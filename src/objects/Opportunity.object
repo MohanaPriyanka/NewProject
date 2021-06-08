@@ -10395,6 +10395,19 @@ ISPICKVAL(Underwriting_Criteria__c,&quot;&quot;)
         <errorMessage>For anchor opportunities, you must set the Underwriting Criteria field to Investment Grade or Financial Review before setting the stage to Complete</errorMessage>
     </validationRules>
     <validationRules>
+        <fullName>CS_Opportunities_require_SSS</fullName>
+        <active>true</active>
+        <description>We&apos;re excluding opps created before 9/1/18 so we don&apos;t have to cleanup data on old and mostly irrelevant opportunities.</description>
+        <errorConditionFormula>AND(
+Product_Line__c =&apos;Community Solar&apos;,
+ISBLANK(Shared_Solar_System__c),
+RecordType.DeveloperName =&apos;Community_Solar&apos;,
+DATEVALUE(CreatedDate) &gt; DATE (2018,09,01)
+)</errorConditionFormula>
+        <errorDisplayField>Shared_Solar_System__c</errorDisplayField>
+        <errorMessage>Shared Solar System must be populated on all CS Opportunities</errorMessage>
+    </validationRules>
+    <validationRules>
         <fullName>Opportunity_Assignment_Agreement</fullName>
         <active>true</active>
         <description>We should not change a customer&apos;s assignment agreement after it has been set</description>
