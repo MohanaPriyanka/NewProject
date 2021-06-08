@@ -1479,20 +1479,6 @@ CONTAINS(Name,&apos;-&apos;),true,false
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
     <rules>
-        <fullName>RL%2FCS - Opportunity Stage - Contract Declined</fullName>
-        <actions>
-            <name>CS_RL_Stage_Update_Declined</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <active>true</active>
-        <criteriaItems>
-            <field>Opportunity.Contract_Status__c</field>
-            <operation>equals</operation>
-            <value>Declined</value>
-        </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
         <fullName>RS - DOER - Origination Date</fullName>
         <active>false</active>
         <criteriaItems>
@@ -1548,181 +1534,6 @@ CONTAINS(Name,&apos;-&apos;),true,false
             <operation>equals</operation>
             <value>False</value>
         </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
-        <fullName>RS MA %28Non DOER%29 - 10%25 Disbursal</fullName>
-        <actions>
-            <name>EMAIL_LOG_Customer_10_Disbursal_MA_non_DOER</name>
-            <type>Task</type>
-        </actions>
-        <actions>
-            <name>Email_Log_RS_Partner_10_Disbursal</name>
-            <type>Task</type>
-        </actions>
-        <active>false</active>
-        <booleanFilter>1 AND 2 AND 3 AND 4 AND 5 AND 6</booleanFilter>
-        <criteriaItems>
-            <field>Opportunity.Disbursal_3_Full_Install_Checkbox__c</field>
-            <operation>notEqual</operation>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.Product_Line__c</field>
-            <operation>equals</operation>
-            <value>Residential Loan</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.DOER_Solar_Loan__c</field>
-            <operation>equals</operation>
-            <value>False</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.Disable_Emails__c</field>
-            <operation>notEqual</operation>
-            <value>True</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.State__c</field>
-            <operation>equals</operation>
-            <value>Massachusetts</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.Disbursal_Type_Interconnect__c</field>
-            <operation>notEqual</operation>
-        </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
-        <fullName>RS Partner - 10%25 Disbursal</fullName>
-        <actions>
-            <name>EMAIL_LOG_Customer_10_Disbursal</name>
-            <type>Task</type>
-        </actions>
-        <actions>
-            <name>Email_Log_RS_Partner_10_Disbursal</name>
-            <type>Task</type>
-        </actions>
-        <active>false</active>
-        <booleanFilter>1 AND 2 AND 3 AND 4 AND 5 AND 6</booleanFilter>
-        <criteriaItems>
-            <field>Opportunity.Disbursal_3_Full_Install_Checkbox__c</field>
-            <operation>notEqual</operation>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.Product_Line__c</field>
-            <operation>equals</operation>
-            <value>Residential Loan</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.DOER_Solar_Loan__c</field>
-            <operation>equals</operation>
-            <value>False</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.Disable_Emails__c</field>
-            <operation>notEqual</operation>
-            <value>True</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.State__c</field>
-            <operation>notEqual</operation>
-            <value>Massachusetts</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.Disbursal_Type_Interconnect__c</field>
-            <operation>notEqual</operation>
-        </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
-        <fullName>RS Partner - 30%25 Disbursal</fullName>
-        <actions>
-            <name>EMAIL_LOG_Customer_30_Disbursal</name>
-            <type>Task</type>
-        </actions>
-        <actions>
-            <name>Email_Log_RS_Partner_30_Disbursal</name>
-            <type>Task</type>
-        </actions>
-        <active>false</active>
-        <criteriaItems>
-            <field>Opportunity.Disbursal_1_Contract_Signature_Checkbox__c</field>
-            <operation>notEqual</operation>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.Product_Line__c</field>
-            <operation>equals</operation>
-            <value>Residential Loan</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.DOER_Solar_Loan__c</field>
-            <operation>equals</operation>
-            <value>False</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.Disable_Emails__c</field>
-            <operation>notEqual</operation>
-            <value>True</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.Disbursal_Type_Contract__c</field>
-            <operation>notEqual</operation>
-        </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
-        <fullName>RS Partner - 60%25 Disbursal</fullName>
-        <actions>
-            <name>EMAIL_LOG_Customer_60_disbursal</name>
-            <type>Task</type>
-        </actions>
-        <actions>
-            <name>Email_Log_RS_Partner_60_Disbursal</name>
-            <type>Task</type>
-        </actions>
-        <active>false</active>
-        <criteriaItems>
-            <field>Opportunity.Disbursal_2_Mechanical_Install_Checkbox__c</field>
-            <operation>notEqual</operation>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.Product_Line__c</field>
-            <operation>equals</operation>
-            <value>Residential Loan</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.DOER_Solar_Loan__c</field>
-            <operation>equals</operation>
-            <value>False</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.Disable_Emails__c</field>
-            <operation>notEqual</operation>
-            <value>True</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.Disbursal_Type_Mech_Completion__c</field>
-            <operation>notEqual</operation>
-        </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
-        <fullName>RS Partner - PTS Submitted</fullName>
-        <actions>
-            <name>PTS_Submittal_Email</name>
-            <type>Alert</type>
-        </actions>
-        <actions>
-            <name>EMAIL_LOG_RS_Partner_PTS_has_been_Submitted</name>
-            <type>Task</type>
-        </actions>
-        <active>true</active>
-        <criteriaItems>
-            <field>Opportunity.Submitted_to_Sol_Systems__c</field>
-            <operation>equals</operation>
-            <value>True</value>
-        </criteriaItems>
-        <description>Used to send notification to partners that PTS submitted on their behalf to Sol Systems</description>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
     <tasks>
@@ -1784,30 +1595,6 @@ using TEMPLATE: Avidia - MCEC Loan Ready for Review</description>
         <protected>false</protected>
         <status>Completed</status>
         <subject>EMAIL LOG: CS Opportunity Complete Email to Partner</subject>
-    </tasks>
-    <tasks>
-        <fullName>EMAIL_LOG_Customer_10_Disbursal</fullName>
-        <assignedTo>api@bluewavesolar.com</assignedTo>
-        <assignedToType>user</assignedToType>
-        <description>EMAIL LOG: Customer 10% Disbursal</description>
-        <dueDateOffset>0</dueDateOffset>
-        <notifyAssignee>false</notifyAssignee>
-        <priority>Normal</priority>
-        <protected>false</protected>
-        <status>Completed</status>
-        <subject>EMAIL LOG: Customer 10% Disbursal</subject>
-    </tasks>
-    <tasks>
-        <fullName>EMAIL_LOG_Customer_10_Disbursal_MA_non_DOER</fullName>
-        <assignedTo>api@bluewavesolar.com</assignedTo>
-        <assignedToType>user</assignedToType>
-        <description>EMAIL LOG: Customer 10% Disbursal using MA Non DOER Template</description>
-        <dueDateOffset>0</dueDateOffset>
-        <notifyAssignee>false</notifyAssignee>
-        <priority>Normal</priority>
-        <protected>false</protected>
-        <status>Completed</status>
-        <subject>EMAIL LOG: Customer 10% Disbursal (MA non DOER)</subject>
     </tasks>
     <tasks>
         <fullName>EMAIL_LOG_Customer_30_Disbursal</fullName>
@@ -2004,17 +1791,6 @@ EMAIL LOG: RS Partner - Contract Sent to Opp</description>
         <protected>false</protected>
         <status>Completed</status>
         <subject>EMAIL LOG: RS Partner PTS has been Submitted</subject>
-    </tasks>
-    <tasks>
-        <fullName>Email_Log_RS_Partner_10_Disbursal</fullName>
-        <assignedTo>api@bluewavesolar.com</assignedTo>
-        <assignedToType>user</assignedToType>
-        <dueDateOffset>0</dueDateOffset>
-        <notifyAssignee>false</notifyAssignee>
-        <priority>Normal</priority>
-        <protected>false</protected>
-        <status>Completed</status>
-        <subject>Email Log: RS Partner - 10% Disbursal</subject>
     </tasks>
     <tasks>
         <fullName>Email_Log_RS_Partner_30_Disbursal</fullName>

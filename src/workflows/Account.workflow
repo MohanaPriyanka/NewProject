@@ -1,34 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
     <alerts>
-        <fullName>Payment_Receipt</fullName>
-        <description>Payment Receipt</description>
-        <protected>false</protected>
-        <recipients>
-            <field>Send_Bills_Contact__c</field>
-            <type>contactLookup</type>
-        </recipients>
-        <senderAddress>customercare@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
-        <template>CS_Billing_Emails/CS_Customer_Payment_Received</template>
-    </alerts>
-    <alerts>
-        <fullName>Payment_Received_AmpRed</fullName>
-        <description>Payment Received AmpRed</description>
-        <protected>false</protected>
-        <recipients>
-            <field>Additional_Contact__c</field>
-            <type>contactLookup</type>
-        </recipients>
-        <recipients>
-            <field>Send_Bills_Contact__c</field>
-            <type>contactLookup</type>
-        </recipients>
-        <senderAddress>customercare@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
-        <template>CS_Billing_Emails/CS_Customer_Payment_Received_AmpRed</template>
-    </alerts>
-    <alerts>
         <fullName>Recurring_Billing_Reciept</fullName>
         <description>Recurring Billing Reciept</description>
         <protected>false</protected>
@@ -142,36 +114,6 @@
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
     <rules>
-        <fullName>Payment Receipt %28AmpRed%29</fullName>
-        <actions>
-            <name>Payment_Received_AmpRed</name>
-            <type>Alert</type>
-        </actions>
-        <actions>
-            <name>EMAIL_LOG_Payment_Receipt_AmpRed</name>
-            <type>Task</type>
-        </actions>
-        <active>true</active>
-        <formula>AND(ISPICKVAL(Client_Brand_Key__c, &quot;AmpRed&quot;), 
-ISCHANGED(Date_of_Last_Payment__c))</formula>
-        <triggerType>onAllChanges</triggerType>
-    </rules>
-    <rules>
-        <fullName>Payment Receipt %28Bluewave Logo%29</fullName>
-        <actions>
-            <name>Payment_Receipt</name>
-            <type>Alert</type>
-        </actions>
-        <actions>
-            <name>EMAIL_LOG_Payment_Receipt</name>
-            <type>Task</type>
-        </actions>
-        <active>true</active>
-        <formula>AND(NOT(ISPICKVAL(Client_Brand_Key__c, &quot;AmpRed&quot;)), 
-ISCHANGED(Date_of_Last_Payment__c))</formula>
-        <triggerType>onAllChanges</triggerType>
-    </rules>
-    <rules>
         <fullName>RL - Account Record Type</fullName>
         <actions>
             <name>Account_Record_Type_Residential_Loan</name>
@@ -186,29 +128,6 @@ ISCHANGED(Date_of_Last_Payment__c))</formula>
         <description>Changes the Account Record Type to Residential Loan</description>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
-    <tasks>
-        <fullName>EMAIL_LOG_Payment_Receipt</fullName>
-        <assignedTo>api@bluewavesolar.com</assignedTo>
-        <assignedToType>user</assignedToType>
-        <description>Using workflow: https://na16.salesforce.com/01Qj0000000Ed3M</description>
-        <dueDateOffset>0</dueDateOffset>
-        <notifyAssignee>false</notifyAssignee>
-        <priority>Normal</priority>
-        <protected>false</protected>
-        <status>Completed</status>
-        <subject>EMAIL LOG: Payment Receipt</subject>
-    </tasks>
-    <tasks>
-        <fullName>EMAIL_LOG_Payment_Receipt_AmpRed</fullName>
-        <assignedTo>api@bluewavesolar.com</assignedTo>
-        <assignedToType>user</assignedToType>
-        <dueDateOffset>0</dueDateOffset>
-        <notifyAssignee>false</notifyAssignee>
-        <priority>Normal</priority>
-        <protected>false</protected>
-        <status>Completed</status>
-        <subject>EMAIL LOG: Payment Receipt AmpRed</subject>
-    </tasks>
     <tasks>
         <fullName>EMAIL_LOG_Recurring_Billing_Receipt</fullName>
         <assignedTo>api@bluewavesolar.com</assignedTo>

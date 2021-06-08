@@ -14606,11 +14606,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account.Date_of_Last_Payment__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account.Day_of_Weekly_Sales_Meeting__c</field>
         <readable>false</readable>
     </fieldPermissions>
