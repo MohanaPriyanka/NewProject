@@ -27787,32 +27787,6 @@ alert(&apos;You have queued a credit check, please refresh the page to check for
         <requireRowSelection>true</requireRowSelection>
     </webLinks>
     <webLinks>
-        <fullName>Manual_Credit_Decline_Co_Applicant</fullName>
-        <availability>online</availability>
-        <description>Sends manual credit decline email to Co applicants</description>
-        <displayType>button</displayType>
-        <linkType>javascript</linkType>
-        <masterLabel>Co Applicant Email - Credit Decline</masterLabel>
-        <openType>onClickJavaScript</openType>
-        <protected>false</protected>
-        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/27.0/connection.js&quot;)} 
-{!REQUIRESCRIPT(&quot;/soap/ajax/27.0/apex.js&quot;)} 
-
-if ({!ISBLANK( Lead.Co_App_Adverse_Credit_Notice_1__c )}) { 
-   alert(&quot;ADVERSE CREDIT NOTICE NOT SENT - PLEASE PROVIDE CONTENT FOR THE ADVERSE CREDIT NOTICE IN THE PERSONAL CREDIT REPORT&quot;);
-} else if({!ISBLANK(Lead.Co_App_Credit_Report_Detail_1_c__c)}) {
-   alert(&quot;ADVERSE CREDIT NOTICE NOT SENT - PLEASE MANUALLY ENTER CREDIT DENIAL CODES FROM PDF ATTACHMENT ON CREDIT REPORT&quot;);
-} else {
-   var objLead = new sforce.SObject(&apos;lead&apos;); 
-   objLead.Id = &apos;{!Lead.Id}&apos;; 
-   sforce.apex.execute(&quot;LoanUnderwriting&quot;,
-                       &quot;updateManualCreditDecline&quot;,
-                       {lead:objLead, coApplicant:true});
-
-   alert(&apos;The Adverse Credit Notice has been sent.&apos;);
-}</url>
-    </webLinks>
-    <webLinks>
         <fullName>New_Customer_Care_Case</fullName>
         <availability>online</availability>
         <displayType>button</displayType>
@@ -27886,75 +27860,6 @@ window.location.href = &apos;{!$Site.BaseUrl}/_ui/core/email/author/EmailAuthor?
 } else {
 
 }</url>
-    </webLinks>
-    <webLinks>
-        <fullName>Send_Co_Applicant_Link</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <encodingKey>UTF-8</encodingKey>
-        <hasMenubar>false</hasMenubar>
-        <hasScrollbars>true</hasScrollbars>
-        <hasToolbar>false</hasToolbar>
-        <height>600</height>
-        <isResizable>true</isResizable>
-        <linkType>url</linkType>
-        <masterLabel>Send Co-Applicant Link (DOER)</masterLabel>
-        <openType>newWindow</openType>
-        <position>none</position>
-        <protected>false</protected>
-        <showsLocation>false</showsLocation>
-        <showsStatus>false</showsStatus>
-        <url>/_ui/core/email/author/EmailAuthor?p2_lkid={!Lead.Id}&amp;rtype=00Q&amp;template_id=00Xj0000000MSY1</url>
-    </webLinks>
-    <webLinks>
-        <fullName>Send_Co_Applicant_Link_BW_Loan</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <encodingKey>UTF-8</encodingKey>
-        <hasMenubar>false</hasMenubar>
-        <hasScrollbars>true</hasScrollbars>
-        <hasToolbar>false</hasToolbar>
-        <height>600</height>
-        <isResizable>true</isResizable>
-        <linkType>url</linkType>
-        <masterLabel>Send Co-Applicant Link (BW Loan)</masterLabel>
-        <openType>newWindow</openType>
-        <position>none</position>
-        <protected>false</protected>
-        <showsLocation>false</showsLocation>
-        <showsStatus>false</showsStatus>
-        <url>/_ui/core/email/author/EmailAuthor?p2_lkid={!Lead.Id}&amp;rtype=00Q&amp;template_id=00Xj0000000FlPi</url>
-    </webLinks>
-    <webLinks>
-        <fullName>Send_PreQual_Approval_Email</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <encodingKey>UTF-8</encodingKey>
-        <linkType>url</linkType>
-        <masterLabel>Send PreQual Approval Email</masterLabel>
-        <openType>replace</openType>
-        <protected>false</protected>
-        <url>/_ui/core/email/author/EmailAuthor?p2_lkid={!Lead.Id}&amp;rtype=00Q&amp;template_id=00Xj0000000FYDj</url>
-    </webLinks>
-    <webLinks>
-        <fullName>Underwriting_Review</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <encodingKey>UTF-8</encodingKey>
-        <hasMenubar>false</hasMenubar>
-        <hasScrollbars>true</hasScrollbars>
-        <hasToolbar>false</hasToolbar>
-        <height>768</height>
-        <isResizable>true</isResizable>
-        <linkType>url</linkType>
-        <masterLabel>Underwriting Review</masterLabel>
-        <openType>newWindow</openType>
-        <position>none</position>
-        <protected>false</protected>
-        <showsLocation>false</showsLocation>
-        <showsStatus>false</showsStatus>
-        <url>/apex/LoanUnderwriting?leadId={!Lead.Id}</url>
-        <width>1024</width>
     </webLinks>
     <webLinks>
         <fullName>dsfs__Send_with_DocuSign</fullName>
