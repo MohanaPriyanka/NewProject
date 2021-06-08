@@ -39,7 +39,7 @@ public with sharing class SharedSolarSystemSharingScheduler implements Schedulab
                 Logger.INFO
             );
         }
-        sssSharingService.shareSharedSolarSystems(eligibilitiesToShare);
         sssSharingService.unshareSharedSolarSystems(eligibilitiesToUnshare);
+        sssSharingService.shareSharedSolarSystems(eligibilitiesToShare);
     }
 }
