@@ -10537,60 +10537,6 @@ COPY THE URL FROM THIS BUTTON and paste it into your own custom button or link. 
         <width>900</width>
     </webLinks>
     <webLinks>
-        <fullName>Actual_Amortization_Schedule</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <encodingKey>UTF-8</encodingKey>
-        <hasMenubar>false</hasMenubar>
-        <hasScrollbars>true</hasScrollbars>
-        <hasToolbar>false</hasToolbar>
-        <height>600</height>
-        <isResizable>true</isResizable>
-        <linkType>url</linkType>
-        <masterLabel>Actual Amortization Schedule</masterLabel>
-        <openType>newWindow</openType>
-        <position>none</position>
-        <protected>false</protected>
-        <showsLocation>false</showsLocation>
-        <showsStatus>false</showsStatus>
-        <url>&quot;/00Oj00000048bwy?pv0={!Opportunity.Name}</url>
-    </webLinks>
-    <webLinks>
-        <fullName>Add_UAL</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <encodingKey>UTF-8</encodingKey>
-        <height>600</height>
-        <linkType>url</linkType>
-        <masterLabel>Add UAL</masterLabel>
-        <openType>noSidebar</openType>
-        <protected>false</protected>
-        <url>/apex/CreateUALWrapper?
-OppId={!Opportunity.Id}
-&amp;acctId={!Opportunity.AccountId}
-&amp;SSSsize={!TEXT(Opportunity.Total_System_Size__c)}
-&amp;SSSname={!Opportunity.Shared_Solar_System_Name__c}</url>
-    </webLinks>
-    <webLinks>
-        <fullName>Calculate_APR</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <encodingKey>UTF-8</encodingKey>
-        <hasMenubar>false</hasMenubar>
-        <hasScrollbars>true</hasScrollbars>
-        <hasToolbar>false</hasToolbar>
-        <height>600</height>
-        <isResizable>true</isResizable>
-        <linkType>url</linkType>
-        <masterLabel>Calculate APR</masterLabel>
-        <openType>newWindow</openType>
-        <position>none</position>
-        <protected>false</protected>
-        <showsLocation>false</showsLocation>
-        <showsStatus>false</showsStatus>
-        <url>https://www.timevalue.com/tcalc-financial-calculators/overview?LOANAMOUNT={!Opportunity.Loan_Principle__c}&amp;DOWNPAYMENT=0.00&amp;PAYMENTAMOUNT={!Opportunity.Monthly_Payment__c}&amp;TERM={!Opportunity.Number_of_Periods_Months__c}&amp;TERM_UNITS=Months&amp;SHOWAMORTIZATIONSCHEDULE=on&amp;COMPUTE=COMPUTE&amp;CALCULATORID=PC07&amp;TEMPLATE_ID=www.timevalue.com_29&amp;PostBack=true#results</url>
-    </webLinks>
-    <webLinks>
         <fullName>Countersign_and_Send_SSF</fullName>
         <availability>online</availability>
         <displayType>button</displayType>
@@ -10617,25 +10563,6 @@ OppId={!Opportunity.Id}
 &amp;MFTSValue1=TODAY
 &amp;EC={!IF($Permission.CS_BW_CounterSignature,1,0)}
 &amp;ECL=You+do+not+have+permission+to+countersign+for+BlueWave</url>
-    </webLinks>
-    <webLinks>
-        <fullName>Create_Loan_Button</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <encodingKey>UTF-8</encodingKey>
-        <hasMenubar>false</hasMenubar>
-        <hasScrollbars>true</hasScrollbars>
-        <hasToolbar>false</hasToolbar>
-        <height>600</height>
-        <isResizable>true</isResizable>
-        <linkType>url</linkType>
-        <masterLabel>Create Loan</masterLabel>
-        <openType>newWindow</openType>
-        <position>none</position>
-        <protected>false</protected>
-        <showsLocation>false</showsLocation>
-        <showsStatus>false</showsStatus>
-        <url>{!URLFOR($Action.Loan__c.New, null, [name =  Opportunity.Name ])}</url>
     </webLinks>
     <webLinks>
         <fullName>Disable_Enable_Emails</fullName>
@@ -10716,25 +10643,6 @@ var result = sforce.connection.update([objCase]);
 
 
 }</url>
-    </webLinks>
-    <webLinks>
-        <fullName>Forecasted_Amortization_Schedule</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <encodingKey>UTF-8</encodingKey>
-        <hasMenubar>false</hasMenubar>
-        <hasScrollbars>true</hasScrollbars>
-        <hasToolbar>false</hasToolbar>
-        <height>600</height>
-        <isResizable>true</isResizable>
-        <linkType>url</linkType>
-        <masterLabel>Forecasted Amortization Schedule</masterLabel>
-        <openType>newWindow</openType>
-        <position>none</position>
-        <protected>false</protected>
-        <showsLocation>false</showsLocation>
-        <showsStatus>false</showsStatus>
-        <url>&quot;/00Oj00000048btQ?pv0={!Opportunity.Name}</url>
     </webLinks>
     <webLinks>
         <fullName>LiveText__Send_Bulk_SMS</fullName>
