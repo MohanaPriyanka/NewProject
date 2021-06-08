@@ -427,6 +427,68 @@ private class SharedSolarSystemSharingServiceTest {
         System.assertEquals(0, shares.size(), 'Expected to remove all shares after the schedule runs');
     }
 
+    @IsTest
+    private static void sharingSchedulerShouldRemoveThenAddShares() {
+        Date today = Date.today();
+
+        List<Account> partnerAccounts = [SELECT Id FROM Account WHERE Name LIKE 'Test Partner Account%' ORDER BY Name LIMIT 2];
+        List<Shared_Solar_System__c> sharedSolarSystems = [
+            SELECT Id, Product__c
+            FROM Shared_Solar_System__c
+            ORDER BY Id
+            LIMIT 1
+        ];
+
+        Commission_Structure__c commissionStructure = new Commission_Structure__c(
+            Name = 'Test Commission Structure',
+            Cents_kW_DC_First_Bill__c = 0.03,
+            Cents_kW_DC_Up_Front__c = 0.08,
+            Cents_kW_DC_First_Bill_Paid__c = 0.02,
+            Partner_Account__c = partnerAccounts[0].Id,
+            Product__c = sharedSolarSystems[0].Product__c
+        );
+        insert new List<Commission_Structure__c>{commissionStructure};
+
+        List<Partner_Shared_Solar_System_Eligibility__c> eligibilities = new List<Partner_Shared_Solar_System_Eligibility__c>();
+        eligibilities.add(new Partner_Shared_Solar_System_Eligibility__c (
+            Account__c = partnerAccounts[0].Id,
+            Shared_Solar_System__c = sharedSolarSystems[0].Id,
+            Commission_Structure__c = commissionStructure.Id,
+            Start_Date__c = Date.newInstance(2020,11,23),
+            End_Date__c = today-1
+        ));
+        eligibilities.add(new Partner_Shared_Solar_System_Eligibility__c (
+            Account__c = partnerAccounts[0].Id,
+            Shared_Solar_System__c = sharedSolarSystems[0].Id,
+            Commission_Structure__c = commissionStructure.Id,
+            Start_Date__c = today,
+            End_Date__c = today+30
+        ));
+        insert eligibilities;
+
+        List<Shared_Solar_System__Share> sharesCreatedByTrigger = [
+            SELECT Id, ParentId, UserOrGroupId
+            FROM Shared_Solar_System__Share
+            ORDER BY ParentId
+        ];
+        System.assertEquals(1, sharesCreatedByTrigger.size(), 'Expected setup to create one share');
+
+        Test.startTest();
+        // Simulates the scheduler daily.
+        new SharedSolarSystemSharingScheduler().changeSharesForRecentEligibilityRecords(today, today-1);
+        Test.stopTest();
+
+        List<Shared_Solar_System__Share> sharesCreatedByScheduledJob = [
+            SELECT Id, ParentId, UserOrGroupId
+            FROM Shared_Solar_System__Share
+            ORDER BY ParentId
+        ];
+        System.assertEquals(1, sharesCreatedByScheduledJob.size(),
+            'Expected to still have a share after the SSSSharingScheduler ran because there is an active PSSSE');
+        System.assertNotEquals(sharesCreatedByTrigger[0].Id, sharesCreatedByScheduledJob[0].Id,
+            'The scheduled job should delete shares since a PSSE ended yesterday, and should create a new one for the active PSSE');
+    }
+
     private static List<Partner_Shared_Solar_System_Eligibility__c> setupTwoAccountsAndTwoSystems(Date startDate, Date endDate) {
         List<Account> partnerAccounts = [SELECT Id FROM Account WHERE Name LIKE 'Test Partner Account%' ORDER BY Name LIMIT 2];
         List<Shared_Solar_System__c> sharedSolarSystems = [
