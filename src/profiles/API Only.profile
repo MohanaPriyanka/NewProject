@@ -845,10 +845,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>UtilityAccountLogConvertTestClass</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>UtilityAccountLogTriggerHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -981,10 +977,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>mapSharedSolarSytemTestClass</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>nmcCustomIdTriggerTestClass</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1010,10 +1002,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>testCalculatePartnerCommissions2</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>utilityAccountLogConversionHandler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <custom>true</custom>
@@ -1870,11 +1858,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.Date_of_Birth__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Account.Date_of_Last_Payment__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

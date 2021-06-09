@@ -1518,15 +1518,6 @@ CASE(Days_Past_Due__c,
         <type>Date</type>
     </fields>
     <fields>
-        <fullName>Date_of_Last_Payment__c</fullName>
-        <externalId>false</externalId>
-        <label>Date of Last Payment</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Date</type>
-    </fields>
-    <fields>
         <fullName>Day_of_Weekly_Sales_Meeting__c</fullName>
         <externalId>false</externalId>
         <label>Day of Weekly Sales Meeting</label>
