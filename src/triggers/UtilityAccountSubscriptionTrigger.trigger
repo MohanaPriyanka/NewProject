@@ -28,7 +28,6 @@ trigger UtilityAccountSubscriptionTrigger on Utility_Account_Subscription__c (af
         } when AFTER_UPDATE {
             CSCancellationProjectRemover.handleOpportunitiesRemovedFromProject(Trigger.oldMap, Trigger.newMap);
             ClientReportingService.updateClientUAS(Trigger.new, Trigger.oldMap);
-            UtilityAccountSubscriptionHandler.checkScheduleZStatus(Trigger.newMap, Trigger.oldMap);
         }
     }
 }

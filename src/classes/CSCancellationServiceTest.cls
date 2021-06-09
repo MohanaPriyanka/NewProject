@@ -570,7 +570,7 @@ public with sharing class CSCancellationServiceTest {
         List<Account> accounts = new List<Account>();
         for (Opportunity opportunity : oppList) {
             System.assertEquals(null, opportunity.Account.Cancellation_Request_Date__c);
-            System.assertEquals('Cancelled', opportunity.StageName);
+            System.assertEquals('Complete', opportunity.StageName);
             accounts.add(
                 new Account(
                     Id = opportunity.Account.Id,
@@ -631,7 +631,7 @@ public with sharing class CSCancellationServiceTest {
         List<Account> accounts = new List<Account>();
         for (Opportunity opportunity : oppList) {
             System.assertEquals(null, opportunity.Account.Cancellation_Request_Date__c);
-            System.assertEquals('Cancelled', opportunity.StageName);
+            System.assertEquals('Complete', opportunity.StageName);
             accounts.add(
                 new Account(
                     Id = opportunity.Account.Id,
@@ -660,7 +660,7 @@ public with sharing class CSCancellationServiceTest {
 
         System.assertEquals(3, oppList.size());
         for (Opportunity opp : oppList) {
-            System.assertEquals('Cancelled', opp.StageName);
+            System.assertEquals('Complete', opp.StageName);
         }
     }
 
@@ -707,8 +707,8 @@ public with sharing class CSCancellationServiceTest {
 
         // Since there's a single opportunity for a single system, we generate a single bill with a single UAS that's still active
         System.assertEquals(2, uasbList.size());
-        System.assertEquals('Active Subscription', uasbList[0].Utility_Account_Subscription__r.Next_Schedule_Z_Status__c);
-        System.assertEquals('Inactive Subscription', uasbList[1].Utility_Account_Subscription__r.Next_Schedule_Z_Status__c);
+        System.assertEquals('Inactive Subscription', uasbList[0].Utility_Account_Subscription__r.Next_Schedule_Z_Status__c);
+        System.assertEquals('Active Subscription', uasbList[1].Utility_Account_Subscription__r.Next_Schedule_Z_Status__c);
         System.assertEquals(Date.newInstance(2018,1,1), uasbList[0].Date__c);
         System.assertEquals('Complete', uasbList[0].Opportunity__r.StageName);
 

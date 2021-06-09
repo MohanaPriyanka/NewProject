@@ -374,36 +374,4 @@ public class UtilityAccountSubscriptionHandlerTest {
         System.assertEquals(300, anchorUAS.Annual_Subscription_Production_Summary__c,'The rollup of Anchor production should = 300');
     }
     
-    @IsTest
-    public static void testCheckScheduleZStatus(){
-        Utility_Account_Subscription__c uasBefore = [
-            SELECT Id, Next_Schedule_Z_Status__c, Opportunity__c 
-            FROM Utility_Account_Subscription__c 
-            WHERE Name = '0000234'
-        ];
-        Opportunity uasBeforeOpportunity = [
-            SELECT Id, StageName 
-            FROM Opportunity 
-            WHERE Id =:uasBefore.Opportunity__c
-        ];
-        System.assertEquals('Active Subscription', uasBefore.Next_Schedule_Z_Status__c);
-        System.assertEquals('Complete', uasBeforeOpportunity.StageName);
-        
-        uasBefore.Next_Schedule_Z_Status__c = 'Inactive Subscription';
-        update uasBefore;
-        
-        Utility_Account_Subscription__c uasAfter = [
-            SELECT Id, Next_Schedule_Z_Status__c, Opportunity__c 
-            FROM Utility_Account_Subscription__c 
-            WHERE Name = '0000234'
-        ];
-        Opportunity uasAfterOpportunity = [
-            SELECT Id, StageName 
-            FROM Opportunity 
-            WHERE Id =:uasAfter.Opportunity__c
-        ];
-        System.assertEquals('Inactive Subscription', uasAfter.Next_Schedule_Z_Status__c);
-        System.assertEquals('Cancelled', uasAfterOpportunity.StageName);
-    }
-    
 }
