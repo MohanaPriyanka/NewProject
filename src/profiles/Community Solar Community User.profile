@@ -3447,10 +3447,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>UtilityAccountLogConvertTestClass</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>UtilityAccountLogTriggerHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -10211,10 +10207,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>mapSharedSolarSytemTestClass</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>nmcCustomIdTriggerTestClass</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -10592,10 +10584,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>trailheadapp__UserTrailmixUpsertBatch_Test</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>utilityAccountLogConversionHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -14804,11 +14792,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.Date_of_Birth__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Account.Date_of_Last_Payment__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
