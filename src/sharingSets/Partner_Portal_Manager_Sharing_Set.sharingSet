@@ -14,6 +14,12 @@
     </accessMappings>
     <accessMappings>
         <accessLevel>Read</accessLevel>
+        <object>Commission_Structure__c</object>
+        <objectField>Partner_Account__c</objectField>
+        <userField>Account</userField>
+    </accessMappings>
+    <accessMappings>
+        <accessLevel>Read</accessLevel>
         <object>Contact</object>
         <objectField>Account</objectField>
         <userField>Account</userField>
