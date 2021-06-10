@@ -121,57 +121,38 @@ public class DisbursalHandlerTest {
         update opps;
     }
 
-   
-
-
-
-
-
-    @IsTest
-    static void testNonDOERFPDD() {
+    @isTest static void testCreateDisbursalsFromOpportunity() {
         Test.startTest();
-        Loan__c loan = [
-            SELECT Id, First_Payment_Due_Date_Override__c
-            FROM Loan__c
-            WHERE DOER_Solar_Loann__c = FALSE
-        ];
+            Decimal totalAmount = 0;
+            Decimal totalPercentage = 0;
+            Opportunity opportunityRecord = [
+                SELECT Id, Name,
+                (SELECT Id, Name FROM Loans__r)
+                FROM Opportunity
+                WHERE DOER_Solar_Loan__c = FALSE
+            ];
 
-        List<Disbursal__c> disbursalRecords = [
-            SELECT Id, Name, Type__c
-            FROM Disbursal__c
-            WHERE Loan__r.Id =: loan.Id
-            ORDER BY Disbursal_Sequence__c
-        ];
+            Map<ID, Opportunity> OppMap = new Map<ID, Opportunity>([SELECT Id, Name, StageName FROM Opportunity LIMIT 10]);
+            
+ 
+            DisbursalHandler disbursalHandler = new DisbursalHandler ();
 
-        Date disbursalDate = Date.newInstance(2018,1,1);
-        System.assertEquals(null, loan.First_Payment_Due_Date_Override__c);
-        System.assertEquals(0, disbursalRecords.size());
-        for (Disbursal__c disbursal : disbursalRecords) {
-            if (disbursal.Type__c == 'Contract Signature') {
-                disbursal.Date_of_Disbursal__c = disbursalDate;
+            DisbursalHandler.createDisbursalsFromOpportunity(OppMap, OppMap);
+
+            List<Disbursal__c> disbursalRecords = [
+                SELECT Id, Name, Disbursal_Percentage__c, Amount__c
+                FROM Disbursal__c
+                WHERE Loan__r.Id = : opportunityRecord.Loans__r.get(0).Id
+            ];
+
+            System.assertEquals(0, disbursalRecords.size());
+            for (Disbursal__c disbursal : disbursalRecords) {
+                totalAmount = totalAmount + disbursal.Amount__c;
+                totalPercentage = totalPercentage + disbursal.Disbursal_Percentage__c;
             }
-        }
-        update disbursalRecords;
-        loan = [
-            SELECT Id, First_Payment_Due_Date_Override__c, (SELECT Id, Status__c, Date_of_Disbursal__c FROM Disbursals__r)
-            FROM Loan__c
-            WHERE DOER_Solar_Loann__c = FALSE
-        ];
-        System.assertEquals(null, loan.First_Payment_Due_Date_Override__c);
-
-        for (Disbursal__c disbursal : disbursalRecords) {
-            if (disbursal.Type__c == 'Interconnection') {
-                disbursal.Date_of_Disbursal__c = disbursalDate;
-            }
-        }
-        update disbursalRecords;
-        loan = [
-            SELECT Id, First_Payment_Due_Date_Override__c, (SELECT Id, Status__c, Date_of_Disbursal__c FROM Disbursals__r)
-            FROM Loan__c
-            WHERE DOER_Solar_Loann__c = FALSE
-        ];
-        System.assertNotEquals(Date.newInstance(2018,2,1), loan.First_Payment_Due_Date_Override__c);
+            System.assertEquals(0, totalAmount);
+            System.assertEquals(0, totalPercentage);
+        Test.stopTest();
     }
-
    
 }
