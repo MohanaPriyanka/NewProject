@@ -80,8 +80,20 @@ public inherited sharing class ContactSelector {
         return returnList;
     }
     
-
-
+    public static Map<Id,Contact> selectMultipleSendBillsContactByContracts(Set<Id> contractIds){
+        Map<Id, Contact> contractIdToContactMap = new Map<Id, Contact>();
+        List<Contract> contractList = [
+            SELECT Id, AccountId, Account.Send_Bills_Contact__c, Account.Send_Bills_Contact__r.Id, 
+            Account.Send_Bills_Contact__r.Email, Account.Send_Bills_Contact__r.FirstName
+            FROM Contract 
+            WHERE Id IN :contractIds
+        ];
+        for(Contract contract : contractList){
+            contractIdToContactMap.put(contract.Id, contract.Account.Send_Bills_Contact__r);
+        }
+        return contractIdToContactMap;
+    }
+    
     public static List<Contact> selectActiveAlsSendBillsContactBySSSId(Id  sharedSolarSystemId) {
         Set<Contact> sendBillsContacts = new Set<Contact>();
         List<Schedule_Z_Subscription__c> getSendBillsContactsfromALS =  [
