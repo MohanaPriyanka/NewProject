@@ -707,8 +707,8 @@ public with sharing class CSCancellationServiceTest {
 
         // Since there's a single opportunity for a single system, we generate a single bill with a single UAS that's still active
         System.assertEquals(2, uasbList.size());
-        System.assertEquals('Inactive Subscription', uasbList[0].Utility_Account_Subscription__r.Next_Schedule_Z_Status__c);
-        System.assertEquals('Active Subscription', uasbList[1].Utility_Account_Subscription__r.Next_Schedule_Z_Status__c);
+        System.assertEquals('Active Subscription', uasbList[0].Utility_Account_Subscription__r.Next_Schedule_Z_Status__c);
+        System.assertEquals('Inactive Subscription', uasbList[1].Utility_Account_Subscription__r.Next_Schedule_Z_Status__c);
         System.assertEquals(Date.newInstance(2018,1,1), uasbList[0].Date__c);
         System.assertEquals('Complete', uasbList[0].Opportunity__r.StageName);
 
