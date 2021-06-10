@@ -45,22 +45,19 @@ public inherited sharing class ContactSelector {
     }
 
     public static List<Contact> selectSendBillsContactBySSSId(Id  sharedSolarSystemId) {
-        Set<Contact> sendBillsContacts = new Set<Contact>();
-        List<Opportunity> getSendBillsContactsFromOpp =  [
-            SELECT Account.Send_Bills_Contact__r.Id,  Account.Send_Bills_Contact__r.Email
+        Set<Id> sendBillsContacts = new Set<Id>();
+        List<Opportunity> getSendBillsContactsFromOpp = [
+            SELECT Account.Send_Bills_Contact__c
             FROM Opportunity 
             WHERE Shared_Solar_System__c = :sharedSolarSystemId
-            AND Opportunity.StageName = 'Complete'
+            AND Opportunity.StageName = 'Complete' 
             AND Account.Send_Bills_Contact__r.Email != NULL
         ];
         for (Opportunity opportunity : getSendBillsContactsFromOpp) {
-            sendBillsContacts.add(opportunity.Account.Send_Bills_Contact__r);
+            sendBillsContacts.add(opportunity.Account.Send_Bills_Contact__c);
         }
-        return new List<Contact>(sendBillsContacts);
-        
+        return getContactsWithRelatedFields(sendBillsContacts);
     }
-
-
 
     public static List<Contact> selectSendBillsContactByContract(Set<Id> contractIds){
         List<Id> contactIdList = new List<Id>();
@@ -69,7 +66,7 @@ public inherited sharing class ContactSelector {
             FROM Contract 
             WHERE Id IN :contractIds
         ];
-        for(Contract con : contractList){
+        for (Contract con : contractList){
             contactIdList.add(con.Account.Send_Bills_Contact__r.Id);
         }
         List<Contact> returnList = [
@@ -79,26 +76,29 @@ public inherited sharing class ContactSelector {
         ];
         return returnList;
     }
-    
 
-
-    public static List<Contact> selectActiveAlsSendBillsContactBySSSId(Id  sharedSolarSystemId) {
-        Set<Contact> sendBillsContacts = new Set<Contact>();
+    public static List<Contact> selectActiveAlsSendBillsContactBySSSId(Id sharedSolarSystemId) {
+        Set<Id> sendBillsContacts = new Set<Id>();
         List<Schedule_Z_Subscription__c> getSendBillsContactsfromALS =  [
-            SELECT Utility_Account_Subscription__r.Opportunity__r.Account.Send_Bills_Contact__r.Id,
-                Utility_Account_Subscription__r.Opportunity__r.Account.Send_Bills_Contact__r.Email
-            FROM Schedule_Z_Subscription__c 
+            SELECT Utility_Account_Subscription__r.Opportunity__r.Account.Send_Bills_Contact__c
+            FROM Schedule_Z_Subscription__c
             WHERE Schedule_Z__r.Shared_Solar_System__c = :sharedSolarSystemId
             AND Schedule_Z__r.Status__c IN ('Submitted to Utility', 'Enacted by Utility')
             AND Schedule_Z__r.Date_Submitted_to_Utility__c !=NULL
         ];
         for (Schedule_Z_Subscription__c sendBillsContactfromALS : getSendBillsContactsfromALS) {
-            sendBillsContacts.add(sendBillsContactfromALS.Utility_Account_Subscription__r.Opportunity__r.Account.Send_Bills_Contact__r);
+            sendBillsContacts.add(
+                sendBillsContactfromALS.Utility_Account_Subscription__r.Opportunity__r.Account.Send_Bills_Contact__c
+            );
         }
-        return new List<Contact>(sendBillsContacts);
-
-
+        return getContactsWithRelatedFields(sendBillsContacts);
     }
-    
 
+    private static List<Contact> getContactsWithRelatedFields(Set<Id> contactIds) {
+        return [
+            SELECT Id, Account.Client_Brand_Key__c
+            FROM Contact
+            WHERE Id IN : contactIds
+        ];
+    }
 }

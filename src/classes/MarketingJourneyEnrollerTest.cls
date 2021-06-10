@@ -11,7 +11,7 @@ public without sharing class MarketingJourneyEnrollerTest {
         Integer numberOfEnrollments = 5;
         Test.startTest();
             Test.setMock(HttpCalloutMock.class, new MarketingJourneyEnrollerSuccess());
-            List<MarketingAPI.JourneyEnrollment> enrollments = createEnrollments(numberOfEnrollments);
+            List<MarketingJourneyEnrollment> enrollments = createEnrollments(numberOfEnrollments);
             MarketingJourneyEnroller.enrollContactsInJourney(enrollments);
         Test.stopTest();
 
@@ -41,7 +41,7 @@ public without sharing class MarketingJourneyEnrollerTest {
         Integer numberOfEnrollments = 5;
         Test.startTest();
             Test.setMock(HttpCalloutMock.class, new MarketingJourneyEnrollerFailure());
-            List<MarketingAPI.JourneyEnrollment> enrollments = createEnrollments(numberOfEnrollments);
+            List<MarketingJourneyEnrollment> enrollments = createEnrollments(numberOfEnrollments);
             MarketingJourneyEnroller.enrollContactsInJourney(enrollments);
         Test.stopTest();
 
@@ -61,16 +61,20 @@ public without sharing class MarketingJourneyEnrollerTest {
     }
 
     @SuppressWarnings('PMD.AvoidHardcodingId')
-    private static List<MarketingAPI.JourneyEnrollment> createEnrollments(Integer numOfEnrollments) {
-        List<MarketingAPI.JourneyEnrollment> enrollments = new List<MarketingAPI.JourneyEnrollment>();
+    private static List<MarketingJourneyEnrollment> createEnrollments(Integer numOfEnrollments) {
+        List<MarketingJourneyEnrollment> enrollments = new List<MarketingJourneyEnrollment>();
+        MarketingJourneyEnrollment enrollment = new MarketingJourneyEnrollment();
+        List<MarketingJourneyEnrollmentDetail> details = new List<MarketingJourneyEnrollmentDetail>();
         for (Integer i=0; i<numOfEnrollments; i++) {
-            MarketingAPI.JourneyEnrollment enrollment = new MarketingAPI.JourneyEnrollment();
-            enrollment.ContactId = '00305000008GSCcAAO';
-            enrollment.EventDefinitionKey = 'APIEvent-d583f5b6-dc29-143b-61b0-38c3cfe07229';
-            enrollment.EventProperties = new List<FlowMap>();
-            enrollment.EventProperties.add(new FlowMap('Key','Value'));
-            enrollments.add(enrollment);
+            MarketingJourneyEnrollmentDetail detail = new MarketingJourneyEnrollmentDetail();
+            detail.ContactId = '00305000008GSCcAAO';
+            detail.EventDefinitionKey = 'APIEvent-d583f5b6-dc29-143b-61b0-38c3cfe07229';
+            detail.EventProperties = new List<FlowMap>();
+            detail.EventProperties.add(new FlowMap('Key','Value'));
+            details.add(detail);
         }
+        enrollment.details = details;
+        enrollments.add(enrollment);
         return enrollments;
     }
 
