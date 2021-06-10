@@ -570,7 +570,7 @@ public with sharing class CSCancellationServiceTest {
         List<Account> accounts = new List<Account>();
         for (Opportunity opportunity : oppList) {
             System.assertEquals(null, opportunity.Account.Cancellation_Request_Date__c);
-            System.assertEquals('Cancelled', opportunity.StageName);
+            System.assertEquals('Complete', opportunity.StageName);
             accounts.add(
                 new Account(
                     Id = opportunity.Account.Id,
@@ -631,7 +631,7 @@ public with sharing class CSCancellationServiceTest {
         List<Account> accounts = new List<Account>();
         for (Opportunity opportunity : oppList) {
             System.assertEquals(null, opportunity.Account.Cancellation_Request_Date__c);
-            System.assertEquals('Cancelled', opportunity.StageName);
+            System.assertEquals('Complete', opportunity.StageName);
             accounts.add(
                 new Account(
                     Id = opportunity.Account.Id,
@@ -660,7 +660,7 @@ public with sharing class CSCancellationServiceTest {
 
         System.assertEquals(3, oppList.size());
         for (Opportunity opp : oppList) {
-            System.assertEquals('Cancelled', opp.StageName);
+            System.assertEquals('Complete', opp.StageName);
         }
     }
 

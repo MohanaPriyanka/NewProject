@@ -59,6 +59,7 @@ public class OpportunitiesTest {
             FROM Utility_Account_Subscriptions__r)
             FROM Opportunity
             WHERE Name = 'ADonut Shop'
+            AND StageName = 'Complete'
         ];
         // This opp should still not be cancelled even though UASes are Inactive, since the UASes have Schedule Z Subscriptions
         System.assertEquals(false, Opportunities.isCancelledWaitlist(opps[0]));
@@ -71,6 +72,7 @@ public class OpportunitiesTest {
             FROM Utility_Account_Subscriptions__r)
             FROM Opportunity
             WHERE Name = 'ADonut Shop'
+            AND StageName = 'Complete'
         ];
         // Now, it should be cancelled since the UASes are Inactive and there are no schedule z subscriptions
         System.assertEquals(true, Opportunities.isCancelledWaitlist(opps[0]));
