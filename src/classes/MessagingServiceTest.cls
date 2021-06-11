@@ -148,4 +148,5 @@ public with sharing class MessagingServiceTest {
         
         System.assertEquals(2, MessagingService.emailsSent.size(), 'There should be one email sent for each contact in the contactList - in this case 2.');
     }
+    
 }

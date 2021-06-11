@@ -4182,38 +4182,6 @@
     <searchLayouts />
     <sharingModel>Private</sharingModel>
     <webLinks>
-        <fullName>CONTACT_Create_Customer_Care_Case</fullName>
-        <availability>online</availability>
-        <description>If the task is linked to a Contact, select this button to create new customer care case</description>
-        <displayType>button</displayType>
-        <encodingKey>UTF-8</encodingKey>
-        <hasMenubar>false</hasMenubar>
-        <hasScrollbars>true</hasScrollbars>
-        <hasToolbar>false</hasToolbar>
-        <height>600</height>
-        <isResizable>true</isResizable>
-        <linkType>url</linkType>
-        <masterLabel>CONTACT: Create Customer Care Case</masterLabel>
-        <openType>newWindow</openType>
-        <position>none</position>
-        <protected>false</protected>
-        <showsLocation>false</showsLocation>
-        <showsStatus>false</showsStatus>
-        <url>/500/e?
-
-&amp;RecordType=012j00000000HA8
-&amp;ent=Case
-&amp;cas14={!Task.Subject}
-&amp;cas15={!Task.Description}
-&amp;00Nj000000BVAYr={!Task.Subject}
-&amp;cas3_lkid={!Task.Who}
-&amp;cas3_lkold={!Task.Who}
-&amp;cas11=Phone
-&amp;00N0a00000CNCAp={!Task.Id}
-&amp;00Nj000000BiMdn={!Task.Product_Line__c}
-&amp;00N0a00000CNAdy={!Task.Product_Line__c}</url>
-    </webLinks>
-    <webLinks>
         <fullName>Create_Customer_Care_Case</fullName>
         <availability>online</availability>
         <description>Creates a new Case record</description>
@@ -4244,37 +4212,6 @@
 &amp;00N0a00000CNCAp={!Task.Id}
 &amp;00Nj000000BiMdn={!Task.Product_Line__c}
 &amp;00N0a00000CNAdy={!Task.Product_Line__c}</url>
-    </webLinks>
-    <webLinks>
-        <fullName>LEAD_Create_Customer_Care_Case</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <linkType>javascript</linkType>
-        <masterLabel>LEAD: Create Customer Care Case</masterLabel>
-        <openType>onClickJavaScript</openType>
-        <protected>false</protected>
-        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/27.0/connection.js&quot;)} 
-
-var objTask = new sforce.SObject(&quot;Task&quot;);
-
-objTask.id = &quot;{!Task.Id}&quot;;
-
-
-
-if( {!Task.Customer_Care_Case__c}) {
-objTask.Customer_Care_Case__c = false;
-
-var result = sforce.connection.update([objTask]);
-
-alert(&apos;Customer Case Case created! To edit the case, press &quot;Back,&quot; refresh the page, and proceed to &quot;Cases&quot; towards the bottom of the page. Select the most recent case.&apos; );
-document.location.reload(true);
-
-}else{
-objTask.Customer_Care_Case__c = true;
-var result = sforce.connection.update([objTask]);
-alert(&apos;Customer Case Case created! To edit the case, press &quot;Back,&quot; refresh the page, and proceed to &quot;Cases&quot; towards the bottom of the page. Select the most recent case.&apos;);
-document.location.reload(true);
-}</url>
     </webLinks>
     <webLinks>
         <fullName>New_PM_Task</fullName>

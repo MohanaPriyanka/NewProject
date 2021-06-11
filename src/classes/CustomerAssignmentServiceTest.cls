@@ -5,6 +5,7 @@
 @IsTest
 @SuppressWarnings('PMD.AvoidHardcodingId')
 public with sharing class CustomerAssignmentServiceTest {
+    
     private static String newContractMapJson = '{' +
         '"800000000000007":{"Id":"800000000000007","Assignment_Agreement__c":"800000000000000AAA"},' + // added
         '"800000000000008":{"Id":"800000000000008","Assignment_Agreement__c":"800000000000001AAA"},' + // no change
@@ -40,33 +41,53 @@ public with sharing class CustomerAssignmentServiceTest {
         );
         insert sss1;
         
+        Product2 testProduct1 = new Product2(
+            Addendum_Template_Id__c = '0123456',
+            Name = 'testProduct1'
+        );
+        insert testProduct1;
+        
+        Contract testCustomerContract1 = new Contract(
+            AccountId = account1.Id,
+            Name = 'testCustomerContract1',
+            RecordTypeId = '0120a0000010S7KAAU',
+            CompanySignedDate = null,
+            Product__c = testProduct1.Id
+        );
+        insert testCustomerContract1;
+        
         Opportunity opp1 = new Opportunity(
             Name = 'testOpp1',
             Shared_Solar_System__c = sss1.Id,
             StageName = 'testOpp1StageName',
-            CloseDate = Date.today()
+            CloseDate = Date.today(),
+            Product__c = testProduct1.Id,
+            ContractId = testCustomerContract1.Id
         );
     	insert opp1;
         
-        Contract contract1 = new Contract(
+        Contract testAA1 = new Contract(
             AccountId = account1.Id,
-            Addendum_Sent_Date__c = NULL,
-            Name = 'testCon1',
-            Opportunity__c = opp1.Id,
             RecordTypeId = '0120a0000010S8hAAE',
+            Name = 'testAA',
+            Opportunity__c = opp1.Id,
             CompanySignedDate = null
         );
-        insert contract1;
+        insert testAA1;
         
-        Contract contract2 = contract1.clone(true, true, true, true);
-        System.assertEquals(contract1, contract2);
-        contract2.CompanySignedDate = Date.today();
+        testCustomerContract1.Opportunity__c = opp1.Id;
+        testCustomerContract1.Assignment_Agreement__c = testAA1.Id;
+        update testCustomerContract1;
+        
+        Contract testAA2 = testAA1.clone(true, true, true, true);
+        System.assertEquals(testAA1, testAA2);
+        testAA2.CompanySignedDate = Date.today();
         
         Map<Id, Contract> oldContractMap = new Map<Id, Contract>();
         Map<Id, Contract> newContractMap = new Map<Id, Contract>();
         
-        oldContractMap.put(contract1.Id, contract1);
-        newContractMap.put(contract2.Id, contract2);
+        oldContractMap.put(testAA1.Id, testAA1);
+        newContractMap.put(testAA2.Id, testAA2);
         
         Util.mockDML = true;
         CustomerAssignmentService.opportunitiesSelector =
@@ -303,6 +324,8 @@ public with sharing class CustomerAssignmentServiceTest {
             switch on methodCall.stubbedMethodName {
                 when 'selectFirstCustomerSignedDateByAssignmentAgreement' {
                     return sssFirstCustomerDateMap;
+                } when 'getOpportunitiesByAAsNeedingAddendumSent' {
+                    return new List<Opportunity>();
                 }
             }
             return null;
@@ -331,7 +354,20 @@ public with sharing class CustomerAssignmentServiceTest {
     public class MockSubscriptionOrderSelector extends MockProvider {
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
-                when 'selectApprovedByContractIds' {
+                when 'selectApprovedByOppIds' {
+                    String json = '[' +
+                        '{"Id":"a9W0v0000000000AAA",' +
+                        '"Client_Assignment_Agreement__c":"8000v000000EXYLAA4",' +
+                        '"Utility_Account_Subscription__r":{"Id":"a1d0v000003Y3AxAAK","Opportunity__c":"006000000000000AAA"}},' +
+                        '{"Id":"a9W0v0000000002AAA",' +
+                        '"Client_Assignment_Agreement__c":"8000v000000EXYLAA4",' +
+                        '"Utility_Account_Subscription__r":{"Id":"a1d0v000003Y3AyAAK","Opportunity__c":"006000000000002AAA"}},' +
+                        '{"Id":"a9W0v0000000003AAA",' +
+                        '"Client_Assignment_Agreement__c":"8000v000000EXYLAA4",' +
+                        '"Utility_Account_Subscription__r":{"Id":"a1d0v000003Y3AyAAK","Opportunity__c":"006000000000003AAA"}}' +
+                        ']';
+                    return (List<Subscription_Order__c>) System.JSON.deserialize(json, List<Subscription_Order__c>.class);
+                } when 'selectApprovedByContractIds' {
                     String json = '[' +
                         '{"Id":"a9W0v0000000000AAA",' +
                         '"Client_Assignment_Agreement__c":"8000v000000EXYLAA4",' +
@@ -365,72 +401,4 @@ public with sharing class CustomerAssignmentServiceTest {
             return null;
         }
     }
-    
-    @IsTest
-    private static void testSendDisclosureFormEmail() {
-        Contact contact1 = new Contact(
-            Title = 'testContact01',
-            LastName = 'testContactLastName'
-        );
-        insert contact1;
-        
-        Account account1 = new Account(
-            Name = 'testAccount1',
-            Send_Bills_Contact__c = contact1.Id
-        );
-        insert account1;
-        
-        Product2 product1 = new Product2(
-            Addendum_Template_Id__c = 'AddendumTestId',
-            Name = 'testProd1'
-        );
-        insert product1;
-        
-        Shared_Solar_System__c sss1 = new Shared_Solar_System__c(
-            Name = 'testSSS1',
-            Address__c = 'testAddress',
-            City__c = 'Boston',
-            State__c = 'MA',
-            Zip_Code__c = '12345',
-            Total_System_Size_kWh_DC__c = 1.1
-        );
-        insert sss1;
-        
-        Opportunity opp1 = new Opportunity(
-            Product__c = product1.Id,
-            StageName = 'opp1StageName',
-            Name = 'opp1Name',
-            CloseDate = Date.today(),
-            Shared_Solar_System__c = sss1.Id
-        );
-        insert opp1;
-        
-        Contract contract1 = new Contract(
-            AccountId = account1.Id,
-            Addendum_Sent_Date__c = NULL,
-            Name = 'testContract1',
-            Opportunity__c = opp1.Id
-        );
-        insert contract1;
-        
-        opp1.ContractId = contract1.Id;
-        update opp1;
-        
-        ContentVersion cv1 = new ContentVersion(
-            Title = 'cv1Title.pdf',
-            VersionData = EncodingUtil.base64Decode('df'),
-            PathOnClient = '/Disclosure_Form.pdf',
-            Signing_Status__c = 'Countersigned'
-        );
-        insert cv1;
-        
-        Map<Id,Contract> contractMap = new Map<Id,Contract>();
-        contractMap.put(contract1.Id, contract1);
-        
-        CustomerAssignmentService.sendDisclosureFormEmail(contractMap, 'Welcome Email');
-        
-        System.assertEquals(1, MessagingService.emailsSent.size());
-    }
-
-    
 }

@@ -191,8 +191,8 @@ public without sharing class OpportunitiesSelector {
                 '      WHERE Opportunity__r.Shared_Solar_System__r.Contract_Assignment_Entity__c = :entityId\n' +
                 '      AND Opportunity__r.Contract_Close_Date__c <= :cutoffDate\n' +
                 '      AND Next_Schedule_Z_Status__c = \'Active Subscription\'\n' +
-                '      AND Opportunity__r.Assignment_Agreement__c = NULL\n' +
-                (anchorsOnly?
+                '      AND Opportunity__r.Assignment_Agreement__c = NULL\n' + 
+            	(anchorsOnly?
                     '      AND Opportunity__r.Customer_Group__c = \'Anchor\'\n':
                     '      AND Opportunity__r.Customer_Group__c != \'Anchor\'\n') +
                 '      AND Opportunity__r.StageName = \'Complete\'\n' +
@@ -261,21 +261,24 @@ public without sharing class OpportunitiesSelector {
             AND Date_Removed_from_Project__c != null
         ];
     }
-
+    
     public List<Opportunity> getOpportunitiesByAAsNeedingAddendumSent(Set<Id> assignmentAgreementIds) {
-        List<Opportunity> resultList = [
-            SELECT Id, Contract.Id, Contract.Product__r.Addendum_Template_Id__c, Contract.Addendum_Sent_Date__c,
-            Account.Send_Bills_Contact__r.Id, Shared_Solar_System__c, Shared_Solar_System__r.Name,
-            Shared_Solar_System__r.Address__c, Shared_Solar_System__r.City__c, Shared_Solar_System__r.State__c,
-            Shared_Solar_System__r.Zip_Code__c, Shared_Solar_System__r.Total_System_Size_kWh_DC__c,
-            Shared_Solar_System__r.Home_Electricity_Offset__c, Contract.Assignment_Agreement__c,
-            Product__c, Product__r.Addendum_Template_Id__c
+        return [
+            SELECT Id, ContractId, Contract.Assignment_Agreement__c, Contract.Addendum_Sent_Date__c, 
+            Contract.Product__r.Addendum_Template_Id__c, Shared_Solar_System__c,
+            Contract.Account.Send_Bills_Contact__r.Id, Product__c,
+            Contract.Name, Contract.Id, Contract.Parent_Contract__c, Contract.AccountId, 
+            Contract.Account.Send_Bills_Contact__c, Contract.Account.Send_Bills_Contact__r.Email,
+            Shared_Solar_System__r.Name, Shared_Solar_System__r.Address__c, Shared_Solar_System__r.City__c, 
+            Shared_Solar_System__r.State__c, Shared_Solar_System__r.Zip_Code__c, 
+            Shared_Solar_System__r.Total_System_Size_kWh_DC__c, 
+            Shared_Solar_System__r.Home_Electricity_Offset__c
             FROM Opportunity
             WHERE Contract.Assignment_Agreement__c IN: assignmentAgreementIds
             AND Contract.Addendum_Sent_Date__c = null
-            AND Product__r.Addendum_Template_Id__c != null
+            AND Contract.Product__r.Addendum_Template_Id__c != null
+            AND Contract.Account.Send_Bills_Contact__c != null
         ];
-        return resultList;
     }
-
+    
 }

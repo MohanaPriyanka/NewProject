@@ -3,16 +3,17 @@
     <actionCalls>
         <name>Call_Apex</name>
         <label>Call Apex</label>
-        <locationX>1712</locationX>
-        <locationY>695</locationY>
+        <locationX>1469</locationX>
+        <locationY>965</locationY>
         <actionName>InvocableDateEnactedALSUpdate</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>scrFinish</targetReference>
+            <targetReference>Enacted_by_Utility_Status</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Assign_Error_Log</targetReference>
         </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>params</name>
             <value>
@@ -20,12 +21,55 @@
             </value>
         </inputParameters>
     </actionCalls>
+    <actionCalls>
+        <name>ContractsForALS</name>
+        <label>ContractsForALS</label>
+        <locationX>1736</locationX>
+        <locationY>433</locationY>
+        <actionName>InvocableSelectAllocationContracts</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Send_Emails</targetReference>
+        </connector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>allocationScheduleId</name>
+            <value>
+                <elementReference>Get_ALS.Id</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
+        <name>Send_Emails</name>
+        <label>Send Emails</label>
+        <locationX>2041</locationX>
+        <locationY>433</locationY>
+        <actionName>InvocableSendDisclosureForms</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>scrFinish</targetReference>
+        </connector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>contracts</name>
+            <value>
+                <elementReference>ContractsForALS</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>sss</name>
+            <value>
+                <elementReference>ALS_SSS</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
     <apiVersion>50.0</apiVersion>
     <assignments>
         <name>Add_Error_Log</name>
         <label>Add Error Log</label>
-        <locationX>1333</locationX>
-        <locationY>816</locationY>
+        <locationX>1021</locationX>
+        <locationY>964</locationY>
         <assignmentItems>
             <assignToReference>sovc_ErrorMessages</assignToReference>
             <operator>Add</operator>
@@ -40,8 +84,8 @@
     <assignments>
         <name>Assign_Auto_Chosen_ALS</name>
         <label>Update Auto Chosen ALS</label>
-        <locationX>845</locationX>
-        <locationY>659</locationY>
+        <locationX>838</locationX>
+        <locationY>660</locationY>
         <assignmentItems>
             <assignToReference>replacedALSId</assignToReference>
             <operator>Assign</operator>
@@ -56,8 +100,8 @@
     <assignments>
         <name>Assign_Error_Log</name>
         <label>Assign Error Log</label>
-        <locationX>1499</locationX>
-        <locationY>811</locationY>
+        <locationX>1303</locationX>
+        <locationY>964</locationY>
         <assignmentItems>
             <assignToReference>sov_ErrorLog.Severity__c</assignToReference>
             <operator>Assign</operator>
@@ -109,8 +153,8 @@
     <assignments>
         <name>Update_Date_Enacted</name>
         <label>Update Date Enacted</label>
-        <locationX>1160</locationX>
-        <locationY>575</locationY>
+        <locationX>1133</locationX>
+        <locationY>560</locationY>
         <assignmentItems>
             <assignToReference>Get_ALS.Date_Enacted_by_Utility__c</assignToReference>
             <operator>Assign</operator>
@@ -147,8 +191,8 @@
         <description>We need to assign a value for all the date fields, otherwise it will clear any existing data because the screen inputs sets the values to null. The formula fields below are all this pattern: BLANKVALUE(screen_input, existing_value).</description>
         <name>Update_Date_Enacted_0</name>
         <label>Update Date Enacted</label>
-        <locationX>968</locationX>
-        <locationY>265</locationY>
+        <locationX>313</locationX>
+        <locationY>295</locationY>
         <assignmentItems>
             <assignToReference>Get_ALS.QC_Start_Date__c</assignToReference>
             <operator>Assign</operator>
@@ -212,8 +256,8 @@
     <decisions>
         <name>Correct_Previous_ALS</name>
         <label>Correct Previous ALS</label>
-        <locationX>473</locationX>
-        <locationY>553</locationY>
+        <locationX>550</locationX>
+        <locationY>571</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>User_chosen_ALS</name>
@@ -254,10 +298,35 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Enacted_by_Utility_Status</name>
+        <label>Enacted by Utility Status</label>
+        <locationX>1728</locationX>
+        <locationY>766</locationY>
+        <defaultConnector>
+            <targetReference>scrFinish</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Not Enacted by Utility</defaultConnectorLabel>
+        <rules>
+            <name>Enacted_by_Utility</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>pickStatus</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Enacted by Utility</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>ALS_SSS</targetReference>
+            </connector>
+            <label>Enacted by Utility</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Related_Records_to_Update</name>
         <label>Related Records to Update?</label>
-        <locationX>1453</locationX>
-        <locationY>572</locationY>
+        <locationX>1463</locationX>
+        <locationY>574</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>No_Related_Records</name>
@@ -270,7 +339,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>scrFinish</targetReference>
+                <targetReference>Enacted_by_Utility_Status</targetReference>
             </connector>
             <label>No Related Records</label>
         </rules>
@@ -293,8 +362,8 @@
     <decisions>
         <name>Update_to_Date_Enacted</name>
         <label>Update to Date Enacted?</label>
-        <locationX>294</locationX>
-        <locationY>555</locationY>
+        <locationX>303</locationX>
+        <locationY>563</locationY>
         <defaultConnector>
             <targetReference>Update_Date_Enacted_0</targetReference>
         </defaultConnector>
@@ -391,10 +460,31 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <recordLookups>
+        <name>ALS_SSS</name>
+        <label>ALS SSS</label>
+        <locationX>1736</locationX>
+        <locationY>575</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>ContractsForALS</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_ALS.Shared_Solar_System__r.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Shared_Solar_System__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_ALS</name>
         <label>Get ALS</label>
-        <locationX>176</locationX>
-        <locationY>181</locationY>
+        <locationX>131</locationX>
+        <locationY>208</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Replaced_ALS</targetReference>
@@ -414,8 +504,8 @@
     <recordLookups>
         <name>Get_Replaced_ALS</name>
         <label>Get Replaced ALS</label>
-        <locationX>179</locationX>
-        <locationY>339</locationY>
+        <locationX>130</locationX>
+        <locationY>381</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>scrChange_Status_Dates</targetReference>
@@ -456,8 +546,8 @@
     <recordUpdates>
         <name>Update_Current_ALS</name>
         <label>Update Current ALS</label>
-        <locationX>1318</locationX>
-        <locationY>602</locationY>
+        <locationX>1301</locationX>
+        <locationY>295</locationY>
         <connector>
             <targetReference>Related_Records_to_Update</targetReference>
         </connector>
@@ -470,8 +560,8 @@
     <screens>
         <name>scrChange_Status_Dates</name>
         <label>Change Status &amp; Dates</label>
-        <locationX>138</locationX>
-        <locationY>551</locationY>
+        <locationX>130</locationX>
+        <locationY>561</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -657,7 +747,7 @@
     <screens>
         <name>scrConfirmPreviousALS</name>
         <label>Confirm Previous ALS</label>
-        <locationX>450</locationX>
+        <locationX>438</locationX>
         <locationY>810</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -734,6 +824,7 @@
                     <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
             <visibilityRule>
@@ -781,6 +872,7 @@
                     <elementReference>replacedALSId</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
             <visibilityRule>
@@ -812,8 +904,8 @@
     <screens>
         <name>scrError</name>
         <label>scrError</label>
-        <locationX>1096</locationX>
-        <locationY>814</locationY>
+        <locationX>728</locationX>
+        <locationY>964</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -828,8 +920,8 @@
     <screens>
         <name>scrFinish</name>
         <label>scrFinish</label>
-        <locationX>1707</locationX>
-        <locationY>484</locationY>
+        <locationX>2041</locationX>
+        <locationY>766</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -842,8 +934,8 @@
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>50</locationX>
-        <locationY>50</locationY>
+        <locationX>4</locationX>
+        <locationY>36</locationY>
         <connector>
             <targetReference>Get_ALS</targetReference>
         </connector>
@@ -852,8 +944,8 @@
     <subflows>
         <name>Log_Errors</name>
         <label>Log Errors</label>
-        <locationX>1212</locationX>
-        <locationY>813</locationY>
+        <locationX>871</locationX>
+        <locationY>964</locationY>
         <connector>
             <targetReference>scrError</targetReference>
         </connector>
