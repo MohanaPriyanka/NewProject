@@ -22,7 +22,6 @@ public with sharing class ContentDocumentSelectorTest {
             PathOnClient = '/InvoiceNumber2.pdf'
         );
         insert cv2;
-
         Shared_Solar_System__c sss1 = new Shared_Solar_System__c(
             Name = 'Test SSS',
             Total_System_Size_kWh_DC__c = 1445.86,
@@ -30,7 +29,6 @@ public with sharing class ContentDocumentSelectorTest {
             Expected_Yield_kWh_kW__c = 1300
         );
         insert sss1;
-
         Transfer__c transfer = new Transfer__c(
             Shared_Solar_System__c = sss1.Id,
             Transfer_Type__c = 'Main',
@@ -40,7 +38,6 @@ public with sharing class ContentDocumentSelectorTest {
             Default_Credit_Value__c = 0.1848
         );
         insert transfer;
-        
     }
 
     @IsTest
@@ -54,7 +51,6 @@ public with sharing class ContentDocumentSelectorTest {
         ];
         ContentVersion cv = cvList[0];
         ContentVersion cv2 = cvList[1];
-
         ContentDocumentSelector documentSelector = new ContentDocumentSelector();
         Test.startTest();
         List<ContentDocument> contentDocuments =
@@ -267,11 +263,14 @@ public with sharing class ContentDocumentSelectorTest {
         Map<Id,Contract> contractMap = new Map<Id,Contract>();
         contractMap.put(contractList[0].Id, contractList[0]);
         
-        MultiMap links = documentSelector.selectCountersignedByLinkedEntities(contractMap);
+        MultiMap links1 = documentSelector.selectCountersignedByLinkedEntities(contractMap);
+
+		Id docId = documentSelector.getDocumentIdFromVersionId(cv.Id);
         
         Test.stopTest();
 
-        System.assertEquals(1, links.size());
+        System.assertEquals(1, links1.size());
+        System.assertEquals(cv.ContentDocumentId, docId);
     }
     
 }

@@ -133,11 +133,12 @@ public with sharing class ContactSelectorTest {
         );
         insert testContract1;
         
-        List<Contact> result = ContactSelector.selectSendBillsContactByContract(new Set<Id>{testContract1.Id});
-        System.assertEquals('TestContact1', result[0].FirstName);
-        System.assertEquals(1, result.size());
-
-
+        List<Contact> resultList = ContactSelector.selectSendBillsContactByContract(new Set<Id>{testContract1.Id});
+        System.assertEquals('TestContact1', resultList[0].FirstName);
+        System.assertEquals(1, resultList.size());
+        
+        Map<Id,Contact> resultMap = ContactSelector.selectMultipleSendBillsContactByContracts(new Set<Id>{testContract1.Id});
+        System.assertEquals('TestContact1', resultMap.get(testContract1.Id).FirstName);
     }
 
 }

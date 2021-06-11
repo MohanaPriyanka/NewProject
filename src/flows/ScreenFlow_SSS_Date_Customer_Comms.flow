@@ -49,12 +49,6 @@
             </value>
         </inputParameters>
         <inputParameters>
-            <name>attachmentStatus</name>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
             <name>templateValues</name>
             <value>
                 <elementReference>mapTemplateReplacement</elementReference>

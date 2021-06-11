@@ -57,7 +57,6 @@ public inherited sharing class ContentDocumentSelector {
         ]){
             contentDocIds.add(docLink.ContentDocumentId);
         } 
-
         ContentDocument latestTransferSheet = [
             SELECT Id, LatestPublishedVersion.Title, LatestPublishedVersion.VersionData, ContentSize
             FROM ContentDocument
@@ -122,7 +121,6 @@ public inherited sharing class ContentDocumentSelector {
     
     public MultiMap selectCountersignedByLinkedEntities(Map<Id,Contract> contractMap) {
         Set<Id> entityIds = contractMap.keySet();
-        
         if (entityIds.isEmpty()) {
             return MultiMap.newListInstance();
         }
@@ -130,22 +128,22 @@ public inherited sharing class ContentDocumentSelector {
         // https://salesforce.stackexchange.com/questions/139007/map-keyset-or-setid-not-returning-content-notes-related-to-an-event
         List<Id> entityIdList = new List<Id>(entityIds);
         List<ContentDocumentLink> docList = [
-            SELECT Id, LinkedEntityId, ContentDocumentId, ContentDocument.ContentSize, ContentDocument.CreatedDate, ContentDocument.LatestPublishedVersion.Signing_Status__c,
-                ContentDocument.LatestPublishedVersion.Id, ContentDocument.LatestPublishedVersion.Title, ContentDocument.LatestPublishedVersion.VersionData,
-                ContentDocument.LatestPublishedVersion.FileExtension
+            SELECT Id, LinkedEntityId, ContentDocumentId, ContentDocument.ContentSize, 
+            ContentDocument.CreatedDate, ContentDocument.LatestPublishedVersion.Signing_Status__c,
+            ContentDocument.LatestPublishedVersion.Id, ContentDocument.LatestPublishedVersion.Title, 
+            ContentDocument.LatestPublishedVersion.VersionData, 
+            ContentDocument.LatestPublishedVersion.FileExtension
             FROM ContentDocumentLink
             WHERE LinkedEntityId IN :entityIdList 
             AND ContentDocument.LatestPublishedVersion.Signing_Status__c = 'Countersigned' 
             AND LinkedEntity.Type='Contract'
             ORDER BY ContentDocument.CreatedDate DESC
         ];
-        
         MultiMap contentDocLinksByContactId = MultiMap.newListInstance();
-        
         for(ContentDocumentLink cdl : docList){
             Contract currentContract = contractMap.get(cdl.LinkedEntityId);
-            String docId = cdl.ContentDocumentId;
-            contentDocLinksByContactId.putValue(currentContract.Account.Send_Bills_Contact__r.Id, docId);
+            String docId = cdl.ContentDocument.LatestPublishedVersionId;
+            contentDocLinksByContactId.putValue(currentContract.Account.Send_Bills_Contact__c, docId);
         }
         return contentDocLinksByContactId;
     }

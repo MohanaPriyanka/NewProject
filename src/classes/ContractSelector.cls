@@ -28,14 +28,15 @@ public inherited sharing class ContractSelector {
         ];
         return new List<List<Contract>>{contracts};
     }
-
+    
     public List<Contract> getCustomerContractsByAssignmentAgreement(Id assignmentAgreementId) {
         return getCustomerContractsByAssignmentAgreement(new Set<Id>{assignmentAgreementId});
     }
 
     public List<Contract> getCustomerContractsByAssignmentAgreement(Set<Id> assignmentAgreementIds) {
         return [
-            SELECT Id, Name, Parent_Contract__c
+            SELECT Id, Name, Parent_Contract__c, Product__r.Addendum_Template_Id__c, 
+            	Addendum_Sent_Date__c, Account.Send_Bills_Contact__r.Id
             FROM Contract
             WHERE Assignment_Agreement__c = : assignmentAgreementIds
         ];
@@ -51,33 +52,24 @@ public inherited sharing class ContractSelector {
         ];
     }
     
-    public Map<Id, Contract> getContractsWithUnsentAddendumsById(List<Id> contactIds) {
-        Map<Id, Contract> contractsWithUnsentAddendumsById = new Map<Id, Contract>();
-        for(Contract currentContract : [
-            SELECT Id, Addendum_Sent_Date__c, Account.Send_Bills_Contact__r.Id
+    public Map<Id,Contract> getContractsForAddendumMapById(Set<Id> contractIds){
+        Map<Id,Contract> contractMap = new Map<Id,Contract>();
+        List<Contract> contractList = [
+            SELECT Id, Name, Parent_Contract__c, Product__r.Addendum_Template_Id__c, AccountId,
+            Addendum_Sent_Date__c, Account.Send_Bills_Contact__c, Assignment_Agreement__c,
+            Account.Send_Bills_Contact__r.Id, Account.Send_Bills_Contact__r.Email
             FROM Contract
-            WHERE Addendum_Sent_Date__c = null 
-            AND Account.Send_Bills_Contact__r.Id IN : contactIds
-            AND Id IN (SELECT ContractId 
-                       FROM Opportunity 
-                       WHERE Product__r.Addendum_Template_Id__c != null)
-        ]){
-            contractsWithUnsentAddendumsById.put(currentContract.Id, currentContract);
+            WHERE Id IN :contractIds
+            AND Addendum_Sent_Date__c = null 
+            AND Product__r.Addendum_Template_Id__c != null
+            AND Account.Send_Bills_Contact__c != null
+        ];
+        for(Contract con : contractList){
+            contractMap.put(con.Id, con);
         }
-        return contractsWithUnsentAddendumsById;
+        return contractMap;
     }
     
-    public Contract getSingleContractWithUnsentAddendumsById(Id contactId){
-        return [
-            SELECT Id, Addendum_Sent_Date__c, Account.Send_Bills_Contact__r.Id
-            FROM Contract
-            WHERE Addendum_Sent_Date__c = null 
-            AND Account.Send_Bills_Contact__r.Id =:contactId
-            AND Id IN (SELECT ContractId 
-                       FROM Opportunity 
-                       WHERE Product__r.Addendum_Template_Id__c != null)];
-    }
-
     /**
      * @description: User Defined Type used by the Assign Customers to Client Agreement Flow
      */
@@ -90,7 +82,7 @@ public inherited sharing class ContractSelector {
 
         @InvocableVariable
         public Boolean clientAcquiredCustomers;
-
+        
         @InvocableVariable
         public Boolean assignAnchors;
     }
