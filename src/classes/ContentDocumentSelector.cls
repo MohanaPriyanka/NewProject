@@ -142,7 +142,7 @@ public inherited sharing class ContentDocumentSelector {
         MultiMap contentDocLinksByContactId = MultiMap.newListInstance();
         for(ContentDocumentLink cdl : docList){
             Contract currentContract = contractMap.get(cdl.LinkedEntityId);
-            String docId = cdl.ContentDocumentId;
+            String docId = cdl.ContentDocument.LatestPublishedVersionId;
             contentDocLinksByContactId.putValue(currentContract.Account.Send_Bills_Contact__c, docId);
         }
         return contentDocLinksByContactId;
