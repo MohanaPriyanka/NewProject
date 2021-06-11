@@ -29,6 +29,7 @@
   <aura:attribute name="userSelectedPaymentMethod" type="String"/>
   <aura:attribute name="currentPaymentMethod" type="String"/>
   <aura:attribute name="newPaymentMethodId" type="String"/>
+  <aura:attribute name="showNewPaymentMethodInstruction" type="Boolean" default="false"/>
   <aura:attribute name="missingFieldsMessage" type="String" default="Please complete all required fields to continue"/>
   <aura:attribute name="responseMessage" type="String"/>
   <aura:attribute name="sfAccountId" type="String"/>
@@ -270,11 +271,43 @@
                     </aura:if>
                     <div class="slds-p-top_medium slds-p-bottom_medium">
                       <c:ZuoraPaymentPage paymentType="{!v.newPaymentMethodType}" zuoraAccountId="{!v.zuoraAccountAndPayMethod.account.Id}"/>
+                      <aura:if isTrue="{!or(v.userSelectedPaymentMethod == 'ACH', v.userSelectedPaymentMethod == 'Credit Card')}">
+                        <aura:if isTrue="{!v.makePaymentOrManageAutopay}">
+                          <div class="slds-text-color_error">
+                            To complete your payment, please enter your payment information, click "Submit Securely" to verify the payment method, and then click "Make A Payment" to complete the transaction. You must click these buttons in that order to successfully complete a payment.
+                          </div>
+                          <div class="slds-text-color_error">
+                            Please do not hit the back button on your browser while the payment is processing.
+                          </div>
+                          <aura:set attribute="else">
+                            <div class="slds-text-color_error">
+                              To change your autopay payment method, please enter your payment information, click "Submit Securely" to verify the payment method, and then click "Update Account". You must click these buttons in that order to successfully change your autopay method.
+                            </div>
+                          </aura:set>
+                        </aura:if>
+                      </aura:if>
                     </div>
                   </div>
                 </div>
               </aura:if>
               <div class="slds-p-top_large"></div>
+              <aura:if isTrue="{!v.showNewPaymentMethodInstruction}">
+                <aura:if isTrue="{!v.makePaymentOrManageAutopay}">
+                  <div class="slds-text-color_error slds-p-bottom_medium">
+                    We've verified your payment method, please click "Make A Payment" to complete the transaction. If you do not click Make A Payment, we will not process your transaction.
+                  </div>
+                  <aura:set attribute="else">
+                    <div class="slds-text-color_error slds-p-bottom_medium">
+                      <div class="slds-p-bottom_small">
+                        We've verified your payment method, please click "Update Account" to use this payment method during the next autopay run.
+                      </div>
+                      <div>
+                        To make a one-time payment now, please click "Update Account" and then use the "Make A Payment" button.
+                      </div>
+                    </div>
+                  </aura:set>
+                </aura:if>
+              </aura:if>
               <aura:if isTrue="{!v.showEnabledButton}">
                 <div class="slds-align_absolute-center">
                   <lightning:button aura:id="makeAPayment"
@@ -567,13 +600,45 @@
                         <aura:if isTrue="{!v.zuoraIsLoading}">
                           Loading...
                         </aura:if>
-                        <div class="slds-p-top_medium slds-p-bottom_medium">
+                        <div class="slds-p-top_medium">
                           <c:ZuoraPaymentPage paymentType="{!v.newPaymentMethodType}" zuoraAccountId="{!v.zuoraAccountAndPayMethod.account.Id}"/>
+                          <aura:if isTrue="{!or(v.userSelectedPaymentMethod == 'ACH', v.userSelectedPaymentMethod == 'Credit Card')}">
+                            <aura:if isTrue="{!v.makePaymentOrManageAutopay}">
+                              <div class="slds-text-color_error">
+                                To complete your payment, please enter your payment information, click "Submit Securely" to verify the payment method, and then click "Make A Payment" to complete the transaction. You must click these buttons in that order to successfully complete a payment.
+                              </div>
+                              <div class="slds-text-color_error">
+                                Please do not hit the back button on your browser while the payment is processing.
+                              </div>
+                              <aura:set attribute="else">
+                                <div class="slds-text-color_error">
+                                  To change your autopay payment method, please enter your payment information, click "Submit Securely" to verify the payment method, and then click "Update Account". You must click these buttons in that order to successfully change your autopay method.
+                                </div>
+                              </aura:set>
+                            </aura:if>
+                          </aura:if>
                         </div>
                       </div>
                     </div>
                   </aura:if>
                   <div class="slds-p-top_large"></div>
+                  <aura:if isTrue="{!v.showNewPaymentMethodInstruction}">
+                    <aura:if isTrue="{!v.makePaymentOrManageAutopay}">
+                      <div class="slds-text-color_error slds-p-bottom_medium">
+                        We've verified your payment method, please click "Make A Payment" to complete the transaction. If you do not click Make A Payment, we will not process your transaction.
+                      </div>
+                      <aura:set attribute="else">
+                        <div class="slds-text-color_error slds-p-bottom_medium">
+                          <div class="slds-p-bottom_small">
+                            We've verified your payment method, please click "Update Account" to use this payment method during the next autopay run.
+                          </div>
+                          <div>
+                            To make a one-time payment now, please click "Update Account" and then use the "Make A Payment" button.
+                          </div>
+                        </div>
+                      </aura:set>
+                    </aura:if>
+                  </aura:if>
                   <aura:if isTrue="{!v.showEnabledButton}">
                     <lightning:button aura:id="makeAPayment"
                                       name="makeAPayment"
