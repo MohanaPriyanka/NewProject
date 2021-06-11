@@ -138,12 +138,12 @@
         } else {
             this.modifyAutopay(component, event, helper, 'Your account has been updated successfully.');
         }
-        component.set("v.showSpinner", false);
     },
 
     finishAndShowMessage : function(component, event, helper, message) {
         component.set("v.showPostSubmitPage", true);
         component.set("v.responseMessage", message);
+        component.set("v.showSpinner", false);
     },
 
     modifyAutopay : function(component, event, helper, successMessage) {
