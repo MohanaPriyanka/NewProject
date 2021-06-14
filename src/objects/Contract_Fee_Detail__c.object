@@ -368,15 +368,24 @@ Small offtake (ie, Residential and Non-Residential Customer Groups) can be label
         <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <fields>
+        <fullName>Deposit_Fee__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Deposit Fee</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Fee_Summary__c</fullName>
         <externalId>false</externalId>
-        <formula>IF(OR(Acquisition_Type_Acquisition__c, Acquisition_Type_Reacquisition__c, Management_Fee__c),
-   &quot;This $&quot;&amp;TEXT(Fee__c)&amp;&quot;/&quot;&amp;TEXT(Fee_Unit__c) 
+        <formula>&quot;$&quot;&amp;TEXT(Fee__c)&amp;&quot;/&quot;&amp;TEXT(Fee_Unit__c) 
    &amp;&quot; &quot;
    &amp;IF(Acquisition_Type_Acquisition__c,
-       IF(Acquisition_Type_Reacquisition__c,&quot;acquisition and reacquisition&quot;,&quot;acquisition&quot;),
-       IF(Acquisition_Type_Reacquisition__c,&quot;reacquisition&quot;, TEXT(Management_Fee_Type__c) &amp; &quot; management&quot;))
-   &amp;&quot; fee is valid for &quot;
+       &quot;acquisition fee valid for &quot;,
+       IF(Acquisition_Type_Reacquisition__c,&quot;reacquisition fee valid for &quot;, 
+          IF(Deposit_Fee__c, &quot;deposit fee&quot;, TEXT(Management_Fee_Type__c) &amp; &quot; management fee valid for &quot;)))
    &amp;IF(OR(Acquisition_Type_Acquisition__c, Acquisition_Type_Reacquisition__c),
        /* Acq and Reacq */
        IF(NOT(ISBLANK(Shared_Solar_System__c)), &quot; customers on &quot; &amp; Shared_Solar_System__r.Name &amp; &quot; and&quot;,&quot;&quot;)
@@ -395,22 +404,24 @@ Small offtake (ie, Residential and Non-Residential Customer Groups) can be label
            IF(Acquisition_Sizing_Type_Downsizing__c, &quot;decreases&quot;, &quot;&quot;))
        &amp;&quot; in size (kW) &quot;,
        /* Management */
-       IF(ISBLANK(Shared_Solar_System__c),
-          IF(Project_Capacity_Group_Anchor__c,
-             IF(Project_Capacity_Group_Non_Anchor__c, &quot;anchor and small offtake capacity&quot;, &quot;anchor capacity&quot;),
-             IF(Project_Capacity_Group_Non_Anchor__c, &quot;small offtake capacity&quot;, &quot;&quot;))
-          &amp;&quot; on &quot; 
-          &amp;IF(Project_Type_Acquisition_Management__c,
-              &quot;Acquisition &amp; Management&quot;,
-              IF( Project_Type_Management_Only__c, &quot;Management-Only&quot;, &quot;&quot;))
-          &amp;&quot; projects&quot;,
-          Shared_Solar_System__r.Name)   
-       &amp;&quot;, beginning on &quot; &amp; TEXT(Management_Fee_Trigger__c) &amp; &quot; date&quot;
-       &amp;IF(ISPICKVAL(Management_Fee_Type__c,&quot;Recurring&quot;), &quot;. It is charged &quot; &amp; TEXT(Recurring_Frequency__c),&quot;&quot;)
-       &amp;IF(ISBLANK(Recurring_Escalator__c),&quot;&quot;, &quot; with a &quot; &amp; TEXT(Recurring_Escalator_Frequency__c) 
-       &amp; &quot; escalator of &quot; &amp; TEXT(Recurring_Escalator__c*100) &amp; &quot;%&quot;)
-   )
-,&quot;Choose a fee type&quot;)</formula>
+       IF(Management_Fee__c,
+          IF(ISBLANK(Shared_Solar_System__c),
+             IF(Project_Capacity_Group_Anchor__c,
+                IF(Project_Capacity_Group_Non_Anchor__c, &quot;anchor and small offtake capacity&quot;, &quot;anchor capacity&quot;),
+                IF(Project_Capacity_Group_Non_Anchor__c, &quot;small offtake capacity&quot;, &quot;&quot;))
+             &amp;&quot; on &quot; 
+             &amp;IF(Project_Type_Acquisition_Management__c,
+                 &quot;Acquisition &amp; Management&quot;,
+                 IF( Project_Type_Management_Only__c, &quot;Management-Only&quot;, &quot;&quot;))
+             &amp;&quot; projects&quot;,
+             Shared_Solar_System__r.Name)   
+          &amp;&quot;, beginning on &quot; &amp; TEXT(Management_Fee_Trigger__c) &amp; &quot; date&quot;
+          &amp;IF(ISPICKVAL(Management_Fee_Type__c,&quot;Recurring&quot;), &quot;. It is charged &quot; &amp; TEXT(Recurring_Frequency__c),&quot;&quot;)
+          &amp;IF(ISBLANK(Recurring_Escalator__c),&quot;&quot;, &quot; with a &quot; &amp; TEXT(Recurring_Escalator_Frequency__c) 
+          &amp; &quot; escalator of &quot; &amp; TEXT(Recurring_Escalator__c*100) &amp; &quot;%&quot;),
+       /* Deposit Fee */
+       &quot;&quot;)
+   )</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Fee Summary</label>
         <required>false</required>
@@ -515,11 +526,12 @@ Small offtake (ie, Residential and Non-Residential Customer Groups) can be label
         <fullName>Product__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <label>Product</label>
+        <label>XXXProduct</label>
         <referenceTo>Product2</referenceTo>
         <relationshipLabel>Contract Fee Detail</relationshipLabel>
         <relationshipName>Contract_Fee_Detail</relationshipName>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
@@ -848,24 +860,24 @@ Small offtake (ie, Residential and Non-Residential Customer Groups) can be label
     <validationRules>
         <fullName>CFD_Checkbox_Acquisition</fullName>
         <active>true</active>
-        <description>A CFD can only have one Fee Type selected, so “Acquisition Type: Acquisition” can only be checked if “Management Fee” and “Acquisition Type: Reacquisition” are not selected.</description>
-        <errorConditionFormula>AND(Acquisition_Type_Acquisition__c, OR(Acquisition_Type_Reacquisition__c, Management_Fee__c))</errorConditionFormula>
+        <description>A CFD can only have one Fee Type selected, so “Acquisition Type: Acquisition” can only be checked if “Management Fee” and “Acquisition Type: Reacquisition” and &quot;Deposit Fee&quot; are not selected.</description>
+        <errorConditionFormula>AND(Acquisition_Type_Acquisition__c, OR(Acquisition_Type_Reacquisition__c, Management_Fee__c, Deposit_Fee__c))</errorConditionFormula>
         <errorDisplayField>Acquisition_Type_Acquisition__c</errorDisplayField>
         <errorMessage>You can only have one Fee Type selected for a Contract Fee Detail object.</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>CFD_Checkbox_Management_Fee</fullName>
         <active>true</active>
-        <description>A CFD can only have one Fee Type selected, so “Management Fee” can only be checked if “Acquisition Type: Acquisition” and “Acquisition Type: Reacquisition” are not selected.</description>
-        <errorConditionFormula>AND(Management_Fee__c, OR(Acquisition_Type_Acquisition__c, Acquisition_Type_Reacquisition__c))</errorConditionFormula>
+        <description>A CFD can only have one Fee Type selected, so “Management Fee” can only be checked if “Acquisition Type: Acquisition” and “Acquisition Type: Reacquisition” and &quot;Deposit Fee&quot; are not selected.</description>
+        <errorConditionFormula>AND(Management_Fee__c, OR(Acquisition_Type_Acquisition__c, Acquisition_Type_Reacquisition__c, Deposit_Fee__c))</errorConditionFormula>
         <errorDisplayField>Management_Fee__c</errorDisplayField>
         <errorMessage>You can only have one Fee Type selected for a Contract Fee Detail object.</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>CFD_Checkbox_Reacquisition</fullName>
         <active>true</active>
-        <description>A CFD can only have one Fee Type selected, so “Acquisition Type: Reacquisition” can only be checked if “Management Fee” and “Acquisition Type: Acquisition” are not selected.</description>
-        <errorConditionFormula>AND(Acquisition_Type_Reacquisition__c, OR(Acquisition_Type_Acquisition__c, Management_Fee__c))</errorConditionFormula>
+        <description>A CFD can only have one Fee Type selected, so “Acquisition Type: Reacquisition” can only be checked if “Management Fee” and “Acquisition Type: Acquisition” and &quot;Deposit Fee&quot; are not selected.</description>
+        <errorConditionFormula>AND(Acquisition_Type_Reacquisition__c, OR(Acquisition_Type_Acquisition__c, Management_Fee__c, Deposit_Fee__c))</errorConditionFormula>
         <errorDisplayField>Acquisition_Type_Reacquisition__c</errorDisplayField>
         <errorMessage>You can only have one Fee Type selected for a Contract Fee Detail object.</errorMessage>
     </validationRules>
@@ -910,10 +922,11 @@ NOT(ISPICKVAL(Management_Fee_Type__c,&quot;&quot;))
 OR(
 Acquisition_Type_Acquisition__c,
 Acquisition_Type_Reacquisition__c,
-Management_Fee__c 
+Management_Fee__c,
+Deposit_Fee__c 
 )
 )</errorConditionFormula>
-        <errorMessage>You must set the fee type to be either Acquisition, Reacquisition or Management</errorMessage>
+        <errorMessage>You must set the fee type to be either Acquisition, Reacquisition, Management, or Deposit</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>No_Downsizing_if_Waiving_Fees</fullName>
