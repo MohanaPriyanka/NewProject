@@ -1,9 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <description>Sends emails to customers via enrollment in Marketing Cloud journey, along with specified data/merge fields</description>
+        <name>Enroll_Contacts_in_Journey_0_0_0</name>
+        <label>Enroll Contacts in Marketing Cloud Journey</label>
+        <locationX>138</locationX>
+        <locationY>3422</locationY>
+        <actionName>MarketingJourneyEnroller</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Log_Transaction_0_0</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>details</name>
+            <value>
+                <elementReference>enrollments</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <actionCalls>
         <name>get_Send_Bills_Contacts</name>
-        <label>get Send Bills Contacts</label>
-        <locationX>204</locationX>
+        <label>Get Contacts to Send Email To</label>
+        <locationX>270</locationX>
         <locationY>974</locationY>
         <actionName>InvocableSendBillsContactsSelector</actionName>
         <actionType>apex</actionType>
@@ -23,115 +42,453 @@
                 <elementReference>recordId</elementReference>
             </value>
         </inputParameters>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </actionCalls>
-    <actionCalls>
-        <name>Send_Email_to_Contacts</name>
-        <label>Send Email to Contacts</label>
-        <locationX>204</locationX>
-        <locationY>2030</locationY>
-        <actionName>InvocableMessagingService</actionName>
-        <actionType>apex</actionType>
-        <connector>
-            <targetReference>Log_Email_Send</targetReference>
-        </connector>
-        <flowTransactionModel>NewTransaction</flowTransactionModel>
-        <inputParameters>
-            <name>contactList</name>
-            <value>
-                <elementReference>get_Send_Bills_Contacts</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>emailTemplateName</name>
-            <value>
-                <elementReference>ffEmailTemplateName</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>templateValues</name>
-            <value>
-                <elementReference>mapTemplateReplacement</elementReference>
-            </value>
-        </inputParameters>
+        <outputParameters>
+            <assignToReference>emailContactList</assignToReference>
+            <name>output</name>
+        </outputParameters>
     </actionCalls>
     <apiVersion>51.0</apiVersion>
     <assignments>
-        <name>Add_Replacement_text_to_Collection</name>
-        <label>Add Replacement text to Collection</label>
-        <locationX>72</locationX>
-        <locationY>1454</locationY>
+        <name>Add_BrandKey_Property</name>
+        <label>Add BrandKey Property</label>
+        <locationX>138</locationX>
+        <locationY>2030</locationY>
         <assignmentItems>
-            <assignToReference>mapTemplateReplacement</assignToReference>
+            <assignToReference>tempProperties</assignToReference>
             <operator>Add</operator>
             <value>
-                <elementReference>varTemplateReplacement</elementReference>
+                <elementReference>tempProperty</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Get_Email_Template</targetReference>
+            <targetReference>Set_UCB</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <name>Add_Solar_Farm_Name_Replacement_Text_to_FlowMap</name>
-        <label>Add Solar Farm Name Replacement Text to FlowMap</label>
-        <locationX>204</locationX>
-        <locationY>1910</locationY>
+        <name>Add_BrandKey_Property_0</name>
+        <label>Add BrandKey Property</label>
+        <locationX>402</locationX>
+        <locationY>2030</locationY>
         <assignmentItems>
-            <assignToReference>mapTemplateReplacement</assignToReference>
+            <assignToReference>tempProperties</assignToReference>
             <operator>Add</operator>
             <value>
-                <elementReference>varTemplateReplacement</elementReference>
+                <elementReference>tempProperty</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Send_Email_to_Contacts</targetReference>
+            <targetReference>Set_UCB_0</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <name>Assign_Solar_Farm_Date_Replacement_Text</name>
-        <label>Assign Solar Farm Date Replacement Text</label>
-        <locationX>72</locationX>
-        <locationY>1334</locationY>
-        <assignmentItems>
-            <assignToReference>varTemplateReplacement.key</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>{{{new_date}}}</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varTemplateReplacement.value</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>inpNewDateForEmail</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Add_Replacement_text_to_Collection</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Assign_Solar_Farm_Name_Replacement_Text</name>
-        <label>Assign Solar Farm Name Replacement Text</label>
-        <locationX>204</locationX>
+        <name>Add_ContactId_Property</name>
+        <label>Add ContactId Property</label>
+        <locationX>138</locationX>
         <locationY>1790</locationY>
         <assignmentItems>
-            <assignToReference>varTemplateReplacement.key</assignToReference>
+            <assignToReference>tempProperties</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>tempProperty</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Set_BrandKey</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Add_ContactId_Property_0</name>
+        <label>Add ContactId Property</label>
+        <locationX>402</locationX>
+        <locationY>1790</locationY>
+        <assignmentItems>
+            <assignToReference>tempProperties</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>tempProperty</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Set_BrandKey_0</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Add_Journey_Enrollment</name>
+        <label>Add Journey Enrollment</label>
+        <locationX>138</locationX>
+        <locationY>2990</locationY>
+        <assignmentItems>
+            <assignToReference>enrollments</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>enrollmentDetail</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Change_in_COD_Contacts</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Add_Journey_Enrollment_0</name>
+        <label>Add Journey Enrollment</label>
+        <locationX>402</locationX>
+        <locationY>2750</locationY>
+        <assignmentItems>
+            <assignToReference>enrollments</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>enrollmentDetail</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Credits_Flowing_Contacts</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Add_SSSName_Property</name>
+        <label>Add SSSName Property</label>
+        <locationX>138</locationX>
+        <locationY>2510</locationY>
+        <assignmentItems>
+            <assignToReference>tempProperties</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>tempProperty</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Set_SSSSeason</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Add_SSSName_Property_0</name>
+        <label>Add SSSName Property</label>
+        <locationX>402</locationX>
+        <locationY>2510</locationY>
+        <assignmentItems>
+            <assignToReference>tempProperties</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>tempProperty</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Set_Marketing_Journey_Enrollment_Details_0</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Add_SSSSeason_Property</name>
+        <label>Add SSSSeason Property</label>
+        <locationX>138</locationX>
+        <locationY>2750</locationY>
+        <assignmentItems>
+            <assignToReference>tempProperties</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>tempProperty</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Set_Marketing_Journey_Enrollment_Details</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Add_UCB_Property</name>
+        <label>Add UCB Property</label>
+        <locationX>138</locationX>
+        <locationY>2270</locationY>
+        <assignmentItems>
+            <assignToReference>tempProperties</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>tempProperty</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Set_SSS_Name</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Add_UCB_Property_0</name>
+        <label>Add UCB Property</label>
+        <locationX>402</locationX>
+        <locationY>2270</locationY>
+        <assignmentItems>
+            <assignToReference>tempProperties</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>tempProperty</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Set_SSS_Name_0</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_BrandKey</name>
+        <label>Set BrandKey</label>
+        <locationX>138</locationX>
+        <locationY>1910</locationY>
+        <assignmentItems>
+            <assignToReference>tempProperty.key</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>{{{solar_farm_name}}}</stringValue>
+                <stringValue>BrandKey</stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>varTemplateReplacement.value</assignToReference>
+            <assignToReference>tempProperty.value</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Change_in_COD_Contacts.Account.Client_Brand_Key__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_BrandKey_Property</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_BrandKey_0</name>
+        <label>Set BrandKey</label>
+        <locationX>402</locationX>
+        <locationY>1910</locationY>
+        <assignmentItems>
+            <assignToReference>tempProperty.key</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>BrandKey</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempProperty.value</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Credits_Flowing_Contacts.Account.Client_Brand_Key__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_BrandKey_Property_0</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_ContactId</name>
+        <label>Set ContactId</label>
+        <locationX>138</locationX>
+        <locationY>1670</locationY>
+        <assignmentItems>
+            <assignToReference>tempProperty.key</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>ContactId</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempProperty.value</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Change_in_COD_Contacts.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_ContactId_Property</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_ContactId_0</name>
+        <label>Set ContactId</label>
+        <locationX>402</locationX>
+        <locationY>1670</locationY>
+        <assignmentItems>
+            <assignToReference>tempProperty.key</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>ContactId</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempProperty.value</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Credits_Flowing_Contacts.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_ContactId_Property_0</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Marketing_Journey_Enrollment_Details</name>
+        <label>Set Marketing Journey Enrollment Details</label>
+        <locationX>138</locationX>
+        <locationY>2870</locationY>
+        <assignmentItems>
+            <assignToReference>enrollmentDetail.ContactId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Change_in_COD_Contacts.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>enrollmentDetail.EventDefinitionKey</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>APIEvent-3fb6460c-d54c-efa9-6636-fee9000b100c</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>enrollmentDetail.EventProperties</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>tempProperties</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_Journey_Enrollment</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Marketing_Journey_Enrollment_Details_0</name>
+        <label>Set Marketing Journey Enrollment Details</label>
+        <locationX>402</locationX>
+        <locationY>2630</locationY>
+        <assignmentItems>
+            <assignToReference>enrollmentDetail.ContactId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Credits_Flowing_Contacts.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>enrollmentDetail.EventDefinitionKey</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>APIEvent-9f26302c-0e8b-9358-dd8e-e00a7dc1432b</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>enrollmentDetail.EventProperties</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>tempProperties</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_Journey_Enrollment_0</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_SSS_Name</name>
+        <label>Set SSS Name</label>
+        <locationX>138</locationX>
+        <locationY>2390</locationY>
+        <assignmentItems>
+            <assignToReference>tempProperty.key</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>SSSName</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempProperty.value</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>getSSSData.Name</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Add_Solar_Farm_Name_Replacement_Text_to_FlowMap</targetReference>
+            <targetReference>Add_SSSName_Property</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_SSS_Name_0</name>
+        <label>Set SSS Name</label>
+        <locationX>402</locationX>
+        <locationY>2390</locationY>
+        <assignmentItems>
+            <assignToReference>tempProperty.key</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>SSSName</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempProperty.value</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getSSSData.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_SSSName_Property_0</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_SSSSeason</name>
+        <label>Set SSSSeason</label>
+        <locationX>138</locationX>
+        <locationY>2630</locationY>
+        <assignmentItems>
+            <assignToReference>tempProperty.key</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>SSSSeason</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempProperty.value</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>inpNewDateForEmail</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_SSSSeason_Property</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_UCB</name>
+        <label>Set UCB</label>
+        <locationX>138</locationX>
+        <locationY>2150</locationY>
+        <assignmentItems>
+            <assignToReference>tempProperty.key</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>UCB</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempProperty.value</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getSSSData.UCB__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_UCB_Property</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_UCB_0</name>
+        <label>Set UCB</label>
+        <locationX>402</locationX>
+        <locationY>2150</locationY>
+        <assignmentItems>
+            <assignToReference>tempProperty.key</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>UCB</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempProperty.value</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getSSSData.UCB__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_UCB_Property_0</targetReference>
         </connector>
     </assignments>
     <choices>
@@ -193,17 +550,17 @@
     <decisions>
         <name>Additional_Input_required_before_sending_email</name>
         <label>Additional Input required before sending email?</label>
-        <locationX>204</locationX>
+        <locationX>270</locationX>
         <locationY>1094</locationY>
         <defaultConnector>
-            <targetReference>Get_Email_Template</targetReference>
+            <targetReference>Enroll_Contacts_in_Marketing_Cloud_Journey</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Yes</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>selDate</leftValueReference>
+                <leftValueReference>selectedDateToUpdateOnSSS</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <elementReference>choiceEstimatedDates</elementReference>
@@ -218,11 +575,8 @@
     <decisions>
         <name>decisionNotify_Customers</name>
         <label>Notify Customers</label>
-        <locationX>446</locationX>
+        <locationX>600</locationX>
         <locationY>854</locationY>
-        <defaultConnector>
-            <targetReference>Confirmation_Screen</targetReference>
-        </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Yes_notify_customers</name>
@@ -256,16 +610,81 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Enroll_Contacts_in_Marketing_Cloud_Journey</name>
+        <label>Enroll Contacts in Marketing Cloud Journey</label>
+        <locationX>270</locationX>
+        <locationY>1430</locationY>
+        <defaultConnector>
+            <targetReference>No_Email_End_Screen</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Send_Change_in_COD_Email</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>selectedDateToUpdateOnSSS</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>choiceEstimatedDates</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Change_in_COD_Contacts</targetReference>
+            </connector>
+            <label>Change in COD</label>
+        </rules>
+        <rules>
+            <name>Send_Credits_Flowing_Email</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>selectedDateToUpdateOnSSS</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>choiceActualCODDate</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Credits_Flowing_Contacts</targetReference>
+            </connector>
+            <label>Credits Flowing</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Enrollments_Ready_to_Send</name>
+        <label>Enrollments Ready to Send?</label>
+        <locationX>270</locationX>
+        <locationY>3302</locationY>
+        <defaultConnector>
+            <targetReference>No_Enrollments_Found</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No Enrollments Found</defaultConnectorLabel>
+        <rules>
+            <name>Enrollments_Ready</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>enrollments</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Enroll_Contacts_in_Journey_0_0_0</targetReference>
+            </connector>
+            <label>Enrollments Found</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>What_Date_is_being_updated</name>
         <label>What Date is being updated?</label>
-        <locationX>446</locationX>
+        <locationX>600</locationX>
         <locationY>518</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>EstimatedDates</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>selDate</leftValueReference>
+                <leftValueReference>selectedDateToUpdateOnSSS</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <elementReference>choiceEstimatedDates</elementReference>
@@ -280,7 +699,7 @@
             <name>ActualCOD_Date</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>selDate</leftValueReference>
+                <leftValueReference>selectedDateToUpdateOnSSS</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <elementReference>choiceActualCODDate</elementReference>
@@ -295,7 +714,7 @@
             <name>Actual_PTO_Date</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>selDate</leftValueReference>
+                <leftValueReference>selectedDateToUpdateOnSSS</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <elementReference>choiceActualPTODate</elementReference>
@@ -310,13 +729,33 @@
     <formulas>
         <name>ffConfirmation</name>
         <dataType>String</dataType>
-        <expression>&quot;The date(s) have been updated&quot;&amp; IF({!Yes_notify_customers},&quot; and emails have been sent!&quot;,&quot;&quot;)</expression>
+        <expression>&quot;The date(s) have been updated&quot;&amp; IF({!Yes_notify_customers},&quot; and emails to customers have been queued for send!&quot;,&quot;&quot;)</expression>
+    </formulas>
+    <formulas>
+        <description>Preview of body of email sent to customer regarding SSS change. NOTE: The emails are sent from Marketing Cloud, so this formula&apos;s results is not consistent with what customers actually receive. Please see Marketing Cloud for details.</description>
+        <name>ffEmailBody</name>
+        <dataType>String</dataType>
+        <expression>CASE({!selectedDateToUpdateOnSSS},
+{!choiceActualCODDate}, &quot;Thanks for contributing clean energy to the grid (See Marketing Cloud for full email)&quot;,
+{!choiceEstimatedDates}, &quot;Your solar farm&apos;s estimated completion date has moved (See Marketing Cloud for full email)&quot;,
+&quot;ERROR&quot;
+)</expression>
+    </formulas>
+    <formulas>
+        <description>Subject of email sent to customer regarding SSS change. NOTE: The emails are sent from Marketing Cloud, so this formula&apos;s results may not be consistent with what customers actually receive. Please see Marketing Cloud for details.</description>
+        <name>ffEmailSubject</name>
+        <dataType>String</dataType>
+        <expression>CASE({!selectedDateToUpdateOnSSS},
+{!choiceActualCODDate},&quot; Your solar farm is live&quot;,
+{!choiceEstimatedDates}, &quot;Update to your solar farm completion date&quot;,
+&quot;ERROR&quot;
+)</expression>
     </formulas>
     <formulas>
         <description>Email template name that will be sent based on the type of date that is being updated</description>
         <name>ffEmailTemplateName</name>
         <dataType>String</dataType>
-        <expression>CASE({!selDate},
+        <expression>CASE({!selectedDateToUpdateOnSSS},
 {!choiceActualCODDate},&quot;Credits_Flowing&quot;,
 {!choiceEstimatedDates},&quot;Change_in_COD_Date&quot;,
 &quot;ERROR&quot;
@@ -365,6 +804,34 @@ MONTH({!New_Est_PTO_Date} ),
     </formulas>
     <interviewLabel>ScreenFlow: SSS Date &amp; Customer Comms {!$Flow.CurrentDateTime}</interviewLabel>
     <label>ScreenFlow: SSS Date &amp; Customer Comms</label>
+    <loops>
+        <name>Change_in_COD_Contacts</name>
+        <label>Change in COD Contacts</label>
+        <locationX>50</locationX>
+        <locationY>1550</locationY>
+        <collectionReference>emailContactList</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Set_ContactId</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Enrollments_Ready_to_Send</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>Credits_Flowing_Contacts</name>
+        <label>Credits Flowing Contacts</label>
+        <locationX>314</locationX>
+        <locationY>1550</locationY>
+        <collectionReference>emailContactList</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Set_ContactId_0</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Enrollments_Ready_to_Send</targetReference>
+        </noMoreValuesConnector>
+    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -385,19 +852,14 @@ MONTH({!New_Est_PTO_Date} ),
     </processMetadataValues>
     <processType>Flow</processType>
     <recordCreates>
-        <name>Log_Email_Send</name>
-        <label>Log Email Send</label>
-        <locationX>204</locationX>
-        <locationY>2150</locationY>
+        <description>Logs a fake email as an EmailMessage record so that we have a log of this transaction happening</description>
+        <name>Log_Transaction_0_0</name>
+        <label>Log Transaction (Email)</label>
+        <locationX>138</locationX>
+        <locationY>3542</locationY>
         <connector>
             <targetReference>Confirmation_Screen</targetReference>
         </connector>
-        <inputAssignments>
-            <field>EmailTemplateId</field>
-            <value>
-                <elementReference>Get_Email_Template.Id</elementReference>
-            </value>
-        </inputAssignments>
         <inputAssignments>
             <field>Message_Details__c</field>
             <value>
@@ -419,13 +881,13 @@ MONTH({!New_Est_PTO_Date} ),
         <inputAssignments>
             <field>Subject</field>
             <value>
-                <elementReference>Get_Email_Template.Subject</elementReference>
+                <elementReference>ffEmailSubject</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
             <field>TextBody</field>
             <value>
-                <elementReference>Get_Email_Template.Body</elementReference>
+                <elementReference>ffEmailBody</elementReference>
             </value>
         </inputAssignments>
         <object>EmailMessage</object>
@@ -434,7 +896,7 @@ MONTH({!New_Est_PTO_Date} ),
     <recordLookups>
         <name>Get_Email_Messages</name>
         <label>Get Email Messages</label>
-        <locationX>446</locationX>
+        <locationX>600</locationX>
         <locationY>278</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -455,30 +917,9 @@ MONTH({!New_Est_PTO_Date} ),
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <name>Get_Email_Template</name>
-        <label>Get Email Template</label>
-        <locationX>204</locationX>
-        <locationY>1670</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Assign_Solar_Farm_Name_Replacement_Text</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>DeveloperName</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>ffEmailTemplateName</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>EmailTemplate</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
         <name>getSSSData</name>
         <label>getSSSData</label>
-        <locationX>446</locationX>
+        <locationX>600</locationX>
         <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -499,7 +940,7 @@ MONTH({!New_Est_PTO_Date} ),
     <recordUpdates>
         <name>Update_SSS_Actual_PTO_Date</name>
         <label>Update SSS Actual PTO Date</label>
-        <locationX>578</locationX>
+        <locationX>732</locationX>
         <locationY>638</locationY>
         <connector>
             <targetReference>decisionNotify_Customers</targetReference>
@@ -529,7 +970,7 @@ MONTH({!New_Est_PTO_Date} ),
     <recordUpdates>
         <name>Update_SSS_COD_Date</name>
         <label>Update SSS COD Date</label>
-        <locationX>314</locationX>
+        <locationX>468</locationX>
         <locationY>638</locationY>
         <connector>
             <targetReference>decisionNotify_Customers</targetReference>
@@ -553,7 +994,7 @@ MONTH({!New_Est_PTO_Date} ),
     <recordUpdates>
         <name>Update_SSS_PTO_Date</name>
         <label>Update SSS PTO Date</label>
-        <locationX>50</locationX>
+        <locationX>204</locationX>
         <locationY>638</locationY>
         <connector>
             <targetReference>decisionNotify_Customers</targetReference>
@@ -583,8 +1024,8 @@ MONTH({!New_Est_PTO_Date} ),
     <screens>
         <name>Confirmation_Screen</name>
         <label>Confirmation Screen</label>
-        <locationX>446</locationX>
-        <locationY>2366</locationY>
+        <locationX>600</locationX>
+        <locationY>3854</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -597,15 +1038,47 @@ MONTH({!New_Est_PTO_Date} ),
         <showHeader>false</showHeader>
     </screens>
     <screens>
+        <name>No_Email_End_Screen</name>
+        <label>No Email End Screen</label>
+        <locationX>490</locationX>
+        <locationY>1550</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Error_Notice_0_0</name>
+            <fieldText>&lt;p&gt;The date(s) have been updated on the Shared Solar System. No emails have been sent to customers.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>No_Enrollments_Found</name>
+        <label>No Enrollments Found</label>
+        <locationX>402</locationX>
+        <locationY>3422</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Error_Notice_0</name>
+            <fieldText>&lt;p&gt;The date(s) have been updated on the Shared Solar System, however &lt;b style=&quot;color: rgb(255, 0, 0);&quot;&gt;an error has occurred, and emails may not have been sent to customers. Please contact BizApps for assistance.&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
         <name>Review_SSS_Merge_Fields</name>
         <label>Review SSS Merge Fields</label>
-        <locationX>72</locationX>
+        <locationX>138</locationX>
         <locationY>1214</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Assign_Solar_Farm_Date_Replacement_Text</targetReference>
+            <targetReference>Enroll_Contacts_in_Marketing_Cloud_Journey</targetReference>
         </connector>
         <fields>
             <name>inpNewDateForEmail</name>
@@ -713,7 +1186,7 @@ MONTH({!New_Est_PTO_Date} ),
     <screens>
         <name>SSS_Date_Updates</name>
         <label>SSS Date Updates</label>
-        <locationX>446</locationX>
+        <locationX>600</locationX>
         <locationY>398</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -727,7 +1200,7 @@ MONTH({!New_Est_PTO_Date} ),
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
-            <name>selDate</name>
+            <name>selectedDateToUpdateOnSSS</name>
             <choiceReferences>choiceEstimatedDates</choiceReferences>
             <choiceReferences>choiceActualPTODate</choiceReferences>
             <choiceReferences>choiceActualCODDate</choiceReferences>
@@ -749,7 +1222,7 @@ MONTH({!New_Est_PTO_Date} ),
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
                 <conditions>
-                    <leftValueReference>selDate</leftValueReference>
+                    <leftValueReference>selectedDateToUpdateOnSSS</leftValueReference>
                     <operator>EqualTo</operator>
                     <rightValue>
                         <elementReference>choiceActualCODDate</elementReference>
@@ -766,7 +1239,7 @@ MONTH({!New_Est_PTO_Date} ),
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
                 <conditions>
-                    <leftValueReference>selDate</leftValueReference>
+                    <leftValueReference>selectedDateToUpdateOnSSS</leftValueReference>
                     <operator>EqualTo</operator>
                     <rightValue>
                         <elementReference>choiceEstimatedDates</elementReference>
@@ -783,7 +1256,7 @@ MONTH({!New_Est_PTO_Date} ),
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
                 <conditions>
-                    <leftValueReference>selDate</leftValueReference>
+                    <leftValueReference>selectedDateToUpdateOnSSS</leftValueReference>
                     <operator>EqualTo</operator>
                     <rightValue>
                         <elementReference>choiceActualPTODate</elementReference>
@@ -803,14 +1276,14 @@ MONTH({!New_Est_PTO_Date} ),
             <visibilityRule>
                 <conditionLogic>or</conditionLogic>
                 <conditions>
-                    <leftValueReference>selDate</leftValueReference>
+                    <leftValueReference>selectedDateToUpdateOnSSS</leftValueReference>
                     <operator>EqualTo</operator>
                     <rightValue>
                         <elementReference>choiceEstimatedDates</elementReference>
                     </rightValue>
                 </conditions>
                 <conditions>
-                    <leftValueReference>selDate</leftValueReference>
+                    <leftValueReference>selectedDateToUpdateOnSSS</leftValueReference>
                     <operator>EqualTo</operator>
                     <rightValue>
                         <elementReference>choiceActualPTODate</elementReference>
@@ -847,7 +1320,7 @@ MONTH({!New_Est_PTO_Date} ),
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
                 <conditions>
-                    <leftValueReference>selDate</leftValueReference>
+                    <leftValueReference>selectedDateToUpdateOnSSS</leftValueReference>
                     <operator>NotEqualTo</operator>
                     <rightValue>
                         <elementReference>choiceActualPTODate</elementReference>
@@ -947,7 +1420,7 @@ MONTH({!New_Est_PTO_Date} ),
                     </rightValue>
                 </conditions>
                 <conditions>
-                    <leftValueReference>selDate</leftValueReference>
+                    <leftValueReference>selectedDateToUpdateOnSSS</leftValueReference>
                     <operator>EqualTo</operator>
                     <rightValue>
                         <elementReference>choiceActualCODDate</elementReference>
@@ -959,7 +1432,7 @@ MONTH({!New_Est_PTO_Date} ),
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>320</locationX>
+        <locationX>474</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getSSSData</targetReference>
@@ -974,23 +1447,33 @@ MONTH({!New_Est_PTO_Date} ),
     <textTemplates>
         <name>ttMessageDetails</name>
         <isViewedAsPlainText>false</isViewedAsPlainText>
-        <text>&lt;p&gt;&lt;b&gt;Update Type:&lt;/b&gt; {!selDate}&lt;/p&gt;&lt;p&gt;&lt;b&gt;Update: &lt;/b&gt;{!ffMessageDetails}&lt;/p&gt;</text>
+        <text>&lt;p&gt;&lt;b&gt;Update Type:&lt;/b&gt; {!selectedDateToUpdateOnSSS}&lt;/p&gt;&lt;p&gt;&lt;b&gt;Update: &lt;/b&gt;{!ffMessageDetails}&lt;/p&gt;</text>
     </textTemplates>
     <variables>
-        <name>colContactList</name>
+        <description>Contacts to which an email should be sent regarding the update</description>
+        <name>emailContactList</name>
         <dataType>SObject</dataType>
         <isCollection>true</isCollection>
         <isInput>false</isInput>
-        <isOutput>true</isOutput>
+        <isOutput>false</isOutput>
         <objectType>Contact</objectType>
     </variables>
     <variables>
-        <name>mapTemplateReplacement</name>
-        <apexClass>FlowMap</apexClass>
+        <name>enrollmentDetail</name>
+        <apexClass>MarketingJourneyEnrollmentDetail</apexClass>
+        <dataType>Apex</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Marketing Cloud Journey enrollments to be processed by Apex and sent into Marketing Cloud using the Marketing Cloud API</description>
+        <name>enrollments</name>
+        <apexClass>MarketingJourneyEnrollmentDetail</apexClass>
         <dataType>Apex</dataType>
         <isCollection>true</isCollection>
         <isInput>false</isInput>
-        <isOutput>true</isOutput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <description>Don&apos;t rename this - the flow is used on an action on the SSS
@@ -1004,23 +1487,15 @@ Flow actions let you pass the value of the record&apos;s ID field into the flow,
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <name>varContactCollection</name>
-        <dataType>SObject</dataType>
+        <name>tempProperties</name>
+        <apexClass>FlowMap</apexClass>
+        <dataType>Apex</dataType>
         <isCollection>true</isCollection>
         <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <objectType>Contact</objectType>
+        <isOutput>true</isOutput>
     </variables>
     <variables>
-        <name>varContactCount</name>
-        <dataType>Number</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <scale>0</scale>
-    </variables>
-    <variables>
-        <name>varTemplateReplacement</name>
+        <name>tempProperty</name>
         <apexClass>FlowMap</apexClass>
         <dataType>Apex</dataType>
         <isCollection>false</isCollection>
