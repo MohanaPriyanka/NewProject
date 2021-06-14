@@ -7,19 +7,19 @@ public without sharing class MarketingJourneyEnroller implements Queueable, Data
     private static final String ENDPOINT = '/interaction/v1/events';
     private static MarketingAPIHelper api = new MarketingAPIHelper();
     private static Integer maxCallouts = MarketingAPIHelper.calloutsPerTransaction;
-    private List<MarketingAPI.JourneyEnrollment> enrollments;
+    private List<MarketingJourneyEnrollmentDetail> enrollments;
 
-    public MarketingJourneyEnroller(List<MarketingAPI.JourneyEnrollment> details) {
-        this.enrollments = details;
+    public MarketingJourneyEnroller(List<MarketingJourneyEnrollmentDetail> enrollments) {
+        this.enrollments = enrollments;
     }
 
     @InvocableMethod(Label='Marketing Cloud Journey Enroller')
-    public static void enrollContactsInJourney(List<MarketingAPI.JourneyEnrollment> details) {
-        System.enqueueJob(new MarketingJourneyEnroller(details));
+    public static void enrollContactsInJourney(List<MarketingJourneyEnrollment> enrollment) {
+        System.enqueueJob(new MarketingJourneyEnroller(enrollment[0].details));
     }
 
     public void execute(QueueableContext context) {
-        MarketingAPI.JourneyEnrollment enrollment;
+        MarketingJourneyEnrollmentDetail enrollment;
         if (!MarketingAPIHelper.publishToAPI) {
             return;
         }
