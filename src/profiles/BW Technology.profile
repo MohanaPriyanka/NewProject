@@ -21777,6 +21777,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract_Fee_Detail__c.Deposit_Fee__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Contract_Fee_Detail__c.Fee_Summary__c</field>
         <readable>true</readable>
