@@ -377,14 +377,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>DisbursalHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>DisbursalHandlerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>DocuSignAPI</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -506,14 +498,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>LightningConnectQuickstart</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LoanHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LoanHandlerTestClass</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
