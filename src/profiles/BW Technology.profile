@@ -1417,14 +1417,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>DisbursalHandler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>DisbursalHandlerTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>DocuSignAPI</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -2466,14 +2458,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>LiveText__liveTextButtons</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LoanHandler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LoanHandlerTestClass</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
