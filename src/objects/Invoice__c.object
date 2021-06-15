@@ -226,6 +226,17 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Date_Sent__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Date that Accounting sent the invoice to the client, manually populated</inlineHelpText>
+        <label>Date Sent</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>Downloaded_Date__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Date that ZuoraInvoiceService downloaded the PDF for this invoice. Indicates that it should not try to retrieve the PDF for the invoice for download.</inlineHelpText>
@@ -413,6 +424,11 @@
                     <fullName>Rejected</fullName>
                     <default>false</default>
                     <label>Rejected</label>
+                </value>
+                <value>
+                    <fullName>Sent</fullName>
+                    <default>false</default>
+                    <label>Sent</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -832,7 +848,7 @@
                 <default>false</default>
             </values>
             <values>
-                <fullName>Submitted to Accounting</fullName>
+                <fullName>Sent</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
