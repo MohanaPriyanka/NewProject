@@ -244,6 +244,8 @@
             <assignToReference>Selected_Client_EntityId</assignToReference>
             <field>Id</field>
         </outputAssignments>
+        <sortField>Name</sortField>
+        <sortOrder>Asc</sortOrder>
         <valueField>Id</valueField>
     </dynamicChoiceSets>
     <formulas>
@@ -515,6 +517,12 @@
                 <name>keyField</name>
                 <value>
                     <stringValue>id</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>preSelectedRowsString</name>
+                <value>
+                    <elementReference>sharedSolarSystemSummaryJSON</elementReference>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
