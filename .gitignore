@@ -363,30 +363,17 @@ src/package.xml
 *inspire1__*
 !src/objects/inspire1__*
 
-#If we want to promote page layout changes for installed pacakges, we can't ignore them.
+#If we want to promote certain metadata changes for installed pacakges, we can't ignore them.
 !src/layouts/*
-
-#If we want to promote setting changes for installed pacakges, we can't ignore them.
 !src/settings/*
-
-#If we want to promote custom metadata changes for installed pacakges, we can't ignore them.
 !src/customMetadata/*
-
-#If we want to promote custom application changes for installed pacakges, we can't ignore them.
 !src/CustomApplication/*
-
-#If we want to promote global value set changes for installed pacakges, we can't ignore them.
 !src/globalValueSets/*
-
-#If we want to promote tab changes for installed pacakges, we can't ignore them.
 !src/tabs/*
-
-#If we want to promote tab changes for installed pacakges, we can't ignore them.
 !src/objectTranslations/*
-
-##If we want to promote matching and duplicate rules for installed packages, we can't ignore them.
 !src/duplicateRules/*
 !src/matchingRules/*
+!src/flows/*
 
 
 #profiles and permission sets are complex Files. If your Org's 
