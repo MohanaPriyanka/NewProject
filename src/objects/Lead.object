@@ -8019,6 +8019,29 @@ SEMA = 13 -14</inlineHelpText>
         <description>Community Solar Lead</description>
         <label>BFG - Community Solar (Residential)</label>
         <picklistValues>
+            <picklist>Underwriting_Criteria__c</picklist>
+            <values>
+                <fullName>FICO</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Financial Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investment-Grade</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Past Payment History</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>LASERCA__Request_Credit_Bureau__c</picklist>
             <values>
                 <fullName>Equifax</fullName>
@@ -10140,6 +10163,29 @@ SEMA = 13 -14</inlineHelpText>
         <businessProcess>CS</businessProcess>
         <compactLayoutAssignment>CS_BD_Compact</compactLayoutAssignment>
         <label>BFG - Community Solar (Business)</label>
+        <picklistValues>
+            <picklist>Underwriting_Criteria__c</picklist>
+            <values>
+                <fullName>FICO</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Financial Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investment-Grade</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Past Payment History</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>LASERCA__Request_Credit_Bureau__c</picklist>
             <values>
