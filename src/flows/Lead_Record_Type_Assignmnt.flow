@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
     <decisions>
         <processMetadataValues>
             <name>index</name>
@@ -3135,6 +3136,7 @@
         <label>Record Type MA Loan</label>
         <locationX>1100</locationX>
         <locationY>200</locationY>
+        <filterLogic>and</filterLogic>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>
@@ -3209,6 +3211,7 @@
         <label>RL - DOER - Lead Record Type - DOER Co-A</label>
         <locationX>1300</locationX>
         <locationY>200</locationY>
+        <filterLogic>and</filterLogic>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>
@@ -3283,6 +3286,7 @@
         <label>RL - DOER - Record Type - DOER</label>
         <locationX>1500</locationX>
         <locationY>200</locationY>
+        <filterLogic>and</filterLogic>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>
@@ -3357,6 +3361,7 @@
         <label>RL - other - record type - individual</label>
         <locationX>1700</locationX>
         <locationY>200</locationY>
+        <filterLogic>and</filterLogic>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>
@@ -3431,6 +3436,7 @@
         <label>rl - other - joint</label>
         <locationX>1900</locationX>
         <locationY>200</locationY>
+        <filterLogic>and</filterLogic>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>
@@ -3505,6 +3511,7 @@
         <label>RL - Record Type - SC Solar Loan</label>
         <locationX>100</locationX>
         <locationY>200</locationY>
+        <filterLogic>and</filterLogic>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>
@@ -3579,6 +3586,7 @@
         <label>RL- Record Type - SC Co App</label>
         <locationX>300</locationX>
         <locationY>200</locationY>
+        <filterLogic>and</filterLogic>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>
@@ -3653,6 +3661,7 @@
         <label>RL - Record Type - NC Solar Loan</label>
         <locationX>500</locationX>
         <locationY>200</locationY>
+        <filterLogic>and</filterLogic>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>
@@ -3727,6 +3736,7 @@
         <label>RL- Record Type NC Co-App</label>
         <locationX>700</locationX>
         <locationY>200</locationY>
+        <filterLogic>and</filterLogic>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>
@@ -3801,6 +3811,7 @@
         <label>Record Type MA Co Applicant</label>
         <locationX>900</locationX>
         <locationY>200</locationY>
+        <filterLogic>and</filterLogic>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>
@@ -3847,7 +3858,7 @@
         <object>Lead</object>
     </recordUpdates>
     <startElementReference>myDecision</startElementReference>
-    <status>Active</status>
+    <status>Obsolete</status>
     <variables>
         <name>myVariable_current</name>
         <dataType>SObject</dataType>
