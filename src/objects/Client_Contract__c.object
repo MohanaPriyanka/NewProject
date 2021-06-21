@@ -160,6 +160,7 @@
         <inlineHelpText>Indicates how this Contract should be used for Client Invoicing, and which fields (Client Acquisition Contract and Client Management Contract) are populated on the System.</inlineHelpText>
         <label>CS Services Type</label>
         <required>false</required>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
@@ -229,9 +230,9 @@
             <isOptional>false</isOptional>
         </lookupFilter>
         <referenceTo>Contract</referenceTo>
-        <relationshipLabel>Client Contracts</relationshipLabel>
         <relationshipName>Client_Contract_Junctions</relationshipName>
         <required>false</required>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
@@ -241,6 +242,7 @@
         <inlineHelpText>At the beginning of this day, the system will automatically populate the Shared Solar System with the related Contract according to the CS Services Type to be used for Client Invoicing.</inlineHelpText>
         <label>Effective Date</label>
         <required>false</required>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
     </fields>
@@ -250,6 +252,7 @@
         <inlineHelpText>At the end of this day, the contract will be automatically removed from the System (unless there is a subsequent Client Contract) and no longer used for client invoicing. Can be different from the Contract&apos;s End Date.</inlineHelpText>
         <label>End Date</label>
         <required>false</required>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
     </fields>
@@ -260,11 +263,21 @@
         <inlineHelpText>The Shared Solar System related to this Contract.</inlineHelpText>
         <label>Shared Solar System</label>
         <referenceTo>Shared_Solar_System__c</referenceTo>
-        <relationshipLabel>Client Contracts</relationshipLabel>
         <relationshipName>Client_Contract_Junctions</relationshipName>
         <required>false</required>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Signed_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Usually the Effective Date on this record is the date the contract or amendment is signed by the client, but in some cases, we start work on before the date (the Effective Date) the contract is signed. If this is blank, then the Signed Date is the same as the Effective Date</inlineHelpText>
+        <label>Signed Date</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
     </fields>
     <label>Project Contract</label>
     <nameField>
