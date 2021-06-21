@@ -7,6 +7,7 @@
         <locationY>0</locationY>
         <actionName>emailSimple</actionName>
         <actionType>emailSimple</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>emailSubject</name>
             <value>
@@ -22,7 +23,7 @@
         <inputParameters>
             <name>emailAddresses</name>
             <value>
-                <stringValue>mponnetinanda@bluewavesolar.com</stringValue>
+                <stringValue>jbattles@bluewavesolar.com</stringValue>
             </value>
         </inputParameters>
     </actionCalls>
@@ -33,6 +34,7 @@
         <locationY>0</locationY>
         <actionName>emailSimple</actionName>
         <actionType>emailSimple</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>emailSubject</name>
             <value>
@@ -50,7 +52,7 @@
         <inputParameters>
             <name>emailAddresses</name>
             <value>
-                <stringValue>mponnetinanda@bluewavesolar.com</stringValue>
+                <stringValue>jbattles@bluewavesolar.com</stringValue>
             </value>
         </inputParameters>
     </actionCalls>
@@ -70,6 +72,7 @@
         <connector>
             <targetReference>myRule_1_A2</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <processMetadataValues>
                 <name>dataType</name>
@@ -188,12 +191,12 @@
             <processMetadataValues>
                 <name>rightHandSideType</name>
                 <value>
-                    <stringValue>Formula</stringValue>
+                    <stringValue>Reference</stringValue>
                 </value>
             </processMetadataValues>
             <name>firstName</name>
             <value>
-                <elementReference>formula_2_myRule_1_A1_1979058960</elementReference>
+                <elementReference>SObject.FirstName</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -230,12 +233,12 @@
             <processMetadataValues>
                 <name>rightHandSideType</name>
                 <value>
-                    <stringValue>Formula</stringValue>
+                    <stringValue>Reference</stringValue>
                 </value>
             </processMetadataValues>
             <name>lastName</name>
             <value>
-                <elementReference>formula_3_myRule_1_A1_4692185609</elementReference>
+                <elementReference>SObject.LastName</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -277,7 +280,7 @@
             </processMetadataValues>
             <name>ssn</name>
             <value>
-                <elementReference>formula_4_myRule_1_A1_9621117715</elementReference>
+                <elementReference>formula_2_myRule_1_A1_7031370390</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -533,6 +536,7 @@
             </value>
         </inputParameters>
     </actionCalls>
+    <apiVersion>49.0</apiVersion>
     <decisions>
         <name>invocableContextCheckDecision</name>
         <label>Context Check Decision</label>
@@ -655,42 +659,12 @@
         <processMetadataValues>
             <name>originalFormula</name>
             <value>
-                <stringValue>IF( 
-REGEX([Lead].FirstName, &quot;^((^|\\s)(((([DdO]&apos;)|Mc|Mac)?[A-ZÃÁÂÀÄÇÉÈÊËÍÌÎÏÕÒÔÓÖÛÚÙÜ][a-zãáàâäçéèêëíìîïñõôóòöûúùü]*)|(da|de|di|do)))*$&quot;),
-[Lead].FirstName, null)</stringValue>
-            </value>
-        </processMetadataValues>
-        <name>formula_2_myRule_1_A1_1979058960</name>
-        <dataType>String</dataType>
-        <expression>IF( 
-REGEX({!SObject.FirstName}, &quot;^((^|\\s)(((([DdO]&apos;)|Mc|Mac)?[A-ZÃÁÂÀÄÇÉÈÊËÍÌÎÏÕÒÔÓÖÛÚÙÜ][a-zãáàâäçéèêëíìîïñõôóòöûúùü]*)|(da|de|di|do)))*$&quot;),
-{!SObject.FirstName}, null)</expression>
-    </formulas>
-    <formulas>
-        <processMetadataValues>
-            <name>originalFormula</name>
-            <value>
-                <stringValue>IF( 
-REGEX([Lead].FirstName, &quot;^((^|\\s)(((([DdO]&apos;)|Mc|Mac)?[A-ZÃÁÂÀÄÇÉÈÊËÍÌÎÏÕÒÔÓÖÛÚÙÜ][a-zãáàâäçéèêëíìîïñõôóòöûúùü]*)|(da|de|di|do)))*$&quot;),
-[Lead].LastName, null)</stringValue>
-            </value>
-        </processMetadataValues>
-        <name>formula_3_myRule_1_A1_4692185609</name>
-        <dataType>String</dataType>
-        <expression>IF( 
-REGEX({!SObject.FirstName}, &quot;^((^|\\s)(((([DdO]&apos;)|Mc|Mac)?[A-ZÃÁÂÀÄÇÉÈÊËÍÌÎÏÕÒÔÓÖÛÚÙÜ][a-zãáàâäçéèêëíìîïñõôóòöûúùü]*)|(da|de|di|do)))*$&quot;),
-{!SObject.LastName}, null)</expression>
-    </formulas>
-    <formulas>
-        <processMetadataValues>
-            <name>originalFormula</name>
-            <value>
                 <stringValue>IF(CONTAINS(LOWER([Lead].LastName),&quot;testcase&quot;), 
 	IF(CONTAINS(LOWER([Lead].FirstName),&quot;frozen&quot;), &quot;000000010&quot;, IF(CONTAINS(LOWER([Lead].FirstName),&quot;fail&quot;),&quot;000000008&quot;, &quot;000000001&quot;)), 
 &quot;000000000&quot;) </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_4_myRule_1_A1_9621117715</name>
+        <name>formula_2_myRule_1_A1_7031370390</name>
         <dataType>String</dataType>
         <expression>IF(CONTAINS(LOWER({!SObject.LastName}),&quot;testcase&quot;), 
 	IF(CONTAINS(LOWER({!SObject.FirstName}),&quot;frozen&quot;), &quot;000000010&quot;, IF(CONTAINS(LOWER({!SObject.FirstName}),&quot;fail&quot;),&quot;000000008&quot;, &quot;000000001&quot;)), 
@@ -714,6 +688,7 @@ REGEX({!SObject.FirstName}, &quot;^((^|\\s)(((([DdO]&apos;)|Mc|Mac)?[A-ZÃÁÂÀ
         <connector>
             <targetReference>invocableContextCheckDecision</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -763,6 +738,7 @@ REGEX({!SObject.FirstName}, &quot;^((^|\\s)(((([DdO]&apos;)|Mc|Mac)?[A-ZÃÁÂÀ
         <label>Untick Soft Pull Credit Report</label>
         <locationX>100</locationX>
         <locationY>300</locationY>
+        <filterLogic>and</filterLogic>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>
@@ -815,7 +791,7 @@ REGEX({!SObject.FirstName}, &quot;^((^|\\s)(((([DdO]&apos;)|Mc|Mac)?[A-ZÃÁÂÀ
         <object>Lead</object>
     </recordUpdates>
     <startElementReference>sobjectInputCheckDecision</startElementReference>
-    <status>Active</status>
+    <status>Draft</status>
     <variables>
         <name>SObject</name>
         <dataType>SObject</dataType>

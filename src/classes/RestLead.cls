@@ -281,6 +281,9 @@ public without sharing class RestLead {
 
         if (restLead.applicationType == 'Residential') {
             newLead.Company = restLead.firstName + ' ' + restLead.lastName;
+            newLead.RecordTypeId = Schema.SObjectType.Lead.getRecordTypeInfosByDeveloperName().get('BFG_Community_Solar').getRecordTypeId();
+        } else {
+            newLead.RecordTypeId = Schema.SObjectType.Lead.getRecordTypeInfosByDeveloperName().get('BFG_Community_Solar_Business').getRecordTypeId();
         }
 
         List<Product2> product = [

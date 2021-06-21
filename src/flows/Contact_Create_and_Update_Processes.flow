@@ -10,14 +10,14 @@
         <processMetadataValues>
             <name>flowSelection</name>
             <value>
-                <stringValue>Lead.RecordTypeAssignment</stringValue>
+                <stringValue>Contact - Soft Pull Credit</stringValue>
             </value>
         </processMetadataValues>
         <name>myRule_1_A1</name>
-        <label>Launch Record Type Assigner</label>
+        <label>Soft Credit Pull</label>
         <locationX>100</locationX>
         <locationY>200</locationY>
-        <actionName>Lead_RecordTypeAssignment</actionName>
+        <actionName>Contact_Soft_Credit_Pull</actionName>
         <actionType>flow</actionType>
         <inputParameters>
             <processMetadataValues>
@@ -47,7 +47,7 @@
             <processMetadataValues>
                 <name>objectType</name>
                 <value>
-                    <stringValue>Lead</stringValue>
+                    <stringValue>Contact</stringValue>
                 </value>
             </processMetadataValues>
             <processMetadataValues>
@@ -63,6 +63,22 @@
         </inputParameters>
     </actionCalls>
     <apiVersion>49.0</apiVersion>
+    <assignments>
+        <name>myVariable_waitStartTimeAssignment</name>
+        <label>myVariable_waitStartTimeAssignment</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>myVariable_waitStartTimeVariable</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>myDecision</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <processMetadataValues>
             <name>index</name>
@@ -79,79 +95,30 @@
             <name>myRule_1</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.Product_line__c</leftValueReference>
-                <operator>IsNull</operator>
+                <leftValueReference>formula_myRule_1</leftValueReference>
+                <operator>EqualTo</operator>
                 <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.Product_line__c</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Residential Loan</stringValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
                 <targetReference>myRule_1_A1</targetReference>
             </connector>
-            <label>Record Type Assignment</label>
+            <label>Soft Credit Pull</label>
         </rules>
     </decisions>
-    <interviewLabel>Lead_Create-2_InterviewLabel</interviewLabel>
-    <label>Lead - Create</label>
+    <description>Process Builder Wrapper for Contact Creation and Update</description>
+    <formulas>
+        <name>formula_myRule_1</name>
+        <dataType>Boolean</dataType>
+        <expression>true</expression>
+    </formulas>
+    <interviewLabel>Contact_Create_and_Update_Processes-1_InterviewLabel</interviewLabel>
+    <label>Contact Create and Update Processes</label>
     <processMetadataValues>
         <name>ObjectType</name>
         <value>
-            <stringValue>Lead</stringValue>
+            <stringValue>Contact</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -169,11 +136,11 @@
     <processMetadataValues>
         <name>TriggerType</name>
         <value>
-            <stringValue>onCreateOnly</stringValue>
+            <stringValue>onAllChanges</stringValue>
         </value>
     </processMetadataValues>
     <processType>Workflow</processType>
-    <startElementReference>myDecision</startElementReference>
+    <startElementReference>myVariable_waitStartTimeAssignment</startElementReference>
     <status>Obsolete</status>
     <variables>
         <name>myVariable_current</name>
@@ -181,7 +148,7 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>true</isOutput>
-        <objectType>Lead</objectType>
+        <objectType>Contact</objectType>
     </variables>
     <variables>
         <name>myVariable_old</name>
@@ -189,6 +156,16 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
-        <objectType>Lead</objectType>
+        <objectType>Contact</objectType>
+    </variables>
+    <variables>
+        <name>myVariable_waitStartTimeVariable</name>
+        <dataType>DateTime</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <elementReference>$Flow.CurrentDateTime</elementReference>
+        </value>
     </variables>
 </Flow>
