@@ -9,7 +9,6 @@
 public without sharing class BlueWaveParent {
     
 
-    public static Map<String, Schema.SObjectType> globalDescribe = Schema.getGlobalDescribe();
 
     @AuraEnabled 
     public static SObject updateSObject(SObject sobj) {
@@ -25,6 +24,7 @@ public without sharing class BlueWaveParent {
 
     @AuraEnabled 
     public static List<String> getPicklistFields(String objectName, String fieldName){
+        Map<String, Schema.SObjectType> globalDescribe = Schema.getGlobalDescribe();
         Schema.SObjectType ctype = globalDescribe.get(objectName); 
         Map<String, Schema.SobjectField> fmap = ctype.getDescribe().fields.getMap();
 
@@ -37,8 +37,6 @@ public without sharing class BlueWaveParent {
 
         return options;
     }
-
-    
 
     @AuraEnabled
     public static Id saveTheFile(Id parentId, String fileName, String base64Data, String contentType, String description) {
@@ -77,26 +75,6 @@ public without sharing class BlueWaveParent {
             appendToFile(fileId, base64Data);
         }
         return Id.valueOf(fileId);
-    }
-
-    @AuraEnabled
-    public static Boolean checkIfDisbursalOnHold(Id oppId) {
-
-        Loan__c loan = [
-            SELECT Id,
-            (SELECT Id, Status__c
-             FROM Disbursals__r) 
-            FROM Loan__c
-            WHERE Opportunity__c =: oppId
-        ];
-
-        for (Disbursal__c disbursal : loan.Disbursals__r) {
-            if (disbursal.Status__c == 'Hold') {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     private static void appendToFile(Id fileId, String base64Data) {
