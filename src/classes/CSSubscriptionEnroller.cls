@@ -53,6 +53,7 @@ public without sharing class CSSubscriptionEnroller {
                     Subscribed_Annual_Cost_of_Electricity__c, Subscribed_Annual_kWhs__c, Utility__c, 
                     Utility_NMC_Tariff__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Utility_NMC_Tariff__r.Size_Ratio__c
                 FROM Utility_Account_Logs__r
+                WHERE QC_Status__c !='Unqualified'
                 ORDER BY Annual_Cost_of_Electricity__c, Annual_kWh__c DESC),
                 (SELECT Id FROM Accounts__r WHERE RecordType.Name = 'Property'),
                 (SELECT Id, AccountId, Contract_Type__c, Customer_Signature_Date_Time__c, Product__c

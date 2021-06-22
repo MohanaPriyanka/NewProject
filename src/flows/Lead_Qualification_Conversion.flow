@@ -13,6 +13,7 @@
         <faultConnector>
             <targetReference>Assign_Error_Log</targetReference>
         </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>leadIdsToConvert</name>
             <value>
@@ -33,6 +34,7 @@
         <faultConnector>
             <targetReference>Assign_Error_Log</targetReference>
         </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>leadsFromFlow</name>
             <value>
@@ -57,6 +59,7 @@
         <faultConnector>
             <targetReference>Assign_Error_Log</targetReference>
         </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>leadIds</name>
             <value>
@@ -75,6 +78,7 @@
         <connector>
             <targetReference>Lead</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>recordId</name>
             <value>
@@ -93,6 +97,7 @@
         <connector>
             <targetReference>IsConverted</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>recordId</name>
             <value>
@@ -111,6 +116,7 @@
         <connector>
             <targetReference>LoopUALs</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>recordId</name>
             <value>
@@ -129,6 +135,7 @@
         <connector>
             <targetReference>getLead</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>recordId</name>
             <value>
@@ -461,15 +468,15 @@
     <decisions>
         <name>decUALStatusCheck</name>
         <label>UAL Status Check</label>
-        <locationX>2034</locationX>
-        <locationY>1511</locationY>
+        <locationX>1885</locationX>
+        <locationY>1508</locationY>
         <defaultConnector>
             <targetReference>LoopUALs</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Pending_QC</name>
-            <conditionLogic>1 OR (2 AND 3) OR (4 AND 5) OR 6</conditionLogic>
+            <conditionLogic>(1 OR (2 AND 3) OR (4 AND 5) OR 6) AND 7</conditionLogic>
             <conditions>
                 <leftValueReference>LoopUALs.QC_Status__c</leftValueReference>
                 <operator>EqualTo</operator>
@@ -510,6 +517,13 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Pending BW Review</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>LoopUALs.QC_Status__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Unqualified</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -833,6 +847,7 @@
                     <elementReference>Get_UALS</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -975,6 +990,7 @@
                     <elementReference>orderedSSSList</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <outputParameters>
                 <assignToReference>selectedSSSList</assignToReference>
@@ -1028,6 +1044,7 @@
                     <elementReference>Lead.Underwriting_Criteria__c</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -1118,6 +1135,7 @@
                     <elementReference>currentUtility</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -1191,6 +1209,7 @@
                     <elementReference>currentProduct</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
