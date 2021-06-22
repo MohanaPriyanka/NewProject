@@ -357,6 +357,19 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Client_Invoicing_Fee_Override__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Override to the system calculated client invoicing amount. This does not override the Client Invoicing Fee yet - we&apos;re using this field to identify fee discrepancies in historical data.</inlineHelpText>
+        <label>Client Invoicing Fee Override</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>Client_Invoicing_Fee__c</fullName>
         <externalId>false</externalId>
         <formula>IF(OR(Contract_Fee_Detail__r.Acquisition_Sizing_Type_Downsizing__c,

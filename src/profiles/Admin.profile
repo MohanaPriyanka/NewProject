@@ -31812,6 +31812,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Subscription_Order__c.Client_Invoicing_Fee_Override__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Subscription_Order__c.Client_Invoicing_Fee__c</field>
         <readable>true</readable>
     </fieldPermissions>

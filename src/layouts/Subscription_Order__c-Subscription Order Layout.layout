@@ -215,6 +215,10 @@
                 <field>Invoice_Date__c</field>
             </layoutItems>
             <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Client_Invoicing_Fee_Override__c</field>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Client_Invoicing_Fee__c</field>
             </layoutItems>
