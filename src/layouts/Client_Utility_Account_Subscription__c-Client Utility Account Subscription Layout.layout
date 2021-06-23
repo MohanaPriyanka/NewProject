@@ -75,6 +75,10 @@
                 <behavior>Readonly</behavior>
                 <field>Rate_Class__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Average_kW_Demand__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
