@@ -19512,6 +19512,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Client_Utility_Account_Subscription__c.Average_kW_Demand__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Client_Utility_Account_Subscription__c.CS_Account__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -63332,10 +63337,6 @@
         <layout>Account-Account Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Account-Account Layout %28Default%29</layout>
-        <recordType>Account.Account_Default</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Account-Account Layout</layout>
         <recordType>Account.BWC_Founders</recordType>
     </layoutAssignments>
@@ -63350,6 +63351,10 @@
     <layoutAssignments>
         <layout>Account-Account Layout</layout>
         <recordType>Account.Executive_Team</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Account-Account Layout %28Default%29</layout>
+        <recordType>Account.Account_Default</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Account-BW Founders%2FExecutives%2FPrincipals</layout>
@@ -63430,6 +63435,14 @@
         <layout>BlueWave_Surveys__c-Net Promoter Score</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>BlueWave_Surveys__c-Net Promoter Score</layout>
+        <recordType>BlueWave_Surveys__c.CS_Customer_Survey</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>BlueWave_Surveys__c-Net Promoter Score</layout>
+        <recordType>BlueWave_Surveys__c.Net_Promoter_Score</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>BlueWave_Surveys__c-Net Promoter Score - Partner</layout>
         <recordType>BlueWave_Surveys__c.Net_Promoter_Score_Partner</recordType>
     </layoutAssignments>
@@ -63440,14 +63453,6 @@
     <layoutAssignments>
         <layout>BlueWave_Surveys__c-Net Promoter Score - Partner</layout>
         <recordType>BlueWave_Surveys__c.Partner_survey_portal_feedback_Q42017</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>BlueWave_Surveys__c-Net Promoter Score</layout>
-        <recordType>BlueWave_Surveys__c.CS_Customer_Survey</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>BlueWave_Surveys__c-Net Promoter Score</layout>
-        <recordType>BlueWave_Surveys__c.Net_Promoter_Score</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>BlueWave_Surveys__c-Partner Feedback Survey Layout</layout>
@@ -63782,24 +63787,12 @@
         <recordType>Lead.Utility_Duke_Energy</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Lead-BFG - DOER Solar Loan %28Co-Applicant%29</layout>
-        <recordType>Lead.BFG_DOER_Solar_Loan_Co_Applicant</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Lead-BFG - DOER Solar Loan</layout>
         <recordType>Lead.BFG_DOER_Solar_Loan</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Lead-BFG - Standard Solar Loan %28Co-Applicant%29</layout>
-        <recordType>Lead.BFG_MA_Solar_Loan_Co_Applicant</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Lead-BFG - Standard Solar Loan %28Co-Applicant%29</layout>
-        <recordType>Lead.BFG_NC_Solar_Loan_Co_Applicant</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Lead-BFG - Standard Solar Loan %28Co-Applicant%29</layout>
-        <recordType>Lead.BFG_SC_Solar_Loan_Co_Applicant</recordType>
+        <layout>Lead-BFG - DOER Solar Loan %28Co-Applicant%29</layout>
+        <recordType>Lead.BFG_DOER_Solar_Loan_Co_Applicant</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-BFG - Standard Solar Loan</layout>
@@ -63816,6 +63809,18 @@
     <layoutAssignments>
         <layout>Lead-BFG - Standard Solar Loan</layout>
         <recordType>Lead.BlueWave_Solar_Loan</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Lead-BFG - Standard Solar Loan %28Co-Applicant%29</layout>
+        <recordType>Lead.BFG_MA_Solar_Loan_Co_Applicant</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Lead-BFG - Standard Solar Loan %28Co-Applicant%29</layout>
+        <recordType>Lead.BFG_NC_Solar_Loan_Co_Applicant</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Lead-BFG - Standard Solar Loan %28Co-Applicant%29</layout>
+        <recordType>Lead.BFG_SC_Solar_Loan_Co_Applicant</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-Lead Layout</layout>
@@ -63985,10 +63990,6 @@
         <layout>Opportunity-BFG</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Opportunity-BFG - Community Solar %28Anchor%29</layout>
-        <recordType>Opportunity.BFG_Community_Solar_Anchor</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Opportunity-BFG</layout>
         <recordType>Opportunity.BFG</recordType>
     </layoutAssignments>
@@ -64003,6 +64004,10 @@
     <layoutAssignments>
         <layout>Opportunity-BFG</layout>
         <recordType>Opportunity.Finance</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Opportunity-BFG - Community Solar %28Anchor%29</layout>
+        <recordType>Opportunity.BFG_Community_Solar_Anchor</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-Business Development</layout>
@@ -72900,176 +72905,6 @@
         <default>false</default>
         <recordType>Case.Product_Support</recordType>
         <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Astropay</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>true</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Authorizenet</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Barclays_ePDQ</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__BlueSnap</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Braintree</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Cybersource</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__EPX_payments</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Ezidebit</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__FatZebra</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Forte</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Linked2Pay</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Litle</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__MerchantWarrior</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__ModusLink</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Moneris_CA</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Moneris_US</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Netbanx</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Network_Merchants_NMI</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Orbital</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__PayTrace</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__PayU</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__PayflowProPayPal</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__PlanetPayment</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Platinum_Payments</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Realex_Payment</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__SecureCo</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Stripe</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__TransactPro</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__Trident_Gateway_MeS</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__USAePay</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__VeriPay</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__eProcessingNetwork</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__eWay</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>ChargentBase__Gateway__c.ChargentBase__iATS</recordType>
-        <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
