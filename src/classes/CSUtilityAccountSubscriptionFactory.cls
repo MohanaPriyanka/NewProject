@@ -57,18 +57,15 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
     ) {
         Integer uasNumberCounter = 1;
         Decimal remainingUALCapacityToAllocate;
-        if (featureService.isEnabled('Sizing_Method')) {
-            remainingUALCapacityToAllocate = ual.Annual_kWh__c;
-        } else {
-            remainingUALCapacityToAllocate = ual.Proposed_kWh__c;
-        }
+        remainingUALCapacityToAllocate = ual.Annual_kWh__c;
+
         for (Opportunity opp : opportunities) {
             if (sssSubscriptionMap.containsKey((opp.Shared_Solar_System__c))) {
                 SSSSubscription sssSubscription = sssSubscriptionMap.get(opp.Shared_Solar_System__c);
                 Decimal sizeRatio = 1.0;
 
                 Decimal sssRemainingSubscriptionCapacity = sssSubscription.maximumkWh;
-                if (featureService.isEnabled('Sizing_Method') && sssSubscription.sizingMethod == 'Rate Class Ratio' && ual.Utility_Rate_Class__r.Utility_NMC_Tariff__c != null ) {
+                if (sssSubscription.sizingMethod == 'Rate Class Ratio' && ual.Utility_Rate_Class__r.Utility_NMC_Tariff__c != null ) {
                     sizeRatio = ual.Utility_Rate_Class__r.Utility_NMC_Tariff__r.Size_Ratio__c;
                     sssRemainingSubscriptionCapacity = (sssRemainingSubscriptionCapacity/sizeRatio).setScale(2, RoundingMode.HALF_DOWN);
                 }
@@ -76,7 +73,7 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
                 if (annualElectricityCapacityAssigned > 0) {
                     //Deduct the assigned value from the sss remaining subscription cost and then put it back into the map
                     sssRemainingSubscriptionCapacity -= annualElectricityCapacityAssigned;
-                    if (featureService.isEnabled('Sizing_Method') && sssSubscription.sizingMethod == 'Rate Class Ratio') {
+                    if (sssSubscription.sizingMethod == 'Rate Class Ratio') {
                         sssSubscription.maximumkWh = sssRemainingSubscriptionCapacity*sizeratio;
                     }
                     sssSubscription.maximumkWh = sssRemainingSubscriptionCapacity;
@@ -166,19 +163,10 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
 
 
     private static void populateSizingMethod(Utility_Account_Log__c ual, Utility_Account_Subscription__c uas, SSSSubscription sssSubscription) {
-        if (!featureService.isEnabled('Sizing_Method')) {
-            return;
-        }
         if (sssSubscription.sizingMethod == 'Rate Class Ratio') {
             if (ual.Utility_Rate_Class__c != null) {
                 uas.Sizing_Method__c = ual.Utility_Rate_Class__r.Utility_NMC_Tariff__c;
-            } else {
-                //CSAP does not populate the UAL's Rate Class before conversion. We do not want to throw an error.
-                //We can default to the Sizing Method on the SSS and flag ops (case or comment?)
-                uas.Sizing_Method__c = sssSubscription.sss.Utility_NMC_Tariff__c;
-                uas.Subscription_Comment_c__c = 'Utility Account did not have a Rate Class assigned upon conversion. ' +
-                    'Therefore this subscription was created using the default Sizing Method on the SSS.';
-            }
+            } 
         } else {
             uas.Sizing_Method__c = sssSubscription.sss.Utility_NMC_Tariff__c;
         }

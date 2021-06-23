@@ -89,9 +89,9 @@ public without sharing class CSSubscriptionEnroller {
 
     public void enroll() {
         for (Lead lead : leads) {
-            if (!featureService.isEnabled('Sizing_Method')) {
-                calculateProposedkWh(lead);
-            }
+            //if (!featureService.isEnabled('Sizing_Method')) {
+            //    calculateProposedkWh(lead);
+            //}
             AnnualEnergyTotal annualTotals = getAnnualTotals(lead);
             if (annualTotals.cost != 0 || annualTotals.kWh != 0) {
                 createOpportunityAndContactRoles(lead, annualTotals);
@@ -113,55 +113,6 @@ public without sharing class CSSubscriptionEnroller {
         }
         Logger.flushLogs();
     }
-
-
-    private void calculateProposedkWh(Lead lead) {
-        Product2 product = productsMap.get(lead.Product__c);
-        for (Utility_Account_Log__c ual : leadIdToLeadWithChildren.get(lead.Id).Utility_Account_Logs__r) {
-            Product_Tariff__c tariff = assignUtilityTariff(ual, lead, product.Product_Tariffs__r);
-            if (tariff != null && product != null && ual.Annual_kWh__c != null) {
-                ual.Utility_NMC_Tariff__c = tariff.Utility_NMC_Tariff__c;
-                ual.Product_Tariff__c = tariff.Id;
-                // Currently, we only need to have a sizing ratio for SMART
-                Decimal sizeRatio;
-                if (tariff.Size_Ratio__c != null) {
-                    sizeRatio = tariff.Size_Ratio__c;
-                } else {
-                    sizeRatio = 1.0;
-                }
-                ual.Proposed_kWh__c = ual.Annual_kWh__c * sizeRatio;
-            } else {
-                ual.Proposed_kWh__c = ual.Annual_kWh__c;
-            }
-            uow.registerDirty(ual);
-        }
-    }
-
-
-    private Product_Tariff__c assignUtilityTariff(Utility_Account_Log__c ual, Lead lead, List<Product_Tariff__c> tariffs) {
-        if (tariffs == null) {
-            return null;
-        }
-        
-        Product_Tariff__c assignedTariff;
-        for (Product_Tariff__c tariff : tariffs) {
-            if (lead.Customer_type__c == tariff.Utility_NMC_Tariff__r.Customer_type__c
-                    && lead.Utility_relationship__c == tariff.Utility_NMC_Tariff__r.Utility_Relationship__c
-                    && (tariff.Utility_NMC_Tariff__r.Maximum_kWh__c == null || ual.Annual_kWh__c < tariff.Utility_NMC_Tariff__r.Maximum_kWh__c)
-                    && (tariff.Utility_NMC_Tariff__r.Minimum_kWh__c == null || ual.Annual_kWh__c >= tariff.Utility_NMC_Tariff__r.Minimum_kWh__c)) {
-                if (assignedTariff == null) {
-                    assignedTariff = tariff;
-                } else {
-                    String message = 'Lead ' + lead.Id + ' meets the criteria for multiple tariffs.';
-                    message += ' Assigned Tariff: ' + assignedTariff;
-                    message += ' Other Qualified Tariff: ' + tariff;
-                    Logger.logLater('CSSubscriptionEnroller', 'assignUtilityTariff', message);
-                }
-            }
-        }
-        return assignedTariff;
-    }
-
 
     private AnnualEnergyTotal getAnnualTotals(Lead lead) {
         Decimal totalAnnualCostOfElectricity = 0;
@@ -239,14 +190,7 @@ public without sharing class CSSubscriptionEnroller {
 
 
     private Id getPropertyAccount(Lead lead) {
-        Id propAccountId;
-        //If Switch lead, the property account will be in the list already. If CSAP Lead, will need to grab the Converted Account
-        if (!leadIdToLeadWithChildren.get(lead.Id).Accounts__r.isEmpty()){
-            return leadIdToLeadWithChildren.get(lead.Id).Accounts__r[0].Id;
-        } else if (lead.IsConverted && lead.ConvertedAccountId != null) {
-            propAccountId = lead.ConvertedAccountId;
-        }
-        return propAccountId;
+        return leadIdToLeadWithChildren.get(lead.Id).Accounts__r[0].Id;
     }
 
     private void createUAS(Lead lead) {
