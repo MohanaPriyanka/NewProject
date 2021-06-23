@@ -161,12 +161,9 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
         }
     }
 
-
     private static void populateSizingMethod(Utility_Account_Log__c ual, Utility_Account_Subscription__c uas, SSSSubscription sssSubscription) {
-        if (sssSubscription.sizingMethod == 'Rate Class Ratio') {
-            if (ual.Utility_Rate_Class__c != null) {
-                uas.Sizing_Method__c = ual.Utility_Rate_Class__r.Utility_NMC_Tariff__c;
-            } 
+        if (sssSubscription.sizingMethod == 'Rate Class Ratio' && ual.Utility_Rate_Class__c != null) {
+            uas.Sizing_Method__c = ual.Utility_Rate_Class__r.Utility_NMC_Tariff__c;
         } else {
             uas.Sizing_Method__c = sssSubscription.sss.Utility_NMC_Tariff__c;
         }
