@@ -14781,6 +14781,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Create_Zuora_Account__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.Credit_Bureau__c</field>
         <readable>true</readable>
@@ -50058,6 +50063,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Zuora__SubscriptionProductChargeHistory__c.Zuora__WeeklyBillCycleDay__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Zuora__SubscriptionProductCharge__c.ClientOwner__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Zuora__SubscriptionProductCharge__c.Project__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

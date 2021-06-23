@@ -14,17 +14,6 @@ public class AccountTriggerHandlerTestClass {
         accountRecord.Custom_ID__c = 'test';
         update accountRecord;
     }	
-    @IsTest static void testCustomIdSwapAccount() {
-		Account account = [SELECT Id, Sales_Representative__r.Id, Partner__r.Id FROM Account WHERE Name = 'Test'];
-		Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'BlueWave Inside Sales'];
-		BSST__c salesRep = [SELECT Id FROM BSST__c WHERE Name = 'BlueWave User'];
-
-		account.Custom_ID__c = 'test';
-		update account;
-
-        System.assertEquals(account.Sales_Representative__r.Id, salesRep.Id);
-        System.assertEquals(account.Partner__r.Id, partner.Id);
-    }
 
     @IsTest
     private static void testPreventDeletion() {

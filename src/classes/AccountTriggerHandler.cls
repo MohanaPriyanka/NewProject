@@ -3,12 +3,6 @@
 public without sharing class AccountTriggerHandler {
     private static ZuoraAccountService zuoraAccountService = new ZuoraAccountService();
 
-    public void onBeforeInsert(List<Account> newAccounts) {
-        customIdSwapAccount(newAccounts);
-    }
-    public void onBeforeUpdate(List<Account> updatedAccounts) {
-        customIdSwapAccount(updatedAccounts);
-    }
     public void onAfterInsert(Map<Id, Account> oldMap, Map<Id, Account> newMap) {
         createZuoraAccounts(newMap.values(), oldMap);
     }
@@ -25,27 +19,6 @@ public without sharing class AccountTriggerHandler {
             zuoraAccountService.accountsWithZuoraUpdates(oldMap, newMap);
         if (zuoraAccountsToUpdate.hasChanges()) {
             zuoraAccountService.handleAccountUpdates(zuoraAccountsToUpdate);
-        }
-    }
-
-    private void customIdSwapAccount(List<Account> accountList){
-        Set<String> customIds = new Set<String>( ); 
-        for(Account acc : accountList) {
-            if(acc.Custom_Id__c != null) {
-                customIds.add(acc.Custom_Id__c);
-            }
-        }
-        if(customIds.size() > 0){
-            Map<String, BSST__c > salesIdMap = new Map<String, BSST__c >();
-            for (BSST__c obj : [SELECT Id, Custom_Id__c, Partner__c FROM BSST__c WHERE Custom_Id__c IN : customIds]){
-                salesIdMap.put(obj.Custom_Id__c, obj); 
-            }
-            for(Account acc : accountList) {
-                if(salesIdMap.containsKey(acc.Custom_Id__c)){
-                    acc.Sales_Representative__c = salesIdMap.get(acc.Custom_Id__c).Id;
-                    acc.Partner__c = salesIdMap.get(acc.Custom_Id__c).Partner__c;
-                }
-            }
         }
     }
 
@@ -75,8 +48,7 @@ public without sharing class AccountTriggerHandler {
                 accountsToUnsetCreateZuoraAccount.add(accountNotInTrigger);
                 // then, if it meets the conditions, we should create it.
                 if ((oldMap == null || !oldMap.get(accountInTrigger.Id).Create_Zuora_Account__c) &&
-                    accountInTrigger.RecordTypeId == propertyRecordTypeId &&
-                    accountInTrigger.Zuora_Id__c == null) {
+                    accountInTrigger.RecordTypeId == propertyRecordTypeId) {
                     accountsNeedingZuoraAccounts.add(accountInTrigger.Id);
                 }
             }
