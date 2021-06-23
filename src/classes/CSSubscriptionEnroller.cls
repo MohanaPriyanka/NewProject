@@ -89,9 +89,6 @@ public without sharing class CSSubscriptionEnroller {
 
     public void enroll() {
         for (Lead lead : leads) {
-            //if (!featureService.isEnabled('Sizing_Method')) {
-            //    calculateProposedkWh(lead);
-            //}
             AnnualEnergyTotal annualTotals = getAnnualTotals(lead);
             if (annualTotals.cost != 0 || annualTotals.kWh != 0) {
                 createOpportunityAndContactRoles(lead, annualTotals);
@@ -113,6 +110,7 @@ public without sharing class CSSubscriptionEnroller {
         }
         Logger.flushLogs();
     }
+
 
     private AnnualEnergyTotal getAnnualTotals(Lead lead) {
         Decimal totalAnnualCostOfElectricity = 0;
@@ -148,7 +146,7 @@ public without sharing class CSSubscriptionEnroller {
 
 
     private void createOpportunityAndContactRoles(Lead lead, AnnualEnergyTotal annualTotals) {
-        Id propertyAccountId = getPropertyAccount(lead);
+        Id propertyAccountId = leadIdToLeadWithChildren.get(lead.Id).Accounts__r[0].Id;
         List<Shared_Solar_System__c> availableSSS = sssList.getQualifiedForLead(lead);
         leadIdToAvailableSSS.put(lead.Id, availableSSS);
         
@@ -189,10 +187,6 @@ public without sharing class CSSubscriptionEnroller {
     }
 
 
-    private Id getPropertyAccount(Lead lead) {
-        return leadIdToLeadWithChildren.get(lead.Id).Accounts__r[0].Id;
-    }
-
     private void createUAS(Lead lead) {
         List<Shared_Solar_System__c> sharedSolarSystems = leadIdToAvailableSSS.get(lead.Id);
         List<Opportunity> opportunities = leadOppsMap.get(lead.Id);
@@ -210,7 +204,6 @@ public without sharing class CSSubscriptionEnroller {
     }
 
     
-
     public class AnnualEnergyTotal {
         public Decimal cost;
         public Decimal kWh;
