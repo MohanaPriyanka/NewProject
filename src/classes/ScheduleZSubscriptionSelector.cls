@@ -134,7 +134,7 @@ public with sharing class ScheduleZSubscriptionSelector {
             FROM Schedule_Z_Subscription__c
             WHERE Schedule_Z__c =: allocationScheduleId
             AND Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c != 'Anchor'
-                // Anchor customers are specifically excluded from disclosure form packets
+            // Anchor customers are specifically excluded from disclosure form packets
         ];
     }
 
@@ -179,7 +179,7 @@ public with sharing class ScheduleZSubscriptionSelector {
                     Utility_Account_Subscription__r.Opportunity_Stage__c,
                     Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Id,
                     Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Name,
-                    Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Total_System_Size_kwh_dc__c,
+                    Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Total_System_Size_kWh_DC__c,
                     Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Method__c,
                     Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c,
                     Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Number_of_Billed_Production_Periods__c,
@@ -200,7 +200,7 @@ public with sharing class ScheduleZSubscriptionSelector {
             )
             FROM Utility_Account_Subscription__c
             WHERE Opportunity__r.Shared_Solar_System__c IN : sssIdList
-            AND Opportunity__r.Account.Last_Bill_Send_Date_New_Charges_Zuora__c != null
+            AND Opportunity__r.Account.Last_Bill_Send_Date_New_Charges_Zuora__c != NULL
             AND Opportunity__r.Account.Last_Bill_Send_Date_New_Charges_Zuora__c >= : maxPastDueDate
             AND Opportunity__r.Account.Total_Outstanding_Balance_Merge__c > : minimumBalance
             AND Id NOT IN : uasIdsAlreadyBilling
@@ -220,5 +220,26 @@ public with sharing class ScheduleZSubscriptionSelector {
             WHERE Utility_Account_Subscription__r.Date_Removed_from_Project__c != NULL
             AND Schedule_Z__c = :replacedALSId
         ];
+    }
+
+    /**
+     * @description Intended to be used to create subscriptions in Zuora for accounts that are imported or manually adjusted
+     * @param accounts List of accounts that need subscriptions in Zuora
+     * @return List of Allocation Schedules that are enacted for those accounts
+     */
+    public List<Schedule_Z__c> getEnactedALSesForAccounts(List<Account> accounts) {
+        List<Schedule_Z_Subscription__c> szsScheduleZSubscriptions = [
+            SELECT Id, Schedule_Z__r.Shared_Solar_System__r.Name, Schedule_Z__r.Status__c, Schedule_Z__c
+            FROM Schedule_Z_Subscription__c
+            WHERE Utility_Account_Subscription__r.Opportunity__r.AccountId = :accounts
+            AND Schedule_Z__r.Date_Enacted_by_Utility__c != NULL
+            AND Schedule_Z__r.Date_Rejected_by_Utility__c = NULL
+            AND Schedule_Z__r.Status__c != 'Replaced'
+        ];
+        List<Schedule_Z__c> enactedScheduleZS = new List<Schedule_Z__c>();
+        for (Schedule_Z_Subscription__c scheduleZSubscription : szsScheduleZSubscriptions) {
+            enactedScheduleZS.add(new Schedule_Z__c(Id = scheduleZSubscription.Schedule_Z__c));
+        }
+        return enactedScheduleZS;
     }
 }
