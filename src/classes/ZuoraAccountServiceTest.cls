@@ -85,7 +85,7 @@ public with sharing class ZuoraAccountServiceTest {
             Sales_Representative__c = partnerSetUpIds.get(1));
         insert contactRecord;
 
-        Account customerAccount = new Account(Name = 'Customer Account', Client_Brand_Key__c = 'BluewaveLogo');
+        Account customerAccount = new Account(Name = 'Customer Account',Client_Brand_Key__c = 'BluewaveLogo');
         insert customerAccount;
 
         Contact referralContact = new Contact( FirstName = 'Contact A',
@@ -453,6 +453,9 @@ public with sharing class ZuoraAccountServiceTest {
 
         pullCreditForLead(residentialLead.Id);
 
+        Account propAccount = getPropAcctForTest(residentialLead.Id);
+        insert propAccount;
+
         residentialLead = [
             SELECT Id, CSAP_Stage__c, FirstName, LastName, Email, Phone, LASERCA__Birthdate__c, Street, City, State, PostalCode,
                 Application_Type__c, LASERCA__Home_Address__c, LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, LASERCA__SSN__c,
@@ -539,6 +542,9 @@ public with sharing class ZuoraAccountServiceTest {
 
         pullCreditForLead(residentialLead.Id);
 
+        Account propAccount = getPropAcctForTest(residentialLead.Id);
+        insert propAccount;
+
         residentialLead = [
             SELECT Id, CSAP_Stage__c, FirstName, LastName, Email, Phone, LASERCA__Birthdate__c, Street, City, State, PostalCode,
                 Application_Type__c, LASERCA__Home_Address__c, LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, LASERCA__SSN__c,
@@ -555,6 +561,7 @@ public with sharing class ZuoraAccountServiceTest {
         Utility_Account_Log__c ual = new Utility_Account_Log__c(
             Lead__c = residentialLead.Id,
             Annual_Cost_of_Electricity__c = 10000,
+            Annual_kWh__c = 10000,
             Name_on_Account__c = 'Tester Testcase'
         );
         insert ual;
@@ -631,6 +638,9 @@ public with sharing class ZuoraAccountServiceTest {
         residentialLead.Zuora_Payment_Ref_Id_Expiration_Date__c = Datetime.now()+1; // Ref Id good until tomorrow
         insert residentialLead;
 
+        Account propAccount = getPropAcctForTest(residentialLead.Id);
+        insert propAccount;
+
         pullCreditForLead(residentialLead.Id);
 
         residentialLead = [
@@ -649,6 +659,7 @@ public with sharing class ZuoraAccountServiceTest {
         Utility_Account_Log__c ual = new Utility_Account_Log__c(
             Lead__c = residentialLead.Id,
             Annual_Cost_of_Electricity__c = 10000,
+            Annual_kWh__c = 10000,
             Name_on_Account__c = 'Tester Testcase'
         );
         insert ual;
