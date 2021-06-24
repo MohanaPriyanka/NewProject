@@ -1,7 +1,7 @@
 /**
  * Created by PeterYao on 4/30/2019.
  * Description: Used by lead conversion for CS leads from CSAP and the Originations platform, and data migration
- * Tested By: ZuoraAccountServiceTest, ZuoraAccountReconciliationServiceTest
+ * Tested By: ZuoraAccountServiceTest, ZuoraAccountReconciliationServiceTest, ZuoraSubscriptionServiceTest
  */
 
 public without sharing class ZuoraAccountAsyncService implements Queueable, Database.AllowsCallouts, Database.Batchable<Account> {
@@ -13,6 +13,7 @@ public without sharing class ZuoraAccountAsyncService implements Queueable, Data
     private Set<String> zuoraAccountIdsReconciled;
     @TestVisible
     private ZuoraAccountReconciliationService accountReconciliationService = new ZuoraAccountReconciliationService();
+    private ScheduleZSubscriptionSelector scheduleZSubscriptionSelector = new ScheduleZSubscriptionSelector();
 
     public ZuoraAccountAsyncService(Id leadId) {
         this.mode = OperationType.CREATE;
@@ -52,22 +53,35 @@ public without sharing class ZuoraAccountAsyncService implements Queueable, Data
     }
 
     public void execute(Database.BatchableContext batchableContext, List<Account> scope) {
-        if (mode == OperationType.CREATE && scope != null) {
-            try {
-                ZuoraAccountService.createAccounts(scope, null);
-            } catch (Exception e) {
-                Logger.flushLogs();
-                Logger.logNow('ZuoraAccountAsyncService', 'execute',
-                    'Zuora account creation failed for accounts: ' + scope + '\n' + e.getMessage() + '\n' + e.getStackTraceString(),
-                    Logger.ERROR);
-            }
+        if (mode != OperationType.CREATE || scope == null) {
+            return;
+        }
+        try {
+            ZuoraAccountService.createAccounts(getAccountsWithoutZuoraId(scope), null);
+        } catch (Exception e) {
+            Logger.flushLogs();
+            Logger.logNow('ZuoraAccountAsyncService', 'execute',
+                'Zuora account creation failed for accounts: ' + scope + '\n' + e.getMessage() + '\n' + e.getStackTraceString(),
+                Logger.ERROR);
         }
     }
 
-    public void finish(Database.BatchableContext batchableContext) {
+    private List<Account> getAccountsWithoutZuoraId(List<Account> scope) {
+        List<Account> accountsWithoutZuoraId = new List<Account>();
+        for (Account account : scope) {
+            if (account.Zuora_Id__c == null) {
+                accountsWithoutZuoraId.add(account);
+            }
+        }
+        return accountsWithoutZuoraId;
     }
 
-    public void startBatch(Integer batchSize) {
-        Database.executeBatch(this, batchSize);
+    public void finish(Database.BatchableContext batchableContext) {
+        if (accountsToCreate != null) {
+            List<Schedule_Z__c> enactedScheduleZs = scheduleZSubscriptionSelector.getEnactedALSesForAccounts(accountsToCreate);
+            ZuoraSubscriptionAsyncService asyncService = new ZuoraSubscriptionAsyncService();
+            asyncService.initForScheduleZEnactment(enactedScheduleZs);
+            Database.executeBatch(asyncService, 100);
+        }
     }
 }

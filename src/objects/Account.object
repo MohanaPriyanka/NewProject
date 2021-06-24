@@ -1397,8 +1397,8 @@ CASE(Days_Past_Due__c,
         <fullName>Create_Zuora_Account__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <inlineHelpText>When checked on a Property Account without a Zuora Id, a process is started to create an account in Zuora with the related Send Bills Contact.</inlineHelpText>
-        <label>Create Zuora Account</label>
+        <inlineHelpText>When checked on a Property Account without a Zuora Id, a process is started to create an account in Zuora with the related Send Bills Contact. If the Account already has a Zuora Id, the process will create subscriptions that are missing.</inlineHelpText>
+        <label>Create Zuora Account and Subscriptions</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>

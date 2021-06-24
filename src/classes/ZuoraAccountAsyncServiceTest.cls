@@ -38,7 +38,7 @@ public with sharing class ZuoraAccountAsyncServiceTest {
         ZuoraAccountAsyncService asyncService =
             new ZuoraAccountAsyncService(AccountsSelector.selectWithSendBillsContact(accountMap.keySet()));
         Test.startTest();
-        asyncService.startBatch(50);
+        Database.executeBatch(asyncService, 50);
         Test.stopTest();
         accountsToCreate = [
             SELECT Id, Send_Bills_Contact__c, Zuora_Id__c
@@ -67,6 +67,7 @@ public with sharing class ZuoraAccountAsyncServiceTest {
         for (Contact contact : contactList) {
             System.assertEquals(1, contact.Zuora_Contacts__r.size());
         }
+        System.debug(LoggingLevel.ERROR, JSON.serializePretty(ZuoraAPIHelper.endpointsCalled));
     }
 
     @IsTest
@@ -84,7 +85,7 @@ public with sharing class ZuoraAccountAsyncServiceTest {
         ZuoraAccountAsyncService asyncService =
             new ZuoraAccountAsyncService(AccountsSelector.selectWithSendBillsContact(new Set<Id>{accountToCreate.Id}));
         Test.startTest();
-        asyncService.startBatch(50);
+        Database.executeBatch(asyncService, 50);
         Test.stopTest();
         accountToCreate = [
             SELECT Id, Send_Bills_Contact__c, Zuora_Id__c
@@ -97,9 +98,10 @@ public with sharing class ZuoraAccountAsyncServiceTest {
             SELECT Message__c
             FROM Error_Log__c
             WHERE Severity__c = :Logger.ERROR
+            AND Class__c = 'ZuoraAccountAsyncService'
         ];
-        // There should have been an error logged:
-        System.assertEquals(1, errorLogs.size());
-        System.assert(errorLogs[0].Message__c.contains('Zuora account creation failed for accounts'));
+        System.assertEquals(1, errorLogs.size(), errorLogs);
+        String errorMessage = 'Zuora account creation failed for accounts';
+        System.assert(errorLogs[0].Message__c.contains(errorMessage), 'Expected ' + errorMessage + ' but got ' + errorLogs[0].Message__c);
     }
 }
