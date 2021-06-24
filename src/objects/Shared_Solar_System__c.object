@@ -2724,14 +2724,21 @@ null)</formula>
         <fullName>Acquisition_Credit_Score_Requir_Required</fullName>
         <active>true</active>
         <errorConditionFormula>AND(
-ISCHANGED(Stage__c),
 ISPICKVAL(Stage__c,&quot;Acquisition&quot;),
+NOT( Do_Not_Underwrite__c ),
 OR (
 Credit_Score_Requirement__c = 0,
 ISBLANK(Credit_Score_Requirement__c)
 )
+)
+|| 
+AND(
+ISPICKVAL(Stage__c,&quot;Acquisition&quot;),
+Do_Not_Underwrite__c,
+NOT(ISBLANK(Credit_Score_Requirement__c))
 )</errorConditionFormula>
-        <errorMessage>Cannot change status to acquisition without populating the Credit Score Requirement field</errorMessage>
+        <errorDisplayField>Credit_Score_Requirement__c</errorDisplayField>
+        <errorMessage>When in the &quot;Acquisition&quot; stage, a Shared Solar System must have a &quot;Minimum FICO Requirement&quot; or be set to &quot;Do Not Underwrite&quot;. It cannot be both.</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>Acquisition_Estimated_COD_PTO_Required</fullName>
