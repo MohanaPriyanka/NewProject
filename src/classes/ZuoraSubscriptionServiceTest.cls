@@ -384,4 +384,29 @@ public with sharing class ZuoraSubscriptionServiceTest {
         System.assertEquals('2c92c0fb7129989d017131da263137da', sba.getSubscriptionFor('BW-0009470', 'SSS-000009').id);
         System.assertEquals(null, sba.getSubscriptionFor('SSS-00009', 'BW-0009470'));
     }
+
+    @IsTest
+    private static void testSubscriptionCreationAfterAccountCreation() {
+        Account property = [
+            SELECT Id
+            FROM Account
+            WHERE Zuora_Id__c = '2c92c0f86ab120de016ab427c9032366'
+        ];
+        property.Create_Zuora_Account__c = true;
+        property.Zuora_Id__c = null;
+        Test.startTest();
+        update property;
+        Test.stopTest();
+        System.assert(calledOrdersAPI(), 'Expected to call /v1/orders to create subscriptions for accounts after' +
+            ' creation, but only got these calls: ' + JSON.serializePretty(ZuoraAPIHelper.endpointsCalled));
+    }
+
+    private static Boolean calledOrdersAPI() {
+        for (ZuoraAPIHelper.EndpointCall endpointCall : ZuoraAPIHelper.endpointsCalled) {
+            if (endpointCall.endpoint == '/v1/orders') {
+                return true;
+            }
+        }
+        return false;
+    }
 }
