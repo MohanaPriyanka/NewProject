@@ -85,7 +85,7 @@ public with sharing class ZuoraAccountServiceTest {
             Sales_Representative__c = partnerSetUpIds.get(1));
         insert contactRecord;
 
-        Account customerAccount = new Account(Name = 'Customer Account',Client_Brand_Key__c = 'BluewaveLogo');
+        Account customerAccount = new Account(Name = 'Customer Account', Client_Brand_Key__c = 'BluewaveLogo');
         insert customerAccount;
 
         Contact referralContact = new Contact( FirstName = 'Contact A',
@@ -561,7 +561,6 @@ public with sharing class ZuoraAccountServiceTest {
         Utility_Account_Log__c ual = new Utility_Account_Log__c(
             Lead__c = residentialLead.Id,
             Annual_Cost_of_Electricity__c = 10000,
-            Annual_kWh__c = 10000,
             Name_on_Account__c = 'Tester Testcase'
         );
         insert ual;
@@ -659,7 +658,6 @@ public with sharing class ZuoraAccountServiceTest {
         Utility_Account_Log__c ual = new Utility_Account_Log__c(
             Lead__c = residentialLead.Id,
             Annual_Cost_of_Electricity__c = 10000,
-            Annual_kWh__c = 10000,
             Name_on_Account__c = 'Tester Testcase'
         );
         insert ual;
