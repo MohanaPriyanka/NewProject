@@ -196,7 +196,7 @@ public without sharing class UtilityAccountLogs {
         String ualZip = standardizeText(data.ual.Service_Zip_Code__c);
         String ualFullAddress = ualName + '|' + ualAddress + '|' + ualCity + '|' + ualState + '|' + ualZip;
 
-        if (udrFullAddress != ualFullAddress) {
+        if (udrFullAddress != ualFullAddress && !String.isBlank(udrName)) {
             data.hasAddressChange = true;
         }
     }
