@@ -348,6 +348,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
         useMocks(false);
         Utility_Account_Log__c ual = new Utility_Account_Log__c(
             Proposed_kWh__c = 15000,
+            Annual_kWh__c = 15000,
             Name_on_Account__c = 'Joey Chan',
             Name = 'Account 1'
         );

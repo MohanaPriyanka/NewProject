@@ -453,6 +453,9 @@ public with sharing class ZuoraAccountServiceTest {
 
         pullCreditForLead(residentialLead.Id);
 
+        Account propAccount = getPropAcctForTest(residentialLead.Id);
+        insert propAccount;
+
         residentialLead = [
             SELECT Id, CSAP_Stage__c, FirstName, LastName, Email, Phone, LASERCA__Birthdate__c, Street, City, State, PostalCode,
                 Application_Type__c, LASERCA__Home_Address__c, LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, LASERCA__SSN__c,
@@ -538,6 +541,9 @@ public with sharing class ZuoraAccountServiceTest {
         insert residentialLead;
 
         pullCreditForLead(residentialLead.Id);
+
+        Account propAccount = getPropAcctForTest(residentialLead.Id);
+        insert propAccount;
 
         residentialLead = [
             SELECT Id, CSAP_Stage__c, FirstName, LastName, Email, Phone, LASERCA__Birthdate__c, Street, City, State, PostalCode,
@@ -630,6 +636,9 @@ public with sharing class ZuoraAccountServiceTest {
         residentialLead.Zuora_Payment_Ref_Id__c = '12345678901234567890123456789012';
         residentialLead.Zuora_Payment_Ref_Id_Expiration_Date__c = Datetime.now()+1; // Ref Id good until tomorrow
         insert residentialLead;
+
+        Account propAccount = getPropAcctForTest(residentialLead.Id);
+        insert propAccount;
 
         pullCreditForLead(residentialLead.Id);
 

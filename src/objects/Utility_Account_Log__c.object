@@ -717,6 +717,11 @@ Used for customer sizing on SMART contracts.</inlineHelpText>
                     <default>false</default>
                     <label>Pending BW Review</label>
                 </value>
+                <value>
+                    <fullName>Unqualified</fullName>
+                    <default>false</default>
+                    <label>Unqualified</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
     </fields>

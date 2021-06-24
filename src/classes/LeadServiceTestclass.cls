@@ -313,6 +313,11 @@ public class LeadServiceTestclass {
         ual.Annual_kWh__c = 9000;
         insert ual;
 
+        Utility_Account_Log__c unqualifiedUal = leadService.buildUtilityAccountLogFromLegacyLead(switchLead, propertyAccount);
+        unqualifiedUal.Annual_kWh__c = 9000;
+        unqualifiedUal.QC_Status__c = 'Unqualified';
+        insert unqualifiedUal;
+
         switchLead.Status = 'Qualified';
         update switchLead;
 
