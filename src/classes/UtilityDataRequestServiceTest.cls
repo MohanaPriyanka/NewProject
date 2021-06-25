@@ -745,4 +745,24 @@ private class UtilityDataRequestServiceTest {
         System.assertEquals('Pending Utility Data', udrs[0].Utility_Account_Log__r.QC_Status__c, 'UAL status incorrect for pending UDR');
         System.assertEquals(ual.Premise_Number__c, udrs[0].Premise_Number__c, 'PoD ID not copied from UAL when it should be');
     }
+
+    @IsTest
+    static void testUALUpdateNoAddressChange() {
+        // Run test
+        Utility_Data_Request__c udr = getTestUDR('testUDR5');
+        udr.Customer_Name__c = '';
+
+        
+        udr.Header_Status__c = 'Complete';
+        udr.Detail_Status__c = 'Complete';
+        update udr;
+        
+        // Verify results
+        Utility_Account_Log__c ual = getTestUAL(udr.Utility_Account_Log__c);
+                
+        // Check UAL fields - address shouldn't change when UDR data doesn't provide a new address
+        System.assertEquals('Bob', ual.Name_On_Account__c, 'UAL name on account should not have changed');
+        System.assertEquals(false, ual.Address_Update__c, 'The addresses should not have been updated');
+    }
+        
 }
