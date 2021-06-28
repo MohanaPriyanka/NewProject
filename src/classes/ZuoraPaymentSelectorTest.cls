@@ -36,10 +36,18 @@ public with sharing class ZuoraPaymentSelectorTest {
     public static void testPaymentSelectorInsufficientPermissions() {
         Zuora__Payment__c payment = [SELECT Id FROM Zuora__Payment__c LIMIT 1];
         ZuoraPaymentSelector paymentSelector = new ZuoraPaymentSelector();
-        User pmStandardUser = [SELECT Id FROM User WHERE Profile.Name = 'PM Standard User' AND IsActive = TRUE LIMIT 1];
+        User bfgStandardUser = [SELECT Id
+                                FROM User
+                                WHERE Profile.Name = 'BFG Standard User'
+                                AND IsActive = TRUE
+                                AND Id NOT IN (
+                                                SELECT AssigneeId
+                                                FROM PermissionSetAssignment
+                                                WHERE PermissionSet.Name LIKE '%Zuora%')
+                                LIMIT 1];
         Boolean exceptionCaught = false;
-        // Singe an PM User should never have permissions to query payments
-        System.runAs(pmStandardUser) {
+        // Since a BFG Standard User without a Zuora perm set should never have permissions to query payments
+        System.runAs(bfgStandardUser) {
             try {
                 paymentSelector.selectById(new Set<Id>{payment.Id});
             } catch (Util.FatalBWException bwe) {
