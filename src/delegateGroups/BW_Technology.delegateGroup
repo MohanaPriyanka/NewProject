@@ -121,8 +121,9 @@
     <permissionSets>Access Drag and Drop Template builder</permissionSets>
     <permissionSets>Expense object (Custom)</permissionSets>
     <permissionSets>Inspire Planner Project, child objects</permissionSets>
-    <permissionSets>Limit Monitoring App</permissionSets>
     <permissionSets>Feeders</permissionSets>
+    <permissionSets>Limit Monitoring App</permissionSets>
+    <permissionSets>Edit Email Templates</permissionSets>
     <permissionSets>Lightning</permissionSets>
     <permissionSets>DocuSign Administrator</permissionSets>
     <permissionSets>DocuSign User</permissionSets>
@@ -133,7 +134,6 @@
     <permissionSets>Salesforce Console User</permissionSets>
     <permissionSets>CS Servicing Visibility</permissionSets>
     <permissionSets>Report Access</permissionSets>
-    <profiles>BWC Executive</profiles>
     <profiles>IT Support</profiles>
     <profiles>PM Force.com user</profiles>
     <profiles>CS Client Partner Login</profiles>
@@ -141,7 +141,6 @@
     <profiles>BFG Marketing User</profiles>
     <profiles>Community Solar User</profiles>
     <profiles>PM Standard User</profiles>
-    <profiles>HR Admin</profiles>
     <profiles>BFG Standard User</profiles>
     <profiles>External BFG User</profiles>
     <profiles>Community Solar Community User</profiles>
