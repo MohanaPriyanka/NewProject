@@ -6,6 +6,11 @@
         <field>Account.Create_Zuora_Account__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.Shared_Solar_System__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>CS Customer Data Import</label>
     <license>Salesforce</license>
