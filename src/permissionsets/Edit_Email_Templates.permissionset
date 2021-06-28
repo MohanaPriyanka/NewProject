@@ -5,6 +5,10 @@
     <label>Edit Email Templates</label>
     <userPermissions>
         <enabled>true</enabled>
+        <name>AccessContentBuilder</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
         <name>CreateLtngTempInPub</name>
     </userPermissions>
     <userPermissions>
