@@ -180,7 +180,7 @@ public without sharing class CSQualificationService {
         }
     }
 
-    private static void sendAdverseCreditNotice(Lead lead) {
+    public static void sendAdverseCreditNotice(Lead lead) {
         MessagingService.EmailEnvelope ee = new MessagingService.EmailEnvelope();
         ee.emailTemplateName = 'CS_Customer_Credit_Denied';
         ee.orgWideEmail =  MessagingService.getCustomerCareEmail().Address;
@@ -195,6 +195,18 @@ public without sharing class CSQualificationService {
         MessagingService.ReplacementText detail3 = new MessagingService.ReplacementText('{!Lead.Credit_Report_Detail_3__c}', lead.Credit_Report_Detail_3__c);
         MessagingService.ReplacementText detail4 = new MessagingService.ReplacementText('{!Lead.Credit_Report_Detail_4__c}', lead.Credit_Report_Detail_4__c);
         ee.replacementTexts = new List<MessagingService.ReplacementText>{leadName, creditDate, creditScore, detail1, detail2, detail3, detail4 };
+        MessagingService.sendEmailTemplate(ee);
+    }
+
+    public static void sendGenericUnqualifiedNotice(Lead lead) {
+        MessagingService.EmailEnvelope ee = new MessagingService.EmailEnvelope();
+        ee.emailTemplateName = 'Credit Denied - No FICO product';
+        ee.orgWideEmail =  MessagingService.getCustomerCareEmail().Address;
+        ee.addressList = new List<String>{lead.Email};
+        ee.subjectLine = 'Sorry, we were unable to approve your application';
+        ee.sobjectId = lead.Id;
+        MessagingService.ReplacementText leadName = new MessagingService.ReplacementText('{!Lead.FirstName}', lead.FirstName);
+        ee.replacementTexts = new List<MessagingService.ReplacementText>{leadName};
         MessagingService.sendEmailTemplate(ee);
     }
 

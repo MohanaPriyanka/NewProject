@@ -3,7 +3,6 @@
  * Description: Domain class for SSS
  * Test: CSUtilityAccountSubscriptionFactoryTest, SharedSolarSystemsTest, LeadServiceTestclass
  */
-
 public inherited sharing class SharedSolarSystems {
 
     @TestVisible private static FeatureService featureService = new FeatureService();
@@ -161,8 +160,6 @@ public inherited sharing class SharedSolarSystems {
         return contractsToCFDs;
     }
 
-
-
     /**
      * @description Gets the qualified systems for this lead, sorted by the lead's System Assignment setting
      * @param lead Lead being qualified
@@ -175,7 +172,6 @@ public inherited sharing class SharedSolarSystems {
         if (lead.Selected_SSS_For_Conversion__c != null) {
             getPreSelectedSharedSolarSystems(lead);
         }
-
         for (Shared_Solar_System__c sss : records) {
             if (qualifiedForSystem(lead, sss, null)) {
                 sssWrappers.add(new SSSWrapper(sss, lead.System_Assignment__c));
@@ -185,13 +181,14 @@ public inherited sharing class SharedSolarSystems {
         for (Integer wrapperIndex = 0; wrapperIndex < sssWrappers.size(); wrapperIndex++) {
             sortedSharedSolarSystems.add(sssWrappers[wrapperIndex].sss);
         }
+
         Logger.flushLogs();
         return sortedSharedSolarSystems;
     }
 
     /**
      * @description Gets the lead's qualification based on Utility, Service Territory, Partner, Product, and Credit Score.
-     * If the lead does not meet any of the project's credit requirement, the lead is "Unqualified due to FICO"
+     * If the lead does not meet any of the project's credit requirement, the lead is "Unqualified"
      * @param lead The lead to check
      * @param creditScore The lead's credit score
      * @return Qualified or Unqualified
@@ -203,7 +200,9 @@ public inherited sharing class SharedSolarSystems {
             }
         }
         if (unqualifiedFICO) {
-           CSQualificationService.handleLeadUnqualifiedDueToFICO(lead);
+            CSQualificationService.handleLeadUnqualifiedDueToFICO(lead);
+        } else {
+            CSQualificationService.sendGenericUnqualifiedNotice(lead);
         }
         return 'Unqualified';
     }
@@ -297,13 +296,11 @@ public inherited sharing class SharedSolarSystems {
         if (!sss.Available_SMB_Underwriting_Method_FICO__c) {
             return false;
         }
-
         if (capacityCheckInstance) {
             creditScore = 999;
         } else if (creditScore == null && lead.Underwriting_Criteria__c == 'FICO') {
             creditScore = Decimal.valueOf(Util.nullToZero(lead.LASER_Credit_Score__c));
         }
-
         if (unqualifiedFICO) {
             unqualifiedFICO = creditScore < sss.Credit_Score_Requirement__c;
         }
@@ -318,7 +315,6 @@ public inherited sharing class SharedSolarSystems {
         if (!sss.Available_SMB_Underwriting_Method_Docs__c || lead.Moody_s_Risk_Calc__c == null || sss.RiskCalc_Minimum__c == null) {
             return false;
         }
-
         Integer leadRiskScore = ORDERED_MOODY_RISK_SCORES.indexOf(lead.Moody_s_Risk_Calc__c);
         Integer sssRiskScore = ORDERED_MOODY_RISK_SCORES.indexOf(sss.RiskCalc_Minimum__c);
         return leadRiskScore != -1 && leadRiskScore <= sssRiskScore;
