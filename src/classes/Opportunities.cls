@@ -63,16 +63,16 @@ public inherited sharing class Opportunities {
         return false;
     }
 
-    public static Boolean allUASesTransferring(Opportunity opp) {
+    public static Boolean anyUASIsTransferring(Opportunity opp) {
         if (opp.Utility_Account_Subscriptions__r.isEmpty()) {
             return false;
         }
         for (Utility_Account_Subscription__c uas : opp.Utility_Account_Subscriptions__r) {
-            if (!uas.Transferring_Subsc_to_Another_UAS__c) {
-                return false;
+            if (uas.Transferring_Subsc_to_Another_UAS__c && uas.Transferred_To__c == null) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     // Depends on Most Recent Enacted ALSS to tell whether the UAS has ever been enacted
