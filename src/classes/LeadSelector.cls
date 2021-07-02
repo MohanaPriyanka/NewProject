@@ -159,6 +159,7 @@ public without sharing class LeadSelector {
                 Status,
                 Street,
                 Underwriting_Criteria__c,
+                Unqualified_due_to_FICO__c,
                 Utility_relationship__r.Id,
                 Utility_relationship__r.EIA_ID__c,
                 Utility_relationship__r.Name,

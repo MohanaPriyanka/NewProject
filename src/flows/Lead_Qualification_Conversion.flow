@@ -24,12 +24,12 @@
     <actionCalls>
         <name>Get_Ordered_List_of_Qualified_SSS</name>
         <label>Get Ordered List of Qualified SSS</label>
-        <locationX>1271</locationX>
-        <locationY>931</locationY>
+        <locationX>1188</locationX>
+        <locationY>211</locationY>
         <actionName>InvocableQualifiedSSSSelector</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>scrQualifiedLead</targetReference>
+            <targetReference>Qualification_Preview</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Assign_Error_Log</targetReference>
@@ -38,7 +38,7 @@
         <inputParameters>
             <name>leadsFromFlow</name>
             <value>
-                <elementReference>Lead</elementReference>
+                <elementReference>Get_Lead</elementReference>
             </value>
         </inputParameters>
         <outputParameters>
@@ -49,17 +49,14 @@
     <actionCalls>
         <name>leadQualificationCheck</name>
         <label>leadQualificationCheck</label>
-        <locationX>966</locationX>
-        <locationY>439</locationY>
+        <locationX>1280</locationX>
+        <locationY>430</locationY>
         <actionName>InvocableLeadQualification</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>Update_Screen</targetReference>
         </connector>
-        <faultConnector>
-            <targetReference>Assign_Error_Log</targetReference>
-        </faultConnector>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
             <name>leadIds</name>
             <value>
@@ -71,8 +68,8 @@
         <description>Update Screen after some change to the record</description>
         <name>Update_Screen</name>
         <label>Update Screen</label>
-        <locationX>971</locationX>
-        <locationY>582</locationY>
+        <locationX>1030</locationX>
+        <locationY>472</locationY>
         <actionName>c:UpdateScreen</actionName>
         <actionType>component</actionType>
         <connector>
@@ -128,13 +125,10 @@
     <actionCalls>
         <name>updateScreenUnqualified</name>
         <label>updateScreenUnqualified</label>
-        <locationX>255</locationX>
-        <locationY>765</locationY>
+        <locationX>966</locationX>
+        <locationY>766</locationY>
         <actionName>c:UpdateScreen</actionName>
         <actionType>component</actionType>
-        <connector>
-            <targetReference>getLead</targetReference>
-        </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>recordId</name>
@@ -420,7 +414,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Get_Ordered_List_of_Qualified_SSS</targetReference>
+                <targetReference>scrQualifiedLead</targetReference>
             </connector>
             <label>Qualified</label>
         </rules>
@@ -687,10 +681,31 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <recordLookups>
+        <name>Get_Lead</name>
+        <label>Get Lead</label>
+        <locationX>1056</locationX>
+        <locationY>275</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Ordered_List_of_Qualified_SSS</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Lead</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_UALS</name>
         <label>Get UALS</label>
-        <locationX>1260</locationX>
-        <locationY>572</locationY>
+        <locationX>1288</locationX>
+        <locationY>568</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Check_Qualification</targetReference>
@@ -718,8 +733,8 @@
     <recordLookups>
         <name>getLead</name>
         <label>getLead</label>
-        <locationX>253</locationX>
-        <locationY>276</locationY>
+        <locationX>256</locationX>
+        <locationY>278</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Update_Screen_GetLead</targetReference>
@@ -739,8 +754,8 @@
     <recordLookups>
         <name>Lead</name>
         <label>Lead</label>
-        <locationX>1113</locationX>
-        <locationY>574</locationY>
+        <locationX>1181</locationX>
+        <locationY>568</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_UALS</targetReference>
@@ -773,10 +788,10 @@
     <recordUpdates>
         <name>updateLeadRecord</name>
         <label>updateLeadRecord</label>
-        <locationX>955</locationX>
-        <locationY>281</locationY>
+        <locationX>936</locationX>
+        <locationY>278</locationY>
         <connector>
-            <targetReference>leadQualificationCheck</targetReference>
+            <targetReference>Get_Lead</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Assign_Error_Log</targetReference>
@@ -784,6 +799,75 @@
         <inputReference>getLead</inputReference>
     </recordUpdates>
     <runInMode>SystemModeWithoutSharing</runInMode>
+    <screens>
+        <name>Qualification_Preview</name>
+        <label>Qualification Preview</label>
+        <locationX>1375</locationX>
+        <locationY>212</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>leadQualificationCheck</targetReference>
+        </connector>
+        <fields>
+            <name>previewHeaderText</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(0, 153, 255); font-size: 20px;&quot;&gt;PREVIEW&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Consult the table below to preview qualifying systems for this Lead.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>previewError</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;background-color: rgb(255, 255, 255); color: rgb(255, 0, 0);&quot;&gt;NOTE:&lt;/b&gt;&lt;b style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt; &lt;/b&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;If you proceed and the table below is empty, the Lead will be marked &apos;Unqualified&apos; and the customer would receive an email indicating that their application has been denied.﻿&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>tableSSSPreview</name>
+            <dataTypeMappings>
+                <typeName>T</typeName>
+                <typeValue>Shared_Solar_System__c</typeValue>
+            </dataTypeMappings>
+            <extensionName>c:datatable</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>objectName</name>
+                <value>
+                    <stringValue>Shared_Solar_System__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnFields</name>
+                <value>
+                    <stringValue>Name,Product__c,Utility__c,Capacity_Available_to_be_Reserved__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnWidths</name>
+                <value>
+                    <stringValue>Name:249, Product__c:249, Utility__c:249, Capacity_Available_to_be_Reserved__c:249</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>tableData</name>
+                <value>
+                    <elementReference>orderedSSSList</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>hideCheckboxColumn</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>selectedSSSList</assignToReference>
+                <name>outputSelectedRows</name>
+            </outputParameters>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
     <screens>
         <name>Resolve_UALs_Before_Conversion</name>
         <label>Resolve UALs Before Conversion</label>
@@ -859,12 +943,12 @@
         <label>Already Converted Lead</label>
         <locationX>508</locationX>
         <locationY>81</locationY>
-        <allowBack>true</allowBack>
+        <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
+        <allowPause>false</allowPause>
         <fields>
             <name>txtAlreadyConverted</name>
-            <fieldText>&lt;p&gt;This lead has already been converted! No further action necessary. &lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;You can close this window now.&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(7, 202, 7); font-size: 20px;&quot;&gt;ALREADY CONVERTED&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This lead has already been converted! No further action necessary.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;You can close this window now.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -880,7 +964,7 @@
         <allowPause>true</allowPause>
         <fields>
             <name>txtError</name>
-            <fieldText>&lt;p&gt;Oops! There was an error in the Qualification and Conversion of the lead!&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;BizApps has already been notified. You can close this window now. &lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(255, 0, 0); font-size: 20px;&quot;&gt;ERROR ENCOUNTERED&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Oops! There was an error in the Qualification and Conversion of the lead!&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;BizApps has already been notified. You can close this window now.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -906,7 +990,7 @@
         <name>scrProducts_Do_Not_Match</name>
         <label>Products Do Not Match</label>
         <locationX>1139</locationX>
-        <locationY>1619</locationY>
+        <locationY>1620</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -915,7 +999,7 @@
         </connector>
         <fields>
             <name>txtProductNoMatch</name>
-            <fieldText>&lt;p&gt;Oops! The Shared Solar Systems you selected do not all have the same product.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;When selecting SSSes, please make sure all projects are for the same product.&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(255, 0, 0); font-size: 20px;&quot;&gt;PRODUCT MISMATCH&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Oops! The Shared Solar Systems you selected do not all have the same product.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;When selecting SSSes, please make sure all projects are for the same product.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -1003,8 +1087,8 @@
     <screens>
         <name>showLeadStatus</name>
         <label>showLeadStatus</label>
-        <locationX>528</locationX>
-        <locationY>761</locationY>
+        <locationX>1097</locationX>
+        <locationY>765</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1013,7 +1097,7 @@
         </connector>
         <fields>
             <name>leadStatus</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(234, 8, 8); font-size: 20px;&quot;&gt;LEAD IS UNQUALIFIED. &lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Consult the table below to determine why there are no Projects available for this customer.&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(234, 8, 8); font-size: 20px;&quot;&gt;LEAD IS UNQUALIFIED&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Consult the table below to determine why there are no Projects available for this customer.&lt;/li&gt;&lt;li&gt;&lt;b&gt;NOTE&lt;/b&gt;: An email has been sent to the customer indicating &apos;Sorry, we were unable to approve your application&apos;&lt;/li&gt;&lt;/ul&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -1054,7 +1138,7 @@
     <screens>
         <name>updateLeadFields</name>
         <label>updateLeadFields</label>
-        <locationX>664</locationX>
+        <locationX>663</locationX>
         <locationY>280</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -1064,12 +1148,12 @@
         </connector>
         <fields>
             <name>currentLeadInfoDisplay</name>
-            <fieldText>&lt;p&gt;&lt;b&gt;&lt;u&gt;Current Lead Info&lt;/u&gt; &lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Utility:&lt;/b&gt; &lt;span style=&quot;background-color: var(--lwc-colorBackgroundInput,rgb(255, 255, 255)); color: var(--lwc-colorTextWeak,rgb(62, 62, 60)); font-size: var(--lwc-fontSize3,0.8125rem); font-family: var(--lwc-fontFamily,&amp;quot;Salesforce Sans&amp;quot;, Arial, sans-serif);&quot;&gt;{!getLead.Utility_relationship__r.Name}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Load Zone:&lt;/b&gt; {!getLead.LoadZone__c}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Product:&lt;/b&gt; {!getLead.Product__r.Name}&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(3, 56, 231); font-size: 20px;&quot;&gt;CURRENT LEAD INFO&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Utility:&lt;/b&gt; &lt;span style=&quot;font-family: var(--lwc-fontFamily,&amp;quot;Salesforce Sans&amp;quot;, Arial, sans-serif); font-size: var(--lwc-fontSize3,0.8125rem); color: var(--lwc-colorTextWeak,rgb(62, 62, 60)); background-color: var(--lwc-colorBackgroundInput,rgb(255, 255, 255));&quot;&gt;{!getLead.Utility_relationship__r.Name}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Load Zone:&lt;/b&gt; {!getLead.LoadZone__c}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Product:&lt;/b&gt; {!getLead.Product__r.Name}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
             <name>txtMoodyScore</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;Moody&apos;s Rick Calc:&lt;/b&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt; {!getLead.Moody_s_Risk_Calc__c}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;Moody&apos;s Rick Calc:&lt;/b&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt; {!getLead.Moody_s_Risk_Calc__c}&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
@@ -1084,7 +1168,7 @@
         </fields>
         <fields>
             <name>selectedFieldCollection</name>
-            <fieldText>&lt;p&gt;You can update the fields below.&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;You can update the fields below.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
