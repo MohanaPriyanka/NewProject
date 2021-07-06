@@ -133,7 +133,7 @@ public with sharing class CSCancellationServiceTest {
         for (Utility_Account_Subscription__c uas : uases) {
             if (uas.Utility_Account_Log__r.Account__r.Days_Past_Due__c > 67) {
                 System.assertEquals('Inactive Subscription', uas.Next_Schedule_Z_Status__c);
-                System.assertEquals(0, uas.Future_Customer_Subscription_KWDC_Rollup__c);
+                    System.assertEquals(0, uas.Future_Customer_Subscription_KWDC_Rollup__c);
             } else {
                 System.assertEquals('Active Subscription', uas.Next_Schedule_Z_Status__c);
             }
@@ -900,7 +900,7 @@ public with sharing class CSCancellationServiceTest {
     }
 
     @IsTest
-    private static void allUASesTransferringShouldConsiderCompletedTransfers() {
+    private static void anyUASIsTransferringShouldConsiderCompletedTransfers() {
         sfab_FabricatedSObject fabbedOpp = new sfab_FabricatedSObject(Opportunity.class);
         System.assertEquals(false, Opportunities.anyUASIsTransferring((Opportunity) fabbedOpp.toSObject()),
             'An opportunity with no UASes should not look like all UASes are transferring');
@@ -909,24 +909,24 @@ public with sharing class CSCancellationServiceTest {
         sfab_FabricatedSObject fabbedUASTwo = new sfab_FabricatedSObject(Utility_Account_Subscription__c.class);
         fabbedOpp.setChildren('Utility_Account_Subscriptions__r', new List<sfab_FabricatedSObject>{fabbedUASOne, fabbedUASTwo});
         System.assertEquals(false, Opportunities.anyUASIsTransferring((Opportunity) fabbedOpp.toSObject()),
-            'allUASesTransferring should be false if all UASes are not transferring ' + JSON.serializePretty(fabbedOpp.toSObject()));
+            'anyUASIsTransferring should be false if all UASes are not transferring ' + JSON.serializePretty(fabbedOpp.toSObject()));
 
         fabbedUASOne.setField(Utility_Account_Subscription__c.Transferring_Subsc_to_Another_UAS__c, true);
         System.assertEquals(true, Opportunities.anyUASIsTransferring((Opportunity) fabbedOpp.toSObject()),
-            'allUASesTransferring should be true if only one UAS is transferring ' + JSON.serializePretty(fabbedOpp.toSObject()));
+            'anyUASIsTransferring should be true if only one UAS is transferring ' + JSON.serializePretty(fabbedOpp.toSObject()));
 
         fabbedUASTwo.setField(Utility_Account_Subscription__c.Transferring_Subsc_to_Another_UAS__c, true);
         System.assertEquals(true, Opportunities.anyUASIsTransferring((Opportunity) fabbedOpp.toSObject()),
-            'allUASesTransferring should be true if two UASes are transferring ' + JSON.serializePretty(fabbedOpp.toSObject()));
+            'anyUASIsTransferring should be true if two UASes are transferring ' + JSON.serializePretty(fabbedOpp.toSObject()));
 
         fabbedUASOne.setField(Utility_Account_Subscription__c.Transferred_To__c, Util.getFakeId(Subscription_Transfer__c.SObjectType));
         System.assertEquals(true, Opportunities.anyUASIsTransferring((Opportunity) fabbedOpp.toSObject()),
-            'allUASesTransferring should be true if one UASes is transferring and another was transferring but is now done.' +
+            'anyUASIsTransferring should be true if one UASes is transferring and another was transferring but is now done.' +
                 JSON.serializePretty(fabbedOpp.toSObject()));
 
         fabbedUASTwo.setField(Utility_Account_Subscription__c.Transferred_To__c, Util.getFakeId(Subscription_Transfer__c.SObjectType));
         System.assertEquals(false, Opportunities.anyUASIsTransferring((Opportunity) fabbedOpp.toSObject()),
-            'allUASesTransferring should be false if both UASes were transferring and now done. ' +
+            'anyUASIsTransferring should be false if both UASes were transferring and now done. ' +
                 'This opp can be cancelled if there are no other active UASes and the UASes are done billing.' +
                 JSON.serializePretty(fabbedOpp.toSObject()));
 
