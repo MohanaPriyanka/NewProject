@@ -47,9 +47,7 @@ public without sharing class CSCancellationService {
             }
         }
 
-        if (!updatedAccounts.isEmpty()) {
-            update updatedAccounts;
-        }
+        update updatedAccounts;
         return updatedAccounts;
     }
 
@@ -101,12 +99,7 @@ public without sharing class CSCancellationService {
             if (uas.Opportunity__r.Product__r.Cancellation_Paragraph_Two__c == null) {
                 String text = 'While trying to cancel this account, we found product: ' + uas.Opportunity__r.Product__c +
                     ' to have a missing Cancellation Paragraph Two. Please ask an administrator to update it.';
-                if (Trigger.new != null) {
-                    ((Account) Trigger.new[0]).Cancellation_Request_Date__c.addError(text);
-                    return accountIdToReplacementMap;
-                } else {
-                    throw new Util.BWException(text);
-                }
+                throw new Util.BWException(text);
             }
 
             Account account = uas.Utility_Account_Log__r.Account__r;
@@ -119,17 +112,18 @@ public without sharing class CSCancellationService {
 
 
     private static void addAccountToReplacementMap(Map<Account, Map<String, String>> accountIdToReplacementMap, Account account) {
-        if (!accountIdToReplacementMap.containsKey(account)) {
-            Map<String, String> replacements = new Map<String, String>{
-                CANCELLATION_PARAGRAPH_TWO_LABEL => '',
-                CANCELLATION_PARAGRAPH_THREE_LABEL => '',
-                '{!Contact.FirstName}' => account.Send_Bills_Contact__r.FirstName
-            };
-            if (account.Client_Brand_Key__c == 'AmpBlack' || account.Client_Brand_Key__c == 'AmpRed') {
-                replacements.put('BlueWave Community Solar', 'Amp-BlueWave');
-            }
-            accountIdToReplacementMap.put(account,replacements);
+        if (accountIdToReplacementMap.containsKey(account)) {
+            return;
         }
+        Map<String, String> replacements = new Map<String, String>{
+            CANCELLATION_PARAGRAPH_TWO_LABEL => '',
+            CANCELLATION_PARAGRAPH_THREE_LABEL => '',
+            '{!Contact.FirstName}' => account.Send_Bills_Contact__r.FirstName
+        };
+        if (account.Client_Brand_Key__c.contains('Amp')) {
+            replacements.put('BlueWave Community Solar', 'Amp-BlueWave');
+        }
+        accountIdToReplacementMap.put(account,replacements);
     }
 
 
@@ -156,12 +150,11 @@ public without sharing class CSCancellationService {
         Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
         mail.setOrgWideEmailAddressId(MessagingService.getCustomerCareEmail().Id);
         mail.setSubject(subject);
-        if (account.Send_Bills_Contact__r.Email != null) {
-            mail.setToAddresses(new List<String>{account.Send_Bills_Contact__r.Email});
-        } else {
+        if (account.Send_Bills_Contact__r.Email == null) {
             throw new Util.BWException('Expected a Send Bills Contact Email for account (' +
                 account.Id + '), but found none');
         }
+        mail.setToAddresses(new List<String>{account.Send_Bills_Contact__r.Email});
         mail.setHtmlBody(MessagingService.getHtmlWithReplacements(template, replacements));
         List<String> ccEmails = new List<String>();
         MessagingService.safeAddCC(account.Send_Bills_Contact__r.Additional_Email__c, ccEmails);
@@ -199,21 +192,14 @@ public without sharing class CSCancellationService {
             }
         }
 
-        if (recentlyCancelledUALIds.isEmpty()) {
-            return uasesToMarkInactive;
-        }
-
         uasesToMarkInactive = UASSelector.selectByUAL(recentlyCancelledUALIds);
         return uasesToMarkInactive;
     }
 
     private static void createCaseToTransferOrTerminate(UtilityAccountSubscriptions subscriptionList) {
-        String caseOwner;
-        List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
-        if (systemProperties.isEmpty() || String.isBlank(systemProperties[0].Finaled_Case_Owner__c)) {
+        String caseOwner = Util.getSystemPropertyString('Finaled_Case_Owner__c');
+        if (String.isBlank(caseOwner)) {
             return;
-        } else {
-            caseOwner = systemProperties[0].Finaled_Case_Owner__c;
         }
         Map<Id, Case> accountToCaseMap = new Map<Id, Case>();
         for (Utility_Account_Subscription__c uas : subscriptionList.records) {
@@ -257,11 +243,7 @@ public without sharing class CSCancellationService {
 
         List<Opportunity> oppsToCancel = new List<Opportunity>();
         for (Opportunity opportunity : completeCSOpps) {
-            if (Opportunities.allUASesTransferring(opportunity)) {
-                continue;
-            }
-            if (Opportunities.isCancelledWaitlist(opportunity) ||
-                (Opportunities.finishedBilling(opportunity) && !Opportunities.hasActiveUASes(opportunity))) {
+            if (Opportunities.shouldCancel(opportunity)) {
                 oppsToCancel.add(opportunity);
             }
         }
@@ -269,13 +251,6 @@ public without sharing class CSCancellationService {
         return oppsToCancel;
     }
 
-
-    private static Boolean isActive(Opportunity opp) {
-        return (opp.StageName != 'Cancelled' &&
-            opp.StageName != 'DUPLICATE' &&
-            opp.StageName != 'Expired' &&
-            opp.StageName != 'Dead');
-    }
 
     // W-008426: Called by the OpportunityTrigger to check to see if all CS opportunities are Cancelled, Expired, Duplicate,
     // or Dead. If so, we update the Account Status__c field and send the final termination letter email.
@@ -285,28 +260,14 @@ public without sharing class CSCancellationService {
         List<Account> accountsToClose = new List<Account>();
         for (Opportunity opp : newOppMap.values()) {
             if (opp.Product_Line__c == 'Community Solar' &&
-                (opp.StageName == 'Cancelled' && oldOppMap.get(opp.Id).StageName != 'Cancelled') ||
-                (opp.StageName == 'DUPLICATE' && oldOppMap.get(opp.Id).StageName != 'DUPLICATE') ||
-                (opp.StageName == 'Expired' && oldOppMap.get(opp.Id).StageName != 'Expired') ||
-                (opp.StageName == 'Dead' && oldOppMap.get(opp.Id).StageName != 'Dead')) {
+                Opportunities.isActive(oldOppMap.get(opp.Id).StageName) && !Opportunities.isActive(opp.StageName)) {
                 accountIds.add(opp.AccountId);
             }
         }
 
-        if (accountIds.isEmpty()) {
-            return accountsToClose;
-        }
         List<Account> acctsToCheck = AccountsSelector.selectNotClosed(accountIds);
         for (Account acct : acctsToCheck) {
-            Boolean readyForClose = true;
-            for (Opportunity opp : acct.Opportunities) {
-                if (isActive(opp)) {
-                    readyForClose = false;
-                    break;
-                }
-            }
-
-            if (readyForClose) {
+            if (new Opportunities(acct.Opportunities).allInactive()) {
                 accountsToClose.add(acct);
             }
         }
@@ -340,22 +301,20 @@ public without sharing class CSCancellationService {
             }
         }
 
-        if (!terminationEmailMap.values().isEmpty()) {
-            sendCancellationEmails(terminationEmailMap.values());
-            Logger.flushLogs();
-        }
+        sendCancellationEmails(terminationEmailMap.values());
+        Logger.flushLogs();
     }
 
     public static void sendCancellationEmails(List<Messaging.SingleEmailMessage> emails) {
         if (Util.getSystemPropertyCheckbox('Send_CS_Cancellation_Emails__c')) {
             MessagingService.sendEmail(emails);
-        } else {
-            Logger.logLater(
-                'CSCancellationService',
-                'sendCancellationEmail',
-                'Not sending ' + emails.size() + ' emails because CS Cancellation Emails is turned off via custom setting',
-                Logger.WARN
-            );
+            return;
         }
+        Logger.logLater(
+            'CSCancellationService',
+            'sendCancellationEmail',
+            'Not sending ' + emails.size() + ' emails because CS Cancellation Emails is turned off via custom setting',
+            Logger.WARN
+        );
     }
 }
