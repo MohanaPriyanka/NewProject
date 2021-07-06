@@ -68,7 +68,7 @@ public with sharing class CSCancellationProjectRemover {
         if (!Opportunities.anyEnactedUASes(opp) ||
             Opportunities.hasActiveUASes(opp) ||
             !Opportunities.allEnactedUASesAreRemoved(opp) ||
-            Opportunities.allUASesTransferring(opp)) {
+            Opportunities.anyUASIsTransferring(opp)) {
             return;
         }
         for (Utility_Account_Subscription__c uas : opp.Utility_Account_Subscriptions__r) {

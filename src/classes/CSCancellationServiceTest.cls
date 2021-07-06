@@ -8,11 +8,6 @@ public with sharing class CSCancellationServiceTest {
         CustomerCommunicationHandlerTest.setupData();
     }
 
-    public static Boolean isSOFeatureEnabled() {
-        FeatureService featureService = new FeatureService();
-        return featureService.isEnabled('Subscription_Orders');
-    }
-
     public static void createBills(Date billDate, Id sssID){
         Schedule_Z__c scheduleZ1 = new Schedule_Z__c(
             Name = '18-0515 Oxford Barrett St. P1',
@@ -138,9 +133,7 @@ public with sharing class CSCancellationServiceTest {
         for (Utility_Account_Subscription__c uas : uases) {
             if (uas.Utility_Account_Log__r.Account__r.Days_Past_Due__c > 67) {
                 System.assertEquals('Inactive Subscription', uas.Next_Schedule_Z_Status__c);
-                if (isSOFeatureEnabled()) {
-                    System.assertEquals(0, uas.Future_Customer_Subscription_KWDC_Rollup__c);
-                }
+                System.assertEquals(0, uas.Future_Customer_Subscription_KWDC_Rollup__c);
             } else {
                 System.assertEquals('Active Subscription', uas.Next_Schedule_Z_Status__c);
             }
@@ -646,7 +639,7 @@ public with sharing class CSCancellationServiceTest {
         Map<Id, Opportunity> opportunityMap = new Map<Id, Opportunity>(OpportunitiesSelector.selectAllCompleteCSWithUASesAndSystemBills());
         for (Opportunity opportunity : opportunityMap.values()) {
             System.assert(Opportunities.isCancelledWaitlist(opportunityMap.get(opportunity.Id)));
-            System.assert(Opportunities.allUASesTransferring(opportunityMap.get(opportunity.Id)));
+            System.assert(Opportunities.anyUASIsTransferring(opportunityMap.get(opportunity.Id)));
         }
 
         Test.startTest();
@@ -700,7 +693,7 @@ public with sharing class CSCancellationServiceTest {
                 System.assert(Opportunities.finishedBilling(opportunityMap.get(uasb.Opportunity__c)));
                 System.assert(!Opportunities.isCancelledWaitlist(opportunityMap.get(uasb.Opportunity__c)));
                 System.assert(Opportunities.hasActiveUASes(opportunityMap.get(uasb.Opportunity__c)));
-                System.assert(!Opportunities.allUASesTransferring(opportunityMap.get(uasb.Opportunity__c)));
+                System.assert(!Opportunities.anyUASIsTransferring(opportunityMap.get(uasb.Opportunity__c)));
             }
         }
         System.assert(foundOpp);
@@ -751,7 +744,7 @@ public with sharing class CSCancellationServiceTest {
                 System.assert(Opportunities.finishedBilling(opportunityMap.get(uasb.Opportunity__c)));
                 System.assert(!Opportunities.isCancelledWaitlist(opportunityMap.get(uasb.Opportunity__c)));
                 System.assert(!Opportunities.hasActiveUASes(opportunityMap.get(uasb.Opportunity__c)));
-                System.assert(!Opportunities.allUASesTransferring(opportunityMap.get(uasb.Opportunity__c)));
+                System.assert(!Opportunities.anyUASIsTransferring(opportunityMap.get(uasb.Opportunity__c)));
             }
         }
         System.assert(foundOpp);
@@ -842,6 +835,8 @@ public with sharing class CSCancellationServiceTest {
 
         // Update UASes to match test scenarios in
         // https://www.lucidchart.com/documents/edit/28ddde15-529b-4b09-b858-35bba5e77e37/5
+        Subscription_Transfer__c subscriptionTransfer = new Subscription_Transfer__c();
+        insert subscriptionTransfer;
         Map<Object, SObject> newUASesByName = CollectionUtil.mapByField(newUASes, Utility_Account_Subscription__c.Name);
         ((Utility_Account_Subscription__c) newUASesByName.get('0000236 Clone')).Transferring_Subsc_to_Another_UAS__c = true;
         ((Utility_Account_Subscription__c) newUASesByName.get('0000236 Clone')).Next_Schedule_Z_Status__c = 'Inactive Subscription';
@@ -852,6 +847,7 @@ public with sharing class CSCancellationServiceTest {
         ((Utility_Account_Subscription__c) oldUASesByName.get('0000236')).Transferring_Subsc_to_Another_UAS__c = true;
         ((Utility_Account_Subscription__c) oldUASesByName.get('0000236')).Next_Schedule_Z_Status__c = 'Inactive Subscription';
         ((Utility_Account_Subscription__c) oldUASesByName.get('0000238')).Transferring_Subsc_to_Another_UAS__c = true;
+        ((Utility_Account_Subscription__c) oldUASesByName.get('0000238')).Transferred_To__c = subscriptionTransfer.Id;
         ((Utility_Account_Subscription__c) oldUASesByName.get('0000238')).Next_Schedule_Z_Status__c = 'Inactive Subscription';
         update oldUASesByName.values();
 
@@ -869,10 +865,10 @@ public with sharing class CSCancellationServiceTest {
             switch on opp.Name {
                 when 'Jordan Jordan 0000236' {
                     System.assert(!Opportunities.hasActiveUASes(opp));
-                    System.assert(Opportunities.allUASesTransferring(opp));
+                    System.assert(Opportunities.anyUASIsTransferring(opp));
                 } when 'Jordan Jordan 0000238' {
                     System.assert(!Opportunities.hasActiveUASes(opp));
-                    System.assert(!Opportunities.allUASesTransferring(opp));
+                    System.assert(!Opportunities.anyUASIsTransferring(opp));
                 }
             }
         }
@@ -901,6 +897,39 @@ public with sharing class CSCancellationServiceTest {
     private static void assertNameAndStage(Opportunity opp, String name, String stageName) {
         System.assertEquals(name, opp.Name);
         System.assertEquals(stageName, opp.StageName);
+    }
+
+    @IsTest
+    private static void anyUASIsTransferringShouldConsiderCompletedTransfers() {
+        sfab_FabricatedSObject fabbedOpp = new sfab_FabricatedSObject(Opportunity.class);
+        System.assertEquals(false, Opportunities.anyUASIsTransferring((Opportunity) fabbedOpp.toSObject()),
+            'An opportunity with no UASes should not look like all UASes are transferring');
+
+        sfab_FabricatedSObject fabbedUASOne = new sfab_FabricatedSObject(Utility_Account_Subscription__c.class);
+        sfab_FabricatedSObject fabbedUASTwo = new sfab_FabricatedSObject(Utility_Account_Subscription__c.class);
+        fabbedOpp.setChildren('Utility_Account_Subscriptions__r', new List<sfab_FabricatedSObject>{fabbedUASOne, fabbedUASTwo});
+        System.assertEquals(false, Opportunities.anyUASIsTransferring((Opportunity) fabbedOpp.toSObject()),
+            'anyUASIsTransferring should be false if all UASes are not transferring ' + JSON.serializePretty(fabbedOpp.toSObject()));
+
+        fabbedUASOne.setField(Utility_Account_Subscription__c.Transferring_Subsc_to_Another_UAS__c, true);
+        System.assertEquals(true, Opportunities.anyUASIsTransferring((Opportunity) fabbedOpp.toSObject()),
+            'anyUASIsTransferring should be true if only one UAS is transferring ' + JSON.serializePretty(fabbedOpp.toSObject()));
+
+        fabbedUASTwo.setField(Utility_Account_Subscription__c.Transferring_Subsc_to_Another_UAS__c, true);
+        System.assertEquals(true, Opportunities.anyUASIsTransferring((Opportunity) fabbedOpp.toSObject()),
+            'anyUASIsTransferring should be true if two UASes are transferring ' + JSON.serializePretty(fabbedOpp.toSObject()));
+
+        fabbedUASOne.setField(Utility_Account_Subscription__c.Transferred_To__c, Util.getFakeId(Subscription_Transfer__c.SObjectType));
+        System.assertEquals(true, Opportunities.anyUASIsTransferring((Opportunity) fabbedOpp.toSObject()),
+            'anyUASIsTransferring should be true if one UASes is transferring and another was transferring but is now done.' +
+                JSON.serializePretty(fabbedOpp.toSObject()));
+
+        fabbedUASTwo.setField(Utility_Account_Subscription__c.Transferred_To__c, Util.getFakeId(Subscription_Transfer__c.SObjectType));
+        System.assertEquals(false, Opportunities.anyUASIsTransferring((Opportunity) fabbedOpp.toSObject()),
+            'anyUASIsTransferring should be false if both UASes were transferring and now done. ' +
+                'This opp can be cancelled if there are no other active UASes and the UASes are done billing.' +
+                JSON.serializePretty(fabbedOpp.toSObject()));
+
     }
 
     @IsTest static void testSetupDataForAccountDateRemovedIsCorrect() {

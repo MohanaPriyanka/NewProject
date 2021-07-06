@@ -30,7 +30,7 @@ public without sharing class OpportunitiesSelector {
     public static List<Opportunity> selectAllCompleteCSWithUASesAndSystemBills() {
         return [
             SELECT Id, Name,
-            (SELECT Id, Name, Next_Schedule_Z_Status__c, Total_Count_of_Schedule_Zs__c, Transferring_Subsc_to_Another_UAS__c FROM Utility_Account_Subscriptions__r),
+            (SELECT Id, Name, Next_Schedule_Z_Status__c, Total_Count_of_Schedule_Zs__c, Transferring_Subsc_to_Another_UAS__c, Transferred_To__c FROM Utility_Account_Subscriptions__r),
             (SELECT Id, Name, Date__c FROM Utility_Account_Subscription_Bills__r ORDER BY Date__c DESC LIMIT 1)
             FROM Opportunity
             WHERE StageName = 'Complete'
@@ -54,7 +54,7 @@ public without sharing class OpportunitiesSelector {
             SELECT Id, Name, Date_Removed_from_Project__c,
             (
                 SELECT Id, Name, Most_Recent_Enacted_ALSS__c, Next_Schedule_Z_Status__c, Total_Count_of_Schedule_Zs__c,
-                    Transferring_Subsc_to_Another_UAS__c, Date_Removed_from_Project__c
+                    Transferring_Subsc_to_Another_UAS__c, Transferred_To__c, Date_Removed_from_Project__c
                 FROM Utility_Account_Subscriptions__r
             )
             FROM Opportunity
@@ -191,7 +191,7 @@ public without sharing class OpportunitiesSelector {
                 '      WHERE Opportunity__r.Shared_Solar_System__r.Contract_Assignment_Entity__c = :entityId\n' +
                 '      AND Opportunity__r.Contract_Close_Date__c <= :cutoffDate\n' +
                 '      AND Next_Schedule_Z_Status__c = \'Active Subscription\'\n' +
-                '      AND Opportunity__r.Assignment_Agreement__c = NULL\n' + 
+                '      AND Opportunity__r.Assignment_Agreement__c = NULL\n' +
             	(anchorsOnly?
                     '      AND Opportunity__r.Customer_Group__c = \'Anchor\'\n':
                     '      AND Opportunity__r.Customer_Group__c != \'Anchor\'\n') +
@@ -261,17 +261,17 @@ public without sharing class OpportunitiesSelector {
             AND Date_Removed_from_Project__c != null
         ];
     }
-    
+
     public List<Opportunity> getOpportunitiesByAAsNeedingAddendumSent(Set<Id> assignmentAgreementIds) {
         return [
-            SELECT Id, ContractId, Contract.Assignment_Agreement__c, Contract.Addendum_Sent_Date__c, 
+            SELECT Id, ContractId, Contract.Assignment_Agreement__c, Contract.Addendum_Sent_Date__c,
             Contract.Product__r.Addendum_Template_Id__c, Shared_Solar_System__c,
             Contract.Account.Send_Bills_Contact__r.Id, Product__c,
-            Contract.Name, Contract.Id, Contract.Parent_Contract__c, Contract.AccountId, 
+            Contract.Name, Contract.Id, Contract.Parent_Contract__c, Contract.AccountId,
             Contract.Account.Send_Bills_Contact__c, Contract.Account.Send_Bills_Contact__r.Email,
-            Shared_Solar_System__r.Name, Shared_Solar_System__r.Address__c, Shared_Solar_System__r.City__c, 
-            Shared_Solar_System__r.State__c, Shared_Solar_System__r.Zip_Code__c, 
-            Shared_Solar_System__r.Total_System_Size_kWh_DC__c, 
+            Shared_Solar_System__r.Name, Shared_Solar_System__r.Address__c, Shared_Solar_System__r.City__c,
+            Shared_Solar_System__r.State__c, Shared_Solar_System__r.Zip_Code__c,
+            Shared_Solar_System__r.Total_System_Size_kWh_DC__c,
             Shared_Solar_System__r.Home_Electricity_Offset__c
             FROM Opportunity
             WHERE Contract.Assignment_Agreement__c IN: assignmentAgreementIds
@@ -280,5 +280,5 @@ public without sharing class OpportunitiesSelector {
             AND Contract.Account.Send_Bills_Contact__c != null
         ];
     }
-    
+
 }

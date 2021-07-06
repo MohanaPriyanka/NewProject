@@ -1,13 +1,22 @@
 /*************************************************************************************
  * Created By: peteryao on 1/14/19  
  * Description: Could be extend the fflib_SObjectDomain class
- * Test: CSOpportunitiesTest
+ * Test: CSOpportunitiesTest, CSCancellationServiceTest
  *************************************************************************************/
 
 public inherited sharing class Opportunities {
     public List<Opportunity> records;
-    public static List<String> lostOpportunityStages = new List<String>{'Cancelled', 'Expired', 'DUPLICATE', 'Dead', 'Complete'};
+    public static List<String> closedOpportunityStages = new List<String>{'Cancelled', 'Expired', 'DUPLICATE', 'Dead', 'Complete'};
+    private static List<String> lostOpportunityStages = new List<String>{'Cancelled', 'Expired', 'DUPLICATE', 'Dead'};
     private static Integer systemBillGenerationGracePeriod;
+    static {
+        List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
+        if (systemProperties.isEmpty() || systemProperties[0].System_Bill_Generation_Grace_Period__c == null) {
+            systemBillGenerationGracePeriod = 15;
+        } else {
+            systemBillGenerationGracePeriod = (Integer)systemProperties[0].System_Bill_Generation_Grace_Period__c;
+        }
+    }
 
     public Opportunities(List<Opportunity> sObjectList) {
         records = sObjectList;
@@ -33,28 +42,15 @@ public inherited sharing class Opportunities {
     // we've stopped billing overdue balances
     // Transitioned from System Bill to UASB Jan 2020 because we will only make UASBs going forward:
     public static Boolean finishedBilling(Opportunity opp) {
-        if (systemBillGenerationGracePeriod == null) {
-            List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
-            if (systemProperties.isEmpty() || systemProperties[0].System_Bill_Generation_Grace_Period__c == null) {
-                systemBillGenerationGracePeriod = 15;
-            } else {
-                systemBillGenerationGracePeriod = (Integer)systemProperties[0].System_Bill_Generation_Grace_Period__c;
-            }
-        }
-
         if (opp.Utility_Account_Subscription_Bills__r.isEmpty()) {
             return false;
         } else if (opp.Utility_Account_Subscription_Bills__r[0].Date__c > Date.today() - 30 - systemBillGenerationGracePeriod) {
             return false;
-        } else {
-            return true;
         }
+        return true;
     }
 
     public static Boolean hasActiveUASes(Opportunity opp) {
-        if (opp.Utility_Account_Subscriptions__r.isEmpty()) {
-            return false;
-        }
         for (Utility_Account_Subscription__c uas : opp.Utility_Account_Subscriptions__r) {
             if (uas.Next_Schedule_Z_Status__c == 'Active Subscription') {
                 return true;
@@ -63,16 +59,13 @@ public inherited sharing class Opportunities {
         return false;
     }
 
-    public static Boolean allUASesTransferring(Opportunity opp) {
-        if (opp.Utility_Account_Subscriptions__r.isEmpty()) {
-            return false;
-        }
+    public static Boolean anyUASIsTransferring(Opportunity opp) {
         for (Utility_Account_Subscription__c uas : opp.Utility_Account_Subscriptions__r) {
-            if (!uas.Transferring_Subsc_to_Another_UAS__c) {
-                return false;
+            if (uas.Transferring_Subsc_to_Another_UAS__c && uas.Transferred_To__c == null) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     // Depends on Most Recent Enacted ALSS to tell whether the UAS has ever been enacted
@@ -90,13 +83,34 @@ public inherited sharing class Opportunities {
     }
 
     public static Boolean anyEnactedUASes(Opportunity opp) {
-        if (opp.Utility_Account_Subscriptions__r.isEmpty()) {
-            return false;
-        }
         for (Utility_Account_Subscription__c uas : opp.Utility_Account_Subscriptions__r) {
             if (uas.Most_Recent_Enacted_ALSS__c != null) {
                 return true;
             }
+        }
+        return false;
+    }
+
+    public Boolean allInactive() {
+        for (Opportunity opportunity : records) {
+            if (isActive(opportunity.StageName)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static Boolean isActive(String stageName) {
+        return (!lostOpportunityStages.contains(stageName));
+    }
+
+    public static Boolean shouldCancel(Opportunity opportunity) {
+        if (anyUASIsTransferring(opportunity)) {
+            return false;
+        }
+        if (isCancelledWaitlist(opportunity) ||
+            (finishedBilling(opportunity) && !hasActiveUASes(opportunity))) {
+            return true;
         }
         return false;
     }
