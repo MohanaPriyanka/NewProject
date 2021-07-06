@@ -133,7 +133,7 @@ public with sharing class CSCancellationServiceTest {
         for (Utility_Account_Subscription__c uas : uases) {
             if (uas.Utility_Account_Log__r.Account__r.Days_Past_Due__c > 67) {
                 System.assertEquals('Inactive Subscription', uas.Next_Schedule_Z_Status__c);
-                    System.assertEquals(0, uas.Future_Customer_Subscription_KWDC_Rollup__c);
+                System.assertEquals(0, uas.Future_Customer_Subscription_KWDC_Rollup__c);
             } else {
                 System.assertEquals('Active Subscription', uas.Next_Schedule_Z_Status__c);
             }
