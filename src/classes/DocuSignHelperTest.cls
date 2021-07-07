@@ -3,11 +3,9 @@ public with sharing class DocuSignHelperTest {
 
     @TestSetup public static void setupTestData() {
         Test.loadData(System_Properties__c.SObjectType, 'TestRLSystemProperties');
-        Util.disableTrigger('Disable_LoanTrancheTrigger__c');
         Util.disableTrigger('Disable_LeadTrigger__c');
         Util.disableTrigger('Disable_ContactTrigger__c');
         Util.disableTrigger('Disable_OpportunityTrigger__c');
-        Util.disableTrigger('Disable_LoanTrigger__c');
 
         Test.loadData(Contact.SObjectType, 'TestCSContact');
         Test.loadData(Account.SObjectType, 'TestCSAccount');

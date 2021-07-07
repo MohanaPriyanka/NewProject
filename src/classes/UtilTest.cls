@@ -138,11 +138,11 @@ public with sharing class UtilTest {
     @IsTest
     private static void testTriggerDisable() {
         // By default, if there's no system property, triggers are not disabled
-        System.assertEquals(false, Util.isDisabled('Disable_LoanTrigger__c'));
-        System_Properties__c property = new System_Properties__c(Name = 'System', Disable_LoanTrigger__c = true);
+        System.assertEquals(false, Util.isDisabled('Disable_AccountTrigger__c'));
+        System_Properties__c property = new System_Properties__c(Name = 'System', Disable_AccountTrigger__c = true);
         insert property;
         // We should be able to manually disable
-        System.assertEquals(true, Util.isDisabled('Disable_LoanTrigger__c'));
+        System.assertEquals(true, Util.isDisabled('Disable_AccountTrigger__c'));
         // If there's a system property, trigger shouldn't be disabled by default
         System.assertEquals(false, Util.isDisabled('Disable_LeadTrigger__c'));
         Util.disableTrigger('Disable_LeadTrigger__c');
@@ -154,12 +154,12 @@ public with sharing class UtilTest {
         delete property;
         // Back to no System_Property, triggers should be enabled again
         System.assertEquals(false, Util.isDisabled('Disable_LeadTrigger__c'));
-        System.assertEquals(false, Util.isDisabled('Disable_LoanTrigger__c'));
+        System.assertEquals(false, Util.isDisabled('Disable_AccountTrigger__c'));
         Util.disableTrigger('Disable_LeadTrigger__c');
         // And we should be able to disable it without explicitly creating a System Property
         System.assertEquals(true, Util.isDisabled('Disable_LeadTrigger__c'));
-        Util.disableTrigger('Disable_LoanTrigger__c');
-        System.assertEquals(true, Util.isDisabled('Disable_LoanTrigger__c'));
+        Util.disableTrigger('Disable_AccountTrigger__c');
+        System.assertEquals(true, Util.isDisabled('Disable_AccountTrigger__c'));
         // There should only be one System Property
         System.assertEquals(1, System_Properties__c.getAll().values().size());
         // All This shouldn't use any SOQL queries
@@ -168,16 +168,16 @@ public with sharing class UtilTest {
     @IsTest
     private static void testAllTriggerToggle() {
         // By default, if there's no system property, triggers are not disabled
-        System.assertEquals(false, Util.isDisabled('Disable_LoanTrigger__c'));
+        System.assertEquals(false, Util.isDisabled('Disable_AccountTrigger__c'));
         Util.disableAllTriggers();
-        System.assertEquals(true, Util.isDisabled('Disable_LoanTrigger__c'));
+        System.assertEquals(true, Util.isDisabled('Disable_AccountTrigger__c'));
         System.assertEquals(true, Util.isDisabled('Disable_LeadTrigger__c'));
         Util.enableAllTriggers();
-        System.assertEquals(false, Util.isDisabled('Disable_LoanTrigger__c'));
+        System.assertEquals(false, Util.isDisabled('Disable_AccountTrigger__c'));
         System.assertEquals(false, Util.isDisabled('Disable_LeadTrigger__c'));
         // And test that it still works with an existing system property
         Util.disableAllTriggers();
-        System.assertEquals(true, Util.isDisabled('Disable_LoanTrigger__c'));
+        System.assertEquals(true, Util.isDisabled('Disable_AccountTrigger__c'));
         System.assertEquals(true, Util.isDisabled('Disable_LeadTrigger__c'));
     }
 
@@ -194,10 +194,10 @@ public with sharing class UtilTest {
 
     @IsTest
     private static void testGetSystemPropertyCheckbox() {
-        System.assertEquals(false, Util.getSystemPropertyCheckbox('Disable_LoanTrigger__c'));
-        System_Properties__c property = new System_Properties__c(Name = 'System', Disable_LoanTrigger__c = true);
+        System.assertEquals(false, Util.getSystemPropertyCheckbox('Disable_AccountTrigger__c'));
+        System_Properties__c property = new System_Properties__c(Name = 'System', Disable_AccountTrigger__c = true);
         insert property;
-        System.assertEquals(true, Util.getSystemPropertyCheckbox('Disable_LoanTrigger__c'));
+        System.assertEquals(true, Util.getSystemPropertyCheckbox('Disable_AccountTrigger__c'));
     }
 
     @IsTest

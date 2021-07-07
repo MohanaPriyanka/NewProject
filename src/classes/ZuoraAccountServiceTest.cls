@@ -10,7 +10,7 @@ public with sharing class ZuoraAccountServiceTest {
     @TestSetup
     public static void setupTestData() {
         Test.startTest();
-        List<String> partnerSetUpIds = LoanTestRecordWarehouse.partnerSetup();
+        List<String> partnerSetUpIds = partnerSetup();
         Profile profileRecord = [SELECT Id FROM Profile WHERE Name='API Only'];
 
         List<User> apiUsers = [
@@ -187,6 +187,34 @@ public with sharing class ZuoraAccountServiceTest {
 
         Test.stopTest();
     }
+
+    private static List<String> partnerSetup() {
+        List<String> partnerSetupList = new List<String>();
+        Account partnerAccount = new Account(
+            Name = 'Bluewave Inside Sales',
+            RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Partner_Account').getRecordTypeId()
+        );
+        insert partnerAccount;
+        Partner__c partner = new Partner__c(
+            Name = 'Bluewave Inside Sales',
+            Account__c = partnerAccount.Id
+        );
+        insert partner;
+        partnerAccount.Partner__c = partner.Id;
+        update partnerAccount;
+        partnerSetupList.add(partner.Id);
+
+        BSST__c salesRep = new BSST__c(Name = 'BlueWave User', Partner__c = partner.Id, Custom_ID__c = 'test', Email__c = 'SalesRep@Sales.com');
+        insert salesRep;
+        partnerSetupList.add(salesRep.Id);
+
+        BSST__c salesRepExec = new BSST__c(Name = 'BlueWave Executive', Partner__c = partner.Id, Custom_ID__c = 'exec', Email__c = 'executive@Sales.com');
+        insert salesRepExec;
+        partnerSetupList.add(salesRepExec.Id);
+
+        return partnerSetupList;
+    }
+
 
     public static Lead getLeadForTest() {
         Partner__c partner = [SELECT Id, Account__c FROM Partner__c WHERE Name = 'Mass Renewables' LIMIT 1];
