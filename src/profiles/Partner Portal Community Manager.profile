@@ -16784,7 +16784,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Account_Balance__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -17099,7 +17099,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Days_Past_Due__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -17114,7 +17114,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Description</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -17714,7 +17714,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Send_Bills_Contact__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -23379,7 +23379,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Contact.Phone</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -29754,7 +29754,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Reason_Unqualified__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -44024,7 +44024,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.City__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -70884,6 +70884,14 @@
         <layout>BlueWave_Surveys__c-Net Promoter Score</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>BlueWave_Surveys__c-Net Promoter Score</layout>
+        <recordType>BlueWave_Surveys__c.CS_Customer_Survey</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>BlueWave_Surveys__c-Net Promoter Score</layout>
+        <recordType>BlueWave_Surveys__c.Net_Promoter_Score</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>BlueWave_Surveys__c-Net Promoter Score - Partner</layout>
         <recordType>BlueWave_Surveys__c.Net_Promoter_Score_Partner</recordType>
     </layoutAssignments>
@@ -70894,14 +70902,6 @@
     <layoutAssignments>
         <layout>BlueWave_Surveys__c-Net Promoter Score - Partner</layout>
         <recordType>BlueWave_Surveys__c.Partner_survey_portal_feedback_Q42017</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>BlueWave_Surveys__c-Net Promoter Score</layout>
-        <recordType>BlueWave_Surveys__c.CS_Customer_Survey</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>BlueWave_Surveys__c-Net Promoter Score</layout>
-        <recordType>BlueWave_Surveys__c.Net_Promoter_Score</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>BlueWave_Surveys__c-Partner Feedback Survey Layout</layout>
