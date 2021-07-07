@@ -5,7 +5,7 @@
         <name>Enroll_Contacts_in_Journey_0_0_0</name>
         <label>Enroll Contacts in Marketing Cloud Journey</label>
         <locationX>138</locationX>
-        <locationY>3422</locationY>
+        <locationY>2462</locationY>
         <actionName>MarketingJourneyEnroller</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -49,74 +49,91 @@
     </actionCalls>
     <apiVersion>51.0</apiVersion>
     <assignments>
-        <name>Add_BrandKey_Property</name>
-        <label>Add BrandKey Property</label>
-        <locationX>138</locationX>
-        <locationY>2030</locationY>
-        <assignmentItems>
-            <assignToReference>tempProperties</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>tempProperty</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Set_UCB</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Add_BrandKey_Property_0</name>
-        <label>Add BrandKey Property</label>
-        <locationX>402</locationX>
-        <locationY>2030</locationY>
-        <assignmentItems>
-            <assignToReference>tempProperties</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>tempProperty</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Set_UCB_0</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Add_ContactId_Property</name>
-        <label>Add ContactId Property</label>
+        <name>Add_email_variables_to_collection</name>
+        <label>Add email variables to collection</label>
         <locationX>138</locationX>
         <locationY>1790</locationY>
         <assignmentItems>
             <assignToReference>tempProperties</assignToReference>
             <operator>Add</operator>
             <value>
-                <elementReference>tempProperty</elementReference>
+                <elementReference>varContactProperties</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempProperties</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>varBrandKeyProperties</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempProperties</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>varUCBfromSSS</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempProperties</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>varSSSName</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempProperties</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>varSSSSeason</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Set_BrandKey</targetReference>
+            <targetReference>Set_Marketing_Journey_Enrollment_Details</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <name>Add_ContactId_Property_0</name>
-        <label>Add ContactId Property</label>
+        <name>Add_email_variables_to_collection_0</name>
+        <label>Add email variables to collection</label>
         <locationX>402</locationX>
         <locationY>1790</locationY>
         <assignmentItems>
             <assignToReference>tempProperties</assignToReference>
             <operator>Add</operator>
             <value>
-                <elementReference>tempProperty</elementReference>
+                <elementReference>varContactProperties</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempProperties</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>varBrandKeyProperties</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempProperties</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>varUCBfromSSS</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempProperties</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>varSSSName</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Set_BrandKey_0</targetReference>
+            <targetReference>Set_Marketing_Journey_Enrollment_Details_0_0</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>Add_Journey_Enrollment</name>
         <label>Add Journey Enrollment</label>
         <locationX>138</locationX>
-        <locationY>2990</locationY>
+        <locationY>2030</locationY>
         <assignmentItems>
             <assignToReference>enrollments</assignToReference>
             <operator>Add</operator>
@@ -129,10 +146,10 @@
         </connector>
     </assignments>
     <assignments>
-        <name>Add_Journey_Enrollment_0</name>
+        <name>Add_Journey_Enrollment_0_0</name>
         <label>Add Journey Enrollment</label>
         <locationX>402</locationX>
-        <locationY>2750</locationY>
+        <locationY>2030</locationY>
         <assignmentItems>
             <assignToReference>enrollments</assignToReference>
             <operator>Add</operator>
@@ -145,182 +162,154 @@
         </connector>
     </assignments>
     <assignments>
-        <name>Add_SSSName_Property</name>
-        <label>Add SSSName Property</label>
-        <locationX>138</locationX>
-        <locationY>2510</locationY>
-        <assignmentItems>
-            <assignToReference>tempProperties</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>tempProperty</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Set_SSSSeason</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Add_SSSName_Property_0</name>
-        <label>Add SSSName Property</label>
-        <locationX>402</locationX>
-        <locationY>2510</locationY>
-        <assignmentItems>
-            <assignToReference>tempProperties</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>tempProperty</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Set_Marketing_Journey_Enrollment_Details_0</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Add_SSSSeason_Property</name>
-        <label>Add SSSSeason Property</label>
-        <locationX>138</locationX>
-        <locationY>2750</locationY>
-        <assignmentItems>
-            <assignToReference>tempProperties</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>tempProperty</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Set_Marketing_Journey_Enrollment_Details</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Add_UCB_Property</name>
-        <label>Add UCB Property</label>
-        <locationX>138</locationX>
-        <locationY>2270</locationY>
-        <assignmentItems>
-            <assignToReference>tempProperties</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>tempProperty</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Set_SSS_Name</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Add_UCB_Property_0</name>
-        <label>Add UCB Property</label>
-        <locationX>402</locationX>
-        <locationY>2270</locationY>
-        <assignmentItems>
-            <assignToReference>tempProperties</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>tempProperty</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Set_SSS_Name_0</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Set_BrandKey</name>
-        <label>Set BrandKey</label>
-        <locationX>138</locationX>
-        <locationY>1910</locationY>
-        <assignmentItems>
-            <assignToReference>tempProperty.key</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>BrandKey</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>tempProperty.value</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Change_in_COD_Contacts.Account.Client_Brand_Key__c</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Add_BrandKey_Property</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Set_BrandKey_0</name>
-        <label>Set BrandKey</label>
-        <locationX>402</locationX>
-        <locationY>1910</locationY>
-        <assignmentItems>
-            <assignToReference>tempProperty.key</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>BrandKey</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>tempProperty.value</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Credits_Flowing_Contacts.Account.Client_Brand_Key__c</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Add_BrandKey_Property_0</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Set_ContactId</name>
-        <label>Set ContactId</label>
+        <name>Set_email_related_variables</name>
+        <label>Set email related variables</label>
         <locationX>138</locationX>
         <locationY>1670</locationY>
         <assignmentItems>
-            <assignToReference>tempProperty.key</assignToReference>
+            <assignToReference>varContactProperties.key</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue>ContactId</stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>tempProperty.value</assignToReference>
+            <assignToReference>varContactProperties.value</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>Change_in_COD_Contacts.Id</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varBrandKeyProperties.key</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>BrandKey</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varBrandKeyProperties.value</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Change_in_COD_Contacts.Account.Client_Brand_Key__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varUCBfromSSS.key</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>UCB</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varUCBfromSSS.value</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getSSSData.UCB__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varSSSName.key</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>SSSName</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varSSSName.value</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getSSSData.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varSSSSeason.key</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>SSSSeason</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varSSSSeason.value</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>inpNewDateForEmail</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
-            <targetReference>Add_ContactId_Property</targetReference>
+            <targetReference>Add_email_variables_to_collection</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <name>Set_ContactId_0</name>
-        <label>Set ContactId</label>
+        <name>Set_email_related_variables_0</name>
+        <label>Set email related variables</label>
         <locationX>402</locationX>
         <locationY>1670</locationY>
         <assignmentItems>
-            <assignToReference>tempProperty.key</assignToReference>
+            <assignToReference>varContactProperties.key</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue>ContactId</stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>tempProperty.value</assignToReference>
+            <assignToReference>varContactProperties.value</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>Credits_Flowing_Contacts.Id</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varBrandKeyProperties.key</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>BrandKey</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varBrandKeyProperties.value</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Credits_Flowing_Contacts.Account.Client_Brand_Key__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varUCBfromSSS.key</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>UCB</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varUCBfromSSS.value</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getSSSData.UCB__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varSSSName.key</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>SSSName</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varSSSName.value</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getSSSData.Name</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
-            <targetReference>Add_ContactId_Property_0</targetReference>
+            <targetReference>Add_email_variables_to_collection_0</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>Set_Marketing_Journey_Enrollment_Details</name>
         <label>Set Marketing Journey Enrollment Details</label>
         <locationX>138</locationX>
-        <locationY>2870</locationY>
+        <locationY>1910</locationY>
         <assignmentItems>
             <assignToReference>enrollmentDetail.ContactId</assignToReference>
             <operator>Assign</operator>
@@ -347,10 +336,10 @@
         </connector>
     </assignments>
     <assignments>
-        <name>Set_Marketing_Journey_Enrollment_Details_0</name>
+        <name>Set_Marketing_Journey_Enrollment_Details_0_0</name>
         <label>Set Marketing Journey Enrollment Details</label>
         <locationX>402</locationX>
-        <locationY>2630</locationY>
+        <locationY>1910</locationY>
         <assignmentItems>
             <assignToReference>enrollmentDetail.ContactId</assignToReference>
             <operator>Assign</operator>
@@ -373,122 +362,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Add_Journey_Enrollment_0</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Set_SSS_Name</name>
-        <label>Set SSS Name</label>
-        <locationX>138</locationX>
-        <locationY>2390</locationY>
-        <assignmentItems>
-            <assignToReference>tempProperty.key</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>SSSName</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>tempProperty.value</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>getSSSData.Name</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Add_SSSName_Property</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Set_SSS_Name_0</name>
-        <label>Set SSS Name</label>
-        <locationX>402</locationX>
-        <locationY>2390</locationY>
-        <assignmentItems>
-            <assignToReference>tempProperty.key</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>SSSName</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>tempProperty.value</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>getSSSData.Name</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Add_SSSName_Property_0</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Set_SSSSeason</name>
-        <label>Set SSSSeason</label>
-        <locationX>138</locationX>
-        <locationY>2630</locationY>
-        <assignmentItems>
-            <assignToReference>tempProperty.key</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>SSSSeason</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>tempProperty.value</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>inpNewDateForEmail</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Add_SSSSeason_Property</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Set_UCB</name>
-        <label>Set UCB</label>
-        <locationX>138</locationX>
-        <locationY>2150</locationY>
-        <assignmentItems>
-            <assignToReference>tempProperty.key</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>UCB</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>tempProperty.value</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>getSSSData.UCB__c</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Add_UCB_Property</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Set_UCB_0</name>
-        <label>Set UCB</label>
-        <locationX>402</locationX>
-        <locationY>2150</locationY>
-        <assignmentItems>
-            <assignToReference>tempProperty.key</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>UCB</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>tempProperty.value</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>getSSSData.UCB__c</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Add_UCB_Property_0</targetReference>
+            <targetReference>Add_Journey_Enrollment_0_0</targetReference>
         </connector>
     </assignments>
     <choices>
@@ -653,7 +527,7 @@
         <name>Enrollments_Ready_to_Send</name>
         <label>Enrollments Ready to Send?</label>
         <locationX>270</locationX>
-        <locationY>3302</locationY>
+        <locationY>2342</locationY>
         <defaultConnector>
             <targetReference>No_Enrollments_Found</targetReference>
         </defaultConnector>
@@ -812,7 +686,7 @@ MONTH({!New_Est_PTO_Date} ),
         <collectionReference>emailContactList</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
-            <targetReference>Set_ContactId</targetReference>
+            <targetReference>Set_email_related_variables</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
             <targetReference>Enrollments_Ready_to_Send</targetReference>
@@ -826,7 +700,7 @@ MONTH({!New_Est_PTO_Date} ),
         <collectionReference>emailContactList</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
-            <targetReference>Set_ContactId_0</targetReference>
+            <targetReference>Set_email_related_variables_0</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
             <targetReference>Enrollments_Ready_to_Send</targetReference>
@@ -856,7 +730,7 @@ MONTH({!New_Est_PTO_Date} ),
         <name>Log_Transaction_0_0</name>
         <label>Log Transaction (Email)</label>
         <locationX>138</locationX>
-        <locationY>3542</locationY>
+        <locationY>2582</locationY>
         <connector>
             <targetReference>Confirmation_Screen</targetReference>
         </connector>
@@ -1025,7 +899,7 @@ MONTH({!New_Est_PTO_Date} ),
         <name>Confirmation_Screen</name>
         <label>Confirmation Screen</label>
         <locationX>600</locationX>
-        <locationY>3854</locationY>
+        <locationY>2894</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1057,7 +931,7 @@ MONTH({!New_Est_PTO_Date} ),
         <name>No_Enrollments_Found</name>
         <label>No Enrollments Found</label>
         <locationX>402</locationX>
-        <locationY>3422</locationY>
+        <locationY>2462</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1496,6 +1370,46 @@ Flow actions let you pass the value of the record&apos;s ID field into the flow,
     </variables>
     <variables>
         <name>tempProperty</name>
+        <apexClass>FlowMap</apexClass>
+        <dataType>Apex</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varBrandKeyProperties</name>
+        <apexClass>FlowMap</apexClass>
+        <dataType>Apex</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varContactProperties</name>
+        <apexClass>FlowMap</apexClass>
+        <dataType>Apex</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varSSSName</name>
+        <apexClass>FlowMap</apexClass>
+        <dataType>Apex</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varSSSSeason</name>
+        <apexClass>FlowMap</apexClass>
+        <dataType>Apex</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varUCBfromSSS</name>
         <apexClass>FlowMap</apexClass>
         <dataType>Apex</dataType>
         <isCollection>false</isCollection>
