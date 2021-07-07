@@ -34,11 +34,9 @@ public with sharing class DocuSignHelperTest {
         mapPCRAndLeadToOpp(leads, pcrs, opportunities);
         setPartnerTaskParentAndUniqueId(partnerTasks);
 
-        Util.enableTrigger('Disable_LoanTrancheTrigger__c');
         Util.enableTrigger('Disable_LeadTrigger__c');
         Util.enableTrigger('Disable_ContactTrigger__c');
         Util.enableTrigger('Disable_OpportunityTrigger__c');
-        Util.enableTrigger('Disable_LoanTrigger__c');
     }
 
     private static void mapPCRAndLeadToOpp(List<Lead> leads, List<LASERCA__Personal_Credit_Report__c> pcrs, List<Opportunity> opportunities) {
