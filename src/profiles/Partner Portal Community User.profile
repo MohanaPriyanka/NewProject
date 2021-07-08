@@ -38248,11 +38248,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Opportunity.Days_Past_Due__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Opportunity.Days_Since_Application_Receipt__c</field>
         <readable>false</readable>
     </fieldPermissions>
