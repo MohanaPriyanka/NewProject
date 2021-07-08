@@ -23,7 +23,7 @@ public without sharing class CSApplicationFinisher {
         if (lead == null) {
             String message = 'Unable to process CS lead application complete steps. Reprocess manually. Inputs:\nleadId: '
                 + leadId + '\nsetApplicationCompleteDate: ' + setApplicationCompleteDate;
-            Logger.logNow('CSApplicationCompleteService', 'execute', message, Logger.ERROR);
+            Logger.logNow('CSApplicationFinisher', 'execute', message, Logger.ERROR);
             return;
         }
 
@@ -48,7 +48,7 @@ public without sharing class CSApplicationFinisher {
             leadService.updateLead(lead);
         } catch (Exception e) {
             String message = 'Failed to update lead on application complete.\n\n' + e.getMessage() + '\n\n' + e.getStackTraceString();
-            Logger.logNow('CSApplicationCompleteService', 'updateLeadOnComplete', message, Logger.ERROR);
+            Logger.logNow('CSApplicationFinisher', 'updateLeadOnComplete', message, Logger.ERROR);
         }
     }
 
@@ -82,7 +82,7 @@ public without sharing class CSApplicationFinisher {
         try {
             MessagingService.sendEmail(new List<Messaging.SingleEmailMessage>{mail});
         } catch (Exception e) {
-            Logger.logNow('CSLeadsService', 'createAndSendCSPartnerEmail', e.getMessage() +
+            Logger.logNow('CSApplicationFinisher', 'createAndSendCSPartnerEmail', e.getMessage() +
                 '; ' + e.getStackTraceString());
         }
     }
