@@ -718,7 +718,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         System.assert(leadAfterPatch.Application_Complete_Date__c != null, 'Application Complete Date should be set');
         System.assertEquals('Qualified', leadAfterPatch.Status, 'CS Lead should have gone through automatic Qualify logic');
         System.assertEquals('Application Completed', leadAfterPatch.Application_Status__c,
-            'Partner status should be Application Completed');
+            'Lead Application Status (internal) should be Application Completed');
     }
 
     @IsTest
@@ -743,7 +743,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         System.assert(leadAfterPatch.Application_Complete_Date__c == null, 'Application Complete Date should NOT be set');
         System.assertEquals('Sales Qualified', leadAfterPatch.Status, 'Qualify logic should not have run yet for SSF lead');
         System.assertNotEquals('Application Completed', leadAfterPatch.Application_Status__c,
-            'Partner lead status should not be Complete');
+            'Lead Application Status (internal) should not be Complete');
     }
     
     /********************
