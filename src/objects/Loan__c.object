@@ -265,20 +265,6 @@ Principall__c - Principal_Paid__c))</formula>
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>DTI_for_Portfolio_ReportingD__c</fullName>
-        <externalId>false</externalId>
-        <formula>Opportunity__r.Combined_DTI_After__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Shows Combined DTI After from Opportunity, which takes joint applications and adjusted income and dti into consideration.</inlineHelpText>
-        <label>DTI for Portfolio Reporting</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>1</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Percent</type>
-    </fields>
-    <fields>
         <fullName>Date_Contract_Signature_Disbursed__c</fullName>
         <description>Used in MCEC Report Data Object</description>
         <externalId>false</externalId>
@@ -841,18 +827,6 @@ TEXT(YEAR(Commencement_Datee__c ) + FLOOR((MONTH(Commencement_Datee__c ) + Produ
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Interest_Only_Period_DOER__c</fullName>
-        <externalId>false</externalId>
-        <label>Interest Only Period (DOER)</label>
-        <precision>5</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Interest_Only_Period__c</fullName>

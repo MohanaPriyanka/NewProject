@@ -29072,11 +29072,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Loan__c.DTI_for_Portfolio_ReportingD__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Loan__c.Date_Contract_Signature_Disbursed__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -29253,11 +29248,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Interest_Only_Payment__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Loan__c.Interest_Only_Period_DOER__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -36756,6 +36746,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Account_Days_Past_Due__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Account_Owner__c</field>
         <readable>true</readable>
@@ -36768,11 +36763,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Added_Expenditures__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.Addendum_Exhibit_D_Recieved__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -36797,32 +36787,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Opportunity.Amortization_Plan__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Opportunity.Amount</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Amount_Financed__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Amount_Remaining_to_be_Disbursed__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Anchor_Stage__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Anniversary_Term_Text__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -36866,11 +36836,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Annual_Income__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Annual_Independent_Income__c</field>
         <readable>true</readable>
@@ -36883,26 +36848,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Annual_SRECs_Est__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Anticipated_Disbursal_Date_Contract__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Anticipated_Disbursal_Date_Contract_del__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Anticipated_Disbursal_Date_Full__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Anticipated_Disbursal_Date_Mechanical__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -36966,11 +36911,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Average_Debt_to_Income_Before__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Avidia_Checking_Account__c</field>
         <readable>true</readable>
@@ -36998,11 +36938,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Billing_City_Upper_Case__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.BlueWave_Avidia_Rate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -37107,11 +37042,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Opportunity.Calculated_Annual_Spend__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Opportunity.Calculated_Subscription_Size__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -37166,11 +37096,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Co_Applicant_DTI_After__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Co_Applicant_Date_of_Birth__c</field>
         <readable>true</readable>
@@ -37208,16 +37133,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Co_Applicant_Signature_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.Co_Applicant_Social_Security__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Combined_DTI_After__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -37361,16 +37276,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.Cosigner_Notice_Signed__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Cost_of_Capital__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Cost_per_Watt_DC__c</field>
         <readable>true</readable>
@@ -37467,11 +37372,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Opportunity.Da_of_Monthly_Payment__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Opportunity.Date_Removed_from_Project__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -37502,17 +37402,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Opportunity.Days_Past_Due__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Opportunity.Days_Since_Application_Receipt__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Days_since_Contract_Close_to_UCC__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -37523,6 +37413,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Default_Payment_Method_Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Delinquency_Information__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -37576,23 +37471,8 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Disbursal_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Disbursal_Type_Contract__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.Disbursal_Type_Interconnect__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Disbursal_Type_Mech_Completion__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -37628,11 +37508,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.EPC_MOU__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.EPC_Partner__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -37711,11 +37586,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.FBO_Funded_Contract_Signature__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.FICO_Co_Applicant__c</field>
         <readable>true</readable>
@@ -37728,16 +37598,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.False_Record__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.Fifth_Adjustable_Monthly_Payment_Amount__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Finance_Charge__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -37772,11 +37632,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Opportunity.First_Adjustable_Monthly_Payment_Amount__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Opportunity.Follow_Up_Contact__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -37793,11 +37648,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Form_Completion_Time__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.Fourth_Adjustable_Monthly_Payment_Amount__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -37818,11 +37668,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Homeowner_s_Insurance_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.IBLS_Buy_Down__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -37861,11 +37706,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.Income_Verified__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Installation_Queue_Duration__c</field>
         <readable>true</readable>
@@ -37888,11 +37728,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Interest_Only_Payment__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.Interest_Only_Period_DOER__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -37997,11 +37832,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Opportunity.Lease_Terms_MOU__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Opportunity.Lease__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -38036,11 +37866,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Load_Z__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Load_Zone_Quality_Check__c</field>
         <readable>true</readable>
@@ -38048,11 +37873,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Load_Zone_Utility_4__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Load_Zone__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -38656,11 +38476,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Repayment_period_MCEC__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Requested_Loan_Amount__c</field>
         <readable>true</readable>
@@ -38728,11 +38543,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.SREC_Fixed_Strip_Price__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.SREC_Option__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -38812,11 +38622,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Opportunity.Second_Adjustable_Monthly_Payment_Amount__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Opportunity.Security_Type__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -38828,11 +38633,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Service_Address_and_Name_on_Account_Chk__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.Service_Territory__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -38878,11 +38678,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Site_Walk__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.Sixth_Adjustable_Monthly_Payment_Amount__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -38987,22 +38782,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Opportunity.Tariff_Custom_ID__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Opportunity.Term__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Testing_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.Third_Adjustable_Monthly_Payment_Amount__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -39021,18 +38806,8 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Total_Capital_Disbursed__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Total_Loan_Payments_Override__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Total_Loan_Payments__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -39191,18 +38966,8 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.X25kW_Slug_Calculated__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.X25kW_Slug_Total__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.XXXTechnology_Platform_Fee__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

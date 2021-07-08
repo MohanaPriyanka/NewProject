@@ -56,45 +56,4 @@
         <operation>Formula</operation>
         <protected>false</protected>
     </fieldUpdates>
-    <rules>
-        <fullName>UAS - Net Metering Credit Update</fullName>
-        <actions>
-            <name>UAS_Net_Metering_Credit_Update</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <active>false</active>
-        <criteriaItems>
-            <field>Utility_Account_Subscription__c.Customer_Subscription_KW_DC__c</field>
-            <operation>notEqual</operation>
-        </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
-        <fullName>UAS - Update Maximum Cost</fullName>
-        <actions>
-            <name>UAS_Update_Maximum_Cost</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <active>false</active>
-        <criteriaItems>
-            <field>Utility_Account_Subscription__c.UAS_Number__c</field>
-            <operation>equals</operation>
-            <value>1</value>
-        </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
-        <fullName>UAS%3A Project Co Assignment Date</fullName>
-        <actions>
-            <name>Project_Co_Timestamp</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <active>false</active>
-        <criteriaItems>
-            <field>Utility_Account_Subscription__c.Project_Company__c</field>
-            <operation>notEqual</operation>
-        </criteriaItems>
-        <description>Timestamps when the UAS is assigned to a project co</description>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
 </Workflow>

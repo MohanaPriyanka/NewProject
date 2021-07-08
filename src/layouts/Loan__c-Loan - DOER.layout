@@ -223,10 +223,6 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Interest_Only_Period_DOER__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>Principal_and_Interest_Period_DOER__c</field>
             </layoutItems>
             <layoutItems>

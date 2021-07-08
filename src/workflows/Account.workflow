@@ -79,20 +79,6 @@
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
     <rules>
-        <fullName>CS %3A Recurring Billing Receipt Email</fullName>
-        <actions>
-            <name>Recurring_Billing_Reciept</name>
-            <type>Alert</type>
-        </actions>
-        <actions>
-            <name>EMAIL_LOG_Recurring_Billing_Receipt</name>
-            <type>Task</type>
-        </actions>
-        <active>false</active>
-        <formula>AND(ISCHANGED(Recurring_Billing__c), Recurring_Billing__c=TRUE, RecordTypeId!=&apos;012j00000010Ha3&apos;,  Total_Billed__c &gt; 0)</formula>
-        <triggerType>onAllChanges</triggerType>
-    </rules>
-    <rules>
         <fullName>Cancellation Date Email Sent</fullName>
         <actions>
             <name>Date_Email_Sent</name>

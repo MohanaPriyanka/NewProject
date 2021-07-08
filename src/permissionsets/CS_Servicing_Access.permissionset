@@ -931,11 +931,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Opportunity.Calculated_Annual_Spend__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Opportunity.Calculated_Subscription_Size__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -966,17 +961,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Opportunity.Load_Z__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Opportunity.Load_Zone_Utility_4__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Load_Zone__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1032,11 +1017,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Service_Address_and_Name_on_Account_Chk__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Service_Territory__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1097,11 +1077,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Utility_Account__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.X25kW_Slug_Calculated__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
