@@ -35259,11 +35259,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Loan__c.DTI_for_Portfolio_ReportingD__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Loan__c.Date_Contract_Signature_Disbursed__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -42940,11 +42935,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.False_Record__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Finance_Charge__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>

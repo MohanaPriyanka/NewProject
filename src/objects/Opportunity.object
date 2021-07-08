@@ -3049,22 +3049,6 @@ text(year(addmonths(Commencement_Date__c, (Product__r.First_Adjustment__c-1))))<
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>Finance_Charge__c</fullName>
-        <description>total interest paid + financing fee</description>
-        <externalId>false</externalId>
-        <formula>Cost_of_Capital__c +  Financing_Fee__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>total interest paid + financing fee</inlineHelpText>
-        <label>Finance Charge</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Financing_Cost__c</fullName>
         <defaultValue>1000</defaultValue>
         <externalId>false</externalId>

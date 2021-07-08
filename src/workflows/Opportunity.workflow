@@ -150,42 +150,6 @@
         <template>CS_Application_Email_Notifications/X18_04_Referee_Rewards_Success</template>
     </alerts>
     <alerts>
-        <fullName>DOER_Customer_Contract_Fully_Executed</fullName>
-        <description>DOER Customer - Contract Fully Executed</description>
-        <protected>false</protected>
-        <recipients>
-            <field>Email__c</field>
-            <type>email</type>
-        </recipients>
-        <senderAddress>customercare@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
-        <template>DOER/DOER_Customer_Contract_FULLY_EXECUTED</template>
-    </alerts>
-    <alerts>
-        <fullName>DOER_Customer_Contract_Received</fullName>
-        <description>DOER Customer - Contract Received</description>
-        <protected>false</protected>
-        <recipients>
-            <field>Email__c</field>
-            <type>email</type>
-        </recipients>
-        <recipients>
-            <field>Partner_Additional_Email_2_of_2__c</field>
-            <type>email</type>
-        </recipients>
-        <recipients>
-            <field>Partner_Additional_Email__c</field>
-            <type>email</type>
-        </recipients>
-        <recipients>
-            <field>Salesperson_Email_2__c</field>
-            <type>email</type>
-        </recipients>
-        <senderAddress>customercare@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
-        <template>DOER/DOER_Customer_Contract_Complete</template>
-    </alerts>
-    <alerts>
         <fullName>Internal_RL_Homeowner_s_insurance_submitted</fullName>
         <ccEmails>solarloans@bluewavesolar.com</ccEmails>
         <description>Internal - RL - Homeowner&apos;s insurance submitted</description>
@@ -249,38 +213,6 @@
         <senderAddress>partnersupport@bluewavesolar.com</senderAddress>
         <senderType>OrgWideEmailAddress</senderType>
         <template>RS_Application_Email_Notifications/RL_Installer_Completed_Loan</template>
-    </alerts>
-    <alerts>
-        <fullName>RL_Installer_Ready_for_Disbursal_DOER</fullName>
-        <description>RL - Installer - Ready for Disbursal - DOER</description>
-        <protected>false</protected>
-        <recipients>
-            <field>Partner_Additional_Email_2_of_2__c</field>
-            <type>email</type>
-        </recipients>
-        <recipients>
-            <field>Partner_Additional_Email__c</field>
-            <type>email</type>
-        </recipients>
-        <recipients>
-            <field>Salesperson_Email_2__c</field>
-            <type>email</type>
-        </recipients>
-        <senderAddress>partnersupport@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
-        <template>DOER/Doer_Installer_Contract_Complete</template>
-    </alerts>
-    <alerts>
-        <fullName>RS_Customer_Signs_DOER_PendingInfo</fullName>
-        <description>RS Customer Signs - DOER PendingInfo</description>
-        <protected>false</protected>
-        <recipients>
-            <field>Email__c</field>
-            <type>email</type>
-        </recipients>
-        <senderAddress>customercare@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
-        <template>RS_Application_Email_Notifications/RS_Customer_Signs_DOER_PendingInfo</template>
     </alerts>
     <alerts>
         <fullName>RS_Customer_Signs_Other</fullName>
@@ -868,116 +800,6 @@ IF(MOD(YEAR(Commencement_Date__c) + FLOOR((MONTH(Commencement_Date__c) + 1)/12),
         </workflowTimeTriggers>
     </rules>
     <rules>
-        <fullName>DOER 35%25 Disbursal ACH</fullName>
-        <actions>
-            <name>EMAIL_LOG_DOER_Customer_35_disbursal_ACH</name>
-            <type>Task</type>
-        </actions>
-        <active>false</active>
-        <criteriaItems>
-            <field>Opportunity.Disbursal_Type_Contract__c</field>
-            <operation>equals</operation>
-            <value>ACH Disbursal</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.DOER_Solar_Loan__c</field>
-            <operation>equals</operation>
-            <value>True</value>
-        </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
-        <fullName>DOER 35%25 Disbursal Check</fullName>
-        <actions>
-            <name>EMAIL_LOG_DOER_Customer_35_disbursal_check</name>
-            <type>Task</type>
-        </actions>
-        <active>false</active>
-        <criteriaItems>
-            <field>Opportunity.Disbursal_Type_Contract__c</field>
-            <operation>equals</operation>
-            <value>Check Disbursal</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.DOER_Solar_Loan__c</field>
-            <operation>equals</operation>
-            <value>True</value>
-        </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
-        <fullName>DOER 65%25 Disbursal ACH</fullName>
-        <actions>
-            <name>EMAIL_LOG_DOER_Customer_65_disbursal_ach</name>
-            <type>Task</type>
-        </actions>
-        <active>false</active>
-        <criteriaItems>
-            <field>Opportunity.Disbursal_Type_Interconnect__c</field>
-            <operation>equals</operation>
-            <value>ACH Disbursal</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.DOER_Solar_Loan__c</field>
-            <operation>equals</operation>
-            <value>True</value>
-        </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
-        <fullName>DOER 65%25 Disbursal Check</fullName>
-        <actions>
-            <name>EMAIL_LOG_DOER_Customer_65_disbursal_check</name>
-            <type>Task</type>
-        </actions>
-        <active>false</active>
-        <criteriaItems>
-            <field>Opportunity.Disbursal_Type_Interconnect__c</field>
-            <operation>equals</operation>
-            <value>Check Disbursal</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.DOER_Solar_Loan__c</field>
-            <operation>equals</operation>
-            <value>True</value>
-        </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
-        <fullName>DOER Customer - Contract Received</fullName>
-        <actions>
-            <name>DOER_Customer_Contract_Received</name>
-            <type>Alert</type>
-        </actions>
-        <actions>
-            <name>EMAIL_LOG_DOER_Customer_Contract_Received</name>
-            <type>Task</type>
-        </actions>
-        <active>false</active>
-        <criteriaItems>
-            <field>Opportunity.Contract_Status__c</field>
-            <operation>equals</operation>
-            <value>Completed</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.BlueWave_Signature_Status__c</field>
-            <operation>notEqual</operation>
-            <value>Completed</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.DOER_Solar_Loan__c</field>
-            <operation>equals</operation>
-            <value>True</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.Disable_Emails__c</field>
-            <operation>equals</operation>
-            <value>False</value>
-        </criteriaItems>
-        <description>Notifies RL customer that the BWOC has received their contract and they will receive their fully executed contract shortly</description>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
         <fullName>Interest Only Start Date</fullName>
         <actions>
             <name>Interest_Only_Start_Date_Opp</name>
@@ -1246,34 +1068,6 @@ IF(MOD(YEAR(Commencement_Date__c) + FLOOR((MONTH(Commencement_Date__c) + 1)/12),
         <triggerType>onCreateOnly</triggerType>
     </rules>
     <rules>
-        <fullName>RL - Interest Rate Field Calc Non DOER</fullName>
-        <actions>
-            <name>Interest_Rate_Field_Calc_Non_DOER</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <active>true</active>
-        <criteriaItems>
-            <field>Opportunity.DOER_Solar_Loan__c</field>
-            <operation>equals</operation>
-            <value>False</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.Product_Line__c</field>
-            <operation>equals</operation>
-            <value>Residential Loan</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.CreatedDate</field>
-            <operation>greaterThan</operation>
-            <value>10/16/2016</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.Loan_Term_Override__c</field>
-            <operation>equals</operation>
-        </criteriaItems>
-        <triggerType>onCreateOnly</triggerType>
-    </rules>
-    <rules>
         <fullName>RL - Opportunity Status Modified Date</fullName>
         <actions>
             <name>RL_Opportunity_Status_Modified_Date</name>
@@ -1300,26 +1094,6 @@ IF(MOD(YEAR(Commencement_Date__c) + FLOOR((MONTH(Commencement_Date__c) + 1)/12),
         <criteriaItems>
             <field>Opportunity.Loan_Term_Override__c</field>
             <operation>notEqual</operation>
-        </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
-        <fullName>RS - DOER - Origination Date</fullName>
-        <active>false</active>
-        <criteriaItems>
-            <field>Opportunity.StageName</field>
-            <operation>equals</operation>
-            <value>Complete</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.Product_Line__c</field>
-            <operation>equals</operation>
-            <value>Residential Loan</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.DOER_Solar_Loan__c</field>
-            <operation>equals</operation>
-            <value>True</value>
         </criteriaItems>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
