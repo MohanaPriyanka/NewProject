@@ -580,17 +580,6 @@ and( Commencement_Date_QC__c=true,
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>Amortization_Plan__c</fullName>
-        <externalId>false</externalId>
-        <label>XXXAmortization Plan</label>
-        <length>131072</length>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>LongTextArea</type>
-        <visibleLines>3</visibleLines>
-    </fields>
-    <fields>
         <fullName>Amount</fullName>
         <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -816,50 +805,6 @@ null, Annual_Electricity_Cost__c/NMC_Value__c)</formula>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Anticipated_Disbursal_Date_Contract__c</fullName>
-        <externalId>false</externalId>
-        <formula>Contract_Close_Date__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXXAnticipated Disbursal Date (Contract)</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Anticipated_Disbursal_Date_Contract_del__c</fullName>
-        <externalId>false</externalId>
-        <formula>Contract_Close_Date__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXXAnticipated Disbursal Date (Contract)</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Anticipated_Disbursal_Date_Full__c</fullName>
-        <externalId>false</externalId>
-        <formula>Webform_3_Submittal_Date__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXXAnticipated Disbursal Date(IX)</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Anticipated_Disbursal_Date_Mechanical__c</fullName>
-        <externalId>false</externalId>
-        <formula>Webform_2_Submittal_Date__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXXAnticipated Disbursal Date (Mech)</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
     </fields>
     <fields>
         <fullName>Anticipated_First_Billing_Date__c</fullName>
@@ -1668,18 +1613,6 @@ IF( Month(CloseDate) = 12, &apos;December&apos;, null))))))))))))</formula>
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Co_Applicant_Social_Security__c</fullName>
-        <externalId>false</externalId>
-        <label>XXXCo-Applicant Social Security</label>
-        <length>15</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Commencement_Date_QC__c</fullName>
         <defaultValue>false</defaultValue>
         <description>Is the Commencement Date in the future (when the contract is being QCed)?</description>
@@ -2079,31 +2012,6 @@ TEXT(DAY(Commencement_Date__c))
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Cosigner_Notice_Signed__c</fullName>
-        <defaultValue>false</defaultValue>
-        <description>Only for New York and Florida Loans</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Only for New York and Florida Loans</inlineHelpText>
-        <label>Cosigner Notice Signed</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Cost_of_Capital__c</fullName>
-        <externalId>false</externalId>
-        <formula>Total_Loan_Payments__c   -  Loan_Amount_Financed__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Total Interest Paid</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Cost_per_Watt_DC__c</fullName>
         <externalId>false</externalId>
         <formula>Loan_Principle__c /System_Size__c / 1000</formula>
@@ -2481,18 +2389,6 @@ IF( ISPICKVAL(Personal_Credit_Report2__r.Solar_Loan_Approval_Status__c, &quot;De
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Da_of_Monthly_Payment__c</fullName>
-        <externalId>false</externalId>
-        <formula>text(Day(Commencement_Date__c))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Day of Monthly Payment</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Date_Removed_from_Project__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Automatically set when all UASes related to this Opportunity are inactive, with a Date Removed From project, with at least one Allocation Schedule Subscription that was enacted, (unless all UASes related to the Opp are transferring).</inlineHelpText>
@@ -2598,21 +2494,6 @@ IF( ISPICKVAL(Personal_Credit_Report2__r.Solar_Loan_Approval_Status__c, &quot;De
         <externalId>false</externalId>
         <formula>today()- Application_Date__c</formula>
         <label>Days Since Application Receipt</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Days_since_Contract_Close_to_UCC__c</fullName>
-        <externalId>false</externalId>
-        <formula>UCC_Filing_Submission_Date__c - Contract_Close_Date__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Days between Contract Close Date and UCC Submission Date</inlineHelpText>
-        <label>Days Since Contract Close to UCC</label>
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
@@ -2774,54 +2655,6 @@ IF( ISPICKVAL(Personal_Credit_Report2__r.Solar_Loan_Approval_Status__c, &quot;De
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Disbursal_Status__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF( DOER_Solar_Loan__c = FALSE,
-
-IF(ISBLANK(Disbursal_1_Contract_Signature_Checkbox__c), &quot;New Loan - No disbursal made&quot;,
-
-IF(NOT(ISBLANK(Disbursal_1_Contract_Signature_Checkbox__c)) &amp;&amp; ISBLANK(Disbursal_2_Mechanical_Install_Checkbox__c) &amp;&amp; ISBLANK(Disbursal_3_Full_Install_Checkbox__c) &amp;&amp; Mechanically_Installed__c = TRUE, 
-
-&quot;Mechanical Installation Disbursal Needed&quot;, 
-
-IF( 
-
-NOT(ISBLANK(Disbursal_1_Contract_Signature_Checkbox__c)) &amp;&amp; NOT(ISBLANK(Disbursal_2_Mechanical_Install_Checkbox__c)) &amp;&amp; ISBLANK(Disbursal_3_Full_Install_Checkbox__c)&amp;&amp; Interconnected__c = TRUE, 
-
-&quot;Interconnection Disbursal Needed&quot; , 
-
-IF( 
-
-NOT(ISBLANK(Disbursal_1_Contract_Signature_Checkbox__c))&amp;&amp; NOT(ISBLANK(Disbursal_2_Mechanical_Install_Checkbox__c)) &amp;&amp; NOT(ISBLANK(Disbursal_3_Full_Install_Checkbox__c)), 
-
-&quot;Fully Disbursed&quot;, null)))),
-
-
-IF( DOER_Solar_Loan__c = TRUE,
-
-IF(ISBLANK(Disbursal_1_Contract_Signature_Checkbox__c), &quot;New Loan - No disbursal made&quot;,
-
-
-IF( 
-
-NOT(ISBLANK(Disbursal_1_Contract_Signature_Checkbox__c)) &amp;&amp; ISBLANK(Disbursal_3_Full_Install_Checkbox__c) &amp;&amp; Interconnected__c = TRUE, 
-
-&quot;Interconnection Disbursal Needed&quot; , 
-
-IF( 
-
-NOT(ISBLANK(Disbursal_1_Contract_Signature_Checkbox__c))&amp;&amp; NOT(ISBLANK(Disbursal_3_Full_Install_Checkbox__c)), 
-
-&quot;Fully Disbursed&quot;, &quot;No Disbursal Needed at this time&quot;))), &quot;No Disbursal Needed at this time&quot;))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXXDisbursal Status</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Disbursal_Type_Contract__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>THIS WILL SEND THE DISBURSAL EMAIL (either check or ACH)</inlineHelpText>
@@ -2844,59 +2677,6 @@ NOT(ISBLANK(Disbursal_1_Contract_Signature_Checkbox__c))&amp;&amp; NOT(ISBLANK(D
                     <fullName>ACH Disbursal</fullName>
                     <default>false</default>
                     <label>ACH Disbursal</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
-        <fullName>Disbursal_Type_Interconnect__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>THIS WILL SEND THE DISBURSAL EMAIL (Check or ACH)</inlineHelpText>
-        <label>XXXDisbursal Type (Interconnect)</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Check Disbursal</fullName>
-                    <default>false</default>
-                    <label>Check Disbursal</label>
-                </value>
-                <value>
-                    <fullName>ACH Disbursal</fullName>
-                    <default>false</default>
-                    <label>ACH Disbursal</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
-        <fullName>Disbursal_Type_Mech_Completion__c</fullName>
-        <externalId>false</externalId>
-        <label>XXXDisbursal Type (Mech Completion)</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>ACH</fullName>
-                    <default>false</default>
-                    <label>ACH</label>
-                </value>
-                <value>
-                    <fullName>Check</fullName>
-                    <default>false</default>
-                    <label>Check</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -3031,18 +2811,6 @@ IF(AND(Application_Type__c=&quot;Joint&quot;,TEXT(Joint_Applicant_Type__c)=&quot
                 </value>
             </valueSetDefinition>
         </valueSet>
-    </fields>
-    <fields>
-        <fullName>EPC_Partner__c</fullName>
-        <externalId>false</externalId>
-        <label>EPC Partner</label>
-        <length>50</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>EPC_Pricing__c</fullName>
@@ -3244,16 +3012,6 @@ text(year(addmonths(Commencement_Date__c, (Product__r.First_Adjustment__c-1))))<
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>FBO_Funded_Contract_Signature__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>XXXFBO Funded (Contract Signature)</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>FICO_Co_Applicant__c</fullName>
         <externalId>false</externalId>
         <formula>Personal_Credit_Report_Co_Applicant__r.Credit_Score_Integer_2__c</formula>
@@ -3289,18 +3047,6 @@ text(year(addmonths(Commencement_Date__c, (Product__r.First_Adjustment__c-1))))<
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Fifth_Adjustable_Monthly_Payment_Amount__c</fullName>
-        <externalId>false</externalId>
-        <label>Fifth Adjustable Monthly Payment Amount</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Finance_Charge__c</fullName>
@@ -3397,18 +3143,6 @@ max(1250,0.05*(Requested_Loan_Amount__c)),
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>First_Adjustable_Monthly_Payment_Amount__c</fullName>
-        <externalId>false</externalId>
-        <label>First Adjustable Monthly Payment Amount</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Follow_Up_Contact__c</fullName>
         <externalId>false</externalId>
         <label>Follow-Up Contact</label>
@@ -3454,18 +3188,6 @@ max(1250,0.05*(Requested_Loan_Amount__c)),
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Fourth_Adjustable_Monthly_Payment_Amount__c</fullName>
-        <externalId>false</externalId>
-        <label>Fourth Adjustable Monthly Payment Amount</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Generatin_Units__c</fullName>
@@ -3545,22 +3267,6 @@ max(1250,0.05*(Requested_Loan_Amount__c)),
                 </value>
             </valueSetDefinition>
         </valueSet>
-    </fields>
-    <fields>
-        <fullName>IBLS_Buy_Down__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(isblank( IBLS_Category_MappedFromLead__c )= True, 
-
-IF(IBLS_Category__c == &quot;Category 2&quot;, 0.20, 0.30),
-
-IF(IBLS_Category_MappedFromLead__c == &quot;Category 2&quot;, 0.2, 0.3))</formula>
-        <label>IBLS Buy Down</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Percent</type>
     </fields>
     <fields>
         <fullName>IBLS_Category_MappedFromLead__c</fullName>
@@ -3657,16 +3363,6 @@ IF(or(ISBLANK(Annual_Independent_Income__c), income_based_loan_support__c = Fals
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Income_Verified__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Income Verified</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>Installation_Queue_Duration__c</fullName>
         <externalId>false</externalId>
         <formula>IF( 
@@ -3729,20 +3425,6 @@ Disbursal_3_Full_Install_Checkbox__c - Contract_Close_Date__c
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Interest_Only_Period_DOER__c</fullName>
-        <defaultValue>12</defaultValue>
-        <externalId>false</externalId>
-        <label>Construction Period (DOER)</label>
-        <precision>5</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Interest_Only_Period__c</fullName>
@@ -4083,42 +3765,6 @@ TEXT(DAY(Interest_Only_Start_Date__c))
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Lease_Terms_MOU__c</fullName>
-        <externalId>false</externalId>
-        <label>Lease Terms MOU</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Drafted</fullName>
-                    <default>false</default>
-                    <label>Drafted</label>
-                </value>
-                <value>
-                    <fullName>Sent</fullName>
-                    <default>false</default>
-                    <label>Sent</label>
-                </value>
-                <value>
-                    <fullName>Signed</fullName>
-                    <default>false</default>
-                    <label>Signed</label>
-                </value>
-                <value>
-                    <fullName>N/A</fullName>
-                    <default>false</default>
-                    <label>N/A</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
         <fullName>Lease__c</fullName>
         <externalId>false</externalId>
         <label>Lease</label>
@@ -4252,31 +3898,6 @@ TEXT(DAY(Interest_Only_Start_Date__c))
         <length>200</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Load_Z__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(
-OR(
-
-left(TEXT( Load_Zone_Utility_4__c  ),4) = &apos;NEMA&apos;,
-left(TEXT( Load_Zone_Utility_4__c  ),4) = &apos;SEMA&apos;,
-left(TEXT( Load_Zone_Utility_4__c  ),4) = &apos;WCMA&apos;),
-
-left(TEXT( Load_Zone_Utility_4__c  ),4),
-
-IF(
-
-TEXT( Load_Zone_Utility_4__c  ) = &apos;Manual Lookup Required&apos;,
-
-&apos;Manual Lookup Required&apos;, null))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXXX Load Zone</label>
-        <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -4419,18 +4040,6 @@ TEXT( Load_Zone_Utility_4__c  ) = &apos;Manual Lookup Required&apos;,
                 </value>
             </valueSetDefinition>
         </valueSet>
-    </fields>
-    <fields>
-        <fullName>Load_Zone__c</fullName>
-        <externalId>false</externalId>
-        <formula>Load_Z__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXXX Load Zone</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Loan_Amount_Financed__c</fullName>
@@ -6341,21 +5950,6 @@ IF((Partner_tag_lookup__r.RL_Commission_Structure__c*System_Size__c)&gt;=Partner
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Repayment_period_MCEC__c</fullName>
-        <description>Indicates which repayment period a customer is currently in.  For MCEC reporting.  Not meant to be visible.</description>
-        <externalId>false</externalId>
-        <formula>if(and( isnull(Disbursal_1_Contract_Signature_Checkbox__c )=False,isnull( Disbursal_3_Full_Install_Checkbox__c )=False),&quot;In Payment - Full Term Period&quot;,
-
-if(and( isnull(Disbursal_1_Contract_Signature_Checkbox__c )=False,isnull( Disbursal_3_Full_Install_Checkbox__c )=True),&quot;In Payment - Interest Only Period&quot;,&quot;Null&quot;))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXRepayment Period MCEC</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Requested_Loan_Amount__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>This represents the amount of the system cost that is being financed by Bluewave.</inlineHelpText>
@@ -6740,19 +6334,6 @@ if(and( isnull(Disbursal_1_Contract_Signature_Checkbox__c )=False,isnull( Disbur
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>SREC_Option__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Deprecated- replaced by SREC Product. Pending Deletion.</inlineHelpText>
-        <label>xxxSREC Option</label>
-        <length>50</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>SREC_Product__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -6962,18 +6543,6 @@ if(and( isnull(Disbursal_1_Contract_Signature_Checkbox__c )=False,isnull( Disbur
         <type>TextArea</type>
     </fields>
     <fields>
-        <fullName>Second_Adjustable_Monthly_Payment_Amount__c</fullName>
-        <externalId>false</externalId>
-        <label>Second Adjustable Monthly Payment Amount</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Security_Type__c</fullName>
         <description>Maps from Lead field of same name</description>
         <externalId>false</externalId>
@@ -7013,46 +6582,6 @@ if(and( isnull(Disbursal_1_Contract_Signature_Checkbox__c )=False,isnull( Disbur
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Service_Territory__c</fullName>
-        <externalId>false</externalId>
-        <label>XXXX Service Territory</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Duke Energy Carolinas (DEC)</fullName>
-                    <default>false</default>
-                    <label>Duke Energy Carolinas (DEC)</label>
-                </value>
-                <value>
-                    <fullName>Duke Energy Progress (DEP)</fullName>
-                    <default>false</default>
-                    <label>Duke Energy Progress (DEP)</label>
-                </value>
-                <value>
-                    <fullName>NEMA</fullName>
-                    <default>false</default>
-                    <label>NEMA</label>
-                </value>
-                <value>
-                    <fullName>SEMA</fullName>
-                    <default>false</default>
-                    <label>SEMA</label>
-                </value>
-                <value>
-                    <fullName>WCMA</fullName>
-                    <default>false</default>
-                    <label>WCMA</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
     </fields>
     <fields>
         <fullName>Servicing_on_Behalf_oftest__c</fullName>
@@ -7276,18 +6805,6 @@ if(and( isnull(Disbursal_1_Contract_Signature_Checkbox__c )=False,isnull( Disbur
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>DateTime</type>
-    </fields>
-    <fields>
-        <fullName>Sixth_Adjustable_Monthly_Payment_Amount__c</fullName>
-        <externalId>false</externalId>
-        <label>Sixth Adjustable Monthly Payment Amount</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
     </fields>
     <fields>
         <fullName>StageName</fullName>
@@ -7879,18 +7396,6 @@ if(and( isnull(Disbursal_1_Contract_Signature_Checkbox__c )=False,isnull( Disbur
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Tariff_Custom_ID__c</fullName>
-        <externalId>false</externalId>
-        <formula>UtilityMapper__c + &quot; &quot; + text(Service_Territory__c) + &quot; &quot; + Project_Class__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Tariff Custom ID</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Term__c</fullName>
         <externalId>false</externalId>
         <formula>IF(Number_of_Periods_Months__c = 144, &quot;Thirteen (13)&quot;, IF(Number_of_Periods_Months__c = 120, &quot;Eleven (11)&quot;, IF(Number_of_Periods_Months__c = 180, &quot;Sixteen (16)&quot;, &quot;Ten (10)&quot;)))</formula>
@@ -7913,18 +7418,6 @@ if(and( isnull(Disbursal_1_Contract_Signature_Checkbox__c )=False,isnull( Disbur
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>DateTime</type>
-    </fields>
-    <fields>
-        <fullName>Third_Adjustable_Monthly_Payment_Amount__c</fullName>
-        <externalId>false</externalId>
-        <label>Third Adjustable Monthly Payment Amount</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Time_to_Close__c</fullName>
@@ -7960,35 +7453,6 @@ if(and( isnull(Disbursal_1_Contract_Signature_Checkbox__c )=False,isnull( Disbur
         <trackTrending>false</trackTrending>
     </fields>
     <fields>
-        <fullName>Total_Capital_Disbursed__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF( 
-
-NOT(ISBLANK(Disbursal_1_Contract_Signature_Checkbox__c)) &amp;&amp; ISBLANK(Disbursal_2_Mechanical_Install_Checkbox__c) &amp;&amp; ISBLANK(Disbursal_3_Full_Install_Checkbox__c),
-
-Disbursal_1_Contract_Signature__c,
-
-IF( 
-
-NOT(ISBLANK(Disbursal_1_Contract_Signature_Checkbox__c)) &amp;&amp; NOT(ISBLANK(Disbursal_2_Mechanical_Install_Checkbox__c)) &amp;&amp; ISBLANK(Disbursal_3_Full_Install_Checkbox__c),
-
-Disbursal_1_Contract_Signature__c + Disbursal_2_Mechanical_Installation__c  ,
-
-IF( 
-
-NOT(ISBLANK(Disbursal_1_Contract_Signature_Checkbox__c))&amp;&amp; NOT(ISBLANK(Disbursal_3_Full_Install_Checkbox__c)),
-
-Disbursal_1_Contract_Signature__c + Disbursal_2_Mechanical_Installation__c + Disbursal_3_Full_Install__c, null)))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Total Capital Disbursed</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Total_Loan_Payments_Override__c</fullName>
         <description>Populated with Apex to show the total loan payments for the adjustable rate loan. Is it used as an override field for the Total Loan Payments field on the opportunity, which is used in docusign.</description>
         <externalId>false</externalId>
@@ -7998,23 +7462,6 @@ Disbursal_1_Contract_Signature__c + Disbursal_2_Mechanical_Installation__c + Dis
         <required>false</required>
         <scale>2</scale>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Total_Loan_Payments__c</fullName>
-        <externalId>false</externalId>
-        <formula>If(Total_Loan_Payments_Override__c!=0,Total_Loan_Payments_Override__c,
-
-IF(
-DOER_Solar_Loan__c ==TRUE,(( Monthly_Payment__c *   Product__r.Loan_Term__c )+( Interest_Only_Payment__c *  Product__r.Loan_Interest_Only_Period__c )), (( Monthly_Payment__c *   Product__r.Loan_Term__c )+( Interest_Payment__c * Product__r.Loan_Interest_Only_Period__c)))
-)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Total Loan Payments</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
@@ -8445,19 +7892,6 @@ TEXT( Load_Zone_Utility_4__c  ) = &apos;Manual Lookup Required&apos;,
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>XXXTechnology_Platform_Fee__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Calculated by Product</inlineHelpText>
-        <label>XXXTechnology Platform Fee</label>
-        <precision>16</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Year__c</fullName>
         <externalId>false</externalId>
         <formula>text(year(CloseDate))</formula>
@@ -8864,7 +8298,6 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <columns>OPPORTUNITY.CLOSE_DATE</columns>
         <columns>OPPORTUNITY.STAGE_NAME</columns>
         <columns>CORE.USERS.ALIAS</columns>
-        <columns>Service_Territory__c</columns>
         <columns>UtilityMapper__c</columns>
         <filterScope>Everything</filterScope>
         <filters>
