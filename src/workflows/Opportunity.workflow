@@ -796,102 +796,6 @@ IF(MOD(YEAR(Commencement_Date__c) + FLOOR((MONTH(Commencement_Date__c) + 1)/12),
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
     <rules>
-        <fullName>CS - Application Approval Email Opp Creation</fullName>
-        <actions>
-            <name>CS_Application_Approval</name>
-            <type>Alert</type>
-        </actions>
-        <actions>
-            <name>Check_Email_Sent_Box</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <actions>
-            <name>EMAIL_LOG_CS_Application_Approval</name>
-            <type>Task</type>
-        </actions>
-        <active>false</active>
-        <formula>AND( OR( Annual_Electricity_Cost2__c &gt; 0, Annual_Electricity_Cost__c &gt; 0),   Disable_Emails__c == FALSE, NOT(ISPICKVAL(StageName,&quot;Complete&quot;)),  !CS_Application_Approval_Email_Sent__c,  Product_Line__c =&quot;Community Solar&quot;)</formula>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
-        <fullName>CS - BlueWave - Contract Receipt %28Eversource%29</fullName>
-        <actions>
-            <name>Sends_CS_Contract_Receipt_Email</name>
-            <type>Alert</type>
-        </actions>
-        <actions>
-            <name>EMAIL_LOG_CS_BlueWave_Contract_Reciept</name>
-            <type>Task</type>
-        </actions>
-        <active>false</active>
-        <booleanFilter>1 AND 2 AND 3 AND (4 OR 5)</booleanFilter>
-        <criteriaItems>
-            <field>Opportunity.Product_Line__c</field>
-            <operation>equals</operation>
-            <value>Community Solar</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.StageName</field>
-            <operation>equals</operation>
-            <value>Complete</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.UtilityMapper__c</field>
-            <operation>equals</operation>
-            <value>Eversource</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.Opportunity_Order__c</field>
-            <operation>equals</operation>
-            <value>1</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.Opportunity_Order__c</field>
-            <operation>equals</operation>
-        </criteriaItems>
-        <description>Triggers sending of CS contract receipt email when CS opportunity is closed as won</description>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
-        <fullName>CS - BlueWave - Contract Receipt %28National Grid%29</fullName>
-        <actions>
-            <name>CS_Contract_Receipt_NGRID</name>
-            <type>Alert</type>
-        </actions>
-        <actions>
-            <name>EMAIL_LOG_NGrid_Contract_Execution</name>
-            <type>Task</type>
-        </actions>
-        <active>false</active>
-        <booleanFilter>1 AND 2 AND (3 OR 5) AND 4</booleanFilter>
-        <criteriaItems>
-            <field>Opportunity.Product_Line__c</field>
-            <operation>equals</operation>
-            <value>Community Solar</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.StageName</field>
-            <operation>equals</operation>
-            <value>Complete</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.Opportunity_Order__c</field>
-            <operation>equals</operation>
-            <value>1</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.UtilityMapper__c</field>
-            <operation>equals</operation>
-            <value>National Grid</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.Opportunity_Order__c</field>
-            <operation>equals</operation>
-        </criteriaItems>
-        <description>Triggers sending of CS contract receipt email when CS opportunity is closed as won</description>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
         <fullName>CS - Contract Pending Stage</fullName>
         <actions>
             <name>Opp_Stage_to_Contract_Pending</name>
@@ -909,30 +813,6 @@ IF(MOD(YEAR(Commencement_Date__c) + FLOOR((MONTH(Commencement_Date__c) + 1)/12),
             <value>Complete</value>
         </criteriaItems>
         <description>Sets the Stage to Contract Pending when the customer recipient status = sent, unless the Opportunity is already complete.</description>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
-        <fullName>CS - Partner - Opportunity Complete Notification</fullName>
-        <actions>
-            <name>CS_Partner_Contract_Complete</name>
-            <type>Alert</type>
-        </actions>
-        <actions>
-            <name>EMAIL_LOG_CS_Opportunity_Complete_Email_to_Partner</name>
-            <type>Task</type>
-        </actions>
-        <active>false</active>
-        <criteriaItems>
-            <field>Opportunity.Product_Line__c</field>
-            <operation>equals</operation>
-            <value>Community Solar</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.StageName</field>
-            <operation>equals</operation>
-            <value>Complete</value>
-        </criteriaItems>
-        <description>Triggers sending of CS contract complete email to partner when CS opportunity is closed as won</description>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
     <rules>
@@ -986,48 +866,6 @@ IF(MOD(YEAR(Commencement_Date__c) + FLOOR((MONTH(Commencement_Date__c) + 1)/12),
             <timeLength>30</timeLength>
             <workflowTimeTriggerUnit>Days</workflowTimeTriggerUnit>
         </workflowTimeTriggers>
-    </rules>
-    <rules>
-        <fullName>CS%2FRL - Contract Pending Stage</fullName>
-        <actions>
-            <name>Opp_Stage_to_Contract_Pending</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <actions>
-            <name>updates_underwriting_queue_duration</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <active>true</active>
-        <criteriaItems>
-            <field>Opportunity.Contract_Status__c</field>
-            <operation>equals</operation>
-            <value>Sent</value>
-        </criteriaItems>
-        <description>Sets the Stage to Contract Pending when the customer recipient status = sent</description>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
-        <fullName>CS%2FRL - Partner Email Field Update</fullName>
-        <actions>
-            <name>Partner_CC_Email</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <actions>
-            <name>Partner_Email_Update</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <actions>
-            <name>Partner_additional_cc</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <active>true</active>
-        <booleanFilter>1</booleanFilter>
-        <criteriaItems>
-            <field>Opportunity.StageName</field>
-            <operation>notEqual</operation>
-            <value>New</value>
-        </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
     <rules>
         <fullName>DOER 35%25 Disbursal ACH</fullName>
@@ -1169,19 +1007,6 @@ IF(MOD(YEAR(Commencement_Date__c) + FLOOR((MONTH(Commencement_Date__c) + 1)/12),
             <timeLength>24</timeLength>
             <workflowTimeTriggerUnit>Hours</workflowTimeTriggerUnit>
         </workflowTimeTriggers>
-    </rules>
-    <rules>
-        <fullName>Opportunity Name - Remove Hyphen</fullName>
-        <actions>
-            <name>Opportunity_Name_Remove_Hyphen</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <active>false</active>
-        <formula>IF 
-( 
-CONTAINS(Name,&apos;-&apos;),true,false 
-)</formula>
-        <triggerType>onCreateOnly</triggerType>
     </rules>
     <rules>
         <fullName>Opportunity Stage - BW Signature</fullName>

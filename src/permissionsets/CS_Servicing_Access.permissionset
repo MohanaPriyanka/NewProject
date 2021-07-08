@@ -931,11 +931,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Opportunity.Calculated_Annual_Spend__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Opportunity.Calculated_Subscription_Size__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1097,11 +1092,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Utility_Account__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.X25kW_Slug_Calculated__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

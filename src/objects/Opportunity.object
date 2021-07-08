@@ -490,18 +490,6 @@
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Addendum_Exhibit_D_Recieved__c</fullName>
-        <defaultValue>false</defaultValue>
-        <description>For NY Only</description>
-        <externalId>false</externalId>
-        <inlineHelpText>For NY Only</inlineHelpText>
-        <label>Addendum Exhibit D Recieved</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>Additional_Components__c</fullName>
         <externalId>false</externalId>
         <label>Inverter Type</label>
@@ -609,35 +597,6 @@ and( Commencement_Date_QC__c=true,
         <trackTrending>false</trackTrending>
     </fields>
     <fields>
-        <fullName>Amount_Financed__c</fullName>
-        <externalId>false</externalId>
-        <formula>Requested_Loan_Amount__c +   Financing_Fee_SLA2__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>System Cost + Financing Fee</inlineHelpText>
-        <label>Amount Financed</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <securityClassification>Restricted</securityClassification>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Amount_Remaining_to_be_Disbursed__c</fullName>
-        <externalId>false</externalId>
-        <formula>Requested_Loan_Amount__c -  Total_Capital_Disbursed__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Amount Remaining to be Disbursed</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Anchor_Stage__c</fullName>
         <description>Stages for BD Offtake Opportunities</description>
         <externalId>false</externalId>
@@ -699,18 +658,6 @@ and( Commencement_Date_QC__c=true,
                 </value>
             </valueSetDefinition>
         </valueSet>
-    </fields>
-    <fields>
-        <fullName>Anniversary_Term_Text__c</fullName>
-        <externalId>false</externalId>
-        <formula>Product__r.Anniversary_Term_Text__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Anniversary Term Text</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Annual_Consumption__c</fullName>
@@ -828,31 +775,6 @@ null, Annual_Electricity_Cost__c/NMC_Value__c)</formula>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Annual_Income__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(ISBLANK(Personal_Credit_Report2__c),
-   BLANKVALUE(Annual_Independent_Income__c, 0),
-   IF(ISBLANK(Personal_Credit_Report2__r.Adjusted_Income__c),
-      BLANKVALUE(Annual_Independent_Income__c, 0),
-      Personal_Credit_Report2__r.Adjusted_Income__c))
-+
-
-IF(ISBLANK(Personal_Credit_Report_Co_Applicant__c), 
-   BLANKVALUE(Co_Applicant_Income__c, 0),
-   IF(ISBLANK(Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c),
-      BLANKVALUE(Co_Applicant_Income__c, 0),
-      Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c))</formula>
-        <inlineHelpText>Combines Primary and Co-Applicant Income (accounting for adjustments made on the Personal Credit Report during Underwriting)</inlineHelpText>
-        <label>Approved Annual Income</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <securityClassification>Restricted</securityClassification>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Annual_Independent_Income__c</fullName>
@@ -1120,24 +1042,6 @@ false
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Average_Debt_to_Income_Before__c</fullName>
-        <businessStatus>Active</businessStatus>
-        <externalId>false</externalId>
-        <formula>IF(Personal_Credit_Report_Co_Applicant__c == null, null, 
-((Personal_Credit_Report2__r.LASERCA__Sum_of_monthly_Personal_Debt__c +
-Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c) /
-(( Annual_Independent_Income__c +  Co_Applicant_Income__c )/12)))</formula>
-        <label>Average Debt to Income (Before)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <securityClassification>Restricted</securityClassification>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Avidia_Checking_Account__c</fullName>
         <defaultValue>false</defaultValue>
         <description>This is populated in the application forms for if they are interested in opening an Avidia checking account.</description>
@@ -1209,19 +1113,6 @@ Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c)
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>BlueWave_Avidia_Rate__c</fullName>
-        <defaultValue>0.045</defaultValue>
-        <externalId>false</externalId>
-        <label>BlueWave/Avidia Rate</label>
-        <precision>6</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Percent</type>
     </fields>
     <fields>
         <fullName>BlueWave_Signature_Status__c</fullName>
@@ -1504,32 +1395,6 @@ Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c)
         <visibleLines>3</visibleLines>
     </fields>
     <fields>
-        <fullName>Calculated_Annual_Spend__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF ( UtilityMapper__c = &quot;National Grid&quot;, Annual_Consumption_kWh__c * 0.2309, 
-
-IF(AND( UtilityMapper__c = &quot;Eversource&quot;,Load_Zone__c = &quot;WCMA&quot;),
-
-Annual_Consumption_kWh__c * 0.2130,
-
-IF(AND( UtilityMapper__c = &quot;Eversource&quot;,Load_Zone__c = &quot;NEMA&quot;),
-
-Annual_Consumption_kWh__c * 0.2254,
-
-IF(AND( UtilityMapper__c = &quot;Eversource&quot;,Load_Zone__c = &quot;SEMA&quot;),
-
-Annual_Consumption_kWh__c * 0.2287,
-0
-))))</formula>
-        <label>Calculated Annual Spend</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Calculated_Subscription_Size__c</fullName>
         <externalId>false</externalId>
         <formula>if( 
@@ -1706,20 +1571,6 @@ IF( Month(CloseDate) = 12, &apos;December&apos;, null))))))))))))</formula>
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Co_Applicant_DTI_After__c</fullName>
-        <externalId>false</externalId>
-        <formula>Personal_Credit_Report_Co_Applicant__r.DTI_After__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Co-Applicant DTI (After)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <securityClassification>Restricted</securityClassification>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Percent</type>
-    </fields>
-    <fields>
         <fullName>Co_Applicant_Date_of_Birth__c</fullName>
         <externalId>false</externalId>
         <label>Co-Applicant Date of Birth</label>
@@ -1827,30 +1678,6 @@ IF( Month(CloseDate) = 12, &apos;December&apos;, null))))))))))))</formula>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Combined_DTI_After__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF( NOT(ISBLANK(Personal_Credit_Report2__r.Adjusted_DTI__c)),
-    Personal_Credit_Report2__r.Adjusted_DTI__c,
-    IF (NOT(ISBLANK( Personal_Credit_Report_Co_Applicant__c )),
-        (( Personal_Credit_Report2__r.Adjusted_Monthly_Personal_Debt__c +
-           Personal_Credit_Report_Co_Applicant__r.Adjusted_Monthly_Personal_Debt__c +
-           Monthly_Payment__c ) / 
-         ( BLANKVALUE(Personal_Credit_Report2__r.Adjusted_Income__c/12, BLANKVALUE(Annual_Independent_Income__c/12,0)) +
-           BLANKVALUE(Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c/12, BLANKVALUE(Co_Applicant_Income__c/12,0) ))),
-        (( Personal_Credit_Report2__r.Adjusted_Monthly_Personal_Debt__c +
-           Monthly_Payment__c ) / 
-         ( BLANKVALUE(Personal_Credit_Report2__r.Adjusted_Income__c/12, BLANKVALUE(Annual_Independent_Income__c/12,0)) ))))</formula>
-        <inlineHelpText>Calculated DTI after for individual and joint applications taking income adjustments into consideration.</inlineHelpText>
-        <label>Combined DTI After</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <securityClassification>Restricted</securityClassification>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Percent</type>
     </fields>
     <fields>
         <fullName>Commencement_Date_QC__c</fullName>
@@ -8603,30 +8430,6 @@ TEXT( Load_Zone_Utility_4__c  ) = &apos;Manual Lookup Required&apos;,
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>X25kW_Slug_Calculated__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF( CS_Capacity_Allocated__c &lt;= 25, 1, 
-IF(AND(CS_Capacity_Allocated__c &gt; 25, CS_Capacity_Allocated__c &lt;=50), 2, 
-IF(AND(CS_Capacity_Allocated__c &gt; 50, CS_Capacity_Allocated__c &lt;=75), 3, 
-IF(AND(CS_Capacity_Allocated__c &gt; 75, CS_Capacity_Allocated__c &lt;=100), 4, 
-IF(AND(CS_Capacity_Allocated__c &gt; 100, CS_Capacity_Allocated__c &lt;=125), 5,
-IF(AND(CS_Capacity_Allocated__c &gt; 125, CS_Capacity_Allocated__c &lt;=150), 6,  
-IF(AND(CS_Capacity_Allocated__c &gt; 150, CS_Capacity_Allocated__c &lt;=175), 7, 
-IF(AND(CS_Capacity_Allocated__c &gt; 175, CS_Capacity_Allocated__c &lt;=200), 8, 
-IF(AND(CS_Capacity_Allocated__c &gt; 200, CS_Capacity_Allocated__c &lt;=225), 9,
-NULL
-)))))))))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>25kW Slug Calculated</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>X25kW_Slug_Total__c</fullName>

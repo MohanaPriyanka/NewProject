@@ -843,18 +843,6 @@ TEXT(YEAR(Commencement_Datee__c ) + FLOOR((MONTH(Commencement_Datee__c ) + Produ
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Interest_Only_Period_DOER__c</fullName>
-        <externalId>false</externalId>
-        <label>Interest Only Period (DOER)</label>
-        <precision>5</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Interest_Only_Period__c</fullName>
         <description>This is a formula field referencing the Interest Only Period on the assigned Product Record</description>
         <externalId>false</externalId>

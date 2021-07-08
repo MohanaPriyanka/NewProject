@@ -24404,11 +24404,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Loan__c.Interest_Only_Period_DOER__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Loan__c.Interest_Only_Period__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -31899,11 +31894,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Opportunity.Addendum_Exhibit_D_Recieved__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Opportunity.Additional_Components__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -31933,23 +31923,8 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Amount_Financed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Amount_Remaining_to_be_Disbursed__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Anchor_Stage__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Anniversary_Term_Text__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -31991,11 +31966,6 @@
         <editable>true</editable>
         <field>Opportunity.Annual_Escalator__c</field>
         <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Annual_Income__c</field>
-        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -32098,11 +32068,6 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Average_Debt_to_Income_Before__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Avidia_Checking_Account__c</field>
         <readable>true</readable>
@@ -32130,11 +32095,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Billing_City_Upper_Case__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.BlueWave_Avidia_Rate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -32239,11 +32199,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Opportunity.Calculated_Annual_Spend__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Opportunity.Calculated_Subscription_Size__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -32303,11 +32258,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Co_Applicant_DTI_After__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Co_Applicant_Date_of_Birth__c</field>
         <readable>true</readable>
@@ -32350,11 +32300,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Co_Applicant_Social_Security__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Combined_DTI_After__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -34430,11 +34375,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Winner_Selection_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.X25kW_Slug_Calculated__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
