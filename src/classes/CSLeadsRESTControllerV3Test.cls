@@ -64,20 +64,6 @@ public with sharing class CSLeadsRESTControllerV3Test {
     }
 
     @IsTest
-    private static void testPatchUtilityAccountLogSuccess() {
-        useMocks();
-        String jsonRequest = '{' +
-            '"id": "' + Util.getFakeId(Schema.Account.SObjectType) + '",' +
-            '"leadId": "' + Util.getFakeId(Schema.Lead.SObjectType) + '",' +
-            '"email": "'+ CSLeadsRESTControllerV2Test.SAMPLE_EMAIL +'",' +
-            '"annualKWh": 500' +
-            '}';
-        controller.patchUtilityAccountLog(jsonRequest);
-
-        System.assertEquals(200, RestContext.response.statusCode, 'Properly formed PATCH should succeed');
-    }
-
-    @IsTest
     private static void testPatchApplicationSuccess() {
         useMocks();
         String jsonRequest = '{' +
@@ -112,8 +98,7 @@ public with sharing class CSLeadsRESTControllerV3Test {
             '   }]' +
             '}]}';
 
-        controller.patchApplication(jsonRequest);
-
+        controller.patchApplication(jsonRequest); 
         System.assertEquals(200, RestContext.response.statusCode, 'Properly formed PATCH should succeed');
     }
 
@@ -133,7 +118,12 @@ public with sharing class CSLeadsRESTControllerV3Test {
         controller.accountsSelector = (AccountsSelector) Test.createStub(AccountsSelector.class, new CSLeadsRESTControllerV2Test.MockAccountsSelector());
         controller.ualSelector = (UALSelector) Test.createStub(UALSelector.class, new CSLeadsRESTControllerV2Test.MockUALSelector());
 
+        CSApplicationFinisher.leadSelector = (LeadSelector) Test.createStub(LeadSelector.class,
+            new CSLeadsRESTControllerV2Test.MockLeadSelector(newLead));
+        CSApplicationFinisher.qualificationService = (CSQualificationService) Test.createStub(CSQualificationService.class,
+            new CSLeadsRESTControllerV2Test.MockQualificationService());
+        CSApplicationFinisher.leadService = (LeadService) Test.createStub(LeadService.class, mockLeadService);
+
         RestContext.response = new RestResponse();
     }
-
 }

@@ -3,6 +3,7 @@
  * Tested by: UtilityDataRequestServiceTest, GlyntUploadServiceTest
  */
 public without sharing class UtilityDataRequestBuilder {
+
     private static UALSelector ualSelector = new UALSelector();
     private static GlyntUploadService glyntUploadService = new GlyntUploadService();
     private static fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
@@ -14,7 +15,7 @@ public without sharing class UtilityDataRequestBuilder {
     );
 
     /**
-     * @description Assesses if UDRs should be generated for passed-in lead ids based on Utility Data Collection Mechanism
+     * @description ASYNC: Assesses if UDRs should be generated for passed-in lead ids based on Utility Data Collection Mechanism
      * <p></p>
      * This method will NOT generate UDRs if any existing are found already related to UALs
      * It will queue the Glynt upload and extraction if it creates UDRs for utilities for which we're using Glynt
@@ -23,6 +24,18 @@ public without sharing class UtilityDataRequestBuilder {
      */
     @Future
     public static void create(List<String> leadIds) {
+        createUDRs(leadIds);
+    }
+
+    /**
+     * @description Assesses if UDRs should be generated for passed-in lead ids based on Utility Data Collection Mechanism
+     * <p></p>
+     * This method will NOT generate UDRs if any existing are found already related to UALs
+     * It will queue the Glynt upload and extraction if it creates UDRs for utilities for which we're using Glynt
+     * @param leadIds Leads to check for UDR creation
+     * @author Jeff Parlin 10-28-20
+     */
+    public static void createUDRs(List<String> leadIds) {
         try {
             innerCreate(leadIds);
         } catch (Exception e) {
@@ -31,6 +44,7 @@ public without sharing class UtilityDataRequestBuilder {
             Logger.logNow('UtilityDataRequestService', 'create (@future)', message, 'Error');
         }
     }
+
     private static void innerCreate(List<String> leadIds) {
         List<Utility_Account_Log__c> uals = ualSelector.selectUalsWithUdrs(leadIds);
         List<Utility_Data_Request__c> utilityDataRequestsForGlynt = new List<Utility_Data_Request__c>();
@@ -86,5 +100,4 @@ public without sharing class UtilityDataRequestBuilder {
         }
         return utilityDataRequests;
     }
-
 }

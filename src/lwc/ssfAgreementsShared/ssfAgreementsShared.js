@@ -161,7 +161,7 @@ const updateServerConsentsSigned = async (component) => {
     let calloutURI = '/apply/services/apexrest/v3/contracts';
     let options = {
         headers: {name: 'Content-Type', value:'application/json'},
-        body: JSON.stringify({ leadId: component.lead.id, email: component.lead.email })
+        body: JSON.stringify({ leadId: component.lead.id, email: component.lead.email, suppressAppComplete: true })
     };
     return makeRequest(calloutURI, 'PATCH', options);
 }

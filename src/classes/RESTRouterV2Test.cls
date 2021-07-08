@@ -1,7 +1,6 @@
 /**
  * Created by jlugo on 2019-07-09.
  */
-
 @IsTest
 public with sharing class RESTRouterV2Test {
     @TestVisible
@@ -84,12 +83,6 @@ public with sharing class RESTRouterV2Test {
         insert product;
     }
 
-    /********************
-     *** SYSTEM TESTS ***
-     ********************/
-
-    /** Leads **/
-
     @IsTest
     public static void testPostResiLeadSuccess() {
         RestRequest req = new RestRequest();
@@ -121,8 +114,6 @@ public with sharing class RESTRouterV2Test {
         Map<String, Object> responseUtilityAccountLog = (Map<String,Object>) responseUtilityAccountLogs[0];
 
         System.assertEquals(201, response.statusCode, 'POST should create properly');
-
-        // verify lead request/response fields
         System.assertNotEquals(responseLead.get('id'), null, 'id should be set on POST response');
         for (String key : requestLead.keySet()) {
             if (requestLead.get(key) instanceof String) {
@@ -201,7 +192,6 @@ public with sharing class RESTRouterV2Test {
                 System.assertEquals(requestUtilityAccountLog.get(key), responseUtilityAccountLog.get(key), 'The requested ' + key + ' is expected to match the actual response');
             }
         }
-
     }
 
     @IsTest
@@ -246,7 +236,6 @@ public with sharing class RESTRouterV2Test {
 
         System.assertEquals(200, response.statusCode, 'Properly formed PATCH should succeed');
         System.assertNotEquals(responseLead.get('applicationCompleteDate'), null, 'When patching app complete date, the response\'s app complete date should not be null');
-
     }
 
     @IsTest
@@ -286,74 +275,8 @@ public with sharing class RESTRouterV2Test {
         System.assertEquals(200, response.statusCode, 'Properly formed GET request should succeed');
     }
 
-    /** Property Accounts **/
-
-    @IsTest
-    public static void testPostPropertyAccountSuccess() {
-        // <setup>
-        RestRequest req = new RestRequest();
-        req.requestURI = '/services/apexrest/v2/leads';
-        req.httpMethod = 'POST';
-        req.addHeader('Content-Type', 'application/json');
-        req.requestBody = Blob.valueOf('{' + validResiLead + '}');
-
-        RestContext.request = req;
-        RestContext.response = new RestResponse();
-
-        RESTRouterV2.postRequest();
-
-        RestResponse response = RestContext.response;
-        String jsonResponse = response.responseBody.toString();
-        Map<String, Object> responseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
-
-        Map<String, Object> postResponseLead = (Map<String, Object>) responseEnvelope.get('data');
-
-        // </setup>
-
-
-        req = new RestRequest();
-        req.requestURI = '/services/apexrest/v2/property-accounts';
-        req.httpMethod = 'POST';
-        req.addHeader('Content-Type', 'application/json');
-
-        String propertyAccountJson = '{' +
-            validPropertyAccount + ',' +
-            '"leadId": "' + postResponseLead.get('id') + '",' +
-            '"utilityAccountLogs": [{' +
-            validUtilityAccountLog +
-            '}]}';
-
-        req.requestBody = Blob.valueOf(propertyAccountJson);
-
-        RestContext.request = req;
-        RestContext.response = new RestResponse();
-
-        RESTRouterV2.postRequest();
-
-        response = RestContext.response;
-
-        Map<String, Object> requestPropertyAccount = (Map<String,Object>) JSON.deserializeUntyped(propertyAccountJson);
-
-        jsonResponse = response.responseBody.toString();
-        responseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
-        Map<String, Object> responsePropertyAccount = (Map<String,Object>) responseEnvelope.get('data');
-
-
-        System.assertEquals(201, response.statusCode, 'POST should create properly');
-
-        // verify lead request/response fields
-        System.assertNotEquals(responsePropertyAccount.get('id'), null, 'id should be set on POST response');
-        for (String key : requestPropertyAccount.keySet()) {
-            if (requestPropertyAccount.get(key) instanceof String) {
-                System.assertEquals(requestPropertyAccount.get(key), responsePropertyAccount.get(key), 'The requested ' + key + ' is expected to match the actual response');
-            }
-        }
-    }
-
     @IsTest
     public static void testPatchPropertyAccountSuccess() {
-
-        // <setup>
         RestRequest req = new RestRequest();
         req.requestURI = '/services/apexrest/v2/leads';
         req.httpMethod = 'POST';
@@ -362,17 +285,12 @@ public with sharing class RESTRouterV2Test {
 
         RestContext.request = req;
         RestContext.response = new RestResponse();
-
         RESTRouterV2.postRequest();
-
         RestResponse response = RestContext.response;
         String jsonResponse = response.responseBody.toString();
         Map<String, Object> responseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
-
         Map<String, Object> postResponseLead = (Map<String, Object>) responseEnvelope.get('data');
         Map<String, Object> postResponsePropertyAccount = (Map<String, Object>) ((List<Object>) postResponseLead.get('propertyAccounts'))[0];
-
-        // </setup>
 
         String patchRequest = '{' +
             '"id":"' + postResponsePropertyAccount.get('id')  + '",' +
@@ -400,135 +318,7 @@ public with sharing class RESTRouterV2Test {
 
         System.assertEquals('mock-zuoraId', responsePropertyAccount.get('zuoraPaymentRefId'), 'Returned zuoraPaymentRefId should match the input zuoraPaymentRefId from the patch request');
         System.assertEquals('2019-01-05T19:00:00.000Z', responsePropertyAccount.get('zuoraPaymentRefIdExpirationDate'), 'Returned zuoraPaymentRefIdExpirationDate should match the input zuoraPaymentRefIdExpirationDate from the patch request');
-
     }
-
-    /** Utility Account Logs **/
-
-    @IsTest
-    public static void testPostUtilityAccountLogSuccess() {
-        // <setup>
-        RestRequest req = new RestRequest();
-        req.requestURI = '/services/apexrest/v2/leads';
-        req.httpMethod = 'POST';
-        req.addHeader('Content-Type', 'application/json');
-
-        req.requestBody = Blob.valueOf('{' +
-            validResiLead + ',' +
-            '"propertyAccounts": [{' +
-            validPropertyAccount +
-            '}]}'
-        );
-
-        RestContext.request = req;
-        RestContext.response = new RestResponse();
-
-        RESTRouterV2.postRequest();
-
-        RestResponse response = RestContext.response;
-        String jsonResponse = response.responseBody.toString();
-        Map<String, Object> responseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
-        Map<String, Object> responseLead = (Map<String,Object>) responseEnvelope.get('data');
-
-        List<Object> responsePropertyAccounts = (List<Object>) responseLead.get('propertyAccounts');
-        Map<String, Object> responsePropertyAccount = (Map<String,Object>) responsePropertyAccounts[0];
-
-        // </setup>
-
-
-        req = new RestRequest();
-        req.requestURI = '/services/apexrest/v2/utility-account-logs';
-        req.httpMethod = 'POST';
-        req.addHeader('Content-Type', 'application/json');
-
-        String utilityAccountLogJson = '{' +
-            '"propertyAccountId": "' + responsePropertyAccount.get('id') + '",' +
-            validUtilityAccountLog +
-            '}';
-
-
-        req.requestBody = Blob.valueOf(utilityAccountLogJson);
-
-        RestContext.request = req;
-        RestContext.response = new RestResponse();
-
-        RESTRouterV2.postRequest();
-
-        response = RestContext.response;
-
-        Map<String, Object> requestUtilityAccountLog = (Map<String, Object>) JSON.deserializeUntyped(utilityAccountLogJson);
-
-        jsonResponse = response.responseBody.toString();
-
-        responseEnvelope = (Map<String, Object>) JSON.deserializeUntyped(jsonResponse);
-        Map<String, Object> responseUtilityAccountLog = (Map<String, Object>) responseEnvelope.get('data');
-
-
-        System.assertEquals(201, response.statusCode, 'POST should create properly');
-
-        // verify lead request/response fields
-        System.assertNotEquals(responseUtilityAccountLog.get('id'), null, 'id should be set on POST response');
-        for (String key : requestUtilityAccountLog.keySet()) {
-            if (requestUtilityAccountLog.get(key) instanceof String) {
-                System.assertEquals(requestUtilityAccountLog.get(key), responseUtilityAccountLog.get(key), 'The requested ' + key + ' is expected to match the actual response');
-            }
-        }
-    }
-
-    @IsTest
-    public static void testPatchUtilityAccountLogSuccess() {
-
-        // <setup>
-        RestRequest req = new RestRequest();
-        req.requestURI = '/services/apexrest/v2/leads';
-        req.httpMethod = 'POST';
-        req.addHeader('Content-Type', 'application/json');
-        req.requestBody = Blob.valueOf(validResiJsonRequest);
-
-        RestContext.request = req;
-        RestContext.response = new RestResponse();
-
-        RESTRouterV2.postRequest();
-
-        RestResponse response = RestContext.response;
-        String jsonResponse = response.responseBody.toString();
-        Map<String, Object> responseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
-
-        Map<String, Object> postResponseLead = (Map<String, Object>) responseEnvelope.get('data');
-        Map<String, Object> postResponsePropertyAccount = (Map<String, Object>) ((List<Object>) postResponseLead.get('propertyAccounts'))[0];
-        Map<String, Object> postResponseUtilityAccountLog = (Map<String, Object>) ((List<Object>) postResponsePropertyAccount.get('utilityAccountLogs'))[0];
-
-        // </setup>
-
-        String patchRequest = '{' +
-            '"id":"' + postResponseUtilityAccountLog.get('id') + '",' +
-            '"annualKWh":8000' +
-            '}';
-
-        req = new RestRequest();
-        req.requestURI = '/services/apexrest/v2/utility-account-logs';
-        req.httpMethod = 'PATCH';
-        req.addHeader('Content-Type', 'application/json');
-        req.requestBody = Blob.valueOf(patchRequest);
-
-        RestContext.request = req;
-        RestContext.response = new RestResponse();
-
-        RESTRouterV2.patchRequest();
-
-        response = RestContext.response;
-        jsonResponse = response.responseBody.toString();
-        responseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
-        Map<String, Object> responseUAL = (Map<String,Object>) responseEnvelope.get('data');
-
-        System.assertEquals(200, response.statusCode, 'Properly formed PATCH should succeed');
-
-        System.assertEquals(8000, responseUAL.get('annualKWh'), 'New annualKWh should match input annualKWh in patch request');
-
-    }
-
-
-    /** Application **/
 
     private static Lead createLead() {
         Lead l = new Lead(
@@ -596,26 +386,6 @@ public with sharing class RESTRouterV2Test {
     }
 
     @IsTest
-    private static void testGetContracts() {
-        // Test Setup
-        Lead lead = createLead();
-
-        // Specific test begin
-        RestRequest req = new RestRequest();
-        req.requestURI = '/services/apexrest/v2/contracts';
-        req.addParameter('leadId', lead.Id);
-        req.addParameter('email', lead.Email);
-        req.httpMethod = 'GET';
-
-        RestContext.request = req;
-        RestContext.response = new RestResponse();
-        RESTRouterV2.getRequest();
-
-        // Since no Contract files have been inserted in this test case, response should be 204
-        System.assertEquals(204, RestContext.response.statusCode, 'This GET on /contracts should return 204 - No Content');
-    }
-
-    @IsTest
     private static void testPatchApplicationSuccessRegenDocs() {
         // <setup>
         Lead lead = createLead();
@@ -655,9 +425,6 @@ public with sharing class RESTRouterV2Test {
                 Account.SObjectType
             }
         );
-    
-        // </setup>
-
 
         RestRequest req = new RestRequest();
         req.requestURI = '/services/apexrest/v2/application';
@@ -686,8 +453,6 @@ public with sharing class RESTRouterV2Test {
         System.assertEquals(null, returnedLead.contentDocs, 'No ContentDocumentLinks should be returned, as docs exist and changes were made to the lead');
         System.assertEquals(Date.today().addDays(-1), returnedLead.mostRecentContractGen.date(), 'mostRecentContractGen should be returned, as docs exist and changes were made to the lead');
     }
-
-
 
     private static String getApplicationJson(Id leadId, Id acctId, Id ualId) {
         return '{' +
@@ -733,10 +498,10 @@ public with sharing class RESTRouterV2Test {
         System.assertNotEquals(originalPropertyAccount.BillingStateCode, updatedPropertyAccount.billingState, 'The updated property account BillingStateCode field value should not match the original field value');
         System.assertNotEquals(originalPropertyAccount.BillingPostalCode, updatedPropertyAccount.billingPostalCode, 'The updated property account BillingPostalCode field value should not match the original field value');
 
-        Utility_Account_Log__c originalUal = originalLead.Utility_Account_Logs__r[0];
+        Utility_Account_Log__c originalUAL = originalLead.Utility_Account_Logs__r[0];
         RestLead.RestUtilityAccountLog updatedUal = updatedPropertyAccount.utilityAccountLogs[0];
         System.assertEquals(1, updatedPropertyAccount.utilityAccountLogs.size(), 'One utility account log should be returned');
-        System.assertEquals(originalUal.Id, updatedUal.id, 'The utility account log returned should be the same one created during setup');
+        System.assertEquals(originalUAL.Id, updatedUal.id, 'The utility account log returned should be the same one created during setup');
         System.assertNotEquals(originalUAL.Name, updatedUal.utilityAccountNumber, 'The updated utility account log utilityAccountNumber field value should not match the original field value');
         System.assertNotEquals(originalUAL.Name_on_Account__c, updatedUal.nameOnAccount, 'The updated utility account log nameOnAccount field value should not match the original field value');
         System.assertNotEquals(originalUAL.Service_Address__c, updatedUal.serviceStreet, 'The updated utility account log serviceStreet field value should not match the original field value');
@@ -744,9 +509,6 @@ public with sharing class RESTRouterV2Test {
         System.assertNotEquals(originalUAL.Service_State__c, updatedUal.serviceState, 'The updated utility account log serviceState field value should not match the original field value');
         System.assertNotEquals(originalUAL.Service_Zip_Code__c, updatedUal.servicePostalCode, 'The updated utility account log servicePostalCode field value should not match the original field value');
     }
-
-
-    /** Other **/
 
     @IsTest
     public static void testZipCheck() {
@@ -821,9 +583,6 @@ public with sharing class RESTRouterV2Test {
         System.assertEquals(false, caughtException, 'Did not expect to catch an exception');
     }
 
-
-    /** General Verb **/
-
     @IsTest
     public static void testPatchInvalidPath() {
         String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Lead.SObjectType) + '"}';
@@ -838,7 +597,6 @@ public with sharing class RESTRouterV2Test {
         RestContext.response = new RestResponse();
 
         RESTRouterV2.patchRequest();
-
         System.assertEquals(404, RestContext.response.statusCode, 'PATCHing to an invalid path should give a 404 - not found');
     }
 
@@ -856,7 +614,6 @@ public with sharing class RESTRouterV2Test {
         RestContext.response = new RestResponse();
 
         RESTRouterV2.patchRequest();
-
         System.assertEquals(500, RestContext.response.statusCode, 'PATCHing with invalid JSON should yield a 500');
     }
 
@@ -874,7 +631,6 @@ public with sharing class RESTRouterV2Test {
         RestContext.response = new RestResponse();
 
         RESTRouterV2.postRequest();
-
         System.assertEquals(404, RestContext.response.statusCode, 'POSTing to an invalid path should give a 404 - not found');
     }
 
@@ -892,17 +648,13 @@ public with sharing class RESTRouterV2Test {
         RestContext.response = new RestResponse();
 
         RESTRouterV2.postRequest();
-
         System.assertEquals(500, RestContext.response.statusCode, 'PATCHing with invalid JSON should yield a 500');
     }
 
     public class MockCSLeadsRESTControllerV2 extends MockProvider {
-        public MockCSLeadsRESTControllerV2() {
-        }
-
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
-                when 'performZipCheck' {
+                when 'getZipcodeCapacity' {
                     String zipCode = RestContext.request.params.get('zipCode');
                     if (zipCode == 'exception') {
                         throw new Util.BWException('system exception');
@@ -918,5 +670,4 @@ public with sharing class RESTRouterV2Test {
             return null;
         }
     }
-
 }

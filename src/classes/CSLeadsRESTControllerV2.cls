@@ -5,13 +5,13 @@
  */
 @SuppressWarnings('PMD.TooManyFields')
 public virtual without sharing class CSLeadsRESTControllerV2 extends RESTController {
+    
     public static final Map<String, String> APP_STATUS_TO_LOCATION = new Map<String, String>{
         'Started' => 'info',
         'Customer Info Completed' => 'agree',
         'Contracts Signed' => 'pay',
         'Application Completed' => 'complete'
     };
-    @TestVisible private static FeatureSelector featureSelector = new FeatureSelector();
     @TestVisible private LeadService leadService = new LeadService();
     @TestVisible private AccountService accountService = new AccountService();
     @TestVisible private UALService ualService = new UALService();
@@ -19,11 +19,9 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     @TestVisible private CapacityService capacityService = new CapacityService();
     @TestVisible private CustomerContractService customerContractService = new CustomerContractService();
     @TestVisible private RateClassesSelector rcSelector = new RateClassesSelector();
-    @TestVisible private CSQualificationService qualificationService = new CSQualificationService();
     @TestVisible private AccountsSelector accountsSelector = new AccountsSelector();
     @TestVisible private UALSelector ualSelector = new UALSelector();
     @TestVisible private ContentDocumentSelector contentSelector = new ContentDocumentSelector();
-    @TestVisible private CustomerContractSelector customerContractSelector = new CustomerContractSelector();
     @TestVisible private FilesUnitOfWorkHelper customWork = new FilesUnitOfWorkHelper();
     @TestVisible private Map<String, String> contractLeadFields = new Map<String, String>{
         'FirstName' => 'firstName',
@@ -57,6 +55,38 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     );
     @TestVisible protected LeadSelector leadSelector = new LeadSelector();
 
+    public virtual void getZipcodeCapacity(String zipCode, String partnerId, String utilityId) {
+        RestResponse response = RestContext.response;
+        RestZipCode zipCodeResponse = new RestZipCode(capacityService.findCapacityByZipcode(zipCode, partnerId, utilityId));
+        envelope.setData(zipCodeResponse);
+        envelope.setJSONResponse(response);
+    }
+
+    public virtual void postLead(String jsonRequest) {
+        RestLead requestLead = (RestLead) JSON.deserialize(jsonRequest, RestLead.class);
+        RestResponse response = RestContext.response;
+        Boolean validRequest = false;
+        try {
+            requestLead.validateCreateFields();
+            // We can only handle one (and only one) property account, right now.
+            // Remove this once the unit-of-work approach is implemented in in the blocks towards the end of this method
+            validRequest = true;
+            if (requestLead.propertyAccounts != null && requestLead.propertyAccounts.size() > 1) {
+                validRequest = false;
+                envelope.addError('Currently, only <=1 propertyAccount per lead is supported in the API.');
+                response.statusCode = statusCode.badRequest;
+            }
+        } catch (Util.BWException e) {
+            envelope.addError(e.getMessage());
+            response.statusCode = statusCode.badRequest;
+        }
+        if (validRequest) {
+            uow.registerWork(customWork);
+            insertLeadAccountAndUALs(requestLead, response);
+        }
+        envelope.setJSONResponse(response);
+    }
+
     public virtual void getLead(String leadId, String email) {
         RestResponse response = RestContext.response;
         if (leadId == null || email == null) {
@@ -66,35 +96,12 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             Lead leadToReturn = leadSelector.selectOneWithPropertiesAndUtilities(leadId);
             if (leadToReturn == null || leadToReturn.Email != email) {
                 throw new Util.AuthorizationBWException('Invalid authorization, the leadId (' + leadId + ') does not match the email (' + email + ')');
-            } else if(leadToReturn.Accounts__r.size() > 1) {
+            } else if (leadToReturn.Accounts__r.size() > 1) {
                 envelope.addError('Currently, only <=1 propertyAccount per lead is supported in the API.');
                 response.statusCode = statusCode.badRequest;
             } else {
                 RestLead responseLead = formatRestLeadFromLeadAndChildren(leadToReturn, false);
                 envelope.setData(responseLead);
-                response.statusCode = statusCode.ok;
-            }
-        }
-        envelope.setJSONResponse(response);
-    }
-
-    public virtual void getContracts(String leadId, String email) {
-        RestResponse response = RestContext.response;
-        if (leadId == null || email == null) {
-            envelope.addError('Request did not include correct fields to retrieve contract files');
-            response.statusCode = statusCode.badRequest;
-        } else {
-            Lead leadToReturn = leadSelector.selectOneWithPropertiesAndUtilities(leadId);
-            if (leadToReturn == null || leadToReturn.Email != email) {
-                throw new Util.AuthorizationBWException('Invalid authorization, the leadId (' + leadId + ') does not match the email (' + email + ')');
-            }
-            RestLead responseLead = formatRestLeadFromLeadAndChildren(leadToReturn, false);
-            Integer numberOfContracts = responseLead.numberOfContractDocs;
-            Integer filesReady = responseLead.contentDocs != null ? responseLead.contentDocs.size() : 0;
-            if (filesReady < numberOfContracts) {
-                response.statusCode = statusCode.noContent;
-            } else {
-                envelope.setData(responseLead.contentDocs);
                 response.statusCode = statusCode.ok;
             }
         }
@@ -107,11 +114,11 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
      * @param jsonRequest Incoming PATCH request body
      */
     public virtual void patchLead(String jsonRequest) {
+        Boolean applicationNowComplete = false;
         RestLead requestLead = (RestLead) JSON.deserialize(jsonRequest, RestLead.class);
         RestResponse response = RestContext.response;
         Lead leadToUpdate = leadSelector.selectOne(requestLead.id);
         Map<String,Object> requestMap = (Map<String,Object>) JSON.deserializeUntyped(jsonRequest);
-        Boolean applicationNowComplete = false;
 
         if (leadToUpdate == null) {
             response.statusCode = statusCode.notFound;
@@ -125,27 +132,21 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             return;
         }
         if (requestLead.applicationCompleteDate != null && leadToUpdate.Application_Complete_Date__c == null) {
+            // Request has application complete date, but database does not - this means it's now a completed application
             applicationNowComplete = true;
-            qualificationService.qualifyLead(leadToUpdate);
         }
 
-        // Update Lead, with JSON data from SSF, e.g. fill Application_Complete_Date__c
+        // Update Lead with JSON data from API, e.g. fill Application_Complete_Date__c set by SSF JS
         requestLead.mergeFields(requestMap.keySet(), leadToUpdate);
         Lead lead = leadService.updateLead(leadToUpdate);
 
         // Check & Update "Application Status" field on Lead if necessary
         updateLeadApplicationStatus(lead.Id);
 
-        // Handle other Non-Lead changes if the application is newly marked as "Application Complete"
-        // Placed last because we want to ensure Lead properly updates before enqueueing other actions
+        // Handle actions when the application is newly marked as "Application Complete"
+        // Placed last because we want to ensure Lead properly updates from SSF UI before enqueueing other actions
         if (applicationNowComplete) {
-            UtilityDataRequestBuilder.create(new List<Id>{lead.Id});
- 			createAndSendCSPartnerEmail(lead.Id);
-            createQCCaseForNoMatchPCR(lead);
-        }
-        if (applicationNowComplete && !lead.No_Payment__c) {
-            // Payment information is captured, setup Zuora account for customer in separate thread
-            ZuoraAccountService.createAccounts(new Set<Id>{lead.Id});
+            CSApplicationFinisher.execute(lead.Id, false);
         }
 
         RestLead responseLead = new RestLead(lead);
@@ -155,7 +156,8 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     }
 
     public virtual void patchPropertyAccount(String jsonRequest) {
-        RestLead.RestPropertyAccount requestAccount = (RestLead.RestPropertyAccount) JSON.deserialize(jsonRequest, RestLead.RestPropertyAccount.class);
+        RestLead.RestPropertyAccount requestAccount = (RestLead.RestPropertyAccount)
+            JSON.deserialize(jsonRequest, RestLead.RestPropertyAccount.class);
         RestResponse response = RestContext.response;
         Account accountToUpdate = accountsSelector.selectOne(requestAccount.id);
         if (accountToUpdate == null) {
@@ -176,29 +178,9 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         envelope.setJSONResponse(response);
     }
 
-    public virtual void patchUtilityAccountLog(String jsonRequest) {
-        RestLead.RestUtilityAccountLog requestUAL = (RestLead.RestUtilityAccountLog) JSON.deserialize(jsonRequest, RestLead.RestUtilityAccountLog.class);
-        RestResponse response = RestContext.response;
-        Utility_Account_Log__c ualToUpdate = ualSelector.selectOne(requestUAL.id);
-        if (ualToUpdate == null) {
-            response.statusCode = statusCode.notFound;
-        } else if (requestUAL.annualKWh != null) {
-            ualToUpdate.Annual_kWh__c = requestUAL.annualKWh;
-            Utility_Account_Log__c ual = ualService.updateUAL(ualToUpdate);
-            updateLeadApplicationStatus(ual.Lead__c);
-            RestLead.RestUtilityAccountLog responseUAL = new RestLead.RestUtilityAccountLog(ual);
-            envelope.setData(responseUAL);
-            response.statusCode = statusCode.ok;
-        } else {
-            envelope.addError('Request did not include correct fields to update');
-            response.statusCode = statusCode.badRequest;
-        }
-        envelope.setJSONResponse(response);
-    }
-
     public virtual void patchApplication(String jsonRequest) {
         RestResponse response = RestContext.response;
-        Map<String, Object> requestLeadMap = (Map<String, Object>) JSON.deserializeUntyped(jsonRequest);
+        Map<String,Object> requestLeadMap = (Map<String,Object>) JSON.deserializeUntyped(jsonRequest);
         Id leadId = (Id)requestLeadMap.get('id');
         Lead existingLead = leadSelector.selectOneWithPropertiesAndUtilities(leadId);
         if (applicationValid(jsonRequest, response, existingLead)) {
@@ -230,7 +212,6 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 // Update lead application status
                 updateLeadApplicationStatus(leadId);
 
-                // Return formatted response
                 RestLead responseLead = formatRestLeadFromLeadAndChildren(leadId, regenerateDocs);
                 envelope.setData(responseLead);
                 response.statusCode = statusCode.ok;
@@ -247,133 +228,39 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         envelope.setJSONResponse(response);
     }
 
-    public virtual void patchContract(String jsonRequest) {
-        Map<String, Object> requestMap = (Map<String, Object>) JSON.deserializeUntyped(jsonRequest);
+    public virtual void patchContract(String jsonRequest) { 
+        Boolean suppressAppCompleteActions = false;
+        Map<String,Object> requestMap = (Map<String,Object>) JSON.deserializeUntyped(jsonRequest);
         RestResponse response = RestContext.response;
-        if(requestMap.containsKey('leadId') && requestMap.get('leadId') != null) {
-            try {
-                customerContractService.signCustomerContracts((Id)requestMap.get('leadId'));
-                updateLeadApplicationStatus((Id)requestMap.get('leadId'));
-                envelope.setData('OK');
-                response.statusCode = statusCode.ok;
-            } catch(System.StringException se) {
-                envelope.addError('Bad lead ID; please provide a valid lead ID');
-                response.statusCode = statusCode.badRequest;
-            } catch(System.TypeException te) {
-                envelope.addError('Bad lead ID; please provide a valid lead ID');
-                response.statusCode = statusCode.badRequest;
-            } catch (Exception e) {
-                envelope.addError(e.getMessage());
-                response.statusCode = statusCode.internalServerError;
-            }
-        } else {
+        Id leadId;
+        if (!requestMap.containsKey('leadId') || requestMap.get('leadId') == null) {
             envelope.addError('Request did not include correct fields to update');
             response.statusCode = statusCode.badRequest;
+            envelope.setJSONResponse(response);
+            return;
         }
-        envelope.setJSONResponse(response);
-    }
-
-    public virtual void postLead(String jsonRequest) {
-        RestLead requestLead = (RestLead) JSON.deserialize(jsonRequest, RestLead.class);
-        RestResponse response = RestContext.response;
-        Boolean validRequest = false;
+        if (requestMap.containsKey('suppressAppComplete') && (Boolean) requestMap.get('suppressAppComplete') == true) {
+            suppressAppCompleteActions = true;
+        }
         try {
-            requestLead.validateCreateFields();
-            // We can only handle one (and only one) property account, right now.
-            // Remove this once the unit-of-work approach is implemented in in the blocks towards the end of this method
-            validRequest = true;
-            if (requestLead.propertyAccounts != null && requestLead.propertyAccounts.size() > 1) {
-                validRequest = false;
-                envelope.addError('Currently, only <=1 propertyAccount per lead is supported in the API.');
-                response.statusCode = statusCode.badRequest;
-            }
-        } catch (Util.BWException e) {
+            leadId = (Id) requestMap.get('leadId');
+            customerContractService.signCustomerContracts(leadId);
+            updateLeadApplicationStatus(leadId);
+            envelope.setData('OK');
+            response.statusCode = statusCode.ok;
+        } catch (System.StringException se) {
+            envelope.addError('Bad lead ID; please provide a valid lead ID');
+            response.statusCode = statusCode.badRequest;
+        } catch (System.TypeException te) {
+            envelope.addError('Bad lead ID; please provide a valid lead ID');
+            response.statusCode = statusCode.badRequest;
+        } catch (Exception e) {
             envelope.addError(e.getMessage());
-            response.statusCode = statusCode.badRequest;
+            response.statusCode = statusCode.internalServerError;
         }
-        if (validRequest) {
-            uow.registerWork(customWork);
-            insertLeadAccountAndUALs(requestLead, response);
+        if (!suppressAppCompleteActions) {
+            CSApplicationFinisher.execute(leadId, true);
         }
-        envelope.setJSONResponse(response);
-    }
-
-    public virtual void postPropertyAccount(String jsonRequest) {
-        RestLead.RestPropertyAccount requestPropertyAccount = (RestLead.RestPropertyAccount) JSON.deserialize(jsonRequest, RestLead.RestPropertyAccount.class);
-        RestResponse response = RestContext.response;
-        Boolean validRequest = false;
-        try {
-            requestPropertyAccount.validateCreateFields();
-            validRequest = true;
-        } catch (Util.BWException e) {
-            envelope.addError(e.getMessage());
-            response.statusCode = statusCode.badRequest;
-            envelope.setJSONResponse(response);
-            return;
-        }
-        Lead associatedLead = leadSelector.selectOne(requestPropertyAccount.leadId);
-        if (associatedLead == null) {
-            response.statusCode = statusCode.notFound;
-            envelope.addError('Lead not found');
-            envelope.setJSONResponse(response);
-            return;
-        }
-        List<Account> existingPropertyAccounts = accountsSelector.selectPropertyAccountsByLeadIds(new Set<Id>{requestPropertyAccount.leadId});
-        if (existingPropertyAccounts != null && !existingPropertyAccounts.isEmpty()) {
-            response.statusCode = statusCode.badRequest;
-            envelope.addError('Cannot POST additional Property Accounts to this Lead, since currently only <=1 propertyAccount per lead is supported, and one already exists for this Lead.');
-            envelope.setJSONResponse(response);
-            return;
-        }
-        Account newPropertyAccount = requestPropertyAccount.asAccount(associatedLead);
-        newPropertyAccount = accountService.insertAccount(newPropertyAccount);
-        RestLead.RestPropertyAccount responsePropertyAccount = new RestLead.RestPropertyAccount(newPropertyAccount);
-        List<Contract> associatedContracts = customerContractSelector.selectByRelatedLead(associatedLead.Id);
-        if(associatedContracts.isEmpty()) {
-            customerContractService.createContractFromLead(associatedLead.Id, null);
-        }
-        if (requestPropertyAccount.utilityAccountLogs != null && !requestPropertyAccount.utilityAccountLogs.isEmpty()) {
-            responsePropertyAccount.utilityAccountLogs = insertUALs(newPropertyAccount, requestPropertyAccount.utilityAccountLogs);
-        }
-        updateLeadApplicationStatus(associatedLead.Id);
-        envelope.setData(responsePropertyAccount);
-        response.statusCode = statusCode.created;
-        envelope.setJSONResponse(response);
-    }
-
-    public virtual void postUtilityAccountLog(String jsonRequest) {
-        RestLead.RestUtilityAccountLog restUtilityAccountLog = (RestLead.RestUtilityAccountLog) JSON.deserialize(jsonRequest, RestLead.RestUtilityAccountLog.class);
-        RestResponse response = RestContext.response;
-        Boolean validRequest = false;
-        try {
-            restUtilityAccountLog.validateCreateFields();
-            validRequest = true;
-        } catch (Util.BWException e) {
-            envelope.addError(e.getMessage());
-            response.statusCode = statusCode.badRequest;
-            envelope.setJSONResponse(response);
-            return;
-        }
-        Account associatedAccount = accountsSelector.selectOne(restUtilityAccountLog.propertyAccountId);
-        if (associatedAccount == null) {
-            response.statusCode = statusCode.notFound;
-            envelope.addError('PropertyAccount not found');
-            envelope.setJSONResponse(response);
-            return;
-        }
-        Utility_Account_Log__c newUtilityAccountLog = restUtilityAccountLog.asUAL(associatedAccount);
-        newUtilityAccountLog = ualService.insertUAL(newUtilityAccountLog);
-        RestLead.RestUtilityAccountLog responseUtilityAccountLog = new RestLead.RestUtilityAccountLog(newUtilityAccountLog);
-        updateLeadApplicationStatus(newUtilityAccountLog.Lead__c);
-        envelope.setData(responseUtilityAccountLog);
-        response.statusCode = statusCode.created;
-        envelope.setJSONResponse(response);
-    }
-
-    public virtual void performZipCheck(String zipCode, String partnerId, String utilityId) {
-        RestResponse response = RestContext.response;
-        RestZipCode zipCodeResponse = new RestZipCode(capacityService.findCapacityByZipcode(zipCode, partnerId, utilityId));
-        envelope.setData(zipCodeResponse);
         envelope.setJSONResponse(response);
     }
 
@@ -416,7 +303,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     }
 
     private void updateLeadAccountAndUALs(String jsonRequest, Lead existingLead) {
-        Map<String, Object> requestLeadMap = (Map<String, Object>) JSON.deserializeUntyped(jsonRequest);
+        Map<String,Object> requestLeadMap = (Map<String,Object>) JSON.deserializeUntyped(jsonRequest);
         RestLead requestLead = (RestLead) JSON.deserialize(jsonRequest, RestLead.class);
         requestLead.mergeFields(requestLeadMap.keySet(), existingLead);
         uow.registerDirty(existingLead);
@@ -441,22 +328,9 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
     }
 
-    private List<RestLead.RestUtilityAccountLog> insertUALs(Account newPropertyAccount, List<RestLead.RestUtilityAccountLog> restUtilityAccountLogs) {
-        List<Utility_Account_Log__c> ualsToInsert = new List<Utility_Account_Log__c>();
-        for (RestLead.RestUtilityAccountLog requestUtilityAccountLog : restUtilityAccountLogs) {
-            ualsToInsert.add(requestUtilityAccountLog.asUAL(newPropertyAccount));
-        }
-        List<Utility_Account_Log__c> newUALs = ualService.insertUALs(ualsToInsert);
-        List<RestLead.RestUtilityAccountLog> ualsToReturn = new List<RestLead.RestUtilityAccountLog>();
-        for (Utility_Account_Log__c newUAL : newUALs) {
-            ualsToReturn.add(new RestLead.RestUtilityAccountLog(newUAL));
-        }
-        return ualsToReturn;
-    }
-
     private Boolean applicationValid(String jsonRequest, RestResponse response, Lead existingLead) {
         RestLead requestLead = (RestLead)JSON.deserialize(jsonRequest, RestLead.class);
-        Map<String, Object> requestMap = (Map<String, Object>) JSON.deserializeUntyped(jsonRequest);
+        Map<String,Object> requestMap = (Map<String,Object>) JSON.deserializeUntyped(jsonRequest);
         if (existingLead == null) {
             response.statusCode = statusCode.notFound;
             return false;
@@ -472,7 +346,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             response.statusCode = statusCode.badRequest;
             return false;
         }
-        Map<String, Object> accountMap = (Map<String, Object>)JSON.deserializeUntyped(JSON.serialize(requestAccount));
+        Map<String,Object> accountMap = (Map<String,Object>)JSON.deserializeUntyped(JSON.serialize(requestAccount));
         if (missingUtilityAccountLogs(accountMap, requestAccount)) {
             envelope.addError('Request did not include correct objects/fields to update');
             response.statusCode = statusCode.badRequest;
@@ -480,25 +354,31 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         return true;
     }
-    private Boolean missingPropertyAccounts(Map<String, Object> requestMap, RestLead requestLead) {
+    
+    private Boolean missingPropertyAccounts(Map<String,Object> requestMap, RestLead requestLead) {
         return requestMap.size() <= 1 || !requestMap.containsKey('propertyAccounts') || requestLead.propertyAccounts.isEmpty();
     }
+    
     private Boolean tooManyOrWrongPropertyAccount(RestLead requestLead, Lead existingLead, RestLead.RestPropertyAccount requestAccount) {
         return requestLead.propertyAccounts.size() > 1 || existingLead.Accounts__r.size() > 1 ||
             (!existingLead.Accounts__r.isEmpty() && existingLead.Accounts__r[0].Id != requestAccount.id);
     }
-    private Boolean missingUtilityAccountLogs(Map<String, Object> accountMap, RestLead.RestPropertyAccount requestAccount) {
-        return accountMap.size() <= 1 || !accountMap.containsKey('utilityAccountLogs') || requestAccount.utilityAccountLogs == null || requestAccount.utilityAccountLogs.isEmpty();
+    
+    private Boolean missingUtilityAccountLogs(Map<String,Object> accountMap, RestLead.RestPropertyAccount requestAccount) {
+        return accountMap.size() <= 1 ||
+            !accountMap.containsKey('utilityAccountLogs') ||
+            requestAccount.utilityAccountLogs == null ||
+            requestAccount.utilityAccountLogs.isEmpty();
     }
 
     private void updateAccount(Lead lead, List<RestLead.RestPropertyAccount> requestPropertyAccounts, List<Object> requestAccountList) {
         Map<Id, Utility_Account_Log__c> existingUtilityAccountLogMap = ualSelector.selectAllByLeadMap(new Set<Id>{lead.Id});
         Map<Id, Account> existingAccountMap = accountsSelector.selectPropertyAccountsByLeadIdsMap(new Set<Id>{lead.Id});
-        for(Integer acctIndex = 0; acctIndex < requestPropertyAccounts.size(); acctIndex++) {
-            Map<String, Object> accountMap = (Map<String, Object>) requestAccountList[acctIndex];
+        for (Integer acctIndex = 0; acctIndex < requestPropertyAccounts.size(); acctIndex++) {
+            Map<String,Object> accountMap = (Map<String,Object>) requestAccountList[acctIndex];
             RestLead.RestPropertyAccount requestPropertyAccount = requestPropertyAccounts[acctIndex];
             Account propAcct;
-            if(existingAccountMap.containsKey(requestPropertyAccount.id)) {
+            if (existingAccountMap.containsKey(requestPropertyAccount.id)) {
                 propAcct = requestPropertyAccount.mergeFields(accountMap.keySet(), existingAccountMap.get(requestPropertyAccount.id));
                 uow.registerDirty(propAcct);
             } else {
@@ -506,7 +386,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 propAcct = requestPropertyAccount.asAccount(lead);
                 uow.registerNew(propAcct);
             }
-            if(requestPropertyAccount.utilityAccountLogs != null && !requestPropertyAccount.utilityAccountLogs.isEmpty()) {
+            if (requestPropertyAccount.utilityAccountLogs != null && !requestPropertyAccount.utilityAccountLogs.isEmpty()) {
                 List<Object> requestUALList = (List<Object>)accountMap.get('utilityAccountLogs');
                 List<RestLead.RestUtilityAccountLog> requestUtilityAccountLogs = requestPropertyAccount.utilityAccountLogs;
                 updateUtilityAccountLogs(propAcct, requestUtilityAccountLogs, requestUALList, existingUtilityAccountLogMap);
@@ -514,14 +394,17 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
     }
 
-    private void updateUtilityAccountLogs(Account propertyAccount, List<RestLead.RestUtilityAccountLog> requestUtilityAccountLogs, List<Object> requestUALList, Map<Id, Utility_Account_Log__c> existingUtilityAccountLogMap) {
-        for(Integer ualIndex = 0; ualIndex < requestUtilityAccountLogs.size(); ualIndex++) {
-            Map<String, Object> ualMap = (Map<String, Object>) requestUALList[ualIndex];
+    private void updateUtilityAccountLogs(
+        Account propertyAccount, List<RestLead.RestUtilityAccountLog> requestUtilityAccountLogs, List<Object> requestUALList,
+        Map<Id, Utility_Account_Log__c> existingUtilityAccountLogMap)
+    {
+        for (Integer ualIndex = 0; ualIndex < requestUtilityAccountLogs.size(); ualIndex++) {
+            Map<String,Object> ualMap = (Map<String,Object>) requestUALList[ualIndex];
             RestLead.RestUtilityAccountLog requestUtilityAccountLog = requestUtilityAccountLogs[ualIndex];
             Utility_Account_Log__c ual;
-            if(ualMap.size() <= 1) { // if == 1, then only has "id", which is not enough fields for a PATCH
+            if (ualMap.size() <= 1) { // if == 1, then only has "id", which is not enough fields for a PATCH
                 continue;
-            } else if(existingUtilityAccountLogMap.containsKey(requestUtilityAccountLog.id)) {
+            } else if (existingUtilityAccountLogMap.containsKey(requestUtilityAccountLog.id)) {
                 ual = requestUtilityAccountLog.mergeFields(ualMap.keySet(), existingUtilityAccountLogMap.get(requestUtilityAccountLog.id));
                 uow.registerDirty(ual);
             } else {
@@ -529,7 +412,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
                 ual = requestUtilityAccountLog.asUAL(propertyAccount);
                 uow.registerNew(ual, Utility_Account_Log__c.Account__c, propertyAccount);
             }
-            if(requestUtilityAccountLog.utilityBills != null && !requestUtilityAccountLog.utilityBills.isEmpty()) {
+            if (requestUtilityAccountLog.utilityBills != null && !requestUtilityAccountLog.utilityBills.isEmpty()) {
                 List<RestLead.RestContentDocument> requestContentDocuments = requestUtilityAccountLog.utilityBills;
                 registerNewContentDocs(requestContentDocuments, ual);
             }
@@ -539,41 +422,41 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     @TestVisible
     private Boolean contractFieldsUpdated(String jsonRequest, Lead existingLead) {
         RestLead requestLead = (RestLead)JSON.deserialize(jsonRequest, RestLead.class);
-        Map<String, Object> requestMap = (Map<String, Object>)JSON.deserializeUntyped(jsonRequest);
-        for(String leadFieldName : contractLeadFields.keySet()) {
+        Map<String,Object> requestMap = (Map<String,Object>)JSON.deserializeUntyped(jsonRequest);
+        for (String leadFieldName : contractLeadFields.keySet()) {
             String restLeadFieldName = contractLeadFields.get(leadFieldName);
-            if(String.valueOf(requestMap.get(restLeadFieldName)) != String.valueOf(existingLead.get(leadFieldName))) {
+            if (String.valueOf(requestMap.get(restLeadFieldName)) != String.valueOf(existingLead.get(leadFieldName))) {
                 return true;
             }
         }
-        if(existingLead.Partner_Lookup__c != requestLead.partnerId) {
-            if(requestLead.partnerId != null) {
+        if (existingLead.Partner_Lookup__c != requestLead.partnerId) {
+            if (requestLead.partnerId != null) {
                 return true;
-            } else if(existingLead.Partner_Lookup__c != PartnerSelector.selectDefaultCSPartner().Id){
+            } else if (existingLead.Partner_Lookup__c != PartnerSelector.selectDefaultCSPartner().Id){
                 return true;
             }
         }
-        if(existingLead.bs_Sales_ID__c != requestLead.salesRepId) {
+        if (existingLead.bs_Sales_ID__c != requestLead.salesRepId) {
             Partner__c partner = PartnerSelector.selectPartnerByPartnerId(existingLead.Partner_Lookup__c);
-            if(requestLead.salesRepId != null) {
+            if (requestLead.salesRepId != null) {
                 return true;
-            } else if(existingLead.bs_Sales_ID__c != partner.Default_Sales_Rep__c){
+            } else if (existingLead.bs_Sales_ID__c != partner.Default_Sales_Rep__c){
                 return true;
             }
         }
         return checkUALsForChanges(requestMap, existingLead);
     }
 
-    private Boolean checkUALsForChanges(Map<String, Object> requestMap, Lead existingLead) {
+    private Boolean checkUALsForChanges(Map<String,Object> requestMap, Lead existingLead) {
         List<Object> accountList = (List<Object>)requestMap.get('propertyAccounts');
-        Map<String, Object> accountMap = (Map<String, Object>)accountList.get(0);
+        Map<String,Object> accountMap = (Map<String,Object>)accountList.get(0);
         List<Object> ualList = (List<Object>)accountMap.get('utilityAccountLogs');
         if (existingLead.Utility_Account_Logs__r.size() != ualList.size()) {
             return true;
         }
-        Map<String, Map<String, Object>> restUALMap = new Map<String, Map<String, Object>>();
+        Map<String, Map<String,Object>> restUALMap = new Map<String, Map<String,Object>>();
         for (Object ualObj : ualList) {
-            Map<String, Object> restUAL = (Map<String, Object>)ualObj;
+            Map<String,Object> restUAL = (Map<String,Object>)ualObj;
             restUALMap.put((String)restUAL.get('utilityAccountNumber'), restUAL);
         }
         for (Utility_Account_Log__c leadUAL : existingLead.Utility_Account_Logs__r) {
@@ -584,11 +467,11 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         return false;
     }
 
-    private Boolean restUALDifferentFromLeadUAL(Map<String, Map<String, Object>> restUALMap, Utility_Account_Log__c leadUAL) {
+    private Boolean restUALDifferentFromLeadUAL(Map<String, Map<String,Object>> restUALMap, Utility_Account_Log__c leadUAL) {
         if (!restUALMap.containsKey(leadUAL.Name)) {
             return true;
         }
-        Map<String, Object> restUAL = restUALMap.get(leadUAL.Name);
+        Map<String,Object> restUAL = restUALMap.get(leadUAL.Name);
         for (String ualFieldName : contractUALFields.keySet()) {
             String restUALFieldName = contractUALFields.get(ualFieldName);
             if (String.valueOf(leadUAL.get(ualFieldName)) != String.valueOf(restUAL.get(restUALFieldName))) {
@@ -619,11 +502,13 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         return responseLead;
     }
 
-    private void setResponseLeadPropertyAccountsAndChildren(Lead leadToReturn, MultiMap ualsByPropertyAccountId, MultiMap leadUALandFUDCDLMap, RestLead responseLead) {
+    private void setResponseLeadPropertyAccountsAndChildren(
+        Lead leadToReturn, MultiMap ualsByPropertyAccountId, MultiMap leadUALandFUDCDLMap, RestLead responseLead)
+    {
         List<RestLead.RestPropertyAccount> returnPropertyAccounts = new List<RestLead.RestPropertyAccount>();
-        for(Account propertyAccount : leadToReturn.Accounts__r) {
+        for (Account propertyAccount : leadToReturn.Accounts__r) {
             List<RestLead.RestUtilityAccountLog> returnUalList = new List<RestLead.RestUtilityAccountLog>();
-            for(Object ual : ualsByPropertyAccountId.getValues(propertyAccount.Id)) {
+            for (Object ual : ualsByPropertyAccountId.getValues(propertyAccount.Id)) {
                 RestLead.RestUtilityAccountLog returnUal = new RestLead.RestUtilityAccountLog((Utility_Account_Log__c) ual);
                 List<RestLead.RestContentDocument> utilityBillList = new List<RestLead.RestContentDocument>();
                 for (Object cdl : leadUALandFUDCDLMap.getValues(returnUal.id)) {
@@ -669,6 +554,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             responseLead.contentDocs = compileLeadContentDocs(responseLead, contractCDLs);
         }
     }
+    
     private MultiMap getLeadUALandFUDCDLMap(Lead leadToReturn, MultiMap ualsByPropertyAccountId) {
         Set<Id> linkedEntityIdSet = new Set<Id>{
             leadToReturn.Id
@@ -686,17 +572,17 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     }
 
     private void registerNewContentDocs(List<RestLead.RestContentDocument> requestContentDocuments, SObject linkedEntity) {
-        for(RestLead.RestContentDocument requestContentDocument : requestContentDocuments) {
-            if(requestContentDocument.id == null) {
+        for (RestLead.RestContentDocument requestContentDocument : requestContentDocuments) {
+            if (requestContentDocument.id == null) {
                 requestContentDocument.body = String.escapeSingleQuotes(requestContentDocument.body);
                 requestContentDocument.validateCreateFields();
                 ContentVersion newContentVersion = requestContentDocument.asContentVersionForInsert();
                 uow.registerNew(newContentVersion);
                 customWork.registerContentDocumentLinkInsert(linkedEntity, newContentVersion, 'V', 'AllUsers');
-            } else if(requestContentDocument.docLinkId == null){
+            } else if (requestContentDocument.docLinkId == null){
                 ContentDocumentLink newContentLink = requestContentDocument.asContentDocLinkForInsert();
                 uow.registerNew(newContentLink, ContentDocumentLink.LinkedEntityId, linkedEntity);
-            } else if(requestContentDocument.lastPublishedVersionId == null) {
+            } else if (requestContentDocument.lastPublishedVersionId == null) {
                 requestContentDocument.body = String.escapeSingleQuotes(requestContentDocument.body);
                 requestContentDocument.validateCreateFields();
                 ContentVersion newContentVersion = requestContentDocument.asContentVersionForInsert();
@@ -844,12 +730,12 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
     @SuppressWarnings('PMD.ApexCRUDViolation')
     private static String getUALStatus(List<Utility_Account_Log__c> ualList) {
         List<Id> ualIds = new List<Id>();
-        for(Utility_Account_Log__c ual : ualList) {
-            if(ual.Utility_lookup__r.Utility_Data_Collection_Mechanism__c == 'File Upload') {
+        for (Utility_Account_Log__c ual : ualList) {
+            if (ual.Utility_lookup__r.Utility_Data_Collection_Mechanism__c == 'File Upload') {
                 ualIds.add(ual.Id);
             }
         }
-        if(ualIds.isEmpty()) {
+        if (ualIds.isEmpty()) {
             return 'Customer Info Completed';
         }
         List<Utility_Account_Log__c> uploadUALs = [
@@ -860,67 +746,15 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             WHERE Id IN :ualIds
         ];
         Boolean utilityBillsPresent = !uploadUALs.isEmpty();
-        for(Utility_Account_Log__c ual : uploadUALs) {
-            if(ual.ContentDocumentLinks.isEmpty()) {
+        for (Utility_Account_Log__c ual : uploadUALs) {
+            if (ual.ContentDocumentLinks.isEmpty()) {
                 utilityBillsPresent = false;
                 break;
             }
         }
-        if(utilityBillsPresent) {
+        if (utilityBillsPresent) {
             return 'Customer Info Completed';
         }
         return 'Started';
-    }
-
-    /**
-     * @description Future method to send an email to the related Partner when the customer has completed their SSF
-     * Application
-     * @param leadId Id for Lead that has completed the application
-     */
-    @Future
-    public static void createAndSendCSPartnerEmail(Id leadId) {
-        Lead lead = new LeadSelector().selectOne(leadId);
-        System_Default__mdt systemDefault = featureSelector.getSystemDefaults();
-        if (systemDefault.Application_Complete_Email_Template__c == null || lead?.Partner_Email__c == null) {
-            Logger.logNow('CSLeadsRestControllerV2', 'createAndSendCSPartnerEmail',
-                'Email was not sent to Partner for lead: ' + leadId + '; First confirm ' +
-                    'that there is an email template found in System Default custom metadata. ' +
-                    'Then confirm the lead is populated with a Partner Email.', Logger.WARN);
-            return;
-        }
-
-        EmailTemplate template = MessagingService.getHtml(systemDefault.Application_Complete_Email_Template__c);
-        String templateHtml = template.HtmlValue;
-        templateHtml = templateHtml.replace('{{{Recipient.Name}}}', lead.Name);
-
-        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
-        mail.setOrgWideEmailAddressId(MessagingService.getCustomerCareEmail().Id);
-        mail.setSubject('Application Completed for ' + lead.Name);
-        mail.setHtmlBody(templateHtml);
-        mail.setToAddresses(new List<String>{lead.Partner_Email__c});
-        mail.setTargetObjectId(lead.Id);
-        mail.setSaveAsActivity(true);
-        mail.setTreatTargetObjectAsRecipient(false);
-
-        try {
-            MessagingService.sendEmail(new List<Messaging.SingleEmailMessage>{mail});
-        } catch (Exception e) {
-            Logger.logNow('CSLeadsRestControllerV2', 'createAndSendCSPartnerEmail', e.getMessage() +
-                '; ' + e.getStackTraceString());
-        }
-    }
-
-    /**
-    * When application is completed, if PCR is still a "No Match," we create a QC Case
-    * @param lead lead that has completed the SSF Application
-    */
-    @TestVisible
-    private void createQCCaseForNoMatchPCR(Lead lead) {
-        if (lead.Personal_Credit_Report__r.LASERCA__Credit_Score__c == '9999') {
-            CaseFactory noMatchFactory  = new CaseFactory();
-            noMatchFactory.setLead(lead);
-            noMatchFactory.setQueueType('No FICO Match');
-            System.enqueueJob(noMatchFactory);
-        }
     }
 }

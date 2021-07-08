@@ -3,13 +3,12 @@
  * Tested By: ZuoraAccountServiceTest
  */
 
-public without sharing class ZuoraAccountService {
+public without sharing class ZuoraAccountService { 
     @TestVisible
     private static AccountsSelector accountSelector = new AccountsSelector();
     private static final List<String> ZUORA_FIELDS_TO_UPDATE =
         new List<String>{'Address_Attn__c','BillingStreet','BillingCity','BillingState','BillingPostalCode','BillingCountry','Send_Bills_Contact__c'};
 
-    @Future (Callout=true)
     public static void createAccounts(Set<Id> leadIds) {
         try {
             List<Account> propertyAccounts = accountSelector.selectPropertyAccountsByLeadIds(leadIds);
