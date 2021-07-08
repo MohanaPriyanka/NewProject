@@ -451,6 +451,21 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Account_Days_Past_Due__c</fullName>
+        <description>Used in the partner portal as an alternative to sharing accounts with partners.</description>
+        <externalId>false</externalId>
+        <formula>Account.Days_Past_Due__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Account Days Past Due</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Account_Owner__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <description>This is used for internal BlueWave Sales tracking efforts.</description>

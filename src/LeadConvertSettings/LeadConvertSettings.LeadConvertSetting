@@ -208,10 +208,6 @@
             <outputField>Annual_Electricity_Cost__c</outputField>
         </mappingFields>
         <mappingFields>
-            <inputField>Underwriting_Criteria__c</inputField>
-            <outputField>Underwriting_Criteria__c</outputField>
-        </mappingFields>
-        <mappingFields>
             <inputField>Utility_relationship__c</inputField>
             <outputField>Utility_relationship__c</outputField>
         </mappingFields>
@@ -238,6 +234,10 @@
         <mappingFields>
             <inputField>Yield_kWh_kW__c</inputField>
             <outputField>Yield_kWh_kW__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>Underwriting_Criteria__c</inputField>
+            <outputField>Underwriting_Criteria__c</outputField>
         </mappingFields>
         <outputObject>Opportunity</outputObject>
     </objectMapping>
