@@ -955,14 +955,15 @@ public with sharing class ZuoraAPI {
         public List<ZuoraInvoiceItemApplication> items;
         public ZuoraInvoiceApplication() {
         }
-        public ZuoraInvoiceApplication(String invoiceId, Decimal amount) {
-            this.invoiceId = invoiceId;
-            this.amount = amount;
-        }
-        public ZuoraInvoiceApplication(String invoiceId, String invoiceItemId, Decimal amount) {
-            this.invoiceId = invoiceId;
-            this.amount = amount;
-            this.items = new List<ZuoraInvoiceItemApplication>{new ZuoraInvoiceItemApplication(invoiceItemId, amount)};
+        public ZuoraInvoiceApplication(Boolean outstandingItemsAreDebitMemosOrInvoicesNotItems, ZuoraOutstandingItemsService.OutstandingItem item, Decimal applicationAmount) {
+            if (outstandingItemsAreDebitMemosOrInvoicesNotItems) {
+                this.invoiceId = item.Id;
+                this.amount = applicationAmount;
+            } else {
+                this.invoiceId = item.ParentId;
+                this.amount = applicationAmount;
+                this.items = new List<ZuoraInvoiceItemApplication>{new ZuoraInvoiceItemApplication(item.Id, applicationAmount)};
+            }
         }
     }
     public class ZuoraInvoiceItemApplication {
@@ -979,14 +980,15 @@ public with sharing class ZuoraAPI {
         public List<ZuoraDebitMemoItemApplication> items;
         public ZuoraDebitMemoApplication() {
         }
-        public ZuoraDebitMemoApplication(String debitMemoId, Decimal amount) {
-            this.debitMemoId = debitMemoId;
-            this.amount = amount;
-        }
-        public ZuoraDebitMemoApplication(String debitMemoId, String debitMemoItemId, Decimal amount) {
-            this.debitMemoId = debitMemoId;
-            this.amount = amount;
-            this.items = new List<ZuoraDebitMemoItemApplication>{new ZuoraDebitMemoItemApplication(debitMemoItemId, amount)};
+        public ZuoraDebitMemoApplication(Boolean outstandingItemsAreDebitMemosOrInvoicesNotItems, ZuoraOutstandingItemsService.OutstandingItem item, Decimal applicationAmount) {
+            if (outstandingItemsAreDebitMemosOrInvoicesNotItems) {
+                this.debitMemoId = item.Id;
+                this.amount = applicationAmount;
+            } else {
+                this.debitMemoId = item.ParentId;
+                this.amount = applicationAmount;
+                this.items = new List<ZuoraDebitMemoItemApplication>{new ZuoraDebitMemoItemApplication(item.Id, applicationAmount)};
+            }
         }
     }
     public class ZuoraDebitMemoItemApplication {

@@ -9,7 +9,8 @@ public without sharing class GatewaySelector {
         return [
             SELECT Id, Name,
                 Zuora__External_Id__c,
-                Client_Owner__r.Account_Number__c
+                Client_Owner__r.Account_Number__c,
+                Zuora__IsDefault__c
             FROM Zuora__PaymentGateway__c
         ];
     }

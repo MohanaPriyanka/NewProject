@@ -1561,6 +1561,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ZuoraGatewayAssigner</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraGatewayAssignerTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ZuoraInvoiceAsyncService</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1602,6 +1610,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ZuoraPaymentSelector</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraPaymentService</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -35021,6 +35033,21 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Zuora__Payment__c.Lockbox_Formula__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Zuora__Payment__c.Lockbox__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Zuora__Payment__c.Payment_Gateway__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Zuora__Payment__c.ResponseStatus__c</field>
         <readable>true</readable>
@@ -50422,6 +50449,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Zuora_Contact__c-Zuora Contact Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Zuora__Payment__c-Zuora__Payment Z-Force Layout v2%2E7</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Zuora__ZInvoice__c-Zuora__ZInvoice Z-Force Layout v2%2E9</layout>

@@ -62,7 +62,11 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Zuora__TransferedToAccounting__c</field>
+                <field>Zuora__ReferenceId__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Lockbox_Formula__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
@@ -101,6 +105,10 @@
         <label>Gateway Information</label>
         <layoutColumns>
             <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Payment_Gateway__c</field>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Zuora__GatewayStatus__c</field>
             </layoutItems>
@@ -115,10 +123,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Zuora__GatewayResponse__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Zuora__ReferenceId__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -137,14 +141,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Zuora__MarkedForSubmissionOn__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Zuora__SoftDescriptor__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Zuora__SoftDescriptorPhone__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
@@ -215,7 +211,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00hS00000011G5h</masterLabel>
+        <masterLabel>00h0a00000Bth4X</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

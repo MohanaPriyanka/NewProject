@@ -4121,6 +4121,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ZuoraGatewayAssigner</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraGatewayAssignerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ZuoraGenericBatchOperation</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -4203,6 +4211,10 @@
     <classAccesses>
         <apexClass>ZuoraPaymentSelectorTest</apexClass>
         <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraPaymentService</apexClass>
+        <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ZuoraProductRatePlanChargeSelector</apexClass>
@@ -48986,6 +48998,21 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Zuora__Payment__c.Lockbox_Formula__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Zuora__Payment__c.Lockbox__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Zuora__Payment__c.Payment_Gateway__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Zuora__Payment__c.Zuora__Account__c</field>
         <readable>true</readable>
@@ -66830,6 +66857,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Zuora_Setting__mdt-Zuora Setting Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Zuora__Payment__c-Zuora__Payment Z-Force Layout v2%2E7</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>agf__ADM_Epic__c-agf__Epic Layout Feed Based</layout>

@@ -109,17 +109,9 @@ public with sharing class ZuoraPaymentService implements ZuoraDataQueryService.P
         Decimal applicationAmount
     ) {
         if (item.IsInvoiceItem) {
-            if (outstandingItemsAreDebitMemosOrInvoicesNotItems) {
-                application.invoices.add(new ZuoraAPI.ZuoraInvoiceApplication(item.Id, applicationAmount));
-            } else {
-                application.invoices.add(new ZuoraAPI.ZuoraInvoiceApplication(item.ParentId, item.Id, applicationAmount));
-            }
+            application.invoices.add(new ZuoraAPI.ZuoraInvoiceApplication(outstandingItemsAreDebitMemosOrInvoicesNotItems, item, applicationAmount));
         } else {
-            if (outstandingItemsAreDebitMemosOrInvoicesNotItems) {
-                application.debitMemos.add(new ZuoraAPI.ZuoraDebitMemoApplication(item.Id, applicationAmount));
-            } else {
-                application.debitMemos.add(new ZuoraAPI.ZuoraDebitMemoApplication(item.ParentId, item.Id, applicationAmount));
-            }
+            application.debitMemos.add(new ZuoraAPI.ZuoraDebitMemoApplication(outstandingItemsAreDebitMemosOrInvoicesNotItems, item, applicationAmount));
         }
     }
 
@@ -186,4 +178,5 @@ public with sharing class ZuoraPaymentService implements ZuoraDataQueryService.P
                 excep.getMessage()+ '\n' + excep.getStackTraceString()+ '\n' + JSON.serialize(paymentToApply, true) + '\n' + JSON.serialize(paymentsToApply, true));
         }
     }
+
 }
