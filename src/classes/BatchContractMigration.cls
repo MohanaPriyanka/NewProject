@@ -31,6 +31,7 @@ public without sharing class BatchContractMigration implements Database.Batchabl
         }
     }
 
+    @SuppressWarnings('PMD.EmptyStatementBlock')
     public void finish(Database.BatchableContext batchableContext) {
         // Nothing to do
     }

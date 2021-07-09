@@ -12,8 +12,6 @@ public with sharing class LeadDispatcher {
 
     public class LeadHandlerResult {
         LeadTriggerHandler leadTriggerHandler = new LeadTriggerHandler();
-        ReferralCodeHandler referralCodeHandler  = new ReferralCodeHandler();
-
         public List<Lead> updatedCSAPLeads = new List<Lead>();
         public Map<Id, Lead> oldCSAPMap = new Map<Id, Lead>();
 
@@ -36,12 +34,6 @@ public with sharing class LeadDispatcher {
                 }
             } else if (lead.LeadSource == 'Website') {
                 result.websiteLeads.add(lead);
-            } else {
-                result.updatedCSAPLeads.add(lead);
-
-                if (oldLeadMap != null) {
-                    result.oldCSAPMap.put(lead.Id, oldLeadMap.get(lead.Id));
-                }
             }
 
         }
@@ -51,10 +43,7 @@ public with sharing class LeadDispatcher {
     public void onBeforeInsert(List<Lead> leadList) {
         LeadHandlerResult result = separateLeads(leadList, null);
 
-        if (result.updatedCSAPLeads.size() > 0) {
-            result.leadTriggerHandler.onBeforeInsert(result.updatedCSAPLeads);
-            result.referralCodeHandler.OnBeforeInsert(result.updatedCSAPLeads);
-        }
+
 
         if (result.updatedLeads.size()> 0 ){
             UtilityLoadZoneService.updateLZUL(result.updatedLeads, null);
@@ -88,9 +77,6 @@ public with sharing class LeadDispatcher {
         LeadHandlerResult result = separateLeads(updatedLeads, oldLeadMap);
 
         LeadService leadService = new LeadService();
-        if (result.updatedCSAPLeads.size() > 0 ) {
-            result.leadTriggerHandler.onAfterUpdate(null, result.updatedCSAPLeads, result.oldCSAPMap);
-        }
 
         if (result.updatedLeads.size()> 0 ){
             leadService.completeLeadConversion(result.updatedLeads, result.oldLeadMap);
