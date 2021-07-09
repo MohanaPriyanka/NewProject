@@ -7589,6 +7589,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract.Conga_UCB_Disclosure_Form__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Contract.ContractTerm</field>
         <readable>true</readable>
@@ -46717,6 +46722,10 @@
         <layout>BlueWave_Surveys__c-Net Promoter Score</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>BlueWave_Surveys__c-Net Promoter Score</layout>
+        <recordType>BlueWave_Surveys__c.Net_Promoter_Score</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>BlueWave_Surveys__c-Net Promoter Score - Partner</layout>
         <recordType>BlueWave_Surveys__c.Net_Promoter_Score_Partner</recordType>
     </layoutAssignments>
@@ -46727,10 +46736,6 @@
     <layoutAssignments>
         <layout>BlueWave_Surveys__c-Net Promoter Score - Partner</layout>
         <recordType>BlueWave_Surveys__c.Partner_survey_portal_feedback_Q42017</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>BlueWave_Surveys__c-Net Promoter Score</layout>
-        <recordType>BlueWave_Surveys__c.Net_Promoter_Score</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>BlueWave_Surveys__c-Partner Feedback Survey Layout</layout>
@@ -47067,24 +47072,12 @@
         <layout>Lead-BFG - Community Solar %28Residential%29</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Lead-BFG - DOER Solar Loan %28Co-Applicant%29</layout>
-        <recordType>Lead.BFG_DOER_Solar_Loan_Co_Applicant</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Lead-BFG - DOER Solar Loan</layout>
         <recordType>Lead.BFG_DOER_Solar_Loan</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Lead-BFG - Standard Solar Loan %28Co-Applicant%29</layout>
-        <recordType>Lead.BFG_MA_Solar_Loan_Co_Applicant</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Lead-BFG - Standard Solar Loan %28Co-Applicant%29</layout>
-        <recordType>Lead.BFG_NC_Solar_Loan_Co_Applicant</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Lead-BFG - Standard Solar Loan %28Co-Applicant%29</layout>
-        <recordType>Lead.BFG_SC_Solar_Loan_Co_Applicant</recordType>
+        <layout>Lead-BFG - DOER Solar Loan %28Co-Applicant%29</layout>
+        <recordType>Lead.BFG_DOER_Solar_Loan_Co_Applicant</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-BFG - Standard Solar Loan</layout>
@@ -47101,6 +47094,18 @@
     <layoutAssignments>
         <layout>Lead-BFG - Standard Solar Loan</layout>
         <recordType>Lead.BlueWave_Solar_Loan</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Lead-BFG - Standard Solar Loan %28Co-Applicant%29</layout>
+        <recordType>Lead.BFG_MA_Solar_Loan_Co_Applicant</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Lead-BFG - Standard Solar Loan %28Co-Applicant%29</layout>
+        <recordType>Lead.BFG_NC_Solar_Loan_Co_Applicant</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Lead-BFG - Standard Solar Loan %28Co-Applicant%29</layout>
+        <recordType>Lead.BFG_SC_Solar_Loan_Co_Applicant</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-C%26I</layout>
