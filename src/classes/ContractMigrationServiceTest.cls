@@ -149,7 +149,7 @@ public with sharing class ContractMigrationServiceTest {
             return null;
         }
     }
-
+    @SuppressWarnings('PMD.AvoidHardcodingId')
     private static List<Opportunity> getOpportunityMocks(List<Account> accounts, Id assignmentAgreementId, Id productId){
         Opportunity oppOne = new Opportunity(
             Id = '0062f00000EllRvAAJ',
