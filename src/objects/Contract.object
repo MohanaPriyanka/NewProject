@@ -486,6 +486,35 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Conga_UCB_Disclosure_Form__c</fullName>
+        <externalId>false</externalId>
+        <formula>&quot;&amp;id=&quot; + Id +
+&quot;&amp;templateid={!Environment.CONGA_UCBDISC_TEMPLATEID}&quot; +
+&quot;&amp;qvar0id=a270a0000020q0rAAA?pv0=&quot; + Id +
+&quot;&amp;queryid=[ResiSig]a270a0000020q0qAAA?pv1={QVar0},[Opp]a270a0000020q0sAAA?pv1={QVar0},[UAS]a270a0000020q0vAAA?pv1={QVar0},[Tariff]a275b0000021MZLAA2?pv1={QVar0},[Biz]a270a0000020q0tAAA?pv1={QVar0},[Resi]a270a0000020q0qAAA?pv1={QVar0},[NonGuarantor]a270a00000211F2AAI?pv1={QVar0},[UAL]a275b000002b4kNAAQ?pv4=&quot; + Lead__r.Id + &quot;,[Account]a275b000002b4kSAAQ?pv3=&quot; + Account.Id + &quot;,[BizAcct]a275b000002b4kcAAA?pv3=&quot; + Account.Id + &quot;,[SSS]a270a00000211EsAAI?pv2=&quot; + Lead__r.Utility_relationship__r.Id + &quot;,[BizAcctSig]a275b000002b4kXAAQ?pv0=&quot; + Id +
+&quot;&amp;sc1=SalesforceFile&quot; +
+&quot;&amp;defaultpdf=1&quot; +
+&quot;&amp;sc0=1&quot; +
+&quot;&amp;apdf=0&quot; +
+&quot;&amp;emailtemplateid={!Environment.CONGA_UCBEMAILTEMPLATEID}P&quot; +
+&quot;&amp;emailtoid=&quot; + Account.Send_Bills_Contact__r.Id +
+&quot;&amp;emailrelatedtoid={QVar0}&quot; +
+&quot;&amp;emailfromid=0D20a0000004K0P&quot; +
+&quot;&amp;APDF=1&quot; +
+&quot;&amp;qmode=SendEmail&quot; +
+&quot;&amp;uf0=1&quot; +
+&quot;&amp;OFN=Supplemental Disclosure Form&quot; +
+&quot;&amp;ContentWorkspaceId=0585b000000aDRHAA2&quot; +
+&quot;&amp;ContentCustomFieldName=Signing_Status__c&quot; +
+&quot;&amp;ContentCustomFieldValue=Countersigned&quot;</formula>
+        <inlineHelpText>This is used in a conga batch record to generate and send UCB disclosure forms in bulk</inlineHelpText>
+        <label>Conga UCB Disclosure Form</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>ContractTerm</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>

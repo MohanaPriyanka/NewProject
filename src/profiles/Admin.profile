@@ -633,14 +633,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>DocuSignHelperTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>DocuSignRecipientStatusHandler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>DocuSignVoid_Invocable</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -8818,6 +8810,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Contract.Conga_Template__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract.Conga_UCB_Disclosure_Form__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
