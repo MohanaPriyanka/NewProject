@@ -69,11 +69,8 @@ public class UserHandlerTest {
 			Send_Bills_Contact__c = incompleteInfoContact.Id,
 			OwnerId = UserInfo.getUserId()
 		);
-		Account loanAccount = new Account(
-			Name = 'Loan',
-			OwnerId = UserInfo.getUserId()
-		);
-		insert new List<Account>{normalAccount, duplicateUsernameAccount, duplicateNicknameAccount, incompleteInfoAccount, loanAccount};
+
+		insert new List<Account>{normalAccount, duplicateUsernameAccount, duplicateNicknameAccount, incompleteInfoAccount};
 
 		Shared_Solar_System__c nonWaitlistSSS =
 			new Shared_Solar_System__c(Name = 'Shared Solar System');
@@ -103,13 +100,8 @@ public class UserHandlerTest {
 			CloseDate = System.today()
 		);
 
-		Opportunity oppThree = new Opportunity(
-			Name = 'Loan',
-			AccountId = loanAccount.Id,
-			StageName = 'Complete',
-			CloseDate = System.today()
-		);
-		insert new List<Opportunity>{oppOne, oppTwo, oppThree};
+
+		insert new List<Opportunity>{oppOne, oppTwo};
 	}
 
 	@IsTest
@@ -222,10 +214,8 @@ public class UserHandlerTest {
 			AccountId = normalAccount.Id,
 			Parent_Account__c = accountParent.Id,
 			Shared_Solar_System__c = testSSS.Id,
-			BlueWave_Signature_Status__c = 'Complete',
 			StageName = 'Complete',
 			Product_Line__c = 'Community Solar',
-			Contract_Status__c = 'Complete',
 			CloseDate = System.today()
 		);
 		insert testOpportunity;
@@ -241,20 +231,6 @@ public class UserHandlerTest {
 		];
 
 		System.assertEquals(previousNumberUsers + 1, userListUpdated.size(),'We should only create a user for a completed opportunity once');
-	}
-
-	@IsTest public static void testLoanOpp() {
-		Opportunity loanOpp = [SELECT Id FROM Opportunity WHERE Name = 'Loan'];
-		loanOpp.Contract_Status__c = 'Completed';
-
-		Test.startTest();
-		update loanOpp;
-		Test.stopTest();
-
-		List<User> accounts = [SELECT Id FROM User WHERE LastName = 'Account'];
-		System.assertEquals(0, accounts.size(),'We should not create a user when a loan opp is completed');
-		List<Error_Log__c> errors = [SELECT Id, Message__c FROM Error_Log__c WHERE Class__c = 'UserHandler'];
-		System.assertEquals(0, errors.size(),'We should not attempt to create a user and have an error when a loan opp is completed');
 	}
 
 	@IsTest

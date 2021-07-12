@@ -1,15 +1,17 @@
 @isTest
 private class LeadsLZUTriggerTestClass {
 
-    static testMethod void validateLZUL(){
+    static testMethod void validateLZUL() {
         Utility__c eversource = new Utility__c(
             Name = 'Eversource',
             Number_of_Decimal_Places__c = 2
         );
 
-        insert new List<Utility__c>{eversource};
+        insert new List<Utility__c>{
+            eversource
+        };
 
-        Load_U__c newLZU = new Load_U__c (Name = '02052', LZ__c = 'NEMA', Town__c= 'Medfield');
+        Load_U__c newLZU = new Load_U__c (Name = '02052', LZ__c = 'NEMA', Town__c = 'Medfield');
         insert newLZU;
 
         ZipCode_Utility_Junction__c junction = new ZipCode_Utility_Junction__c(
@@ -18,7 +20,15 @@ private class LeadsLZUTriggerTestClass {
         );
         insert junction;
 
-        Lead newLead = new Lead(FirstName = 'Cole', LastName = 'Swain', Company = 'BlueWave', Status = 'contacted', Parcel_Zip__c = '02052', Product_Line__c = 'Community Solar');
+        Lead newLead = new Lead(
+            FirstName = 'Cole',
+            LastName = 'Swain',
+            Company = 'BlueWave',
+            Status = 'contacted',
+            Parcel_Zip__c = '02052',
+            Product_Line__c = 'Community Solar',
+            LeadSource = 'Switch'
+        );
         Test.startTest();
         insert newLead;
         Test.stopTest();

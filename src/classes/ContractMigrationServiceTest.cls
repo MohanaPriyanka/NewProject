@@ -30,7 +30,7 @@ public with sharing class ContractMigrationServiceTest {
 
     @IsTest
     public static void testServiceLogic() {
-        // 6 Opps, with 5 DS and 4 attachments (2 Opps should log error for missing data)
+        // 6 Opps, (2 Opps should log error for missing data)
         List<Account> accounts = new List<Account>([SELECT Id FROM Account WHERE Name LIKE '%Customer%']);
         Contract assignAgree = [SELECT Id FROM Contract LIMIT 1];
         Product2 normalCSProduct = [SELECT Id FROM Product2 WHERE Name = 'Normal 10% Community Solar' LIMIT 1];
@@ -41,11 +41,6 @@ public with sharing class ContractMigrationServiceTest {
 
         ContractMigrationService service = new ContractMigrationService();
         service.convertOpportunityToContract(oppList);
-        service.cloneDocuSignAttachmentsToContract(oppList, 'Credit Allocation Agreement');
-        service.cloneDocuSignAttachmentsToContract(oppList, 'Disclosure');
-
-        List<ContentDocumentLink> cdlToInsertList = (List<ContentDocumentLink>)
-            FFLibHelperTest.getRegisterNewListFromUnitOfWork(service.uow, 'ContentDocumentLink');
 
         List<Contract> contracts = [
             SELECT Id, AccountId, Assignment_Agreement__c
@@ -70,8 +65,6 @@ public with sharing class ContractMigrationServiceTest {
         System.assertEquals(2,countOfContractsAccount1);
         System.assert(containsAccount2);
 
-        // 1 for agreement, 1 for disclosure for each opp with a DS
-        System.assertEquals(8,cdlToInsertList.size());
     }
 
     @IsTest
@@ -110,51 +103,11 @@ public with sharing class ContractMigrationServiceTest {
     }
 
     private static void useMocks() {
-        ContractMigrationService.docuSignSelector = (DocuSignSelector) Test.createStub(DocuSignSelector.class, new MockDocuSignStatusSelector());
         ContractMigrationService.attachSelector = (AttachmentSelector) Test.createStub(AttachmentSelector.class, new MockAttachSelector());
     }
 
-    public class MockDocuSignStatusSelector extends MockProvider {
-        MockDocuSignStatusSelector() {}
-        public override Object handleMethodCall(MethodCall methodCall) {
-            // No DS for Opp 0062f00000EllRvAAJ
-            Map<Id, dsfs__DocuSign_Status__c> dsMap = new Map<Id, dsfs__DocuSign_Status__c>();
-            dsfs__DocuSign_Status__c statusOne = new dsfs__DocuSign_Status__c(
-                Id = 'a0S2f000000adRDEAY',
-                dsfs__Opportunity__c = '0062f00000EllS0AAJ'
-            );
-            dsfs__DocuSign_Status__c statusTwo = new dsfs__DocuSign_Status__c(
-                Id = 'a0S2f000000bbRDEAY',
-                dsfs__Opportunity__c = '0062f00000EllRwAAJ'
-            );
-            dsfs__DocuSign_Status__c statusThree = new dsfs__DocuSign_Status__c(
-                Id = 'a0S2f000000ccRDEAY',
-                dsfs__Opportunity__c = '0062f00000EllRxAAJ'
-            );
-            dsfs__DocuSign_Status__c statusFour = new dsfs__DocuSign_Status__c(
-                Id = 'a0S2f000000eeRDEAY',
-                dsfs__Opportunity__c = '0062f00000EllRyAAJ'
-            );
-            dsfs__DocuSign_Status__c statusFive = new dsfs__DocuSign_Status__c(
-                Id = 'a0S2f000000ffRDEAY',
-                dsfs__Opportunity__c = '0062f00000EllRzAAJ'
-            );
 
-            dsMap.put(statusOne.Id, statusOne);
-            dsMap.put(statusTwo.Id, statusTwo);
-            dsMap.put(statusThree.Id, statusThree);
-            dsMap.put(statusFour.Id, statusFour);
-            dsMap.put(statusFive.Id, statusFive);
-
-            switch on methodCall.stubbedMethodName {
-                when 'getDocusignStatuses' {
-                    return dsMap;
-                }
-            }
-            return null;
-        }
-    }
-
+    @SuppressWarnings('PMD.EmptyStatementBlock,PMD.AvoidHardcodingId')
     public class MockAttachSelector extends MockProvider {
         MockAttachSelector() {}
         public override Object handleMethodCall(MethodCall methodCall) {
@@ -163,25 +116,25 @@ public with sharing class ContractMigrationServiceTest {
                 Name = 'File Customer Agreement',
                 Body = Blob.valueOf('This is the file body'),
                 ParentId = 'a0S2f000000adRDEAY',
-                Description = 'Descirption'
+                Description = 'Description'
             );
             Attachment attachTwo = new Attachment(
                 Name = 'Customer Agreement Two',
                 Body = Blob.valueOf('This is the file body'),
                 ParentId = 'a0S2f000000bbRDEAY',
-                Description = 'Descirption'
+                Description = 'Description'
             );
             Attachment attachThree = new Attachment(
                 Name = 'Customer Agreement',
                 Body = Blob.valueOf('This is the file body'),
                 ParentId = 'a0S2f000000ccRDEAY',
-                Description = 'Descirption'
+                Description = 'Description'
             );
             Attachment attachFour = new Attachment(
                 Name = 'Customer Agreement',
                 Body = Blob.valueOf('This is the file body'),
                 ParentId = 'a0S2f000000ffRDEAY',
-                Description = 'Descirption'
+                Description = 'Description'
             );
 
             List<Attachment> attachList = new List<Attachment>{
@@ -196,7 +149,7 @@ public with sharing class ContractMigrationServiceTest {
             return null;
         }
     }
-
+    @SuppressWarnings('PMD.AvoidHardcodingId')
     private static List<Opportunity> getOpportunityMocks(List<Account> accounts, Id assignmentAgreementId, Id productId){
         Opportunity oppOne = new Opportunity(
             Id = '0062f00000EllRvAAJ',

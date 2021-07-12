@@ -217,36 +217,6 @@ public class LeadServiceTestclass {
     }
 
     @IsTest
-    static void testDispatchCSAPLead() {
-        Lead csapLead = (Lead)TestFactory.createSObject(new Lead(
-            LastName = 'Testcase',
-            FirstName = 'CSAP',
-            Email = 'test@email.com',
-            LeadSource = 'CSAP',
-            Company = 'Cloud Jedi',
-            Status = 'Qualified',
-            Product_line__c = 'Community Solar',
-            Parcel_Zip__c = '12345',
-            System_Assignment__c = 'Automatic - Assignment Order')
-        );
-        insert csapLead;
-
-        Partner__c partner = [SELECT Id FROM Partner__c WHERE Email__c = 'otherTest@email.com' LIMIT 1];
-        csapLead.Partner_Lookup__c = partner.Id;
-        update csapLead;
-
-        Lead lead = [
-            SELECT Id, Partner_Lookup__c, Utility_relationship__r.Name, LoadZone__c
-            FROM Lead
-            WHERE FirstName = 'CSAP'
-            LIMIT 1
-        ];
-        //LeadDispatcher should send lead to LeadTriggerHandler where LoadZone and Utliity are set using UtilityLoadZoneService
-        System.assertEquals('Hudson Valley' , lead.LoadZone__c, 'UtilityLoadZoneService should have set lead.LoadZone__c = \'Hudson Valley\'');
-        System.assertEquals('NYS Electric and Gas', lead.Utility_relationship__r.Name, 'UtilityLoadZoneService should have set lead.Utility_relationship__c to the NYS Electric & Gas utility');
-    }
-
-    @IsTest
     static void testBuildPropertyAccount() {
         Lead switchLead = [
             SELECT Id, Status, Company, Product_line__c, Utility_relationship__r.Id, LASERCA__Home_Address__c,
