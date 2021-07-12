@@ -18,16 +18,31 @@ public without sharing class CSApplicationFinisher {
      */
     @Future
     public static void execute(Id leadId, Boolean setApplicationCompleteDate) {
-        // Locate lead
         Lead lead = leadSelector.selectOne(leadId);
         if (lead == null) {
-            String message = 'Unable to process CS lead application complete steps. Reprocess manually. Inputs:\nleadId: '
-                + leadId + '\nsetApplicationCompleteDate: ' + setApplicationCompleteDate;
-            Logger.logNow('CSApplicationFinisher', 'execute', message, Logger.ERROR);
+            logError(leadId, setApplicationCompleteDate, 'Unable to locate lead');
             return;
         }
+        try {
+            performSteps(lead, setApplicationCompleteDate);
+        } catch (Exception e) {
+            logError(leadId, setApplicationCompleteDate, 'Unexpected error occurred');
+            return;
+        }
+    }
 
-        // Perform actions on CS Lead application complete
+    private static void logError(Id leadId, Boolean setApplicationCompleteDate, String messagePrefix) {
+        String message = messagePrefix +  '. Please reprocess manually. Inputs:\nleadId: ' + leadId +
+            '\nsetApplicationCompleteDate: ' + setApplicationCompleteDate;
+        Logger.logNow('CSApplicationFinisher', 'execute', message, Logger.ERROR);
+    }
+
+    /**
+     * @description Perform actions on CS Lead application complete
+     * @param lead CS Lead record to process
+     * @param setApplicationCompleteDate Set application complete date on Lead via Apex when called?
+     */
+    private static void performSteps(Lead lead, Boolean setApplicationCompleteDate) {
         updateLeadOnComplete(lead, setApplicationCompleteDate);
         createAndSendCSPartnerEmail(lead);
         createQCCaseForNoMatchPCR(lead);
@@ -38,18 +53,11 @@ public without sharing class CSApplicationFinisher {
     }
 
     private static void updateLeadOnComplete(Lead lead, Boolean setApplicationCompleteDate) {
-        if (setApplicationCompleteDate) {
-            lead.Application_Complete_Date__c = Datetime.now();
-        }
+        lead.Application_Complete_Date__c = setApplicationCompleteDate ? Datetime.now() : lead.Application_Complete_Date__c;
         lead.Application_Status__c = 'Application Completed';
-        try {
-            CSLeadsRESTControllerV2.setContinueApplicationLinks(lead, 'Application Completed');
-            qualificationService.qualifyLead(lead);
-            leadService.updateLead(lead);
-        } catch (Exception e) {
-            String message = 'Failed to update lead on application complete.\n\n' + e.getMessage() + '\n\n' + e.getStackTraceString();
-            Logger.logNow('CSApplicationFinisher', 'updateLeadOnComplete', message, Logger.ERROR);
-        }
+        CSLeadsRESTControllerV2.setContinueApplicationLinks(lead, 'Application Completed');
+        qualificationService.qualifyLead(lead);
+        leadService.updateLead(lead);
     }
 
     /**
@@ -78,13 +86,7 @@ public without sharing class CSApplicationFinisher {
         mail.setTargetObjectId(lead.Id);
         mail.setSaveAsActivity(true);
         mail.setTreatTargetObjectAsRecipient(false);
-
-        try {
-            MessagingService.sendEmail(new List<Messaging.SingleEmailMessage>{mail});
-        } catch (Exception e) {
-            Logger.logNow('CSApplicationFinisher', 'createAndSendCSPartnerEmail', e.getMessage() +
-                '; ' + e.getStackTraceString());
-        }
+        MessagingService.sendEmail(new List<Messaging.Email>{mail});
     }
 
     /**

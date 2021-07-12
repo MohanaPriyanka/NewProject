@@ -82,7 +82,7 @@ private with sharing class GlyntUploadServiceTest {
         Test.setMock(HttpCalloutMock.class, new GlyntMockUploadSuccess());
         GlyntAPIHelper.extractionProcessor = 'GlyntExtractionService';
         Chain.callQueueableChain = true;
-        UtilityDataRequestBuilder.create(new List<String>{lead.Id});
+        UtilityDataRequestBuilder.createUDRs(new List<String>{lead.Id});
         // Since finalizers in tests cause this, we'll run the last promise explicitly:
         // https://salesforce.stackexchange.com/questions/336329/apex-tests-using-finalizers-causes-metadata-api-deploy-to-result-in-limit-exceed
         GlyntExtractionService extractionService =
@@ -113,7 +113,7 @@ private with sharing class GlyntUploadServiceTest {
 
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, new GlyntMockUploadFailure());
-        UtilityDataRequestBuilder.create(new List<String>{lead.Id});
+        UtilityDataRequestBuilder.createUDRs(new List<String>{lead.Id});
         Test.stopTest();
 
         utilityDataRequests = [SELECT Id FROM Utility_Data_Request__c];
