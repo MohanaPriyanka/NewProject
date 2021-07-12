@@ -37,9 +37,7 @@ public with sharing class LeadDispatcher {
 
     public void onBeforeInsert(List<Lead> leadList) {
         LeadHandlerResult result = separateLeads(leadList, null);
-        if (result.updatedLeads.size()> 0 ){
-            UtilityLoadZoneService.updateLZUL(result.updatedLeads, null);
-        }
+        UtilityLoadZoneService.updateLZUL(result.updatedLeads, null);
     }
 
     public void checkForDuplicates(List<Lead> leadList) {
@@ -59,7 +57,6 @@ public with sharing class LeadDispatcher {
 
     public void onAfterUpdate(List<Lead> updatedLeads, Map<Id, Lead> oldLeadMap){
         LeadHandlerResult result = separateLeads(updatedLeads, oldLeadMap);
-
         LeadService leadService = new LeadService();
 
         if (result.updatedLeads.size()> 0 ){
