@@ -12,19 +12,12 @@ public with sharing class LeadDispatcher {
 
     public class LeadHandlerResult {
         LeadTriggerHandler leadTriggerHandler = new LeadTriggerHandler();
-        ReferralCodeHandler referralCodeHandler  = new ReferralCodeHandler();
-
-        public List<Lead> updatedCSAPLeads = new List<Lead>();
-        public Map<Id, Lead> oldCSAPMap = new Map<Id, Lead>();
-
         public List<Lead> websiteLeads = new List<Lead>();
-
         public List<Lead> updatedLeads = new List<Lead>();
         public Map<Id, Lead> oldLeadMap = new Map<Id, Lead>();
     }
 
-
-    //Separate the Switch Leads from the CSAP/Web/Loan Leads
+    //Separate the Switch Leads from the Web Leads
     public static LeadHandlerResult separateLeads(List<Lead> updatedLeads, Map<Id, Lead> oldLeadMap){
         LeadHandlerResult result = new LeadHandlerResult();
         for (Lead lead : updatedLeads) {
@@ -36,12 +29,6 @@ public with sharing class LeadDispatcher {
                 }
             } else if (lead.LeadSource == 'Website') {
                 result.websiteLeads.add(lead);
-            } else {
-                result.updatedCSAPLeads.add(lead);
-
-                if (oldLeadMap != null) {
-                    result.oldCSAPMap.put(lead.Id, oldLeadMap.get(lead.Id));
-                }
             }
 
         }
@@ -50,19 +37,7 @@ public with sharing class LeadDispatcher {
 
     public void onBeforeInsert(List<Lead> leadList) {
         LeadHandlerResult result = separateLeads(leadList, null);
-
-        if (result.updatedCSAPLeads.size() > 0) {
-            result.leadTriggerHandler.onBeforeInsert(result.updatedCSAPLeads);
-            result.referralCodeHandler.OnBeforeInsert(result.updatedCSAPLeads);
-        }
-
-        if (result.updatedLeads.size()> 0 ){
-            UtilityLoadZoneService.updateLZUL(result.updatedLeads, null);
-
-            // When we remove the "If Switch" statement with retirement of CSAP,we will need to retire ReferralCodeHandler
-            // and change to assignPartner(leadList); This will require an update to all TestClasses that still use the CustomId
-            // assignPartner(result.updatedSwitchLeads);
-        }
+        UtilityLoadZoneService.updateLZUL(result.updatedLeads, null);
     }
 
     public void checkForDuplicates(List<Lead> leadList) {
@@ -77,20 +52,12 @@ public with sharing class LeadDispatcher {
 
     public void onBeforeUpdate(List<Lead> updatedLeads, Map<Id, Lead> oldLeadMap) {
         LeadHandlerResult result = separateLeads(updatedLeads, oldLeadMap);
-
-        if (result.updatedLeads.size()> 0 ){
-            UtilityLoadZoneService.updateLZUL(result.updatedLeads, result.oldLeadMap);
-        }
-
+        UtilityLoadZoneService.updateLZUL(result.updatedLeads, result.oldLeadMap);
     }
 
     public void onAfterUpdate(List<Lead> updatedLeads, Map<Id, Lead> oldLeadMap){
         LeadHandlerResult result = separateLeads(updatedLeads, oldLeadMap);
-
         LeadService leadService = new LeadService();
-        if (result.updatedCSAPLeads.size() > 0 ) {
-            result.leadTriggerHandler.onAfterUpdate(null, result.updatedCSAPLeads, result.oldCSAPMap);
-        }
 
         if (result.updatedLeads.size()> 0 ){
             leadService.completeLeadConversion(result.updatedLeads, result.oldLeadMap);
