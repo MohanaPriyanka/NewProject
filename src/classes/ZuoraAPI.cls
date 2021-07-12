@@ -1,10 +1,14 @@
 /*************************************************************************************
- * Created By: peteryao on 2019-04-11  
- * Description: 
- * Test: 
+ * Created By: peteryao on 2019-04-11
+ * Description: Supports Zuora REST API calls.
+ * Test: Zuora*Test
  *************************************************************************************/
-@SuppressWarnings('PMD.ExcessivePublicCount, PMD.VariableNamingConventions, PMD.TooManyFields, PMD.ExcessiveClassLength')
+// We need to suppress naming because these objects are serialized to/from JSON
+@SuppressWarnings('PMD.ExcessivePublicCount, PMD.VariableNamingConventions, PMD.TooManyFields, PMD.ExcessiveClassLength, PMD.FieldNamingConventions')
 public with sharing class ZuoraAPI {
+    public static Map<String,String> brandKeyToCommProfileMap = ZuoraAccountReconciliationService.brandKeyToCommProfileMap();
+    public static String accountFieldsToReconcile = 'PaymentGateway, PaymentTerm, CommunicationProfileId';
+
     // https://www.zuora.com/developer/api-reference/#tag/RSA-Signatures
     public class RSASignature {
         @AuraEnabled
@@ -85,10 +89,7 @@ public with sharing class ZuoraAPI {
         public String AccountId;
     }
 
-    public static Map<String,String> brandKeyToCommProfileMap = ZuoraAccountReconciliationService.brandKeyToCommProfileMap();
-
     // https://www.zuora.com/developer/api-reference/#operation/POST_Account
-    public static String accountFieldsToReconcile = 'PaymentGateway, PaymentTerm, CommunicationProfileId';
     public class ZuoraAccount {
         public String AccountNumber;
         public Boolean AllowInvoiceEdit;
@@ -128,7 +129,7 @@ public with sharing class ZuoraAPI {
         public String CommunicationProfileId;
         public Boolean APM_Zcustom = true;
 
-        // Default constructor
+        @SuppressWarnings('PMD.EmptyStatementBlock')
         public ZuoraAccount() {
         }
 
@@ -953,8 +954,6 @@ public with sharing class ZuoraAPI {
         public Decimal amount;
         public String invoiceId;
         public List<ZuoraInvoiceItemApplication> items;
-        public ZuoraInvoiceApplication() {
-        }
         public ZuoraInvoiceApplication(Boolean outstandingItemsAreDebitMemosOrInvoicesNotItems, ZuoraOutstandingItemsService.OutstandingItem item, Decimal applicationAmount) {
             if (outstandingItemsAreDebitMemosOrInvoicesNotItems) {
                 this.invoiceId = item.Id;
@@ -978,8 +977,6 @@ public with sharing class ZuoraAPI {
         public Decimal amount;
         public String debitMemoId;
         public List<ZuoraDebitMemoItemApplication> items;
-        public ZuoraDebitMemoApplication() {
-        }
         public ZuoraDebitMemoApplication(Boolean outstandingItemsAreDebitMemosOrInvoicesNotItems, ZuoraOutstandingItemsService.OutstandingItem item, Decimal applicationAmount) {
             if (outstandingItemsAreDebitMemosOrInvoicesNotItems) {
                 this.debitMemoId = item.Id;
