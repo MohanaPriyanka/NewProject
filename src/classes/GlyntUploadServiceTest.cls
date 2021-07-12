@@ -1,5 +1,6 @@
 @IsTest
 private with sharing class GlyntUploadServiceTest {
+
     @TestSetup
     private static void testSetup() {
         Cache.Org.put('GlyntAuthToken', '123qweasd');
@@ -75,20 +76,21 @@ private with sharing class GlyntUploadServiceTest {
         );
         insert new List<ContentDocumentLink>{cdl, cdl2, cdl3};
     }
+
     @IsTest
     private static void systemTest() {
         Lead lead = [SELECT Id FROM Lead WHERE FirstName = 'Test' LIMIT 1];
-        Test.startTest();
         Test.setMock(HttpCalloutMock.class, new GlyntMockUploadSuccess());
-        GlyntAPIHelper.extractionProcessor = 'GlyntExtractionService';
-        Chain.callQueueableChain = true;
-        UtilityDataRequestBuilder.createUDRs(new List<String>{lead.Id});
-        // Since finalizers in tests cause this, we'll run the last promise explicitly:
-        // https://salesforce.stackexchange.com/questions/336329/apex-tests-using-finalizers-causes-metadata-api-deploy-to-result-in-limit-exceed
-        GlyntExtractionService extractionService =
-            new GlyntExtractionService(System.now().addMinutes(GlyntAPIHelper.extractionQueryTimeout));
-        extractionService.passThrough = new List<String>{'123qwe', '123qwf', '123qwg'};
-        extractionService.execute();
+        Test.startTest();
+            GlyntAPIHelper.extractionProcessor = 'GlyntExtractionService';
+            Chain.callQueueableChain = true;
+            UtilityDataRequestBuilder.createUDRsAsync(new List<String>{lead.Id});
+            // Since finalizers in tests cause this, we'll run the last promise explicitly:
+            // https://salesforce.stackexchange.com/questions/336329/apex-tests-using-finalizers-causes-metadata-api-deploy-to-result-in-limit-exceed
+            GlyntExtractionService extractionService =
+                new GlyntExtractionService(System.now().addMinutes(GlyntAPIHelper.extractionQueryTimeout));
+            extractionService.passThrough = new List<String>{'123qwe', '123qwf', '123qwg'};
+            extractionService.execute();
         Test.stopTest();
         List<Error_Log__c> infoLogsFromExtractionResults = [
             SELECT Class__c, Message__c
@@ -113,7 +115,7 @@ private with sharing class GlyntUploadServiceTest {
 
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, new GlyntMockUploadFailure());
-        UtilityDataRequestBuilder.createUDRs(new List<String>{lead.Id});
+        UtilityDataRequestBuilder.createUDRsAsync(new List<String>{lead.Id});
         Test.stopTest();
 
         utilityDataRequests = [SELECT Id FROM Utility_Data_Request__c];

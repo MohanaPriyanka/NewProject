@@ -40,6 +40,11 @@ public without sharing class UtilityDataRequestBuilder {
         }
     }
 
+    @Future
+    public static void createUDRsAsync(List<String> leadIds) {
+        createUDRs(leadIds);
+    }
+
     @TestVisible
     private static Utility_Data_Request__c constructNewUDR(Utility_Account_Log__c ual) {
         Utility_Data_Request__c udr = new Utility_Data_Request__c(
