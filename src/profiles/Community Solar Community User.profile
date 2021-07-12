@@ -1267,26 +1267,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>DocuSignAPI</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>DocuSignAPIMockImpl</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>DocuSignAPIWebSvcTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>DocuSignHelper</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>DocuSignVoid_Invocable</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>EmailService</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3252,14 +3232,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>RESTRouterV2Test</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ReferralCodeHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ReferralCodeHandlerTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -7871,10 +7843,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>customIdSwapLeadTriggerTestClass</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>dsfs__APIError</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -10164,10 +10132,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>mapDebtToIncomeTestClass</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>mapDocuSignRSTestClass</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
