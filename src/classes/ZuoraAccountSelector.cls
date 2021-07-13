@@ -3,6 +3,7 @@
  */
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class ZuoraAccountSelector {
+
     private static ZuoraSubscriptionService zuoraSubscriptionService = new ZuoraSubscriptionService();
     private static QueryResultGateways gatewayList;
 
@@ -162,5 +163,20 @@ public without sharing class ZuoraAccountSelector {
             Logger.logLater('ZuoraAccountSelector', 'getAutopayAccountsWithBalance', 'More than 2000 records found, but only 2000 supported. Implement queryMore.', Logger.ERROR);
         }
         return queryResultAccount.records;
+    }
+
+    public List<Zuora__CustomerAccount__c> getAutopayAccountsWithBalanceForEmail() {
+        return [
+            SELECT Id,
+                Zuora__Account__c, Zuora__Account__r.Send_Bills_Contact__c,
+                Zuora__Account__r.Send_Bills_Contact__r.FirstName,
+                Zuora__Account__r.Send_Bills_Contact__r.Email,
+                Zuora__Account__r.Client_Brand_Key__c,
+                Zuora__Default_Payment_Method__r.Zuora__AchAccountNumberMask__c,
+                Zuora__Default_Payment_Method__r.Zuora__CreditCardMaskNumber__c,
+                Zuora__Balance__c
+            FROM Zuora__CustomerAccount__c
+            WHERE Zuora__AutoPay__c = TRUE AND Zuora__Balance__c > 0 AND Zuora__Batch__c = 'Batch2'
+        ];
     }
 }

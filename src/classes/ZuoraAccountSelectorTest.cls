@@ -1,11 +1,10 @@
 @IsTest
 public with sharing class ZuoraAccountSelectorTest {
-    @IsTest
-    static void testAccountQuery() {
+
+    private static Zuora__CustomerAccount__c insertDataGetAccountId() {
         Account newSFAccount = new Account(
             Name = 'Account Name'
         );
-
         insert newSFAccount;
 
         Zuora__CustomerAccount__c newAccount = new Zuora__CustomerAccount__c(
@@ -14,8 +13,14 @@ public with sharing class ZuoraAccountSelectorTest {
             Zuora__Zuora_Id__c = '2c92c0f86b78f56c016b7b00480c2e24'
         );
         insert newAccount;
+        return newAccount;
+    }
+
+    @IsTest
+    static void testAccountQuery() {
+        Id newAccountId = insertDataGetAccountId().Id;
         ZuoraAccountSelector.AccountWithPaymentMethod acctWithPayMethod;
-        acctWithPayMethod = new ZuoraAccountSelector().getAccountWithDefaultPaymentMethod(newAccount.Id);
+        acctWithPayMethod = new ZuoraAccountSelector().getAccountWithDefaultPaymentMethod(newAccountId);
 
         System.assertEquals(230.00, acctWithPayMethod.account.Balance);
         System.assertEquals(false, acctWithPayMethod.account.AutoPay);
@@ -49,5 +54,16 @@ public with sharing class ZuoraAccountSelectorTest {
         ZuoraAccountSelector selector = new ZuoraAccountSelector();
         List<ZuoraAPI.ZuoraAccount> accounts = selector.getAutopayAccountsWithBalance();
         System.assert(accounts.size() > 0);
+    }
+
+    @IsTest
+    private static void getAutopayAccountsWithBalanceForEmail() {
+        Zuora__CustomerAccount__c account = insertDataGetAccountId();
+        account.Zuora__AutoPay__c = true;
+        account.Zuora__Balance__c = 45.58;
+        account.Zuora__Batch__c = 'Batch2';
+        update account;
+        ZuoraAccountSelector selector = new ZuoraAccountSelector();
+        System.assert(selector.getAutopayAccountsWithBalanceForEmail().size() > 0, 'No rows found for query');
     }
 }
