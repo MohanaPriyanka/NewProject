@@ -688,7 +688,7 @@ private class UtilityDataRequestServiceTest {
         Integer udrCount = udrCount(ualForLead.Id);
 
         Test.startTest();
-            UtilityDataRequestBuilder.create(new List<String>{lead.Id});
+            UtilityDataRequestBuilder.createUDRs(new List<String>{lead.Id});
         Test.stopTest();
 
         // Check database to confirm no extra UDRs were generated for this UAL
@@ -722,7 +722,7 @@ private class UtilityDataRequestServiceTest {
 
         Test.startTest();
             System.assertEquals(0, udrCount(ual.Id), 'UDRs prior to create() method run should be 0');
-            UtilityDataRequestBuilder.create(new List<String>{lead.Id});
+            UtilityDataRequestBuilder.createUDRs(new List<String>{lead.Id});
         Test.stopTest();
 
         // Check results... Should have generated a new UDR with appropriate field vals, and updated UAL

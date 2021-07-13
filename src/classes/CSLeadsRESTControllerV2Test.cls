@@ -4,9 +4,11 @@
 @IsTest
 @SuppressWarnings('PMD.ExcessivePublicCount, PMD.AvoidHardcodingId')
 public with sharing class CSLeadsRESTControllerV2Test {
+
     private static CSLeadsRESTControllerV2 controller = new CSLeadsRESTControllerV2();
     private static MockLeadService mockLeadService;
-    @TestVisible private static final String SAMPLE_EMAIL = 'email@invalid.com';
+    public static final String SAMPLE_EMAIL = 'email@invalid.com';
+    
     private static void useMocks() {
         Lead newLead = new Lead(
             Id = Util.getFakeId(Lead.SObjectType),
@@ -14,6 +16,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         );
         useMocks(newLead);
     }
+
     private static void useMocks(Lead leadToReturnFromLeadSelector) {
         mockLeadService = new MockLeadService();
         controller.leadService = (LeadService) Test.createStub(LeadService.class, mockLeadService);
@@ -23,12 +26,15 @@ public with sharing class CSLeadsRESTControllerV2Test {
         controller.capacityService = (CapacityService) Test.createStub(CapacityService.class, new MockCapacityService());
         controller.duplicateService = (CSLeadsDuplicateService) Test.createStub(CSLeadsDuplicateService.class , new MockDuplicateService(false));
         controller.uow = (fflib_SObjectUnitOfWork) Test.createStub(fflib_SObjectUnitOfWork.class, new MockUOW());
-        controller.qualificationService = (CSQualificationService) Test.createStub(CSQualificationService.class, new MockQualificationService());
         controller.leadSelector = (LeadSelector) Test.createStub(LeadSelector.class, new MockLeadSelector(leadToReturnFromLeadSelector));
         controller.accountsSelector = (AccountsSelector) Test.createStub(AccountsSelector.class, new MockAccountsSelector());
         controller.ualSelector = (UALSelector) Test.createStub(UALSelector.class, new MockUALSelector());
+        CSApplicationFinisher.leadSelector = (LeadSelector) Test.createStub(LeadSelector.class, new MockLeadSelector(leadToReturnFromLeadSelector));
+        CSApplicationFinisher.qualificationService = (CSQualificationService) Test.createStub(CSQualificationService.class, new MockQualificationService());
+        CSApplicationFinisher.leadService = (LeadService) Test.createStub(LeadService.class, mockLeadService);
         RestContext.response = new RestResponse();
     }
+    
     @TestSetup
     public static void testSetup() {
         Utility__c utility = new Utility__c(
@@ -46,6 +52,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         );
         insert product;
     }
+    
     /*******************
      *** getLead() ***
      *******************/
@@ -55,6 +62,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         controller.getLead(Util.getFakeId(Lead.SObjectType), SAMPLE_EMAIL);
         System.assertEquals(200, RestContext.response.statusCode, 'Properly formed GET request should succeed');
     }
+    
     @IsTest
     private static void testGetLeadInvalidAuth() {
         useMocks();
@@ -66,12 +74,14 @@ public with sharing class CSLeadsRESTControllerV2Test {
         }
         System.assert(authError, 'Incorrect email should throw authorization error');
     }
+    
     @IsTest
     private static void testGetLeadMissingFields() {
         useMocks();
         controller.getLead(Util.getFakeId(Schema.Lead.SObjectType), null);
         System.assertEquals(400, RestContext.response.statusCode, 'Method should return error when either lead ID or email is omitted');
     }
+    
     @IsTest
     private static void testGetLeadTooManyAccounts() {
         sfab_FabricatedSObject fabbedLead = new sfab_FabricatedSObject(Lead.class);
@@ -88,22 +98,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         controller.getLead(Util.getFakeId(Lead.SObjectType), SAMPLE_EMAIL);
         System.assertEquals(400, RestContext.response.statusCode, 'Method should return error when lead has multiple property accounts');
     }
-    /*******************
-     ** getContracts() **
-     *******************/
-    @IsTest
-    private static void testGetContractsSuccess() {
-        useMocks();
-        controller.contentSelector = (ContentDocumentSelector) Test.createStub(ContentDocumentSelector.class, new MockContentDocumentSelector());
-        controller.getContracts(Util.getFakeId(Lead.SObjectType), SAMPLE_EMAIL);
-        System.assertEquals(200, RestContext.response.statusCode, 'Contracts GET request should have returned 200');
-    }
-    @IsTest
-    private static void testGetContractsNoData() {
-        useMocks();
-        controller.getContracts(Util.getFakeId(Lead.SObjectType), SAMPLE_EMAIL);
-        System.assertEquals(204, RestContext.response.statusCode, 'GET request for contracts should fail since none were gen\'d');
-    }
+    
     /*******************
      *** patchLead() ***
      *******************/
@@ -128,6 +123,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
             System.assertEquals(true, checkLead.Soft_Pull_Credit_Report__c, 'Credit should be pulled after Contracts have been signed');
         }
     }
+    
     @IsTest
     private static void testDontPullCreditForFinancialDocs() {
         sfab_FabricatedSObject fabbedLead = new sfab_FabricatedSObject(Lead.class);
@@ -149,14 +145,18 @@ public with sharing class CSLeadsRESTControllerV2Test {
             System.assertEquals(false, checkLead.Soft_Pull_Credit_Report__c, 'Credit should not be pulled when Underwriting Criteria = Fincancial Docs');
         }
     }
+    
     @IsTest
     private static void testPatchLeadSuccessFinancialDocs() {
         useMocks();
         String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Lead.SObjectType) + '", "applicationCompleteDate": "2019-01-01T01:00", "underwritingCriteria": "Financial Review" }';
+        Test.startTest();
         controller.patchLead(jsonRequest);
+        Test.stopTest();
         System.assertEquals(200, RestContext.response.statusCode, 'Properly formed PATCH should succeed');
         System.assertEquals('Qualified', mockLeadService.getLastUpdatedLead().Status, 'Lead status should be populated by CSQualificationService when Financial Review leads are completed.');
     }
+    
     @IsTest
     private static void testPatchLeadStreetAddress() {
         useMocks();
@@ -166,6 +166,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         System.assertEquals('123 Patched Street', mockLeadService.getLastUpdatedLead().Street, 'Street should be updated when streetAddress is PATCHed.');
         System.assertEquals('123 Patched Street', mockLeadService.getLastUpdatedLead().LASERCA__Home_Address__c, 'LASERCA Home Address should be updated when streetAddress is PATCHed.');
     }
+    
     @IsTest
     private static void testPatchLeadCreditPullOnce() {
         sfab_FabricatedSObject fabbedLead = new sfab_FabricatedSObject(Lead.class);
@@ -184,6 +185,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         controller.updateLeadApplicationStatus(Util.getFakeId(Lead.SObjectType));
         System.assertEquals(null, Util.objectsUpdatedIfMockingDML, 'Application Status is the same and therefore does not require an update');
     }
+    
     @IsTest
     private static void testPatchLeadNoFields() {
         useMocks();
@@ -191,6 +193,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         controller.patchLead(jsonRequest);
         System.assertEquals(400, RestContext.response.statusCode, 'PATCH should throw an error when no patchable fields are provided');
     }
+    
     @IsTest
     private static void testPatchLeadInvalidId() {
         useMocks(null);
@@ -198,6 +201,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         controller.patchLead(jsonRequest);
         System.assertEquals(404, RestContext.response.statusCode, 'PATCH should throw an error if the ID provided is not valid');
     }
+    
     /******************************
      *** patchPropertyAccount() ***
      ******************************/
@@ -208,6 +212,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         controller.patchPropertyAccount(jsonRequest);
         System.assertEquals(200, RestContext.response.statusCode, 'Properly formed PATCH should succeed');
     }
+    
     @IsTest
     private static void testPatchPropertyAccountNoFields() {
         useMocks();
@@ -215,6 +220,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         controller.patchPropertyAccount(jsonRequest);
         System.assertEquals(400, RestContext.response.statusCode, 'PATCH should throw an error when no patchable fields are provided');
     }
+    
     @IsTest
     private static void testPatchPropertyAccountInvalidId() {
         useMocks();
@@ -222,30 +228,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         controller.patchPropertyAccount(jsonRequest);
         System.assertEquals(404, RestContext.response.statusCode, 'PATCH should throw an error if the ID provided is not valid');
     }
-    /********************************
-     *** patchUtilityAccountLog() ***
-     ********************************/
-    @IsTest
-    private static void testPatchUtilityAccountLogSuccess() {
-        useMocks();
-        String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Account.SObjectType) + '", "annualKWh": 500 }';
-        controller.patchUtilityAccountLog(jsonRequest);
-        System.assertEquals(200, RestContext.response.statusCode, 'Properly formed PATCH should succeed');
-    }
-    @IsTest
-    private static void testPatchUtilityAccountLogNoFields() {
-        useMocks();
-        String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Account.SObjectType) + '"}';
-        controller.patchUtilityAccountLog(jsonRequest);
-        System.assertEquals(400, RestContext.response.statusCode, 'PATCH should throw an error when no patchable fields are provided');
-    }
-    @IsTest
-    private static void testPatchUtilityAccountLogInvalidId() {
-        useMocks();
-        String jsonRequest = '{ "id": "a1b000000000111"}'; // ID of ...111 is set as an non-existent ID in the mock svc
-        controller.patchUtilityAccountLog(jsonRequest);
-        System.assertEquals(404, RestContext.response.statusCode, 'PATCH should throw an error if the ID provided is not valid');
-    }
+    
     /******************
      *** postLead() ***
      ******************/
@@ -256,6 +239,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         controller.postLead(jsonRequest);
         System.assertEquals(400, RestContext.response.statusCode, 'POST should throw an error when required fields are not provided');
     }
+    
     @IsTest
     private static void testPostLeadWithDuplicate() {
         useMocks();
@@ -271,6 +255,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         controller.postLead(jsonRequest);
         System.assertEquals(201, RestContext.response.statusCode, 'A lead Post with a duplicate lead should succeed');
     }
+    
     @IsTest
     private static void testPostLeadWithMinimalFields() {
         useMocks();
@@ -284,6 +269,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         controller.postLead(jsonRequest);
         System.assertEquals(201, RestContext.response.statusCode, 'A Lead POST with minimal fields should succeed');
     }
+    
     @IsTest
     private static void testPostLeadWithMinimalFieldsReturnUrl() {
         useMocks();
@@ -298,6 +284,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         System.assertEquals(201, RestContext.response.statusCode, 'A Lead POST with minimal fields should succeed');
         System.assertNotEquals(null, mockLeadService.getLastUpdatedLead().Continue_Application_Link__c, 'If a resume URL is not provided in a Lead POST call, one should be created automatically');
     }
+    
     @IsTest
     private static void testPostLeadWithTooManyAccounts() {
         useMocks();
@@ -345,6 +332,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         controller.postLead(jsonRequest);
         System.assertEquals(400, RestContext.response.statusCode, 'We currently only support 1 propertyAccount');
     }
+    
     @IsTest
     private static void testPostLeadSuccess() {
         sfab_FabricatedSObject fabbedLead = new sfab_FabricatedSObject(Lead.class);
@@ -392,116 +380,12 @@ public with sharing class CSLeadsRESTControllerV2Test {
         controller.postLead(jsonRequest);
         System.assertEquals(201, RestContext.response.statusCode, 'Properly formed POST should succeed');
     }
-    /*****************************
-     *** postPropertyAccount() ***
-     *****************************/
-    @IsTest
-    private static void testPostPropertyAccountNoFields() {
-        useMocks();
-        String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Account.SObjectType) + '" }';
-        controller.postPropertyAccount(jsonRequest);
-        System.assertEquals(400, RestContext.response.statusCode, 'POST should throw an error when required fields are not provided');
-    }
-    @IsTest
-    private static void testPostPropertyAccountWhenOneAlreadyExists() {
-        sfab_FabricatedSObject fabbedLead = new sfab_FabricatedSObject(Lead.class);
-        fabbedLead.setField(Lead.Email, SAMPLE_EMAIL);
-        fabbedLead.setField(Lead.Id, '00Q000000000999');
-        fabbedLead.setField(Lead.CreatedDate, Datetime.now());
-        sfab_FabricatedSObject fabbedPropertyAccount1 = new sfab_FabricatedSObject(Account.class);
-        fabbedPropertyAccount1.setField(Account.Lead__c, '00Q000000000999');
-        fabbedPropertyAccount1.setField(Account.Id, Util.getFakeId(Account.SObjectType));
-        fabbedLead.setChildren('Accounts__r', new List<sfab_FabricatedSObject>{fabbedPropertyAccount1});
-        sfab_FabricatedSObject fabbedUAL = new sfab_FabricatedSObject(Utility_Account_Log__c.class);
-        fabbedUAL.setField(Utility_Account_Log__c.Lead__c, '00Q000000000999');
-        fabbedUAL.setField(Utility_Account_Log__c.Id, Util.getFakeId(Utility_Account_Log__c.SObjectType));
-        fabbedUAL.setField(Utility_Account_Log__c.Account__c, Util.getFakeId(Account.SObjectType));
-        fabbedLead.setChildren('Utility_Account_Logs__r', new List<sfab_FabricatedSObject>{fabbedUAL});
-        useMocks((Lead) fabbedLead.toSObject());
-        // We only support one property account today.  If you try to pass another in after one exists, you should get an error
-        String jsonRequest = '{' +
-            '"leadId": "00Q000000000999",' +
-            '"billingStreet": "Test billing street",' +
-            '"billingCity": "Test billing city",' +
-            '"billingState": "NY",' +
-            '"billingPostalCode": "14472"' +
-            '}';
-        controller.postPropertyAccount(jsonRequest);
-        Map<String, Object> responseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(RestContext.response.responseBody.toString());
-        List<Object> errors = (List<Object>) responseEnvelope.get('errors');
-        String error = String.valueOf(errors.get(0));
-        System.assertEquals(400, RestContext.response.statusCode, 'We currently only support 1 propertyAccount');
-        System.assert(error.contains('only <=1 propertyAccount per lead is supported'), 'Returned error message should match error of too many property accounts');
-    }
-    @IsTest
-    private static void testPostPropertyAccountWithInvalidLead() {
-        useMocks(null);
-        String jsonRequest = '{' +
-            '"leadId": "00Q000000000111",' + // ID of ...111 is set as an non-existent ID in the mock svc
-            '"billingStreet": "Test billing street",' +
-            '"billingCity": "Test billing city",' +
-            '"billingState": "NY",' +
-            '"billingPostalCode": "14472"' +
-            '}';
-        controller.postPropertyAccount(jsonRequest);
-        System.assertEquals(404, RestContext.response.statusCode, 'POST should throw an error if the ID provided is not valid');
-    }
-    @IsTest
-    private static void testPostPropertyAccountWithMinimalFields() {
-        useMocks();
-        String jsonRequest = '{' +
-            '"leadId": "'+Util.getFakeId(Lead.SObjectType)+'",' +
-            '"billingStreet": "Test billing street",' +
-            '"billingCity": "Test billing city",' +
-            '"billingState": "NY",' +
-            '"billingPostalCode": "14472"' +
-            '}';
-        controller.postPropertyAccount(jsonRequest);
-        System.assertEquals(201, RestContext.response.statusCode, 'A PropertyAccount POST with minimal fields should succeed');
-    }
-    /*******************************
-     *** postUtilityAccountLog() ***
-     *******************************/
-    @IsTest
-    private static void testPostUtilityAccountLogNoFields() {
-        useMocks();
-        String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Utility_Account_Log__c.SObjectType) + '" }';
-        controller.postUtilityAccountLog(jsonRequest);
-        System.assertEquals(400, RestContext.response.statusCode, 'POST should throw an error when required fields are not provided');
-    }
-    @IsTest
-    private static void testPostUtilityAccountLogWithInvalidAccount() {
-        useMocks();
-        String jsonRequest = '{' +
-            '"propertyAccountId": "001000000000111",' + // ID of ...111 is set as an non-existent ID in the mock svc
-            '"nameOnAccount": "Bob",' +
-            '"serviceStreet": "Test service street",' +
-            '"serviceCity": "Test service city",' +
-            '"serviceState": "NY",' +
-            '"servicePostalCode": "14472"' +
-            '}';
-        controller.postUtilityAccountLog(jsonRequest);
-        System.assertEquals(404, RestContext.response.statusCode, 'POST should throw an error if the ID provided is not valid');
-    }
-    @IsTest
-    private static void testPostUtilityAccountLogWithMinimalFields() {
-        useMocks();
-        String jsonRequest = '{' +
-            '"propertyAccountId": "001000000000888",' +
-            '"nameOnAccount": "Bob",' +
-            '"serviceStreet": "Test service street",' +
-            '"serviceCity": "Test service city",' +
-            '"serviceState": "NY",' +
-            '"servicePostalCode": "14472"' +
-            '}';
-        controller.postUtilityAccountLog(jsonRequest);
-        System.assertEquals(201, RestContext.response.statusCode, 'A UAL POST with minimal fields should succeed');
-    }
+
     @IsTest
     private static void testPerformZipCheck() {
         useMocks();
         RestContext.response = new RestResponse();
-        controller.performZipCheck('12345', '', '');
+        controller.getZipcodeCapacity('12345', '', '');
         Boolean caughtException = false;
         try {
             RESTController.ResponseEnvelope envelope =
@@ -512,6 +396,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         }
         System.assertEquals(false, caughtException, 'Did not expect to catch an exception');
     }
+    
     /**************************
      *** patchApplication() ***
      **************************/
@@ -522,6 +407,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         controller.patchApplication(jsonRequest);
         System.assertEquals(400, RestContext.response.statusCode, 'PATCH should throw an error when no patchable fields are provided');
     }
+    
     @IsTest
     private static void testPatchApplicationInvalidLeadId() {
         useMocks(null);
@@ -529,6 +415,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         controller.patchApplication(jsonRequest);
         System.assertEquals(404, RestContext.response.statusCode, 'PATCH should throw an error if the ID provided is not valid');
     }
+    
     @IsTest
     private static void testPatchApplicationMultiplePropertyAccounts() {
         useMocks();
@@ -542,6 +429,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         controller.patchApplication(jsonRequest);
         System.assertEquals(400, RestContext.response.statusCode, 'PATCH should throw an error when more than one property account is provided');
     }
+
     @IsTest
     private static void testPatchApplicationMissingUALs() {
         useMocks();
@@ -554,6 +442,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         controller.patchApplication(jsonRequest);
         System.assertEquals(400, RestContext.response.statusCode, 'PATCH should throw an error when no property account fields or UALs are provided');
     }
+
     @IsTest
     private static void testPatchApplicationSuccessNoDocs() {
         useMocks();
@@ -591,6 +480,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         controller.patchApplication(jsonRequest);
         System.assertEquals(200, RestContext.response.statusCode, 'Properly formed PATCH should succeed');
     }
+
     @IsTest
     private static void testContractFieldsUpdated() {
         Partner__c p0 = new Partner__c(Name = 'test record');
@@ -777,6 +667,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         requestAccount.utilityAccountLogs = new List<RestLead.RestUtilityAccountLog>{requestUAL2};
         System.assert(controller.contractFieldsUpdated(JSON.serialize(requestLead), l), 'Method should return because RestLead UAL is different from Lead UAL');
     }
+    
     /**************************
      *** patchContract() ***
      **************************/
@@ -796,6 +687,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         controller.patchContract(jsonRequest);
         System.assertEquals(400, RestContext.response.statusCode, 'PATCH contract should throw an error when an invalid lead id is provided');
     }
+
     @IsTest
     static void testPatchContractSuccess() {
         useMocks();
@@ -803,6 +695,57 @@ public with sharing class CSLeadsRESTControllerV2Test {
         controller.patchContract(jsonRequest);
         System.assertEquals(200, RestContext.response.statusCode, 'PATCH contract should not throw an error when a valid lead id is provided');
     }
+
+    @IsTest
+    private static void testPatchContractWithAppCompleteActions() { // e.g. Powersetter 3rd party origination
+        CSTestDataFactory dataset = new CSTestDataFactory();
+        dataset.insertOpenUCBSystem();
+        dataset.insertLeadViaAPI(true, 'None', false);
+        dataset.insertContractFiles();
+        JSONGenerator jsonGenerator = JSON.createGenerator(false);
+        jsonGenerator.writeStartObject();
+        jsonGenerator.writeStringField('leadId', dataset.leadId);
+        jsonGenerator.writeEndObject();
+        Test.startTest();
+            RestContext.response = new RestResponse();
+            controller.patchContract(jsonGenerator.getAsString());
+        Test.stopTest();
+        Lead leadAfterPatch = [
+            SELECT Application_Complete_Date__c, Status, Application_Status__c
+            FROM Lead WHERE Id =: dataset.leadId LIMIT 1
+        ];
+        System.assertEquals(200, RestContext.response.statusCode, 'PATCH should return OK');
+        System.assert(leadAfterPatch.Application_Complete_Date__c != null, 'Application Complete Date should be set');
+        System.assertEquals('Qualified', leadAfterPatch.Status, 'CS Lead should have gone through automatic Qualify logic');
+        System.assertEquals('Application Completed', leadAfterPatch.Application_Status__c,
+            'Lead Application Status (internal) should be Application Completed');
+    }
+
+    @IsTest
+    private static void testPatchContractWithSuppressAppCompleteActions() { // e.g. SSF origination
+        CSTestDataFactory dataset = new CSTestDataFactory();
+        dataset.insertLeadViaAPI(true, 'None', false);
+        dataset.insertContractFiles();
+        JSONGenerator jsonGenerator = JSON.createGenerator(false);
+        jsonGenerator.writeStartObject();
+        jsonGenerator.writeStringField('leadId', dataset.leadId);
+        jsonGenerator.writeBooleanField('suppressAppComplete', true);
+        jsonGenerator.writeEndObject();
+        Test.startTest();
+            RestContext.response = new RestResponse();
+            controller.patchContract(jsonGenerator.getAsString());
+        Test.stopTest();
+        Lead leadAfterPatch = [
+            SELECT Application_Complete_Date__c, Status, Application_Status__c
+            FROM Lead WHERE Id =: dataset.leadId LIMIT 1
+        ];
+        System.assertEquals(200, RestContext.response.statusCode, 'PATCH should return OK');
+        System.assert(leadAfterPatch.Application_Complete_Date__c == null, 'Application Complete Date should NOT be set');
+        System.assertEquals('Sales Qualified', leadAfterPatch.Status, 'Qualify logic should not have run yet for SSF lead');
+        System.assertNotEquals('Application Completed', leadAfterPatch.Application_Status__c,
+            'Lead Application Status (internal) should not be Complete');
+    }
+    
     /********************
      *** SYSTEM TESTS ***
      ********************/
@@ -892,6 +835,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
             }
         }
     }
+    
     @IsTest
     private static void testPostLeadDocSuccessSystem() {
         ContentVersion cvUtilBill = new ContentVersion(
@@ -947,6 +891,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         System.assertNotEquals(null, responseFinancialDoc.get('size'), 'The request should have returned a valid size for financial document');
         System.assertNotEquals(null, responseFinancialDoc.get('createdDate'), 'The request should have returned a valid created date for financial document');
     }
+    
     private static String getPostLeadJson(String financialDocs, String utilityBills) {
         String json = '{' +
             '"firstName": "System",' +
@@ -962,7 +907,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
             '"productName": "CS Product",' +
             '"campaignId": "0005500000",' +
             '"noPayment": false,';
-        if(financialDocs != null) {
+        if (financialDocs != null) {
             json += financialDocs + ',';
         }
         json += '"propertyAccounts": [{' +
@@ -977,17 +922,19 @@ public with sharing class CSLeadsRESTControllerV2Test {
             '       "serviceState": "NY",' +
             '       "servicePostalCode": "14472",' +
             '       "utilityAccountNumber": "555555"';
-        if(utilityBills != null) {
+        if (utilityBills != null) {
             json += ',' + utilityBills;
         }
         json += '   }]' +
             '}]}';
         return json;
     }
+
     @IsTest
-    private static void testPostSuccessSystemNoContract() {
+    static void testApplicationStatus() {
+        // Initial POST /lead, without utility bill data
         String jsonRequest = '{' +
-            '"firstName": "System",' +
+            '"firstName": "Unit",' +
             '"lastName": "Testcase",' +
             '"email": "test@invalid.bluewavesolar.com",' +
             '"mobilePhone": "555-555-5555",' +
@@ -1000,108 +947,44 @@ public with sharing class CSLeadsRESTControllerV2Test {
             '"continueApplicationLink": "http://switch.bluewavesolar.invalid",' +
             '"productName": "CS Product",' +
             '"campaignId": "0005500000",' +
-            '"noPayment": false' +
-            '}';
-        RestRequest req = new RestRequest();
-        req.requestURI = '/services/apexrest/v2/leads';
-        req.httpMethod = 'POST';
-        req.addHeader('Content-Type', 'application/json');
-        req.requestBody = Blob.valueOf(jsonRequest);
-        RestContext.request = req;
-        RestContext.response = new RestResponse();
-        RESTRouterV2.postRequest();
-        RestResponse response = RestContext.response;
-        String jsonResponse = response.responseBody.toString();
-        Map<String, Object> responseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
-        Map<String, Object> responseLead = (Map<String,Object>) responseEnvelope.get('data');
-        Id leadId = (Id)responseLead.get('id');
-        System.assertEquals(201, response.statusCode, 'POST should create properly');
-        System.assertEquals(0, [SELECT Id FROM Contract WHERE Lead__c = :leadId].size(), 'No contract should be created for this lead, as it has a product but no property account');
-        jsonRequest = '{' +
-            '"leadId": "' + leadId + '",' +
-            '"billingStreet": "Test billing street",' +
-            '"billingCity": "Test billing city",' +
-            '"billingState": "NY",' +
-            '"billingPostalCode": "14472"' +
-            '}';
-        controller.postPropertyAccount(jsonRequest);
-        System.assertEquals(201, RestContext.response.statusCode, 'A PropertyAccount POST with minimal fields should succeed');
-        System.assertEquals(1, [SELECT Id FROM Contract WHERE Lead__c = :leadId].size(), 'A contract should be created for this lead, as it now has both a product and a property account');
-    }
-    @IsTest
-    static void testApplicationStatus() {
-        String jsonRequest = '{' +
-            '   "firstName": "System",' +
-            '   "lastName": "Testcase",' +
-            '   "email": "test@invalid.bluewavesolar.com",' +
-            '   "mobilePhone": "555-555-5555",' +
-            '   "applicationType": "Residential",' +
-            '   "streetAddress": "1 Test Street",' +
-            '   "city": "Suffern",' +
-            '   "state": "NY",' +
-            '   "zipCode": "10901",' +
-            '   "eiaId": "1234",' +
-            '   "continueApplicationLink": "http://switch.bluewavesolar.invalid",' +
-            '   "productName": "CS Product",' +
-            '   "campaignId": "0005500000",' +
-            '   "noPayment": false' +
-            '}';
-        RestRequest req = new RestRequest();
-        req.requestURI = '/services/apexrest/v2/leads';
-        req.httpMethod = 'POST';
-        req.addHeader('Content-Type', 'application/json');
-        req.requestBody = Blob.valueOf(jsonRequest);
-        RestContext.request = req;
-        RestContext.response = new RestResponse();
-        RESTRouterV2.postRequest();
-        RestResponse response = RestContext.response;
-        String jsonResponse = response.responseBody.toString();
-        Map<String, Object> responseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
-        Map<String, Object> responseLead = (Map<String,Object>) responseEnvelope.get('data');
-        Id leadId = (Id)responseLead.get('id');
-        Lead lead = [SELECT Id, Application_Status__c, Continue_Application_Link__c FROM Lead WHERE Id = :leadId];
-        System.assertEquals(201, response.statusCode, 'POST should create properly');
-        System.assertEquals('Started', lead.Application_Status__c, 'Lead does not have property accounts or utility account logs; application status should be Started');
-        PageReference url = new PageReference(lead.Continue_Application_Link__c);
-        System.assertEquals('info', url.getParameters().get('loc'), 'Because Application Status is Started, Continue Application Link loc param should be info');
-        jsonRequest = '{' +
-            '   "leadId": "' + leadId + '",' +
+            '"noPayment": false,' +
+            '"propertyAccounts": [{' +
             '   "billingStreet": "Test billing street",' +
             '   "billingCity": "Test billing city",' +
             '   "billingState": "NY",' +
-            '   "billingPostalCode": "14472"' +
-            '}';
-        controller.postPropertyAccount(jsonRequest);
-        lead = [SELECT Id, Application_Status__c, Continue_Application_Link__c, (SELECT Id FROM Accounts__r) FROM Lead WHERE Id = :leadId];
-        System.assertEquals(201, RestContext.response.statusCode, 'A PropertyAccount POST with minimal fields should succeed');
-        System.assertEquals('Started', lead.Application_Status__c, 'Lead does not have utility account logs; application status should be Started');
-        url = new PageReference(lead.Continue_Application_Link__c);
-        System.assertEquals('info', url.getParameters().get('loc'), 'Because Application Status is Started, Continue Application Link loc param should be info');
-        Id propertyAccountId = lead.Accounts__r[0].Id;
-        Utility__c utility = [SELECT Id FROM Utility__c WHERE EIA_ID__c = '1234' LIMIT 1];
-        Utility_Account_Log__c ual = new Utility_Account_Log__c(
-            Lead__c = leadId,
-            Account__c = propertyAccountId,
-            Utility_lookup__c = utility.Id
-        );
-        insert ual;
-        jsonRequest = '{' +
-        '   "id": "' + ual.Id + '",' +
-        '   "leadId": "' + leadId + '",' +
-        '   "email": "test@invalid.bluewavesolar.com",' +
-        '   "nameOnAccount": "Bob",' +
-        '   "serviceStreet": "Test service street",' +
-        '   "serviceCity": "Test service city",' +
-        '   "serviceState": "NY",' +
-        '   "servicePostalCode": "14472",' +
-        '   "annualKWh": 1000' +
+            '   "billingPostalCode": "14472",' +
+            '   "utilityAccountLogs": [{' +
+            '       "nameOnAccount": "Test Accounts Payable",' +
+            '       "serviceStreet": "Test service street",' +
+            '       "serviceCity": "Test service city",' +
+            '       "serviceState": "NY",' +
+            '       "servicePostalCode": "14472",' +
+            '       "utilityAccountNumber": "555555"' +
+            '   }]' +
+            '}]' +
         '}';
-        controller.patchUtilityAccountLog(jsonRequest);
-        lead = [SELECT Id, Application_Status__c, Continue_Application_Link__c, (SELECT Id, Utility_lookup__r.Name, Utility_lookup__r.Utility_Data_Collection_Mechanism__c FROM Utility_Account_Logs__r) FROM Lead WHERE Id = :leadId];
-        System.assertEquals(200, RestContext.response.statusCode, 'A UAL PATCH with minimal fields should succeed');
-        System.assertEquals('Started', lead.Application_Status__c, 'The Lead\'s utility account log does not have a utility bill uploaded; application status should be Started');
-        url = new PageReference(lead.Continue_Application_Link__c);
-        System.assertEquals('info', url.getParameters().get('loc'), 'Because Application Status is Started, Continue Application Link loc param should be info');
+        RestRequest req = new RestRequest();
+        req.requestURI = '/services/apexrest/v2/leads';
+        req.httpMethod = 'POST';
+        req.addHeader('Content-Type', 'application/json');
+        req.requestBody = Blob.valueOf(jsonRequest);
+        RestContext.request = req;
+        RestContext.response = new RestResponse();
+        RESTRouterV2.postRequest();
+        RestResponse response = RestContext.response;
+        String jsonResponse = response.responseBody.toString();
+        Map<String, Object> responseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
+        Map<String, Object> responseLead = (Map<String,Object>) responseEnvelope.get('data');
+        Id leadId = (Id) responseLead.get('id');
+        Lead lead = [SELECT Id, Application_Status__c, Continue_Application_Link__c,
+                        (SELECT Id FROM Utility_Account_Logs__r),
+                        (SELECT Id FROM Accounts__r)
+                    FROM Lead WHERE Id = :leadId];
+        System.assertEquals(201, response.statusCode, 'POST should create properly');
+        System.assertEquals('Started', lead.Application_Status__c, 'Application status should be Started');
+        PageReference url = new PageReference(lead.Continue_Application_Link__c);
+        System.assertEquals('info', url.getParameters().get('loc'), 'Continue Application Link loc param should be info');
+
         Id utilityAccountLogId = lead.Utility_Account_Logs__r[0].Id;
         ContentVersion contentVersion = new ContentVersion(
             ContentLocation = 'S',
@@ -1113,12 +996,15 @@ public with sharing class CSLeadsRESTControllerV2Test {
         insert contentVersion;
         ContentDocumentSelector cds = new ContentDocumentSelector();
         Id contentDocId = cds.getDocumentIdFromVersionId(contentVersion.Id);
+
+        // PATCH /application with utility bill file
+        // NOTE: this is not how SSF handles this as of 6/30/21...
+        // All utility bill data (if needed) is submitted in the initial POST /lead, this is legacy fragment from jlugo
         jsonRequest = '{' +
         '   "id": "' + leadId + '",' +
         '   "email": "test@invalid.bluewavesolar.com",' +
         '   "propertyAccounts": [{' +
-        '      "id": "' + propertyAccountId + '",' +
-        '      "billingCity": "' + propertyAccountId + '",' +
+        '      "id": "' + lead.Accounts__r[0].Id + '",' +
         '      "utilityAccountLogs": [{' +
         '          "id": "' + utilityAccountLogId + '",' +
         '          "utilityBills": [{' +
@@ -1129,11 +1015,14 @@ public with sharing class CSLeadsRESTControllerV2Test {
         '   }]' +
         '}';
         controller.patchApplication(jsonRequest);
-        lead = [SELECT Id, Application_Status__c, Continue_Application_Link__c, (SELECT Id, Customer_Signature_Date_Time__c FROM Contracts__r) FROM Lead WHERE Id = :leadId];
+        lead = [SELECT Id, Application_Status__c, Continue_Application_Link__c FROM Lead WHERE Id = :leadId];
         System.assertEquals(200, RestContext.response.statusCode, 'An Application PATCH with required fields should succeed');
-        System.assertEquals('Customer Info Completed', lead.Application_Status__c, 'The lead, property account, utility account log, and utility bills are all present but contracts are not yet signed; application status should be Customer Info Completed');
+        System.assertEquals('Customer Info Completed', lead.Application_Status__c,
+            'All data present, but contracts not signed yet; application status should be Customer Info Completed');
         url = new PageReference(lead.Continue_Application_Link__c);
-        System.assertEquals('agree', url.getParameters().get('loc'), 'Because Application Status is Customer Info Completed, Continue Application Link loc param should be agree');
+        System.assertEquals('agree', url.getParameters().get('loc'), 'Continue link loc param should be agree');
+
+        // PATCH /contract - contract signature
         jsonRequest = '{' +
         '   "leadId": "' + leadId + '",' +
         '   "email": "test@invalid.bluewavesolar.com"' +
@@ -1141,23 +1030,29 @@ public with sharing class CSLeadsRESTControllerV2Test {
         controller.patchContract(jsonRequest);
         lead = [SELECT Id, Application_Status__c, Continue_Application_Link__c FROM Lead WHERE Id = :leadId];
         System.assertEquals(200, RestContext.response.statusCode, 'A Contract PATCH with required fields should succeed');
-        System.assertEquals('Contracts Signed', lead.Application_Status__c, 'All customer info is present and all contracts are signed; application status should be Contracts Signed');
+        System.assertEquals('Contracts Signed', lead.Application_Status__c,
+            'All customer info is present and all contracts are signed; application status should be Contracts Signed');
         url = new PageReference(lead.Continue_Application_Link__c);
-        System.assertEquals('pay', url.getParameters().get('loc'), 'Because Application Status is Contracts Signed, Continue Application Link loc param should be pay');
+        System.assertEquals('pay', url.getParameters().get('loc'),
+            'Because Application Status is Contracts Signed, Continue Application Link loc param should be pay');
+
+        // PATCH /lead - application completion
         jsonRequest = '{' +
         '   "id": "' + leadId + '",' +
         '   "email": "test@invalid.bluewavesolar.com",' +
         '   "applicationCompleteDate": "2020-07-22T00:00:00Z"' +
         '}';
         controller.patchLead(jsonRequest);
-        lead = [SELECT Id, Application_Status__c, Application_Complete_Date__c, Continue_Application_Link__c FROM Lead WHERE Id = :leadId];
+        lead = [SELECT Id, Application_Status__c, Continue_Application_Link__c FROM Lead WHERE Id = :leadId];
         System.assertEquals(200, RestContext.response.statusCode, 'A Lead PATCH with required fields should succeed');
-        System.assertEquals('Application Completed', lead.Application_Status__c, 'All customer info is present, all contracts are signed, and Application Complete Date is populated; application status should be Application Completed');
+        System.assertEquals('Application Completed', lead.Application_Status__c, 'Status should be Application Completed');
         url = new PageReference(lead.Continue_Application_Link__c);
-        System.assertEquals('complete', url.getParameters().get('loc'), 'Because Application Status is Application Completed, Continue Application Link loc param should be complete');
+        System.assertEquals('complete', url.getParameters().get('loc'), 'Continue Application Link loc param should be complete');
     }
+
     @IsTest
-    private static void testPartnerEmailSendApplicationComplete(){
+    private static void testPartnerEmailSendApplicationComplete() {
+        CSApplicationFinisher.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new MockFeatureSelector());
         Account partnerAccount = new Account(
             Name = 'Partner Account'
         );
@@ -1170,17 +1065,20 @@ public with sharing class CSLeadsRESTControllerV2Test {
             LeadSource = 'Switch',
             Partner_Account__c = partnerAccount.Id,
             Partner_Email__c = 'partner@testcase.com'
-        );
+        ); 
         insert leadToUpdate;
-        CSLeadsRESTControllerV2.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new MockFeatureSelector());
         MessagingService.emailTemplateMap = new Map<String, EmailTemplate>();
         sfab_FabricatedSObject fabbedEmailTemplate = new sfab_FabricatedSObject(EmailTemplate.class);
         fabbedEmailTemplate.setField(EmailTemplate.HtmlValue, '{{{Recipient.Name}}}');
         MessagingService.emailTemplateMap.put('MockTemplate', (EmailTemplate) fabbedEmailTemplate.toSObject());
+
         Test.startTest();
-        CSLeadsRESTControllerV2.createAndSendCSPartnerEmail(leadToUpdate.Id);
+        LeadSelector leadSelector = new LeadSelector();
+        leadToUpdate = leadSelector.selectOne(leadToUpdate.Id);
+        CSApplicationFinisher.createAndSendCSPartnerEmail(leadToUpdate);
         Test.stopTest();
-            System.assertEquals(1, MessagingService.emailsSent.size(), 'Application Complete email should be sent to Partner');
+
+        System.assertEquals(1, MessagingService.emailsSent.size(), 'Application Complete email should be sent to Partner');
         Messaging.SingleEmailMessage sentEmail = (Messaging.SingleEmailMessage) MessagingService.emailsSent[0];
         System.assert(!sentEmail.htmlBody.contains('{{{Recipient.Name}}}'),
             'Merge fields should be merged, but got: ' + sentEmail.htmlBody);
@@ -1210,9 +1108,11 @@ public with sharing class CSLeadsRESTControllerV2Test {
         update leadToUpdate;
         leadToUpdate = new LeadSelector().selectOne(leadToUpdate.Id);
         CSLeadsRESTControllerV2 controller = new CSLeadsRESTControllerV2();
+
         Test.startTest();
-        controller.createQCCaseForNoMatchPCR(leadToUpdate);
+        CSApplicationFinisher.createQCCaseForNoMatchPCR(leadToUpdate);
         Test.stopTest();
+
         List<Case> qcCase = [
             SELECT Id, QC_Case_Subject__c, Category__c
             FROM Case
@@ -1225,8 +1125,8 @@ public with sharing class CSLeadsRESTControllerV2Test {
     @IsTest
     private static void testContractFilesCompilation() {
         // Mock data
-        CSLeadsRESTControllerV2Test.RestLeadTestDataset dataSet = new CSLeadsRESTControllerV2Test.RestLeadTestDataset();
-        dataSet.generateTestData(false);
+        CSTestDataFactory dataSet = new CSTestDataFactory();
+        dataset.insertLeadViaAPI(false, 'None', false);
         Lead generatedLead = new LeadSelector().selectOneWithPropertiesAndUtilities(dataSet.leadId);
         dataSet.insertContractFiles();
 
@@ -1256,8 +1156,8 @@ public with sharing class CSLeadsRESTControllerV2Test {
     @IsTest
     private static void testContractFilesCompilationWithNoRateClass() {
         // Mock data
-        CSLeadsRESTControllerV2Test.RestLeadTestDataset dataSet = new CSLeadsRESTControllerV2Test.RestLeadTestDataset();
-        dataSet.generateTestData(true);
+        CSTestDataFactory dataSet = new CSTestDataFactory();
+        dataset.insertLeadViaAPI(true, 'None', false);
         Lead generatedLead = new LeadSelector().selectOneWithPropertiesAndUtilities(dataSet.leadId);
         dataSet.insertContractFiles();
 
@@ -1273,148 +1173,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     /*************
      *** MOCKS ***
      *************/
-    private class RestLeadTestDataset {
-        private Id leadId;
-        private Product2 product;
-        private Id contractId;
-        private Id partnerId;
-        private Id salesRepId;
-        private Id utilityId;
-        private Rate_Class__c rateClass;
-        private APXTConga4__Conga_Template__c contractCongaTemplate;
-        private List<ContentVersion> contractFiles;
-        private List<ContentDocumentLink> contractDocumentLinks;
-        private RestLead restLead;
-
-        public RestLeadTestDataset() {
-            insertBaseDependencies();
-        }
-
-        private void insertBaseDependencies() {
-            Partner__c partner = new Partner__c(Name='default test');
-            insert partner;
-            partnerId = partner.Id;
-
-            BSST__c salesRep = new BSST__c(Name = 'default rep', Partner__c = partner.Id);
-            insert salesRep;
-            salesRepId = salesRep.Id;
-            partner.Default_Sales_Rep__c = salesRep.Id;
-            update partner;
-
-            insert new System_Properties__c(Name = 'test', Default_CS_Partner__c = partner.Id);
-
-            contractCongaTemplate = new APXTConga4__Conga_Template__c();
-            insert contractCongaTemplate;
-
-            product = [SELECT Id,Name FROM Product2 LIMIT 1];
-            product.Disclosure_Form_Conga_Template__c = contractCongaTemplate.Id;
-            update product;
-
-            utilityId = [SELECT Id FROM Utility__c WHERE Name = 'Utility with EIA ID'].Id;
-            rateClass = new Rate_Class__c(
-                Name                        = 'Rate Class 1',
-                Suppress_Disclosure_Form__c = false,
-                Utility__c                  = utilityId
-            );
-            insert rateClass;
-        }
-
-        private void generateTestData(Boolean missingRateClass) {
-            restLead = new RestLead();
-            restLead.productName = product.Name;
-            restLead.utilityId = utilityId;
-            restLead.firstName = 'Restlead';
-            restLead.lastName = 'Testcase';
-            restLead.email = 'restlead.testcase@bluewavesolar.com.invalid';
-            restLead.mobilePhone = '555-555-5555';
-            restLead.businessPhone = '555-555-1111';
-            restLead.businessName = 'Test Business';
-            restLead.streetAddress = '1 Test Street';
-            restLead.city = 'Suffern';
-            restLead.state = 'NY';
-            restLead.zipCode = '10901';
-            restLead.businessTitle = 'CEO';
-            restLead.partnerId = partnerId;
-            restLead.salesRepId = salesRepId;
-            restLead.noPayment = false;
-
-            RestLead.RestPropertyAccount restAccount = new RestLead.RestPropertyAccount();
-            restAccount.billingStreet = 'Test billing street';
-            restAccount.billingCity = 'Test billing city';
-            restAccount.billingState = 'NY';
-            restAccount.billingPostalCode = '14472';
-
-            RestLead.RestUtilityAccountLog requestUAL1 = new RestLead.RestUtilityAccountLog();
-            requestUAL1.serviceStreet = 'Test service street';
-            requestUAL1.serviceCity = 'Test service city';
-            requestUAL1.serviceState = 'NY';
-            requestUAL1.servicePostalCode = '14472';
-            requestUAL1.utilityAccountNumber = '555555';
-            requestUAL1.rateClass = missingRateClass ? null : 'Rate Class 1';
-
-            restAccount.utilityAccountLogs = new List<RestLead.RestUtilityAccountLog>{requestUAL1};
-            restLead.propertyAccounts = new List<RestLead.RestPropertyAccount>{restAccount};
-
-            // Insert data into database using existing methods that would apply to an incoming API request
-            controller.insertLeadAccountAndUALs(restLead, new RestResponse());
-            leadId = [SELECT Id FROM Lead].Id;
-            contractId = [SELECT Id FROM Contract WHERE Lead__c =: leadId].Id;
-        }
-
-        private void insertContractFiles() {
-            // Insert two content versions and link to the Contract (assume Conga generated the following docs)
-            ContentVersion content1 = new ContentVersion(
-                Title='Community Solar Agreement.pdf',
-                PathOnClient ='test',
-                VersionData=Blob.valueOf('Community Solar Agreement Data')
-            );
-            ContentVersion content2 = new ContentVersion(
-                Title='Solar Disclosure Form.pdf',
-                PathOnClient ='test',
-                VersionData=Blob.valueOf('Solar Disclosure Form Data')
-            );
-            contractFiles = new List<ContentVersion>{content1, content2};
-            insert contractFiles;
-
-            // Query for Salesforce-generated ContentDocumentLinks on ContentVersions, add to Contract
-            contractFiles = [
-                SELECT Id, ContentDocumentId, VersionData, Title FROM ContentVersion
-                WHERE Id =: content1.Id OR Id =: content2.Id
-            ];
-            ContentDocumentLink cdl1 = new ContentDocumentLink(
-                LinkedEntityId = contractId,
-                ContentDocumentId = contractFiles[0].ContentDocumentId,
-                ShareType = 'V',
-                Visibility = 'AllUsers'
-            );
-            ContentDocumentLink cdl2 = new ContentDocumentLink(
-                LinkedEntityId = contractId,
-                ContentDocumentId = contractFiles[1].ContentDocumentId,
-                ShareType = 'V',
-                Visibility = 'AllUsers'
-            );
-            contractDocumentLinks = new List<ContentDocumentLink>{cdl1, cdl2};
-            insert contractDocumentLinks;
-        }
-
-        private void setRateClassToSuppressDisclosureForm() {
-            rateClass.Suppress_Disclosure_Form__c = true;
-            update rateClass;
-        }
-
-        private void resetRateClass() {
-            rateClass.Suppress_Disclosure_Form__c = false;
-            update rateClass;
-        }
-
-        private void setProductDisclosureTemplateToNull() {
-            product.Disclosure_Form_Conga_Template__c = null;
-            update product;
-        }
-    }
-
-    @TestVisible
-    private class MockLeadService extends MockProvider {
+    public class MockLeadService extends MockProvider {
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
                 when 'updateLead' {
@@ -1431,22 +1190,19 @@ public with sharing class CSLeadsRESTControllerV2Test {
             return (Lead) updateCalls.get(updateCalls.size() - 1).listOfArgs.get(0);
         }
     }
-    @TestVisible
-    private class MockLeadSelector implements StubProvider {
+
+    public class MockLeadSelector implements StubProvider {
         private Lead leadToReturn;
-        public MockLeadSelector() {
-            this.leadToReturn = null;
-                }
         public MockLeadSelector(Lead leadToReturn) {
             this.leadToReturn = leadToReturn;
-                }
+        }
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
             List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
             return leadToReturn;
         }
     }
-    @TestVisible
-    private class MockAccountService implements StubProvider {
+    
+    public class MockAccountService implements StubProvider {
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
             List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
             switch on stubbedMethodName {
@@ -1460,8 +1216,8 @@ public with sharing class CSLeadsRESTControllerV2Test {
             return null;
         }
     }
-    @TestVisible
-    private class MockAccountsSelector implements StubProvider {
+
+    public class MockAccountsSelector implements StubProvider {
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
             List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
             switch on stubbedMethodName {
@@ -1480,9 +1236,9 @@ public with sharing class CSLeadsRESTControllerV2Test {
                 when 'selectPropertyAccountsByLeadIds' {
                     Set<Id> leadIds = (Set<Id>) listOfArgs.get(0);
                     if (leadIds.contains('00Q000000000999')) {
-                                return new List<Account>{new Account()};
-                            }
-                        }
+                        return new List<Account>{new Account()};
+                    }
+                }
                 when 'selectPropertyAccountsByLeadIdsMap' {
                     return new Map<Id, Account>{'001000000000999' => new Account(Id = '001000000000999')};
                 }
@@ -1490,8 +1246,8 @@ public with sharing class CSLeadsRESTControllerV2Test {
             return null;
         }
     }
-    @TestVisible
-    private class MockUALService implements StubProvider {
+
+    public class MockUALService implements StubProvider {
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
             List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
             switch on stubbedMethodName {
@@ -1508,8 +1264,8 @@ public with sharing class CSLeadsRESTControllerV2Test {
             return null;
         }
     }
-    @TestVisible
-    private class MockUALSelector implements StubProvider {
+
+    public class MockUALSelector implements StubProvider {
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
             List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
             if (String.valueOf(listOfArgs.get(0)).substring(0,15) == 'a1b000000000111') {
@@ -1532,8 +1288,8 @@ public with sharing class CSLeadsRESTControllerV2Test {
             return new Utility_Account_Log__c();
         }
     }
-    @TestVisible
-    private class MockCustomerContractService extends MockProvider {
+
+    public class MockCustomerContractService extends MockProvider {
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
                 when 'createContractFromLead' {
@@ -1546,8 +1302,8 @@ public with sharing class CSLeadsRESTControllerV2Test {
             return null;
         }
     }
-    @TestVisible
-    private class MockCapacityService implements StubProvider {
+
+    public class MockCapacityService implements StubProvider {
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
             List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
             String zipResponseWithCapacity = '{"zipcode":"02633","utilityIds":["a1MS0000008BldpMAC"],"utilities":[{"attributes":{"type":"Utility__c","url":"/services/data/v47.0/sobjects/Utility__c/a1MS0000008BldpMAC"},"Id":"a1MS0000008BldpMAC","Name":"Eversource"}],"sharedSolarSystems":[{"attributes":{"type":"Shared_Solar_System__c","url":"/services/data/v47.0/sobjects/Shared_Solar_System__c/a1JS0000003BMvGMAW"},"Id":"a1JS0000003BMvGMAW","Name":"Project A Oak Road","Capacity_Available_to_be_Reserved__c":144499.98,"Product__c":"01tS0000005j7AVIAY","Product__r":{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AVIAY"},"Id":"01tS0000005j7AVIAY","Name":"BlueWave SMART","Customer_Subscription_Type__c":"kWh"}},{"attributes":{"type":"Shared_Solar_System__c","url":"/services/data/v47.0/sobjects/Shared_Solar_System__c/a1JS0000003BMvHMAW"},"Id":"a1JS0000003BMvHMAW","Name":"Project B Main St","Capacity_Available_to_be_Reserved__c":1445.86,"Product__c":"01tS0000005j7AVIAY","Product__r":{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AVIAY"},"Id":"01tS0000005j7AVIAY","Name":"BlueWave SMART","Customer_Subscription_Type__c":"kWh"}},{"attributes":{"type":"Shared_Solar_System__c","url":"/services/data/v47.0/sobjects/Shared_Solar_System__c/a1JS0000003BMvIMAW"},"Id":"a1JS0000003BMvIMAW","Name":"Project C Second St","Capacity_Available_to_be_Reserved__c":1445.86,"Product__c":"01tS0000005j7AWIAY","Product__r":{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AWIAY"},"Id":"01tS0000005j7AWIAY","Name":"BlueWave SREC","Customer_Subscription_Type__c":"Electricity Cost ($)"}}],"products":[{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AVIAY"},"Id":"01tS0000005j7AVIAY","Name":"BlueWave SMART","Customer_Subscription_Type__c":"kWh"},{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AWIAY"},"Id":"01tS0000005j7AWIAY","Name":"BlueWave SREC","Customer_Subscription_Type__c":"Electricity Cost ($)"}],"loadZones":[{"attributes":{"type":"Load_U__c","url":"/services/data/v47.0/sobjects/Load_U__c/a0ZS0000007rJ3mMAE"},"Id":"a0ZS0000007rJ3mMAE","LZ__c":"SEMA","Town__c":"Medfield","Name":"02633"}],"loadZoneNames":["SEMA"]}';
@@ -1556,7 +1312,8 @@ public with sharing class CSLeadsRESTControllerV2Test {
             return response;
         }
     }
-    private class MockContentDocumentSelector extends MockProvider {
+
+    public class MockContentDocumentSelector extends MockProvider {
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
                 when 'selectByLinkedEntities' {
@@ -1597,7 +1354,8 @@ public with sharing class CSLeadsRESTControllerV2Test {
             return null;
         }
     }
-    private class MockDuplicateService extends MockProvider {
+
+    public class MockDuplicateService extends MockProvider {
         private Boolean hasDuplicates;
         public MockDuplicateService(Boolean hasDuplicates) {
             this.hasDuplicates = hasDuplicates;
@@ -1624,13 +1382,14 @@ public with sharing class CSLeadsRESTControllerV2Test {
             }
         }
     }
-    @TestVisible
-    private class MockUOW extends MockProvider {
+
+    public class MockUOW extends MockProvider {
         public override Object handleMethodCall(MethodCall methodCall) {
             return null;
         }
     }
-    private class MockQualificationService implements StubProvider {
+
+    public class MockQualificationService implements StubProvider {
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
             List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs)
         {
@@ -1641,7 +1400,8 @@ public with sharing class CSLeadsRESTControllerV2Test {
             return null;
         }
     }
-    private class MockFeatureSelector implements StubProvider {
+
+    public class MockFeatureSelector implements StubProvider {
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
             List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs)
         {

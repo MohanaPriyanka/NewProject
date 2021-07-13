@@ -2,9 +2,7 @@
  * Created by peteryao on 2/19/20.
  * Tested by: RESTRouterV3Test
  */
-
 @RestResource(UrlMapping='/v3/*')
-
 global without sharing class RESTRouterV3 {
     static {
         RESTRouterV2.controller = new CSLeadsRESTControllerV3();
