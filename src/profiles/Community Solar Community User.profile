@@ -77,11 +77,6 @@
         <visible>false</visible>
     </applicationVisibilities>
     <applicationVisibilities>
-        <application>Inspire_Planner_Console</application>
-        <default>false</default>
-        <visible>false</visible>
-    </applicationVisibilities>
-    <applicationVisibilities>
         <application>LASERCA__Laser_Credit_Access</application>
         <default>false</default>
         <visible>true</visible>
