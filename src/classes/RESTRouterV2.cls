@@ -1,11 +1,9 @@
 /**
  * Created by jlugo on 7/3/2019.
  * Description: REST Controller for sending CS Leads to Salesforce
- * Test: CSLeadsRESTControllerV2Test
+ * Test: CSLeadsRESTControllerV2Test, RESTRouterV2Test
  */
-
 @RestResource(UrlMapping='/v2/*')
-
 global without sharing class RESTRouterV2 {
     public static CSLeadsRESTControllerV2 controller = new CSLeadsRESTControllerV2();
 
@@ -20,9 +18,6 @@ global without sharing class RESTRouterV2 {
                 }
                 when '/property-accounts' {
                     controller.patchPropertyAccount(jsonRequest);
-                }
-                when '/utility-account-logs' {
-                    controller.patchUtilityAccountLog(jsonRequest);
                 }
                 when '/application' {
                     controller.patchApplication(jsonRequest);
@@ -51,12 +46,6 @@ global without sharing class RESTRouterV2 {
                 when '/leads' {
                     controller.postLead(jsonRequest);
                 }
-                when '/property-accounts' {
-                    controller.postPropertyAccount(jsonRequest);
-                }
-                when '/utility-account-logs' {
-                    controller.postUtilityAccountLog(jsonRequest);
-                }
                 when else {
                     envelope.addError('Path not found');
                     RestContext.response.statusCode = 404;
@@ -79,15 +68,11 @@ global without sharing class RESTRouterV2 {
                     String zipCode = req.params.get('zipCode');
                     String partnerId = req.params.get('partnerId');
                     String utilityId = req.params.get('utilityId');
-                    controller.performZipCheck(zipCode, (partnerId==null?'':partnerId), utilityId);
+                    controller.getZipcodeCapacity(zipCode, (partnerId==null?'':partnerId), utilityId);
                 } when '/leads' {
                     String leadId = req.params.get('leadId');
                     String email = req.params.get('email');
                     controller.getLead(leadId, email);
-                } when '/contracts' {
-                    String leadId = req.params.get('leadId');
-                    String email = req.params.get('email');
-                    controller.getContracts(leadId, email);
                 } when else {
                     envelope.addError('Path not found');
                     RestContext.response.statusCode = 404;
@@ -110,5 +95,4 @@ global without sharing class RESTRouterV2 {
         errorMessage += requestBody != null ? '\n\nRequest Body: ' + requestBody.toString() : '{ null }';
         Logger.logNow('RESTRouterV2', methodName, errorMessage, 'Error');
     }
-
 }

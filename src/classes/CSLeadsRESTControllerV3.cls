@@ -2,8 +2,8 @@
  * Created by peteryao on 2/19/20.
  * Tested by: CSLeadsRESTControllerV3Test
  */
-
 public without sharing class CSLeadsRESTControllerV3 extends CSLeadsRESTControllerV2 {
+
     public void validateAuthorization(Id leadId, String email) {
         Lead lead = leadSelector.selectOne(leadId);
         if (lead == null || lead.Email != email) {
@@ -18,15 +18,10 @@ public without sharing class CSLeadsRESTControllerV3 extends CSLeadsRESTControll
     }
 
     public override void patchPropertyAccount(String jsonRequest) {
-        RestLead.RestPropertyAccount requestAccount = (RestLead.RestPropertyAccount) JSON.deserialize(jsonRequest, RestLead.RestPropertyAccount.class);
+        RestLead.RestPropertyAccount requestAccount =
+            (RestLead.RestPropertyAccount) JSON.deserialize(jsonRequest, RestLead.RestPropertyAccount.class);
         validateAuthorization(requestAccount.leadId, requestAccount.email);
         super.patchPropertyAccount(jsonRequest);
-    }
-
-    public override void patchUtilityAccountLog(String jsonRequest) {
-        RestLead.RestUtilityAccountLog requestUAL = (RestLead.RestUtilityAccountLog) JSON.deserialize(jsonRequest, RestLead.RestUtilityAccountLog.class);
-        validateAuthorization(requestUAL.leadId, requestUAL.email);
-        super.patchUtilityAccountLog(jsonRequest);
     }
 
     public override void patchApplication(String jsonRequest) {
@@ -37,7 +32,7 @@ public without sharing class CSLeadsRESTControllerV3 extends CSLeadsRESTControll
 
     public override void patchContract(String jsonRequest) {
         Map<String, Object> requestMap = (Map<String, Object>) JSON.deserializeUntyped(jsonRequest);
-        if(requestMap.containsKey('leadId') && requestMap.containsKey('email')) {
+        if (requestMap.containsKey('leadId') && requestMap.containsKey('email')) {
             Id leadId = (Id) requestMap.get('leadId');
             String email = (String) requestMap.get('email');
             validateAuthorization(leadId, email);
