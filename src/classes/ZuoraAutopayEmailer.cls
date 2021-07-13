@@ -7,8 +7,8 @@
 public without sharing class ZuoraAutopayEmailer implements Schedulable {
 
     @TestVisible private static final String MC_EVENT_KEY = 'APIEvent-7e12d0f4-1f3c-f499-ad4e-a6c5477cb479';
-    @TestVisible private static final String CRON_EXP = '0 0 12 25-28 * ?'; // Run every month on days 25, 26, 27, 28 at noon
-    @TestVisible private List<MarketingJourneyEnrollmentDetail> enrollments = new List<MarketingJourneyEnrollmentDetail>();
+    @TestVisible private static final String CRON_EXP = '0 0 12 26-29 * ?'; // Run every month on days 26, 27, 28, 29 at noon
+    @TestVisible private List<MarketingJourneyEnrollmentDetail> enrollments;
     @TestVisible private ZuoraAccountSelector accountSelector = new ZuoraAccountSelector();
     @TestVisible private Date testDate; // used for overrides in tests
     private Date todaysDate;
@@ -23,8 +23,9 @@ public without sharing class ZuoraAutopayEmailer implements Schedulable {
      * @param context Schedulable context
      */
     public void execute(SchedulableContext context) {
+        enrollments = new List<MarketingJourneyEnrollmentDetail>();
         todaysDate = testDate == null ? Date.today() : testDate;
-        if (!shouldSendEmailsToday()) {
+        if (!shouldSendEmailsToday(todaysDate)) {
             return;
         }
         for (Zuora__CustomerAccount__c account : accountSelector.getAutopayAccountsWithBalanceForEmail()) {
@@ -92,14 +93,15 @@ public without sharing class ZuoraAutopayEmailer implements Schedulable {
      * go out on the 3rd to the last day of every month, and this method decides if today is the correct day
      * @return Boolean on if today is the correct date to be sending emails
      */
-    private Boolean shouldSendEmailsToday() {
-        Integer numOfDaysInMonth = Date.daysInMonth(todaysDate.year(), todaysDate.month());
-        Date thirdToLastDayInMonth = Date.newInstance(todaysDate.year(), todaysDate.month(), numOfDaysInMonth).addDays(-3);
-        return todaysDate == thirdToLastDayInMonth;
+    @TestVisible
+    private Boolean shouldSendEmailsToday(Date cronRunDate) {
+        Integer numOfDaysInMonth = Date.daysInMonth(cronRunDate.year(), cronRunDate.month());
+        Date thirdToLastDayInMonth = Date.newInstance(cronRunDate.year(), cronRunDate.month(), numOfDaysInMonth).addDays(-2);
+        return cronRunDate == thirdToLastDayInMonth;
     }
 
     private String getNextWithdrawalDate() {
         Date dateOfNextWithdrawal = todaysDate.toStartOfMonth().addMonths(1);
-        return Datetime.newInstance(dateOfNextWithdrawal, Time.newInstance(0,0,0,0)).format('yyyy-MM-dd');
+        return Datetime.newInstance(dateOfNextWithdrawal, Time.newInstance(0,0,0,0)).format('MM/dd/yyyy');
     }
 }

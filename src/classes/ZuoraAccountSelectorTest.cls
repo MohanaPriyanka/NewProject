@@ -2,11 +2,17 @@
 public with sharing class ZuoraAccountSelectorTest {
 
     private static Zuora__CustomerAccount__c insertDataGetAccountId() {
+        Contact sendBillsContact = new Contact(
+            FirstName = 'Test',
+            LastName = 'Contact',
+            Email = 'test@gmail.com'
+        );
+        insert sendBillsContact;
         Account newSFAccount = new Account(
-            Name = 'Account Name'
+            Name = 'Account Name',
+            Send_Bills_Contact__c = sendBillsContact.Id
         );
         insert newSFAccount;
-
         Zuora__CustomerAccount__c newAccount = new Zuora__CustomerAccount__c(
             Name = 'Account Name',
             Zuora__Account__c = newSFAccount.Id,

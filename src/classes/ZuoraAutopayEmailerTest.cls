@@ -4,25 +4,18 @@ public with sharing class ZuoraAutopayEmailerTest {
     private static ZuoraAutopayEmailer emailer = new ZuoraAutopayEmailer();
     private static Boolean testWithGoodData = true;
 
-    @TestSetup
-    private static void insertTestPrerequisites() {
-        insert new System_Properties__c(Name = 'System', Log_Level__c = 'Fine');
-    }
-
     @IsTest
     private static void testEnrollmentProperties() {
         useMocks();
-        emailer.testDate = Date.newInstance(2021, 07, 28); // 3rd from last day of month
+        emailer.testDate = Date.newInstance(2021, 07, 29); // 3rd from last day of month
         emailer.execute(null);
-        Zuora__CustomerAccount__c acc = (Zuora__CustomerAccount__c) JSON.deserialize(
-            completeZuoraAccountRecordJSON, Zuora__CustomerAccount__c.class
-        );
+        Zuora__CustomerAccount__c acc = getCustomerAccounts(true)[0];
         MarketingJourneyEnrollmentDetail enrollment = emailer.enrollments[0];
         System.assertEquals(ZuoraAutopayEmailer.MC_EVENT_KEY, enrollment.EventDefinitionKey, 'Wrong Entry Event Key');
         System.assertEquals(acc.Zuora__Account__r.Send_Bills_Contact__c, enrollment.ContactId, 'Wrong contact id');
         for (FlowMap property : enrollment.EventProperties) {
             if (property.key == 'WithdrawalDate') {
-                System.assertEquals('2021-08-01', property.value, 'Wrong withdrawal date');
+                System.assertEquals('08/01/2021', property.value, 'Wrong withdrawal date');
             } else if (property.key == 'AmountDue') {
                 System.assertEquals(String.valueOf(acc.Zuora__Balance__c), property.value, 'Wrong zuora balance');
             }
@@ -33,9 +26,9 @@ public with sharing class ZuoraAutopayEmailerTest {
     @IsTest
     private static void testGoodAutopayEmailSend() {
         useMocks();
-        emailer.testDate = Date.newInstance(2021, 07, 28); // 3rd from last day of month, should send emails
+        emailer.testDate = Date.newInstance(2021, 07, 29); // 3rd from last day of month, should send emails
         Test.setMock(HttpCalloutMock.class, new MarketingJourneyEnrollerTest.MarketingJourneyEnrollerSuccess());
-        String cronExp = '0 0 12 25-28 * ?';
+        String cronExp = '0 0 12 26-29 * ?';
         Test.startTest();
             System.schedule('Zuora Autopay Emailer', cronExp, emailer);
             emailer.execute(null); // need to call this explicitly in Tests
@@ -50,8 +43,8 @@ public with sharing class ZuoraAutopayEmailerTest {
     private static void testDataMissingNoEmailsSent() {
         useMocks();
         testWithGoodData = false;
-        emailer.testDate = Date.newInstance(2021, 07, 28); // 3rd from last day of month, should send emails
-        String cronExp = '0 0 12 25-28 * ?';
+        emailer.testDate = Date.newInstance(2021, 07, 29); // 3rd from last day of month, should send emails
+        String cronExp = '0 0 12 26-29 * ?';
         Test.startTest();
             System.schedule('Zuora Autopay Emailer', cronExp, emailer);
         Test.stopTest();
@@ -65,7 +58,7 @@ public with sharing class ZuoraAutopayEmailerTest {
     @IsTest
     private static void testWrongDateNoEmailsSent() {
         emailer.testDate = Date.newInstance(2021, 07, 27); // This isn't the 3rd from last day, should not run
-        String cronExp = '0 0 12 25-28 * ?';
+        String cronExp = '0 0 12 26-29 * ?';
         Test.startTest();
             System.schedule('Zuora Autopay Emailer', cronExp, emailer);
         Test.stopTest();
@@ -83,6 +76,20 @@ public with sharing class ZuoraAutopayEmailerTest {
         System.assertEquals(0, [SELECT Id FROM Error_Log__c].size(), 'No error logs should have been logged for this tx');
     }
 
+    @IsTest
+    private static void testShouldRunToday() {
+        System.assertEquals(true, emailer.shouldSendEmailsToday(Date.newInstance(2021,7,29)),
+            'Helper method should indicate that emails should go out on the specified date');
+        System.assertEquals(false, emailer.shouldSendEmailsToday(Date.newInstance(2021,7,28)),
+            'Helper method should indicate that emails should NOT go out on the specified date');
+        System.assertEquals(false, emailer.shouldSendEmailsToday(Date.newInstance(2020,2,26)),
+            'Helper method should indicate that emails should NOT go out on leap year on 2/26');
+        System.assertEquals(true, emailer.shouldSendEmailsToday(Date.newInstance(2020,2,27)),
+            'Helper method should indicate that emails should go out on leap year on 2/27');
+        System.assertEquals(false, emailer.shouldSendEmailsToday(Date.newInstance(2021,2,28)),
+            'Helper method should indicate that emails should NOT go out (past the correct date');
+    }
+
     private static void useMocks() {
         emailer.accountSelector = (ZuoraAccountSelector) Test.createStub(ZuoraAccountSelector.class, new MockZuoraAccountSelector());
     }
@@ -92,82 +99,38 @@ public with sharing class ZuoraAutopayEmailerTest {
             List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs)
         {
             if (stubbedMethodName == 'getAutopayAccountsWithBalanceForEmail' && testWithGoodData) {
-                Zuora__CustomerAccount__c customerAccount = (Zuora__CustomerAccount__c)
-                    JSON.deserialize(completeZuoraAccountRecordJSON, Zuora__CustomerAccount__c.class);
-                return new List<Zuora__CustomerAccount__c>{customerAccount};
+                return getCustomerAccounts(true);
             } else if (stubbedMethodName == 'getAutopayAccountsWithBalanceForEmail' && !testWithGoodData) {
-                Zuora__CustomerAccount__c customerAccount = (Zuora__CustomerAccount__c)
-                    JSON.deserialize(incompleteZuoraAccountRecordJSON, Zuora__CustomerAccount__c.class);
-                return new List<Zuora__CustomerAccount__c>{customerAccount};
+                return getCustomerAccounts(false);
             }
             return null;
         }
     }
 
-    public static final String completeZuoraAccountRecordJSON = '{'+
-        '"attributes": {'+
-            '"type": "Zuora__CustomerAccount__c",'+
-            '"url": "/services/data/v51.0/sobjects/Zuora__CustomerAccount__c/a010a00000GuXjsAAF"'+
-        '},'+
-        '"Id":"a710a00000GvLjsAAF",'+
-        '"Zuora__Account__c": "0010a00001duE59AAE",'+
-        '"Zuora__Account__r": {'+
-            '"attributes": {'+
-                '"type": "Account",'+
-                '"url": "/services/data/v51.0/sobjects/Account/0012a00001duE59AAE"'+
-            '},'+
-            '"Send_Bills_Contact__c": "0030a00002LHO3oAAH",'+
-            '"Send_Bills_Contact__r": {'+
-                '"attributes": {'+
-                    '"type": "Contact",'+
-                    '"url": "/services/data/v51.0/sobjects/Contact/0032a00002LHO3oAAH"'+
-                '},'+
-                '"FirstName": "Susan",'+
-                '"Email": "susan.baldi555@gmail.com"'+
-            '},'+
-            '"Client_Brand_Key__c": "BluewaveLogo"'+
-        '},'+
-        '"Zuora__Default_Payment_Method__r": {'+
-            '"attributes": {'+
-                '"type": "Zuora__PaymentMethod__c",'+
-                '"url": "/services/data/v51.0/sobjects/Zuora__PaymentMethod__c/a795c000000HYyxAAG"'+
-            '},'+
-            '"Zuora__AchAccountNumberMask__c": null,'+
-            '"Zuora__CreditCardMaskNumber__c": "************4111"'+
-        '},'+
-        '"Zuora__Balance__c": 58.44'+
-    '}';
+    public static List<Zuora__CustomerAccount__c> getCustomerAccounts(Boolean setAllFields) {
+        sfab_FabricatedSObject sendBillsContact = new sfab_FabricatedSObject(Contact.class);
+        sendBillsContact.setField(Contact.Email, 'susan.baldi22@gmail.com');
+        sendBillsContact.setField(Contact.FirstName, 'Susan');
 
-    public static final String incompleteZuoraAccountRecordJSON = '{'+ // Missing zuora balance field data
-        '"attributes": {'+
-            '"type": "Zuora__CustomerAccount__c",'+
-            '"url": "/services/data/v51.0/sobjects/Zuora__CustomerAccount__c/a010a00000GuXjsAAF"'+
-        '},'+
-        '"Id":"a710a00000GvLjsAAF",'+
-        '"Zuora__Account__c": "0010a00001duE59AAE",'+
-        '"Zuora__Account__r": {'+
-            '"attributes": {'+
-                '"type": "Account",'+
-                '"url": "/services/data/v51.0/sobjects/Account/0012a00001duE59AAE"'+
-            '},'+
-            '"Send_Bills_Contact__c": "0030a00002LHO3oAAH",'+
-            '"Send_Bills_Contact__r": {'+
-                '"attributes": {'+
-                    '"type": "Contact",'+
-                    '"url": "/services/data/v51.0/sobjects/Contact/0032a00002LHO3oAAH"'+
-                '},'+
-                '"FirstName": "Susan",'+
-                '"Email": "susan.baldi555@gmail.com"'+
-            '},'+
-            '"Client_Brand_Key__c": "BluewaveLogo"'+
-        '},'+
-        '"Zuora__Default_Payment_Method__r": {'+
-            '"attributes": {'+
-                '"type": "Zuora__PaymentMethod__c",'+
-                '"url": "/services/data/v51.0/sobjects/Zuora__PaymentMethod__c/a795c000000HYyxAAG"'+
-            '},'+
-            '"Zuora__AchAccountNumberMask__c": null,'+
-            '"Zuora__CreditCardMaskNumber__c": "************4111"'+
-        '}'+
-    '}';
+        sfab_FabricatedSObject zuoraAccount = new sfab_FabricatedSObject(Account.class);
+        zuoraAccount.setField(Account.Client_Brand_Key__c, 'BluewaveLogo');
+        zuoraAccount.setField(Account.Send_Bills_Contact__c, '0030a00002LHO3oAAH');
+        zuoraAccount.setParent('Send_Bills_Contact__r', sendBillsContact);
+
+        sfab_FabricatedSObject paymentMethod = new sfab_FabricatedSObject(Zuora__PaymentMethod__c.class);
+        paymentMethod.setField(Zuora__PaymentMethod__c.Zuora__AchAccountNumberMask__c, '***123');
+        paymentMethod.setField(Zuora__PaymentMethod__c.Zuora__CreditCardMaskNumber__c, null);
+
+        sfab_FabricatedSObject customerAccount = new sfab_FabricatedSObject(Zuora__CustomerAccount__c.class);
+        if (setAllFields) {
+            customerAccount.setField(Zuora__CustomerAccount__c.Zuora__Balance__c, 58.44);
+        }
+        customerAccount.setField(Zuora__CustomerAccount__c.Zuora__Account__c, '0010a00001duE59AAE');
+        customerAccount.setParent('Zuora__Account__r', zuoraAccount);
+        customerAccount.setParent('Zuora__Default_Payment_Method__r', paymentMethod);
+
+        List<Zuora__CustomerAccount__c> accountList = new List<Zuora__CustomerAccount__c>();
+        accountList.add((Zuora__CustomerAccount__c) customerAccount.toSObject());
+        return accountList;
+    }
 }
