@@ -109,12 +109,12 @@ public with sharing class ZuoraAutopayEmailerTest {
 
     public static List<Zuora__CustomerAccount__c> getCustomerAccounts(Boolean setAllFields) {
         sfab_FabricatedSObject sendBillsContact = new sfab_FabricatedSObject(Contact.class);
-        sendBillsContact.setField(Contact.Email, 'susan.baldi22@gmail.com');
+        sendBillsContact.setField(Contact.Email, 'susan.testcase@gmail.com');
         sendBillsContact.setField(Contact.FirstName, 'Susan');
 
         sfab_FabricatedSObject zuoraAccount = new sfab_FabricatedSObject(Account.class);
         zuoraAccount.setField(Account.Client_Brand_Key__c, 'BluewaveLogo');
-        zuoraAccount.setField(Account.Send_Bills_Contact__c, '0030a00002LHO3oAAH');
+        zuoraAccount.setField(Account.Send_Bills_Contact__c, Util.getFakeId(Contact.SObjectType));
         zuoraAccount.setParent('Send_Bills_Contact__r', sendBillsContact);
 
         sfab_FabricatedSObject paymentMethod = new sfab_FabricatedSObject(Zuora__PaymentMethod__c.class);
@@ -125,7 +125,7 @@ public with sharing class ZuoraAutopayEmailerTest {
         if (setAllFields) {
             customerAccount.setField(Zuora__CustomerAccount__c.Zuora__Balance__c, 58.44);
         }
-        customerAccount.setField(Zuora__CustomerAccount__c.Zuora__Account__c, '0010a00001duE59AAE');
+        customerAccount.setField(Zuora__CustomerAccount__c.Zuora__Account__c, Util.getFakeId(Account.SObjectType));
         customerAccount.setParent('Zuora__Account__r', zuoraAccount);
         customerAccount.setParent('Zuora__Default_Payment_Method__r', paymentMethod);
 
