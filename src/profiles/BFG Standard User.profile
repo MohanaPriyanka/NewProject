@@ -1369,6 +1369,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>GatewaySelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>GenericBatchDMLOperation</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3609,6 +3613,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ZuoraAPI</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ZuoraAPIHelper</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3653,6 +3661,14 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ZuoraGatewayAssigner</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraGatewayAssignerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ZuoraInvoiceAsyncService</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3682,6 +3698,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ZuoraPaymentSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraPaymentService</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -42337,6 +42357,21 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Zuora__Payment__c.Lockbox_Formula__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Zuora__Payment__c.Lockbox__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Zuora__Payment__c.Payment_Gateway__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Zuora__SubscriptionProductCharge__c.ClientOwner__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -57632,6 +57667,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>ZipCode_Utility_Junction__c-ZipCode Utility Junction Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Zuora__Payment__c-Zuora__Payment Z-Force Layout v2%2E7</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>agf__ADM_Epic__c-agf__Epic Layout Feed Based</layout>

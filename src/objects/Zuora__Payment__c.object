@@ -58,6 +58,43 @@ The Payment object holds all of the information about an individual payment, inc
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ControlledByParent</externalSharingModel>
     <fields>
+        <fullName>Lockbox_Formula__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(ISPICKVAL(Zuora__Type__c, &quot;External&quot;), 
+   Lockbox__c,
+   &quot;&quot;)</formula>
+        <inlineHelpText>Lockbox used for external payments (checks)</inlineHelpText>
+        <label>Lockbox</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Lockbox__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Lockbox, as set in Zuora. It&apos;s defaulted and set for all payments, but only meaningful for external payments (checks)</inlineHelpText>
+        <label>Zuora Lockbox</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Payment_Gateway__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>The default payment gateway on the Billing Account when the Payment is downloaded (which is the payment gateway that is used to make the payment).</inlineHelpText>
+        <label>Payment Gateway</label>
+        <referenceTo>Zuora__PaymentGateway__c</referenceTo>
+        <relationshipLabel>Payments</relationshipLabel>
+        <relationshipName>Payments</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Payment_Status__c</fullName>
         <externalId>false</externalId>
         <formula>IF( ISBLANK(ResponseStatus__c),TEXT(Zuora__Status__c), ResponseStatus__c)</formula>
