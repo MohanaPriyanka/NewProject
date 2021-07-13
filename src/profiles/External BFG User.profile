@@ -369,26 +369,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>DocuSignAPI</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>DocuSignAPIMockImpl</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>DocuSignAPIWebSvcTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>DocuSignHelper</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>DocuSignVoid_Invocable</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ExecuteSOQL</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -598,14 +578,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ProductionSelector</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ReferralCodeHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ReferralCodeHandlerTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -829,10 +801,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>customIdSwapLeadTriggerTestClass</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>flowcomponents__LightningLookupController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -846,10 +814,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>mapDebtToIncomeTestClass</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>mapDocuSignRSTestClass</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
