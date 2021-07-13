@@ -831,36 +831,6 @@ IF(MOD(YEAR(Commencement_Date__c) + FLOOR((MONTH(Commencement_Date__c) + 1)/12),
         </workflowTimeTriggers>
     </rules>
     <rules>
-        <fullName>Opportunity Stage - BW Signature</fullName>
-        <actions>
-            <name>Opportunity_Stage_BW_Signature</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <active>true</active>
-        <booleanFilter>1 AND 2 AND 3 AND 4</booleanFilter>
-        <criteriaItems>
-            <field>Opportunity.Contract_Status__c</field>
-            <operation>equals</operation>
-            <value>Completed</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.All_QC_Boxes_True__c</field>
-            <operation>equals</operation>
-            <value>True</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.Quality_Check_Status__c</field>
-            <operation>equals</operation>
-            <value>Completed</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.StageName</field>
-            <operation>equals</operation>
-            <value>Pending Quality Control Signature</value>
-        </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
         <fullName>Opportunity Stage - Complete %2F Contract Close Date</fullName>
         <actions>
             <name>Opportunity_Stage_complete</name>
@@ -934,63 +904,6 @@ IF(MOD(YEAR(Commencement_Date__c) + FLOOR((MONTH(Commencement_Date__c) + 1)/12),
             <timeLength>13</timeLength>
             <workflowTimeTriggerUnit>Days</workflowTimeTriggerUnit>
         </workflowTimeTriggers>
-    </rules>
-    <rules>
-        <fullName>Opportunity Stage - QC Signature Pending</fullName>
-        <actions>
-            <name>Opportunity_Stage_QC_Signature_Pending</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <active>false</active>
-        <booleanFilter>1 AND 2</booleanFilter>
-        <criteriaItems>
-            <field>Opportunity.All_QC_Boxes_True__c</field>
-            <operation>equals</operation>
-            <value>True</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.Product_Line__c</field>
-            <operation>equals</operation>
-            <value>Community Solar</value>
-        </criteriaItems>
-        <description>Changes stage to &apos;QC Signature Pending&apos; when QC is complete, and when Customer has signed.</description>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
-        <fullName>Opportunity Stage - QC in Process</fullName>
-        <actions>
-            <name>Opportunity_Stage_QC_in_Process</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <active>false</active>
-        <booleanFilter>1 AND 2 AND 3 AND 4 AND 5</booleanFilter>
-        <criteriaItems>
-            <field>Opportunity.Contract_Status__c</field>
-            <operation>equals</operation>
-            <value>Completed</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.BlueWave_Signature_Status__c</field>
-            <operation>notEqual</operation>
-            <value>Completed</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.All_QC_Boxes_True__c</field>
-            <operation>equals</operation>
-            <value>False</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.Product_Line__c</field>
-            <operation>equals</operation>
-            <value>Community Solar</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.StageName</field>
-            <operation>notEqual</operation>
-            <value>Complete</value>
-        </criteriaItems>
-        <description>Changes stage to &apos;QC in Process&apos; when QC is not yet complete, and when Customer has signed. Updated with rule 5 to prevent expiring docusign envelopes from people with paper contracts going back to QC</description>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
     <rules>
         <fullName>Opportunity Stage - Utility Information Needed</fullName>
