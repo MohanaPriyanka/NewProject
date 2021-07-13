@@ -16,11 +16,6 @@
         <field>Expense__c.Date_Incurred__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Expense__c.Project_Task__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Expense object (Custom)</label>
     <objectPermissions>

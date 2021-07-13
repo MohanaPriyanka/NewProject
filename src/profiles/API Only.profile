@@ -62,11 +62,6 @@
         <visible>false</visible>
     </applicationVisibilities>
     <applicationVisibilities>
-        <application>Site_Acq_Central</application>
-        <default>false</default>
-        <visible>false</visible>
-    </applicationVisibilities>
-    <applicationVisibilities>
         <application>Vivint_Solar</application>
         <default>false</default>
         <visible>true</visible>

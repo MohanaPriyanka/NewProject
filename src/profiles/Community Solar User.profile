@@ -131,11 +131,6 @@
         <visible>false</visible>
     </applicationVisibilities>
     <applicationVisibilities>
-        <application>Site_Acq_Central</application>
-        <default>false</default>
-        <visible>false</visible>
-    </applicationVisibilities>
-    <applicationVisibilities>
         <application>Support_Ops_Console</application>
         <default>false</default>
         <visible>false</visible>
@@ -27824,11 +27819,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Expense__c.Date_Incurred__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Expense__c.Project_Task__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>

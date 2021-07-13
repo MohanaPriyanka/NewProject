@@ -5,11 +5,6 @@
         <default>false</default>
         <visible>false</visible>
     </applicationVisibilities>
-    <applicationVisibilities>
-        <application>Site_Acq_Central</application>
-        <default>false</default>
-        <visible>false</visible>
-    </applicationVisibilities>
     <custom>false</custom>
     <layoutAssignments>
         <layout>inspire1__Project__c-inspire1__Inspire Project v1%2E75 Layout</layout>

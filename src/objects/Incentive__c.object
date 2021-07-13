@@ -150,7 +150,6 @@
     <compactLayoutAssignment>Custom_Compact_Layout</compactLayoutAssignment>
     <compactLayouts>
         <fullName>Custom_Compact_Layout</fullName>
-        <fields>Inspire_Project__c</fields>
         <fields>Incentive_Type__c</fields>
         <fields>Application_Submitted__c</fields>
         <fields>Application_Fee__c</fields>
@@ -288,20 +287,6 @@
                 </value>
             </valueSetDefinition>
         </valueSet>
-    </fields>
-    <fields>
-        <fullName>Inspire_Project__c</fullName>
-        <externalId>false</externalId>
-        <label>Inspire Project</label>
-        <referenceTo>inspire1__Project__c</referenceTo>
-        <relationshipLabel>Incentives</relationshipLabel>
-        <relationshipName>Incentives</relationshipName>
-        <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>false</reparentableMasterDetail>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <fields>
         <fullName>Original_Expiration__c</fullName>

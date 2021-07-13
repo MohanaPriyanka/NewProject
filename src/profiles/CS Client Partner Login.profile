@@ -132,11 +132,6 @@
         <visible>false</visible>
     </applicationVisibilities>
     <applicationVisibilities>
-        <application>Site_Acq_Central</application>
-        <default>false</default>
-        <visible>false</visible>
-    </applicationVisibilities>
-    <applicationVisibilities>
         <application>Support_Ops_Console</application>
         <default>false</default>
         <visible>false</visible>

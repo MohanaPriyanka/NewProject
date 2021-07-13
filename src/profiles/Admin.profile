@@ -72,11 +72,6 @@
         <visible>true</visible>
     </applicationVisibilities>
     <applicationVisibilities>
-        <application>Site_Acq_Central</application>
-        <default>false</default>
-        <visible>true</visible>
-    </applicationVisibilities>
-    <applicationVisibilities>
         <application>Support_Ops_Console</application>
         <default>false</default>
         <visible>true</visible>
@@ -10828,11 +10823,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>External_Affairs__c.Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>FeederProjectAssociation__c.Inspire_Project__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

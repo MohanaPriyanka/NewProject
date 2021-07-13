@@ -144,7 +144,6 @@
     <compactLayoutAssignment>Interconnection_Agreement_Compact_Custom</compactLayoutAssignment>
     <compactLayouts>
         <fullName>Interconnection_Agreement_Compact_Custom</fullName>
-        <fields>Inspire_Project__c</fields>
         <fields>Name</fields>
         <fields>Agreement_Iteration__c</fields>
         <fields>Agreement_Payment_Est__c</fields>
@@ -280,21 +279,6 @@
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Inspire_Project__c</fullName>
-        <description>Child of Inspire Project</description>
-        <externalId>false</externalId>
-        <label>Inspire Project</label>
-        <referenceTo>inspire1__Project__c</referenceTo>
-        <relationshipLabel>Interconnection Agreements</relationshipLabel>
-        <relationshipName>Interconnection_Agreements</relationshipName>
-        <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>false</reparentableMasterDetail>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <label>Interconnection Agreement</label>
     <listViews>
