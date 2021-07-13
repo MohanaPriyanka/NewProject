@@ -36,9 +36,7 @@ public with sharing class ContractMigrationServiceTest {
         Product2 normalCSProduct = [SELECT Id FROM Product2 WHERE Name = 'Normal 10% Community Solar' LIMIT 1];
 
         List<Opportunity> oppList = getOpportunityMocks(accounts,assignAgree.Id,normalCSProduct.Id);
-
-        useMocks();
-
+        
         ContractMigrationService service = new ContractMigrationService();
         service.convertOpportunityToContract(oppList);
 
@@ -76,8 +74,6 @@ public with sharing class ContractMigrationServiceTest {
 
         List<Opportunity> oppList = getOpportunityMocks(accounts,assignAgree.Id,normalCSProduct.Id);
 
-        useMocks();
-
         Test.startTest();
             BatchContractMigration batchJob = new BatchContractMigration();
             batchJob.opportunitiesToRun = oppList;
@@ -102,53 +98,6 @@ public with sharing class ContractMigrationServiceTest {
         System.assert(true, 'Should not have thrown an exception when executing the schedule. The batch is tested in testBatchJob');
     }
 
-    private static void useMocks() {
-        ContractMigrationService.attachSelector = (AttachmentSelector) Test.createStub(AttachmentSelector.class, new MockAttachSelector());
-    }
-
-
-    @SuppressWarnings('PMD.EmptyStatementBlock,PMD.AvoidHardcodingId')
-    public class MockAttachSelector extends MockProvider {
-        MockAttachSelector() {}
-        public override Object handleMethodCall(MethodCall methodCall) {
-            // No attachment for DS a0S2f000000eeRDEAY / Opp 0062f00000EllRyAAJ
-            Attachment attachOne = new Attachment(
-                Name = 'File Customer Agreement',
-                Body = Blob.valueOf('This is the file body'),
-                ParentId = 'a0S2f000000adRDEAY',
-                Description = 'Description'
-            );
-            Attachment attachTwo = new Attachment(
-                Name = 'Customer Agreement Two',
-                Body = Blob.valueOf('This is the file body'),
-                ParentId = 'a0S2f000000bbRDEAY',
-                Description = 'Description'
-            );
-            Attachment attachThree = new Attachment(
-                Name = 'Customer Agreement',
-                Body = Blob.valueOf('This is the file body'),
-                ParentId = 'a0S2f000000ccRDEAY',
-                Description = 'Description'
-            );
-            Attachment attachFour = new Attachment(
-                Name = 'Customer Agreement',
-                Body = Blob.valueOf('This is the file body'),
-                ParentId = 'a0S2f000000ffRDEAY',
-                Description = 'Description'
-            );
-
-            List<Attachment> attachList = new List<Attachment>{
-                attachOne, attachTwo, attachThree, attachFour
-            };
-
-            switch on methodCall.stubbedMethodName {
-                when 'getAttachmentsByParentIdAndName' {
-                    return attachList;
-                }
-            }
-            return null;
-        }
-    }
     @SuppressWarnings('PMD.AvoidHardcodingId')
     private static List<Opportunity> getOpportunityMocks(List<Account> accounts, Id assignmentAgreementId, Id productId){
         Opportunity oppOne = new Opportunity(

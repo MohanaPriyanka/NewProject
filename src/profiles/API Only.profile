@@ -32531,6 +32531,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Zuora__Payment__c.Lockbox__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Zuora__Payment__c.ResponseStatus__c</field>
         <readable>true</readable>
     </fieldPermissions>
