@@ -9,6 +9,7 @@
     <emailSenderName>BlueWave</emailSenderName>
     <enableCustomVFErrorPageOverrides>false</enableCustomVFErrorPageOverrides>
     <enableDirectMessages>true</enableDirectMessages>
+    <enableExperienceBundleBasedSnaOverrideEnabled>true</enableExperienceBundleBasedSnaOverrideEnabled>
     <enableGuestChatter>true</enableGuestChatter>
     <enableGuestFileAccess>true</enableGuestFileAccess>
     <enableGuestMemberVisibility>false</enableGuestMemberVisibility>
@@ -31,7 +32,6 @@
         <profile>admin</profile>
         <profile>api only</profile>
         <profile>bw technology</profile>
-        <profile>bfg marketing user</profile>
         <profile>bfg standard user</profile>
         <profile>external bfg user</profile>
     </networkMemberGroups>
