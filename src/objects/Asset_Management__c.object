@@ -550,19 +550,6 @@
         </valueSet>
     </fields>
     <fields>
-        <fullName>Project__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Project</label>
-        <referenceTo>MPM4_BASE__Milestone1_Project__c</referenceTo>
-        <relationshipLabel>Asset Management</relationshipLabel>
-        <relationshipName>Asset_Management</relationshipName>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>Real_estate_tax_payments__c</fullName>
         <externalId>false</externalId>
         <label>Real estate tax payments</label>
@@ -772,7 +759,7 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Asset Management</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

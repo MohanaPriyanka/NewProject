@@ -549,19 +549,6 @@
         <visibleLines>4</visibleLines>
     </fields>
     <fields>
-        <fullName>Project__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Project</label>
-        <referenceTo>MPM4_BASE__Milestone1_Project__c</referenceTo>
-        <relationshipLabel>Partners</relationshipLabel>
-        <relationshipName>Partner</relationshipName>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>Proof_of_Experience__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Populated Date = Date of Expiration or Date for Re-Submittal</inlineHelpText>

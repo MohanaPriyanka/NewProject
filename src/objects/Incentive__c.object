@@ -316,20 +316,6 @@
         <type>Date</type>
     </fields>
     <fields>
-        <fullName>Project__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <description>Never used, deprecated</description>
-        <externalId>false</externalId>
-        <label>Milestones Project</label>
-        <referenceTo>MPM4_BASE__Milestone1_Project__c</referenceTo>
-        <relationshipLabel>Incentives</relationshipLabel>
-        <relationshipName>Incentives</relationshipName>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>Public_Private__c</fullName>
         <externalId>false</externalId>
         <label>Public / Private</label>
