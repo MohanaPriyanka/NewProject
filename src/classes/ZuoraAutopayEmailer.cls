@@ -6,10 +6,10 @@
  */
 public without sharing class ZuoraAutopayEmailer implements Schedulable {
 
-    public Date testDate; // used for overrides in system or manual tests
-    public Boolean dryRun = false;
     @TestVisible private static final String MC_EVENT_KEY = 'APIEvent-7e12d0f4-1f3c-f499-ad4e-a6c5477cb479';
     @TestVisible private static final String CRON_EXP = '0 0 12 26-29 * ?'; // Run every month on days 26, 27, 28, 29 at noon
+    public Boolean dryRun = false;
+    public Date dateOverride;
     @TestVisible private List<MarketingJourneyEnrollmentDetail> enrollments;
     @TestVisible private ZuoraAccountSelector accountSelector = new ZuoraAccountSelector();
     private Date todaysDate;
@@ -25,7 +25,7 @@ public without sharing class ZuoraAutopayEmailer implements Schedulable {
      */
     public void execute(SchedulableContext context) {
         enrollments = new List<MarketingJourneyEnrollmentDetail>();
-        todaysDate = testDate == null ? Date.today() : testDate;
+        todaysDate = dateOverride == null ? Date.today() : dateOverride;
         if (!shouldSendEmailsToday(todaysDate)) {
             return;
         }

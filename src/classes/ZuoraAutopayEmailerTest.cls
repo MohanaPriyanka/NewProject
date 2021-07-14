@@ -7,7 +7,7 @@ public with sharing class ZuoraAutopayEmailerTest {
     @IsTest
     private static void testEnrollmentProperties() {
         useMocks();
-        emailer.testDate = Date.newInstance(2021, 07, 29); // 3rd from last day of month
+        emailer.dateOverride = Date.newInstance(2021, 07, 29); // 3rd from last day of month
         emailer.execute(null);
         Zuora__CustomerAccount__c acc = getCustomerAccounts(true)[0];
         MarketingJourneyEnrollmentDetail enrollment = emailer.enrollments[0];
@@ -26,7 +26,7 @@ public with sharing class ZuoraAutopayEmailerTest {
     @IsTest
     private static void testGoodAutopayEmailSend() {
         useMocks();
-        emailer.testDate = Date.newInstance(2021, 07, 29); // 3rd from last day of month, should send emails
+        emailer.dateOverride = Date.newInstance(2021, 07, 29); // 3rd from last day of month, should send emails
         Test.setMock(HttpCalloutMock.class, new MarketingJourneyEnrollerTest.MarketingJourneyEnrollerSuccess());
         String cronExp = '0 0 12 26-29 * ?';
         Test.startTest();
@@ -43,7 +43,7 @@ public with sharing class ZuoraAutopayEmailerTest {
     private static void testDataMissingNoEmailsSent() {
         useMocks();
         testWithGoodData = false;
-        emailer.testDate = Date.newInstance(2021, 07, 29); // 3rd from last day of month, should send emails
+        emailer.dateOverride = Date.newInstance(2021, 07, 29); // 3rd from last day of month, should send emails
         String cronExp = '0 0 12 26-29 * ?';
         Test.startTest();
             System.schedule('Zuora Autopay Emailer', cronExp, emailer);
@@ -57,7 +57,7 @@ public with sharing class ZuoraAutopayEmailerTest {
 
     @IsTest
     private static void testWrongDateNoEmailsSent() {
-        emailer.testDate = Date.newInstance(2021, 07, 27); // This isn't the 3rd from last day, should not run
+        emailer.dateOverride = Date.newInstance(2021, 07, 27); // This isn't the 3rd from last day, should not run
         String cronExp = '0 0 12 26-29 * ?';
         Test.startTest();
             System.schedule('Zuora Autopay Emailer', cronExp, emailer);
