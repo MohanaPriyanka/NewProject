@@ -403,7 +403,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
     }
     public static List<Utility_Account_Log__c> getUtilityAccountLogs() {
         List<Utility_Account_Log__c> ualList = [
-            SELECT Id, Name, Annual_Cost_of_Electricity__c, Name_on_Account__c, Lead__c, Utility__c,
+            SELECT Id, Name, Annual_Cost_of_Electricity__c, Name_on_Account__c, Lead__c,
                 Annual_kWh__c, Proposed_kWh__c, Lead__r.Product__r.Customer_Subscription_Type__c,
                 Utility_NMC_Tariff__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Utility_NMC_Tariff__c,
                 Utility_Rate_Class__r.Utility_NMC_Tariff__r.Size_Ratio__c, Subsc_Annual_Cost_of_Electricity_Rollup__c,
@@ -419,7 +419,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             SELECT Id, Name, Maximum_Subscription_Cost__c, Billing_Method__c, Product__r.Name,
                 Product__c, Product__r.Sizing_Method__c, Product__r.Customer_Subscription_Type__c,
                 Project_Capacity_Available_kW_DC__c, Estimated_COD_Date_Manual__c, Service_Territories__c,
-                Reserved_Capacity_kW_DC__c, Service_Territory__c, Utility__c, Expected_Yield_kWh_kW__c,
+                Reserved_Capacity_kW_DC__c, Service_Territory__c, Expected_Yield_kWh_kW__c,
                 Utility_NMC_Tariff__c, Utility_NMC_Tariff__r.Size_Ratio__c, Credit_Score_Requirement__c, Assignment_Order__c, Maximum_Subscription_Capacity_kWDC__c,
                 BWC_Project_Entity_Manual__c, NMC_Value__c,
                 Total_System_Size_kWh_DC__c, Utility__r.Number_of_Decimal_Places__c
