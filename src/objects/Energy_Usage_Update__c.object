@@ -657,20 +657,6 @@ if( month( Date__c ) == 12, &quot;December&quot;, null))))))))))))</formula>
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>SRECs_Produced__c</fullName>
-        <externalId>false</externalId>
-        <formula>Production__c / 1000* Shared_Solar_System__r.Project_Management__r.SREC_Factor__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>SRECs Produced</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Schedule_Z_Allocations__c</fullName>
         <externalId>false</externalId>
         <label>Allocations</label>

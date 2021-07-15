@@ -4214,38 +4214,6 @@
 &amp;00N0a00000CNAdy={!Task.Product_Line__c}</url>
     </webLinks>
     <webLinks>
-        <fullName>New_PM_Task</fullName>
-        <availability>online</availability>
-        <description>Used on the Activity related list on Project detail page</description>
-        <displayType>massActionButton</displayType>
-        <encodingKey>UTF-8</encodingKey>
-        <linkType>url</linkType>
-        <masterLabel>New Project Management Task</masterLabel>
-        <openType>replace</openType>
-        <protected>false</protected>
-        <requireRowSelection>false</requireRowSelection>
-        <url>/00T/e?what_id={!MPM4_BASE__Milestone1_Project__c.Id}&amp;retURL=%2F{!MPM4_BASE__Milestone1_Project__c.Id}&amp;RecordType=012j0000000uhj9&amp;ent=Task</url>
-    </webLinks>
-    <webLinks>
-        <fullName>Project_Link</fullName>
-        <availability>online</availability>
-        <displayType>link</displayType>
-        <encodingKey>UTF-8</encodingKey>
-        <hasMenubar>false</hasMenubar>
-        <hasScrollbars>true</hasScrollbars>
-        <hasToolbar>false</hasToolbar>
-        <height>600</height>
-        <isResizable>true</isResizable>
-        <linkType>url</linkType>
-        <masterLabel>Project Link</masterLabel>
-        <openType>newWindow</openType>
-        <position>none</position>
-        <protected>false</protected>
-        <showsLocation>false</showsLocation>
-        <showsStatus>false</showsStatus>
-        <url>{!MPM4_BASE__Milestone1_Task__c.Name}</url>
-    </webLinks>
-    <webLinks>
         <fullName>Send_Email_to_Requestor</fullName>
         <availability>online</availability>
         <displayType>button</displayType>

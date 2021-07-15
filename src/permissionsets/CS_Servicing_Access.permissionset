@@ -841,11 +841,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Energy_Usage_Update__c.SRECs_Produced__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Energy_Usage_Update__c.Schedule_Z_Allocations__c</field>
         <readable>true</readable>
     </fieldPermissions>
