@@ -33486,11 +33486,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Contingency_Balance__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>MPM4_BASE__Milestone1_Project__c.Contingency__c</field>
         <readable>true</readable>
@@ -35393,11 +35388,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>MPM4_BASE__Milestone1_Project__c.Total_MWDC__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Total_Potential_Risk__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -42353,11 +42343,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Schedule_Z__c.Number_of_Days_to_Enact_ALS__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Schedule_Z__c.Project_ID__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

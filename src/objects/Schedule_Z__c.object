@@ -365,18 +365,6 @@ CASE(Utility__c,
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Project_ID__c</fullName>
-        <description>The ID for the Project Associated with the Shared Solar System.</description>
-        <externalId>false</externalId>
-        <formula>Shared_Solar_System__r.Project_Management__c</formula>
-        <inlineHelpText>The ID for the Project Associated with the Shared Solar System.</inlineHelpText>
-        <label>Project ID</label>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>QC_Start_Date__c</fullName>
         <description>This is set by a process builder when the Status is set to new.</description>
         <externalId>false</externalId>

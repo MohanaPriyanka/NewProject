@@ -17721,11 +17721,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Contingency_Balance__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>MPM4_BASE__Milestone1_Project__c.Contingency__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -19547,11 +19542,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>MPM4_BASE__Milestone1_Project__c.Total_MWDC__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Total_Potential_Risk__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
