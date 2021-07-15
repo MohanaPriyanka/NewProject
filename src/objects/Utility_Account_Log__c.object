@@ -924,50 +924,12 @@ Used for customer sizing on SMART contracts.</inlineHelpText>
         <type>Summary</type>
     </fields>
     <fields>
-        <fullName>Subscribed_Annual_Cost_of_Electricity__c</fullName>
-        <businessStatus>DeprecateCandidate</businessStatus>
-        <description>Used for SREC CS Product sizing. It&apos;s the sum of the Annual Cost of Electricity (future) field on all related Utility Account Subscriptions.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Used for SREC CS Product sizing. It&apos;s the sum of the Annual Cost of Electricity (future) field on all related Utility Account Subscriptions.</inlineHelpText>
-        <label>xxSubscribed Annual Cost of Electricity</label>
-        <summarizedField>Utility_Account_Subscription__c.Subscribed_Annual_Cost_of_Electricity__c</summarizedField>
-        <summaryFilterItems>
-            <field>Utility_Account_Subscription__c.Next_Schedule_Z_Status__c</field>
-            <operation>equals</operation>
-            <value>Active Subscription</value>
-        </summaryFilterItems>
-        <summaryForeignKey>Utility_Account_Subscription__c.Utility_Account_Log__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
-    </fields>
-    <fields>
         <fullName>Subscribed_Annual_kWhs_Rollup__c</fullName>
         <description>This sums the Future kWh subscription fields from all related utility account subscriptions.</description>
         <externalId>false</externalId>
         <inlineHelpText>This sums the Future kWh subscription fields from all related utility account subscriptions.</inlineHelpText>
         <label>Subscribed Annual kWhs</label>
         <summarizedField>Utility_Account_Subscription__c.Annual_kWh_Subscription_Future_Rollup__c</summarizedField>
-        <summaryFilterItems>
-            <field>Utility_Account_Subscription__c.Next_Schedule_Z_Status__c</field>
-            <operation>equals</operation>
-            <value>Active Subscription</value>
-        </summaryFilterItems>
-        <summaryForeignKey>Utility_Account_Subscription__c.Utility_Account_Log__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
-    </fields>
-    <fields>
-        <fullName>Subscribed_Annual_kWhs__c</fullName>
-        <businessStatus>DeprecateCandidate</businessStatus>
-        <description>This sums the Future kWh subscription fields from all related utility account subscriptions.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>This sums the Future kWh subscription fields from all related utility account subscriptions.</inlineHelpText>
-        <label>xxSubscribed Annual kWhs</label>
-        <summarizedField>Utility_Account_Subscription__c.Annual_kwh_subscription_future__c</summarizedField>
         <summaryFilterItems>
             <field>Utility_Account_Subscription__c.Next_Schedule_Z_Status__c</field>
             <operation>equals</operation>
@@ -1043,18 +1005,6 @@ Used for customer sizing on SMART contracts.</inlineHelpText>
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Utility__c</fullName>
-        <externalId>false</externalId>
-        <formula>Lead__r.Electricity_Provider__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>xxxUtility</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Utility_lookup__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -1086,7 +1036,6 @@ Used for customer sizing on SMART contracts.</inlineHelpText>
         <fullName>All</fullName>
         <columns>NAME</columns>
         <columns>CREATED_DATE</columns>
-        <columns>Utility__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>
