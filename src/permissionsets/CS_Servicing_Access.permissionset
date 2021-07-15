@@ -1016,11 +1016,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Opportunity.Service_Address_and_Name_on_Account_Chk__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Opportunity.Servicing_on_behalf_of__c</field>
         <readable>true</readable>
     </fieldPermissions>

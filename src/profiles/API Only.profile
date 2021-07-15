@@ -22145,16 +22145,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.All_Customers_Signature_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.All_QC_Boxes_True__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Amount</field>
         <readable>true</readable>
@@ -22297,11 +22287,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Billing_City_Upper_Case__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.BlueWave_Signature_Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -22575,11 +22560,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.Confirmed_Subscription_Size_Correct__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Conga_Contract_Id__c</field>
         <readable>true</readable>
@@ -22621,17 +22601,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Opportunity.Contract_Fully_Populated__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Opportunity.Contract_Paper_Copy__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.Contract_Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -22672,11 +22642,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Cumulative_Loan_to_Value__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.Current_Utility_Bill__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -23031,11 +22996,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Opportunity.Green_Button_Data_Received__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Opportunity.Homeowner_s_Insurance_Policy_End_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -23247,11 +23207,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.LoadZone__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.Load_Zone_Quality_Check__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -23766,21 +23721,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Opportunity.QC_Call_Complete__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.QC_Personal_Credit_Report__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.Quality_Check_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Opportunity.RFP_Issue_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -24042,11 +23982,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Send_PDF_with_Email__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.Service_Address_and_Name_on_Account_Chk__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
