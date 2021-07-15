@@ -213,10 +213,6 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Pending Quality Control Signature</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>QC In Process</fullName>
             <default>false</default>
         </values>
