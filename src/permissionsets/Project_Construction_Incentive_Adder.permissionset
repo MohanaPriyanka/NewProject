@@ -1933,15 +1933,6 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
-        <object>Construction__c</object>
-        <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
-        <allowEdit>true</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
         <object>Incentive__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
@@ -1968,10 +1959,6 @@
     </recordTypeVisibilities>
     <tabSettings>
         <tab>Adder_Extension__c</tab>
-        <visibility>Visible</visibility>
-    </tabSettings>
-    <tabSettings>
-        <tab>Construction__c</tab>
         <visibility>Visible</visibility>
     </tabSettings>
     <tabSettings>

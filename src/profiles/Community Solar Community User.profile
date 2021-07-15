@@ -21550,146 +21550,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Equipment_Log__c.Comments__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Equipment_Log__c.Cost_Per_Inverter__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Equipment_Log__c.Cost_Per_Module__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Equipment_Log__c.DC_AC_Ratio__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Equipment_Log__c.Date_of_Purchase__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Equipment_Log__c.EPC_Account__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Equipment_Log__c.Inverter_Cost_per_Wattage__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Equipment_Log__c.Module_Cost_per_Wattage__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Equipment_Log__c.Total_Cost__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Equipment_Log__c.Total_InverterQuantity__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Equipment_Log__c.Total_Inverter_Cost__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Equipment_Log__c.Total_Inverter_Wattage__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Equipment_Log__c.Total_ModuleQuantity__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Equipment_Log__c.Total_Module_Cost__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Equipment_Log__c.Total_Module_Wattage_kw_DC__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Equipment_Log__c.Total_Other_Equipment_Cost__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Equipment__c.Comments__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Equipment__c.Cost__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Equipment__c.Date_of_Purchase__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Equipment__c.Inverter_Type__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Equipment__c.Inverter_Type_del__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Equipment__c.Model__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Equipment__c.Module_Tilt__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Equipment__c.Quantity__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Equipment__c.Racking_Type__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Equipment__c.Size__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Equipment__c.Unit_Cost__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Equipment__c.Units__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Error_Log__c.Class__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -68843,9 +68703,6 @@
         <layout>Consolidated_Loan_Info__c-Consolidated Loan Info Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Construction__c-Construction Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Consumption_Update__c-Community Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -68973,40 +68830,6 @@
     <layoutAssignments>
         <layout>Entity__c-BWC SE Project Entity Layout</layout>
         <recordType>Entity__c.BWC_SE_Project_Entity</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Equipment_Log__c-EPC Equipment Log Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Equipment__c-Combiner Boxes</layout>
-        <recordType>Equipment__c.Combiner_Boxes</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Equipment__c-EPC Equipment Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Equipment__c-EPC Equipment Layout</layout>
-        <recordType>Equipment__c.Equipment_Default</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Equipment__c-EPC Equipment Layout</layout>
-        <recordType>Equipment__c.Neutral_Ground_Reactor</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Equipment__c-EPC Equipment Layout</layout>
-        <recordType>Equipment__c.Transformer</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Equipment__c-Inverter Layout</layout>
-        <recordType>Equipment__c.Inverter</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Equipment__c-Module Layout</layout>
-        <recordType>Equipment__c.Module</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Equipment__c-Racking Layout</layout>
-        <recordType>Equipment__c.Racking</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Error_Log__c-Error Log Layout</layout>
@@ -71142,15 +70965,6 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
-        <object>Construction__c</object>
-        <viewAllRecords>false</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>false</allowCreate>
-        <allowDelete>false</allowDelete>
-        <allowEdit>false</allowEdit>
-        <allowRead>false</allowRead>
-        <modifyAllRecords>false</modifyAllRecords>
         <object>Consumption_Update__ChangeEvent</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -71502,25 +71316,7 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
-        <object>Equipment_Log__c</object>
-        <viewAllRecords>false</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>false</allowCreate>
-        <allowDelete>false</allowDelete>
-        <allowEdit>false</allowEdit>
-        <allowRead>false</allowRead>
-        <modifyAllRecords>false</modifyAllRecords>
         <object>Equipment__ChangeEvent</object>
-        <viewAllRecords>false</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>false</allowCreate>
-        <allowDelete>false</allowDelete>
-        <allowEdit>false</allowEdit>
-        <allowRead>false</allowRead>
-        <modifyAllRecords>false</modifyAllRecords>
-        <object>Equipment__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -84603,41 +84399,6 @@
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>Equipment__c.Combiner_Boxes</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>true</default>
-        <recordType>Equipment__c.Equipment_Default</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>Equipment__c.Inverter</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>Equipment__c.Module</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>Equipment__c.Neutral_Ground_Reactor</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>Equipment__c.Racking</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>Equipment__c.Transformer</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
         <default>true</default>
         <recordType>FeederProjectAssociation__c.Eversource_13_kV</recordType>
         <visible>true</visible>
@@ -85733,10 +85494,6 @@
         <visibility>DefaultOff</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>Construction__c</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
         <tab>Consumption_Update__c</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
@@ -85783,10 +85540,6 @@
     <tabVisibilities>
         <tab>Entity__c</tab>
         <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Equipment__c</tab>
-        <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>Expense__c</tab>
