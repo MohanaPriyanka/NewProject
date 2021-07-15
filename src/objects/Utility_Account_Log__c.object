@@ -419,15 +419,6 @@ Used for customer sizing on SMART contracts.</inlineHelpText>
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Multiple_Copies__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Multiple Copies?</label>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>NYPA__c</fullName>
         <description>Checked during QC for National Grid NY if an account is NYPA.</description>
         <externalId>false</externalId>
@@ -570,17 +561,6 @@ Used for customer sizing on SMART contracts.</inlineHelpText>
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Partner__c</fullName>
-        <externalId>false</externalId>
-        <label>Partner</label>
-        <length>20</length>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Password__c</fullName>
         <externalId>false</externalId>
         <label>Password</label>
@@ -604,17 +584,6 @@ Used for customer sizing on SMART contracts.</inlineHelpText>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Previous_BW_CL_Applicant__c</fullName>
-        <defaultValue>false</defaultValue>
-        <description>From CS Application. To see if they have applied for a BW Solar Loan Before.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>From CS Application. To see if they have applied for a BW Solar Loan Before.</inlineHelpText>
-        <label>Previous BW CL Applicant?</label>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Previous_Name_on_Utility_Account__c</fullName>
@@ -889,20 +858,6 @@ Used for customer sizing on SMART contracts.</inlineHelpText>
         <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Solar_System_Size_kW_DC__c</fullName>
-        <description>From CS Application. If they have a solar system, what size is it.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>From CS Application. If they have a solar system, what size is it.</inlineHelpText>
-        <label>Solar System Size(kW DC)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
         <unique>false</unique>
     </fields>
     <fields>

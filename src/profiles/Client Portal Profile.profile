@@ -28656,11 +28656,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Utility_Account_Log__c.Multiple_Copies__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Utility_Account_Log__c.Name_on_Account__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -28681,22 +28676,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Utility_Account_Log__c.Partner__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Utility_Account_Log__c.Password__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Log__c.Premise_Number__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Utility_Account_Log__c.Previous_BW_CL_Applicant__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -28757,11 +28742,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Log__c.Service_Zip_Code__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Utility_Account_Log__c.Solar_System_Size_kW_DC__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
