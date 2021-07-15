@@ -26,7 +26,8 @@ public without sharing class CSApplicationFinisher {
         try {
             performSteps(lead, setApplicationCompleteDate);
         } catch (Exception e) {
-            logError(leadId, setApplicationCompleteDate, 'Unexpected error occurred');
+            String errorMessage = 'Unexpected error occurred: ' + e.getMessage() + '\n\n' + e.getStackTraceString() + '\n\n';
+            logError(leadId, setApplicationCompleteDate, errorMessage);
             return;
         }
     }
@@ -52,7 +53,7 @@ public without sharing class CSApplicationFinisher {
         }
     }
 
-    private static void updateLeadOnComplete(Lead lead, Boolean setApplicationCompleteDate) {
+    public static void updateLeadOnComplete(Lead lead, Boolean setApplicationCompleteDate) {
         lead.Application_Complete_Date__c = setApplicationCompleteDate ? Datetime.now() : lead.Application_Complete_Date__c;
         lead.Application_Status__c = 'Application Completed';
         CSLeadsRESTControllerV2.setContinueApplicationLinks(lead, 'Application Completed');
@@ -61,12 +62,10 @@ public without sharing class CSApplicationFinisher {
     }
 
     /**
-     * @description Method to send an email to the related Partner when the customer has completed their SSF
-     * Application
+     * @description Method to send an email to the related Partner when the customer has completed their SSF Application
      * @param Lead Lead that has completed the application
      */
-    @TestVisible
-    private static void createAndSendCSPartnerEmail(Lead lead) {
+    public static void createAndSendCSPartnerEmail(Lead lead) {
         System_Default__mdt systemDefault = featureSelector.getSystemDefaults();
         if (systemDefault.Application_Complete_Email_Template__c == null || lead?.Partner_Email__c == null) {
             Logger.logNow('CSLeadsService', 'createAndSendCSPartnerEmail',
@@ -90,11 +89,10 @@ public without sharing class CSApplicationFinisher {
     }
 
     /**
-    * When application is completed, if PCR is still a "No Match," we create a QC Case
+    * @description When application is completed, if PCR is still a "No Match," we create a QC Case
     * @param lead lead that has completed the SSF Application
     */
-    @TestVisible
-    private static void createQCCaseForNoMatchPCR(Lead lead) {
+    public static void createQCCaseForNoMatchPCR(Lead lead) {
         if (lead.Personal_Credit_Report__r.LASERCA__Credit_Score__c == '9999') {
             CaseFactory noMatchFactory  = new CaseFactory();
             noMatchFactory.setLead(lead);
