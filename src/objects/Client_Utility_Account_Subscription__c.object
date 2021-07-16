@@ -254,6 +254,16 @@ Utility_Account_Subscription__r.Annual_kwh_subscription_future__c
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Exclude_from_Demand_Capacity__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Subscription__r.Utility_Account_Log__r.Exclude_from_Demand_Capacity__c</formula>
+        <inlineHelpText>When checked, this customer utility account is not included in demand capacity for a SSS due to an exemption for residential load for mass meter exceptions.</inlineHelpText>
+        <label>Exclude from Demand Capacity</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>FICO_score__c</fullName>
         <externalId>false</externalId>
         <formula>IF( 
