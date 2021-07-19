@@ -47,11 +47,12 @@ public with sharing class ZuoraInvoiceSelector {
                 Zuora__BillingAccount__r.Zuora__Account__r.Id,
                 Zuora__BillingAccount__r.Zuora__Account__r.Client_Brand_Key__c,
                 Zuora__BillingAccount__r.Zuora__Account__r.Bill_Delivery_Preference__c,
+                Zuora__BillingAccount__r.Zuora__Account__r.Send_Bills_Contact__c,
                 Zuora__BillingAccount__r.Zuora__Account__r.Send_Bills_Contact__r.Email,
                 Zuora__BillingAccount__r.Zuora__Account__r.Additional_Contact__r.Email,
                 LetterStream_Insert__r.Content_Version_ID__c
             FROM Zuora__ZInvoice__c
-            WHERE Ready_For_Email_Send__c = true
+            WHERE Ready_for_Email_Send__c = TRUE
         ];
     }
 

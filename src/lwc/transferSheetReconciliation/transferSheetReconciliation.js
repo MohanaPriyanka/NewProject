@@ -78,7 +78,7 @@ export default class BasicDatatable extends LightningElement {
         uasbData.customerName = this.setCustomerName(uasbData, dataFromApex);
         uasbData.trUtilityAccount = dataFromApex.utilUASB.PreGen_Utility_Acct__c;
         uasbData.sfUtilityAccount = dataFromApex.sfUASB.PreGen_Utility_Acct__c;
-        uasbData.finaled = dataFromApex.sfUASB.PreGen_IsPreGen__c ? 'FINALED_' : '';
+        uasbData.exceptionPrefix = this.getExceptionPrefix(dataFromApex.sfUASB);
         uasbData.uniqueId = dataFromApex.sfUASB.Schedule_Z_Subscription__c;
         if (this.UCB) {
             uasbData.sfNewAvailableCredits = dataFromApex.sfUASB.New_available_credits__c;
@@ -101,6 +101,15 @@ export default class BasicDatatable extends LightningElement {
             uasbData.trCredits = dataFromApex.utilUASB.Credits_Allocated__c;
             uasbData.trCreditValue = dataFromApex.utilUASB.NMC_Rate__c;
         }
+    }
+
+    getExceptionPrefix(uasb) {
+        if (uasb.PreGen_IsPreGen__c) {
+            return 'FINALED_';
+        } else if (uasb.Early_Removal__c) {
+            return 'REMOVED_';
+        }
+        return ''
     }
 
     setCustomerName(uasbData, dataFromApex) {
