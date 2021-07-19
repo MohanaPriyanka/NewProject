@@ -13,6 +13,7 @@ public with sharing class ScheduleZSubscriptionSelector {
         'Utility_Account_Subscription__c, ' +
         'Utility_Account_Subscription__r.Id,' +
         'Utility_Account_Subscription__r.Name,' +
+        'Utility_Account_Subscription__r.Early_Removal__c,' +
         'Utility_Account_Subscription__r.Finaled__c,' +
         'Utility_Account_Subscription__r.Next_Schedule_Z_Status__c, ' +
         'Utility_Account_Subscription__r.Name_on_Account_From_Log__c, ' +

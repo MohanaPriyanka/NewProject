@@ -66,7 +66,7 @@
                     <template for:each={uasbData} for:item='item'>
                         <tr key={item.uniqueId} class={item.rowStyle}>
                             <td class={item.leftPanelStyle}>{item.customerName}</td>
-                            <td class={item.leftPanelStyle}>{item.finaled}{item.sfUtilityAccount}</td>
+                            <td class={item.leftPanelStyle}>{item.exceptionPrefix}{item.sfUtilityAccount}</td>
                             <td class={item.leftPanelStyle}>{item.sfProduction}</td>
                             <td class={item.leftPanelStyle}>{item.sfCredits}</td>
                             <td class={item.leftPanelStyle}>{item.sfCreditValue}</td>
@@ -179,7 +179,7 @@
                     <template for:each={uasbData} for:item='item'>
                         <tr key={item.uniqueId} class={item.rowStyle}>
                             <td class={item.leftPanelStyle}>{item.customerName}</td>
-                            <td class={item.leftPanelStyle}>{item.finaled}{item.sfUtilityAccount}</td>
+                            <td class={item.leftPanelStyle}>{item.exceptionPrefix}{item.sfUtilityAccount}</td>
                             <td class={item.leftPanelStyle}>{item.sfNewAvailableCredits}</td>
                             <td class={item.leftPanelStyle}>{item.sfTotalAvailableCredits}</td>
                             <td class={item.leftPanelStyle}>{item.sfNetMemberCredits}</td>

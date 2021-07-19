@@ -19,7 +19,7 @@ public virtual class UASB {
     /**
      * @description No-arg default constructor
      */
-    public UASB(){
+    public UASB() {
     }
 
     /**
@@ -31,12 +31,11 @@ public virtual class UASB {
     public UASB(
         Schedule_Z_Subscription__c szs,
         Transfer__c transfer,
-        Map<Id,List<Product_Escalator__c>> productEscalatorMap)
-    {
+        Map<Id, List<Product_Escalator__c>> productEscalatorMap) {
         this.szs = szs;
         this.transfer = transfer;
         this.billingMethod = szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Method__c;
-        this.productionDecimalRounding =(Integer) szs.Schedule_Z__r.Shared_Solar_System__r.Utility__r.UASB_Number_of_Decimals__c;
+        this.productionDecimalRounding = (Integer) szs.Schedule_Z__r.Shared_Solar_System__r.Utility__r.UASB_Number_of_Decimals__c;
         this.subscriptionProduction = getSubscriptionProduction();
         setEscalatorOverrides(productEscalatorMap);
     }
@@ -81,6 +80,7 @@ public virtual class UASB {
         uasb.Externally_Serviced__c = szs.Utility_Account_Subscription__r.Externally_Serviced__c;
         uasb.PreGen_Name_on_Account__c = getCustomerName();
         uasb.PreGen_Utility_Acct__c = getUtilityAccountNumber();
+        uasb.Early_Removal__c = szs.Utility_Account_Subscription__r.Early_Removal__c;
     }
 
     /**
@@ -104,7 +104,7 @@ public virtual class UASB {
 
     private String getCustomerName() {
         String customerName = szs.Utility_Account_Subscription__r.Name_on_Account_From_Log__c;
-        customerName = customerName != null ? customerName.substring(0,Math.min(customerName.length(),49)) : customerName;
+        customerName = customerName != null ? customerName.substring(0, Math.min(customerName.length(), 49)) : customerName;
         return customerName;
     }
 
@@ -150,7 +150,7 @@ public virtual class UASB {
         return szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.Solar_Electricity_Rate__c;
     }
 
-    private void setEscalatorOverrides(Map<Id,List<Product_Escalator__c>> productEscalatorMap) {
+    private void setEscalatorOverrides(Map<Id, List<Product_Escalator__c>> productEscalatorMap) {
         Product_Escalator__c productEscalator = getProductEscalator(productEscalatorMap);
         if (productEscalator != null) {
             nmcDiscountOverride = productEscalator.New_NMC_Discount__c;
@@ -158,7 +158,7 @@ public virtual class UASB {
         }
     }
 
-    private Product_Escalator__c getProductEscalator(Map<Id,List<Product_Escalator__c>> productEscalatorMap) {
+    private Product_Escalator__c getProductEscalator(Map<Id, List<Product_Escalator__c>> productEscalatorMap) {
         Product_Escalator__c escalatorForThisTransfer;
         String mapKeyScheduleId = szs.Utility_Account_Subscription__r.Opportunity__r.Product_Escalation_Schedule__c;
         if (mapKeyScheduleId != null) {
@@ -172,8 +172,7 @@ public virtual class UASB {
 
     @TestVisible
     private Product_Escalator__c getActiveEscalator(
-        Map<Id,List<Product_Escalator__c>> escalatorMap, Integer productionCount, String mapKeyScheduleId)
-    {
+        Map<Id, List<Product_Escalator__c>> escalatorMap, Integer productionCount, String mapKeyScheduleId) {
         Product_Escalator__c activeEscalator = null;
         List<Product_Escalator__c> escalators = escalatorMap.get(mapKeyScheduleId);
         if (escalators == null) {

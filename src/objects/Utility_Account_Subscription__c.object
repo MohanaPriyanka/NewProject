@@ -419,6 +419,17 @@ Round(( Subscribed_Annual_Cost_of_Electricity__c / Opportunity__r.NMC_Value__c/ 
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>Early_Removal__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>NG MA has recently allowed us to remove (not replace) subscribers without filing a new AS through a one time request. For these customers, we will need a way to stop billing it in a similar manner as finalled accounts, without using the finalled account process. It also needs to be at the subscription level, since in some situations, we may only remove a single subscription.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Check after an early removal is accepted by National Grid MA, or if a subscription is rejected by any utility due to ineligibility, but the rest of the ALS is accepted. We will need to populate the date removed from project and allow Stop Credit Transfer on the ALSS to be checked when subscription is done billing.</inlineHelpText>
+        <label>Early Removal</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Entity_Assignment__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
