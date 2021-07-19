@@ -79,6 +79,10 @@
                 <behavior>Readonly</behavior>
                 <field>Average_kW_Demand__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Exclude_from_Demand_Capacity__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
