@@ -142,11 +142,6 @@
         <visible>false</visible>
     </applicationVisibilities>
     <applicationVisibilities>
-        <application>Project_Construction_App</application>
-        <default>false</default>
-        <visible>false</visible>
-    </applicationVisibilities>
-    <applicationVisibilities>
         <application>Service_Cloud_Console</application>
         <default>false</default>
         <visible>false</visible>
