@@ -1,10 +1,7 @@
 /**
- * Created by mstackhouse on 12/28/2018.
- * Description: 
- * Test: CaseFactoryTest
+ * @description Creates cases for various input scenarios
+ * Tested by: CaseFactoryTest
  */
-
-
 public without sharing class CaseFactory implements Queueable {
     public static RecordType customerCare;
     public static RecordType productSupport;
@@ -18,27 +15,48 @@ public without sharing class CaseFactory implements Queueable {
     public static Group partnerSupportQueue;
     public static Case newCase;
     private Lead lead;
-
     private String queueType;
+
     public CaseFactory() {
         queryForRecordTypesAndQueues();
     }
-    public void setLead(Lead lead){
+
+    /**
+     * @description This method is used to insert asynchronous cases based on queueType.
+     * @param ctx Queueable context (is nullable if not run in queueable context)
+     */
+    public void execute(QueueableContext ctx) {
+        try {
+            if (this.queueType == 'No FICO Match') {
+                insertNoMatchCreditReportCase(this.lead);
+            }
+            if (this.queueType == 'Low FICO Match') {
+                insertLowMatchCreditReportCase(this.lead);
+            }
+        } catch (Exception e) {
+            String message = 'Error inserting case. Inputs:\n' + 'Lead Id: ' + this.lead.Id + 'Queue Type: ' + this.queueType;
+            Logger.logNow('CaseFactory', 'execute', message, Logger.ERROR);
+        }
+    }
+
+    public void setLead(Lead lead) {
         this.lead = new LeadSelector().selectOne(lead.Id);
     }
 
-    public void setQueueType(String queueType){
+    public void setQueueType(String queueType) {
         this.queueType = queueType;
     }
 
-    public void assignTypes(List<RecordType> typeList){
-        for(RecordType type : typeList){
-            if(type.DeveloperName=='Product_Support'){
-                productSupport = type;
-            } else if(type.DeveloperName=='Customer_Care'){
-                customerCare = type;
-            } else if(type.DeveloperName=='Partner_Care_Case'){
-                partnerCareCase = type;
+    public void assignTypes(List<RecordType> typeList) {
+        for (RecordType type : typeList) {
+            switch on type.DeveloperName {
+                when 'Product_Support' {
+                    productSupport = type;
+                } when 'Customer_Care' {
+                    customerCare = type;
+                } when 'Partner_Care_Case' {
+                    partnerCareCase = type;
+                }
             }
         }
     }
@@ -60,7 +78,6 @@ public without sharing class CaseFactory implements Queueable {
                 assignTypes(caseRecordTypes);
             }
         }
-
         if (customerCareEmail == null) {
             customerCareEmail = [
                 SELECT Id, Address
@@ -69,7 +86,6 @@ public without sharing class CaseFactory implements Queueable {
                 LIMIT 1
             ];
         }
-
         if (collectionsQueue == null || customerCareQueue == null || productQueue == null || customerQCQueue == null) {
             List<Group> assignmentGroups = [
                 SELECT Id, DeveloperName
@@ -91,45 +107,48 @@ public without sharing class CaseFactory implements Queueable {
             }
         }
     }
+
     /**
-     * This method creates a new case and sets defaults for owner, record type id, and record type
+     * @description This method creates a new case and sets defaults for owner, record type id, and record type
      * @param type The desired record type of the case.
-     *
      * @return new case
      */
     public Case getCase(String type) {
         newCase = new Case();
-        if (type == 'Product_Support' ) {
-            newCase.RecordTypeId = productSupport.Id;
-            newCase.RecordType = productSupport;
-            newCase.OwnerId = productQueue.Id;
-        } else if (type == 'Customer_Care') {
-            newCase.RecordTypeId = customerCare.Id;
-            newCase.RecordType = customerCare;
-            newCase.OwnerId = customerCareQueue.Id;
-        } else if (type == 'Collections') {
-            // Collections uses the customer care record type
-            newCase.RecordTypeId = customerCare.Id;
-            newCase.RecordType = customerCare;
-            newCase.OwnerId = collectionsQueue.Id;
-        } else if (type == 'Customer_QC') {
-            newCase.RecordTypeId = customerCare.Id;
-            newCase.RecordType = customerCare;
-            newCase.OwnerId = customerQCQueue.Id;
-        } else if (type == 'Data_Ops') {
-            // Data Ops uses the customer care record type
-            newCase.RecordTypeId = customerCare.Id;
-            newCase.RecordType = customerCare;
-            newCase.OwnerId = dataOpsQueue.Id;
-        } else if (type == 'Partner_Care_Case') {
-            newCase.RecordTypeId = partnerCareCase.Id;
-            newCase.RecordType = partnerCareCase;
-            newCase.OwnerId = partnerSupportQueue.Id;
+        switch on type {
+            when 'Product_Support' {
+                newCase.RecordTypeId = productSupport.Id;
+                newCase.RecordType = productSupport;
+                newCase.OwnerId = productQueue.Id;
+            } when 'Customer_Care' {
+                newCase.RecordTypeId = customerCare.Id;
+                newCase.RecordType = customerCare;
+                newCase.OwnerId = customerCareQueue.Id;
+            } when 'Collections' {
+                // Collections uses the customer care record type
+                newCase.RecordTypeId = customerCare.Id;
+                newCase.RecordType = customerCare;
+                newCase.OwnerId = collectionsQueue.Id;
+            } when 'Customer_QC' {
+                newCase.RecordTypeId = customerCare.Id;
+                newCase.RecordType = customerCare;
+                newCase.OwnerId = customerQCQueue.Id;
+            } when 'Data_Ops' {
+                // Data Ops uses the customer care record type
+                newCase.RecordTypeId = customerCare.Id;
+                newCase.RecordType = customerCare;
+                newCase.OwnerId = dataOpsQueue.Id;
+            } when 'Partner_Care_Case' {
+                newCase.RecordTypeId = partnerCareCase.Id;
+                newCase.RecordType = partnerCareCase;
+                newCase.OwnerId = partnerSupportQueue.Id;
+            }
         }
         return newCase;
     }
+
     /**
-     * This method inserts a case when a leads credit report comes back as a no match.
+     * @description This method inserts a case when a leads credit report comes back as a no match.
      * @param lead The lead that the no match credit report case will be made for.
      */
     public void insertNoMatchCreditReportCase(Lead lead) {
@@ -151,11 +170,12 @@ public without sharing class CaseFactory implements Queueable {
             insert newCcCase;
         }
     }
+
     /**
-    * This method inserts a case when a leads credit report comes back as a low match.
-    * @param lead The lead that the low match credit report case will be made for.
-    */
-    public void insertLowMatchCreditReportCase(Lead lead){
+     * @description This method inserts a case when a leads credit report comes back as a low match.
+     * @param lead The lead that the low match credit report case will be made for.
+     */
+    public void insertLowMatchCreditReportCase(Lead lead) {
         if (new CaseSelector().selectOpenLowMatchCasesFromLead(lead).size() == 0) {
             queryForRecordTypesAndQueues();
             Case newCcCase = getCase('Customer_QC');
@@ -168,21 +188,9 @@ public without sharing class CaseFactory implements Queueable {
             newCcCase.Sale_Status__c = 'Pre-Sale';
             newCcCase.Case_Type__c = '3rd Party';
             newCcCase.Subject = lead.Name + ' - Low Match Credit Report';
-            newCcCase.Description = lead.Name+' - Credit score does not qualify, ' +
+            newCcCase.Description = lead.Name + ' - Credit score does not qualify, ' +
                 'please provide a passing credit report or we will send adverse action notice to customer';
             insert newCcCase;
-        }
-    }
-    /**
-     * This method is used to insert asynchronous cases based on queueType.
-     * @param param1 Unused by method, but is required for queueable interface
-     */
-    public void execute(QueueableContext param1) {
-        if(this.queueType =='No FICO Match'){
-            insertNoMatchCreditReportCase(this.lead);
-        }
-        if(this.queueType == 'Low FICO Match'){
-            insertLowMatchCreditReportCase(this.lead);
         }
     }
 }
