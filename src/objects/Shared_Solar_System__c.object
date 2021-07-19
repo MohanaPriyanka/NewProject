@@ -1296,20 +1296,6 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <visibleLines>5</visibleLines>
     </fields>
     <fields>
-        <fullName>Project_Management__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Project Management</label>
-        <referenceTo>MPM4_BASE__Milestone1_Project__c</referenceTo>
-        <relationshipLabel>Shared Solar Systems</relationshipLabel>
-        <relationshipName>Shared_Solar_Systems</relationshipName>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>Project_Number__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>This field is used for ORU CDG Allocation Schedules.</inlineHelpText>
@@ -1871,7 +1857,6 @@ null)</formula>
         <columns>Total_CS_Capacity_kW_DC_Formula__c</columns>
         <columns>Picklist__c</columns>
         <columns>Open__c</columns>
-        <columns>Project_Management__c</columns>
         <columns>Maximum_Subscription_Cost__c</columns>
         <filterScope>Everything</filterScope>
         <filters>

@@ -187,20 +187,6 @@
         <trackTrending>false</trackTrending>
         <type>Date</type>
     </fields>
-    <fields>
-        <fullName>Project_Task__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <inlineHelpText>For expenses related to specific tasks in a project. Multiple expenses can be logged to a single task.</inlineHelpText>
-        <label>Project Task</label>
-        <referenceTo>inspire1__Project_Tasks__c</referenceTo>
-        <relationshipLabel>Expenses</relationshipLabel>
-        <relationshipName>Expenses</relationshipName>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
     <label>Expense</label>
     <listViews>
         <fullName>All</fullName>

@@ -630,21 +630,6 @@ If a new Feeder Utility and Voltage needs to be added:
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Project__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <description>Deprecated - use FeederProjectAssociation. AB aiming to associate a Project with a Feeder via the Project Name lookup field</description>
-        <externalId>false</externalId>
-        <label>xxxProject</label>
-        <referenceTo>MPM4_BASE__Milestone1_Project__c</referenceTo>
-        <relationshipLabel>Feeders</relationshipLabel>
-        <relationshipName>Feeders</relationshipName>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>Remaining_Capacity_for_DG_on_Feeder_MW__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Do not include BW</inlineHelpText>
@@ -1033,7 +1018,6 @@ If a new Feeder Utility and Voltage needs to be added:
     </listViews>
     <listViews>
         <fullName>Projects_and_Feeders</fullName>
-        <columns>Project__c</columns>
         <columns>Date_of_Most_Recent_Preapp__c</columns>
         <columns>NAME</columns>
         <columns>Dynamic_Remaining_Capacity__c</columns>

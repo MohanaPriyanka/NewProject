@@ -2,11 +2,6 @@
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <description>All fields on Feeder, Feeder Project Association, including Inspire Planner fields</description>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>FeederProjectAssociation__c.Inspire_Project__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>false</editable>
         <field>Feeder__c.Assumed_Remaining_Capacity_per_DOER_DG__c</field>
         <readable>true</readable>

@@ -150,7 +150,6 @@
     <compactLayoutAssignment>Custom_Compact_Layout</compactLayoutAssignment>
     <compactLayouts>
         <fullName>Custom_Compact_Layout</fullName>
-        <fields>Inspire_Project__c</fields>
         <fields>Incentive_Type__c</fields>
         <fields>Application_Submitted__c</fields>
         <fields>Application_Fee__c</fields>
@@ -290,20 +289,6 @@
         </valueSet>
     </fields>
     <fields>
-        <fullName>Inspire_Project__c</fullName>
-        <externalId>false</externalId>
-        <label>Inspire Project</label>
-        <referenceTo>inspire1__Project__c</referenceTo>
-        <relationshipLabel>Incentives</relationshipLabel>
-        <relationshipName>Incentives</relationshipName>
-        <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>false</reparentableMasterDetail>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
-    </fields>
-    <fields>
         <fullName>Original_Expiration__c</fullName>
         <externalId>false</externalId>
         <label>Original Expiration</label>
@@ -329,20 +314,6 @@
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Project__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <description>Never used, deprecated</description>
-        <externalId>false</externalId>
-        <label>Milestones Project</label>
-        <referenceTo>MPM4_BASE__Milestone1_Project__c</referenceTo>
-        <relationshipLabel>Incentives</relationshipLabel>
-        <relationshipName>Incentives</relationshipName>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Public_Private__c</fullName>

@@ -5592,29 +5592,6 @@ IF(INCLUDES(Customer_Type__c, &quot;Private Affordable&quot;),&quot;Error&quot;,
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Project__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Project</label>
-        <lookupFilter>
-            <active>true</active>
-            <filterItems>
-                <field>$Source.AccountId</field>
-                <operation>equals</operation>
-                <valueField>$Source.AccountId</valueField>
-            </filterItems>
-            <isOptional>true</isOptional>
-        </lookupFilter>
-        <referenceTo>MPM4_BASE__Milestone1_Project__c</referenceTo>
-        <relationshipLabel>Opportunities</relationshipLabel>
-        <relationshipName>Opportunities</relationshipName>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>QC_Call_Complete__c</fullName>
         <defaultValue>false</defaultValue>
         <description>This is used by Partner support and customer ops during the QC process for CS opportunities.</description>
