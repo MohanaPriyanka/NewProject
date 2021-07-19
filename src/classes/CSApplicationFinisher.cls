@@ -8,6 +8,8 @@ public without sharing class CSApplicationFinisher {
     @TestVisible private static FeatureSelector featureSelector = new FeatureSelector();
     @TestVisible private static CSQualificationService qualificationService = new CSQualificationService();
     @TestVisible private static LeadService leadService = new LeadService();
+    private static Boolean inputSetAppCompleteDate;
+    private static Id inputLeadId;
 
     /**
      * @description Performs required actions when a CS Lead is marked as "complete" by SSF or API
@@ -17,16 +19,17 @@ public without sharing class CSApplicationFinisher {
      */
     @Future
     public static void execute(Id leadId, Boolean setApplicationCompleteDate) {
+        inputLeadId = leadId;
+        inputSetAppCompleteDate = setApplicationCompleteDate;
         Lead lead = leadSelector.selectOne(leadId);
         if (lead == null) {
-            logError(leadId, setApplicationCompleteDate, 'Unable to locate lead');
+            logError(null, 'execute', 'Unable to locate lead');
             return;
         }
         try {
             updateLeadOnComplete(lead, setApplicationCompleteDate);
         } catch (Exception e) {
-            String errorMessage = 'Failed to update lead' + e.getMessage() + '\n\n' + e.getStackTraceString() + '\n\n';
-            logError(lead.Id, setApplicationCompleteDate, errorMessage);
+            logError(e, 'execute', 'Failed to update lead');
             return; // Do not continue if lead update fails
         }
         performAdditionalActions(lead);
@@ -44,7 +47,6 @@ public without sharing class CSApplicationFinisher {
         qualificationService.qualifyLead(lead);
         leadService.updateLead(lead);
     }
-
 
     /**
      * @description Method to send an email to the related Partner when the customer has completed their SSF Application
@@ -77,9 +79,7 @@ public without sharing class CSApplicationFinisher {
                 mail
             });
         } catch (Exception e) {
-            String message = 'Failed to send CS Partner email on application completion for ' + lead.Id +
-                '\n\n' + e.getMessage() + '\n\n' + e.getStackTraceString();
-            Logger.logNow('CSApplicationFinisher', 'execute', message, Logger.ERROR);
+            logError(e, 'createAndSendCSPartnerEmail', 'Failed to send CS Partner email on application completion');
         }
     }
 
@@ -106,9 +106,7 @@ public without sharing class CSApplicationFinisher {
                 lead.Id
             });
         } catch (Exception e) {
-            String message = 'Failed to create UDR for Lead ' + lead.Id + '\n\n' + e.getMessage() + '\n\n' +
-                e.getStackTraceString();
-            Logger.logNow('CSApplicationFinisher', 'createUtilityDataRequest', message, Logger.ERROR);
+            logError(e, 'createUtilityDataRequest', 'Failed to create UDR for Lead');
         }
     }
 
@@ -124,9 +122,7 @@ public without sharing class CSApplicationFinisher {
                 });
             }
         } catch (Exception e) {
-            String message = 'Failed to create Zuora Account for Lead ' + lead.Id + '\n\n' + e.getMessage() + '\n\n' +
-                e.getStackTraceString();
-            Logger.logNow('CSApplicationFinisher', 'createZuoraAccount', message, Logger.ERROR);
+            logError(e, 'createZuoraAccount', 'Failed to create Zuora Account for Lead');
         }
     }
 
@@ -142,9 +138,12 @@ public without sharing class CSApplicationFinisher {
         createZuoraAccount(lead);
     }
 
-    private static void logError(Id leadId, Boolean setApplicationCompleteDate, String messagePrefix) {
-        String message = messagePrefix + '. Please reprocess manually. Inputs:\nleadId: ' + leadId +
-            '\nsetApplicationCompleteDate: ' + setApplicationCompleteDate;
-        Logger.logNow('CSApplicationFinisher', 'execute', message, Logger.ERROR);
+    private static void logError(Exception caughtException, String method, String messagePrefix) {
+        String message = messagePrefix + '. Please reprocess manually. Class inputs:\nleadId: ' + inputLeadId +
+            '\nsetApplicationCompleteDate: ' + inputSetAppCompleteDate;
+        if (caughtException != null) {
+            messagePrefix += '\n\n ' + caughtException.getMessage() + '\n\n' + caughtException.getStackTraceString();
+        }
+        Logger.logNow('CSApplicationFinisher', method, message, Logger.ERROR);
     }
 }
