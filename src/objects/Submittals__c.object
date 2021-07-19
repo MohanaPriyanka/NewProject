@@ -73,20 +73,6 @@
         <visibleLines>4</visibleLines>
     </fields>
     <fields>
-        <fullName>Construction__c</fullName>
-        <externalId>false</externalId>
-        <label>Construction</label>
-        <referenceTo>Construction__c</referenceTo>
-        <relationshipLabel>Submittals</relationshipLabel>
-        <relationshipName>Submittals</relationshipName>
-        <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>false</reparentableMasterDetail>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
-    </fields>
-    <fields>
         <fullName>EPC_Response_Requested_By__c</fullName>
         <externalId>false</externalId>
         <label>EPC Response Requested By</label>
@@ -189,7 +175,7 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Submittals</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ControlledByParent</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

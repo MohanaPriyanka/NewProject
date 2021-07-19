@@ -92,19 +92,6 @@
         <type>TextArea</type>
     </fields>
     <fields>
-        <fullName>Construction__c</fullName>
-        <externalId>false</externalId>
-        <label>Construction</label>
-        <referenceTo>Construction__c</referenceTo>
-        <relationshipLabel>Change Orders</relationshipLabel>
-        <relationshipName>Project_Change_Orders</relationshipName>
-        <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>false</reparentableMasterDetail>
-        <trackTrending>false</trackTrending>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
-    </fields>
-    <fields>
         <fullName>Cost_Impact__c</fullName>
         <externalId>false</externalId>
         <label>Cost Impact</label>
@@ -144,7 +131,7 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Change Orders</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ControlledByParent</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

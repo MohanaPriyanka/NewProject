@@ -82,20 +82,6 @@
         <visibleLines>3</visibleLines>
     </fields>
     <fields>
-        <fullName>Construction__c</fullName>
-        <externalId>false</externalId>
-        <label>Construction</label>
-        <referenceTo>Construction__c</referenceTo>
-        <relationshipLabel>Requests for Information</relationshipLabel>
-        <relationshipName>Requests_for_Information</relationshipName>
-        <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>false</reparentableMasterDetail>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
-    </fields>
-    <fields>
         <fullName>Engineer_Review__c</fullName>
         <externalId>false</externalId>
         <label>Engineer Review</label>
@@ -198,7 +184,7 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Requests for Information</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ControlledByParent</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>
