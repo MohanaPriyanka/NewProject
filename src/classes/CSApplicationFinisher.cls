@@ -77,7 +77,8 @@ public without sharing class CSApplicationFinisher {
                 mail
             });
         } catch (Exception e) {
-            String message = 'Failed to send CS Partner email on application completion for ' + lead.Id;
+            String message = 'Failed to send CS Partner email on application completion for ' + lead.Id +
+                '\n\n' + e.getMessage() + '\n\n' + e.getStackTraceString();
             Logger.logNow('CSApplicationFinisher', 'execute', message, Logger.ERROR);
         }
     }
@@ -105,7 +106,8 @@ public without sharing class CSApplicationFinisher {
                 lead.Id
             });
         } catch (Exception e) {
-            String message = 'Failed to create UDR for Lead ' + lead.Id;
+            String message = 'Failed to create UDR for Lead ' + lead.Id + '\n\n' + e.getMessage() + '\n\n' +
+                e.getStackTraceString();
             Logger.logNow('CSApplicationFinisher', 'createUtilityDataRequest', message, Logger.ERROR);
         }
     }
@@ -122,7 +124,8 @@ public without sharing class CSApplicationFinisher {
                 });
             }
         } catch (Exception e) {
-            String message = 'Failed to create Zuora Account for Lead ' + lead.Id;
+            String message = 'Failed to create Zuora Account for Lead ' + lead.Id + '\n\n' + e.getMessage() + '\n\n' +
+                e.getStackTraceString();
             Logger.logNow('CSApplicationFinisher', 'createZuoraAccount', message, Logger.ERROR);
         }
     }
