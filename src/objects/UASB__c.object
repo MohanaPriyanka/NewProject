@@ -397,6 +397,16 @@ MONTH(Billing_Period_End_Date__c),
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>Early_Removal__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>See Early Removal on the UAS object. Set by the Transfer QC process.</inlineHelpText>
+        <label>Early Removal</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Effective_Net_Metering_Rate__c</fullName>
         <externalId>false</externalId>
         <formula>Net_Metering_Credits_Allocated__c / Subscription_Production_kWh__c</formula>
@@ -580,8 +590,8 @@ MONTH(Billing_Period_End_Date__c),
         <fullName>PreGen_IsPreGen__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <inlineHelpText>Only for use with Pregenerated Bills</inlineHelpText>
-        <label>PreGen IsPreGen</label>
+        <inlineHelpText>Indicates that the UAS was finaled when the UASB was generated. Used by the TransferSheetQC service to show finaled accounts.</inlineHelpText>
+        <label>Finaled</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>

@@ -62,6 +62,10 @@
                 <behavior>Edit</behavior>
                 <field>Subscription_Comment_c__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Early_Removal__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
@@ -365,6 +369,7 @@
         <fields>Type__c</fields>
         <fields>Approved_Change_in_Percent_Share__c</fields>
         <fields>Approved_Change_in_Subscription__c</fields>
+        <fields>Client_Assignment_Agreement__c</fields>
         <fields>Comments__c</fields>
         <relatedList>Subscription_Order__c.Utility_Account_Subscription__c</relatedList>
         <sortField>Effective_Date__c</sortField>

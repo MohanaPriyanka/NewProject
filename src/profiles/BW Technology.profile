@@ -44951,6 +44951,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>UASB__c.Early_Removal__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>UASB__c.Effective_Net_Metering_Rate__c</field>
         <readable>true</readable>
@@ -46003,6 +46008,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Utility_Account_Subscription__c.Date_Removed_from_Project__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility_Account_Subscription__c.Early_Removal__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
