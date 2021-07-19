@@ -103,15 +103,6 @@ public without sharing class ZuoraBillEmailHandler implements Database.Batchable
         return customerCareCase;
     }
 
-    private Task createTask(String emailStatusMessage, Zuora__ZInvoice__c invoice) {
-        Task newTask = new Task (
-            WhatId = invoice.Id,
-            Status = 'Completed',
-            Subject = emailStatusMessage
-        );
-        return newTask;
-    }
-
     private String getHTML(Zuora__ZInvoice__c zuoraInvoice) {
         String htmlBody;
         String billTemplateName = 'Zuora_Monthly_Invoice_Email_' + zuoraInvoice.Zuora__BillingAccount__r.Zuora__Account__r.Client_Brand_Key__c;
@@ -148,6 +139,6 @@ public without sharing class ZuoraBillEmailHandler implements Database.Batchable
     }
 
     public void finish(Database.BatchableContext bc) {
-        Logger.logNow('ZuoraBillEmailHandler', 'finish', 'Email Send finished. Count of emails:' + String.valueOf(countOfUniqueEmails), 'INFO');
+        Logger.logNow('ZuoraBillEmailHandler', 'finish', 'Email Send finished. Count of emails:' + String.valueOf(countOfUniqueEmails), Logger.INFO);
     }
 }
