@@ -146,7 +146,6 @@
         <fullName>Easement_Compact</fullName>
         <fields>Name</fields>
         <fields>Easement_Type__c</fields>
-        <fields>Inspire_Project__c</fields>
         <fields>Easement_Sent__c</fields>
         <fields>Easement_Received_from_Utility__c</fields>
         <fields>Easement_Business_Days_Act__c</fields>
@@ -307,20 +306,6 @@
                 </value>
             </valueSetDefinition>
         </valueSet>
-    </fields>
-    <fields>
-        <fullName>Inspire_Project__c</fullName>
-        <externalId>false</externalId>
-        <label>Inspire Project</label>
-        <referenceTo>inspire1__Project__c</referenceTo>
-        <relationshipLabel>Easements</relationshipLabel>
-        <relationshipName>Easements</relationshipName>
-        <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>false</reparentableMasterDetail>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <label>Easement</label>
     <listViews>

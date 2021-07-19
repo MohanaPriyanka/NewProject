@@ -178,20 +178,6 @@
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Project__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <description>If the campaign is related to a Project, you can relate it through this lookup field.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>If the campaign is related to a Project, you can relate it through this lookup field.</inlineHelpText>
-        <label>Project</label>
-        <referenceTo>MPM4_BASE__Milestone1_Project__c</referenceTo>
-        <relationshipLabel>Campaigns</relationshipLabel>
-        <relationshipName>Campaigns</relationshipName>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>Shirts_Total__c</fullName>
         <externalId>false</externalId>
         <label>Shirts (Total Requested)</label>

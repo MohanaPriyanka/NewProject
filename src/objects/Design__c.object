@@ -144,7 +144,6 @@
     <compactLayoutAssignment>Design_Compact_Custom</compactLayoutAssignment>
     <compactLayouts>
         <fullName>Design_Compact_Custom</fullName>
-        <fields>Inspire_Project__c</fields>
         <fields>Name</fields>
         <fields>Selected_Design__c</fields>
         <fields>Distribution_Design_Started__c</fields>
@@ -208,20 +207,6 @@
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Inspire_Project__c</fullName>
-        <externalId>false</externalId>
-        <label>Inspire Project</label>
-        <referenceTo>inspire1__Project__c</referenceTo>
-        <relationshipLabel>Designs</relationshipLabel>
-        <relationshipName>Designs</relationshipName>
-        <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>true</reparentableMasterDetail>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <fields>
         <fullName>On_Site_Meeting_Notes__c</fullName>

@@ -73,19 +73,6 @@
         <type>TextArea</type>
     </fields>
     <fields>
-        <fullName>Construction__c</fullName>
-        <externalId>false</externalId>
-        <label>Construction</label>
-        <referenceTo>Construction__c</referenceTo>
-        <relationshipLabel>Risk Register</relationshipLabel>
-        <relationshipName>Project_Risk_Factors</relationshipName>
-        <relationshipOrder>1</relationshipOrder>
-        <reparentableMasterDetail>false</reparentableMasterDetail>
-        <trackTrending>false</trackTrending>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
-    </fields>
-    <fields>
         <fullName>Date__c</fullName>
         <externalId>false</externalId>
         <label>Date</label>
@@ -146,18 +133,6 @@
         <type>Percent</type>
     </fields>
     <fields>
-        <fullName>Project__c</fullName>
-        <externalId>false</externalId>
-        <label>Project</label>
-        <referenceTo>MPM4_BASE__Milestone1_Project__c</referenceTo>
-        <relationshipName>Project_Risk_Factors</relationshipName>
-        <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>true</reparentableMasterDetail>
-        <trackTrending>false</trackTrending>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
-    </fields>
-    <fields>
         <fullName>Responsible_Party__c</fullName>
         <externalId>false</externalId>
         <label>Responsible Party</label>
@@ -190,7 +165,7 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Risk Register</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ControlledByParent</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>
