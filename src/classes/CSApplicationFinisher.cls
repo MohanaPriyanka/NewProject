@@ -142,7 +142,7 @@ public without sharing class CSApplicationFinisher {
         String message = messagePrefix + '. Please reprocess manually. Class inputs:\nleadId: ' + inputLeadId +
             '\nsetApplicationCompleteDate: ' + inputSetAppCompleteDate;
         if (caughtException != null) {
-            messagePrefix += '\n\n ' + caughtException.getMessage() + '\n\n' + caughtException.getStackTraceString();
+            message += '\n\n ' + caughtException.getMessage() + '\n\n' + caughtException.getStackTraceString();
         }
         Logger.logNow('CSApplicationFinisher', method, message, Logger.ERROR);
     }
