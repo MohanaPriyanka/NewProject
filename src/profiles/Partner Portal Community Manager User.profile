@@ -41913,7 +41913,7 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Opportunity.Customer_Group__c</field>
         <readable>true</readable>
     </fieldPermissions>
