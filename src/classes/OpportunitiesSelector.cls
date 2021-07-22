@@ -42,8 +42,8 @@ public without sharing class OpportunitiesSelector {
     }
     public static List<Opportunity> selectByIds(List<Id> oppIds) {
         return [
-            SELECT Id, Contract_Status__c, Product_Line__c,
-                Parent_Account_ID__c, BlueWave_Signature_Status__c,
+            SELECT Id, Product_Line__c,
+                Parent_Account_ID__c,
                 Lead__c, StageName
             FROM Opportunity
             WHERE Id IN: oppIds
@@ -192,7 +192,7 @@ public without sharing class OpportunitiesSelector {
                 '      AND Opportunity__r.Contract_Close_Date__c <= :cutoffDate\n' +
                 '      AND Next_Schedule_Z_Status__c = \'Active Subscription\'\n' +
                 '      AND Opportunity__r.Assignment_Agreement__c = NULL\n' +
-            	(anchorsOnly?
+                (anchorsOnly?
                     '      AND Opportunity__r.Customer_Group__c = \'Anchor\'\n':
                     '      AND Opportunity__r.Customer_Group__c != \'Anchor\'\n') +
                 '      AND Opportunity__r.StageName = \'Complete\'\n' +
@@ -209,8 +209,8 @@ public without sharing class OpportunitiesSelector {
                 Assignment_Agreement__c
             FROM Opportunity
             WHERE StageName = 'Complete'
-            AND Shared_Solar_System__c != NULL
-            AND ContractId = NULL
+            AND Shared_Solar_System__c != null
+            AND ContractId = null
         ];
     }
 
