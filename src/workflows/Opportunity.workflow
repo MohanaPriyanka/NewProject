@@ -728,26 +728,6 @@ IF(MOD(YEAR(Commencement_Date__c) + FLOOR((MONTH(Commencement_Date__c) + 1)/12),
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
     <rules>
-        <fullName>CS - Contract Pending Stage</fullName>
-        <actions>
-            <name>Opp_Stage_to_Contract_Pending</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <active>true</active>
-        <criteriaItems>
-            <field>Opportunity.Contract_Status__c</field>
-            <operation>equals</operation>
-            <value>Sent</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.StageName</field>
-            <operation>notEqual</operation>
-            <value>Complete</value>
-        </criteriaItems>
-        <description>Sets the Stage to Contract Pending when the customer recipient status = sent, unless the Opportunity is already complete.</description>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
         <fullName>CS Opportunity Stage - Expired</fullName>
         <active>true</active>
         <booleanFilter>(1 OR 2 ) AND 3 AND 4 AND 5 AND 6</booleanFilter>
@@ -812,53 +792,6 @@ IF(MOD(YEAR(Commencement_Date__c) + FLOOR((MONTH(Commencement_Date__c) + 1)/12),
             <value>0</value>
         </criteriaItems>
         <triggerType>onAllChanges</triggerType>
-    </rules>
-    <rules>
-        <fullName>Internal - RS - Joint App Expiration</fullName>
-        <active>false</active>
-        <description>This is used to notify the BWOC when the 1 signer of a joint RL app has signer, but the 2nd did not sign within 24 hours. They have to go in and void the contract and resend it since signers must sign within 24 hrs of eachother</description>
-        <formula>AND( Contract_Status__c=&quot;Completed&quot;, Co_Applicant_Signature_Status__c!=&quot;Completed&quot;,
- CONTAINS(Application_Type__c,&quot;Joint&quot;)=true,
- OR(Product_Line__c =&quot;residential loan&quot;,Product_Line__c=&quot;Residential Loan&quot;))</formula>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-        <workflowTimeTriggers>
-            <actions>
-                <name>RS_Internal_Alert_joint_application_expiration</name>
-                <type>Alert</type>
-            </actions>
-            <timeLength>24</timeLength>
-            <workflowTimeTriggerUnit>Hours</workflowTimeTriggerUnit>
-        </workflowTimeTriggers>
-    </rules>
-    <rules>
-        <fullName>Opportunity Stage - BW Signature</fullName>
-        <actions>
-            <name>Opportunity_Stage_BW_Signature</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <active>true</active>
-        <booleanFilter>1 AND 2 AND 3 AND 4</booleanFilter>
-        <criteriaItems>
-            <field>Opportunity.Contract_Status__c</field>
-            <operation>equals</operation>
-            <value>Completed</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.All_QC_Boxes_True__c</field>
-            <operation>equals</operation>
-            <value>True</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.Quality_Check_Status__c</field>
-            <operation>equals</operation>
-            <value>Completed</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.StageName</field>
-            <operation>equals</operation>
-            <value>Pending Quality Control Signature</value>
-        </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
     <rules>
         <fullName>Opportunity Stage - Complete %2F Contract Close Date</fullName>
@@ -934,63 +867,6 @@ IF(MOD(YEAR(Commencement_Date__c) + FLOOR((MONTH(Commencement_Date__c) + 1)/12),
             <timeLength>13</timeLength>
             <workflowTimeTriggerUnit>Days</workflowTimeTriggerUnit>
         </workflowTimeTriggers>
-    </rules>
-    <rules>
-        <fullName>Opportunity Stage - QC Signature Pending</fullName>
-        <actions>
-            <name>Opportunity_Stage_QC_Signature_Pending</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <active>false</active>
-        <booleanFilter>1 AND 2</booleanFilter>
-        <criteriaItems>
-            <field>Opportunity.All_QC_Boxes_True__c</field>
-            <operation>equals</operation>
-            <value>True</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.Product_Line__c</field>
-            <operation>equals</operation>
-            <value>Community Solar</value>
-        </criteriaItems>
-        <description>Changes stage to &apos;QC Signature Pending&apos; when QC is complete, and when Customer has signed.</description>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
-        <fullName>Opportunity Stage - QC in Process</fullName>
-        <actions>
-            <name>Opportunity_Stage_QC_in_Process</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <active>false</active>
-        <booleanFilter>1 AND 2 AND 3 AND 4 AND 5</booleanFilter>
-        <criteriaItems>
-            <field>Opportunity.Contract_Status__c</field>
-            <operation>equals</operation>
-            <value>Completed</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.BlueWave_Signature_Status__c</field>
-            <operation>notEqual</operation>
-            <value>Completed</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.All_QC_Boxes_True__c</field>
-            <operation>equals</operation>
-            <value>False</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.Product_Line__c</field>
-            <operation>equals</operation>
-            <value>Community Solar</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.StageName</field>
-            <operation>notEqual</operation>
-            <value>Complete</value>
-        </criteriaItems>
-        <description>Changes stage to &apos;QC in Process&apos; when QC is not yet complete, and when Customer has signed. Updated with rule 5 to prevent expiring docusign envelopes from people with paper contracts going back to QC</description>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
     <rules>
         <fullName>Opportunity Stage - Utility Information Needed</fullName>
