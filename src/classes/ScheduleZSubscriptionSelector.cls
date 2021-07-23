@@ -1,6 +1,6 @@
 /**
  * Created by PeterYao on 3/12/2019.
- * Tested By: ScheduleZSubscriptionSelector, TestBilLCreationdandPayment, BillGenerationServiceTest, ScheduleZTriggerHandlerTest
+ * Tested By: ScheduleZSubscriptionSelector, BillGenerationServiceTest, ScheduleZTriggerHandlerTest
  */
 
 @SuppressWarnings('PMD.ApexCRUDViolation')
@@ -84,7 +84,7 @@ public with sharing class ScheduleZSubscriptionSelector {
 
 
     @SuppressWarnings('PMD.ApexCRUDViolation')
-    public static List<Schedule_Z_Subscription__c> getOverdueSZSubscriptions(Decimal minimumBalance, Date maxPastDueDate, Set<Id> uasIdsAlreadyBilling){
+    public static List<Schedule_Z_Subscription__c> getOverdueSZSubscriptions(Decimal minimumBalance, Date maxPastDueDate, Set<Id> uasIdsAlreadyBilling) {
         Set<Id> overdueUASIds = new Set<Id>();
         List<Schedule_Z_Subscription__c> overdueSZSes = new List<Schedule_Z_Subscription__c>();
 
@@ -92,13 +92,13 @@ public with sharing class ScheduleZSubscriptionSelector {
         List<AggregateResult> overdueUASBs = [
             SELECT Utility_Account_Subscription__c uasId
             FROM UASB__c
-            WHERE Utility_Account_Subscription__r.Opportunity__r.Account.Max_Overdue_Due_Date_Merge__c >= : maxPastDueDate
-            AND Utility_Account_Subscription__r.Opportunity__r.Account.Total_Outstanding_Balance_Merge__c > : minimumBalance
-            AND Utility_Account_Subscription__c NOT IN : uasIdsAlreadyBilling
+            WHERE Utility_Account_Subscription__r.Opportunity__r.Account.Max_Overdue_Due_Date_Merge__c >= :maxPastDueDate
+            AND Utility_Account_Subscription__r.Opportunity__r.Account.Total_Outstanding_Balance_Merge__c > :minimumBalance
+            AND Utility_Account_Subscription__c NOT IN :uasIdsAlreadyBilling
             GROUP BY Utility_Account_Subscription__c
         ];
-        for (AggregateResult result : overdueUASBs){
-            overdueUASIds.add((String)result.get('uasId'));
+        for (AggregateResult result : overdueUASBs) {
+            overdueUASIds.add((String) result.get('uasId'));
         }
         List<Utility_Account_Subscription__c> overdueUASes = [
             SELECT Id, (
@@ -109,7 +109,7 @@ public with sharing class ScheduleZSubscriptionSelector {
                 LIMIT 1
             )
             FROM Utility_Account_Subscription__c
-            WHERE Id IN : overdueUASIds
+            WHERE Id IN :overdueUASIds
         ];
         for (Utility_Account_Subscription__c uas : overdueUASes) {
             overdueSZSes.addAll(uas.Schedule_Z_Subscriptions__r);
@@ -117,14 +117,14 @@ public with sharing class ScheduleZSubscriptionSelector {
         return overdueSZSes;
     }
 
-    public static List<Schedule_Z_Subscription__c> getALSSFromALS(List<Id> allocationScheduleIds){
+    public static List<Schedule_Z_Subscription__c> getALSSFromALS(List<Id> allocationScheduleIds) {
         List<Schedule_Z_Subscription__c> allocationSubscriptions = [
             SELECT Id, Utility_Account_Subscription__c,
                 Schedule_Z__r.Date_Enacted_by_Utility__c,
                 Utility_Account_Subscription__r.Most_Recent_Enacted_ALSS__c,
                 Utility_Account_Subscription__r.Most_Recent_Enacted_ALSS__r.Schedule_Z__r.Date_Enacted_by_Utility__c
             FROM Schedule_Z_Subscription__c
-            WHERE Schedule_Z__c IN : allocationScheduleIds
+            WHERE Schedule_Z__c IN :allocationScheduleIds
         ];
         return allocationSubscriptions;
     }
@@ -133,7 +133,7 @@ public with sharing class ScheduleZSubscriptionSelector {
         return [
             SELECT Id, Utility_Account_Subscription__r.Opportunity__r.ContractId
             FROM Schedule_Z_Subscription__c
-            WHERE Schedule_Z__c =: allocationScheduleId
+            WHERE Schedule_Z__c = :allocationScheduleId
             AND Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c != 'Anchor'
             // Anchor customers are specifically excluded from disclosure form packets
         ];
@@ -141,11 +141,11 @@ public with sharing class ScheduleZSubscriptionSelector {
 
     public List<Schedule_Z_Subscription__c> getOnTimeListForBillingOffTransfer(Set<Id> scheduleZs) {
         String queryString = getQueryString(whereClauseForBilling, null);
-        queryString.replaceAll('Last_Bill_Send_Date_New_Charges__c','Last_Bill_Send_Date_New_Charges_Zuora__c');
+        queryString.replaceAll('Last_Bill_Send_Date_New_Charges__c', 'Last_Bill_Send_Date_New_Charges_Zuora__c');
         return Database.query(queryString);
     }
 
-    public List<Schedule_Z_Subscription__c> getOverdueSZSForBillingOffTransfer(Set<Id> sssIdList, Set<Id> uasIdsAlreadyBilling){
+    public List<Schedule_Z_Subscription__c> getOverdueSZSForBillingOffTransfer(Set<Id> sssIdList, Set<Id> uasIdsAlreadyBilling) {
         List<Schedule_Z_Subscription__c> overdueSZSes = new List<Schedule_Z_Subscription__c>();
 
         Decimal minimumBalance = Util.nullToZero(Util.getSystemPropertyDecimal('Minimum_Balance_Bills_for_Cancelled__c'));
@@ -169,6 +169,7 @@ public with sharing class ScheduleZSubscriptionSelector {
                     Utility_Account_Subscription__r.Customer_Subscription_KW_DC__c,
                     Utility_Account_Subscription__r.Future_Customer_Subscription_KWDC_Rollup__c,
                     Utility_Account_Subscription__r.Name,
+                    Utility_Account_Subscription__r.Early_Removal__c,
                     Utility_Account_Subscription__r.Finaled__c,
                     Utility_Account_Subscription__r.Next_Schedule_Z_Status__c,
                     Utility_Account_Subscription__r.Utility_Account_Log__c,
@@ -200,11 +201,11 @@ public with sharing class ScheduleZSubscriptionSelector {
                 LIMIT 1
             )
             FROM Utility_Account_Subscription__c
-            WHERE Opportunity__r.Shared_Solar_System__c IN : sssIdList
+            WHERE Opportunity__r.Shared_Solar_System__c IN :sssIdList
             AND Opportunity__r.Account.Last_Bill_Send_Date_New_Charges_Zuora__c != NULL
-            AND Opportunity__r.Account.Last_Bill_Send_Date_New_Charges_Zuora__c >= : maxPastDueDate
-            AND Opportunity__r.Account.Total_Outstanding_Balance_Merge__c > : minimumBalance
-            AND Id NOT IN : uasIdsAlreadyBilling
+            AND Opportunity__r.Account.Last_Bill_Send_Date_New_Charges_Zuora__c >= :maxPastDueDate
+            AND Opportunity__r.Account.Total_Outstanding_Balance_Merge__c > :minimumBalance
+            AND Id NOT IN :uasIdsAlreadyBilling
         ];
         for (Utility_Account_Subscription__c uas : overdueUASes) {
             overdueSZSes.addAll(uas.Schedule_Z_Subscriptions__r);
