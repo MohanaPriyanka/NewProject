@@ -517,7 +517,7 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
     <fields>
         <fullName>ContractTerm</fullName>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
+        <trackHistory>false</trackHistory>
     </fields>
     <fields>
         <fullName>Contract_Type__c</fullName>
@@ -981,7 +981,7 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
         <inlineHelpText>Generates Project Specific Addendum for Contract (MA only) and the SMART disclosure form (if it is a SMART contract).</inlineHelpText>
         <label>Generate Addendum and Disclosure</label>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <type>Checkbox</type>
     </fields>
     <fields>
@@ -991,7 +991,7 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
         <inlineHelpText>Generates the Countersigned version of the contract for SSF applicants, and emails it to the customer.</inlineHelpText>
         <label>Generate Countersigned Version</label>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <type>Checkbox</type>
     </fields>
     <fields>
