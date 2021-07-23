@@ -11,6 +11,14 @@
  */
 
 public without sharing class PaymentCaseCreator implements Schedulable, ZuoraDataQueryService.Processor {
+    @TestVisible
+    private static ZuoraAccountSelector zuoraAccountSelector = new ZuoraAccountSelector();
+    @TestVisible
+    private static AccountsSelector accountsSelector = new AccountsSelector();
+    private static CaseFactory caseFactory = new CaseFactory();
+    private Map<Id, Account> accountIdToAccountMap;
+    public static final String AUTOPAY_CASE_PREFIX = 'Automatic Payment Error';
+
     public enum OrderCaseType {
         PAYMENT_STATUS_ERROR,
         INTERNAL_ERROR
@@ -36,7 +44,7 @@ public without sharing class PaymentCaseCreator implements Schedulable, ZuoraDat
             'The transaction has been declined because of an AVS mismatch. The address provided does not match billing address of cardholder.'
         };
 
-    private static Map<String,String> friendlyGatewayResponseMap = new Map<String,String>{
+    private static Map<String, String> friendlyGatewayResponseMap = new Map<String, String>{
         'Invalid Route.' =>
             'Invalid Routing Number. Please check that Bank Account Number and Routing Number are not reversed.',
         'Please enter a \'Bank Account Number\'' => 'Invalid Bank Account Number. Please double check the Bank Account Number entered.'
@@ -69,14 +77,6 @@ public without sharing class PaymentCaseCreator implements Schedulable, ZuoraDat
         set;
     }
 
-    @TestVisible
-    private static ZuoraAccountSelector zuoraAccountSelector = new ZuoraAccountSelector();
-    @TestVisible
-    private static AccountsSelector accountsSelector = new AccountsSelector();
-    private static CaseFactory caseFactory = new CaseFactory();
-    private Map<Id, Account> accountIdToAccountMap;
-    public static final String AUTOPAY_CASE_PREFIX = 'Automatic Payment Error';
-
     public void execute(SchedulableContext sc) {
         String queryString = ZuoraPaymentSelector.getFailedPaymentRunPaymentsFromLastDay(System.now());
         ZuoraDataQueryService.ProcessingParameter param = new ZuoraDataQueryService.ProcessingParameter();
@@ -85,19 +85,14 @@ public without sharing class PaymentCaseCreator implements Schedulable, ZuoraDat
     }
 
     public void executePostQueryJob(ZuoraDataQueryService.ProcessingParameter method, String response) {
-        try {
-            List<ZuoraAPI.Payment> failedAutopayPayments =
-                (List<ZuoraAPI.Payment>)JSON.deserialize(response, List<ZuoraAPI.Payment>.class);
+        List<ZuoraAPI.Payment> failedAutopayPayments =
+            (List<ZuoraAPI.Payment>) JSON.deserialize(response, List<ZuoraAPI.Payment>.class);
 
-            turnOffAutopayForFailedPayments(failedAutopayPayments);
-            getAccountsForCases(failedAutopayPayments);
-            Map<Case, ZuoraAPI.Payment> caseToPaymentMap = createCases(failedAutopayPayments);
-            sendAllRequiredEmails(caseToPaymentMap);
-        } catch (Exception e) {
-            Logger.logLater('PaymentCaseCreator', 'executePostQueryJob', 'Exception caught: ' + e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
-        } finally {
-            Logger.flushLogs();
-        }
+        turnOffAutopayForFailedPayments(failedAutopayPayments);
+        getAccountsForCases(failedAutopayPayments);
+        Map<Case, ZuoraAPI.Payment> caseToPaymentMap = createCases(failedAutopayPayments);
+        sendAllRequiredEmails(caseToPaymentMap);
+        Logger.flushLogs();
     }
 
     private void turnOffAutopayForFailedPayments(List<ZuoraAPI.Payment> payments) {
@@ -108,6 +103,10 @@ public without sharing class PaymentCaseCreator implements Schedulable, ZuoraDat
             actionItems.objects.add(zuoraAccount);
             zuoraAccount.Id = payment.accountId;
             zuoraAccount.AutoPay = false;
+            if (actionItems.objects.size() == ZuoraAPIHelper.maxActionUpdateRecords) {
+                ZuoraAPIHelper.actionUpdate(actionItems);
+                actionItems.objects.clear();
+            }
         }
         ZuoraAPIHelper.actionUpdate(actionItems);
     }
@@ -119,10 +118,7 @@ public without sharing class PaymentCaseCreator implements Schedulable, ZuoraDat
             accountIds.add((Id) payment.CrmId);
         }
         List<Account> failedPaymentAccounts = accountsSelector.selectAll(accountIds);
-        accountIdToAccountMap = new Map<Id, Account>();
-        for (Account account : failedPaymentAccounts) {
-            accountIdToAccountMap.put(account.Id, account);
-        }
+        accountIdToAccountMap = new Map<Id, Account>(failedPaymentAccounts);
     }
 
     @TestVisible
@@ -150,7 +146,7 @@ public without sharing class PaymentCaseCreator implements Schedulable, ZuoraDat
         Logger.logLater(
             'PaymentCaseCreator',
             'createCases',
-            'Creating ' + casesToOpen.size()  + ' cases:\n'+JSON.serialize(casesToOpen),
+            'Creating ' + casesToOpen.size() + ' cases:\n' + JSON.serialize(casesToOpen),
             Logger.DEBUG
         );
         Util.insertAndLog(casesToOpen, 'PaymentCaseCreator', 'createCases');
@@ -201,8 +197,7 @@ public without sharing class PaymentCaseCreator implements Schedulable, ZuoraDat
             if (!errorsWarrantingAnEmail.contains(payment?.GatewayResponse)) {
                 continue;
             }
-            if (payment == null ||
-                toEmail == null ||
+            if (toEmail == null ||
                 name == null ||
                 account.Zuora__Invoices__r.isEmpty() ||
                 account.Zuora__Invoices__r[0].Zuora__DueDate__c == null) {
@@ -231,20 +226,11 @@ public without sharing class PaymentCaseCreator implements Schedulable, ZuoraDat
 
     private void sendEmails(List<Messaging.Email> emailsToSend) {
         if (!Util.getSystemPropertyCheckbox('Send_Payment_Case_Emails__c')) {
-            Logger.logLater('PaymentCaseCreator', 'sendAllRequiredEmails', 'Emails disabled:\n'+JSON.serialize(emailsToSend), Logger.ERROR);
+            Logger.logLater('PaymentCaseCreator', 'sendAllRequiredEmails', 'Emails disabled:\n' + JSON.serialize(emailsToSend), Logger.ERROR);
             return;
         }
         List<Messaging.SendEmailResult> results = MessagingService.sendEmail(emailsToSend);
-        for (Messaging.SendEmailResult result : results) {
-            if (!result.isSuccess()) {
-                String logString = 'Autopay Auto-Email send failed with errors:\n';
-                List<Messaging.SendEmailError> errors = result.getErrors();
-                for (Messaging.SendEmailError error : errors) {
-                    logString += error.getMessage() + '\n';
-                }
-                Logger.logLater('PaymentCaseCreator', 'sendAllRequiredEmails', logString, 'Error');
-            }
-        }
+        MessagingService.logErrors(results, 'Autopay sendEmails');
     }
     @SuppressWarnings('PMD.ExcessiveParameterList')
     private Messaging.Email sendTransactionErrorEmail(String name, String billDueDate, String errorMessage, List<String> recipientEmailAddresses, EmailTemplate template, Id contactId, Case caseToAttach) {
@@ -282,18 +268,16 @@ public without sharing class PaymentCaseCreator implements Schedulable, ZuoraDat
         mail.setSubject('Autopay Email Failed');
         mail.setHtmlBody(errorMessage);
         mail.setPlainTextBody(errorMessage);
-        mail.setToAddresses(new List<String>{'product@bluewavesolar.com'});
+        mail.setToAddresses(new List<String>{
+            'product@bluewavesolar.com'
+        });
         return mail;
     }
 
     public void closeAutopayCasesOnPaymentMethodUpdate(Map<Id, Zuora__CustomerAccount__c> oldCustomerAccounts, Map<Id, Zuora__CustomerAccount__c> newCustomerAccounts) {
-        try {
-            Set<Id> propertyAccountIds = findDefaultPaymentMethodUpdates(oldCustomerAccounts, newCustomerAccounts);
-            if (!propertyAccountIds.isEmpty()) {
-                closeAutopayCasesFuture(propertyAccountIds);
-            }
-        } catch (Exception e) {
-            Logger.logNow('PaymentCaseCreator', 'closeAutopayCasesOnPaymentMethodUpdate', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
+        Set<Id> propertyAccountIds = findDefaultPaymentMethodUpdates(oldCustomerAccounts, newCustomerAccounts);
+        if (!propertyAccountIds.isEmpty()) {
+            closeAutopayCasesFuture(propertyAccountIds);
         }
     }
 
@@ -314,9 +298,7 @@ public without sharing class PaymentCaseCreator implements Schedulable, ZuoraDat
         try {
             List<Account> accounts = accountsSelector.selectAll(propertyAccountsWithPaymentMethodChanges);
             for (Account account : accounts) {
-                if (!account.Cases.isEmpty()) {
-                    openPaymentMethodCases.addAll(account.Cases);
-                }
+                openPaymentMethodCases.addAll(account.Cases);
             }
             for (Case paymentMethodCase : openPaymentMethodCases) {
                 paymentMethodCase.Status = 'Closed';

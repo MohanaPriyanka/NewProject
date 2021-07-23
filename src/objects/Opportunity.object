@@ -213,10 +213,6 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Pending Quality Control Signature</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>QC In Process</fullName>
             <default>false</default>
         </values>
@@ -529,70 +525,6 @@
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>All_Customers_Signature_Status__c</fullName>
-        <description>This field tracks whether all of the Customers on Residential Loan and Community Solar opportunities have signed, taking into account Joint and Individual applications.</description>
-        <externalId>false</externalId>
-        <formula>CASE(
-Product_Line__c,
-
-&quot;Community Solar&quot;,
-
-IF(Contract_Status__c =&quot;Completed&quot;,&quot;Completed&quot;,&quot;Incomplete&quot;),
-
-&quot;Residential Loan&quot;,
-
-CASE(Application_Type__c,
-&quot;Joint&quot;,
-
-IF(
-AND(Contract_Status__c =&quot;Completed&quot;, Co_Applicant_Signature_Status__c=&quot;Completed&quot;),
-&quot;Completed&quot;,&quot;Incomplete&quot;
-),
-
-&quot;Individual&quot;,
-IF(Contract_Status__c =&quot;Completed&quot;,&quot;Completed&quot;,&quot;Incomplete&quot;),
-
-&quot;&quot;),
-
-&quot;&quot;
-)</formula>
-        <inlineHelpText>This field tracks whether all of the Customers on Residential Loan and Community Solar opportunities have signed, taking into account Joint and Individual applications.</inlineHelpText>
-        <label>All Customers Signature Status</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>All_QC_Boxes_True__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(
- Product_Line__c=&quot;Community Solar&quot;,
-and(
- Contract_Fully_Populated__c =true,  
- Confirmed_Subscription_Size_Correct__c =true,  
- Service_Address_and_Name_on_Account_Chk__c =true,
- Load_Zone_Quality_Check__c =true,
- Current_Utility_Bill__c = true,
- Green_Button_Data_Received__c = true,
- QC_Personal_Credit_Report__c = true
-),
-IF(
- Product_Line__c=&quot;Residential Loan&quot;,
-and( Commencement_Date_QC__c=true,
- Loan_Amount_Verified__c =true,
- Customer_Address_Verified__c =true,
- System_Information_Verified__c,
- Customer_Signature_Verified__c ),false)
-)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>All QC Boxes True?</label>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Amount</fullName>
@@ -1070,19 +1002,6 @@ false
         <label>Billing City (Upper Case)</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>BlueWave_Signature_Status__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>This field represents the signature status of BW&apos;s management team after QC.</inlineHelpText>
-        <label>BlueWave Signature Status</label>
-        <length>15</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
@@ -1866,17 +1785,6 @@ TEXT(DAY(Commencement_Date__c))
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Confirmed_Subscription_Size_Correct__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <inlineHelpText>Check kW DC sizing calculations in UAS</inlineHelpText>
-        <label>Confirmed Subscription Size Correct</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>Conga_Contract_Id__c</fullName>
         <description>Pulls in the Conga template IDs used to generate the countersigned version of SSF contracts. Needed because lookupfields can&apos;t be referenced in buttons.</description>
         <externalId>false</externalId>
@@ -1975,18 +1883,6 @@ TEXT(DAY(Commencement_Date__c))
         <type>Date</type>
     </fields>
     <fields>
-        <fullName>Contract_Fully_Populated__c</fullName>
-        <defaultValue>false</defaultValue>
-        <description>Check this box after contract has been quality and data checked.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Verify contract is fully populated/signed with correct information</inlineHelpText>
-        <label>Contract Fully Populated</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>Contract_Paper_Copy__c</fullName>
         <defaultValue>&quot;info@bluewave-capital.com&quot;</defaultValue>
         <externalId>false</externalId>
@@ -1996,20 +1892,6 @@ TEXT(DAY(Commencement_Date__c))
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Email</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Contract_Status__c</fullName>
-        <description>Set by Process Builder</description>
-        <externalId>false</externalId>
-        <inlineHelpText>This field represents the signature status of the customer on the contract.</inlineHelpText>
-        <label>Customer Signature Status</label>
-        <length>15</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
@@ -2096,17 +1978,6 @@ IF( ISPICKVAL(Personal_Credit_Report2__r.Solar_Loan_Approval_Status__c, &quot;De
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Current_Utility_Bill__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <inlineHelpText>Verify the utility bill meets the underwriting criteria based on state/program</inlineHelpText>
-        <label>Current Utility Bill</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Custom_ID__c</fullName>
@@ -3185,17 +3056,6 @@ max(1250,0.05*(Requested_Loan_Amount__c)),
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Green_Button_Data_Received__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <inlineHelpText>Consumption data has been received for sizing</inlineHelpText>
-        <label>Green Button Data/kWh Info Received</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>Homeowner_s_Insurance_Policy_End_Date__c</fullName>
         <externalId>false</externalId>
         <label>Homeowner&apos;s Insurance Policy End Date</label>
@@ -3883,19 +3743,6 @@ TEXT(DAY(Interest_Only_Start_Date__c))
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Load_Zone_Quality_Check__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <inlineHelpText>•	For SMART products verify: 1) utility,  2) rate class
-•	For SREC products verify:     1) utility,  2) load zone
-•	For NY products verify:         1) utility,  2) rate class</inlineHelpText>
-        <label>Load Zone / Utility Check / Rate Class</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Load_Zone_Utility_4__c</fullName>
@@ -5592,42 +5439,6 @@ IF(INCLUDES(Customer_Type__c, &quot;Private Affordable&quot;),&quot;Error&quot;,
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>QC_Call_Complete__c</fullName>
-        <defaultValue>false</defaultValue>
-        <description>This is used by Partner support and customer ops during the QC process for CS opportunities.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>This is used by Partner Support and Customer Ops during the QC process for CS opportunities.</inlineHelpText>
-        <label>QC Call Complete</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>QC_Personal_Credit_Report__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <inlineHelpText>Verify customer’s FICO meets UW criteria based on state/program/project</inlineHelpText>
-        <label>QC Personal Credit Report</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Quality_Check_Status__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>This field represents the status of BlueWave&apos;s QC approval on the customer&apos;s contract before management counter-signs.</inlineHelpText>
-        <label>QC Approval Status</label>
-        <length>20</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>RFP_Issue_Date__c</fullName>
         <externalId>false</externalId>
         <label>RFP Issue Date</label>
@@ -6518,24 +6329,6 @@ IF((Partner_tag_lookup__r.RL_Commission_Structure__c*System_Size__c)&gt;=Partner
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
         <label>Send PDF with Email</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Service_Address_and_Name_on_Account_Chk__c</fullName>
-        <defaultValue>false</defaultValue>
-        <description>Used in utility account QC for CS app</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Ensure UAL details are accurate by comparing the following details using the utility bill:
-1) Name on Utility Account
-2) Utility Account Number
-3) Service Address
-4) Service State
-5) Service Zip Code</inlineHelpText>
-        <label>Utility Account Information Verified</label>
-        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -8369,16 +8162,9 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <columns>CS_Capacity_Allocated__c</columns>
         <columns>Shared_Solar_System__c</columns>
         <columns>Partner_tag_lookup__c</columns>
-        <columns>All_QC_Boxes_True__c</columns>
-        <columns>Load_Zone_Quality_Check__c</columns>
         <columns>Utility_Bill_Received__c</columns>
-        <columns>Service_Address_and_Name_on_Account_Chk__c</columns>
-        <columns>Contract_Fully_Populated__c</columns>
         <columns>Utility_Acct_Verified_on_Contract__c</columns>
         <columns>Personal_Credit_Report_Reviewed__c</columns>
-        <columns>Confirmed_Subscription_Size_Correct__c</columns>
-        <columns>Current_Utility_Bill__c</columns>
-        <columns>Green_Button_Data_Received__c</columns>
         <filterScope>Everything</filterScope>
         <filters>
             <field>Product_Line__c</field>
@@ -8401,11 +8187,8 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <columns>CS_Capacity_Allocated__c</columns>
         <columns>Shared_Solar_System__c</columns>
         <columns>Partner_tag_lookup__c</columns>
-        <columns>All_QC_Boxes_True__c</columns>
         <columns>Utility_Bill_Received__c</columns>
-        <columns>Contract_Fully_Populated__c</columns>
         <columns>Personal_Credit_Report_Reviewed__c</columns>
-        <columns>Confirmed_Subscription_Size_Correct__c</columns>
         <columns>Comments__c</columns>
         <filterScope>Everything</filterScope>
         <filters>
@@ -8910,7 +8693,6 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <columns>OPPORTUNITY.NAME</columns>
         <columns>OPPORTUNITY.STAGE_NAME</columns>
         <columns>ACCOUNT.NAME</columns>
-        <columns>Contract_Status__c</columns>
         <columns>Partner_tag2__c</columns>
         <columns>DOER_Solar_Loan__c</columns>
         <columns>Comments__c</columns>
@@ -8948,10 +8730,8 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <columns>OPPORTUNITY.NAME</columns>
         <columns>Lead_Status__c</columns>
         <columns>OPPORTUNITY.STAGE_NAME</columns>
-        <columns>Contract_Status__c</columns>
         <columns>Co_Applicant_Signature_Status__c</columns>
         <columns>Partner_Sales_Agreement_Status__c</columns>
-        <columns>BlueWave_Signature_Status__c</columns>
         <columns>Comments__c</columns>
         <filterScope>Everything</filterScope>
         <filters>
