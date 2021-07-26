@@ -6,7 +6,9 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
     @TestVisible
     private static SubscriptionOrderSelector subscripOrderSelector = new SubscriptionOrderSelector();
     private static fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
-        new List<SObjectType>{Shared_Solar_System__c.SObjectType}
+        new List<SObjectType>{
+            Shared_Solar_System__c.SObjectType
+        }
     );
     public void execute(SchedulableContext sch) {
         try {
@@ -26,9 +28,9 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
         try {
             update sss;
             return 'Success';
-        } catch (Exception excep){
+        } catch (Exception excep) {
             String customMessage = excep.getMessage();
-            if (customMessage.contains('FIELD_CUSTOM_VALIDATION_EXCEPTION')){
+            if (customMessage.contains('FIELD_CUSTOM_VALIDATION_EXCEPTION')) {
                 Integer location = customMessage.indexOf('FIELD_CUSTOM_VALIDATION_EXCEPTION');
                 Integer length = customMessage.length();
                 customMessage = customMessage.substring(location + 35, length);
@@ -38,9 +40,9 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
     }
     public void updateSSS() {
         Map<Id, Shared_Solar_System__c> allSSSes = sssSelector.getAllSSSMap();
-        SharedSolarSystems systems = new SharedSolarSystems(allSSSes.values());
+        SharedSolarSystemInvoicer systems = new SharedSolarSystemInvoicer();
         summarizeCapacity(allSSSes, uow);
-        systems.updateManagementRevenueStartDate(uow);
+        systems.updateManagementRevenueStartDate(uow, allSSSes.values());
         uow.commitWork();
     }
     public void uncheckApexContext(List<Shared_Solar_System__c> sssList) {
@@ -93,8 +95,7 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
     private void addCapacityToCapacityList(
         Utility_Account_Subscription__c uas,
         List<Utility_Account_Subscription__c> committedCapacityList,
-        List<Utility_Account_Subscription__c> pendingCapacityList)
-    {
+        List<Utility_Account_Subscription__c> pendingCapacityList) {
         if (uas.Opportunity_Stage__c == 'Complete') {
             committedCapacityList.add(uas);
         } else if (!isCancelledStatus(uas)) {
@@ -108,8 +109,7 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
         Decimal pendingSmallCSCapacity,
         Decimal committedSmallCSCapacity,
         Decimal pendingAnchorCapacity,
-        Decimal committedAnchorCapacity)
-    {
+        Decimal committedAnchorCapacity) {
         if (sss.Reserved_Capacity_kW_DC__c != String.valueOf(pendingSmallCSCapacity)) {
             sss.Reserved_Capacity_kW_DC__c = String.valueOf(pendingSmallCSCapacity);
             uow.registerDirty(sss, new List<SObjectField>{
@@ -142,12 +142,12 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
         }
         return summarizedCapacity;
     }
-    private Boolean isAnchorOrPublicOfftake(Utility_Account_Subscription__c uas){
+    private Boolean isAnchorOrPublicOfftake(Utility_Account_Subscription__c uas) {
         return (uas.Customer_Group__c == 'Anchor' ||
             uas.Opportunity__r.Customer_Sub_Group__c == 'Public Offtake'
         );
     }
-    private Boolean isCancelledStatus(Utility_Account_Subscription__c uas){
+    private Boolean isCancelledStatus(Utility_Account_Subscription__c uas) {
         return (uas.Opportunity_Stage__c == 'Expired'
             || uas.Opportunity_Stage__c == 'Cancelled'
             || uas.Opportunity_Stage__c == 'DUPLICATE'
@@ -158,36 +158,36 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
         );
     }
 
-    public void onUpdateCheckForChangedValues(Map<Id, Shared_Solar_System__c> oldSSSMap, List<Shared_Solar_System__c> newSSSes){
+    public void onUpdateCheckForChangedValues(Map<Id, Shared_Solar_System__c> oldSSSMap, List<Shared_Solar_System__c> newSSSes) {
         Set<Id> sssWithChangedBrandKey = new Set<Id>();
-        Map<Id,Shared_Solar_System__c> sssWithChangedReacqStartDate = new Map<Id,Shared_Solar_System__c>();
+        Map<Id, Shared_Solar_System__c> sssWithChangedReacqStartDate = new Map<Id, Shared_Solar_System__c>();
 
-        for (Shared_Solar_System__c newSSS : newSSSes){
+        for (Shared_Solar_System__c newSSS : newSSSes) {
             Shared_Solar_System__c oldSSS = oldSSSMap.get(newSSS.Id);
             if (newSSS.Client_Brand_Key__c != oldSSS.Client_Brand_Key__c
-                || newSSS.BWC_Project_Entity_Manual__c != oldSSS.BWC_Project_Entity_Manual__c){
+                || newSSS.BWC_Project_Entity_Manual__c != oldSSS.BWC_Project_Entity_Manual__c) {
                 sssWithChangedBrandKey.add(newSSS.Id);
             }
             if (newSSS.Reacquisition_Start_Date__c != oldSSS.Reacquisition_Start_Date__c &&
-                newSSS.Reacquisition_Start_Date__c < System.today()){
-                sssWithChangedReacqStartDate.put(newSSS.Id,newSSS);
+                newSSS.Reacquisition_Start_Date__c < System.today()) {
+                sssWithChangedReacqStartDate.put(newSSS.Id, newSSS);
             }
         }
-        if (sssWithChangedBrandKey.size() > 0){
+        if (sssWithChangedBrandKey.size() > 0) {
             queueClientBrandKeyUpdate(sssWithChangedBrandKey);
         }
-        if (sssWithChangedReacqStartDate.size() > 0){
+        if (sssWithChangedReacqStartDate.size() > 0) {
             reacquisitionStartDateChange(sssWithChangedReacqStartDate);
         }
     }
 
-    private void queueClientBrandKeyUpdate(Set<Id> sssWithChangedBrandKey){
+    private void queueClientBrandKeyUpdate(Set<Id> sssWithChangedBrandKey) {
         ClientBrandingService brandService = new ClientBrandingService();
         brandService.sssIdWithChangedClientBrandKey = sssWithChangedBrandKey;
         System.enqueueJob(brandService);
     }
 
-    private void reacquisitionStartDateChange(Map<Id,Shared_Solar_System__c> sssWithChangedReacqStartDate) {
+    private void reacquisitionStartDateChange(Map<Id, Shared_Solar_System__c> sssWithChangedReacqStartDate) {
         Set<Id> ordersToUpdate = new Set<Id>();
         // We don't want to prevent the enactment of an Allocation Schedule if we hit an error here, so use try/catch:
         try {
@@ -195,7 +195,7 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
                 Date newReacqStartDate = sssWithChangedReacqStartDate.get(sssId).Reacquisition_Start_Date__c;
                 // Query within a loop isn't ideal, but it allows us to limit the number of Subscription Orders
                 // that are returned by the query by filtering for date and SSS at the same time
-                Map<Id, Subscription_Order__c> soMap = subscripOrderSelector.getAcquisitionOrdersBySSS(sssId,newReacqStartDate);
+                Map<Id, Subscription_Order__c> soMap = subscripOrderSelector.getAcquisitionOrdersBySSS(sssId, newReacqStartDate);
                 ordersToUpdate.addAll(soMap.keySet());
             }
             ClientInvoicingFeeAssignmentService service = new ClientInvoicingFeeAssignmentService(ordersToUpdate);

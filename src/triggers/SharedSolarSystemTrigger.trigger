@@ -6,15 +6,16 @@ trigger SharedSolarSystemTrigger on Shared_Solar_System__c (before insert, after
         return;
     }
     SharedSolarSystemHandler sharedSolarSystemHandler = new SharedSolarSystemHandler();
-    SharedSolarSystems sharedSolarSystems = new SharedSolarSystems(Trigger.new);
+    SharedSolarSystemInvoicer invoicer = new SharedSolarSystemInvoicer();
+    SharedSolarSystemCapacityCalculator capacityCalculator = new SharedSolarSystemCapacityCalculator();
     switch on Trigger.operationType {
         when BEFORE_INSERT {
-            sharedSolarSystems.calculateMaximumSubscriptionCapacityForSMART();
-            sharedSolarSystems.updateManagementRevenueStartDateBeforeTrigger();
+            capacityCalculator.calculateMaximumSubscriptionCapacityForSMART(Trigger.new);
+            invoicer.updateManagementRevenueStartDateBeforeTrigger(Trigger.new);
         } when BEFORE_UPDATE {
             sharedSolarSystemHandler.summarizeCapacityBeforeUpdate(Trigger.newMap);
-            sharedSolarSystems.calculateMaximumSubscriptionCapacityForSMART();
-            sharedSolarSystems.updateManagementRevenueStartDateBeforeTrigger();
+            capacityCalculator.calculateMaximumSubscriptionCapacityForSMART(Trigger.new);
+            invoicer.updateManagementRevenueStartDateBeforeTrigger(Trigger.new);
         } when AFTER_UPDATE {
             sharedSolarSystemHandler.uncheckApexContext(Trigger.new);
             sharedSolarSystemHandler.onUpdateCheckForChangedValues(Trigger.oldMap, Trigger.new);
