@@ -1251,14 +1251,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>AttachmentSelector</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>AttachmentSelectorTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>AuthNetAPI</apexClass>
         <enabled>false</enabled>
     </classAccesses>
