@@ -1,8 +1,6 @@
 /**
- * Created by: Kristin White on 9/28/2020
- * 
- * Test: UtilityDataRequestServiceTest
- * 
+ * @description Created by: Kristin White on 9/28/2020
+ * Tested by: UtilityDataRequestServiceTest
  */
 @SuppressWarnings('ApexDocValidation')
 public without sharing class UtilityDataRequestService {
@@ -13,20 +11,21 @@ public without sharing class UtilityDataRequestService {
     @TestVisible private static UtilityDataRequestSelector udrSelector = new UtilityDataRequestSelector();
 
     /* INSTANCE PROPERTIES */
-    @TestVisible private Map<Id,Utility_Data_Request__c> completedUDRMap = new Map<Id,Utility_Data_Request__c>();
-    @TestVisible private Map<Id,Utility_Data_Request__c> newUDRMap;
-    @TestVisible private Map<Id,Utility_Data_Request__c> oldUDRMap;
-    @TestVisible private Map<String,Rate_Class__c> rateClassWithEDIMap;
-    @TestVisible private Map<Id,Id> udrToRateClassMap = new Map<Id,Id>();
-    @TestVisible private Map<Id,List<Utility_Data_Request_Period__c>> completedUDRToUdrpMap;
+    @TestVisible private Map<Id, Utility_Data_Request__c> completedUDRMap = new Map<Id, Utility_Data_Request__c>();
+    @TestVisible private Set<Id> erroredUtilityDataRequestIds = new Set<Id>();
+    @TestVisible private Map<Id, Utility_Data_Request__c> newUDRMap;
+    @TestVisible private Map<Id, Utility_Data_Request__c> oldUDRMap;
+    @TestVisible private Map<String, Rate_Class__c> rateClassWithEDIMap;
+    @TestVisible private Map<Id, Id> udrToRateClassMap = new Map<Id, Id>();
+    @TestVisible private Map<Id, List<Utility_Data_Request_Period__c>> completedUDRToUdrpMap;
     @TestVisible private fflib_SObjectUnitOfWork uow;
 
     /**
-     * Constructor for service class instance
+     * @description Constructor for service class instance
      * @param oldUDRMap Trigger.oldMap
      * @param newUDRMap Trigger.newMap
      */
-    public UtilityDataRequestService(Map<Id,Utility_Data_Request__c> oldUDRMap, Map<Id,Utility_Data_Request__c> newUDRMap) {
+    public UtilityDataRequestService(Map<Id, Utility_Data_Request__c> oldUDRMap, Map<Id, Utility_Data_Request__c> newUDRMap) {
         this.oldUDRMap = oldUDRMap;
         this.newUDRMap = newUDRMap;
     }
@@ -41,7 +40,7 @@ public without sharing class UtilityDataRequestService {
             setAnnualkWhAndAvgDemandOnUDRs();
             // Flags the related UDRPs that were used in Annual kWh and Avg Demand calcs
             uow.commitWork();
-        } catch (Exception e ) {
+        } catch (Exception e) {
             String message = 'Unable to commit work before completion of UDRs: ' + completedUDRMap.keySet().toString()
                 + '\n\n' + e.getMessage() + '\n\n' + e.getStackTraceString();
             Logger.logLater('UtilityDataRequestService', 'beforeStatusUpdatedToComplete', message);
@@ -60,12 +59,29 @@ public without sharing class UtilityDataRequestService {
             populateUDRPRateClassOnCompletedUDRs();
             updateUALForCompletedUDRs();
             uow.commitWork();
-        } catch (Exception e ) {
+        } catch (Exception e) {
             String message = 'Unable to commit work on completion of UDRs: ' + completedUDRMap.keySet().toString()
                 + '\n\n' + e.getMessage() + '\n\n' + e.getStackTraceString();
             Logger.logLater('UtilityDataRequestService', 'afterStatusUpdatedToComplete', message);
         }
         Logger.flushLogs();
+    }
+
+    /**
+     * @description Uses CaseFactory to insert QC Cases for EDI transactions resulting in 'Error' status
+     */
+    public void openErrorCasesIfEncountered() {
+        for (Utility_Data_Request__c udr : newUDRMap.values()) {
+            if (udr.Request_Status_new__c == 'Error' && oldUDRMap.get(udr.Id).Request_Status_new__c != 'Error') {
+                erroredUtilityDataRequestIds.add(udr.Id);
+            }
+        }
+        if (!erroredUtilityDataRequestIds.isEmpty()) {
+            CaseFactory caseFactory = new CaseFactory();
+            caseFactory.erroredUtilityDataRequestIds = erroredUtilityDataRequestIds;
+            caseFactory.setQueueType('EDI Error');
+            System.enqueueJob(caseFactory);
+        }
     }
 
     private void setupTriggerContext() {
@@ -77,13 +93,13 @@ public without sharing class UtilityDataRequestService {
             }
         );
         // Map completed UDRs for further processing if criteria is met
-        Map<Id,Utility_Data_Request__c> udrsWithServiceProviders = udrSelector.selectMapForKWHById(newUDRMap.values());
+        Map<Id, Utility_Data_Request__c> udrsWithServiceProviders = udrSelector.selectMapForKWHById(newUDRMap.values());
         for (Utility_Data_Request__c udr : newUDRMap.values()) {
             if (udr.Request_Status_new__c == 'Complete' &&
                 oldUDRMap.get(udr.Id).Request_Status_new__c != 'Complete' &&
                 udrsWithServiceProviders.get(udr.Id)?.Service_Provider__c != 'Glynt') // Ignore Glynt UDRs, handled elsewhere
             {
-                completedUDRMap.put(udr.Id,udr);
+                completedUDRMap.put(udr.Id, udr);
             }
         }
         // Retrieve Rate Classes, UDR->UDRPs, and UALs for Completed UDRs
@@ -91,9 +107,9 @@ public without sharing class UtilityDataRequestService {
         completedUDRToUdrpMap = udrpSelector.selectByUDR(completedUDRMap.keySet());
     }
 
-    private void setAnnualkWhAndAvgDemandOnUDRs(){
+    private void setAnnualkWhAndAvgDemandOnUDRs() {
         Map<Id, UDRWrapper> udrObjectMap = new Map<Id, UDRWrapper>();
-        for (Id udrId : completedUDRToUdrpMap.keySet()){
+        for (Id udrId : completedUDRToUdrpMap.keySet()) {
             UDRWrapper currentUDR = new UDRWrapper(udrId);
             currentUDR.addUDRPs(completedUDRToUdrpMap.get(udrId));
             udrObjectMap.put(udrId, currentUDR);
@@ -132,8 +148,9 @@ public without sharing class UtilityDataRequestService {
     }
 
     /**
-     * @description Populates the UDRP.Rate_Class_Lookup__c where 
+     * @description Populates the UDRP.Rate_Class_Lookup__c where
      * the Rate Class object's EDI_Rate_Class__c text matches the UDRP's Rate_Subclass__c text.
+     * @param udrId
      */
     private void populateRateClassOnUDRP(Id udrId) {
         List<Utility_Data_Request_Period__c> udrpList = completedUDRToUdrpMap.get(udrId);

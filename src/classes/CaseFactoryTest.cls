@@ -1,13 +1,12 @@
 /**
- * Created by mstackhouse on 12/28/2018.
+ * @description Created by mstackhouse on 12/28/2018.
  * Description: Tests for CaseFactory
  */
-
 @IsTest
 public with sharing class CaseFactoryTest {
+
     @TestSetup
     public static void setupTestData() {
-        Test.startTest();
         Load_U__c loadZone = new Load_U__c (
             Name = '12345',
             LZ__c = 'Hudson Valley',
@@ -63,10 +62,9 @@ public with sharing class CaseFactoryTest {
         Database.DMLOptions dmo = new Database.DMLOptions();
         dmo.assignmentRuleHeader.useDefaultRule = true;
         resiLead.setOptions(dmo);
-
         insert resiLead;
-        Test.stopTest();
     }
+
     @IsTest
     public static void testGetProductSupportCase() {
         RecordType productSupport = [
@@ -120,7 +118,7 @@ public with sharing class CaseFactoryTest {
         RecordType customerCare = [
             SELECT Id, Name
             FROM RecordType
-            Where SobjectType = 'Case' and DeveloperName = 'Customer_Care'
+            WHERE SobjectType = 'Case' AND DeveloperName = 'Customer_Care'
             LIMIT 1
         ];
 
@@ -166,18 +164,18 @@ public with sharing class CaseFactoryTest {
     @IsTest
     public static void testGetPartnerCareCase() {
         RecordType partnerCareCase = [
-                SELECT Id, Name
-                FROM RecordType
-                WHERE SobjectType = 'Case' AND DeveloperName = 'Partner_Care_Case'
-                LIMIT 1
+            SELECT Id, Name
+            FROM RecordType
+            WHERE SobjectType = 'Case' AND DeveloperName = 'Partner_Care_Case'
+            LIMIT 1
         ];
 
         Group partnerCareQueueID = [
-                SELECT Id, DeveloperName
-                FROM Group
-                WHERE Type = 'Queue'
-                AND DeveloperName = 'Partner_Support'
-                LIMIT 1
+            SELECT Id, DeveloperName
+            FROM Group
+            WHERE Type = 'Queue'
+            AND DeveloperName = 'Partner_Support'
+            LIMIT 1
         ];
 
         CaseFactory caseFactory = new CaseFactory();
@@ -195,9 +193,9 @@ public with sharing class CaseFactoryTest {
         System.assertEquals(null, testCase.RecordTypeId);
         System.assertEquals(null, testCase.OwnerId);
     }
+
     @IsTest
     public static void testNoMatchCaseCreation() {
-
         Lead switchLead = [
             SELECT Id,Name,Parent_Account__c
             FROM Lead
@@ -207,8 +205,8 @@ public with sharing class CaseFactoryTest {
         System.assertEquals(0, new CaseSelector().selectOpenNoMatchCasesFromLead(switchLead).size(), 'There should be no open cases for ' +
             'this lead before enqueuing');
         Test.startTest();
-        CaseFactory testFactory= new CaseFactory();
-        CaseFactory testFactory2= new CaseFactory();
+        CaseFactory testFactory = new CaseFactory();
+        CaseFactory testFactory2 = new CaseFactory();
         testFactory.setLead(switchLead);
         testFactory.setQueueType('No FICO Match');
         testFactory2.setLead(switchLead);
@@ -219,20 +217,19 @@ public with sharing class CaseFactoryTest {
         System.assertEquals(1, new CaseSelector().selectOpenNoMatchCasesFromLead(switchLead).size(), 'If a case already ' +
             'exists another should not be created. There should only be 1 open case at a time.');
     }
+
     @IsTest
     public static void testLowMatchCaseCreation() {
-
         Lead switchLead = [
             SELECT Id,Name,Parent_Account__c
             FROM Lead
             LIMIT 1
         ];
-
-        System.assertEquals(0, new CaseSelector().selectOpenLowMatchCasesFromLead(switchLead).size(), 'There should be no open cases for ' +
-            'this lead before enqueuing');
+        System.assertEquals(0, new CaseSelector().selectOpenLowMatchCasesFromLead(switchLead).size(),
+            'There should be no open cases for this lead before enqueuing');
         Test.startTest();
-        CaseFactory testFactory= new CaseFactory();
-        CaseFactory testFactory2= new CaseFactory();
+        CaseFactory testFactory = new CaseFactory();
+        CaseFactory testFactory2 = new CaseFactory();
         testFactory.setLead(switchLead);
         testFactory.setQueueType('Low FICO Match');
         testFactory2.setLead(switchLead);
@@ -242,5 +239,88 @@ public with sharing class CaseFactoryTest {
         Test.stopTest();
         System.assertEquals(1, new CaseSelector().selectOpenLowMatchCasesFromLead(switchLead).size(), 'If a case already ' +
             'exists another should not be created. There should only be 1 open case at a time.');
+    }
+
+    @IsTest
+    public static void testEDIErrorCaseWithMapping() {
+        List<EDI_Error_Mapping__mdt> cmdtRecords = [
+            SELECT Exception_Reason_Code__c, Case_Subject__c, Case_Description__c
+            FROM EDI_Error_Mapping__mdt
+        ];
+        EDI_Error_Mapping__mdt selectedErrorMapping;
+        for (EDI_Error_Mapping__mdt detail : cmdtRecords) {
+            if (detail.Exception_Reason_Code__c == 'HUR') {
+                selectedErrorMapping = detail;
+            }
+        }
+        CaseFactory factory = new CaseFactory();
+        Case generatedCase;
+        factory.erroredUtilityDataRequestIds = new Set<Id>{
+            Util.getFakeId(Utility_Data_Request__c.SObjectType)
+        };
+        factory.setQueueType('EDI Error');
+        Test.startTest();
+        factory.getEDIErrorMappings();
+        Utility_Data_Request__c mockUDR = getMockUDRForErrorCase('HUR');
+        generatedCase = factory.createEDIErrorCase(mockUDR);
+        Test.stopTest();
+        System.assertEquals('Upload Complete Utility Bill to Case - Need More Pages', generatedCase.QC_Case_Subject__c,
+            'Invalid QC case status');
+        System.assertEquals('Community Solar', generatedCase.Product_Line__c, 'Invalid product line on Case');
+        System.assertEquals('QC', generatedCase.Category__c, 'Invalid category for case');
+        System.assertEquals('3rd Party', generatedCase.Case_Type__c, 'Invalid case type');
+
+        String expectedCaseSubject = factory.parseEDIMergeFields(
+            mockUDR, factory.getEDICaseFieldText(selectedErrorMapping, 'Subject')
+        );
+        String expectedCaseDescription = factory.parseEDIMergeFields(
+            mockUDR, factory.getEDICaseFieldText(selectedErrorMapping, 'Description')
+        );
+        System.assertEquals(expectedCaseSubject, generatedCase.Subject,
+            'Unexpected case Subject value for Case: ' + generatedCase.Subject);
+        System.assertEquals(expectedCaseDescription, generatedCase.Description,
+            'Unexpected case Description value for Case: ' + generatedCase.Description);
+    }
+
+    @IsTest
+    public static void testEDIErrorCaseWithoutMapping() {
+        CaseFactory factory = new CaseFactory();
+        Case generatedCase;
+        factory.erroredUtilityDataRequestIds = new Set<Id>{
+            Util.getFakeId(Utility_Data_Request__c.SObjectType)
+        };
+        factory.setQueueType('EDI Error');
+        Test.startTest();
+        factory.getEDIErrorMappings();
+        generatedCase = factory.createEDIErrorCase(getMockUDRForErrorCase('NOT_REAL_ERROR_CODE'));
+        Test.stopTest();
+        System.assertEquals('Upload Complete Utility Bill to Case - Need More Pages', generatedCase.QC_Case_Subject__c,
+            'Invalid QC case status');
+        System.assertEquals('Community Solar', generatedCase.Product_Line__c, 'Invalid product line on Case');
+        System.assertEquals('QC', generatedCase.Category__c, 'Invalid category for case');
+        System.assertEquals('3rd Party', generatedCase.Case_Type__c, 'Invalid case type');
+        System.assert(!generatedCase.Subject.contains('{Lead}'), 'Merge field present where one should not be: ' +
+            generatedCase.Subject);
+        System.assert(!generatedCase.Description.contains('{Lead}') && !generatedCase.Description.contains('{UAL}'),
+            'Merge fields present in case description where none should exist: ' + generatedCase.Description);
+    }
+
+    public static Utility_Data_Request__c getMockUDRForErrorCase(String exceptionCode) {
+        sfab_FabricatedSObject leadRecord = new sfab_FabricatedSObject(Lead.class);
+        leadRecord.setField(Lead.Name, 'Jamal Testcase');
+        leadRecord.setField(Lead.Partner_Account__c, Util.getFakeId(Account.SObjectType));
+        leadRecord.setField(Lead.Sales_Person__c, Util.getFakeId(Account.SObjectType));
+
+        sfab_FabricatedSObject ual = new sfab_FabricatedSObject(Utility_Account_Log__c.class);
+        ual.setField(Utility_Account_Log__c.Lead__c, Util.getFakeId(Lead.SObjectType));
+        ual.setField(Utility_Account_Log__c.Name, '012345678');
+        ual.setParent('Lead__r', leadRecord);
+
+        sfab_FabricatedSObject udr = new sfab_FabricatedSObject(Utility_Data_Request__c.class);
+        udr.setField(Utility_Data_Request__c.Id, Util.getFakeId(Utility_Data_Request__c.SObjectType));
+        udr.setField(Utility_Data_Request__c.Exception_Reason_Code__c, exceptionCode);
+        udr.setParent('Utility_Account_Log__r', ual);
+
+        return (Utility_Data_Request__c) udr.toSObject();
     }
 }
