@@ -4871,7 +4871,7 @@ IF(AND(Risk_Level_Business_Type__c = &quot;Not Risky&quot;, VALUE(Number_of_Year
         <externalId>false</externalId>
         <inlineHelpText>This is the reason a lead was unqualified. It&apos;s populated by the user who marks the lead as unqualified.</inlineHelpText>
         <label>Reason Unqualified</label>
-        <length>50</length>
+        <length>200</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
