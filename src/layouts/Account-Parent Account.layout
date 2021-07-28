@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Layout xmlns="http://soap.sforce.com/2006/04/metadata">
-    <excludeButtons>DataDotComCompanyHierarchy</excludeButtons>
+    <excludeButtons>DataDotComAccountInsights</excludeButtons>
+    <excludeButtons>DataDotComClean</excludeButtons>
     <excludeButtons>DisableCustomerPortalAccount</excludeButtons>
     <excludeButtons>DisablePartnerPortalAccount</excludeButtons>
     <excludeButtons>IncludeOffline</excludeButtons>
@@ -202,17 +203,6 @@
         <fields>dsfs__Hrs_Sent_to_Sign__c</fields>
         <fields>dsfs__Sent_Date_Time__c</fields>
         <relatedList>dsfs__DocuSign_Status__c.dsfs__Company__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <fields>UPDATEDBY_USER</fields>
-        <fields>OWNER.FIRST_NAME</fields>
-        <fields>OWNER.LAST_NAME</fields>
-    </relatedLists>
-    <relatedLists>
-        <fields>UPDATEDBY_USER</fields>
-        <fields>OWNER.FIRST_NAME</fields>
-        <fields>OWNER.LAST_NAME</fields>
     </relatedLists>
     <relatedLists>
         <fields>ACCOUNT.NAME</fields>
