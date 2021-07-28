@@ -558,7 +558,7 @@ public with sharing class SharedSolarSystemHandlerTest {
             FROM Shared_Solar_System__c
         ];
         List<Client_Contract__c> clientContracts = new List<Client_Contract__c>();
-        for (Shared_Solar_System__c sss : sssList){
+        for (Shared_Solar_System__c sss : sssList) {
             clientContracts.add(new Client_Contract__c(
                 Contract__c = contractA.Id,
                 Effective_Date__c = Date.today().addYears(-1),

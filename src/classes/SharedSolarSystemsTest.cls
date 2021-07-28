@@ -1,14 +1,16 @@
 /**
- * Created by peteryao on 8/5/20.
+ * @description Created by peteryao on 8/5/20.
  */
 @IsTest
 public with sharing class SharedSolarSystemsTest {
     @IsTest
     private static void testRecalculateMaximumSubscriptionCapacityForNonSMART() {
-        SharedSolarSystems.productSelector = (ProductSelector) Test.createStub(ProductSelector.class, new MockProductSelector(true));
-        List<Shared_Solar_System__c> sharedSolarSystems = new List<Shared_Solar_System__c>{new Shared_Solar_System__c()};
+        SharedSolarSystemCapacityCalculator.productSelector = (ProductSelector) Test.createStub(ProductSelector.class, new MockProductSelector(true));
+        List<Shared_Solar_System__c> sharedSolarSystems = new List<Shared_Solar_System__c>{
+            new Shared_Solar_System__c()
+        };
         try {
-            new SharedSolarSystems(sharedSolarSystems).calculateMaximumSubscriptionCapacityForSMART();
+            new SharedSolarSystemCapacityCalculator().calculateMaximumSubscriptionCapacityForSMART(sharedSolarSystems);
             System.assert(true, 'We should not have thrown an exception trying to calculate max capacity with null values');
         } catch (Exception e) {
             System.assert(false, e.getMessage() + '\n' + e.getStackTraceString());
@@ -17,7 +19,7 @@ public with sharing class SharedSolarSystemsTest {
 
     @IsTest
     private static void testRecalculateMaximumSubscriptionCapacityIncludingSMART() {
-        SharedSolarSystems.productSelector = (ProductSelector) Test.createStub(ProductSelector.class, new MockProductSelector(false));
+        SharedSolarSystemCapacityCalculator.productSelector = (ProductSelector) Test.createStub(ProductSelector.class, new MockProductSelector(false));
         Shared_Solar_System__c smartSystem = new Shared_Solar_System__c(
             Name = 'SMART',
             Product__c = Util.getFakeId(Product2.SObjectType),
@@ -35,15 +37,17 @@ public with sharing class SharedSolarSystemsTest {
             Total_System_Size_kWh_DC__c = 100,
             Total_System_Size_kW_AC__c = 50
         );
-        List<Shared_Solar_System__c> sharedSolarSystems = new List<Shared_Solar_System__c>{smartSystem, smartSystemNoDC, nonSMARTSystem};
+        List<Shared_Solar_System__c> sharedSolarSystems = new List<Shared_Solar_System__c>{
+            smartSystem, smartSystemNoDC, nonSMARTSystem
+        };
         try {
-            new SharedSolarSystems(sharedSolarSystems).calculateMaximumSubscriptionCapacityForSMART();
+            new SharedSolarSystemCapacityCalculator().calculateMaximumSubscriptionCapacityForSMART(sharedSolarSystems);
         } catch (Exception e) {
             System.assert(false, e.getMessage() + '\n' + e.getStackTraceString());
         }
         for (Shared_Solar_System__c sss : sharedSolarSystems) {
             if (sss.Name == 'SMART') {
-                System.assertEquals(25 * (100/50), sss.Maximum_Subscription_Capacity_kWDC__c, 'Expected to set Max Capacity for SMART');
+                System.assertEquals(25 * (100 / 50), sss.Maximum_Subscription_Capacity_kWDC__c, 'Expected to set Max Capacity for SMART');
             }
             if (sss.Name == 'Dumb' || sss.Name == 'SMART No DC') {
                 System.assertEquals(null, sss.Maximum_Subscription_Capacity_kWDC__c, 'Expected to have to set Max Capacity manually');
@@ -52,10 +56,10 @@ public with sharing class SharedSolarSystemsTest {
     }
     @IsTest
     private static void testUpdateManagementRevenueStartDate() {
-        Date ptoDate = Date.newInstance(2020,1,1);
-        Date codDate = Date.newInstance(2020,1,1);
-        Date assignmentDate = Date.newInstance(2020,1,1);
-        Date billDate = Date.newInstance(2020,2,1);
+        Date ptoDate = Date.newInstance(2020, 1, 1);
+        Date codDate = Date.newInstance(2020, 1, 1);
+        Date assignmentDate = Date.newInstance(2020, 1, 1);
+        Date billDate = Date.newInstance(2020, 2, 1);
         Shared_Solar_System__c ptoSystemWithPTOTrigger = new Shared_Solar_System__c(
             Id = Util.getFakeId(Shared_Solar_System__c.SObjectType),
             Name = 'PTO System With PTO Trigger',
@@ -94,14 +98,16 @@ public with sharing class SharedSolarSystemsTest {
             systemWithNoManagementContract,
             codSystemWithCODTrigger
         };
-        SharedSolarSystems.contractFeeDetailSelector =
+        SharedSolarSystemInvoicer.contractFeeDetailSelector =
             (ContractFeeDetailSelector) Test.createStub(ContractFeeDetailSelector.class, new MockContractFeeDetailSelector(codSystemWithCODTrigger.Id));
         try {
             fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
-                new List<SObjectType>{Shared_Solar_System__c.SObjectType},
+                new List<SObjectType>{
+                    Shared_Solar_System__c.SObjectType
+                },
                 new FFLibHelperTest.MockDML()
             );
-            new SharedSolarSystems(mockSharedSolarSystems).updateManagementRevenueStartDate(uow);
+            new SharedSolarSystemInvoicer().updateManagementRevenueStartDate(uow, mockSharedSolarSystems);
         } catch (Exception e) {
             System.assert(false, e.getMessage() + '\n' + e.getStackTraceString());
         }
@@ -119,39 +125,39 @@ public with sharing class SharedSolarSystemsTest {
 
     @IsTest
     private static void testMeetsUnderwritingCriteria() {
-        SharedSolarSystems sharedSolarSystems = new SharedSolarSystems(null);
+        SharedSolarSystemQualifier sharedSolarSystemQualifier = new SharedSolarSystemQualifier();
         Shared_Solar_System__c sss = new Shared_Solar_System__c(
             Available_SMB_Underwriting_Method_FICO__c = true,
             Available_SMB_Underwriting_Method_Docs__c = true,
             Credit_Score_Requirement__c = 750,
             RiskCalc_Minimum__c = 'Ba3'
         );
-        System.assert(sharedSolarSystems.meetsUnderwritingCriteria(getLead('FICO', '800', null), sss, null),
+        System.assert(sharedSolarSystemQualifier.meetsUnderwritingCriteria(getLead('FICO', '800', null), sss, null),
             'lead with FICO of 800 should meet underwriting for a system with FICO min of 750');
-        System.assert(!sharedSolarSystems.meetsUnderwritingCriteria(getLead('FICO', '700', null), sss, null),
+        System.assert(!sharedSolarSystemQualifier.meetsUnderwritingCriteria(getLead('FICO', '700', null), sss, null),
             'lead with FICO of 800 should meet underwriting for a system with FICO min of 750');
-        System.assert(sharedSolarSystems.meetsUnderwritingCriteria(getLead('FICO', null, null), sss, 800),
+        System.assert(sharedSolarSystemQualifier.meetsUnderwritingCriteria(getLead('FICO', null, null), sss, 800),
             'lead getting a credit pull of 800 (before it\'s set on the lead) should meet underwriting for a system with FICO min of 750');
-        System.assert(!sharedSolarSystems.meetsUnderwritingCriteria(getLead('FICO', null, null), sss, 700),
+        System.assert(!sharedSolarSystemQualifier.meetsUnderwritingCriteria(getLead('FICO', null, null), sss, 700),
             'lead getting a credit pull of 700 (before it\'s set on the lead) should not meet underwriting for a system with FICO min of 750');
         sss.Available_SMB_Underwriting_Method_FICO__c = false;
-        System.assert(!sharedSolarSystems.meetsUnderwritingCriteria(getLead('FICO', '800', null), sss, null),
+        System.assert(!sharedSolarSystemQualifier.meetsUnderwritingCriteria(getLead('FICO', '800', null), sss, null),
             'lead with FICO of 800 should not meet underwriting for a system that is not available to qualify for FICO');
 
-        System.assert(sharedSolarSystems.meetsUnderwritingCriteria(getLead('Financial Review', '800', 'Aaa'), sss, null),
+        System.assert(sharedSolarSystemQualifier.meetsUnderwritingCriteria(getLead('Financial Review', '800', 'Aaa'), sss, null),
             'Finanical Review lead with a Moody\'s of Aaa should meet underwriting for a system with RiskCalc min of Ba3');
-        System.assert(sharedSolarSystems.meetsUnderwritingCriteria(getLead('Financial Review', '800', 'Ba3'), sss, null),
+        System.assert(sharedSolarSystemQualifier.meetsUnderwritingCriteria(getLead('Financial Review', '800', 'Ba3'), sss, null),
             'Finanical Review lead with a Moody\'s of Ba3 should meet underwriting for a system with RiskCalc min of Ba3');
-        System.assert(!sharedSolarSystems.meetsUnderwritingCriteria(getLead('Financial Review', '800', 'C1'), sss, null),
+        System.assert(!sharedSolarSystemQualifier.meetsUnderwritingCriteria(getLead('Financial Review', '800', 'C1'), sss, null),
             'Finanical Review lead with a Moody\'s of C1 should not meet underwriting for a system with RiskCalc min of Ba3');
         sss.Available_SMB_Underwriting_Method_Docs__c = false;
-        System.assert(!sharedSolarSystems.meetsUnderwritingCriteria(getLead('Financial Review', '800', 'Aaa'), sss, null),
+        System.assert(!sharedSolarSystemQualifier.meetsUnderwritingCriteria(getLead('Financial Review', '800', 'Aaa'), sss, null),
             'Finanical Review lead with a Moody\'s of Aaa should not meet underwriting for a system that is not available to qualify');
     }
 
-    /*************************************
-      *** MOCKS AND HELPER METHODS ***
-      *************************************/
+    /**
+     * @description MOCKS AND HELPER METHODS ***
+     **/
     public class MockProductSelector extends MockProvider {
         private Boolean returnEmpty;
         public MockProductSelector(Boolean returnEmpty) {
@@ -167,7 +173,9 @@ public with sharing class SharedSolarSystemsTest {
                             Id = Util.getFakeId(Product2.SObjectType),
                             Max_Subscription_kW_AC_for_DC_calc__c = 25
                         );
-                        return new List<Product2>{smartProduct};
+                        return new List<Product2>{
+                            smartProduct
+                        };
                     }
                 }
             }
@@ -208,7 +216,9 @@ public with sharing class SharedSolarSystemsTest {
                         Management_Fee_Trigger__c = 'Project: COD',
                         Shared_Solar_System__c = systemSpecificCFDId
                     );
-                    return new List<Contract_Fee_Detail__c>{cfdPTO, cfdCustomerAssigned, cfdFirstBilled, cfdCODForSSS};
+                    return new List<Contract_Fee_Detail__c>{
+                        cfdPTO, cfdCustomerAssigned, cfdFirstBilled, cfdCODForSSS
+                    };
                 }
             }
             return null;
@@ -225,7 +235,11 @@ public with sharing class SharedSolarSystemsTest {
 
     @TestVisible
     private static List<Partner_Shared_Solar_System_Eligibility__c> getPartnerEligibilities(Shared_Solar_System__c sharedSolarSystem, Account partnerAccount) {
-        return getPartnerEligibilities(new List<Shared_Solar_System__c>{sharedSolarSystem}, new List<Account>{partnerAccount});
+        return getPartnerEligibilities(new List<Shared_Solar_System__c>{
+            sharedSolarSystem
+        }, new List<Account>{
+            partnerAccount
+        });
     }
 
     @TestVisible
@@ -240,7 +254,7 @@ public with sharing class SharedSolarSystemsTest {
                     Shared_Solar_System__c = sss.Id,
                     Account__c = partnerAccount.Id,
                     Commission_Structure__c = commissionStructureMap.get(csKey).Id,
-                    Start_Date__c = Date.newInstance(2020,1,1)
+                    Start_Date__c = Date.newInstance(2020, 1, 1)
                 ));
             }
         }
@@ -255,7 +269,7 @@ public with sharing class SharedSolarSystemsTest {
             productIds.add(sss.Product__c);
         }
 
-        for(Account partner : partnerAccounts) {
+        for (Account partner : partnerAccounts) {
             for (Id product : productIds) {
                 String mapKey = partner.Id + '-' + product;
                 Commission_Structure__c commissionStructure = new Commission_Structure__c(
@@ -273,5 +287,5 @@ public with sharing class SharedSolarSystemsTest {
         insert commissionStructureMap.values();
         return commissionStructureMap;
     }
-    
+
 }
