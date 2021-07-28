@@ -337,7 +337,6 @@
     </relatedLists>
     <relatedLists>
         <fields>OPPORTUNITY.NAME</fields>
-        <fields>Project__c</fields>
         <fields>City__c</fields>
         <fields>OPPORTUNITY.STAGE_NAME</fields>
         <fields>OPPORTUNITY.CLOSE_DATE</fields>
