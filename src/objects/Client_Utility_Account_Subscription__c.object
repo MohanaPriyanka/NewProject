@@ -332,13 +332,7 @@ null, Utility_Account_Subscription__r.Opportunity__r.FICO__c)</formula>
     <fields>
         <fullName>Future_Share_of_System__c</fullName>
         <externalId>false</externalId>
-        <formula>IF(
- $CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true
-,
- Utility_Account_Subscription__r.Future_Share_of_System_Rollup__c
-,
- Utility_Account_Subscription__r.Future_Share_of_System__c
-)</formula>
+        <formula>Utility_Account_Subscription__r.Future_Share_of_System_Rollup__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>Customer&apos;s subscription % for next allocation schedule</inlineHelpText>
         <label>Future Share of System</label>
