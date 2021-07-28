@@ -3954,44 +3954,6 @@ window.top.location.href = urlStart + &apos;&amp;inConsole=no&amp;optType=0&apos
 }</url>
     </webLinks>
     <webLinks>
-        <fullName>Send_Text_Message</fullName>
-        <availability>online</availability>
-        <description>For LiveText</description>
-        <displayType>button</displayType>
-        <linkType>javascript</linkType>
-        <masterLabel>Send Text Message</masterLabel>
-        <openType>onClickJavaScript</openType>
-        <protected>false</protected>
-        <url>{!REQUIRESCRIPT(&apos;/soap/ajax/31.0/connection.js&apos;)};
-{!REQUIRESCRIPT(&apos;/soap/ajax/31.0/apex.js&apos;)};
-{!REQUIRESCRIPT(&apos;/support/console/31.0/integration.js&apos;)};
-
-var objectId = window.location.pathname.substring(1);
-var recordPrefix = objectId.substring(0, 3);
-var phoneInformation = JSON.parse(sforce.apex.execute(&quot;LiveText.RetrievePreferredPhoneNumber&quot;,&quot;getToPhoneInformationFromObject&quot;,{selectedObjId:objectId}));
-var phoneNumber = phoneInformation[&apos;phone&apos;];
-var oObjectId = phoneInformation[&apos;orginatingObjectId&apos;];
-var ownerId = phoneInformation[&apos;ownerId&apos;];
-var params = &apos;&amp;phone=&apos;+phoneNumber.replace(&apos;+&apos;, &apos;%2B&apos;) +&apos;&amp;oid=&apos;+objectId+&apos;&amp;conversationtype=outbound&amp;objectprefix=&apos;+recordPrefix+&apos;&amp;ownerId=&apos;+ownerId+&apos;&amp;orginatingObjectId=&apos;+oObjectId;
-var conversationSessionPrefix = &apos;/{!$ObjectType.LiveText__Conversation_Session__c}/e?cvid=null&apos;+params;
-
-if(sforce.console.isInConsole()){
-    sforce.console.openPrimaryTab(null, conversationSessionPrefix, true, &apos;{!HTMLENCODE($Label.livetext__txt_conversation)}&apos;, null);
-    var closeSubtab = function closeSubtab(result) {
-        var tabId = result.id;
-        sforce.console.closeTab(tabId);
-    };
-    sforce.console.getEnclosingTabId(closeSubtab);
-}else{
-    var query = &quot;SELECT Id FROM AppMenuItem WHERE Name=&apos;LiveText_Console&apos;&quot;;
-    sforce.connection.sessionId = &apos;{!$Api.Session_ID}&apos;;
-    var queryResult = sforce.connection.query(query);
-    var records = queryResult.getArray(&apos;records&apos;);
-    var ltId = records[0].Id;
-    window.top.location.href = &apos;https://&apos;+window.location.hostname+&apos;/console?tsid=&apos;+ltId +&apos;#&apos;+conversationSessionPrefix;
-}</url>
-    </webLinks>
-    <webLinks>
         <fullName>dsfs__Send_with_DocuSign</fullName>
         <availability>online</availability>
         <description>This button will initiate a DocuSign Envelope that is linked to the Contact</description>

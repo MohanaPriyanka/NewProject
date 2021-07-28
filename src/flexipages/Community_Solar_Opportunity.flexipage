@@ -216,7 +216,7 @@
             <componentInstance>
                 <componentInstanceProperties>
                     <name>createQuickActionName</name>
-                    <value>LiveText__NewAccount</value>
+                    <value>Account</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>lookupFieldName</name>
