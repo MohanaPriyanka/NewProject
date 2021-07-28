@@ -79,7 +79,7 @@ public without sharing class MarketingJourneyEnrollerTest {
     }
 
     /*  MOCKS */
-    private class MarketingJourneyEnrollerSuccess implements HttpCalloutMock {
+    public class MarketingJourneyEnrollerSuccess implements HttpCalloutMock {
         public HttpResponse respond(HttpRequest request) {
             HttpResponse httpResponse;
             if (request.getEndpoint() == 'callout:MarketingCloudOAuth') {
@@ -91,7 +91,7 @@ public without sharing class MarketingJourneyEnrollerTest {
         }
     }
 
-    private class MarketingJourneyEnrollerFailure implements HttpCalloutMock {
+    public class MarketingJourneyEnrollerFailure implements HttpCalloutMock {
         public HttpResponse respond(HttpRequest request) {
             HttpResponse httpResponse;
             if (request.getEndpoint() == 'callout:MarketingCloudOAuth') {
