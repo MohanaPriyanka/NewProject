@@ -64,30 +64,8 @@ public class ZuoraGLServiceTest {
         System.assert(dataQueriesQueued[0].Query__c.contains('FROM AccountingPeriod'), 'Expected the first query to be FROM AccountingPeriod');
         System.assertEquals('completed', dataQueriesQueued[0].Status__c, 'Expected the first query to be finished');
         System.assertEquals(null, dataQueriesQueued[1].Status__c, 'And the next query to be incomplete');
-        System.assertEquals(ZuoraGLSelector.getInvoiceItems(startDate, endDate), dataQueriesQueued[1].Query__c);
+        System.assertEquals(ZuoraGLSelector.getInvoiceItems(startDate, Date.newInstance(2016,7,2)), dataQueriesQueued[1].Query__c);
 
-    }
-
-    @IsTest
-    private static void testSchedule() {
-        test.startTest();
-        ZuoraGLService scheduledJob = new ZuoraGLService();
-        scheduledJob.daysToLookBack = 5;
-        Datetime dt = Datetime.now();
-        String cronExpress = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
-        String jobId = System.schedule('ZuoraGLQuery',cronExpress,scheduledJob);
-        test.stopTest();
-
-        CronTrigger ct = [
-            SELECT Id, CronExpression, TimesTriggered, NextFireTime
-            FROM CronTrigger
-            WHERE Id = : jobId
-        ];
-
-        System.assertEquals(dt.minute(), ct.NextFireTime.minute());
-        System.assertEquals(dt.hour(), ct.NextFireTime.hour());
-        System.assertEquals(dt.day(), ct.NextFireTime.day());
-        System.assertEquals(dt.month(), ct.NextFireTime.month());
     }
 
     @IsTest
@@ -105,9 +83,10 @@ public class ZuoraGLServiceTest {
 
         ZuoraDataQueryService.ProcessingParameter methodToRunAfter = new ZuoraDataQueryService.ProcessingParameter();
         methodToRunAfter.className = 'ZuoraGLService';
-        methodToRunAfter.methodName = 'InvoiceItem';
+        methodToRunAfter.methodName = 'InvoiceItem_First_Half';
         Map<String,Date> optionalDates = new Map<String,Date>();
         optionalDates.put('PeriodCloseDate',Date.newInstance(2016,01,01));
+        optionalDates.put('Halfway',Date.newInstance(2016,07,02));
         methodToRunAfter.optionalDates = optionalDates;
 
         Zuora_Data_Query__c zuoraDataQuery = new Zuora_Data_Query__c(
@@ -254,6 +233,7 @@ public class ZuoraGLServiceTest {
         methodToRunAfter.methodName = 'PaymentPart_DM';
         Map<String,Date> optionalDates = new Map<String,Date>();
         optionalDates.put('PeriodCloseDate',Date.newInstance(2016,01,01));
+        optionalDates.put('Halfway',Date.newInstance(2016,07,02));
         methodToRunAfter.optionalDates = optionalDates;
 
         Zuora_Data_Query__c zuoraDataQuery = new Zuora_Data_Query__c(
@@ -331,9 +311,10 @@ public class ZuoraGLServiceTest {
 
         ZuoraDataQueryService.ProcessingParameter methodToRunAfter = new ZuoraDataQueryService.ProcessingParameter();
         methodToRunAfter.className = 'ZuoraGLService';
-        methodToRunAfter.methodName = 'PaymentPart_IV';
+        methodToRunAfter.methodName = 'PaymentPart_IV_First_Half';
         Map<String,Date> optionalDates = new Map<String,Date>();
         optionalDates.put('PeriodCloseDate',Date.newInstance(2016,01,01));
+        optionalDates.put('Halfway',Date.newInstance(2016,07,02));
         methodToRunAfter.optionalDates = optionalDates;
 
         Zuora_Data_Query__c zuoraDataQuery = new Zuora_Data_Query__c(
