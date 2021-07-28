@@ -39,7 +39,7 @@ public inherited sharing class UtilityDataRequestSelector {
             SELECT Lead_Lookup__c
             FROM Case
             WHERE Lead_Lookup__c IN :leadIdToUdrId.keySet()
-            AND QC_Case_Subject__c = 'Upload Complete Utility Bill to Case - Need More Pages'
+            AND QC_Case_Subject__c =: CaseFactory.ediErrorQCSubject
             AND IsClosed = FALSE
         ];
         for (Case c : openCasesForEDIErrors) {

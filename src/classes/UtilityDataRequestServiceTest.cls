@@ -793,7 +793,6 @@ private class UtilityDataRequestServiceTest {
         update udr; // trigger UtilityDataRequestTrigger -> udrService.openErrorCasesIfEncountered();
         Test.stopTest();
         List<Case> cases = [SELECT Id, QC_Case_Subject__c, Subject, Description FROM Case];
-        System.debug([SELECT Message__c FROM Error_Log__c]);
         System.assertEquals(1, cases.size(), 'One case should have been inserted when UDR was marked as ERROR');
     }
 

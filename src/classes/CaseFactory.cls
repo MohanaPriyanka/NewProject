@@ -4,22 +4,14 @@
  */
 public without sharing class CaseFactory implements Queueable {
 
-    /* INSTANCE VARS */
+    public static String ediErrorQCSubject = 'Upload Complete Utility Bill to Case - Need More Pages';
+    private Map<Object, SObject> recordTypeMap;
+    private Map<Object, SObject> groupMap;
     public Set<Id> erroredUtilityDataRequestIds;
     private String queueType;
     private Lead lead;
     private List<Utility_Data_Request__c> utilityDataRequests;
     private Set<Id> utilityDataRequestsWithOpenErrorCases;
-    private RecordType customerCare;
-    private RecordType productSupport;
-    private RecordType partnerCareCase;
-    private OrgWideEmailAddress customerCareEmail;
-    private Group customerCareQueue;
-    private Group productQueue;
-    private Group collectionsQueue;
-    private Group dataOpsQueue;
-    private Group customerQCQueue;
-    private Group partnerSupportQueue;
     private Case newCase;
     private Map<String, EDI_Error_Mapping__mdt> ediErrorMappings;
     @TestVisible private UtilityDataRequestSelector udrSelector = new UtilityDataRequestSelector();
@@ -67,20 +59,6 @@ public without sharing class CaseFactory implements Queueable {
         this.queueType = queueType;
     }
 
-    public void assignTypes(List<RecordType> typeList) {
-        for (RecordType type : typeList) {
-            switch on type.DeveloperName {
-                when 'Product_Support' {
-                    productSupport = type;
-                } when 'Customer_Care' {
-                    customerCare = type;
-                } when 'Partner_Care_Case' {
-                    partnerCareCase = type;
-                }
-            }
-        }
-    }
-
     /**
      * @description This method creates a new case and sets defaults for owner, record type id, and record type
      * @param type The desired record type of the case.
@@ -90,31 +68,25 @@ public without sharing class CaseFactory implements Queueable {
         newCase = new Case();
         switch on type {
             when 'Product_Support' {
-                newCase.RecordTypeId = productSupport.Id;
-                newCase.RecordType = productSupport;
-                newCase.OwnerId = productQueue.Id;
+                newCase.RecordTypeId = recordTypeMap.get('Product_Support').Id;
+                newCase.OwnerId = groupMap.get('Product_Support').Id;
             } when 'Customer_Care' {
-                newCase.RecordTypeId = customerCare.Id;
-                newCase.RecordType = customerCare;
-                newCase.OwnerId = customerCareQueue.Id;
+                newCase.RecordTypeId = recordTypeMap.get('Customer_Care').Id;
+                newCase.OwnerId = groupMap.get('Customer_Care').Id;
             } when 'Collections' {
                 // Collections uses the customer care record type
-                newCase.RecordTypeId = customerCare.Id;
-                newCase.RecordType = customerCare;
-                newCase.OwnerId = collectionsQueue.Id;
+                newCase.RecordTypeId = recordTypeMap.get('Customer_Care').Id;
+                newCase.OwnerId = groupMap.get('Collections').Id;
             } when 'Customer_QC' {
-                newCase.RecordTypeId = customerCare.Id;
-                newCase.RecordType = customerCare;
-                newCase.OwnerId = customerQCQueue.Id;
+                newCase.RecordTypeId = recordTypeMap.get('Customer_Care').Id;
+                newCase.OwnerId = groupMap.get('Customer_QC').Id;
             } when 'Data_Ops' {
                 // Data Ops uses the customer care record type
-                newCase.RecordTypeId = customerCare.Id;
-                newCase.RecordType = customerCare;
-                newCase.OwnerId = dataOpsQueue.Id;
+                newCase.RecordTypeId = recordTypeMap.get('Customer_Care').Id;
+                newCase.OwnerId = groupMap.get('Data_Ops').Id;
             } when 'Partner_Care_Case' {
-                newCase.RecordTypeId = partnerCareCase.Id;
-                newCase.RecordType = partnerCareCase;
-                newCase.OwnerId = partnerSupportQueue.Id;
+                newCase.RecordTypeId = recordTypeMap.get('Partner_Care_Case').Id;
+                newCase.OwnerId = groupMap.get('Partner_Support').Id;
             }
         }
         return newCase;
@@ -122,49 +94,19 @@ public without sharing class CaseFactory implements Queueable {
 
     @SuppressWarnings('PMD.ApexCRUDViolation')
     private void queryForRecordTypesAndQueues() {
-        if (customerCare == null || productSupport == null) {
-            List<RecordType> caseRecordTypes = [
-                SELECT Id, Name, DeveloperName
-                FROM RecordType
-                WHERE SobjectType = 'Case'
-                AND (DeveloperName = 'Product_Support' OR DeveloperName = 'Customer_Care' OR DeveloperName = 'Partner_Care_Case')
-                ORDER BY DeveloperName
-            ];
+        List<RecordType> caseRecordTypes = [
+            SELECT Id, Name, DeveloperName
+            FROM RecordType
+            WHERE SobjectType = 'Case'
+        ];
+        recordTypeMap = CollectionUtil.mapByField(caseRecordTypes, RecordType.DeveloperName);
 
-            if (caseRecordTypes.size() != 3) {
-                Logger.logNow('CaseFactory', 'constructor', 'Missing RecordType for case. Available RecordTypes: ' + caseRecordTypes);
-            } else {
-                assignTypes(caseRecordTypes);
-            }
-        }
-        if (customerCareEmail == null) {
-            customerCareEmail = [
-                SELECT Id, Address
-                FROM OrgWideEmailAddress
-                WHERE Address = 'customercare@bluewavesolar.com'
-                LIMIT 1
-            ];
-        }
-        if (collectionsQueue == null || customerCareQueue == null || productQueue == null || customerQCQueue == null) {
-            List<Group> assignmentGroups = [
-                SELECT Id, DeveloperName
-                FROM Group
-                WHERE Type = 'Queue'
-                AND (DeveloperName = 'Collections' OR DeveloperName = 'Customer_Care' OR DeveloperName = 'Customer_QC'
-                OR DeveloperName = 'Data_Ops' OR DeveloperName = 'Product_Support' OR DeveloperName = 'Partner_Support')
-                ORDER BY DeveloperName
-            ];
-            if (assignmentGroups.size() != 6) {
-                Logger.logNow('CaseFactory', 'constructor', 'Missing Groups for assignment. Available Groups: ' + assignmentGroups);
-            } else {
-                collectionsQueue = assignmentGroups[0];
-                customerCareQueue = assignmentGroups[1];
-                customerQCQueue = assignmentGroups[2];
-                dataOpsQueue = assignmentGroups[3];
-                partnerSupportQueue = assignmentGroups[4];
-                productQueue = assignmentGroups[5];
-            }
-        }
+        List<Group> assignmentGroups = [
+            SELECT Id, DeveloperName
+            FROM Group
+            WHERE Type = 'Queue'
+        ];
+        groupMap = CollectionUtil.mapByField(assignmentGroups, Group.DeveloperName);
     }
 
     /**
@@ -245,7 +187,7 @@ public without sharing class CaseFactory implements Queueable {
         EDI_Error_Mapping__mdt errorDetail = ediErrorMappings.get(udr.Exception_Reason_Code__c);
         Case ediErrorCase = getCase('Customer_QC');
         ediErrorCase.Lead_Lookup__c = udr.Utility_Account_Log__r.Lead__c;
-        ediErrorCase.QC_Case_Subject__c = 'Upload Complete Utility Bill to Case - Need More Pages';
+        ediErrorCase.QC_Case_Subject__c = ediErrorQCSubject;
         ediErrorCase.Product_Line__c = 'Community Solar';
         ediErrorCase.AccountId = udr.Utility_Account_Log__r.Lead__r.Partner_Account__c;
         ediErrorCase.ContactId = udr.Utility_Account_Log__r.Lead__r.Sales_Person__c;
