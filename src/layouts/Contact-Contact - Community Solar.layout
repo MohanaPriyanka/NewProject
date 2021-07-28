@@ -4,12 +4,13 @@
     <customButtons>LASER_Credit_Access_Custom</customButtons>
     <customButtons>Opt_out_for_Text_Messages</customButtons>
     <customButtons>Opt_in_for_Text_Messages</customButtons>
-    <customButtons>Send_Text_Message</customButtons>
     <excludeButtons>Clone</excludeButtons>
+    <excludeButtons>DataDotComClean</excludeButtons>
     <excludeButtons>DisableCustomerPortal</excludeButtons>
     <excludeButtons>DisablePartnerPortal</excludeButtons>
     <excludeButtons>DisablePrmSuperUser</excludeButtons>
     <excludeButtons>EnablePrmSuperUser</excludeButtons>
+    <excludeButtons>RequestUseSfdc</excludeButtons>
     <excludeButtons>Share</excludeButtons>
     <excludeButtons>Submit</excludeButtons>
     <layoutSections>
@@ -374,17 +375,6 @@
         <fields>ACCOUNT.ADDRESS1_CITY</fields>
         <fields>ACCOUNT.PHONE1</fields>
         <relatedList>Account.Send_Bills_Contact__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <fields>printsf__Order__c</fields>
-        <fields>printsf__Ordered_For__c</fields>
-        <fields>printsf__Lead__c</fields>
-        <fields>printsf__Date_Submitted__c</fields>
-        <fields>printsf__Date_Completed__c</fields>
-        <fields>printsf__Order_Status__c</fields>
-        <fields>printsf__TrackLink__c</fields>
-        <relatedList>printsf__Collateral_Send_History__c.printsf__Contact__c</relatedList>
     </relatedLists>
     <relatedLists>
         <fields>ACTIVITY.SUBJECT</fields>
