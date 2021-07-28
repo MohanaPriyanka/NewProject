@@ -34,7 +34,7 @@ public without sharing class SharedSolarSystemQualifier {
         // none qualify, they have been unqualified for a different reason
         for (Shared_Solar_System__c sss : records) {
             if (sss.Available_SMB_Underwriting_Method_FICO__c &&
-                qualifiedForSystemIgnoringUnderwriting(lead, sss, creditScore)) {
+                qualifiedForSystemSkipingFICO(lead, sss, creditScore)) {
                 CSQualificationService.handleLeadUnqualifiedDueToFICO(lead);
                 return 'Unqualified';
             }
@@ -72,20 +72,22 @@ public without sharing class SharedSolarSystemQualifier {
 
     @TestVisible
     private Boolean qualifiedForSystem(Lead lead, Shared_Solar_System__c sss, Decimal creditScore) {
-        return qualifiedForSystem(lead, sss, creditScore, true);
-    }
-
-    private Boolean qualifiedForSystemIgnoringUnderwriting(Lead lead, Shared_Solar_System__c sss, Decimal creditScore) {
         return qualifiedForSystem(lead, sss, creditScore, false);
     }
 
-    private Boolean qualifiedForSystem(Lead lead, Shared_Solar_System__c sss, Decimal creditScore, Boolean includeUnderwriting) {
+    private Boolean qualifiedForSystemSkipingFICO(Lead lead, Shared_Solar_System__c sss, Decimal creditScore) {
+        return qualifiedForSystem(lead, sss, creditScore, true);
+    }
+
+    private Boolean qualifiedForSystem(Lead lead, Shared_Solar_System__c sss, Decimal creditScore, Boolean skipFICOCheck) {
         Boolean utilityMatch = sss.Utility__c == lead.Utility_relationship__c;
         Boolean lzInServiceTerritory = loadZoneInServiceTerritory(lead.LoadZone__c, sss);
         Boolean isPartnerEligible = isPartnerEligible(lead.Partner_Lookup__c, sss);
         Boolean productMatch = matchesProduct(lead, sss);
-        Boolean meetsUnderwritingCriteria = true;
-        if (includeUnderwriting) {
+        Boolean meetsUnderwritingCriteria;
+        if (skipFICOCheck && lead.Underwriting_Criteria__c == 'FICO') {
+            meetsUnderwritingCriteria = true;
+        } else {
             meetsUnderwritingCriteria = meetsUnderwritingCriteria(lead, sss, creditScore);
         }
         Boolean paymentMatch = meetsPaymentCriteria(lead, sss);
