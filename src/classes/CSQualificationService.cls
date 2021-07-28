@@ -1,5 +1,5 @@
 /**
- * Created by SarahRenfro on 5/22/2019.
+ * @description Created by SarahRenfro on 5/22/2019.
  * Tested by: CSQualificationTestclass
  */
 @SuppressWarnings('PMD.ApexCRUDViolation')
@@ -8,8 +8,8 @@ public without sharing class CSQualificationService {
     private static CreditReportSelector creditReportSelector = new CreditReportSelector();
     private static Map<Id, Lead> leadMap = new Map<Id, Lead>();
 
-    @TestVisible private  fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
-        new List<Schema.SObjectType> {
+    @TestVisible private fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
+        new List<Schema.SObjectType>{
             LASERCA__Personal_Credit_Report__c.SObjectType,
             Lead.SObjectType
         }
@@ -42,7 +42,7 @@ public without sharing class CSQualificationService {
      * @param triggerNewMap LASERCA__Credit_Report_Log__c Trigger.NEW
      * @param triggerOldMap LASERCA__Credit_Report_Log__c Trigger.OLD
      */
-    public void checkCreditReportLog(Map<Id,LASERCA__Credit_Report_Log__c> triggerNewMap, Map<Id,LASERCA__Credit_Report_Log__c> triggerOldMap) {
+    public void checkCreditReportLog(Map<Id, LASERCA__Credit_Report_Log__c> triggerNewMap, Map<Id, LASERCA__Credit_Report_Log__c> triggerOldMap) {
         Set<Id> pcrIds = new Set<Id>();
         List<LASERCA__Credit_Report_Log__c> errorCRLs = new List<LASERCA__Credit_Report_Log__c>();
         List<String> leadIds = new List<String>();
@@ -55,7 +55,7 @@ public without sharing class CSQualificationService {
             }
         }
         leadMap = new LeadSelector().getLeadMap(leadIds);
-        if (errorCRLs.size() > 0 ) {
+        if (errorCRLs.size() > 0) {
             handleErrorCRL(errorCRLs[0]);
         }
         List<LASERCA__Personal_Credit_Report__c> completedPCRs = creditReportSelector.getCompletedPCRs(pcrIds);
@@ -75,7 +75,6 @@ public without sharing class CSQualificationService {
     /**
      * @description If a Credit Report is returned with Status = ERROR, we create a blank PCR to be used in
      * underwriting. The blank PCR will be populated with a score of 9999, resulting in a case to resolve
-     *
      * @param errorCRL CRL with Status = Error
      */
     private void handleErrorCRL(LASERCA__Credit_Report_Log__c errorCRL) {
@@ -87,13 +86,14 @@ public without sharing class CSQualificationService {
         Lead lead = leadMap.get(errorCRL.LASERCA__Lead__c);
         lead.Personal_Credit_Report__c = pcr.Id;
         uow.registerDirty(lead);
-        underwriteLeadWithFICO(new List<LASERCA__Personal_Credit_Report__c>{pcr});
+        underwriteLeadWithFICO(new List<LASERCA__Personal_Credit_Report__c>{
+            pcr
+        });
     }
 
     /**
      * @description Reads the PCR for a lead and runs qualification logic based off credit score.
      * If credit score is a real score, close all related FICO Cases.
-     *
      * @param pcrs Personal Credit Reports to be evaluated
      */
     private void underwriteLeadWithFICO(List<LASERCA__Personal_Credit_Report__c> pcrs) {
@@ -146,7 +146,6 @@ public without sharing class CSQualificationService {
     /**
      * @description If score is missing, populates PCR with 9999 to be resolved later. Creates a case to resolve
      * missing credit score for completed applications.
-     *
      * @param noMatchPCR Personal Credit Report missing a credit score
      * @param lead Lead related to the PCR
      */
@@ -160,7 +159,7 @@ public without sharing class CSQualificationService {
     }
 
     private void createNoMatchFICOCase(Lead lead) {
-        CaseFactory noMatchFactory  = new CaseFactory();
+        CaseFactory noMatchFactory = new CaseFactory();
         noMatchFactory.setLead(lead);
         noMatchFactory.setQueueType('No FICO Match');
         System.enqueueJob(noMatchFactory);
@@ -170,11 +169,10 @@ public without sharing class CSQualificationService {
      * @description If after running qualification logic (SharedSolarSystems) the lead's credit score does not meet
      * any of the open project's credit minimum, the Lead should be flagged as "Unqualified due to FICO" and have an
      * Adverse Credit Notice email sent automatically
-     *
      * @param lead Lead that is unqualified due to FICO
      */
     public static void handleLeadUnqualifiedDueToFICO(Lead lead) {
-        if (!lead.Unqualified_due_to_FICO__c){
+        if (!lead.Unqualified_due_to_FICO__c) {
             lead.Unqualified_due_to_FICO__c = true;
             sendAdverseCreditNotice(lead);
         }
@@ -183,8 +181,10 @@ public without sharing class CSQualificationService {
     public static void sendAdverseCreditNotice(Lead lead) {
         MessagingService.EmailEnvelope ee = new MessagingService.EmailEnvelope();
         ee.emailTemplateName = 'CS_Customer_Credit_Denied';
-        ee.orgWideEmail =  MessagingService.getCustomerCareEmail().Address;
-        ee.addressList = new List<String>{lead.Email};
+        ee.orgWideEmail = MessagingService.getCustomerCareEmail().Address;
+        ee.addressList = new List<String>{
+            lead.Email
+        };
         ee.subjectLine = 'Your BlueWave Community Solar Application Has Been Denied';
         ee.sobjectId = lead.Id;
         MessagingService.ReplacementText leadName = new MessagingService.ReplacementText('{!Lead.FirstName}', lead.Name);
@@ -194,19 +194,25 @@ public without sharing class CSQualificationService {
         MessagingService.ReplacementText detail2 = new MessagingService.ReplacementText('{!Lead.Credit_Report_Detail_2__c}', lead.Credit_Report_Detail_2__c);
         MessagingService.ReplacementText detail3 = new MessagingService.ReplacementText('{!Lead.Credit_Report_Detail_3__c}', lead.Credit_Report_Detail_3__c);
         MessagingService.ReplacementText detail4 = new MessagingService.ReplacementText('{!Lead.Credit_Report_Detail_4__c}', lead.Credit_Report_Detail_4__c);
-        ee.replacementTexts = new List<MessagingService.ReplacementText>{leadName, creditDate, creditScore, detail1, detail2, detail3, detail4 };
+        ee.replacementTexts = new List<MessagingService.ReplacementText>{
+            leadName, creditDate, creditScore, detail1, detail2, detail3, detail4
+        };
         MessagingService.sendEmailTemplate(ee);
     }
 
     public static void sendGenericUnqualifiedNotice(Lead lead) {
         MessagingService.EmailEnvelope ee = new MessagingService.EmailEnvelope();
         ee.emailTemplateName = 'Credit Denied - No FICO product';
-        ee.orgWideEmail =  MessagingService.getCustomerCareEmail().Address;
-        ee.addressList = new List<String>{lead.Email};
+        ee.orgWideEmail = MessagingService.getCustomerCareEmail().Address;
+        ee.addressList = new List<String>{
+            lead.Email
+        };
         ee.subjectLine = 'Sorry, we were unable to approve your application';
         ee.sobjectId = lead.Id;
         MessagingService.ReplacementText leadName = new MessagingService.ReplacementText('{!Lead.FirstName}', lead.FirstName);
-        ee.replacementTexts = new List<MessagingService.ReplacementText>{leadName};
+        ee.replacementTexts = new List<MessagingService.ReplacementText>{
+            leadName
+        };
         MessagingService.sendEmailTemplate(ee);
     }
 
@@ -223,7 +229,7 @@ public without sharing class CSQualificationService {
     }
 
     public class QualificationInput {
-        public  List<QualificationMatch> qualificationMatches = new List<QualificationMatch>();
+        public List<QualificationMatch> qualificationMatches = new List<QualificationMatch>();
         private List<Id> utilityIds = new List<Id>();
         private Lead lead;
         private String loadZone;
@@ -281,17 +287,17 @@ public without sharing class CSQualificationService {
                     matchResult.hasCapacity = true;
                 }
 
-                matchResult.hasLZ = SharedSolarSystems.loadZoneInServiceTerritory(this.loadZone, sss);
-                matchResult.hasPartner = SharedSolarSystems.isPartnerEligible(partnerId, sss);
+                matchResult.hasLZ = SharedSolarSystemQualifier.loadZoneInServiceTerritory(this.loadZone, sss);
+                matchResult.hasPartner = SharedSolarSystemQualifier.isPartnerEligible(partnerId, sss);
                 matchResult.eligiblePartners = summarizeEligiblePartners(sss.Partner_Shared_Solar_System_Accesses__r);
                 matchResult.underwritingOptions = summarizeUnderwritingOptions(sss);
 
-                Boolean meetsPaymentCriteria = (this.lead == null ? true : SharedSolarSystems.meetsPaymentCriteria(this.lead, sss));
+                Boolean meetsPaymentCriteria = (this.lead == null ? true : SharedSolarSystemQualifier.meetsPaymentCriteria(this.lead, sss));
                 Boolean meetsUnderwritingCriteria;
 
                 switch on (this.underwriting) {
                     when 'FICO' {
-                        meetsUnderwritingCriteria= sss.Available_SMB_Underwriting_Method_FICO__c && this.fico >= sss.Credit_Score_Requirement__c;
+                        meetsUnderwritingCriteria = sss.Available_SMB_Underwriting_Method_FICO__c && this.fico >= sss.Credit_Score_Requirement__c;
                     } when 'Financial Review' {
                         meetsUnderwritingCriteria = sss.Available_SMB_Underwriting_Method_Docs__c;
                     } when else {
@@ -335,10 +341,10 @@ public without sharing class CSQualificationService {
     }
 
     /**
-    * @description Returns a semi-colon delimited list of partners from the list of Partner SSS Eligibility records
-    * @param partnerEligibilities List of eligibility records to summarize
-    * @return Summary
-    */
+     * @description Returns a semi-colon delimited list of partners from the list of Partner SSS Eligibility records
+     * @param partnerEligibilities List of eligibility records to summarize
+     * @return Summary
+     */
     private static String summarizeEligiblePartners(List<Partner_Shared_Solar_System_Eligibility__c> partnerEligibilities) {
         String eligiblePartners = '';
         for (Partner_Shared_Solar_System_Eligibility__c eligibility : partnerEligibilities) {

@@ -1,5 +1,5 @@
 /**
- * Created by SarahRenfro on 5/22/2019.
+ * @description Created by SarahRenfro on 5/22/2019.
  */
 @IsTest
 public class CSQualificationTestclass {
@@ -62,8 +62,13 @@ public class CSQualificationTestclass {
             Number_of_Decimal_Places__c = 2,
             EIA_ID__c = '5678'
         );
+        Utility__c rge = new Utility__c(
+            Name = 'Rochester Gas and Electric',
+            Number_of_Decimal_Places__c = 2,
+            EIA_ID__c = '2468'
+        );
         insert new List<Utility__c>{
-            nyseg, central
+            nyseg, central, rge
         };
 
         Load_U__c loadZone = new Load_U__c (
@@ -75,22 +80,25 @@ public class CSQualificationTestclass {
             Name = '56789',
             LZ__c = 'Mohawk Valley'
         );
+        Load_U__c loadZone3 = new Load_U__c(
+            Name = '24680',
+            LZ__c = 'Upstate'
+        );
         insert new List<Load_U__c>{
-            loadZone, loadZone2
+            loadZone, loadZone2, loadZone3
         };
 
         ZipCode_Utility_Junction__c junction1 = new ZipCode_Utility_Junction__c(
             Load_Zone_Utility__c = loadZone.Id,
             Utility__c = nyseg.Id
         );
-
         ZipCode_Utility_Junction__c junction2 = new ZipCode_Utility_Junction__c(
-            Load_Zone_Utility__c = loadZone.Id,
+            Load_Zone_Utility__c = loadZone2.Id,
             Utility__c = central.Id
         );
         ZipCode_Utility_Junction__c junction3 = new ZipCode_Utility_Junction__c(
-            Load_Zone_Utility__c = loadZone2.Id,
-            Utility__c = central.Id
+            Load_Zone_Utility__c = loadZone3.Id,
+            Utility__c = rge.Id
         );
 
         insert new List<ZipCode_Utility_Junction__c>{
@@ -118,7 +126,10 @@ public class CSQualificationTestclass {
             Available_SMB_Underwriting_Method_Docs__c = true,
             RiskCalc_Minimum__c = 'C'
         );
-        insert sss1;
+        Shared_Solar_System__c sssWithLowCreditRequirement = sss1.clone();
+        sssWithLowCreditRequirement.Credit_Score_Requirement__c = 100;
+        sssWithLowCreditRequirement.Utility__c = central.Id;
+        insert new List<Shared_Solar_System__c>{sss1, sssWithLowCreditRequirement};
         insert SharedSolarSystemsTest.getPartnerEligibilities(sss1, partnerAccount);
 
         Lead resiLead = new Lead(
@@ -162,7 +173,7 @@ public class CSQualificationTestclass {
         pullCreditForLead(lead.Id, 'High FICO');
         Lead checkLead = [
             SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c,
-                Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, Moody_s_Risk_Calc__c 
+                Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, Moody_s_Risk_Calc__c
             FROM Lead
             WHERE Id = :lead.Id
         ];
@@ -174,6 +185,39 @@ public class CSQualificationTestclass {
     @IsTest
     public static void testUnqualifiedLead() {
         Lead lead = [SELECT Id FROM Lead LIMIT 1];
+        Utility__c central = [SELECT Id FROM Utility__c WHERE Name = 'Rochester Gas and Electric' LIMIT 1];
+
+        lead.Utility_relationship__c = central.Id;
+        update lead;
+
+        pullCreditForLead(lead.Id, 'High FICO');
+
+        Lead checkLead = [
+            SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c,
+                Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, Moody_s_Risk_Calc__c, Unqualified_due_to_FICO__c
+            FROM Lead
+            WHERE Id = :lead.Id
+        ];
+        System.assertEquals('Unqualified', checkLead.Status, 'Lead status should be unqualified');
+        System.assertNotEquals(null, checkLead.Personal_Credit_Report__c, 'Lead should have an attached personal credit report');
+        System.assertEquals('700', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, 'Credit score on lead personal credit report should be 700');
+        System.assertEquals(false, checkLead.Unqualified_due_to_FICO__c, 'Lead should not be unqualified due to FICO');
+    }
+
+    @IsTest
+    public static void testUnqualifiedLeadDueToNoOpenSystems() {
+        List<Shared_Solar_System__c> sharedSolarSystems = [
+            SELECT Id
+            FROM Shared_Solar_System__c
+            WHERE Open__c = TRUE
+        ];
+        // With all systems closed, leads should be be unqualified due to FICO
+        for (Shared_Solar_System__c sharedSolarSystem : sharedSolarSystems) {
+            sharedSolarSystem.Open__c = false;
+        }
+        update sharedSolarSystems;
+
+        Lead lead = [SELECT Id FROM Lead LIMIT 1];
         Utility__c central = [SELECT Id FROM Utility__c WHERE Name = 'Central Hudson Gas and Electric' LIMIT 1];
 
         lead.Utility_relationship__c = central.Id;
@@ -183,13 +227,12 @@ public class CSQualificationTestclass {
 
         Lead checkLead = [
             SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c,
-                Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, Moody_s_Risk_Calc__c
+                Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, Moody_s_Risk_Calc__c, Unqualified_due_to_FICO__c
             FROM Lead
             WHERE Id = :lead.Id
         ];
         System.assertEquals('Unqualified', checkLead.Status, 'Lead status should be unqualified');
-        System.assertNotEquals(null, checkLead.Personal_Credit_Report__c, 'Lead should have an attached personal credit report');
-        System.assertEquals('700', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, 'Credit score on lead personal credit report should be 700');
+        System.assertEquals(false, checkLead.Unqualified_due_to_FICO__c, 'Lead should not be unqualified due to FICO');
     }
 
     @IsTest
@@ -216,39 +259,15 @@ public class CSQualificationTestclass {
     }
 
     @IsTest
-    public static void testNoPCRMatchCSAPLead() {
-        Lead lead = [SELECT Id FROM Lead LIMIT 1];
-        lead.LeadSource = 'CSAP';
-        update lead;
-
-        Test.startTest();
-        pullCreditForLead(lead.Id, 'No Match');
-        Test.stopTest();
-
-        Lead checkLead = [
-            SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c,
-                Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, Moody_s_Risk_Calc__c
-            FROM Lead
-            WHERE Id = :lead.Id
-        ];
-
-        System.assertEquals('Qualified', checkLead.Status, 'Lead status should be Qualified');
-        System.assertNotEquals(null, checkLead.Personal_Credit_Report__c, 'Lead should have an attached personal credit report');
-        System.assertEquals('9999', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, 'Credit score on lead personal credit report should be 9999');
-        System.assertEquals(1, new CaseSelector().selectOpenNoMatchCasesFromLead(lead).size(), '9999 credit score ' +
-            'implies no match, therefore a no match case should be created.');
-    }
-
-    @IsTest
     public static void testLowFico() {
         Lead lead = [SELECT Id, Name FROM Lead LIMIT 1];
 
         Test.startTest();
-            pullCreditForLead(lead.Id, 'Low FICO');
+        pullCreditForLead(lead.Id, 'Low FICO');
         Test.stopTest();
 
         Lead checkLead = [
-            SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c, Moody_s_Risk_Calc__c, 
+            SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c, Moody_s_Risk_Calc__c,
                 Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, Personal_Credit_Report__r.Approval_Status__c,
                 Unqualified_due_to_FICO__c
             FROM Lead
@@ -309,8 +328,8 @@ public class CSQualificationTestclass {
     private static void testQualifyLead() {
         // Test Financial Review qualification without associated Fin Doc records
         Lead lead = [
-            SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Product__c, 
-            	Moody_s_Risk_Calc__c
+            SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Product__c,
+                Moody_s_Risk_Calc__c
             FROM Lead
             LIMIT 1
         ];
@@ -327,7 +346,7 @@ public class CSQualificationTestclass {
         insert fud;
         lead = [
             SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Underwriting_Criteria__c,
-            	Moody_s_Risk_Calc__c, Product__c, (SELECT Id FROM Underwrite_Financial_Documents__r)
+                Moody_s_Risk_Calc__c, Product__c, (SELECT Id FROM Underwrite_Financial_Documents__r)
             FROM Lead
             WHERE Id = :lead.Id
         ];
@@ -354,9 +373,8 @@ public class CSQualificationTestclass {
         );
         insert cdl;
         lead = [
-            SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Product__c, 
-            	Moody_s_Risk_Calc__c, Underwriting_Criteria__c, No_Payment__c,
-            (SELECT Id FROM Underwrite_Financial_Documents__r)
+            SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Product__c,
+                Moody_s_Risk_Calc__c, Underwriting_Criteria__c, No_Payment__c, (SELECT Id FROM Underwrite_Financial_Documents__r)
             FROM Lead
             WHERE Id = :lead.Id
         ];
@@ -365,13 +383,12 @@ public class CSQualificationTestclass {
             'Financial Underwriting Document record has files attached and there is a matching SSS.');
 
         // Test 'None' underwriting criteria, but where there is also no matching SSS for qualification
-        Utility__c newUtility = [SELECT Id FROM Utility__c WHERE Name = 'Central Hudson Gas and Electric' LIMIT 1];
+        Utility__c newUtility = [SELECT Id FROM Utility__c WHERE Name = 'Rochester Gas and Electric' LIMIT 1];
         lead.Utility_relationship__c = newUtility.Id;
         update lead;
         lead = [
-            SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Moody_s_Risk_Calc__c, 
-            	Underwriting_Criteria__c,Product__c, No_Payment__c, Email, FirstName,
-            (SELECT Id FROM Underwrite_Financial_Documents__r)
+            SELECT Id, Status, Utility_relationship__c, LoadZone__c, Partner_Lookup__r.Name, Moody_s_Risk_Calc__c,
+                Underwriting_Criteria__c,Product__c, No_Payment__c, Email, FirstName, (SELECT Id FROM Underwrite_Financial_Documents__r)
             FROM Lead
             LIMIT 1
         ];
@@ -416,7 +433,7 @@ public class CSQualificationTestclass {
 
         List<CSQualificationService.QualificationMatch> allMatches = new List<CSQualificationService.QualificationMatch>();
         Lead switchLead = [
-            SELECT Id, Product__c, Parcel_Zip__c, Moody_s_Risk_Calc__c 
+            SELECT Id, Product__c, Parcel_Zip__c, Moody_s_Risk_Calc__c
             FROM Lead
             LIMIT 1
         ];
@@ -440,7 +457,7 @@ public class CSQualificationTestclass {
     public static void testQualificationWidgetNoMatch() {
         List<CSQualificationService.QualificationMatch> allMatches = new List<CSQualificationService.QualificationMatch>();
         Lead switchLead = [
-            SELECT Id, Product__c, Parcel_Zip__c, Moody_s_Risk_Calc__c 
+            SELECT Id, Product__c, Parcel_Zip__c, Moody_s_Risk_Calc__c
             FROM Lead
             LIMIT 1
         ];
@@ -452,7 +469,7 @@ public class CSQualificationTestclass {
 
         String productId = switchLead.Product__c;
         String partnerId = partner.Id;
-        String zipCode = '56789';
+        String zipCode = '24680';
         String underwriting = 'Financial Review';
 
         allMatches = CSQualificationService.getQualificationMatches(null, productId, partnerId, zipCode, underwriting);
@@ -462,7 +479,7 @@ public class CSQualificationTestclass {
     @IsTest
     public static void closeReportMissingCasesTest() {
         Lead switchLead = [
-            SELECT Id, Name, Parent_Account__c, Moody_s_Risk_Calc__c 
+            SELECT Id, Name, Parent_Account__c, Moody_s_Risk_Calc__c
             FROM Lead
             LIMIT 1
         ];
