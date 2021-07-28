@@ -1,8 +1,8 @@
 /**
+ * @description Calculates capacity fields on SSS
  * Tested By: SharedSolarSystemsTest
  */
-
-public with sharing class SharedSolarSystemCapacityCalculator {
+public without sharing class SharedSolarSystemCapacityCalculator {
     @TestVisible private static ProductSelector productSelector = new ProductSelector();
 
     public static Decimal calculateMaximumkWh(Shared_Solar_System__c sss) {

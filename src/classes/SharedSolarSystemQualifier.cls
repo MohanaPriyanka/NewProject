@@ -1,12 +1,11 @@
 /**
- * Created by PeterYao on 7/25/2021.
+ * @description : Responsible for qualifying Leads, and handling actions when they are not qualified
+ * Tested By: SharedSolarSystemsTest
  */
-
-public with sharing class SharedSolarSystemQualifier {
+public without sharing class SharedSolarSystemQualifier {
     @TestVisible private static SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
     @TestVisible private static final Boolean LOG_FINE_RESULTS = Logger.shouldLog(Logger.FINE);
     @TestVisible private static Boolean capacityCheckInstance = false;
-    private Boolean unqualifiedFICO = true;
     private static final List<String> ORDERED_MOODY_RISK_SCORES = new List<String>{
         'Aaa', 'Aa1', 'Aa2', 'Aa3', 'A1', 'A2', 'A3',
         'Baa1', 'Baa2', 'Baa3', 'Ba1', 'Ba2', 'Ba3', 'B1', 'B2', 'B3',
@@ -31,11 +30,16 @@ public with sharing class SharedSolarSystemQualifier {
                 return 'Qualified';
             }
         }
-        if (unqualifiedFICO) {
-            CSQualificationService.handleLeadUnqualifiedDueToFICO(lead);
-        } else {
-            CSQualificationService.sendGenericUnqualifiedNotice(lead);
+        // If the lead qualifies for any system, ignoring FICO, then they must have been unqualified due to FICO. If
+        // none qualify, they have been unqualified for a different reason
+        for (Shared_Solar_System__c sss : records) {
+            if (sss.Available_SMB_Underwriting_Method_FICO__c &&
+                qualifiedForSystemIgnoringUnderwriting(lead, sss, creditScore)) {
+                CSQualificationService.handleLeadUnqualifiedDueToFICO(lead);
+                return 'Unqualified';
+            }
         }
+        CSQualificationService.sendGenericUnqualifiedNotice(lead);
         return 'Unqualified';
     }
 
@@ -68,11 +72,22 @@ public with sharing class SharedSolarSystemQualifier {
 
     @TestVisible
     private Boolean qualifiedForSystem(Lead lead, Shared_Solar_System__c sss, Decimal creditScore) {
+        return qualifiedForSystem(lead, sss, creditScore, true);
+    }
+
+    private Boolean qualifiedForSystemIgnoringUnderwriting(Lead lead, Shared_Solar_System__c sss, Decimal creditScore) {
+        return qualifiedForSystem(lead, sss, creditScore, false);
+    }
+
+    private Boolean qualifiedForSystem(Lead lead, Shared_Solar_System__c sss, Decimal creditScore, Boolean includeUnderwriting) {
         Boolean utilityMatch = sss.Utility__c == lead.Utility_relationship__c;
         Boolean lzInServiceTerritory = loadZoneInServiceTerritory(lead.LoadZone__c, sss);
         Boolean isPartnerEligible = isPartnerEligible(lead.Partner_Lookup__c, sss);
         Boolean productMatch = matchesProduct(lead, sss);
-        Boolean meetsUnderwritingCriteria = meetsUnderwritingCriteria(lead, sss, creditScore);
+        Boolean meetsUnderwritingCriteria = true;
+        if (includeUnderwriting) {
+            meetsUnderwritingCriteria = meetsUnderwritingCriteria(lead, sss, creditScore);
+        }
         Boolean paymentMatch = meetsPaymentCriteria(lead, sss);
 
         Boolean isQualified = utilityMatch
@@ -122,18 +137,14 @@ public with sharing class SharedSolarSystemQualifier {
 
     @TestVisible
     private Boolean meetsUnderwritingCriteria(Lead lead, Shared_Solar_System__c sss, Decimal creditScore) {
-        Boolean meetsCriteria = false;
+        Boolean meetsCriteria = true;
         Boolean sssDoesNotUnderwrite = sss.Do_Not_Underwrite__c;
 
         switch on (lead.Underwriting_Criteria__c) {
             when 'FICO' {
                 meetsCriteria = meetsFICOUnderwriting(lead, sss, creditScore);
             } when 'Financial Review' {
-                unqualifiedFICO = false;
                 meetsCriteria = meetsFinancialReviewUnderwriting(lead, sss);
-            } when else {
-                unqualifiedFICO = false;
-                meetsCriteria = true;
             }
         }
 
@@ -149,9 +160,6 @@ public with sharing class SharedSolarSystemQualifier {
             creditScore = 999;
         } else if (creditScore == null && lead.Underwriting_Criteria__c == 'FICO') {
             creditScore = Decimal.valueOf(Util.nullToZero(lead.LASER_Credit_Score__c));
-        }
-        if (unqualifiedFICO) {
-            unqualifiedFICO = creditScore < sss.Credit_Score_Requirement__c;
         }
         return creditScore >= sss.Credit_Score_Requirement__c;
     }

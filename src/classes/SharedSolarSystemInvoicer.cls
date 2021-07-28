@@ -1,8 +1,8 @@
 /**
+ * @description Sets SSS fields used for Client Invoicing
  * Tested By: SharedSolarSystemsTest
  */
-
-public with sharing class SharedSolarSystemInvoicer {
+public without sharing class SharedSolarSystemInvoicer {
     @TestVisible private static ContractFeeDetailSelector contractFeeDetailSelector = new ContractFeeDetailSelector();
 
     public void updateManagementRevenueStartDateBeforeTrigger(List<Shared_Solar_System__c> records) {
