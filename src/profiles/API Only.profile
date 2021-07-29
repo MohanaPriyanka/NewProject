@@ -583,10 +583,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ProductProfileController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ProductionDetailSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>

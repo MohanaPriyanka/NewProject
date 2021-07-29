@@ -995,10 +995,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ProductProfileController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ProductSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>

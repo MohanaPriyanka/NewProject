@@ -3170,10 +3170,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ProductProfileController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ProductService</apexClass>
         <enabled>false</enabled>
     </classAccesses>

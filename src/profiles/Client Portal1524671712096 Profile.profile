@@ -402,10 +402,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ProductProfileController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ScheduleZTriggerHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
