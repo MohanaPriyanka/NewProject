@@ -1,3 +1,0 @@
-<design:component>
-	<design:attribute name="blogType" label="Blog Type" description="Type for Blogs to Show" />
-</design:component>

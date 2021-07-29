@@ -1259,10 +1259,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>CreateUALController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>CustomApexObject</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3171,14 +3167,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>PortalLoginHistoryController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>PortalLoginHistoryControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>PostSandboxRefresher</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3572,10 +3560,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>UtilityLoginInformationController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>UtilityTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
