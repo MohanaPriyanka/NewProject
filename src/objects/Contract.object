@@ -489,7 +489,7 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
         <fullName>Conga_UCB_Disclosure_Form__c</fullName>
         <externalId>false</externalId>
         <formula>&quot;&amp;id=&quot; + Id +
-&quot;&amp;templateid=a2F5b000001WIRfEAO&quot; +
+&quot;&amp;templateid={!Environment.CONGA_UCBDISC_TEMPLATEID}&quot; +
 &quot;&amp;qvar0id=a270a0000020q0rAAA?pv0=&quot; + Id +
 &quot;&amp;queryid=[ResiSig]a270a0000020q0qAAA?pv1={QVar0},[Opp]a270a0000020q0sAAA?pv1={QVar0},[UAS]a270a0000020q0vAAA?pv1={QVar0},[Tariff]a275b0000021MZLAA2?pv1={QVar0},[Biz]a270a0000020q0tAAA?pv1={QVar0},[Resi]a270a0000020q0qAAA?pv1={QVar0},[NonGuarantor]a270a00000211F2AAI?pv1={QVar0},[UAL]a275b000002b4kNAAQ?pv4=&quot; + Lead__r.Id + &quot;,[Account]a275b000002b4kSAAQ?pv3=&quot; + Account.Id + &quot;,[BizAcct]a275b000002b4kcAAA?pv3=&quot; + Account.Id + &quot;,[SSS]a270a00000211EsAAI?pv2=&quot; + Lead__r.Utility_relationship__r.Id + &quot;,[BizAcctSig]a275b000002b4kXAAQ?pv0=&quot; + Id +
 &quot;&amp;sc1=SalesforceFile&quot; +
