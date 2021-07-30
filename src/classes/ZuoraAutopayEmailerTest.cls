@@ -67,16 +67,6 @@ public with sharing class ZuoraAutopayEmailerTest {
     }
 
     @IsTest
-    private static void testSchedulerMethod() {
-        String jobId = ZuoraAutopayEmailer.scheduleJob();
-        CronTrigger ct = [SELECT Id, CronExpression, TimesTriggered, NextFireTime FROM CronTrigger WHERE Id = :jobId];
-        System.assertEquals(ZuoraAutopayEmailer.CRON_EXP, ct.CronExpression, 'Cron expression incorrect for some reason');
-        System.assertEquals(0, ct.TimesTriggered, 'Scheduled job should not have run yet');
-        System.assert(ct.NextFireTime != null, 'Job should have future runs scheduled');
-        System.assertEquals(0, [SELECT Id FROM Error_Log__c].size(), 'No error logs should have been logged for this tx');
-    }
-
-    @IsTest
     private static void testShouldRunToday() {
         System.assertEquals(true, emailer.shouldSendEmailsToday(Date.newInstance(2021,7,29)),
             'Helper method should indicate that emails should go out on the specified date');
