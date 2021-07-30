@@ -496,7 +496,7 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
 &quot;&amp;defaultpdf=1&quot; +
 &quot;&amp;sc0=1&quot; +
 &quot;&amp;apdf=0&quot; +
-&quot;&amp;emailtemplateid={!Environment.CONGA_UCBEMAILTEMPLATEID}P&quot; +
+&quot;&amp;emailtemplateid={!Environment.CONGA_UCBEMAILTEMPLATEID}&quot; +
 &quot;&amp;emailtoid=&quot; + Account.Send_Bills_Contact__r.Id +
 &quot;&amp;emailrelatedtoid={QVar0}&quot; +
 &quot;&amp;emailfromid=0D20a0000004K0P&quot; +
