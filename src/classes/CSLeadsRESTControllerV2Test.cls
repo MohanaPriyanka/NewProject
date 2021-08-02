@@ -1052,7 +1052,6 @@ public with sharing class CSLeadsRESTControllerV2Test {
 
     @IsTest
     private static void testPartnerEmailSendApplicationComplete() {
-        CSApplicationFinisher.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new MockFeatureSelector());
         Account partnerAccount = new Account(
             Name = 'Partner Account'
         );
@@ -1067,6 +1066,10 @@ public with sharing class CSLeadsRESTControllerV2Test {
             Partner_Email__c = 'partner@testcase.com'
         ); 
         insert leadToUpdate;
+
+        CSApplicationFinisher appFinisher = new CSApplicationFinisher(leadToUpdate.Id, null);
+        CSApplicationFinisher.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new MockFeatureSelector());
+
         MessagingService.emailTemplateMap = new Map<String, EmailTemplate>();
         sfab_FabricatedSObject fabbedEmailTemplate = new sfab_FabricatedSObject(EmailTemplate.class);
         fabbedEmailTemplate.setField(EmailTemplate.HtmlValue, '{{{Recipient.Name}}}');
@@ -1075,7 +1078,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         Test.startTest();
         LeadSelector leadSelector = new LeadSelector();
         leadToUpdate = leadSelector.selectOne(leadToUpdate.Id);
-        CSApplicationFinisher.createAndSendCSPartnerEmail(leadToUpdate);
+        appFinisher.createAndSendCSPartnerEmail(leadToUpdate);
         Test.stopTest();
 
         System.assertEquals(1, MessagingService.emailsSent.size(), 'Application Complete email should be sent to Partner');
@@ -1110,7 +1113,8 @@ public with sharing class CSLeadsRESTControllerV2Test {
         CSLeadsRESTControllerV2 controller = new CSLeadsRESTControllerV2();
 
         Test.startTest();
-        CSApplicationFinisher.createQCCaseForNoMatchPCR(leadToUpdate);
+        CSApplicationFinisher appFinisher = new CSApplicationFinisher(leadToUpdate.Id, null);
+        appFinisher.createQCCaseForNoMatchPCR(leadToUpdate);
         Test.stopTest();
 
         List<Case> qcCase = [
@@ -1126,7 +1130,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     private static void testContractFilesCompilation() {
         // Mock data
         CSTestDataFactory dataSet = new CSTestDataFactory();
-        dataset.insertLeadViaAPI(false, 'None', false);
+        dataSet.insertLeadViaAPI(false, 'None', false);
         Lead generatedLead = new LeadSelector().selectOneWithPropertiesAndUtilities(dataSet.leadId);
         dataSet.insertContractFiles();
 
@@ -1157,7 +1161,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     private static void testContractFilesCompilationWithNoRateClass() {
         // Mock data
         CSTestDataFactory dataSet = new CSTestDataFactory();
-        dataset.insertLeadViaAPI(true, 'None', false);
+        dataSet.insertLeadViaAPI(true, 'None', false);
         Lead generatedLead = new LeadSelector().selectOneWithPropertiesAndUtilities(dataSet.leadId);
         dataSet.insertContractFiles();
 
@@ -1168,6 +1172,34 @@ public with sharing class CSLeadsRESTControllerV2Test {
         System.assertEquals(2, dataSet.restLead.contentDocs.size(),'Incorrect number of contract files');
 
         Test.stopTest();
+    }
+
+    @IsTest
+    private static void testAppFinisherNoLeadFound() {
+        Lead lead = new Lead(
+            Id = Util.getFakeId(Lead.SObjectType),
+            Email = SAMPLE_EMAIL
+        );
+        CSApplicationFinisher appFinisher = new CSApplicationFinisher(lead.Id, null);
+        appFinisher.execute(null);
+        List<Error_Log__c> errorLogs = [SELECT Id, Message__c FROM Error_Log__c];
+        System.assertEquals(1, errorLogs.size(), 'Lead does not exist, app finisher should fail and log error');
+        System.assert(errorLogs[0].Message__c.contains('Unable to locate lead'), 'Error should indicate unable to locate lead');
+    }
+
+    @IsTest
+    private static void testAppFinisherLeadError() {
+        CSTestDataFactory dataFactory = new CSTestDataFactory();
+        dataFactory.insertLeadViaAPI(false, 'None', false);
+        Lead lead = [SELECT Id FROM Lead];
+
+        CSApplicationFinisher appFinisher = new CSApplicationFinisher(lead.Id, null);
+        CSApplicationFinisher.triggerErrorInTest = true;
+        appFinisher.execute(null);
+
+        List<Error_Log__c> errorLogs = [SELECT Id, Message__c FROM Error_Log__c];
+        System.assertEquals(1, errorLogs.size(), 'Error was intentionally tripped in test, should have logged error');
+        System.assert(errorLogs[0].Message__c.contains('Test error encountered'), 'Error should include test error message');
     }
 
     /*************
