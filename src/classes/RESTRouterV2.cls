@@ -1,5 +1,5 @@
 /**
- * Created by jlugo on 7/3/2019.
+ * @description Created by jlugo on 7/3/2019.
  * Description: REST Controller for sending CS Leads to Salesforce
  * Test: CSLeadsRESTControllerV2Test, RESTRouterV2Test
  */
@@ -31,9 +31,9 @@ global without sharing class RESTRouterV2 {
                 }
             }
         } catch (Util.AuthorizationBWException abwe) {
-            handleException(envelope, 401, 'patchRequest', abwe);
+            handleException(envelope, 401, 'patchRequest', abwe, 'Error');
         } catch (Exception e) {
-            handleException(envelope, 500, 'patchRequest', e);
+            handleException(envelope, 500, 'patchRequest', e, 'Error');
         }
     }
 
@@ -52,9 +52,9 @@ global without sharing class RESTRouterV2 {
                 }
             }
         } catch (Util.AuthorizationBWException abwe) {
-            handleException(envelope, 401, 'postRequest', abwe);
+            handleException(envelope, 401, 'postRequest', abwe, 'Error');
         } catch (Exception e) {
-            handleException(envelope, 500, 'postRequest', e);
+            handleException(envelope, 500, 'postRequest', e, 'Error');
         }
     }
 
@@ -68,7 +68,7 @@ global without sharing class RESTRouterV2 {
                     String zipCode = req.params.get('zipCode');
                     String partnerId = req.params.get('partnerId');
                     String utilityId = req.params.get('utilityId');
-                    controller.getZipcodeCapacity(zipCode, (partnerId==null?'':partnerId), utilityId);
+                    controller.getZipcodeCapacity(zipCode, (partnerId == null ? '' : partnerId), utilityId);
                 } when '/leads' {
                     String leadId = req.params.get('leadId');
                     String email = req.params.get('email');
@@ -79,13 +79,13 @@ global without sharing class RESTRouterV2 {
                 }
             }
         } catch (Util.AuthorizationBWException abwe) {
-            handleException(envelope, 401, 'getRequest', abwe);
+            handleException(envelope, 401, 'getRequest', abwe, 'Info');
         } catch (Exception e) {
-            handleException(envelope, 500, 'getRequest', e);
+            handleException(envelope, 500, 'getRequest', e, 'Error');
         }
     }
 
-    private static void handleException(RESTController.ResponseEnvelope envelope, Integer statusCode, String methodName, Exception e) {
+    private static void handleException(RESTController.ResponseEnvelope envelope, Integer statusCode, String methodName, Exception e, String severity) {
         Blob requestBody = RestContext.request.requestBody;
         envelope.addError(e.getMessage());
         envelope.setJSONResponse(RestContext.response);
@@ -93,6 +93,6 @@ global without sharing class RESTRouterV2 {
         String errorMessage = 'Error: ' + e.getMessage() + '\n' + e.getStackTraceString();
         errorMessage += '. Request: ' + RestContext.request;
         errorMessage += requestBody != null ? '\n\nRequest Body: ' + requestBody.toString() : '{ null }';
-        Logger.logNow('RESTRouterV2', methodName, errorMessage, 'Error');
+        Logger.logNow('RESTRouterV2', methodName, errorMessage, severity);
     }
 }
