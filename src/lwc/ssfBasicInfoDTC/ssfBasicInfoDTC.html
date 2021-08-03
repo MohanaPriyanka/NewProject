@@ -72,7 +72,7 @@
                                 </div>
                                 <template if:true={underwritingHelpTextVisible} onclick={handleInteriorClick}>
                                     <c-ssf-info-box onclose={toggleUnderwritingHelp}>
-                                        <lightning-formatted-rich-text value={underwritingHelpText}></lightning-formatted-rich-text>
+                                            <lightning-formatted-rich-text value={underwritingHelpText}></lightning-formatted-rich-text>
                                     </c-ssf-info-box>
                                 </template>
                             </template>
@@ -137,10 +137,11 @@
                       value={restLead.email}
                       label="Email"
                       class="slds-var-m-bottom_small"
-                      onchange={genericOnChange}
+                      onchange={setAndValidateContactEmail}
                       type="email"
                       required
-                      disabled={resumedApp}>
+                      disabled={resumedApp}
+                      data-field-name="contactEmail">
                     </lightning-input>
                 </div>
                 <div class="input-group half">
@@ -323,9 +324,10 @@
                                               name="podId"
                                               class="slds-var-m-bottom_small slds-col"
                                               label={podEntryFieldLabel}
-                                              field-level-help="PoD ID for the customer's utility account. This can be found on the customer utility bill."
+                                              field-level-help="PoD ID for your utility account. This can be found on your utility bill. For NYSEG and RG&E this is 15 characters long, starting in N01 or R01."
                                               value={it.value.podId}
                                               onchange={utilityAccountOnChange}
+                                              max-length="15"
                                               required>
                                             </lightning-input>
                                         </div>
@@ -341,6 +343,7 @@
                                               field-level-help="Please re-enter the PoD ID for verification purposes."
                                               value={it.value.podIdReentry}
                                               onchange={utilityAccountOnChange}
+                                              max-length="15"
                                               required>
                                             </lightning-input>
                                         </div>

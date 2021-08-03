@@ -390,8 +390,8 @@ const matchHomeAddress = (restLead, propertyAccount) => {
 }
 
 const applicationValid = (cmp) => {
-    // Check all UAL zips, even if on a resume app, to ensure we service those zips
-    validateServiceZipCode(cmp, null);
+    validateServiceZipCode(cmp, null); // Check all UAL zips, even if on a resume app, to ensure we service those zips
+    validateContactEmail(cmp); // Check to ensure emails are valid
 
     var allValid = [...cmp.template.querySelectorAll('lightning-input'), ...cmp.template.querySelectorAll('lightning-combobox')]
     .reduce((validSoFar, inputCmp) => {
@@ -436,6 +436,17 @@ const applicationValid = (cmp) => {
     return true;
 }
 
+const validateContactEmail = (cmp) => {
+    const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    let contactEmailField = cmp.template.querySelector(`[data-field-name="contactEmail"]`);
+    if (!cmp.restLead.email.match(regex)) {
+        contactEmailField.setCustomValidity('Invalid email address entered. Please check your inputs.');
+    } else {
+        contactEmailField.setCustomValidity('');
+    }
+    contactEmailField.reportValidity();
+}
+
 const showWarningToast = (cmp, title, message) => {
     const evt = new ShowToastEvent({
         title: title,
@@ -477,6 +488,7 @@ const insertLead = async (cmp) => {
         let insertResult = await createLead(cmp.restLead);
         cmp.dispatchEvent(new CustomEvent('leadcreated', { detail: insertResult }));
     } catch (error) {
+        toggleLoadingSpinnerEvent(cmp, true, 'waitingRoom');
         cmp.dispatchEvent(new CustomEvent('readystate'));
         handlePromiseError(cmp, error, 'insertLead', 'Error');
     }
@@ -487,8 +499,8 @@ const patchLead = async (cmp) => {
         let patchResult = await patchApplication(cmp.restLead);
         cmp.dispatchEvent(new CustomEvent('leadcreated', {detail: patchResult}));
     } catch (error) {
+        toggleLoadingSpinnerEvent(cmp, true, 'waitingRoom');
         cmp.dispatchEvent(new CustomEvent('readystate'));
-        toggleLoadingSpinnerEvent(cmp, true);
         handlePromiseError(cmp, error, 'patchLead', 'Error');
     }
 }
@@ -603,5 +615,6 @@ export {
     onLoad,
     findDuplicateUAL,
     getText,
-    submitApplication
+    submitApplication,
+    validateContactEmail
 }
