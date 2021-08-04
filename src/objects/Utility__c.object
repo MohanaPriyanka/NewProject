@@ -115,6 +115,17 @@
         </valueSet>
     </fields>
     <fields>
+        <fullName>EDI_Name_Override__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Override field for the Utility Name that is sent in outbound EDI requests</inlineHelpText>
+        <label>EDI Name Override</label>
+        <length>50</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>EIA_ID__c</fullName>
         <externalId>true</externalId>
         <inlineHelpText>This is the EIA ID that Originations provides</inlineHelpText>
