@@ -205,7 +205,7 @@ CASE(Utility__c,
 &quot;NYS Electric and Gas&quot;,&quot;a2F0a000000OY5fEAG&quot;,
 &quot;Orange and Rockland&quot;,&quot;{!Environment.VAR_CONGA_TEMPLATE_OANDRALS}&quot;,
 &quot;National Grid (NY)&quot;,
-    IF(Shared_Solar_System__r.UCB__c,&quot;a2F5b000001WAtTEAW&quot;,&quot;{!Environment.VAR_CONGA_NGNY_ALS_EXCEL},{!Environment.VAR_CONGA_NGNY_ALS_PDF}&quot;),
+    IF(Shared_Solar_System__r.UCB__c,&quot;{!Environment.VAR_CONGA_NGRID_NY_UCB_ALS}&quot;,&quot;{!Environment.VAR_CONGA_NGNY_ALS_EXCEL},{!Environment.VAR_CONGA_NGNY_ALS_PDF}&quot;),
 &quot;Central Hudson&quot;, &quot;a2F0a000000Ob66EAC&quot;,
 &quot;&quot;
 )
