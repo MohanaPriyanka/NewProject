@@ -112,7 +112,7 @@ public without sharing class CaseFactory implements Queueable {
     /**
      * @description This method inserts a case when a leads credit report comes back as a no match.
      */
-    private void insertNoMatchCreditReportCase() {
+    public void insertNoMatchCreditReportCase() {
         if (caseSelector.selectOpenNoMatchCasesFromLead(lead).size() == 0) {
             Case newCcCase = getCase('Customer_QC');
             newCcCase.Lead_Lookup__c = lead.Id;

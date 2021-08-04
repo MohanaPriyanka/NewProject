@@ -2,32 +2,42 @@
  * @description Processes a CS Lead which has entered an 'Application Complete' state, called typically from the API
  * Tested By: CSLeadsRESTControllerV2Test
  */
-public without sharing class CSApplicationFinisher {
+public without sharing class CSApplicationFinisher implements Queueable, Database.AllowsCallouts {
 
     @TestVisible private static LeadSelector leadSelector = new LeadSelector();
     @TestVisible private static FeatureSelector featureSelector = new FeatureSelector();
     @TestVisible private static CSQualificationService qualificationService = new CSQualificationService();
     @TestVisible private static LeadService leadService = new LeadService();
-    private static Boolean inputSetAppCompleteDate;
-    private static Id inputLeadId;
+    @TestVisible private static Boolean triggerErrorInTest = false;
+    private Datetime applicationCompleteDate;
+    private Id leadId;
+
+    /**
+     * @description Constructor for class
+     * @param leadId CS Lead record to process
+     * @param appCompleteDate Application complete date, if provided by UI (SSF), otherwise, if null, fill date in this class
+     */
+    public CSApplicationFinisher(Id leadId, Datetime appCompleteDate) {
+        this.leadId = leadId;
+        this.applicationCompleteDate = appCompleteDate;
+    }
 
     /**
      * @description Performs required actions when a CS Lead is marked as "complete" by SSF or API
      * Runs in async @future context.
-     * @param leadId CS Lead record to process
-     * @param setApplicationCompleteDate Set application complete date on Lead via Apex when called?
-     */
-    @Future
-    public static void execute(Id leadId, Boolean setApplicationCompleteDate) {
-        inputLeadId = leadId;
-        inputSetAppCompleteDate = setApplicationCompleteDate;
+     * @param ctx Queueable context
+     **/
+    public void execute(System.QueueableContext ctx) {
         Lead lead = leadSelector.selectOne(leadId);
         if (lead == null) {
             logError(null, 'execute', 'Unable to locate lead');
             return;
         }
         try {
-            updateLeadOnComplete(lead, setApplicationCompleteDate);
+            updateLeadOnComplete(lead);
+            if (Test.isRunningTest() && triggerErrorInTest) {
+                throw new Util.BWException('Test error encountered');
+            }
         } catch (Exception e) {
             logError(e, 'execute', 'Failed to update lead');
             return; // Do not continue if lead update fails
@@ -38,10 +48,9 @@ public without sharing class CSApplicationFinisher {
     /**
      * @description Updates CS Lead with changes necessary when the Lead is ready to be marked "Application Complete"
      * @param lead CS Lead
-     * @param setApplicationCompleteDate Indicates whether the application complete date should be set to system.now()
      */
-    public static void updateLeadOnComplete(Lead lead, Boolean setApplicationCompleteDate) {
-        lead.Application_Complete_Date__c = setApplicationCompleteDate ? Datetime.now() : lead.Application_Complete_Date__c;
+    public void updateLeadOnComplete(Lead lead) {
+        lead.Application_Complete_Date__c = applicationCompleteDate == null ? lead.Application_Complete_Date__c : applicationCompleteDate ;
         lead.Application_Status__c = 'Application Completed';
         CSLeadsRESTControllerV2.setContinueApplicationLinks(lead, 'Application Completed');
         qualificationService.qualifyLead(lead);
@@ -52,7 +61,7 @@ public without sharing class CSApplicationFinisher {
      * @description Method to send an email to the related Partner when the customer has completed their SSF Application
      * @param lead Lead that has completed the application
      */
-    public static void createAndSendCSPartnerEmail(Lead lead) {
+    public void createAndSendCSPartnerEmail(Lead lead) {
         try {
             System_Default__mdt systemDefault = featureSelector.getSystemDefaults();
             if (systemDefault.Application_Complete_Email_Template__c == null || lead?.Partner_Email__c == null) {
@@ -87,12 +96,16 @@ public without sharing class CSApplicationFinisher {
      * @description When application is completed, if PCR is still a "No Match," we create a QC Case
      * @param lead lead that has completed the SSF Application
      */
-    public static void createQCCaseForNoMatchPCR(Lead lead) {
-        if (lead.Personal_Credit_Report__r.LASERCA__Credit_Score__c == '9999') {
-            CaseFactory noMatchFactory = new CaseFactory();
-            noMatchFactory.setLead(lead);
-            noMatchFactory.setQueueType('No FICO Match');
-            System.enqueueJob(noMatchFactory);
+    public void createQCCaseForNoMatchPCR(Lead lead) {
+        try {
+            if (lead.Personal_Credit_Report__r.LASERCA__Credit_Score__c == '9999') {
+                CaseFactory noMatchFactory = new CaseFactory();
+                noMatchFactory.setLead(lead);
+                noMatchFactory.setQueueType('No FICO Match');
+                noMatchFactory.insertNoMatchCreditReportCase();
+            }
+        } catch (Exception e) {
+            logError(e, 'createQCCaseForNoMatchPCR', 'Failed to create FICO: No Match Case for Lead');
         }
     }
 
@@ -100,7 +113,7 @@ public without sharing class CSApplicationFinisher {
      * @description Creates UDR if relevant to this lead (EDI or Glynt utility data mechanism)
      * @param lead CS Lead
      */
-    public static void createUtilityDataRequest(Lead lead) {
+    public void createUtilityDataRequest(Lead lead) {
         try {
             UtilityDataRequestBuilder.createUDRs(new List<Id>{
                 lead.Id
@@ -114,15 +127,15 @@ public without sharing class CSApplicationFinisher {
      * @description Creates Zuora account if relevant to this lead (No_Payment__c flag on Lead needs to be FALSE)
      * @param lead CS Lead
      */
-    public static void createZuoraAccount(Lead lead) {
-        try {
-            if (lead.No_Payment__c == false) {
-                ZuoraAccountService.createAccounts(new Set<Id>{
-                    lead.Id
-                });
+    public void postCreateZuoraAccountEvent(Lead lead) {
+        if (!lead.No_Payment__c) {
+            Zuora_Account_Create_Event__e zuoraAccountCreateEvent = new Zuora_Account_Create_Event__e(
+                Lead_Id__c = lead.Id
+            );
+            Database.SaveResult sr = EventBus.publish(zuoraAccountCreateEvent);
+            if (!sr.isSuccess()) {
+                logError(null, 'postCreateZuoraAccountEvent', 'Failed to post Zuora Acc create platform event');
             }
-        } catch (Exception e) {
-            logError(e, 'createZuoraAccount', 'Failed to create Zuora Account for Lead');
         }
     }
 
@@ -131,16 +144,16 @@ public without sharing class CSApplicationFinisher {
      * NOTE: Each method called here works independently and should have its own try/catch exception handling/logging
      * @param lead CS Lead record to process
      */
-    private static void performAdditionalActions(Lead lead) {
+    private void performAdditionalActions(Lead lead) {
         createAndSendCSPartnerEmail(lead);
         createQCCaseForNoMatchPCR(lead);
         createUtilityDataRequest(lead);
-        createZuoraAccount(lead);
+        postCreateZuoraAccountEvent(lead);
     }
 
-    private static void logError(Exception caughtException, String method, String messagePrefix) {
-        String message = messagePrefix + '. Please reprocess manually. Class inputs:\nleadId: ' + inputLeadId +
-            '\nsetApplicationCompleteDate: ' + inputSetAppCompleteDate;
+    private void logError(Exception caughtException, String method, String messagePrefix) {
+        String message = messagePrefix + '. Please reprocess manually. Class inputs:\nleadId: ' + leadId +
+            '\napplicationCompleteDate: ' + applicationCompleteDate;
         if (caughtException != null) {
             message += '\n\n ' + caughtException.getMessage() + '\n\n' + caughtException.getStackTraceString();
         }

@@ -9,12 +9,19 @@ public without sharing class ZuoraAccountService {
     private static final List<String> ZUORA_FIELDS_TO_UPDATE =
         new List<String>{'Address_Attn__c','BillingStreet','BillingCity','BillingState','BillingPostalCode','BillingCountry','Send_Bills_Contact__c'};
 
+    @Future(Callout=true)
     public static void createAccounts(Set<Id> leadIds) {
-        List<Account> propertyAccounts = accountSelector.selectPropertyAccountsByLeadIds(leadIds);
-        if (propertyAccounts == null) {
-            return;
+        try {
+            List<Account> propertyAccounts = accountSelector.selectPropertyAccountsByLeadIds(leadIds);
+            if (propertyAccounts == null) {
+                return;
+            }
+            createAccounts(propertyAccounts, null);
         }
-        createAccounts(propertyAccounts, null);
+        catch (Exception e) {
+            String message = 'Failed to create Zuora Accounts for Leads ' + leadIds + '\n\n' + e.getMessage() + '\n\n' + e.getStackTraceString();
+            Logger.logNow('ZuoraAccountService', 'createAccounts', message, Logger.ERROR);
+        }
     }
 
     public static void createAccountsFromLeads(List<Id> convertedLeadIds) {

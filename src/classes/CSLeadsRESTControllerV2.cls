@@ -146,7 +146,8 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         // Handle actions when the application is newly marked as "Application Complete"
         // Placed last because we want to ensure Lead properly updates from SSF UI before enqueueing other actions
         if (applicationNowComplete) {
-            CSApplicationFinisher.execute(lead.Id, false);
+            CSApplicationFinisher appFinisher = new CSApplicationFinisher(lead.Id, null);
+            System.enqueueJob(appFinisher);
         }
 
         RestLead responseLead = new RestLead(lead);
@@ -259,7 +260,8 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
             response.statusCode = statusCode.internalServerError;
         }
         if (!suppressAppCompleteActions) {
-            CSApplicationFinisher.execute(leadId, true);
+            CSApplicationFinisher appFinisher = new CSApplicationFinisher(leadId, Datetime.now());
+            System.enqueueJob(appFinisher);
         }
         envelope.setJSONResponse(response);
     }
