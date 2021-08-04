@@ -166,12 +166,8 @@ export default class SsfDTC extends NavigationMixin(LightningElement) {
         if (!variant) {
             this.showSpinner = !turnOff;
         }
-        else {
-            switch (variant) {
-                case 'waitingRoom':
-                    this.showWaitingRoom = !turnOff;
-                    break;
-            }
+        else if (variant === 'waitingRoom') {
+            this.showWaitingRoom = !turnOff;
         }
     }
 }

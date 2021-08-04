@@ -16,6 +16,7 @@ import {
     verifyPODEntry,
     getText,
     submitApplication,
+    validateContactEmail
 } from 'c/ssfBasicInfoShared';
 
 export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
@@ -97,6 +98,11 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         } else if (eventField === 'podId' || eventField === 'podIdReentry') {
             verifyPODEntry(this, event, eventField);
         }
+    }
+
+    setAndValidateContactEmail(event) {
+        this.restLead.email = event.target.value;
+        validateContactEmail(this);
     }
 
     handleZipEntry(event) {
