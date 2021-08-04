@@ -51,7 +51,7 @@ public without sharing class UtilityDataRequestBuilder {
             Account_Number__c = ual.Name,
             Utility__c = ual.Utility_lookup__c,
             Utility_DUNS__c = ual.Utility_lookup__r.Utility_DUNS_Number__c,
-            Utility_Name__c = string.isBlank(ual.Utility_lookup__r.EDI_Name_Override__c)
+            Utility_Name__c = ual.Utility_lookup__r.EDI_Name_Override__c == null
                 ? ual.Utility_lookup__r.Name : ual.Utility_lookup__r.EDI_Name_Override__c,
             Utility_Account_Log__c = ual.Id,
             Header_Status__c = 'Pending',
