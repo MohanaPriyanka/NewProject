@@ -8,14 +8,9 @@
     <tabs>standard-Chatter</tabs>
     <tabs>standard-Account</tabs>
     <tabs>standard-Contact</tabs>
-    <tabs>MPM4_BASE__Milestone1_Project__c</tabs>
-    <tabs>MPM4_BASE__Milestone1_Milestone__c</tabs>
     <tabs>standard-Opportunity</tabs>
     <tabs>standard-Dashboard</tabs>
     <tabs>standard-File</tabs>
-    <tabs>MPM4_BASE__Milestone1_Task__c</tabs>
-    <tabs>Feeder__c</tabs>
-    <tabs>FeederProjectAssociation__c</tabs>
     <tabs>Load_U__c</tabs>
     <tabs>Partner__c</tabs>
     <tabs>Loan_Traunch__c</tabs>
@@ -33,8 +28,6 @@
     <tabs>Town__c</tabs>
     <tabs>Quick_Sales_Sheet__c</tabs>
     <tabs>Management_Reporting__c</tabs>
-    <tabs>Construction__c</tabs>
-    <tabs>Equipment__c</tabs>
     <tabs>SMART_Data__c</tabs>
     <tabs>et4ae5__IndividualEmailResult__c</tabs>
     <tabs>Production__c</tabs>
