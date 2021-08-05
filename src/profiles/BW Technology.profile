@@ -46837,6 +46837,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Utility__c.EDI_Name_Override__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Utility__c.EIA_ID__c</field>
         <readable>true</readable>
     </fieldPermissions>

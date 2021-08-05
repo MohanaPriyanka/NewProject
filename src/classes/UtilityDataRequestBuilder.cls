@@ -7,7 +7,7 @@ public without sharing class UtilityDataRequestBuilder {
     private static UALSelector ualSelector = new UALSelector();
     private static GlyntUploadService glyntUploadService = new GlyntUploadService();
     private static fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
-        new List<Schema.SObjectType> {
+        new List<Schema.SObjectType>{
             Utility_Data_Request__c.SObjectType,
             Utility_Account_Log__c.SObjectType,
             ContentDocumentLink.SObjectType
@@ -48,15 +48,16 @@ public without sharing class UtilityDataRequestBuilder {
     @TestVisible
     private static Utility_Data_Request__c constructNewUDR(Utility_Account_Log__c ual) {
         Utility_Data_Request__c udr = new Utility_Data_Request__c(
-            Account_Number__c       = ual.Name,
-            Utility__c              = ual.Utility_lookup__c,
-            Utility_DUNS__c         = ual.Utility_lookup__r.Utility_DUNS_Number__c,
-            Utility_Name__c         = ual.Utility_lookup__r.Name,
-            Utility_Account_Log__c  = ual.Id,
-            Header_Status__c        = 'Pending',
-            Detail_Status__c        = 'Pending',
-            Premise_Number__c       = ual.Premise_Number__c,
-            Service_Provider__c     = ual.Utility_lookup__r.Use_Glynt__c ? 'Glynt' : 'ESG'
+            Account_Number__c = ual.Name,
+            Utility__c = ual.Utility_lookup__c,
+            Utility_DUNS__c = ual.Utility_lookup__r.Utility_DUNS_Number__c,
+            Utility_Name__c = ual.Utility_lookup__r.EDI_Name_Override__c == null
+                ? ual.Utility_lookup__r.Name : ual.Utility_lookup__r.EDI_Name_Override__c,
+            Utility_Account_Log__c = ual.Id,
+            Header_Status__c = 'Pending',
+            Detail_Status__c = 'Pending',
+            Premise_Number__c = ual.Premise_Number__c,
+            Service_Provider__c = ual.Utility_lookup__r.Use_Glynt__c ? 'Glynt' : 'ESG'
         );
         uow.registerNew(udr);
         ual.QC_Status__c = 'Pending Utility Data';

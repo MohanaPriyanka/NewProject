@@ -18,7 +18,7 @@
     </fieldOverrides>
     <fieldOverrides>
         <field>Utility_Name__c</field>
-        <formula>Utility_Account_Log__c.Utility_lookup__r.Name</formula>
+        <formula>BLANKVALUE(Utility_Account_Log__c.Utility_lookup__r.EDI_Name_Override__c ,Utility_Account_Log__c.Utility_lookup__r.Name)</formula>
     </fieldOverrides>
     <optionsCreateFeedItem>true</optionsCreateFeedItem>
     <quickActionLayout>
