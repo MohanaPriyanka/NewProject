@@ -46,7 +46,7 @@ public without sharing class ProductionDetailDebitMemoService {
             createProductionDetailsForReturnedPayments(returnedDebitMemos, returnedPaymentIds);
         }
 
-        if (adjustmentDebitMemos.size() > 0 ) {
+        if (adjustmentDebitMemos.size() > 0) {
             createProductionDetailsForAdjustments(adjustmentDebitMemos, adjustmentExternalIds);
         }
     }
@@ -85,13 +85,22 @@ public without sharing class ProductionDetailDebitMemoService {
         for (Journal_Entry__c entry : adjustmentDebitMemos) {
             List<Bill_Adjustment__c> adjustments = adjustMap.get(entry.External_Id__c);
             if (adjustments == null) {
-                incompleteEntries.add(entry);
+                // We didn't find any Bill Adjustments for incompleteEntries (and that is manually set), so
+                // these JEs will have Ready For Production Update set to true so we try to generate
+                // Production Details again. We don't want to do that indefinitely, so if we don't set
+                // the Zuora Id on the Bill Adjustment for two months, we'll give up. We can always set the
+                // Ready for Production Detail checkbox manually.
+                if (entry.CreatedDate > System.today().addMonths(-2)) {
+                    incompleteEntries.add(entry);
+                }
                 continue;
             }
 
             for (Bill_Adjustment__c sfAdjustment : adjustments) {
                 if (sfAdjustment.Transfer__c != null) {
-                    billService.createBillProductionDetail(sfAdjustment.Transfer__c, -entry.Amount__c, 'Payment', entry.Id);
+                    // Use the amount on the SF Adjustment since there could be multiple adjustments related
+                    // to a single debit memo in Zuora, like a0p0a00000ButEJAAZ
+                    billService.createBillProductionDetail(sfAdjustment.Transfer__c, -sfAdjustment.Adjustment_Amount__c, 'Payment', entry.Id);
                 }
             }
         }
