@@ -1,0 +1,71 @@
+{
+  "appPageId" : "c846375f-b289-4bf1-b4fd-ed059e2c4b55",
+  "componentName" : "siteforce:sldsTwoCol66Layout",
+  "id" : "21112436-bb22-42ec-8717-b61cc392e141",
+  "label" : "Contact Support",
+  "regions" : [ {
+    "id" : "5aaaeb3f-8a0a-4e0e-9bc8-f9d63487d3cd",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "allowAttachments" : true,
+        "attachmentLabel" : "Upload File",
+        "buttonAlignment" : "center",
+        "buttonBgColor" : "",
+        "buttonBgHoverColor" : "",
+        "buttonBorderColor" : "",
+        "buttonMaxWidth" : "",
+        "buttonRadius" : 22,
+        "buttonTextColor" : "",
+        "buttonTextHoverColor" : "",
+        "callToAction" : false,
+        "callToActionButtonText" : "",
+        "callToActionText" : "",
+        "callToActionUrl" : "",
+        "confirmationSubtext" : "We’ll get back to you soon.",
+        "confirmationText" : "Your case was created.",
+        "guestQuickActionName" : "Select or configure a global action",
+        "headerSubtitle" : "Tell us how we can help.",
+        "headerTitle" : "Contact Partner Support",
+        "quickActionName" : "NewPartnerCase",
+        "requestSummaryText" : "Case summary"
+      },
+      "componentName" : "forceCommunity:contactSupportForm",
+      "id" : "c97fab5a-8587-4777-996d-0e00ac333a15",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "adb4eb68-6874-4a8d-8e67-e9e5ea75a6be",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "58c5e0a0-c48c-4ac7-a592-3dfb2820dfbf",
+    "regionName" : "sidebar",
+    "type" : "region"
+  }, {
+    "id" : "344e2d26-a292-480d-bafd-ecce879a7432",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "Contact Support"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "24a658ed-f7fa-418d-a712-7f0224c484a1",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "f13199a2-dba3-4c78-9765-9990ad4fcba4",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "contactsupport"
+}

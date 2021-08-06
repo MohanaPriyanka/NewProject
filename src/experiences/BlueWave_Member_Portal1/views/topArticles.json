@@ -14,14 +14,14 @@
         "showTitle" : true,
         "title" : "Top Help Articles",
         "topicList" : [ {
-          "name" : "0TOj0000000L0vBGAS",
-          "isPublic" : true
+          "isPublic" : true,
+          "name" : "0TOj0000000L0vBGAS"
         }, {
-          "name" : "0TOj0000000L0v5GAC",
-          "isPublic" : true
+          "isPublic" : true,
+          "name" : "0TOj0000000L0v5GAC"
         }, {
-          "name" : "0TOj0000000L3IAGA0",
-          "isPublic" : true
+          "isPublic" : true,
+          "name" : "0TOj0000000L3IAGA0"
         } ]
       },
       "componentName" : "forceCommunity:topArticleList",
@@ -40,8 +40,8 @@
   }, {
     "components" : [ {
       "componentAttributes" : {
+        "customHeadTags" : "",
         "description" : "",
-        "metaTags" : "",
         "title" : "Top Articles"
       },
       "componentName" : "forceCommunity:seoAssistant",

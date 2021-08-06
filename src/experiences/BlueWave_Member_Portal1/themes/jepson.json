@@ -1,13 +1,14 @@
 {
   "activeBrandingSetId" : "1d81b32a-a20d-4bf4-afc8-41b74a332d03",
-  "customCSS" : ".content .slds-form.slds-form_stacked .slds-grid.slds-gutters_small.forcePageBlockSectionRow:first-child {\n    display: none;\n}\n\nbutton.uiButton{\n    border-radius: .5rem !important;\n    \n}\n\n\narticle.summary{\nmargin-left: 15px;\n}\n\n.forceTopicFeaturedTopicItem {\n    font-size:x-large;\n}\n\n\n.forceCommunityRecordListCompact{\n    background: white; \n    border-radius: .3rem;\n    margin-left:2rem;\n    padding: 1rem;\n}\n\nfieldset.slds-theme--default{\n    border-radius:.5rem;\n    padding: 2rem;\n}\n\n.siteforceThemeLayoutStarter .article-item.selfServiceArticleListItem {box-sizing:border-box;border-radius:.2rem}\n\n.slds-button_icon-more{display:none;}\n.slds-icon-utility-down{display:none;}\n.slds-m-left_xx-small{display:none;}\n.rowActionsPlaceHolder{display:none;}\n.slds-row-number{display:none;}\n.uiTooltip {\ndisplay: none !important;\n}",
+  "customCSS" : ".content .slds-form.slds-form_stacked .slds-grid.slds-gutters_small.forcePageBlockSectionRow:first-child {\n    display: none;\n}\n\nbutton.uiButton{\n    border-radius: .5rem !important;\n    \n}\n\n\narticle.summary{\nmargin-left: 15px;\n}\n\n.forceTopicFeaturedTopicItem {\n    font-size:x-large;\n}\n\n\n.forceCommunityRecordListCompact{\n    background: white; \n    border-radius: .3rem;\n    margin-left:2rem;\n    padding: 1rem;\n}\n\nfieldset.slds-theme--default{\n    border-radius:.5rem;\n    padding: 2rem;\n}\n\n.siteforceThemeLayoutStarter .article-item.selfServiceArticleListItem {box-sizing:border-box;border-radius:.2rem}\n\n.slds-button_icon-more{display:none;}\n.slds-icon-utility-down{display:none;}\n.slds-m-left_xx-small{display:none;}\n.rowActionsPlaceHolder{display:none;}\n.slds-row-number{display:none;}\n/*.uiTooltip {\ndisplay: none !important;\n}*/\n\n\n/* CASE DETAIL- Hides all page layout sections >= 3 */\n.comm-page-detail-500 .test-id__section.slds-section:nth-child(N+2) {display:none !important;}",
   "developerName" : "jepson",
   "id" : "2eb092a6-9877-4986-9510-ee521c5b9891",
   "label" : "Jepson",
   "layouts" : {
     "Home" : "c8c25cf5-65cf-419d-858c-9660c0af7cf4",
     "Inner" : "779da896-a12d-4a6c-975b-f845f61c7cfb",
-    "Login" : "d3856df1-a5f2-41b0-b16d-8b0e72b6572e"
+    "Login" : "d3856df1-a5f2-41b0-b16d-8b0e72b6572e",
+    "ServiceNotAvailable" : "d3e06986-1c37-463b-86a7-1092d9127a31"
   },
   "type" : "theme",
   "views" : [ {
@@ -117,8 +118,8 @@
               "buttonColor" : "",
               "buttonHoverColor" : "",
               "crossObjectTypeaheadApiNames" : [ {
-                "name" : "Knowledge__kav",
-                "isPublic" : true
+                "isPublic" : true,
+                "name" : "Knowledge__kav"
               } ],
               "iconColor" : "rgba(0, 0, 0, 0.8)",
               "placeholderText" : "Search Support",
@@ -249,19 +250,19 @@
           "defaultMinimizedText" : "Chat with an Expert",
           "displayHelpButton" : true,
           "eswConfigurationJSON" : {
-            "entryFeature" : "LiveAgent",
-            "enabledFeatures" : [ "LiveAgent" ],
-            "gslbBaseURL" : "https://service.force.com",
-            "eswConfigId" : "04I0a000000k9elEAA",
             "baseCoreURL" : "https://bluewavesolar--jeff.my.salesforce.com",
-            "eswConfigDevName" : "CS_Customer_Portal_Chat",
-            "eswLiveAgentDevName" : "EmbeddedServiceLiveAgent_Parent04I540000008OIAEA2_168359a18ae",
-            "orgId" : "00D0U000000GuBp",
             "baseLiveAgentContentURL" : "https://c.la2-c1cs-ord.salesforceliveagent.com/content",
-            "deploymentId" : "572j0000000L8TH",
-            "buttonId" : "573j0000000LA5U",
             "baseLiveAgentURL" : "https://d.la2-c1cs-ord.salesforceliveagent.com/chat",
-            "isOfflineCasesEnabled" : "1"
+            "buttonId" : "573j0000000LA5U",
+            "deploymentId" : "572j0000000L8TH",
+            "enabledFeatures" : [ "LiveAgent" ],
+            "entryFeature" : "LiveAgent",
+            "eswConfigDevName" : "CS_Customer_Portal_Chat",
+            "eswConfigId" : "04I0a000000k9elEAA",
+            "eswLiveAgentDevName" : "EmbeddedServiceLiveAgent_Parent04I540000008OIAEA2_168359a18ae",
+            "gslbBaseURL" : "https://service.force.com",
+            "isOfflineCasesEnabled" : "1",
+            "orgId" : "00D0U000000GuBp"
           },
           "externalScripts" : "",
           "externalStyles" : "",
@@ -321,7 +322,7 @@
           "headerHeight" : 24,
           "linkActiveBorderColor" : "",
           "linkColor" : "rgb(255, 255, 255)",
-          "linkHoverColor" : "rgba(0, 0, 0, 0.7)",
+          "linkHoverColor" : "rgb(56, 125, 222)",
           "linkTextShadowColor" : "rgba(238, 214, 214, 0)",
           "logoWidth" : 179,
           "searchStyle" : "expanded",
@@ -378,8 +379,8 @@
               "buttonColor" : "rgba(255,255,255,1)",
               "buttonHoverColor" : "rgba(0,0,0,0.2)",
               "crossObjectTypeaheadApiNames" : [ {
-                "name" : "Knowledge__kav",
-                "isPublic" : true
+                "isPublic" : true,
+                "name" : "Knowledge__kav"
               } ],
               "iconColor" : "#000",
               "placeholderText" : "Search Support",
@@ -516,19 +517,19 @@
           "defaultMinimizedText" : "Chat with an Expert",
           "displayHelpButton" : true,
           "eswConfigurationJSON" : {
-            "entryFeature" : "LiveAgent",
-            "enabledFeatures" : [ "LiveAgent" ],
-            "gslbBaseURL" : "https://service.force.com",
-            "eswConfigId" : "04I0a000000k9elEAA",
             "baseCoreURL" : "https://bluewavesolar--jeff.my.salesforce.com",
-            "eswConfigDevName" : "CS_Customer_Portal_Chat",
-            "eswLiveAgentDevName" : "EmbeddedServiceLiveAgent_Parent04I540000008OIAEA2_168359a18ae",
-            "orgId" : "00D0U000000GuBp",
             "baseLiveAgentContentURL" : "https://c.la2-c1cs-ord.salesforceliveagent.com/content",
-            "deploymentId" : "572j0000000L8TH",
-            "buttonId" : "573j0000000LA5U",
             "baseLiveAgentURL" : "https://d.la2-c1cs-ord.salesforceliveagent.com/chat",
-            "isOfflineCasesEnabled" : "1"
+            "buttonId" : "573j0000000LA5U",
+            "deploymentId" : "572j0000000L8TH",
+            "enabledFeatures" : [ "LiveAgent" ],
+            "entryFeature" : "LiveAgent",
+            "eswConfigDevName" : "CS_Customer_Portal_Chat",
+            "eswConfigId" : "04I0a000000k9elEAA",
+            "eswLiveAgentDevName" : "EmbeddedServiceLiveAgent_Parent04I540000008OIAEA2_168359a18ae",
+            "gslbBaseURL" : "https://service.force.com",
+            "isOfflineCasesEnabled" : "1",
+            "orgId" : "00D0U000000GuBp"
           },
           "externalScripts" : "",
           "externalStyles" : "",
@@ -547,6 +548,29 @@
         "type" : "component"
       } ],
       "id" : "af16aa6a-ac3a-4cb3-a298-13d78aa97f8a",
+      "regionName" : "themeFooter",
+      "type" : "region"
+    } ],
+    "type" : "view"
+  }, {
+    "componentAttributes" : {
+      "fixedPageWidth" : 1170,
+      "headerBgColor" : "rgba(0, 0, 0, 0)",
+      "isHeaderPinned" : false,
+      "isHeroUnderHeader" : false,
+      "isPageWidthFixed" : true,
+      "showHeader" : true,
+      "showHero" : true
+    },
+    "componentName" : "siteforce:themeLayoutStarter",
+    "id" : "d3e06986-1c37-463b-86a7-1092d9127a31",
+    "label" : "ServiceNotAvailable",
+    "regions" : [ {
+      "id" : "81a75902-987d-458e-a4d1-9d7f77d385aa",
+      "regionName" : "themeHeader",
+      "type" : "region"
+    }, {
+      "id" : "52c3d422-e069-4504-98ea-5db3cd929efc",
       "regionName" : "themeFooter",
       "type" : "region"
     } ],

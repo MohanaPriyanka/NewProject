@@ -1,0 +1,11 @@
+{
+  "activeViewId" : "e3eee3b9-e84d-41be-8aa4-6a64171bdddd",
+  "appPageId" : "c846375f-b289-4bf1-b4fd-ed059e2c4b55",
+  "configurationTags" : [ ],
+  "id" : "ecae1d19-36b7-47ee-ac6f-e660a902e567",
+  "label" : "Shared Solar System Detail",
+  "objectApiName" : "Shared_Solar_System__c",
+  "routeType" : "detail-a1J",
+  "type" : "route",
+  "urlPrefix" : "shared-solar-system"
+}

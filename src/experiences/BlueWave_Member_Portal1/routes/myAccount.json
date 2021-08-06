@@ -1,6 +1,7 @@
 {
   "activeViewId" : "48bf5a10-c307-4a12-a19e-7d30ec105adc",
   "appPageId" : "75cc6a93-289d-403d-a65f-3e067ecf74c3",
+  "configurationTags" : [ ],
   "id" : "bda0aed8-4ffc-4403-9f84-c4df812a69fc",
   "label" : "My Account",
   "routeType" : "my-account",

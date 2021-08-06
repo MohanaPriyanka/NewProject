@@ -1,56 +1,63 @@
 {
   "appPageId" : "8f426399-4c5a-4500-a4c6-88a9ee701502",
   "componentName" : "siteforce:sldsOneColLayout",
-  "id" : "d295b219-3e47-4d54-94e9-16387c5a3f49",
+  "id" : "47d2b8ba-a371-4db6-9aac-8f9052e997f5",
   "label" : "Switch",
   "regions" : [ {
-    "id" : "31dc819a-9a83-4165-ae32-d472f181c55b",
+    "components" : [ {
+      "componentAttributes" : { },
+      "componentName" : "c:ssfHeader",
+      "id" : "27e121a2-20f3-4437-aec7-7c67021a4c15",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "00c83ae1-984a-4b1f-9584-589f3e98a0af",
     "regionName" : "header",
     "type" : "region"
   }, {
     "components" : [ {
       "componentAttributes" : { },
-      "componentName" : "c:SSFApplication",
-      "id" : "e676b6e6-4829-47d3-82ed-af654cb6edd1",
+      "componentName" : "c:SSFApplicationDTC",
+      "id" : "b808e7c9-1f72-48f7-885d-bf6a3f1d776e",
       "renderPriority" : "NEUTRAL",
       "renditionMap" : { },
       "type" : "component"
     } ],
-    "id" : "304095c1-7401-4601-82a0-16a10893f29a",
+    "id" : "71c2dfa7-b55e-4ead-8b34-aa6b878e7b24",
     "regionName" : "content",
     "type" : "region"
   }, {
     "components" : [ {
       "componentAttributes" : {
-        "csap" : true,
-        "partnerFooter" : false
+        "isExpanded" : true
       },
-      "componentName" : "c:SLPFooter",
-      "id" : "8615d420-8d7c-4377-a8c4-12c9d7caac2c",
+      "componentName" : "c:ssfFooter",
+      "id" : "3967a252-c2da-4ae8-b744-f3ec0b8af3b2",
       "renderPriority" : "NEUTRAL",
       "renditionMap" : { },
       "type" : "component"
     } ],
-    "id" : "2526a90f-6318-4f64-96df-fc12a116b76a",
+    "id" : "134e370b-13d2-4f49-ac7c-e6e800909a93",
     "regionName" : "footer",
     "type" : "region"
   }, {
     "components" : [ {
       "componentAttributes" : {
+        "customHeadTags" : "",
         "description" : "",
-        "metaTags" : "",
         "title" : "Switch"
       },
       "componentName" : "forceCommunity:seoAssistant",
-      "id" : "7fca7c62-84af-455b-bfba-ce644c305468",
+      "id" : "08e5bf6a-ceef-41a9-b1a7-1d8160bc7cec",
       "renditionMap" : { },
       "type" : "component"
     } ],
-    "id" : "e113ee51-1605-4d6e-8f29-5e2d7ee68882",
+    "id" : "8629b9a7-bd41-469c-983f-288ff5c865e6",
     "regionName" : "sfdcHiddenRegion",
     "type" : "region"
   } ],
-  "themeLayoutType" : "Inner",
+  "themeLayoutType" : "NmE1gktamttI3bNW2rZP16mWWNlHaf",
   "type" : "view",
   "viewType" : "custom-switch"
 }

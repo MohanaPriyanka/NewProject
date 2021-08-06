@@ -8,14 +8,6 @@
     "regionName" : "header",
     "type" : "region"
   }, {
-    "components" : [ {
-      "componentAttributes" : { },
-      "componentName" : "c:CSAPShowContract",
-      "id" : "a58dd9c7-b2ee-4c40-9a78-16ac3eddabac",
-      "renderPriority" : "NEUTRAL",
-      "renditionMap" : { },
-      "type" : "component"
-    } ],
     "id" : "8b8e4bb7-1ed8-4232-a44b-607fc1f02a91",
     "regionName" : "content",
     "type" : "region"
@@ -26,8 +18,8 @@
   }, {
     "components" : [ {
       "componentAttributes" : {
+        "customHeadTags" : "",
         "description" : "",
-        "metaTags" : "",
         "title" : "Contract Show"
       },
       "componentName" : "forceCommunity:seoAssistant",

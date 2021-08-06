@@ -40,8 +40,8 @@
         "showTitle" : false,
         "title" : "Top Articles",
         "topicList" : [ {
-          "name" : "0TO0a000000DpgXGAS",
-          "isPublic" : true
+          "isPublic" : true,
+          "name" : "0TO0a000000DpgXGAS"
         } ]
       },
       "componentName" : "forceCommunity:topArticleList",
@@ -60,8 +60,8 @@
         "showTitle" : false,
         "title" : "Top Articles",
         "topicList" : [ {
-          "name" : "0TO0a000000DpgcGAC",
-          "isPublic" : true
+          "isPublic" : true,
+          "name" : "0TO0a000000DpgcGAC"
         } ]
       },
       "componentName" : "forceCommunity:topArticleList",
@@ -80,8 +80,8 @@
   }, {
     "components" : [ {
       "componentAttributes" : {
+        "customHeadTags" : "",
         "description" : "",
-        "metaTags" : "",
         "title" : "Support Topics"
       },
       "componentName" : "forceCommunity:seoAssistant",
@@ -99,8 +99,8 @@
         "showTitle" : false,
         "title" : "Top Articles",
         "topicList" : [ {
-          "name" : "0TO0a000000DpgdGAC",
-          "isPublic" : true
+          "isPublic" : true,
+          "name" : "0TO0a000000DpgdGAC"
         } ]
       },
       "componentName" : "forceCommunity:topArticleList",

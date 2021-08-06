@@ -13,33 +13,33 @@
         "tabsetConfig" : {
           "UUID" : "653d1dfa-1039-40bf-b7dc-7d40cd00dcda",
           "activeTab" : "tab1",
-          "useOverflowMenu" : false,
           "tabs" : [ {
             "UUID" : "50069a1b-f311-497c-ae98-427f045010d9",
-            "tabName" : "Members",
-            "tabKey" : "tab1",
-            "locked" : false,
             "allowGuestUser" : false,
+            "locked" : false,
             "seedComponents" : [ {
-              "fqn" : "forceCommunity:relatedList",
               "attributes" : {
                 "parentRecordId" : "{!CurrentUser.accountId}",
                 "relatedListName" : "Users"
-              }
-            } ]
+              },
+              "fqn" : "forceCommunity:relatedList"
+            } ],
+            "tabKey" : "tab1",
+            "tabName" : "Members"
           }, {
             "UUID" : "06cac83d-57dc-475d-879b-16441e2aa1ad",
-            "tabName" : "Branding",
-            "tabKey" : "tab2",
-            "locked" : false,
             "allowGuestUser" : false,
+            "locked" : false,
             "seedComponents" : [ {
-              "fqn" : "forceCommunity:accountBrandRecord",
               "attributes" : {
                 "recordId" : "{!CurrentUser.accountId}"
-              }
-            } ]
-          } ]
+              },
+              "fqn" : "forceCommunity:accountBrandRecord"
+            } ],
+            "tabKey" : "tab2",
+            "tabName" : "Branding"
+          } ],
+          "useOverflowMenu" : false
         }
       },
       "componentName" : "forceCommunity:tabset",
@@ -90,8 +90,8 @@
   }, {
     "components" : [ {
       "componentAttributes" : {
+        "customHeadTags" : "",
         "description" : "",
-        "metaTags" : "",
         "title" : "Account Management"
       },
       "componentName" : "forceCommunity:seoAssistant",

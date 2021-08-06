@@ -22,8 +22,8 @@
     "components" : [ {
       "componentAttributes" : {
         "scopes" : [ {
-          "name" : "Knowledge__kav",
-          "isPublic" : true
+          "isPublic" : true,
+          "name" : "Knowledge__kav"
         } ],
         "searchResultFiltering" : false,
         "searchTerm" : "{!searchString}",

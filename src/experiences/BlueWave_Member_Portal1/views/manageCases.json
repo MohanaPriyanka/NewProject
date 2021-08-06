@@ -90,8 +90,8 @@
   }, {
     "components" : [ {
       "componentAttributes" : {
+        "customHeadTags" : "",
         "description" : "",
-        "metaTags" : "",
         "title" : "Manage Cases"
       },
       "componentName" : "forceCommunity:seoAssistant",

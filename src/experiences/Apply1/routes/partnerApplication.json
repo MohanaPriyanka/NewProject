@@ -1,0 +1,11 @@
+{
+  "activeViewId" : "594eb1be-1ad6-4919-a498-0504d5d6bee1",
+  "appPageId" : "8f426399-4c5a-4500-a4c6-88a9ee701502",
+  "configurationTags" : [ ],
+  "id" : "d5273a82-3fe6-4721-aeb2-9026658a293f",
+  "label" : "Partner Application",
+  "pageAccess" : "UseParent",
+  "routeType" : "custom-partner-application",
+  "type" : "route",
+  "urlPrefix" : "partner-application"
+}

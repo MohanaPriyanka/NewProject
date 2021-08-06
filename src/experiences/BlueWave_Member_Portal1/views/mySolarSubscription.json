@@ -27,10 +27,15 @@
         "enableInlineEdit" : false,
         "filterName" : "00B0a00000552yIEAQ",
         "layout" : "STANDARD",
-        "pageSize" : 8,
+        "pageSize" : 100,
         "scope" : "Utility_Account_Subscription__c",
         "showActionBar" : false,
+        "showChartsPanel" : false,
         "showDisplay" : "grid",
+        "showFilterPanel" : false,
+        "showImageIcon" : false,
+        "showManualRefreshButton" : false,
+        "showObjectName" : false,
         "showPinnedList" : false,
         "showSearchBar" : false
       },
@@ -54,8 +59,8 @@
   }, {
     "components" : [ {
       "componentAttributes" : {
+        "customHeadTags" : "",
         "description" : "",
-        "metaTags" : "",
         "title" : "My Solar Subscription"
       },
       "componentName" : "forceCommunity:seoAssistant",

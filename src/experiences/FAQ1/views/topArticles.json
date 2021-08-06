@@ -14,14 +14,14 @@
         "showTitle" : false,
         "title" : "Top Articles",
         "topicList" : [ {
-          "name" : "0TO190000002r6PGAQ",
-          "isPublic" : true
+          "isPublic" : true,
+          "name" : "0TO190000002r6PGAQ"
         }, {
-          "name" : "0TO190000002r5kGAA",
-          "isPublic" : true
+          "isPublic" : true,
+          "name" : "0TO190000002r5kGAA"
         }, {
-          "name" : "0TO190000002r6KGAQ",
-          "isPublic" : true
+          "isPublic" : true,
+          "name" : "0TO190000002r6KGAQ"
         } ]
       },
       "componentName" : "forceCommunity:topArticleList",
@@ -40,8 +40,8 @@
   }, {
     "components" : [ {
       "componentAttributes" : {
+        "customHeadTags" : "",
         "description" : "",
-        "metaTags" : "",
         "title" : "Top Articles"
       },
       "componentName" : "forceCommunity:seoAssistant",

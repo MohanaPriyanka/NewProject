@@ -31,7 +31,7 @@
       "type" : "component"
     }, {
       "componentAttributes" : {
-        "richTextValue" : "<p><a href=\"/ForgotPassword\" target=\"_self\" style=\"color: rgb(255, 255, 255);\">Click here to set up your Account or reset your password.</a></p>"
+        "richTextValue" : "<p><a href=\"/ForgotPassword\" rel=\"noopener noreferrer\" target=\"_self\"><u>﻿Click here to set up your account or reset your password.</u></a></p>"
       },
       "componentName" : "forceCommunity:richTextInline",
       "id" : "1abc17c9-8245-413d-9ba7-7513afd96695",
@@ -45,8 +45,8 @@
   }, {
     "components" : [ {
       "componentAttributes" : {
+        "customHeadTags" : "",
         "description" : "",
-        "metaTags" : "",
         "title" : "Login"
       },
       "componentName" : "forceCommunity:seoAssistant",

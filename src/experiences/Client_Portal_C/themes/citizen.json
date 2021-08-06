@@ -7,10 +7,12 @@
   "layouts" : {
     "Home" : "7037702e-ad82-4161-b1b9-5f325b6bb233",
     "Inner" : "eac82814-47dc-4905-a8a6-9c39def64b7d",
-    "Login" : "0a43f614-5fea-4349-9ab1-7fb775c55bdb"
+    "Login" : "0a43f614-5fea-4349-9ab1-7fb775c55bdb",
+    "ServiceNotAvailable" : "14779a09-7316-46d1-ae51-08c027b7cbf9"
   },
   "type" : "theme",
   "views" : [ {
+    "componentAttributes" : { },
     "componentName" : "salesforceIdentity:loginBody2",
     "id" : "0a43f614-5fea-4349-9ab1-7fb775c55bdb",
     "label" : "Login",
@@ -29,6 +31,15 @@
     } ],
     "type" : "view"
   }, {
+    "componentAttributes" : {
+      "fixedPageWidth" : 1440,
+      "headerBgColor" : "rgba(0, 71, 100, 0.8)",
+      "isHeaderPinned" : false,
+      "isHeroUnderHeader" : false,
+      "isPageWidthFixed" : true,
+      "showHeader" : true,
+      "showHero" : false
+    },
     "componentName" : "siteforce:themeLayoutStarter",
     "id" : "eac82814-47dc-4905-a8a6-9c39def64b7d",
     "label" : "Default",
@@ -235,6 +246,15 @@
     } ],
     "type" : "view"
   }, {
+    "componentAttributes" : {
+      "fixedPageWidth" : 1440,
+      "headerBgColor" : "rgba(0, 71, 100, 0.8)",
+      "isHeaderPinned" : false,
+      "isHeroUnderHeader" : true,
+      "isPageWidthFixed" : true,
+      "showHeader" : true,
+      "showHero" : true
+    },
     "componentName" : "siteforce:themeLayoutStarter",
     "id" : "7037702e-ad82-4161-b1b9-5f325b6bb233",
     "label" : "Home",
@@ -436,6 +456,29 @@
       "type" : "region"
     }, {
       "id" : "a11eda9d-8775-4233-a184-1b0e7791a995",
+      "regionName" : "themeFooter",
+      "type" : "region"
+    } ],
+    "type" : "view"
+  }, {
+    "componentAttributes" : {
+      "fixedPageWidth" : 1170,
+      "headerBgColor" : "rgba(0, 0, 0, 0)",
+      "isHeaderPinned" : false,
+      "isHeroUnderHeader" : false,
+      "isPageWidthFixed" : true,
+      "showHeader" : true,
+      "showHero" : true
+    },
+    "componentName" : "siteforce:themeLayoutStarter",
+    "id" : "14779a09-7316-46d1-ae51-08c027b7cbf9",
+    "label" : "ServiceNotAvailable",
+    "regions" : [ {
+      "id" : "e1eb62a9-7c04-48d1-a44d-4510f64298e8",
+      "regionName" : "themeHeader",
+      "type" : "region"
+    }, {
+      "id" : "8056264f-2505-4c93-9d1b-f2c5a1f208f1",
       "regionName" : "themeFooter",
       "type" : "region"
     } ],

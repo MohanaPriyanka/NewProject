@@ -1,6 +1,7 @@
 {
-  "activeViewId" : "9bd71f19-5504-499c-80ce-398f506eb0f9",
+  "activeViewId" : "2f7f1691-6706-4e82-8c0b-f9d91d192a63",
   "appPageId" : "75cc6a93-289d-403d-a65f-3e067ecf74c3",
+  "configurationTags" : [ ],
   "id" : "ae064f56-e631-4b65-9ceb-6e4a238bf63e",
   "label" : "Billing Account Detail",
   "objectApiName" : "Zuora__CustomerAccount__c",

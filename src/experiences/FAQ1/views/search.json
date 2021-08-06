@@ -11,8 +11,8 @@
     "components" : [ {
       "componentAttributes" : {
         "scopes" : [ {
-          "name" : "KnowledgeArticleVersion",
-          "isPublic" : true
+          "isPublic" : true,
+          "name" : "KnowledgeArticleVersion"
         } ],
         "searchResultFiltering" : true,
         "searchTerm" : "{!searchString}",

@@ -1,0 +1,96 @@
+{
+  "appPageId" : "c846375f-b289-4bf1-b4fd-ed059e2c4b55",
+  "componentName" : "siteforce:sldsTwoCol84Layout",
+  "id" : "afa2ea30-b0b8-4a40-af59-86ca526df4c2",
+  "label" : "Case Detail",
+  "regions" : [ {
+    "id" : "29d1a9e1-e5be-4823-b167-5c4ffc60d214",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "recordId" : "{!recordId}"
+      },
+      "componentName" : "forceCommunity:recordDetail",
+      "id" : "800400dc-33f4-4b7e-89ad-670c462ebc84",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "63e619d6-8489-4e03-a44c-a057c149d22d",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "3b591ab9-c75e-4bf9-bf2c-0ad127d0e450",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "{!Record._Object}: {!Record._Title}"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "3f7e7d8a-a826-41c1-b50d-918579c0580b",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "77cd297d-1e3c-43e6-91be-1447cc5a4457",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  }, {
+    "id" : "bc40a1d3-ede0-4f83-b8e6-b59586cebcdb",
+    "regionName" : "featured",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "align" : "Center",
+        "applyCardBackground" : true,
+        "autoLaunchFlow" : false,
+        "buttonBackgroundColor" : "",
+        "buttonHeight" : "50px",
+        "buttonLabel" : "Submit For Review",
+        "buttonTextColor" : "",
+        "buttonTextSize" : "",
+        "buttonWidth" : "300px",
+        "fixedButtonWidthHeight" : true,
+        "fixedModalWidthHeight" : false,
+        "flowInputVariablesString" : "[{\"name\" : \"var_CaseId\", \"type\" : \"String\", \"value\" : \"{!recordId}\"}]",
+        "flowModalHeader" : "",
+        "flowName" : "Partner_Case_Flow",
+        "hideButton" : false,
+        "hideFlowTransitionOverlay" : true,
+        "hideModalCloseButton" : false,
+        "modalHeight" : "600px",
+        "modalWidth" : "800px",
+        "redirectUrlOnFlowCompletion" : "",
+        "refreshPageOnFlowCompletion" : true,
+        "renderFooter" : false
+      },
+      "componentName" : "sf_flowmodal:ccp_launchFlowModal",
+      "id" : "387e4bc3-e89b-4617-bd14-d332cbc87260",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    }, {
+      "componentAttributes" : {
+        "recordId" : "{!recordId}",
+        "width" : "MEDIUM"
+      },
+      "componentName" : "forceCommunity:relatedRecords",
+      "id" : "86b20ccb-a32b-48cc-ba1f-b4e1aa06a2da",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "81c8812c-ddc8-47b9-b305-fd7f1cdb2a83",
+    "regionName" : "sidebar",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "detail-500"
+}

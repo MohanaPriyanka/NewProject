@@ -1,0 +1,45 @@
+{
+  "appPageId" : "c846375f-b289-4bf1-b4fd-ed059e2c4b55",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "id" : "b05189a7-3dc2-4ea4-90ad-ab188e4d9681",
+  "label" : "Shared Solar System List",
+  "regions" : [ {
+    "id" : "91b5edb1-841b-4e07-a67a-cdea112ea858",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "enableInlineEdit" : false,
+        "filterName" : "00B0a000004YkZaEAK",
+        "layout" : "STANDARD",
+        "pageSize" : 25,
+        "scope" : "Shared_Solar_System__c",
+        "showActionBar" : false,
+        "showChartsPanel" : false,
+        "showDisplay" : "showall",
+        "showFilterPanel" : false,
+        "showImageIcon" : true,
+        "showManualRefreshButton" : true,
+        "showObjectName" : true,
+        "showPinnedList" : true,
+        "showSearchBar" : true
+      },
+      "componentName" : "forceCommunity:objectHome",
+      "id" : "aef8f5da-ea0a-4061-8ca2-385c5890bce9",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "81919d4c-806d-458c-b393-89dadd1d8126",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "0144e059-3158-48ce-9f91-d9528bb6d380",
+    "regionName" : "footer",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "list-a1J"
+}

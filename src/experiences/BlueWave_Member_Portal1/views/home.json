@@ -6,7 +6,7 @@
   "regions" : [ {
     "components" : [ {
       "componentAttributes" : {
-        "richTextValue" : "<h2>&nbsp;</h2>\n<h1 style=\"text-align: center;\"><strong>Hello, {!CurrentUser.name} </strong></h1>\n<p style=\"text-align: center;\">&nbsp;</p>"
+        "richTextValue" : "<h2>&nbsp;</h2>\n<h1 style=\"text-align: center;\"><strong>Hello, {!CurrentUser.firstName}! </strong></h1>\n<p style=\"text-align: center;\">&nbsp;</p>"
       },
       "componentName" : "forceCommunity:htmlBlock",
       "id" : "53811b1a-01b2-48ed-b0d6-4484aafdfaa6",
@@ -49,8 +49,8 @@
   }, {
     "components" : [ {
       "componentAttributes" : {
+        "customHeadTags" : "",
         "description" : "",
-        "metaTags" : "",
         "title" : "Home"
       },
       "componentName" : "forceCommunity:seoAssistant",

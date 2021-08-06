@@ -1,0 +1,11 @@
+{
+  "activeViewId" : "f63a6173-c5b0-4f45-a053-2aa0ebf5af0a",
+  "appPageId" : "8f426399-4c5a-4500-a4c6-88a9ee701502",
+  "configurationTags" : [ ],
+  "id" : "c89695f3-b2de-47b5-af15-f41b9a7c87ba",
+  "label" : "Switch - Partner",
+  "pageAccess" : "UseParent",
+  "routeType" : "custom-partnerswitch",
+  "type" : "route",
+  "urlPrefix" : "partnerswitch"
+}

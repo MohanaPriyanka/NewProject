@@ -26,8 +26,8 @@
   }, {
     "components" : [ {
       "componentAttributes" : {
+        "customHeadTags" : "",
         "description" : "",
-        "metaTags" : "",
         "title" : "Account Info"
       },
       "componentName" : "forceCommunity:seoAssistant",

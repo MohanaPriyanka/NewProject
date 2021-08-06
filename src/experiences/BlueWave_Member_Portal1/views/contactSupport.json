@@ -40,8 +40,8 @@
   }, {
     "components" : [ {
       "componentAttributes" : {
+        "customHeadTags" : "",
         "description" : "",
-        "metaTags" : "",
         "title" : "Contact Support"
       },
       "componentName" : "forceCommunity:seoAssistant",

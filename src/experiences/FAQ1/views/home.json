@@ -41,8 +41,8 @@
         "showTitle" : false,
         "title" : "Top Articles",
         "topicList" : [ {
-          "name" : "0TO0a000000DpniGAC",
-          "isPublic" : true
+          "isPublic" : true,
+          "name" : "0TO0a000000DpniGAC"
         } ]
       },
       "componentName" : "forceCommunity:topArticleList",
@@ -61,8 +61,8 @@
         "showTitle" : false,
         "title" : "Top Articles",
         "topicList" : [ {
-          "name" : "0TO0a000000DpnxGAC",
-          "isPublic" : true
+          "isPublic" : true,
+          "name" : "0TO0a000000DpnxGAC"
         } ]
       },
       "componentName" : "forceCommunity:topArticleList",
@@ -81,8 +81,8 @@
         "showTitle" : false,
         "title" : "Top Articles",
         "topicList" : [ {
-          "name" : "0TO0a000000DqXlGAK",
-          "isPublic" : true
+          "isPublic" : true,
+          "name" : "0TO0a000000DqXlGAK"
         } ]
       },
       "componentName" : "forceCommunity:topArticleList",
@@ -101,8 +101,8 @@
   }, {
     "components" : [ {
       "componentAttributes" : {
+        "customHeadTags" : "",
         "description" : "",
-        "metaTags" : "",
         "title" : "Home"
       },
       "componentName" : "forceCommunity:seoAssistant",

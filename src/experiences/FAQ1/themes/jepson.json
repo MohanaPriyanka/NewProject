@@ -7,10 +7,12 @@
   "layouts" : {
     "Home" : "6635dff7-55df-4a30-8385-1fba20ac527d",
     "Inner" : "4a922d22-ba39-4d31-8243-1dfc723852f4",
-    "Login" : "9ef4b02e-cfc2-4d3a-8af2-1a688542402f"
+    "Login" : "9ef4b02e-cfc2-4d3a-8af2-1a688542402f",
+    "ServiceNotAvailable" : "d5b1b312-9cc2-4e05-a199-c469942c449c"
   },
   "type" : "theme",
   "views" : [ {
+    "componentAttributes" : { },
     "componentName" : "salesforceIdentity:loginBody2",
     "id" : "9ef4b02e-cfc2-4d3a-8af2-1a688542402f",
     "label" : "Login",
@@ -29,6 +31,15 @@
     } ],
     "type" : "view"
   }, {
+    "componentAttributes" : {
+      "fixedPageWidth" : 1440,
+      "headerBgColor" : "rgba(255, 255, 255, 0.8)",
+      "isHeaderPinned" : false,
+      "isHeroUnderHeader" : false,
+      "isPageWidthFixed" : true,
+      "showHeader" : true,
+      "showHero" : false
+    },
     "componentName" : "siteforce:themeLayoutStarter",
     "id" : "4a922d22-ba39-4d31-8243-1dfc723852f4",
     "label" : "Default",
@@ -107,8 +118,8 @@
               "buttonColor" : "",
               "buttonHoverColor" : "",
               "crossObjectTypeaheadApiNames" : [ {
-                "name" : "Knowledge__kav",
-                "isPublic" : true
+                "isPublic" : true,
+                "name" : "Knowledge__kav"
               } ],
               "iconColor" : "rgba(0, 0, 0, 0.8)",
               "placeholderText" : "Search...",
@@ -238,6 +249,15 @@
     } ],
     "type" : "view"
   }, {
+    "componentAttributes" : {
+      "fixedPageWidth" : 1440,
+      "headerBgColor" : "rgba(255, 255, 255, 0.8)",
+      "isHeaderPinned" : false,
+      "isHeroUnderHeader" : false,
+      "isPageWidthFixed" : true,
+      "showHeader" : true,
+      "showHero" : false
+    },
     "componentName" : "siteforce:themeLayoutStarter",
     "id" : "6635dff7-55df-4a30-8385-1fba20ac527d",
     "label" : "Home",
@@ -316,8 +336,8 @@
               "buttonColor" : "",
               "buttonHoverColor" : "",
               "crossObjectTypeaheadApiNames" : [ {
-                "name" : "Knowledge__kav",
-                "isPublic" : true
+                "isPublic" : true,
+                "name" : "Knowledge__kav"
               } ],
               "iconColor" : "rgba(0, 0, 0, 0.8)",
               "placeholderText" : "Search...",
@@ -442,6 +462,29 @@
       "type" : "region"
     }, {
       "id" : "dbb14899-d5b3-4459-bded-53ecc9584f1c",
+      "regionName" : "themeFooter",
+      "type" : "region"
+    } ],
+    "type" : "view"
+  }, {
+    "componentAttributes" : {
+      "fixedPageWidth" : 1170,
+      "headerBgColor" : "rgba(0, 0, 0, 0)",
+      "isHeaderPinned" : false,
+      "isHeroUnderHeader" : false,
+      "isPageWidthFixed" : true,
+      "showHeader" : true,
+      "showHero" : true
+    },
+    "componentName" : "siteforce:themeLayoutStarter",
+    "id" : "d5b1b312-9cc2-4e05-a199-c469942c449c",
+    "label" : "ServiceNotAvailable",
+    "regions" : [ {
+      "id" : "2736539e-cba9-4d48-90f8-fcb50e51e4b0",
+      "regionName" : "themeHeader",
+      "type" : "region"
+    }, {
+      "id" : "89786d6d-81b8-4595-ae55-407ff099cdee",
       "regionName" : "themeFooter",
       "type" : "region"
     } ],

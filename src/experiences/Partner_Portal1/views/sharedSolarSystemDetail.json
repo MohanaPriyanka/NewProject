@@ -1,0 +1,72 @@
+{
+  "appPageId" : "c846375f-b289-4bf1-b4fd-ed059e2c4b55",
+  "componentName" : "siteforce:sldsTwoCol84Layout",
+  "id" : "e3eee3b9-e84d-41be-8aa4-6a64171bdddd",
+  "label" : "Shared Solar System Detail",
+  "regions" : [ {
+    "components" : [ {
+      "componentAttributes" : {
+        "recordId" : "{!recordId}"
+      },
+      "componentName" : "forceCommunity:recordHeadline",
+      "id" : "79ccea46-dcf1-40d1-af8d-76a9410a9007",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "b5be1430-1962-467c-a5bf-8931cfe4d7d1",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "recordId" : "{!recordId}"
+      },
+      "componentName" : "forceCommunity:recordDetail",
+      "id" : "00672528-e0c4-42ac-90e0-68a34b8b2e6e",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "4940204c-4f2e-45dd-936b-c237296d5d54",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "4d840fc6-0044-4c7d-9d96-b0d7d9896e68",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "{!Record._Object}: {!Record._Title}"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "48464b97-f99e-4d76-96d6-0e3da3867d28",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "b9f6256c-dd2f-47f1-b6c7-9446912b41b7",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "recordId" : "{!recordId}",
+        "width" : "MEDIUM"
+      },
+      "componentName" : "forceCommunity:relatedRecords",
+      "id" : "f98b9dd2-4d21-46ed-b621-487110f87f2d",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "6d22df59-45f1-490c-a7cc-c5dd14afb933",
+    "regionName" : "sidebar",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "detail-a1J"
+}

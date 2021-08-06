@@ -26,8 +26,8 @@
   }, {
     "components" : [ {
       "componentAttributes" : {
+        "customHeadTags" : "",
         "description" : "",
-        "metaTags" : "",
         "title" : "Project Report Folder"
       },
       "componentName" : "forceCommunity:seoAssistant",

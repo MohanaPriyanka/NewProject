@@ -1,7 +1,8 @@
 {
-  "activeViewId" : "d295b219-3e47-4d54-94e9-16387c5a3f49",
+  "activeViewId" : "47d2b8ba-a371-4db6-9aac-8f9052e997f5",
   "appPageId" : "8f426399-4c5a-4500-a4c6-88a9ee701502",
-  "id" : "af69a2ee-64d3-4dfb-b3d5-1d9fa29ace38",
+  "configurationTags" : [ ],
+  "id" : "b90b7a33-b164-4fc0-96b0-5c351760db95",
   "label" : "Switch",
   "pageAccess" : "UseParent",
   "routeType" : "custom-switch",

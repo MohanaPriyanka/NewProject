@@ -9,10 +9,12 @@
     "Home" : "9f6a32d3-f2a9-4e87-abd4-59675cb52ba2",
     "Inner" : "6cf22bbf-df73-4e32-8a54-cdb3ce1d7315",
     "Login" : "516e413e-8682-418e-8c9d-fb0b79506d46",
+    "ServiceNotAvailable" : "22bd539b-6279-413d-8142-05acd7f0a392",
     "SiqAVXnQjfVaPkSPEx6MK8WR5peYfo" : "5b0d2607-3fc1-44c4-b010-fa00f729dbee"
   },
   "type" : "theme",
   "views" : [ {
+    "componentAttributes" : { },
     "componentName" : "salesforceIdentity:loginBody2",
     "id" : "516e413e-8682-418e-8c9d-fb0b79506d46",
     "label" : "Login",
@@ -31,6 +33,15 @@
     } ],
     "type" : "view"
   }, {
+    "componentAttributes" : {
+      "fixedPageWidth" : 1440,
+      "headerBgColor" : "rgba(255, 255, 255, 0.8)",
+      "isHeaderPinned" : false,
+      "isHeroUnderHeader" : false,
+      "isPageWidthFixed" : true,
+      "showHeader" : true,
+      "showHero" : false
+    },
     "componentName" : "siteforce:themeLayoutStarter",
     "id" : "6cf22bbf-df73-4e32-8a54-cdb3ce1d7315",
     "label" : "Default",
@@ -246,6 +257,15 @@
     } ],
     "type" : "view"
   }, {
+    "componentAttributes" : {
+      "fixedPageWidth" : 1282,
+      "headerBgColor" : "rgba(255, 255, 255, 0.01)",
+      "isHeaderPinned" : false,
+      "isHeroUnderHeader" : false,
+      "isPageWidthFixed" : true,
+      "showHeader" : true,
+      "showHero" : true
+    },
     "componentName" : "siteforce:themeLayoutStarter",
     "id" : "9f6a32d3-f2a9-4e87-abd4-59675cb52ba2",
     "label" : "Home",
@@ -461,6 +481,15 @@
     } ],
     "type" : "view"
   }, {
+    "componentAttributes" : {
+      "fixedPageWidth" : 1440,
+      "headerBgColor" : "rgba(255, 255, 255, 0.8)",
+      "isHeaderPinned" : false,
+      "isHeroUnderHeader" : false,
+      "isPageWidthFixed" : true,
+      "showHeader" : true,
+      "showHero" : true
+    },
     "componentName" : "siteforce:themeLayoutStarter",
     "id" : "00538262-c197-493d-8931-d524a9b804bd",
     "label" : "Project Reports",
@@ -667,6 +696,15 @@
     } ],
     "type" : "view"
   }, {
+    "componentAttributes" : {
+      "fixedPageWidth" : 1440,
+      "headerBgColor" : "rgba(255, 255, 255, 0.8)",
+      "isHeaderPinned" : false,
+      "isHeroUnderHeader" : false,
+      "isPageWidthFixed" : true,
+      "showHeader" : true,
+      "showHero" : true
+    },
     "componentName" : "siteforce:themeLayoutStarter",
     "id" : "5b0d2607-3fc1-44c4-b010-fa00f729dbee",
     "label" : "Billing Reports",
@@ -868,6 +906,29 @@
       "type" : "region"
     }, {
       "id" : "f240b5b7-436d-4f22-8fd8-1a09b3e75740",
+      "regionName" : "themeFooter",
+      "type" : "region"
+    } ],
+    "type" : "view"
+  }, {
+    "componentAttributes" : {
+      "fixedPageWidth" : 1170,
+      "headerBgColor" : "rgba(0, 0, 0, 0)",
+      "isHeaderPinned" : false,
+      "isHeroUnderHeader" : false,
+      "isPageWidthFixed" : true,
+      "showHeader" : true,
+      "showHero" : true
+    },
+    "componentName" : "siteforce:themeLayoutStarter",
+    "id" : "22bd539b-6279-413d-8142-05acd7f0a392",
+    "label" : "ServiceNotAvailable",
+    "regions" : [ {
+      "id" : "8ec9f387-1e40-4767-b0b7-1dcc0a64791e",
+      "regionName" : "themeHeader",
+      "type" : "region"
+    }, {
+      "id" : "68f93e42-85e9-44af-bacc-97c9594c803f",
       "regionName" : "themeFooter",
       "type" : "region"
     } ],
