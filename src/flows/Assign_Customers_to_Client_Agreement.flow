@@ -104,7 +104,7 @@
             <name>output</name>
         </outputParameters>
     </actionCalls>
-    <apiVersion>49.0</apiVersion>
+    <apiVersion>52.0</apiVersion>
     <assignments>
         <name>Add_Contract_To_Update_List</name>
         <label>Add Contract To Update List</label>
@@ -433,6 +433,7 @@
         </connector>
         <inputReference>ContractsToUpdate</inputReference>
     </recordUpdates>
+    <runInMode>SystemModeWithoutSharing</runInMode>
     <screens>
         <name>Assign_Customers_To_Client_Agreement</name>
         <label>Assign Customers To Client Agreement</label>
