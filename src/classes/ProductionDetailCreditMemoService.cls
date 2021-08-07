@@ -1,6 +1,6 @@
 // Tested By: ProductionToBillServiceTest
 @SuppressWarnings('PMD.ApexCRUDViolation')
-public without sharing class ProductionDetailCreditMemoService implements Database.AllowsCallouts{
+public without sharing class ProductionDetailCreditMemoService implements Database.AllowsCallouts {
     @TestVisible
     private List<Transfer_Part__c> productionDetailToInsert = new List<Transfer_Part__c>();
     @TestVisible
@@ -17,7 +17,8 @@ public without sharing class ProductionDetailCreditMemoService implements Databa
     public void createProductionDetailFromCreditMemo(List<Journal_Entry__c> creditMemoEntries) {
         calculateProductionDetailFromCreditMemo(creditMemoEntries);
         insert productionDetailToInsert;
-        delete productionDetailToDelete;
+        List<Database.DeleteResult> deleteResults = Database.delete(productionDetailToDelete, false);
+        logDeleteErrors(deleteResults, productionDetailToDelete);
     }
 
     @TestVisible
@@ -28,10 +29,10 @@ public without sharing class ProductionDetailCreditMemoService implements Databa
         for (Journal_Entry__c creditMemo : creditMemoEntries) {
             // If a Credit Memo Journal Entry is marked as "Ready_for_Production_Detail__c" but already
             // has transfer parts, that means it could have been reallocated and we need to re-distribute:
-            if (creditMemo.Transfer_Parts__r.size() > 0){
+            if (creditMemo.Transfer_Parts__r.size() > 0) {
                 productionDetailToDelete.addAll(creditMemo.Transfer_Parts__r);
             }
-            if (creditMemo.Reason_Code__c == 'Production'){
+            if (creditMemo.Reason_Code__c == 'Production') {
                 billItems.add(creditMemo);
             }
             if (ZuoraAPIHelper.getCalloutsRemaining() > 10) {
@@ -39,27 +40,26 @@ public without sharing class ProductionDetailCreditMemoService implements Databa
                 // applied to) before reusing the same method that is used for Payment Journal Entries
                 completedJEs.add(creditMemo);
                 collectionItems.addAll(splitCreditMemoIntoParts(creditMemo));
-            } else {
-                // If we hit the calloutLimit, do not add to completedJEs List, so the JE will remain
-                // marked as "Ready for Production Detail" = true, and get pulled into the next batch
             }
+            // If we hit the calloutLimit, do not add to completedJEs List, so the JE will remain
+            // marked as "Ready for Production Detail" = true, and get pulled into the next batch
         }
         createBillItemForCreditMemo(billItems);
         createPaymentItemForCreditMemo(collectionItems);
     }
 
-    private void createBillItemForCreditMemo(List<Journal_Entry__c> billItems){
+    private void createBillItemForCreditMemo(List<Journal_Entry__c> billItems) {
         Set<String> adjustmentExternalIds = new Set<String>();
         Set<Id> transferRecordIds = new Set<Id>();
 
-        for (Journal_Entry__c entry : billItems){
+        for (Journal_Entry__c entry : billItems) {
             adjustmentExternalIds.add(entry.External_Id__c);
         }
 
-        Map<String,List<Bill_Adjustment__c>> adjustMap = adjustmentSelector.getAdjustmentMapFromExternalIds(adjustmentExternalIds);
+        Map<String, List<Bill_Adjustment__c>> adjustMap = adjustmentSelector.getAdjustmentMapFromExternalIds(adjustmentExternalIds);
 
-        for (String entryId : adjustMap.keySet()){
-            for (Bill_Adjustment__c adjust : adjustMap.get(entryId)){
+        for (String entryId : adjustMap.keySet()) {
+            for (Bill_Adjustment__c adjust : adjustMap.get(entryId)) {
                 transferRecordIds.add(adjust.Transfer__c);
             }
         }
@@ -67,12 +67,12 @@ public without sharing class ProductionDetailCreditMemoService implements Databa
         ProductionDetailBillService billService = new ProductionDetailBillService();
         billService.transferToDetailMap = productionDetailSelector.getTransferPartMap(transferRecordIds);
 
-        for (Journal_Entry__c entry : billItems){
+        for (Journal_Entry__c entry : billItems) {
             List<Bill_Adjustment__c> adjustments = adjustMap.get(entry.External_Id__c);
-            if (adjustments == null){
+            if (adjustments == null) {
                 continue;
             }
-            for (Bill_Adjustment__c sfAdjustment : adjustments){
+            for (Bill_Adjustment__c sfAdjustment : adjustments) {
                 billService.createBillProductionDetail(sfAdjustment.Transfer__c, sfAdjustment.Adjustment_Amount__c, 'Bill', entry.Id);
                 billService.createBillProductionDetail(sfAdjustment.Transfer__c, sfAdjustment.Discount__c, 'Customer Savings', entry.Id);
                 billService.createBillProductionDetail(sfAdjustment.Transfer__c, sfAdjustment.Adjustment_Amount__c, 'Payment', entry.Id);
@@ -81,27 +81,27 @@ public without sharing class ProductionDetailCreditMemoService implements Databa
         productionDetailToInsert.addAll(billService.productionDetailToInsert);
     }
 
-    private void createPaymentItemForCreditMemo(List<Journal_Entry__c> collectionItems){
+    private void createPaymentItemForCreditMemo(List<Journal_Entry__c> collectionItems) {
         ProductionDetailPaymentService payService = new ProductionDetailPaymentService();
         payService.calculateProductionDetailFromCollectionItem(collectionItems);
         productionDetailToInsert.addAll(payService.productionDetailToInsert);
     }
 
-    private List<Journal_Entry__c> splitCreditMemoIntoParts(Journal_Entry__c creditMemo){
+    private List<Journal_Entry__c> splitCreditMemoIntoParts(Journal_Entry__c creditMemo) {
         HttpResponse response;
         ZuoraAPI.CreditMemoWithParts memoParts;
         List<ZuoraAPI.CreditMemoPartItem> memoPartItemList = new List<ZuoraAPI.CreditMemoPartItem>();
         List<Journal_Entry__c> journalEntriesByPart = new List<Journal_Entry__c>();
 
-        response = ZuoraAPIHelper.callJsonEndpoint('GET', '/v1/creditmemos/'+ creditMemo.External_Id__c +'/parts', null, false);
+        response = ZuoraAPIHelper.callJsonEndpoint('GET', '/v1/creditmemos/' + creditMemo.External_Id__c + '/parts', null, false);
         memoParts = (ZuoraAPI.CreditMemoWithParts) JSON.deserialize(response.getBody(), ZuoraAPI.CreditMemoWithParts.class);
 
-        for (ZuoraAPI.CreditMemoPart memoPart : memoParts.parts){
-            if (memoPart.DebitMemoId != null){
+        for (ZuoraAPI.CreditMemoPart memoPart : memoParts.parts) {
+            if (memoPart.DebitMemoId != null) {
                 continue;
             }
-            if (memoPart.InvoiceId != null){
-                String urlString = '/v1/creditmemos/'+ creditMemo.External_Id__c +'/parts/';
+            if (memoPart.InvoiceId != null) {
+                String urlString = '/v1/creditmemos/' + creditMemo.External_Id__c + '/parts/';
                 urlString += memoPart.Id + '/itemparts';
                 response = ZuoraAPIHelper.callJsonEndpoint('GET', urlString, null, false);
                 ZuoraAPI.CreditMemoWithItems partItems;
@@ -126,5 +126,19 @@ public without sharing class ProductionDetailCreditMemoService implements Databa
             }
         }
         return journalEntriesByPart;
+    }
+
+    private void logDeleteErrors(List<Database.DeleteResult> deleteResults, List<Transfer_Part__c> transferParts) {
+        for (Integer i = 0; i < deleteResults.size(); i++) {
+            if (!deleteResults[i].isSuccess()) {
+                Logger.logLater(
+                    'ProductionDetailCreditMemoService',
+                    'createProductionDetailFromCreditMemo',
+                    transferParts[i].Id + ': ' + deleteResults[i].getErrors()[0].getMessage(),
+                    Logger.ERROR
+                );
+            }
+        }
+        Logger.flushLogs();
     }
 }

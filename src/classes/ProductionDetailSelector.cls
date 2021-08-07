@@ -43,7 +43,7 @@ public inherited sharing class ProductionDetailSelector {
                 Production__c, Production__r.Name, Journal_Entry__c, Journal_Entry__r.External_Id__c
             FROM Transfer_Part__c
             WHERE Journal_Entry__r.External_Id__c IN : invoiceEntries
-            AND Type__c = 'Bill'
+            AND (Type__c = 'Bill' OR (Type__c = 'Payment' AND Journal_Entry__r.Object_Type__c = 'DebitMemo'))
         ];
 
         for (Transfer_Part__c part : parts){
@@ -59,12 +59,20 @@ public inherited sharing class ProductionDetailSelector {
         return partsMap;
     }
 
-    public Map<Id,Decimal> getPaymentSum(Set<String> invoiceEntries) {
+    /**
+     * @description Gets payments applied to Bills
+     * @param invoiceOrDebitMemoIds Zuora InvoiceItemId or DebitMemoId
+     * @return Map of payment amounts by Production Detail Id (of type Bill)
+     */
+    public Map<Id,Decimal> getPaymentSum(Set<String> invoiceOrDebitMemoIds) {
         Map<Id,Decimal> paymentSumMap = new Map<Id,Decimal>();
         List<AggregateResult> payments = [
             SELECT SUM(Amount__c) sumPayments, Bill_Part__c
             FROM Transfer_Part__c
-            WHERE Bill_Part__r.Journal_Entry__r.External_Id__c IN : invoiceEntries
+            WHERE (
+                Bill_Part__r.Journal_Entry__r.External_Id__c IN : invoiceOrDebitMemoIds
+                OR Journal_Entry__r.External_Id__c IN : invoiceOrDebitMemoIds
+            )
             AND Type__c = 'Payment'
             GROUP BY Bill_Part__c
         ];
