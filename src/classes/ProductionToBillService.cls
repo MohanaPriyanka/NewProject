@@ -12,7 +12,8 @@ public without sharing class ProductionToBillService implements Queueable, Datab
         BILL, PAYMENT, CREDITMEMO, DEBITMEMO, UNSERVICED_BILL, UNSERVICED_ADJUST
     }
     public OperationType opType;
-    public Integer batchSize = 1000;
+    // Set to 50 to avoid UNABLE_TO_LOCK_ROW on Production records when inserting InvoiceItem PDs
+    public Integer batchSize = 50;
 
     public List<Journal_Entry__c> incompleteEntries = new List<Journal_Entry__c>();
 
@@ -47,11 +48,10 @@ public without sharing class ProductionToBillService implements Queueable, Datab
         );
         if (invoiceItems.size() > 0) {
             ProductionDetailBillService billService = new ProductionDetailBillService();
+            // Runs a Data Query, inserts PDs when done, and queues itself if there are more to do.
             billService.createProductionDetailFromInvoiceItems(invoiceItems, batchSize);
             markJournalEntriesAsComplete(invoiceItems);
-            if (invoiceItems.size() == batchSize) {
-                queueJob(OperationType.BILL);
-            }
+            // Since the billService is async and requeues itself, there's no need to queue the BILL job here
         } else {
             queueJob(OperationType.PAYMENT);
         }
