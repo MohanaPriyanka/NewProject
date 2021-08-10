@@ -84,7 +84,7 @@ public inherited sharing class ProductionDetailSelector {
 
     public static List<Transfer_Part__c> getDetailsForDeletion(Map<Id, Transfer_Part__c> details) {
         List<Transfer_Part__c> detailList = [
-            SELECT Id, Production__r.Verification_Status__c, Transfer__c
+            SELECT Id, Production__r.Verification_Status__c, Transfer__c, Journal_Entry__c
             FROM Transfer_Part__c
             WHERE Id IN :details.keySet()
         ];
