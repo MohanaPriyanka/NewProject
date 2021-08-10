@@ -22,7 +22,7 @@ public without sharing class TransferPartService {
             ProductionCredits prodCredit = new ProductionCredits();
             prodCredit.production = prod;
             prodCredit.type = prod.Billing_Method__c;
-            if (prod.Billing_Method__c == 'kWh'){
+            if (prod.Billing_Method__c == 'kWh') {
                 prodCredit.creditsTransferred = prod.kWh_Transferred__c;
                 prodCredit.untransferredCredits = prod.Untransferred_kWh__c;
             } else {
@@ -33,7 +33,7 @@ public without sharing class TransferPartService {
         }
     }
 
-    public void onAfterTransferUpdate(List<Transfer__c> allTransfers, Map<Id, Transfer__c> oldTransferMap){
+    public void onAfterTransferUpdate(List<Transfer__c> allTransfers, Map<Id, Transfer__c> oldTransferMap) {
         List<Transfer__c> transferList = new List<Transfer__c>();
         List<Case> casesToInsert = new List<Case>();
         Group dataOps = [SELECT Id, DeveloperName FROM Group WHERE Type = 'Queue' AND DeveloperName = 'Data_Ops' LIMIT 1];
@@ -60,7 +60,7 @@ public without sharing class TransferPartService {
         }
 
         createPartsFromTransfer(transferList);
-        if (casesToInsert.size() > 0 ){
+        if (casesToInsert.size() > 0) {
             insert casesToInsert;
         }
     }
@@ -68,8 +68,8 @@ public without sharing class TransferPartService {
 
     public void onAfterTransferParts(List<Transfer_Part__c> allTransferParts) {
         Set<Id> transferIds = new Set<Id>();
-        for (Transfer_Part__c part : allTransferParts){
-            if (part.Type__c == 'Transfer'){
+        for (Transfer_Part__c part : allTransferParts) {
+            if (part.Type__c == 'Transfer') {
                 transferIds.add(part.Transfer__c);
             }
         }
@@ -80,7 +80,8 @@ public without sharing class TransferPartService {
     public void onBeforeDelete(Map<Id, Transfer_Part__c> deletedProductionDetails) {
         List<Transfer_Part__c> deletedDetails = ProductionDetailSelector.getDetailsForDeletion(deletedProductionDetails);
         for (Transfer_Part__c detail : deletedDetails) {
-            if (detail.Production__r.Verification_Status__c == 'Verified') {
+            if (detail.Production__r.Verification_Status__c == 'Verified' &&
+                detail.Journal_Entry__c == null) {
                 Transfer_Part__c triggerDetail = deletedProductionDetails.get(detail.Id);
                 triggerDetail.addError('Production Detail cannot be deleted if Production is "Verified"');
             }
@@ -93,11 +94,11 @@ public without sharing class TransferPartService {
      * @param transferIds Parent Transfer record to the related production details
      * @return Updated Transfer
      */
-    public List<Transfer__c> rollupTransferPartsToTransfer(Set<Id> transferIds){
+    public List<Transfer__c> rollupTransferPartsToTransfer(Set<Id> transferIds) {
         List<AggregateResult> results = [
             SELECT Transfer__c, SUM(Amount__c) partsAmount, SUM(kWh_Amount__c) kwhTotal
             FROM Transfer_Part__c
-            WHERE Transfer__c IN : transferIds
+            WHERE Transfer__c IN :transferIds
             AND Type__c = 'Transfer'
             GROUP BY Transfer__c
         ];
@@ -112,14 +113,13 @@ public without sharing class TransferPartService {
         }
 
         for (AggregateResult result : results) {
-            Transfer__c transferRec = updatedTransferMap.get((Id)result.get('Transfer__c'));
-            transferRec.Id = (Id)result.get('Transfer__c');
-            transferRec.Total_Transferred__c = (Decimal)result.get('partsAmount');
-            transferRec.Total_kWh_Transferred__c = (Decimal)result.get('kwhTotal');
+            Transfer__c transferRec = updatedTransferMap.get((Id) result.get('Transfer__c'));
+            transferRec.Id = (Id) result.get('Transfer__c');
+            transferRec.Total_Transferred__c = (Decimal) result.get('partsAmount');
+            transferRec.Total_kWh_Transferred__c = (Decimal) result.get('kwhTotal');
         }
         return updatedTransferMap.values();
     }
-
 
 
     public void createPartsFromTransfer(List<Transfer__c> transferList) {
@@ -153,9 +153,9 @@ public without sharing class TransferPartService {
         for (Transfer__c transfer : onTimeTransfers) {
             //want to grab the first from the production list because it is the oldest
             List<Object> productionCreditObjects = sssToProductionCreditsMap.getValues(transfer.Shared_Solar_System__c);
-            for (Object value : productionCreditObjects){
+            for (Object value : productionCreditObjects) {
                 ProductionCredits prodCredit = (ProductionCredits) value;
-                if(prodCredit.creditsTransferred == 0){
+                if (prodCredit.creditsTransferred == 0) {
                     Production__c production = prodCredit.production;
 
                     Transfer_Part__c part = new Transfer_Part__c (
@@ -168,7 +168,7 @@ public without sharing class TransferPartService {
                         kWh_Amount__c = transfer.Transfer_kWh__c
                     );
 
-                    if (prodCredit.type == 'kWh'){
+                    if (prodCredit.type == 'kWh') {
                         prodCredit.creditsTransferred += transfer.Transfer_kWh__c;
                     } else {
                         prodCredit.creditsTransferred += transfer.Transfer_Amount__c;
@@ -197,18 +197,18 @@ public without sharing class TransferPartService {
         List<Transfer_Part__c> partsToInsert = new List<Transfer_Part__c>();
         for (Transfer__c transfer : excessTransfers) {
             Decimal amountToTransfer;
-            if (transfer.Billing_Method__c == 'kWh'){
+            if (transfer.Billing_Method__c == 'kWh') {
                 amountToTransfer = transfer.Transfer_kWh__c;
             } else {
                 amountToTransfer = transfer.Transfer_Amount__c;
             }
 
             List<Object> productionCreditObjects = sssToProductionCreditsMap.getValues(transfer.Shared_Solar_System__c);
-            for (Object value : productionCreditObjects){
+            for (Object value : productionCreditObjects) {
                 ProductionCredits prodCredit = (ProductionCredits) value;
-                if(prodCredit.creditsTransferred != 0 && prodCredit.untransferredCredits != 0) {
+                if (prodCredit.creditsTransferred != 0 && prodCredit.untransferredCredits != 0) {
                     Production__c production = prodCredit.production;
-                    if (amountToTransfer > 0){
+                    if (amountToTransfer > 0) {
                         Decimal partAmount = Math.min(prodCredit.untransferredCredits, amountToTransfer);
                         Transfer_Part__c part = new Transfer_Part__c(
                             Name = 'Excess Transfer - ' + production.Name,
@@ -237,7 +237,7 @@ public without sharing class TransferPartService {
 
     }
 
-    public void insertTransferParts(List<Transfer_Part__c> transferParts){
+    public void insertTransferParts(List<Transfer_Part__c> transferParts) {
         try {
             insert transferParts;
         } catch (Exception e) {

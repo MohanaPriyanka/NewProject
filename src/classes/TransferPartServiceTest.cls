@@ -547,8 +547,20 @@ private class TransferPartServiceTest {
             delete productionDetail;
             System.assert(false, 'Expected delete to throw an exception - Production Detail cannot be deleted when Production is Verified');
         } catch (Exception e) {
-            System.assert(e.getMessage().contains('cannot be deleted'), 'Expected delete to throw an exception about deleting the PD - Production Detail cannot be deleted when Production is Verified');
+            System.assert(
+                e.getMessage().contains('cannot be deleted'),
+                'Expected an exception to contain "cannot be deleted" but got: ' + e.getMessage() + '\n' + e.getStackTraceString()
+            );
         }
+
+        Journal_Entry__c je = new Journal_Entry__c();
+        insert je;
+        productionDetail.Journal_Entry__c = je.Id;
+        update productionDetail;
+
+        delete productionDetail;
+        System.assert(true, 'The ProductionDetailCreditMemoService needs to delete Production Details related to ' +
+            'Journal Entries when creating Production Details for Credit Memos (since they may be applied over time)');
     }
 
     @IsTest
