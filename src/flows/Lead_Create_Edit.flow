@@ -225,12 +225,12 @@
             <processMetadataValues>
                 <name>rightHandSideType</name>
                 <value>
-                    <stringValue>String</stringValue>
+                    <stringValue>Formula</stringValue>
                 </value>
             </processMetadataValues>
             <name>loginAccount</name>
             <value>
-                <stringValue>bluewavesoft</stringValue>
+                <elementReference>formula_6_myRule_5_A1_2964366240</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -356,7 +356,7 @@
             </processMetadataValues>
             <name>ssn</name>
             <value>
-                <elementReference>formula_6_myRule_5_A1_3946456124</elementReference>
+                <elementReference>formula_7_myRule_5_A1_3771156377</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -609,6 +609,90 @@
             <name>middleName</name>
             <value>
                 <elementReference>myVariable_current.MiddleName</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>String</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Provider</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>maxOccurs</name>
+                <value>
+                    <numberValue>1.0</numberValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>objectType</name>
+                <value>
+                    <stringValue></stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Formula</stringValue>
+                </value>
+            </processMetadataValues>
+            <name>provider</name>
+            <value>
+                <elementReference>formula_8_myRule_5_A1_1310387135</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>String</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Applicant Id Field</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>maxOccurs</name>
+                <value>
+                    <numberValue>1.0</numberValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>objectType</name>
+                <value>
+                    <stringValue></stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>String</stringValue>
+                </value>
+            </processMetadataValues>
+            <name>applicantIdField</name>
+            <value>
+                <stringValue>LASERCA__Applicant_Id__c</stringValue>
             </value>
         </inputParameters>
     </actionCalls>
@@ -1105,18 +1189,40 @@
         <processMetadataValues>
             <name>originalFormula</name>
             <value>
+                <stringValue>$CustomMetadata.System_Default__mdt.System_Defaults.Credit_Login_Account_Username__c </stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_6_myRule_5_A1_2964366240</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.System_Default__mdt.System_Defaults.Credit_Login_Account_Username__c}</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
                 <stringValue>IF(CONTAINS(LOWER([Lead].LastName),&quot;testcase&quot;), 
 	IF(CONTAINS(LOWER([Lead].FirstName),&quot;frozen&quot;), &quot;000000010&quot;, IF(CONTAINS(LOWER([Lead].FirstName),&quot;fail&quot;),&quot;000000008&quot;, &quot;000000001&quot;)), 
 &quot;000000000&quot;) </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_6_myRule_5_A1_3946456124</name>
+        <name>formula_7_myRule_5_A1_3771156377</name>
         <dataType>String</dataType>
         <expression>IF(CONTAINS(LOWER({!myVariable_current.LastName}),&quot;testcase&quot;), 
 	IF(CONTAINS(LOWER({!myVariable_current.FirstName}),&quot;frozen&quot;), &quot;000000010&quot;, IF(CONTAINS(LOWER({!myVariable_current.FirstName}),&quot;fail&quot;),&quot;000000008&quot;, &quot;000000001&quot;)), 
 &quot;000000000&quot;)</expression>
     </formulas>
-    <interviewLabel>Lead_Create_Edit-13_InterviewLabel</interviewLabel>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>$CustomMetadata.System_Default__mdt.System_Defaults.Credit_Provider__c </stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_8_myRule_5_A1_1310387135</name>
+        <dataType>String</dataType>
+        <expression>{!$CustomMetadata.System_Default__mdt.System_Defaults.Credit_Provider__c}</expression>
+    </formulas>
+    <interviewLabel>Lead_Create_Edit-14_InterviewLabel</interviewLabel>
     <label>Lead Create/Edit</label>
     <processMetadataValues>
         <name>ObjectType</name>

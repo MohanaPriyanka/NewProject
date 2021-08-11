@@ -129,7 +129,9 @@ public class CSQualificationTestclass {
         Shared_Solar_System__c sssWithLowCreditRequirement = sss1.clone();
         sssWithLowCreditRequirement.Credit_Score_Requirement__c = 100;
         sssWithLowCreditRequirement.Utility__c = central.Id;
-        insert new List<Shared_Solar_System__c>{sss1, sssWithLowCreditRequirement};
+        insert new List<Shared_Solar_System__c>{
+            sss1, sssWithLowCreditRequirement
+        };
         insert SharedSolarSystemsTest.getPartnerEligibilities(sss1, partnerAccount);
 
         Lead resiLead = new Lead(
@@ -173,13 +175,13 @@ public class CSQualificationTestclass {
         pullCreditForLead(lead.Id, 'High FICO');
         Lead checkLead = [
             SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c,
-                Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, Moody_s_Risk_Calc__c
+                Moody_s_Risk_Calc__c
             FROM Lead
             WHERE Id = :lead.Id
         ];
         System.assertEquals('Qualified', checkLead.Status, 'Lead status should be Qualified');
         System.assertNotEquals(null, checkLead.Personal_Credit_Report__c, 'Lead should have an attached personal credit report');
-        System.assertEquals('700', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, 'Credit score on lead personal credit report should be 700');
+        System.assertEquals('700', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score__c, 'Credit score on lead personal credit report should be 700');
     }
 
     @IsTest
@@ -194,14 +196,17 @@ public class CSQualificationTestclass {
 
         Lead checkLead = [
             SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c,
-                Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, Moody_s_Risk_Calc__c, Unqualified_due_to_FICO__c
+
+                Moody_s_Risk_Calc__c
+
             FROM Lead
             WHERE Id = :lead.Id
         ];
         System.assertEquals('Unqualified', checkLead.Status, 'Lead status should be unqualified');
         System.assertNotEquals(null, checkLead.Personal_Credit_Report__c, 'Lead should have an attached personal credit report');
-        System.assertEquals('700', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, 'Credit score on lead personal credit report should be 700');
-        System.assertEquals(false, checkLead.Unqualified_due_to_FICO__c, 'Lead should not be unqualified due to FICO');
+
+        System.assertEquals('700', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score__c, 'Credit score on lead personal credit report should be 700');
+
     }
 
     @IsTest
@@ -218,6 +223,9 @@ public class CSQualificationTestclass {
         update sharedSolarSystems;
 
         Lead lead = [SELECT Id FROM Lead LIMIT 1];
+
+        lead.LeadSource = 'Switch';
+        lead.Application_Complete_Date__c = System.today();
         Utility__c central = [SELECT Id FROM Utility__c WHERE Name = 'Central Hudson Gas and Electric' LIMIT 1];
 
         lead.Utility_relationship__c = central.Id;
@@ -227,12 +235,12 @@ public class CSQualificationTestclass {
 
         Lead checkLead = [
             SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c,
-                Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, Moody_s_Risk_Calc__c, Unqualified_due_to_FICO__c
+                Moody_s_Risk_Calc__c
             FROM Lead
             WHERE Id = :lead.Id
         ];
         System.assertEquals('Unqualified', checkLead.Status, 'Lead status should be unqualified');
-        System.assertEquals(false, checkLead.Unqualified_due_to_FICO__c, 'Lead should not be unqualified due to FICO');
+        System.assertEquals('700', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score__c, 'Credit score on lead personal credit report should be 700');
     }
 
     @IsTest
@@ -247,18 +255,19 @@ public class CSQualificationTestclass {
 
         Lead checkLead = [
             SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c,
-                Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, Moody_s_Risk_Calc__c
+                Moody_s_Risk_Calc__c
             FROM Lead
             WHERE Id = :lead.Id
         ];
 
         System.assertEquals('Qualified', checkLead.Status, 'Lead status should be Qualified');
         System.assertNotEquals(null, checkLead.Personal_Credit_Report__c, 'Lead should have an attached personal credit report');
-        System.assertEquals('9999', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, 'Credit score on lead personal credit report should be 9999');
+        System.assertEquals('9999', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score__c, 'Credit score on lead personal credit report should be 9999');
         System.assertEquals(1, new CaseSelector().selectOpenNoMatchCasesFromLead(lead).size(), 'QC for No Match PCRs should only be created for completed SSF leads');
     }
 
     @IsTest
+
     public static void testLowFico() {
         Lead lead = [SELECT Id, Name FROM Lead LIMIT 1];
 
@@ -268,7 +277,6 @@ public class CSQualificationTestclass {
 
         Lead checkLead = [
             SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c, Moody_s_Risk_Calc__c,
-                Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, Personal_Credit_Report__r.Approval_Status__c,
                 Unqualified_due_to_FICO__c
             FROM Lead
             WHERE Id = :lead.Id
@@ -276,8 +284,7 @@ public class CSQualificationTestclass {
 
         System.assertEquals('Unqualified', checkLead.Status, 'Lead status should be Unqualified');
         System.assertNotEquals(null, checkLead.Personal_Credit_Report__c, 'Lead should have an attached personal credit report');
-        System.assertEquals('Declined', checkLead.Personal_Credit_Report__r.Approval_Status__c, 'PCR should be declined because FICO lower than 680');
-        System.assertEquals('200', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c, 'Credit score on lead personal credit report should be 200');
+        System.assertEquals('200', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score__c, 'Credit score on lead personal credit report should be 200');
         System.assertEquals(true, checkLead.Unqualified_due_to_FICO__c, 'Lead should be flagged as Unqualified due to FICO');
         Messaging.SingleEmailMessage sentEmail = (Messaging.SingleEmailMessage) MessagingService.emailsSent[0];
         System.assertNotEquals(null, sentEmail, 'ACN should be automatically sent to customer');
@@ -291,10 +298,8 @@ public class CSQualificationTestclass {
         );
         if (type == 'High FICO') {
             pcr.LASERCA__Credit_Score__c = '700';
-            pcr.LASERCA__Credit_Score_TransUnion__c = '700';
         } else if (type == 'Low FICO') {
             pcr.LASERCA__Credit_Score__c = '200';
-            pcr.LASERCA__Credit_Score_TransUnion__c = '200';
         }
         insert pcr;
 
@@ -310,7 +315,7 @@ public class CSQualificationTestclass {
         );
 
         if (type == 'No Match') {
-            crLog.LASERCA__Status__c = 'Error';
+            crLog.LASERCA__Status__c = 'ERROR';
             crLog.LASERCA__Personal_Credit_Report__c = null;
         } else {
             crLog.LASERCA__Status__c = 'Completed';

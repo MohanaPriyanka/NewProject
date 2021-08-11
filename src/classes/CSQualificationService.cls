@@ -48,7 +48,7 @@ public without sharing class CSQualificationService {
         List<String> leadIds = new List<String>();
         for (LASERCA__Credit_Report_Log__c crl : triggerNewMap.values()) {
             leadIds.add(crl.LASERCA__Lead__c);
-            if (crl.LASERCA__Status__c == 'ERROR') {
+            if (crl.LASERCA__Status__c == 'ERROR' && crl.LASERCA__Personal_Credit_Report__c == null) {
                 errorCRLs.add(crl);
             } else {
                 pcrIds.add(crl.LASERCA__Personal_Credit_Report__c);
@@ -150,10 +150,9 @@ public without sharing class CSQualificationService {
      * @param lead Lead related to the PCR
      */
     private void handleNoMatchCreditPull(LASERCA__Personal_Credit_Report__c noMatchPCR, Lead lead) {
-        noMatchPCR.LASERCA__Credit_Score_TransUnion__c = '9999';
         noMatchPCR.LASERCA__Credit_Score__c = '9999';
         uow.registerDirty(noMatchPCR);
-        if (lead.LeadSource == 'CSAP' || lead.Application_Complete_Date__c != null) {
+        if (lead.Application_Complete_Date__c != null) {
             createNoMatchFICOCase(lead);
         }
     }
@@ -194,8 +193,10 @@ public without sharing class CSQualificationService {
         MessagingService.ReplacementText detail2 = new MessagingService.ReplacementText('{!Lead.Credit_Report_Detail_2__c}', lead.Credit_Report_Detail_2__c);
         MessagingService.ReplacementText detail3 = new MessagingService.ReplacementText('{!Lead.Credit_Report_Detail_3__c}', lead.Credit_Report_Detail_3__c);
         MessagingService.ReplacementText detail4 = new MessagingService.ReplacementText('{!Lead.Credit_Report_Detail_4__c}', lead.Credit_Report_Detail_4__c);
+        MessagingService.ReplacementText creditprovider = new MessagingService.ReplacementText('{!Lead.Credit_Provider__c}', lead.Credit_Provider__c);
+        MessagingService.ReplacementText creditprovideraddress = new MessagingService.ReplacementText('{!Lead.Credit_Provider_Address__c}', lead.Credit_Provider_Address__c);
         ee.replacementTexts = new List<MessagingService.ReplacementText>{
-            leadName, creditDate, creditScore, detail1, detail2, detail3, detail4
+            leadName, creditDate, creditScore, detail1, detail2, detail3, detail4, creditprovider, creditprovideraddress
         };
         MessagingService.sendEmailTemplate(ee);
     }

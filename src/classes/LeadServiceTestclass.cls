@@ -106,7 +106,7 @@ public class LeadServiceTestclass {
             Assemblage_Count__c = 1,
             Maximum_Subscription_Capacity_kWDC__c = 25,
             Billing_Method__c = 'kWh',
-            Available_SMB_Underwriting_Method_Docs__c = true,
+            Available_SMB_Underwriting_Method_Docs__c = true, 
             Available_SMB_Underwriting_Method_FICO__c = true
         );
         Shared_Solar_System__c sss2 = new Shared_Solar_System__c(
@@ -126,7 +126,7 @@ public class LeadServiceTestclass {
             Assemblage_Count__c = 1,
             Maximum_Subscription_Capacity_kWDC__c = 25,
             Billing_Method__c = 'NMC',
-            Available_SMB_Underwriting_Method_Docs__c = true,
+            Available_SMB_Underwriting_Method_Docs__c = true, 
             Available_SMB_Underwriting_Method_FICO__c = true
         );
         insert new List<Shared_Solar_System__c>{
@@ -175,7 +175,7 @@ public class LeadServiceTestclass {
         partnerEligibilities.add(new Partner_Shared_Solar_System_Eligibility__c(
             Shared_Solar_System__c = sss1.Id,
             Account__c = partnerAccount1.Id,
-            Start_Date__c = Date.newInstance(2020, 1, 1)
+            Start_Date__c = Date.newInstance(2020,1,1)
         ));
         insert partnerEligibilities;
 
@@ -198,7 +198,7 @@ public class LeadServiceTestclass {
             partner1, partner2
         };
 
-        Lead switchLead = (Lead) TestFactory.createSObject(new Lead(
+        Lead switchLead = (Lead)TestFactory.createSObject(new Lead(
             LastName = 'Testcase',
             FirstName = 'Switch',
             Email = 'switch@email.com',
@@ -472,7 +472,7 @@ public class LeadServiceTestclass {
     }
 
     @IsTest
-    static void testFailedEnrollment() {
+    static void testFailedEnrollment(){
         Lead switchLead = [
             SELECT Id, Status, Company, Product_line__c, Utility_relationship__r.Id, LASERCA__Home_Address__c,
                 LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c
@@ -499,8 +499,8 @@ public class LeadServiceTestclass {
             lc.setConvertedStatus('Qualified');
             lc.setDoNotCreateOpportunity(true);
             Database.convertLead(lc, false);
-        } catch (Exception e) {
-            Boolean expectedException = e.getMessage().contains('No Annual Usage populated on UALs. Please enter usage before converting') ? true : false;
+        } catch(Exception e) {
+            Boolean expectedException = e.getMessage().contains('No Annual Usage populated on UALs. Please enter usage before converting')? true : false;
             System.assert(expectedException, 'Expected the lead conversion to fail due to missing Annual Usage on UALs');
         }
 
@@ -548,10 +548,10 @@ public class LeadServiceTestclass {
             AccountId = a.Id
         );
         insert contract;
-
+        
         Test.startTest();
-        lead.Product__c = newProduct.Id;
-        update lead;
+            lead.Product__c = newProduct.Id;
+            update lead;
         Test.stopTest();
 
         System.assertEquals(newProduct.Id, [SELECT Product__c FROM Contract WHERE Id = :contract.Id LIMIT 1].Product__c,
@@ -608,8 +608,7 @@ public class LeadServiceTestclass {
     public static void pullCreditForLead(Id leadId) {
         LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
             LASERCA__Lead__c = leadId,
-            LASERCA__Credit_Score__c = '700',
-            LASERCA__Credit_Score_TransUnion__c = '700'
+            LASERCA__Credit_Score__c = '700'
         );
         insert pcr;
         LASERCA__Trade_Accounts__c tradeAccounts = new LASERCA__Trade_Accounts__c(
@@ -656,7 +655,7 @@ public class LeadServiceTestclass {
         List<Shared_Solar_System__c> mockedSSSList = getListofMockedSSS();
 
         System.assertEquals(5, mockedSSSList.size(), 'Should be 5 Shared Solar Systems ready for Enrollment');
-        SharedSolarSystems sssService = new SharedSolarSystems(mockedSSSList);
+        SharedSolarSystems sssService =  new SharedSolarSystems(mockedSSSList);
         Lead preSelectedLead = getMockLead('SEMA');
 
         System.assertEquals(3, sssService.getQualifiedForLead(preSelectedLead).size(), 'Lead should qualify for 3 out of 5 projects when no "Pre-Selected SSS"');
@@ -675,7 +674,7 @@ public class LeadServiceTestclass {
         sfab_FabricatedSObject fabbedSSS = new sfab_FabricatedSObject(Shared_Solar_System__c.class);
         sfab_FabricatedSObject fabbedProduct = new sfab_FabricatedSObject(Product2.class);
         fabbedProduct.setField(Product2.Ignore_Load_Zones_When_Qualifying__c, false);
-        fabbedProduct.setField(Product2.Parent_Product__c, '00Q0U00000617VTUAY');
+        fabbedProduct.setField(Product2.Parent_Product__c,'00Q0U00000617VTUAY');
         fabbedSSS.setParent('Product__r', fabbedProduct);
         fabbedSSS.setField(Shared_Solar_System__c.Id, Util.getFakeId(Shared_Solar_System__c.SObjectType));
         fabbedSSS.setField(Shared_Solar_System__c.Product__c, Util.getFakeId(Product2.SObjectType));
@@ -691,7 +690,7 @@ public class LeadServiceTestclass {
         fabbedSSS.setChildren('Partner_Shared_Solar_System_Accesses__r', new List<sfab_FabricatedSObject>{
             fabbedPartnerEligibility
         });
-        Shared_Solar_System__c sss = (Shared_Solar_System__c) fabbedSSS.toSObject();
+        Shared_Solar_System__c sss =  (Shared_Solar_System__c) fabbedSSS.toSObject();
 
         SharedSolarSystems sssService = new SharedSolarSystems(new List<Shared_Solar_System__c>{
             sss
@@ -707,7 +706,7 @@ public class LeadServiceTestclass {
         List<Shared_Solar_System__c> mockedSSSList = getListofMockedSSS();
 
         System.assertEquals(5, mockedSSSList.size(), 'Should be 5 Shared Solar Systems ready for Enrollment');
-        SharedSolarSystems sssService = new SharedSolarSystems(mockedSSSList);
+        SharedSolarSystems sssService =  new SharedSolarSystems(mockedSSSList);
         Lead preSelectedLead = getMockLead('SEMA');
         preSelectedLead.No_Payment__c = true;
         System.assertEquals(1, sssService.getQualifiedForLead(preSelectedLead).size(), 'Lead should qualify for 1 out of 5 projects when "No Payment"');
@@ -720,7 +719,7 @@ public class LeadServiceTestclass {
         System.assertEquals(1, InvocableQualifiedSSSSelector.invokeGetQualifiedForLead(new List<Lead>{
             lead
         }).size(),
-            'Invocable Method should return list of qualified Shared Solar Systems');
+        'Invocable Method should return list of qualified Shared Solar Systems');
     }
 
     private static Lead getMockLead(String loadZone) {
@@ -758,7 +757,7 @@ public class LeadServiceTestclass {
     }
 
     private static List<Shared_Solar_System__c> getListofMockedSSS() {
-        return new List<Shared_Solar_System__c>{
+        return new List<Shared_Solar_System__c> {
             getMockSSS(false, 'SEMA', false),
             getMockSSS(false, 'SEMA', false),
             getMockSSS(true, 'SEMA', false),

@@ -1103,8 +1103,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         insert leadToUpdate;
         LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
             LASERCA__Lead__c = leadToUpdate.Id,
-            LASERCA__Credit_Score__c = '9999',
-            LASERCA__Credit_Score_TransUnion__c = '9999'
+            LASERCA__Credit_Score__c = '9999'
         );
         insert pcr;
         leadToUpdate.Personal_Credit_Report__c = pcr.Id;

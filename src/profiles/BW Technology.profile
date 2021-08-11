@@ -651,6 +651,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>CSApplicationFinisher</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>CSBillSettingSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1349,6 +1353,18 @@
     <classAccesses>
         <apexClass>ContractTriggerTest</apexClass>
         <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CreditReportChecker</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CreditReportCheckerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CreditReportSelector</apexClass>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>CustomApexObject</apexClass>
@@ -26002,6 +26018,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Lead.Credit_Provider_Address__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.Credit_Provider__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Lead.Credit_Report_Detail_1__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -44123,6 +44149,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>System_Bill__c.YTD_kWh_Production__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>System_Default__mdt.Credit_Login_Account_Username__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>System_Default__mdt.Credit_Provider__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -66043,6 +66079,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>System_Bill__c-System Bill Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>System_Default__mdt-System Default Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>System_Settings__c-System Settings Layout</layout>

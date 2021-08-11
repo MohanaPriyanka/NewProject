@@ -98,10 +98,10 @@ public without sharing class CSApplicationFinisher implements Queueable, Databas
      */
     public void createQCCaseForNoMatchPCR(Lead lead) {
         try {
-            if (lead.Personal_Credit_Report__r.LASERCA__Credit_Score__c == '9999') {
-                CaseFactory noMatchFactory = new CaseFactory();
-                noMatchFactory.setLead(lead);
-                noMatchFactory.setQueueType('No FICO Match');
+        if (lead.Personal_Credit_Report__r.LASERCA__Credit_Score__c == '9999') {
+            CaseFactory noMatchFactory = new CaseFactory();
+            noMatchFactory.setLead(lead);
+            noMatchFactory.setQueueType('No FICO Match');
                 noMatchFactory.insertNoMatchCreditReportCase();
             }
         } catch (Exception e) {
@@ -155,7 +155,7 @@ public without sharing class CSApplicationFinisher implements Queueable, Databas
         String message = messagePrefix + '. Please reprocess manually. Class inputs:\nleadId: ' + leadId +
             '\napplicationCompleteDate: ' + applicationCompleteDate;
         if (caughtException != null) {
-            message += '\n\n ' + caughtException.getMessage() + '\n\n' + caughtException.getStackTraceString();
+            messagePrefix += '\n\n ' + caughtException.getMessage() + '\n\n' + caughtException.getStackTraceString();
         }
         Logger.logNow('CSApplicationFinisher', method, message, Logger.ERROR);
     }
