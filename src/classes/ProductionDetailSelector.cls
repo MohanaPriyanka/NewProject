@@ -71,9 +71,10 @@ public inherited sharing class ProductionDetailSelector {
             FROM Transfer_Part__c
             WHERE (
                 Bill_Part__r.Journal_Entry__r.External_Id__c IN : invoiceOrDebitMemoIds
-                OR Journal_Entry__r.External_Id__c IN : invoiceOrDebitMemoIds
+                OR Journal_Entry__r.Applied_Record_Id__c IN : invoiceOrDebitMemoIds
             )
             AND Type__c = 'Payment'
+            AND Journal_Entry__r.Object_Type__c != 'DebitMemo'
             GROUP BY Bill_Part__c
         ];
         for (AggregateResult payment : payments){

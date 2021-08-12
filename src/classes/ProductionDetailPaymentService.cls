@@ -29,6 +29,7 @@ public without sharing class ProductionDetailPaymentService implements Database.
         }
     }
 
+    @TestVisible
     private void distributePaymentAmongInvoicesOrDebitMemos(Journal_Entry__c paymentEntry, List<Transfer_Part__c> invoicePartOrDebitMemos) {
         Decimal paymentAmount = paymentEntry.Amount__c;
 
@@ -39,10 +40,16 @@ public without sharing class ProductionDetailPaymentService implements Database.
 
             Decimal applicationAmount;
             if (paymentEntry.Object_Type__c == 'DebitMemo') {
-                applicationAmount = Math.min(invoicePartOrDebitMemo.Amount__c, paymentAmount);
+                // If the paymentEntry for which we're creating a Production Detail is a Debit Memo, it's a returned payment.
+                // invoicePartOrDebitMemo is the PD for the InvoiceItem or DM that the returned payment is applied to - there
+                // could be multiple PDs if the invoice item covers multiple production periods, like a920a0000007xuUAAQ.
+                // For those cases, we don't want to apply more than the payment amount or the invoicePartOrDebitMemo, but
+                // invoicePartOrDebitMemo could be negative (since it could be a Returned Payment Debit Memo like a920a00000080iiAAA).
+                // So we need to take the abs of invoicePartOrDebitMemo.
+                applicationAmount = Math.min(Math.abs(invoicePartOrDebitMemo.Amount__c), paymentAmount);
             } else {
                 Decimal invoicePartPayments = Util.nullToZero(partToPaymentMap.get(invoicePartOrDebitMemo.Id));
-                // The production details for debit memos are negative (they are negative payments), but we need to pay
+                // The Production Details for Debit Memos are negative (they are negative payments), but we need to pay
                 // them, so we need to take the abs of that amount.
                 Decimal invoicePartBalance = Math.abs(invoicePartOrDebitMemo.Amount__c) - invoicePartPayments;
                 if (invoicePartBalance <= 0) {
