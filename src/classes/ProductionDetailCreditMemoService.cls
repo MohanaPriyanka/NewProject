@@ -1,4 +1,4 @@
-// Tested By: ProductionToBillServiceTest
+// Tested By: ProductionDetailCreditMemoTest
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class ProductionDetailCreditMemoService implements Database.AllowsCallouts {
     @TestVisible
