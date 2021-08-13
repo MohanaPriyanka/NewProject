@@ -194,20 +194,11 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
-        <fields>inspire1__Description__c</fields>
-        <fields>inspire1__Project_Status__c</fields>
-        <fields>inspire1__Actual_Start_Date__c</fields>
-        <fields>inspire1__Actual_Finish_Date__c</fields>
-        <fields>inspire1__Baseline_Start_Date__c</fields>
-        <fields>inspire1__Baseline_Finish_Date__c</fields>
-        <fields>UPDATEDBY_USER</fields>
-        <fields>OWNER.FIRST_NAME</fields>
-        <fields>OWNER.LAST_NAME</fields>
-        <relatedList>inspire1__Project__c.BWC_Project_Entity__c</relatedList>
+        <relatedList>Shared_Solar_System__c.BWC_Project_Entity_Manual__c</relatedList>
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
-        <relatedList>Shared_Solar_System__c.BWC_Project_Entity_Manual__c</relatedList>
+        <relatedList>Shared_Solar_System__c.Contract_Assignment_Entity__c</relatedList>
     </relatedLists>
     <relatedLists>
         <relatedList>RelatedNoteList</relatedList>
@@ -226,6 +217,14 @@
     </relatedLists>
     <relatedLists>
         <relatedList>RelatedEntityHistoryList</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>CONTRACT.CONTRACT_NUMBER</fields>
+        <fields>Contract_Type__c</fields>
+        <fields>CONTRACT.NAME</fields>
+        <fields>CONTRACT.STATUS</fields>
+        <fields>SALES.ACCOUNT.NAME</fields>
+        <relatedList>Contract.BlueWave_Entity__c</relatedList>
     </relatedLists>
     <relatedLists>
         <fields>CONTRACT.CONTRACT_NUMBER</fields>
