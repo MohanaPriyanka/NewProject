@@ -2199,11 +2199,10 @@ IF(
     <fields>
         <fullName>Link_to_Client_Logo__c</fullName>
         <externalId>false</externalId>
-        <formula>HYPERLINK(
-IF(CONTAINS(TEXT(Client_Brand_Key__c),&quot;Amp&quot;), 
-   &quot;/resource/clientLogos/&quot; + TEXT(Client_Brand_Key__c) + &quot;.png&quot;, 
-   &quot;/resource/1470818337000/BlueWaveLogo&quot;),
-&quot;Logo Image&quot;)</formula>
+        <formula>IF(CONTAINS(TEXT(Client_Brand_Key__c),&quot;Amp&quot;),
+&quot;/servlet/servlet.FileDownload?file=0150a000002xuLS&quot;,
+&quot;/servlet/servlet.FileDownload?file=0150a0000036Brv&quot;
+)</formula>
         <label>Link to Client Logo</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
