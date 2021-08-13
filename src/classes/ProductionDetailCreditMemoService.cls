@@ -87,6 +87,7 @@ public without sharing class ProductionDetailCreditMemoService implements Databa
         productionDetailToInsert.addAll(payService.productionDetailToInsert);
     }
 
+    @TestVisible
     private List<Journal_Entry__c> splitCreditMemoIntoParts(Journal_Entry__c creditMemo) {
         HttpResponse response;
         ZuoraAPI.CreditMemoWithParts memoParts;
@@ -98,9 +99,13 @@ public without sharing class ProductionDetailCreditMemoService implements Databa
 
         for (ZuoraAPI.CreditMemoPart memoPart : memoParts.parts) {
             if (memoPart.DebitMemoId != null) {
-                continue;
-            }
-            if (memoPart.InvoiceId != null) {
+                Journal_Entry__c creditMemoPartEntry = new Journal_Entry__c(
+                    Id = creditMemo.Id,
+                    Applied_Record_Id__c = memoPart.DebitMemoId,
+                    Amount__c = memoPart.Amount
+                );
+                journalEntriesByPart.add(creditMemoPartEntry);
+            } else if (memoPart.InvoiceId != null) {
                 String urlString = '/v1/creditmemos/' + creditMemo.External_Id__c + '/parts/';
                 urlString += memoPart.Id + '/itemparts';
                 response = ZuoraAPIHelper.callJsonEndpoint('GET', urlString, null, false);

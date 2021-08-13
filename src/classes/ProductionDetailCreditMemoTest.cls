@@ -114,6 +114,28 @@ public with sharing class ProductionDetailCreditMemoTest {
         System.assertEquals(4, service.productionDetailToDelete.size());
     }
 
+    @IsTest
+    private static void testApplyingCMsToDMs() {
+        // ProductionDetailCreditMemoService.splitCreditMemoIntoParts should return a JE with the Debit Memo Id as the
+        // Applied_Record_Id__c if it's applied to a DM. This JE is then passed to the ProductionDetailPaymentService as
+        // if it is a payment JE, since it might as well be.
+        // ZuoraAPIMock.getCreditMemoParts makes it look like Credit Memos are all applied to an Invoice and Debit Memo. The
+        // ZuoraAPIMock.getCreditMemoPartItems returns two part items for the invoice.
+        // ProductionToBillServiceTest.getBillPartByInvoice only returns Production Details for Invoice items, not debit
+        // memos, so we don't expect the PDPaymentService to actually create PDs for the CMs (if we ran it), but at least
+        // it should try.
+        Journal_Entry__c creditMemo = new Journal_Entry__c(
+            Id = Util.getFakeId(Journal_Entry__c.SObjectType),
+            External_Id__c = 'does not matter'
+        );
+        HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('GET', '/v1/creditmemos/' + creditMemo.External_Id__c + '/parts', null, false);
+        ZuoraAPI.CreditMemoWithParts memoParts = (ZuoraAPI.CreditMemoWithParts) JSON.deserialize(response.getBody(), ZuoraAPI.CreditMemoWithParts.class);
+        System.assertEquals(2, memoParts.parts.size(), 'Expected an Invoice and Debit Memo part for CM parts mock, but got this: ' + response.getBody());
+
+        List<Journal_Entry__c> journalEntriesByPart = new ProductionDetailCreditMemoService().splitCreditMemoIntoParts(creditMemo);
+        System.assertEquals(3, journalEntriesByPart.size(), 'Expected two JEs for the Invoice and one for the DM, but got this: ' + journalEntriesByPart);
+    }
+
     private static List<Journal_Entry__c> getCreditMemoJournalEntries() {
         Date mayBillDate = Date.newInstance(2019, 05, 20);
         Date juneBillDate = Date.newInstance(2019, 06, 20);
