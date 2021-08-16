@@ -796,28 +796,30 @@ public class LeadServiceTestclass {
     @IsTest
     private static void testUpdateContApplicationLink() {
         Lead switchLead = [
-            SELECT Id, Email, Continue_Application_Link__c, Partner_Lookup__c
+            SELECT Id, Email, Continue_Application_Link__c, Contract_eSign_Link__c
             FROM Lead
             WHERE FirstName = 'Switch'
             LIMIT 1
         ];
 
-        switchLead.Email = 'updated@email.com';
+        System.assert(switchLead.Continue_Application_Link__c.containsNone('updated%40email.com'), 'Confirm continue application link does not contain updated email.');
+        System.assert(switchLead.Contract_eSign_Link__c.containsNone('updated%40email.com'), 'Confirm eSign link does not contain updated email.');
 
+        switchLead.Email = 'updated@email.com';
 
         Test.startTest();
         update switchLead;
         Test.stopTest();
 
         Lead updatedLead = [
-            SELECT Id, Email, Continue_Application_Link__c, Partner_Lookup__c
+            SELECT Id, Email, Continue_Application_Link__c, Contract_eSign_Link__c
             FROM Lead
             WHERE Id = :switchLead.Id
             LIMIT 1
         ];
 
-        System.assertEquals('updated@email.com', updatedLead.Email);
-        System.assert(updatedLead.Continue_Application_Link__c.contains('updated%40email.com'));
-
+        System.assertEquals('updated@email.com', updatedLead.Email, 'Confirm email has been updated on lead');
+        System.assert(updatedLead.Continue_Application_Link__c.contains('updated%40email.com'), 'Continue_Application_Link should get updated after a lead email is updated so the customer/partner does not experience an error when trying continue their application');
+        System.assert(updatedLead.Contract_eSign_Link__c.contains('updated%40email.com'), 'Contract_eSign_Link__c should get updated after a lead email is updated so the customer/partner does not experience an error when trying to re-sign their contract.');
     }
 }
