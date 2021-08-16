@@ -220,6 +220,10 @@ public class LeadServiceTestclass {
             Application_Type__c = 'Non-Residential',
             System_Assignment__c = 'Automatic - Assignment Order'));
         insert switchLead;
+
+        CSLeadsRESTControllerV2.setContinueApplicationLinks(switchLead, null);
+
+        update switchLead;
     }
 
     @IsTest
@@ -787,5 +791,33 @@ public class LeadServiceTestclass {
             }
             return null;
         }
+    }
+
+    @IsTest
+    private static void testUpdateContApplicationLink() {
+        Lead switchLead = [
+            SELECT Id, Email, Continue_Application_Link__c, Partner_Lookup__c
+            FROM Lead
+            WHERE FirstName = 'Switch'
+            LIMIT 1
+        ];
+
+        switchLead.Email = 'updated@email.com';
+
+
+        Test.startTest();
+        update switchLead;
+        Test.stopTest();
+
+        Lead updatedLead = [
+            SELECT Id, Email, Continue_Application_Link__c, Partner_Lookup__c
+            FROM Lead
+            WHERE Id = :switchLead.Id
+            LIMIT 1
+        ];
+
+        System.assertEquals('updated@email.com', updatedLead.Email);
+        System.assert(updatedLead.Continue_Application_Link__c.contains('updated%40email.com'));
+
     }
 }

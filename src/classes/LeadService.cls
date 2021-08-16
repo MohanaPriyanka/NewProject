@@ -169,4 +169,12 @@ public without sharing class LeadService {
         lead = leadSelector.selectOne(lead.Id);
         return lead;
     }
+
+    public void updateContApplicationLink(List<Lead> triggerNew, Map<Id, Lead> triggerOldMap) {
+        for (Lead lead : triggerNew) {
+            if (lead.Email != triggerOldMap.get(lead.Id).Email && lead.Continue_Application_Link__c != null) {
+                CSLeadsRESTControllerV2.setContinueApplicationLinks(lead, null);
+            }
+        }
+    }
 }
