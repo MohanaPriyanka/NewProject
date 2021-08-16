@@ -1,4 +1,4 @@
-// Tested By: ProductionToBillServiceTest
+// Tested By: ProductionDetailBillTest
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class ProductionDetailBillService implements ZuoraDataQueryService.Processor{
     @TestVisible
