@@ -802,8 +802,8 @@ public class LeadServiceTestclass {
             LIMIT 1
         ];
 
-        System.assert(switchLead.Continue_Application_Link__c.containsNone('updated%40email.com'), 'Confirm continue application link does not contain updated email.');
-        System.assert(switchLead.Contract_eSign_Link__c.containsNone('updated%40email.com'), 'Confirm eSign link does not contain updated email.');
+        System.assert(!(switchLead.Continue_Application_Link__c.contains('updated%40email.com')), 'Confirm continue application link does not contain updated email.');
+        System.assert(!(switchLead.Contract_eSign_Link__c.contains('updated%40email.com')), 'Confirm eSign link does not contain updated email.');
 
         switchLead.Email = 'updated@email.com';
 
