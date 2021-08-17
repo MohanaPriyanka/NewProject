@@ -52,7 +52,13 @@ public with sharing class LeadDispatcher {
 
     public void onBeforeUpdate(List<Lead> updatedLeads, Map<Id, Lead> oldLeadMap) {
         LeadHandlerResult result = separateLeads(updatedLeads, oldLeadMap);
+        LeadService leadService = new LeadService();
         UtilityLoadZoneService.updateLZUL(result.updatedLeads, result.oldLeadMap);
+
+        if (result.updatedLeads.size()> 0 ){
+            leadService.updateContApplicationLink(result.updatedLeads, result.oldLeadMap);
+        }
+
     }
 
     public void onAfterUpdate(List<Lead> updatedLeads, Map<Id, Lead> oldLeadMap){

@@ -220,6 +220,10 @@ public class LeadServiceTestclass {
             Application_Type__c = 'Non-Residential',
             System_Assignment__c = 'Automatic - Assignment Order'));
         insert switchLead;
+
+        CSLeadsRESTControllerV2.setContinueApplicationLinks(switchLead, null);
+
+        update switchLead;
     }
 
     @IsTest
@@ -787,5 +791,35 @@ public class LeadServiceTestclass {
             }
             return null;
         }
+    }
+
+    @IsTest
+    private static void testUpdateContApplicationLink() {
+        Lead switchLead = [
+            SELECT Id, Email, Continue_Application_Link__c, Contract_eSign_Link__c
+            FROM Lead
+            WHERE FirstName = 'Switch'
+            LIMIT 1
+        ];
+
+        System.assert(!(switchLead.Continue_Application_Link__c.contains('updated%40email.com')), 'Confirm continue application link does not contain updated email.');
+        System.assert(!(switchLead.Contract_eSign_Link__c.contains('updated%40email.com')), 'Confirm eSign link does not contain updated email.');
+
+        switchLead.Email = 'updated@email.com';
+
+        Test.startTest();
+        update switchLead;
+        Test.stopTest();
+
+        Lead updatedLead = [
+            SELECT Id, Email, Continue_Application_Link__c, Contract_eSign_Link__c
+            FROM Lead
+            WHERE Id = :switchLead.Id
+            LIMIT 1
+        ];
+
+        System.assertEquals('updated@email.com', updatedLead.Email, 'Confirm email has been updated on lead');
+        System.assert(updatedLead.Continue_Application_Link__c.contains('updated%40email.com'), 'Continue_Application_Link should get updated after a lead email is updated so the customer/partner does not experience an error when trying continue their application');
+        System.assert(updatedLead.Contract_eSign_Link__c.contains('updated%40email.com'), 'Contract_eSign_Link__c should get updated after a lead email is updated so the customer/partner does not experience an error when trying to re-sign their contract.');
     }
 }
