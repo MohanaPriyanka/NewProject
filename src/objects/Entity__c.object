@@ -1557,13 +1557,5 @@
     </recordTypes>
     <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
-    <validationRules>
-        <fullName>Sold_status_requires_sale_date</fullName>
-        <active>true</active>
-        <errorConditionFormula>AND(ISPICKVAL(Status__c, &quot;Sold&quot;),
-				isnull(Sale_date__c))</errorConditionFormula>
-        <errorDisplayField>Sale_date__c</errorDisplayField>
-        <errorMessage>Please enter a sale date</errorMessage>
-    </validationRules>
     <visibility>Public</visibility>
 </CustomObject>
