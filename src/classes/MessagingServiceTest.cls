@@ -75,6 +75,7 @@ public with sharing class MessagingServiceTest {
 
         exceptionThrown = false;
         MessagingService.onlyUseActiveTemplates = false;
+        MessagingService.emailsSent = null;
         try {
             MessagingService.createAndSendDynamicTemplateEmail(
                 'MessagingServiceTest_Inactive_Template',

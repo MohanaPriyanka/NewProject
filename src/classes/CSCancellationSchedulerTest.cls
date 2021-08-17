@@ -68,7 +68,8 @@ private class CSCancellationSchedulerTest {
         System.assertEquals(1, cancellationScheduler.accountsRemovedFromAllProjects.size(),
             'Expected the cancellation scheduler to find the account ready to be marked with Removed From Project');
         if (UserInfo.getUserEmail() != null) {
-            System.assertEquals(1, MessagingService.emailsSent.size(), 'Expected to send an email of the summary');
+            System.assertEquals(3, MessagingService.emailsSent.size(),
+                'Expected to send a Subscription Removal Confirmation, an Account Closed Confirmation, and a CS Cancellation Result summary');
         }
 
         schedule = [SELECT Id, Summary__c FROM Autopay_Schedule__c WHERE Id = :schedule.Id];

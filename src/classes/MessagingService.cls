@@ -8,7 +8,7 @@
 public without sharing class MessagingService {
     private static OrgWideEmailAddress customerCareEmail;
     @TestVisible private static Map<String, EmailTemplate> emailTemplateMap = new Map<String, EmailTemplate>();
-    public static Messaging.Email[] emailsSent;
+    @TestVisible private static Messaging.Email[] emailsSent;
     @TestVisible private static Boolean onlyUseActiveTemplates = true;
 
     public static OrgWideEmailAddress getCustomerCareEmail() {
@@ -23,7 +23,8 @@ public without sharing class MessagingService {
         return customerCareEmail;
     }
 
-    public static Boolean createAndSendDynamicTemplateEmail(String emailTemplateName, String orgWideEmail, String subjectLine, List<String> addressList, String templateField, String replaceText) {
+    @TestVisible
+    private static Boolean createAndSendDynamicTemplateEmail(String emailTemplateName, String orgWideEmail, String subjectLine, List<String> addressList, String templateField, String replaceText) {
         EmailEnvelope ee = new EmailEnvelope();
         ee.emailTemplateName = emailTemplateName;
         ee.orgWideEmail = orgWideEmail;
@@ -60,7 +61,6 @@ public without sharing class MessagingService {
         return htmlValue;
     }
 
-    @TestVisible
     @SuppressWarnings('PMD.ApexCRUDViolation')
     public static EmailTemplate getHtml (String templateName) {
         if (emailTemplateMap.get(templateName) == null) {
@@ -108,7 +108,11 @@ public without sharing class MessagingService {
 
     public static Messaging.SendEmailResult[] sendEmail(Messaging.Email[] emails) {
         Messaging.SendEmailResult[] sendEmailResults;
-        emailsSent = emails.clone();
+        if (emailsSent == null) {
+            emailsSent = emails.clone();
+        } else {
+            emailsSent.addAll(emails.clone());
+        }
         try {
             sendEmailResults = Messaging.sendEmail(emails, false);
         } catch (EmailException ee) {

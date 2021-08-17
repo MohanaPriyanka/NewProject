@@ -72,7 +72,8 @@ public class InvocableMessagingServiceTest {
         List<InvocableMessagingService.EmailTemplateSendInfo> sendInfoList = new List<InvocableMessagingService.EmailTemplateSendInfo>{infoObj1};
         InvocableMessagingService.sendEmailTemplate(sendInfoList);
         System.assertEquals(1, MessagingService.emailsSent.size());
-        
+        MessagingService.emailsSent = null;
+
         Contract resultContract1 = [
             SELECT Id, Name, AccountId, Account.Send_Bills_Contact__r.Id, Addendum_Sent_Date__c
             FROM Contract 

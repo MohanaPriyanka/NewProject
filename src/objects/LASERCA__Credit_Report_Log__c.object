@@ -46,7 +46,6 @@
     <deprecated>false</deprecated>
     <enableActivities>false</enableActivities>
     <enableBulkApi>false</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableFeeds>false</enableFeeds>
     <enableHistory>true</enableHistory>
     <enableReports>true</enableReports>
@@ -54,6 +53,22 @@
     <enableSharing>false</enableSharing>
     <enableStreamingApi>false</enableStreamingApi>
     <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>File_Not_Scored__c</fullName>
+        <description>Makes it easier for the CreditReportLogTrigger to handle SC3 - FILE NOT SCORED BECAUSE SUBJECT DOES NOT HAVE SUFFICIENT CREDIT</description>
+        <externalId>false</externalId>
+        <formula>IF(ISBLANK(LASERCA__Personal_Credit_Report__c ), FALSE,
+   IF(ISBLANK(LASERCA__Personal_Credit_Report__r.LASERCA__Credit_Score__c), 
+      TRUE,
+      FALSE
+   )
+)</formula>
+        <inlineHelpText>TRUE, if there is a PCR but has no Credit Score.</inlineHelpText>
+        <label>File Not Scored</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
     <fields>
         <fullName>LASERCA__Birthdate__c</fullName>
         <deprecated>false</deprecated>
@@ -436,7 +451,7 @@
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Credit Report Logs</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

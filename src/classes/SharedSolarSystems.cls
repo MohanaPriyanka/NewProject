@@ -1,15 +1,12 @@
 /**
  * @description Created by SarahRenfro on 7/6/2020.
  * Description: Domain class for SSS
- * Test: CSUtilityAccountSubscriptionFactoryTest, SharedSolarSystemsTest, LeadServiceTestclass
+ * Test: CSUtilityAccountSubscriptionFactoryTest, SharedSolarSystemsTest, LeadServiceTestclass, CapacityServiceTest
  */
 public inherited sharing class SharedSolarSystems {
 
-    @TestVisible private static ProductSelector productSelector = new ProductSelector();
     private List<Shared_Solar_System__c> records;
     private Lead virtualLead;
-    private static SharedSolarSystemCapacityCalculator calculator = new SharedSolarSystemCapacityCalculator();
-    private static SharedSolarSystemInvoicer invoicer = new SharedSolarSystemInvoicer();
     private static SharedSolarSystemQualifier qualifier = new SharedSolarSystemQualifier();
 
     /**
