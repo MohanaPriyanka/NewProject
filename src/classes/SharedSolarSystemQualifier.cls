@@ -1,6 +1,6 @@
 /**
  * @description : Responsible for qualifying Leads, and handling actions when they are not qualified
- * Tested By: SharedSolarSystemsTest
+ * Tested By: SharedSolarSystemsTest, CSQualificationTestclass, LeadServiceTestclass
  */
 public without sharing class SharedSolarSystemQualifier {
     @TestVisible private static SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
@@ -11,6 +11,8 @@ public without sharing class SharedSolarSystemQualifier {
         'Baa1', 'Baa2', 'Baa3', 'Ba1', 'Ba2', 'Ba3', 'B1', 'B2', 'B3',
         'Caa1', 'Caa2', 'Ca', 'C'
     };
+    private static final String QUALIFIED = 'Qualified';
+    private static final String UNQUALIFIED = 'Unqualified';
 
     public static void setCapacityCheck(Boolean capacityCheck) {
         capacityCheckInstance = capacityCheck;
@@ -27,7 +29,7 @@ public without sharing class SharedSolarSystemQualifier {
     public String checkCSQualification(Lead lead, Decimal creditScore, List<Shared_Solar_System__c> records) {
         for (Shared_Solar_System__c sss : records) {
             if (qualifiedForSystem(lead, sss, creditScore)) {
-                return 'Qualified';
+                return QUALIFIED;
             }
         }
         // If the lead qualifies for any system, ignoring FICO, then they must have been unqualified due to FICO. If
@@ -36,11 +38,15 @@ public without sharing class SharedSolarSystemQualifier {
             if (sss.Available_SMB_Underwriting_Method_FICO__c &&
                 qualifiedForSystemSkipingFICO(lead, sss, creditScore)) {
                 CSQualificationService.handleLeadUnqualifiedDueToFICO(lead);
-                return 'Unqualified';
+                return UNQUALIFIED;
             }
         }
-        CSQualificationService.sendGenericUnqualifiedNotice(lead);
-        return 'Unqualified';
+        // We only want to send the unqualified email if we haven't already sent it, which we would have done if the
+        // lead.Status is already Unqualified.
+        if (lead.Status != UNQUALIFIED) {
+            CSQualificationService.sendGenericUnqualifiedNotice(lead);
+        }
+        return UNQUALIFIED;
     }
 
     /**

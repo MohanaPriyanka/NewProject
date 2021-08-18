@@ -735,6 +735,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>InvocableMessagingServiceTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>InvocableQualifiedSSSSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1124,6 +1128,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>SharedSolarSystemHandlerTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SharedSolarSystemQualifier</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -10773,6 +10781,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Knowledge__kav.Resolution__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Credit_Report_Log__c.File_Not_Scored__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

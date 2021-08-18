@@ -146,6 +146,14 @@ Production: BlueWave Inside Sales</description>
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Disable_CreditReportLogTrigger__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Disable CreditReportLogTrigger</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Disable_Journal_Entry_Trigger__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
