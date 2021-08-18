@@ -199,6 +199,7 @@
 ISPICKVAL(Shared_Solar_System__r.Product__r.Program__c,&quot;SMART - Community Solar&quot;),&quot;{!Environment.VAR_CONGA_TEMPLATE_AOBC}&quot;,
 
 CASE(Utility__c,
+&quot;Consolidated Edison&quot;, &quot;{!Environment.VAR_CONGA_TEMPLATE_ALS_CONED}&quot;,
 &quot;Eversource (East)&quot;,&quot;a2F0a000001RC7W,{!Environment.VAR_CONGA_TEMPLATE_EVERSOURCE_MA_SREC_EXCEL}&quot;,
 &quot;Eversource (West)&quot;,&quot;a2F0a000001RC7W,{!Environment.VAR_CONGA_TEMPLATE_EVERSOURCE_MA_SREC_EXCEL}&quot;,
 &quot;National Grid (MA)&quot;,&quot;a2F0a000001RBod,{!Environment.VAR_CONGA_TEMPLATE_NG_MA_SREC_EXCEL}&quot;,
