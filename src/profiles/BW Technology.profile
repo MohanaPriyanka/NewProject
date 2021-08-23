@@ -3419,6 +3419,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>PartnerSSFLinkController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>PartnerSSSEligibilities</apexClass>
         <enabled>false</enabled>
     </classAccesses>
