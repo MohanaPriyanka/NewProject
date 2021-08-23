@@ -3827,6 +3827,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>PartnerSSFLinkController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>PartnerSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -70117,6 +70121,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Consumption_Update__c-Coverage Update Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Contact-Contact Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>ContactPointAddress-Contact Point Address Layout</layout>
