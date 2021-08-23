@@ -13,8 +13,8 @@ public class ZuoraCreditDebitMemoService {
     @TestVisible
     private static FeatureService featureService = new FeatureService();
 
-    public static Bill_Adjustment__c createCreditOrDebitMemo(Bill_Adjustment__c adjustment, Date effectiveDate){
-        if (adjustment.Adjustment_Amount__c < 0){
+    public static Bill_Adjustment__c createCreditOrDebitMemo(Bill_Adjustment__c adjustment, Date effectiveDate) {
+        if (adjustment.Adjustment_Amount__c < 0) {
             return handleCreditMemo(adjustment, effectiveDate);
         } else {
             return handleDebitMemo(adjustment, effectiveDate);
@@ -99,7 +99,9 @@ public class ZuoraCreditDebitMemoService {
         debitMemo.accountId = adjust.Utility_Account_Subscription__r.Opportunity__r.Account.Zuora_Id__c;
         debitMemo.Project_Zcustom = adjust.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c;
         debitMemo.ClientOwner_Zcustom = adjust.Client__r.Account_Number__c;
-        debitMemo.charges = new List<ZuoraAPI.DebitMemoCharge>{debitCharge};
+        debitMemo.charges = new List<ZuoraAPI.DebitMemoCharge>{
+            debitCharge
+        };
         debitMemo.CRM_ID_Zcustom = adjust.Id;
         debitMemo.reasonCode = adjust.Adjustment_Type__c;
         return debitMemo;
@@ -120,7 +122,9 @@ public class ZuoraCreditDebitMemoService {
         ZuoraAPI.DebitMemoItem debitMemoItem = new ZuoraAPI.DebitMemoItem();
         debitMemoItem.amount = adjust.Adjustment_Amount__c;
         debitMemoItem.skuName = 'Utility Credit';
-        debitMemo.items = new List<ZuoraAPI.DebitMemoItem>{debitMemoItem};
+        debitMemo.items = new List<ZuoraAPI.DebitMemoItem>{
+            debitMemoItem
+        };
         debitMemo.effectiveDate = effectiveDate;
         debitMemo.reasonCode = adjust.Adjustment_Type__c;
         debitMemo.Project_Zcustom = project;
@@ -159,20 +163,22 @@ public class ZuoraCreditDebitMemoService {
     public static ZuoraAPI.CreditMemo convertSFAdjustToCreditMemo(Bill_Adjustment__c adjust) {
         // Credit Memo Application assumes we only have one credit item here:
         ZuoraAPI.CreditCharge chargeLine = new ZuoraAPI.CreditCharge();
-        chargeLine.amount = (-1*adjust.Adjustment_Amount__c);
+        chargeLine.amount = (-1 * adjust.Adjustment_Amount__c);
         chargeLine.chargeId = getChargeFromAdjustment(adjust);
 
         ZuoraAPI.CreditMemo creditMemo = new ZuoraAPI.CreditMemo();
         creditMemo.accountId = adjust.Utility_Account_Subscription__r.Opportunity__r.Account.Zuora_Id__c;
         creditMemo.Project_Zcustom = adjust.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c;
         creditMemo.ClientOwner_Zcustom = adjust.Client__r.Account_Number__c;
-        creditMemo.charges = new List<ZuoraAPI.CreditCharge>{chargeLine};
+        creditMemo.charges = new List<ZuoraAPI.CreditCharge>{
+            chargeLine
+        };
         creditMemo.CRM_ID_Zcustom = adjust.Id;
         creditMemo.reasonCode = adjust.Adjustment_Type__c;
         return creditMemo;
     }
 
-    private static String getChargeFromAdjustment(Bill_Adjustment__c adjust){
+    private static String getChargeFromAdjustment(Bill_Adjustment__c adjust) {
         String zuoraAcctId = adjust.Utility_Account_Subscription__r.Opportunity__r.Account.Zuora_Id__c;
         String client = adjust.Client__r.Account_Number__c;
         String project = adjust.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c;
@@ -185,16 +191,16 @@ public class ZuoraCreditDebitMemoService {
                     return ratePlanCharge.ProductRatePlanChargeId;
                 }
             }
-            throw new Util.BWException('No client/project found for client: ' + client + ' and project '+ project);
+            throw new Util.BWException('No client/project found for client: ' + client + ' and project ' + project);
         } else {
             ZuoraAPI.OrderBySubscriptionOwner subscription = ZuoraSubscriptionService.getOrderBySubscriptionOwner(zuoraAcctId);
             return subscription.getProductRatePlanChargeId(client, project);
         }
     }
 
-    public static Bill_Adjustment__c handleAPIResponse(String memoCRMId, HttpResponse response, Boolean isCredit){
+    public static Bill_Adjustment__c handleAPIResponse(String memoCRMId, HttpResponse response, Boolean isCredit) {
         ZuoraAPI.GenericResponse zResponse = new ZuoraAPI.GenericResponse();
-        zResponse = (ZuoraAPI.GenericResponse)JSON.deserialize(response.getBody(), ZuoraAPI.GenericResponse.class);
+        zResponse = (ZuoraAPI.GenericResponse) JSON.deserialize(response.getBody(), ZuoraAPI.GenericResponse.class);
         Bill_Adjustment__c adjustToUpdate;
 
         if (zResponse.success && !String.isBlank(zResponse.Id)) {
@@ -202,7 +208,7 @@ public class ZuoraCreditDebitMemoService {
                 Id = memoCRMId,
                 Zuora_Id__c = zResponse.Id
             );
-            if (isCredit){
+            if (isCredit) {
                 postCreditMemo(zResponse.Id);
             } else {
                 postDebitMemo(zResponse.Id);
@@ -214,39 +220,39 @@ public class ZuoraCreditDebitMemoService {
         return adjustToUpdate;
     }
 
-    public static void postCreditMemo(String creditMemoId){
-        String urlParam = '/v1/creditmemos/'+ creditMemoId + '/post';
-        HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('POST',urlParam,null,false);
+    public static void postCreditMemo(String creditMemoId) {
+        String urlParam = '/v1/creditmemos/' + creditMemoId + '/post';
+        HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('POST', urlParam, null, false);
         ZuoraAPI.ZuoraCreditMemo creditMemo = (ZuoraAPI.ZuoraCreditMemo) JSON.deserialize(ZuoraAPIHelper.cleanJSON(response.getBody()), ZuoraAPI.ZuoraCreditMemo.class);
         if (creditMemo.id == null) {
             throw new Util.FatalBWException('Credit memo post failed: ' + response.getBody());
         }
     }
 
-    public static void postDebitMemo(String debitMemoId){
-        String urlParam = '/v1/debitmemos/'+ debitMemoId + '/post';
-        HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('POST',urlParam,null,false);
+    public static void postDebitMemo(String debitMemoId) {
+        String urlParam = '/v1/debitmemos/' + debitMemoId + '/post';
+        HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('POST', urlParam, null, false);
         ZuoraAPI.ZuoraDebitMemo debitMemo = (ZuoraAPI.ZuoraDebitMemo) JSON.deserialize(ZuoraAPIHelper.cleanJSON(response.getBody()), ZuoraAPI.ZuoraDebitMemo.class);
         if (debitMemo.id == null) {
             throw new Util.FatalBWException('Debit memo post failed: ' + response.getBody());
         }
     }
 
-    public static void beforeAdjustmentUpdate(List<Bill_Adjustment__c> adjustmentsToCheck){
-        Boolean adjustmentsToUpload = false;
+    public static void beforeAdjustmentUpdate(List<Bill_Adjustment__c> adjustmentsToCheck) {
+        Set<Id> billAdjustmentsToSend = new Set<Id>();
 
-        for (Bill_Adjustment__c adjust : adjustmentsToCheck){
+        for (Bill_Adjustment__c adjust : adjustmentsToCheck) {
             if (adjust.Approval_Status__c == 'Approved'
                 && adjust.Effective__c == 'Post When Approved'
-                && adjust.Zuora_Id__c == null){
-                adjustmentsToUpload = true;
-                break;
+                && adjust.Zuora_Id__c == null) {
+                billAdjustmentsToSend.add(adjust.Id);
             }
         }
 
-        if (adjustmentsToUpload){
+        if (!billAdjustmentsToSend.isEmpty()) {
             ZuoraCreditMemoBatchSend batchSend = new ZuoraCreditMemoBatchSend();
             batchSend.mode = ZuoraCreditMemoBatchSend.AdjustmentType.POST_WHEN_APPROVED;
+            batchSend.setBillAdjustmentsToSend(billAdjustmentsToSend);
             batchSend.executeBatch();
         }
     }
