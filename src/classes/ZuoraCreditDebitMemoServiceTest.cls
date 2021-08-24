@@ -1,6 +1,6 @@
-@isTest
+@IsTest
 public class ZuoraCreditDebitMemoServiceTest {
-    @testSetup public static void testDataSetup() {
+    @TestSetup public static void testDataSetup() {
         MultipleMonthProductionUpdateTest.multipleMonthTest();
         setBillsToUnPublished();
 
@@ -101,7 +101,9 @@ public class ZuoraCreditDebitMemoServiceTest {
             Reason_For_Adjustment__c = 'Needs adjustment');
 
 
-        insert new List<Bill_Adjustment__c>{adjustOne, adjustTwo, adjustThree, adjustFour, adjustFive, adjustSix, adjustSeven, adjustEight};
+        insert new List<Bill_Adjustment__c>{
+            adjustOne, adjustTwo, adjustThree, adjustFour, adjustFive, adjustSix, adjustSeven, adjustEight
+        };
 
         List<Account> accounts = [
             SELECT Id, Name, Zuora_Id__c
@@ -116,7 +118,7 @@ public class ZuoraCreditDebitMemoServiceTest {
             uasList[0].Opportunity__r.Shared_Solar_System__r.Unique_ID__c +
             'END';
 
-        for (Account accts : accounts){
+        for (Account accts : accounts) {
             accts.Zuora_Id__c = accountKey;
         }
         update accounts;
@@ -137,8 +139,6 @@ public class ZuoraCreditDebitMemoServiceTest {
 
     @IsTest
     private static void testBatch() {
-        // disableTrigger just sets a system property checkbox to true
-        Util.disableTrigger('Update_Usage_Records_With_ZuoraId__c');
         ZuoraCreditDebitMemoService.featureService = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(false));
 
         // 6 adjustments exist, but one should be excluded, because already has a zuora ID:
@@ -189,9 +189,6 @@ public class ZuoraCreditDebitMemoServiceTest {
         ZuoraAPIMock.createDMWithNoId = true;
         ZuoraCreditDebitMemoService.featureService = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(false));
 
-        // disableTrigger just sets a system property checkbox to true
-        Util.disableTrigger('Update_Usage_Records_With_ZuoraId__c');
-
         // 8 adjustments exist, but one should be excluded, because already has a zuora ID and 2 should be
         // excluded because they are not approved:
         Database.QueryLocator queryLocator = AdjustmentSelector.getAdjustmentsNotYetInZuora(false, ZuoraCreditMemoBatchSend.AdjustmentType.POST_NEXT_BILL);
@@ -210,7 +207,9 @@ public class ZuoraCreditDebitMemoServiceTest {
         Test.stopTest();
 
         List<Error_Log__c> errorLogs = [
-            SELECT Message__c FROM Error_Log__c WHERE Severity__c = :Logger.ERROR
+            SELECT Message__c
+            FROM Error_Log__c
+            WHERE Severity__c = :Logger.ERROR
         ];
         System.assertEquals(1, errorLogs.size());
         System.assert(errorLogs[0].Message__c.contains('Memo did not successfully create:'));
@@ -218,8 +217,6 @@ public class ZuoraCreditDebitMemoServiceTest {
 
     @IsTest
     private static void testAPICallWithMock() {
-        // disableTrigger just sets a system property checkbox to true
-        Util.disableTrigger('Update_Usage_Records_With_ZuoraId__c');
         ZuoraCreditDebitMemoService.featureService = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(false));
 
         // 8 adjustments exist, but one should be excluded, because already has a zuora ID and 2 should be
@@ -237,13 +234,13 @@ public class ZuoraCreditDebitMemoServiceTest {
         List<Bill_Adjustment__c> adjustmentsToUpdate = new List<Bill_Adjustment__c>();
 
         Test.startTest();
-        for (Bill_Adjustment__c adjust : beforeCallList){
+        for (Bill_Adjustment__c adjust : beforeCallList) {
             adjustmentsToUpdate.add(ZuoraCreditDebitMemoService.createCreditOrDebitMemo(adjust, System.today()));
         }
         Test.stopTest();
 
-        System.assertEquals(5,adjustmentsToUpdate.size());
-        for (Bill_Adjustment__c adjustment : adjustmentsToUpdate){
+        System.assertEquals(5, adjustmentsToUpdate.size());
+        for (Bill_Adjustment__c adjustment : adjustmentsToUpdate) {
             System.assertNotEquals(null, adjustment.Zuora_Id__c);
         }
     }
@@ -274,40 +271,51 @@ public class ZuoraCreditDebitMemoServiceTest {
     }
 
     @IsTest
-    private static void testOnApprovalSend(){
-        // disableTrigger just sets a system property checkbox to true
-        Util.disableTrigger('Update_Usage_Records_With_ZuoraId__c');
+    private static void testOnApprovalSend() {
         ZuoraCreditDebitMemoService.featureService = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(false));
 
         List<Bill_Adjustment__c> beforeAdjustments = [
             SELECT Id
             FROM Bill_Adjustment__c
-            WHERE Zuora_Id__c != null
+            WHERE Zuora_Id__c != NULL
         ];
-        system.assertEquals(1,beforeAdjustments.size());
+        System.assertEquals(1, beforeAdjustments.size());
 
         List<Bill_Adjustment__c> unapprovedAdjustments = [
             SELECT Id
             FROM Bill_Adjustment__c
             WHERE Approval_Status__c != 'Approved'
+            AND Effective__c = 'Post When Approved'
         ];
 
-        for (Bill_Adjustment__c adjust : unapprovedAdjustments){
+        for (Bill_Adjustment__c adjust : unapprovedAdjustments) {
             adjust.Approval_Status__c = 'Approved';
         }
-        System.assertEquals(2,unapprovedAdjustments.size());
+        System.assertEquals(2, unapprovedAdjustments.size());
+
+        // Turning off the trigger, making the Bill Adjustment approved, and then turning on the trigger, simulates
+        // what the batch would see if two bill adjustments are approved in different transactions, but before a batch
+        // can process
+        Util.disableTrigger('Disable_BillAdjustmentTrigger__c');
+        update unapprovedAdjustments[0];
+        Util.enableTrigger('Disable_BillAdjustmentTrigger__c');
 
         Test.startTest();
-            update unapprovedAdjustments;
+        update unapprovedAdjustments[1];
         Test.stopTest();
 
-        // 8 adjustments exist, 1 already has Zuora_ID__c, 2 Post on Approval, 5 Post on Next Bill:
         List<Bill_Adjustment__c> afterAdjustments = [
-            SELECT Id
+            SELECT Id, Effective__c, Zuora_Id__c
             FROM Bill_Adjustment__c
-            WHERE Zuora_Id__c != null
+            WHERE Zuora_Id__c != NULL
         ];
-        System.assertEquals(3,afterAdjustments.size());
+        System.assertEquals(2, afterAdjustments.size(),
+            '8 adjustments exist: ' +
+                '1 already has Zuora_ID__c, ' +
+                '1 should get a Zuora Id after the batch since Effective is Post When Approved, ' +
+                '1 Post When Approved should not have a Zuora Id since the trigger was turned off, and ' +
+                '5 are Post on Next Bill, but got this: ' + afterAdjustments
+        );
     }
 
     @IsTest
@@ -394,7 +402,9 @@ public class ZuoraCreditDebitMemoServiceTest {
 
     @IsTest
     private static void testHandleCreditMemo() {
-        Map<String, Boolean> featureFlagMap = new Map<String, Boolean>{'Relate_Debit_Memos_To_Invoices'=>false,'Multiple_Subscriptions'=>true};
+        Map<String, Boolean> featureFlagMap = new Map<String, Boolean>{
+            'Relate_Debit_Memos_To_Invoices' => false, 'Multiple_Subscriptions' => true
+        };
         ZuoraCreditDebitMemoService.featureService = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(featureFlagMap));
 
         String adjustJSON = '{' +
