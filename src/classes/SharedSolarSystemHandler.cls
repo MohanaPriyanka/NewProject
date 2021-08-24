@@ -130,13 +130,30 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
     }
 
     private void registerCapacityChanges(Shared_Solar_System__c sss, fflib_SObjectUnitOfWork uow) {
-        sss.Reserved_Capacity_kW_DC__c = String.valueOf(sumCapacity(pendingSmallCSCapacityList));
-        sss.Capacity_Committed_kW_DC__c = sumCapacity(committedSmallCSCapacityList);
-        sss.Pending_Anchor_Capacity__c = sumCapacity(pendingAnchorCapacityList);
-        sss.Anchor_Capacity_Reserved__c = sumCapacity(committedAnchorCapacityList);
-        sss.Pending_Demand_Capacity__c = sumCapacity(pendingDemandCapacityList);
-        sss.Committed_Demand_Capacity__c = sumCapacity(committedDemandCapacityList);
-        uow.registerDirty(sss);
+        Boolean recordChanged = false;
+        recordChanged = updateSystemField(sss, Shared_Solar_System__c.Reserved_Capacity_kW_DC__c,
+            String.valueOf(sumCapacity(pendingSmallCSCapacityList)), recordChanged);
+        recordChanged = updateSystemField(sss, Shared_Solar_System__c.Capacity_Committed_kW_DC__c,
+            sumCapacity(committedSmallCSCapacityList), recordChanged);
+        recordChanged = updateSystemField(sss, Shared_Solar_System__c.Pending_Anchor_Capacity__c,
+            sumCapacity(pendingAnchorCapacityList), recordChanged);
+        recordChanged = updateSystemField(sss, Shared_Solar_System__c.Anchor_Capacity_Reserved__c,
+            sumCapacity(committedAnchorCapacityList), recordChanged);
+        recordChanged = updateSystemField(sss, Shared_Solar_System__c.Pending_Demand_Capacity__c,
+            sumCapacity(pendingDemandCapacityList), recordChanged);
+        recordChanged = updateSystemField(sss, Shared_Solar_System__c.Committed_Demand_Capacity__c,
+            sumCapacity(committedDemandCapacityList), recordChanged);
+        if (recordChanged) {
+            uow.registerDirty(sss);
+        }
+    }
+
+    private Boolean updateSystemField(Shared_Solar_System__c sss, SObjectField field, Object value, Boolean recordChanged) {
+         if (sss.get(field) != value) {
+             sss.put(field, value);
+             recordChanged = true;
+         }
+        return recordChanged;
     }
 
     private Decimal sumCapacity(List<Utility_Account_Subscription__c> uasList) {
