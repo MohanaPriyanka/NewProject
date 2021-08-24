@@ -41672,6 +41672,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Utility__c.Average_Demand_Threshold__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Utility__c.Collect_Customer_POD_Number__c</field>
         <readable>true</readable>
     </fieldPermissions>
