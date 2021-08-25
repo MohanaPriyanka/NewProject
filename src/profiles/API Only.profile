@@ -2476,6 +2476,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.Total_Outstanding_Balance_Merge__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.Total_Outstanding_Balance__c</field>
         <readable>true</readable>
     </fieldPermissions>
