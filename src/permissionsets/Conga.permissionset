@@ -16,6 +16,30 @@
         <enabled>true</enabled>
         <name>APXTConga4__Connected_App_Setting__mdt</name>
     </customMetadataTypeAccesses>
+    <customMetadataTypeAccesses>
+        <enabled>true</enabled>
+        <name>APXT_BPM__Conductor_Region__mdt</name>
+    </customMetadataTypeAccesses>
+    <customMetadataTypeAccesses>
+        <enabled>true</enabled>
+        <name>APXT_BPM__Conductor_Setting__mdt</name>
+    </customMetadataTypeAccesses>
+    <customMetadataTypeAccesses>
+        <enabled>true</enabled>
+        <name>CongaWorkflow__Workflow_Region__mdt</name>
+    </customMetadataTypeAccesses>
+    <customMetadataTypeAccesses>
+        <enabled>true</enabled>
+        <name>CongaWorkflow__Workflow_Setting__mdt</name>
+    </customMetadataTypeAccesses>
+    <customSettingAccesses>
+        <enabled>true</enabled>
+        <name>APXTConga4__Conga_Composer_Settings__c</name>
+    </customSettingAccesses>
+    <customSettingAccesses>
+        <enabled>true</enabled>
+        <name>APXTConga4__Conga_Solutions_Settings__c</name>
+    </customSettingAccesses>
     <fieldPermissions>
         <editable>true</editable>
         <field>APXTConga4__Composer_QuickMerge__c.APXTConga4__Conga_Solution__c</field>
@@ -408,11 +432,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>APXT_BPM__Conductor__c.APXT_BPM__Consolidated_PDF_Output_File__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>APXT_BPM__Conductor__c.APXT_BPM__Content_Workspace_Id__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -504,11 +523,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>APXT_BPM__Conductor__c.Instructions__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>APXT_BPM__Conductor__c.Link_to_Window__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -745,6 +759,22 @@
         <apexPage>APXTConga4__SMComposer8Launcher</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
+    <pageAccesses>
+        <apexPage>APXT_BPM__ConductorDashboardButtonPage</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>APXT_BPM__ConductorDashboardPage</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>APXT_BPM__Conductor_Launch</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>APXT_BPM__Conductor_Schedule</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
     <tabSettings>
         <tab>APXTConga4__Composer_QuickMerge__c</tab>
         <visibility>Available</visibility>
@@ -767,6 +797,18 @@
     </tabSettings>
     <userPermissions>
         <enabled>true</enabled>
+        <name>ApiEnabled</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
         <name>EnableNotifications</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>ExportReport</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>RunReports</name>
     </userPermissions>
 </PermissionSet>
