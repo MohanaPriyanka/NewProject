@@ -1563,10 +1563,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>LeadTriggerHandlerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>LeadsLZUTriggerTestClass</apexClass>
         <enabled>false</enabled>
     </classAccesses>
