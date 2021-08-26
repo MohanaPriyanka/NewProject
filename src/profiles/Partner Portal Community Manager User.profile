@@ -51217,12 +51217,12 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Log__c.Auto_QC_Reject_Reason__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Log__c.Average_Demand__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -51372,7 +51372,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Log__c.QC_Status__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
