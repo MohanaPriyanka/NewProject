@@ -9,12 +9,14 @@ import getNewApplicationLink from '@salesforce/apex/PartnerSSFLinkController.get
 export default class LaunchSsfButtonCmp extends NavigationMixin(LightningElement)  {
     ssfURL;
     error;
+    renderButton = false;
 
     connectedCallback() {
         getNewApplicationLink()
         .then(result => {
+            console.log(result);
             this.ssfURL = result;
-            this.openLink();
+            this.renderButton = result == null ? false : true;
 
         })
         .catch(error => {
