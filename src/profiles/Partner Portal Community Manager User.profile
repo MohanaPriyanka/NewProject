@@ -4076,6 +4076,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>PartnerSSFLinkController_Test</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>PartnerSSSEligibilities</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -24501,6 +24505,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Contact.Retirement_Annual_Salary__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contact.SSF_Link__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>

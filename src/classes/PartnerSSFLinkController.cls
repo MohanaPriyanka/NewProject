@@ -1,5 +1,6 @@
 /**
  * Created by aingram on 8/20/21.
+ * Tested with PartnerSSFLinkController_Test
  */
 
 public with sharing class PartnerSSFLinkController {
@@ -8,10 +9,14 @@ public with sharing class PartnerSSFLinkController {
     public static String getNewApplicationLink() {
         User currentUser = getUserFromId(UserInfo.getUserId());
         Contact partnerContact = getContact(currentUser.ContactId);
-        String ssfUrl = Util.getCommunitySiteURL('Apply') + '/s/switch?partnerId=';
-        ssfUrl += partnerContact.Partner_Lookup__c;
-        return ssfUrl;
-
+        if (partnerContact.Partner_Lookup__c == null || partnerContact.Sales_Representative__c == null) {
+            return '';
+        } else {
+            String ssfUrl = Util.getCommunitySiteURL('Apply') + '/s/switch?salesrepId=';
+            ssfUrl += partnerContact.Sales_Representative__c;
+            ssfUrl += '&partnerId=' + partnerContact.Partner_Lookup__c;
+            return ssfUrl;
+        }
     }
 
     public static User getUserFromId(Id userId){
