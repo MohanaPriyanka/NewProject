@@ -1231,7 +1231,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <inlineHelpText>Primary customer product.</inlineHelpText>
-        <label>Product</label>
+        <label>Default Enrollment Product</label>
         <referenceTo>Product2</referenceTo>
         <relationshipLabel>Shared Solar Systems</relationshipLabel>
         <relationshipName>Shared_Solar_Systems</relationshipName>
