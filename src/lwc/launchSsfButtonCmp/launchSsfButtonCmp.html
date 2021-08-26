@@ -4,7 +4,14 @@
 
 <!-- Launch Ssf Button Cmp -->
 <template>
-  <div class="slds-m-top_small slds-m-bottom_medium slds-align_absolute-center">
-      <lightning-button variant="brand" label="New Application" title="SSF Link" onclick={openLink}></lightning-button>
+  <div class="slds-grid slds-gutters">
+    <div class="slds-col slds-size_6-of-12 slds-align_absolute-center">
+      <template if:true={renderButton}>
+        <button class="slds-button slds-button_brand slds-button_stretch ssfLink slds-m-vertical_large" onclick={openLink}>New Application</button>
+      </template>
+
+    </div>
+
   </div>
+
 </template>

@@ -20,10 +20,18 @@ private class PartnerSSFLinkController_Test {
 
         insert partner;
 
+        BSST__c salesRep = new BSST__c(
+            Name = 'Foo Test',
+            Partner__c = partner.Id
+        );
+
+        insert salesRep;
+
         Contact contactOne = new Contact(
             FirstName = 'Foo',
             LastName = 'Test',
             Partner_Lookup__c = partner.Id,
+            Sales_Representative__c = salesRep.Id,
             AccountId = partnerAccount.Id
         );
 
@@ -49,13 +57,24 @@ private class PartnerSSFLinkController_Test {
     @IsTest
     public static void getNewApplicationLinkTest() {
         User partnerUser = [SELECT Id, ContactId FROM User WHERE Username = 'test123@test.com' LIMIT 1];
-        Contact contactUser = [SELECT Id, Partner_Lookup__c FROM Contact WHERE Id = :partnerUser.ContactId LIMIT 1];
+        Contact contactUser = [SELECT Id, Partner_Lookup__c, Sales_Representative__c FROM Contact WHERE Id = :partnerUser.ContactId LIMIT 1];
 
         System.runAs(partnerUser) {
             String ssfUrl = PartnerSSFLinkController.getNewApplicationLink();
             System.assert(ssfUrl.contains(contactUser.Partner_Lookup__c), 'URL should contain partnerId in parameters');
+            System.assert(ssfUrl.contains(contactUser.Sales_Representative__c), 'URL should contain salesRepId in parameters');
 
         }
+
+        contactUser.Sales_Representative__c = null;
+        update contactUser;
+
+        System.runAs(partnerUser) {
+            String ssfUrl = PartnerSSFLinkController.getNewApplicationLink();
+            System.assertEquals(ssfUrl, '', 'Empty string should be returned when a contact has no sales rep or partner linked');
+        }
+
+
 
     }
 }
