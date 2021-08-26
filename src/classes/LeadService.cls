@@ -170,11 +170,20 @@ public without sharing class LeadService {
         return lead;
     }
 
-    public void updateContApplicationLink(List<Lead> triggerNew, Map<Id, Lead> triggerOldMap) {
-        for (Lead lead : triggerNew) {
-            if (lead.Email != triggerOldMap.get(lead.Id).Email && lead.Continue_Application_Link__c != null) {
-                CSLeadsRESTControllerV2.setContinueApplicationLinks(lead, null);
+    @Future
+    public static void closeQCCasesForUnqualifiedLeads(Set<Id> leadIds) {
+        try {
+            CaseSelector caseSelector = new CaseSelector();
+            List<Case> cases = caseSelector.openQCCasesForLeads(leadIds);
+            for (Case c : cases) {
+                c.Status = 'Closed';
+                c.Resolution__c = 'No Longer an Issue';
             }
+            update cases;
+        } catch (Exception e) {
+            Logger.logNow('LeadService', 'closeQCCasesForUnqualifiedLeads',
+                'Leads: ' + JSON.serialize(leadIds) + '\n' + e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR
+            );
         }
     }
 }

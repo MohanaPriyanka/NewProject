@@ -5,7 +5,8 @@
 @IsTest
 public class LeadServiceTestclass {
 
-    @TestSetup public static void setupTestData() {
+    @TestSetup
+    public static void setupTestData() {
         Utility__c nyseg = new Utility__c(
             Name = 'NYS Electric and Gas',
             Number_of_Decimal_Places__c = 2
@@ -222,7 +223,6 @@ public class LeadServiceTestclass {
         insert switchLead;
 
         CSLeadsRESTControllerV2.setContinueApplicationLinks(switchLead, null);
-
         update switchLead;
     }
 
@@ -725,6 +725,32 @@ public class LeadServiceTestclass {
             lead
         }).size(),
             'Invocable Method should return list of qualified Shared Solar Systems');
+    }
+
+    @IsTest
+    private static void testCloseQCCasesForUnqualifiedLeads() {
+        Lead lead = [SELECT Id,Name FROM Lead LIMIT 1];
+        Case newQCCase = new Case(
+            Lead_Lookup__c = lead.Id,
+            QC_Case_Subject__c = 'No Credit Match - Provide Additional Background on Guarantor (New Address or DOB)',
+            Product_Line__c = 'Community Solar',
+            Category__c = 'QC',
+            Case_Type__c = '3rd Party',
+            Sale_Status__c = 'Pre-Sale',
+            Subject = 'No Match Credit Report',
+            Priority = 'Medium',
+            Origin = 'Other'
+        );
+        insert newQCCase;
+
+        Test.startTest();
+        lead.Status = 'Unqualified';
+        update lead;
+        Test.stopTest();
+
+        String caseStatus = [SELECT Status FROM Case WHERE Id =: newQCCase.Id].Status;
+        System.debug([SELECT Message__c FROM Error_Log__c]);
+        System.assertEquals('Closed', caseStatus, 'Invalid QC case status after lead marked Unqualified');
     }
 
     private static Lead getMockLead(String loadZone) {

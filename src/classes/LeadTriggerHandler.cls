@@ -1,57 +1,70 @@
-/*************************************************************************************
- * Test: LeadTriggerHandlerTest
- *************************************************************************************/
-
+/**
+ * @description Handles Lead post-processing and procedure redirection from a trigger context
+ * Tested By: LeadServiceTestclass, CSLeadsDuplicateServiceTest
+ */
 public without sharing class LeadTriggerHandler {
-    public static Boolean firstRun = true;
-    @TestVisible private static Boolean skipContractSend = false;
-    private Map<String, String> leadToOppConvertMap = new Map<String, String> {
-        'Acquired_By_Client_Closed_By_BlueWave__c'=>'Acquired_By_Client_Closed_By_BlueWave__c',
-        'Application__c'=>'Application_Date__c',
-        'Application_Type__c'=>'Application_Type__c',
-        'bs_Sales_ID__c'=>'BS_Sales_ID__c',
-        'Company'=>'Name',
-        'Date_of_Application_2__c'=>'Date_of_Application__c',
-        'Lead_ID__c'=>'Lead_ID__c',
-        'MobilePhone'=>'Customer_Phone__c',
-        'OwnerId'=>'OwnerId',
-        'Partner_Account__c' => 'Partner_Account__c',
-        'Partner_Contact__c' => 'Partner_Contact__c',
-        'Partner_Email__c'=>'Partner_Email__c',
-        'Partner_Lookup__c'=>'Partner_tag_lookup__c',
-        'Partner_Tag__c'=>'Partner_Tag__c',
-        'Personal_Credit_Report__c'=>'Personal_Credit_Report2__c',
-        'Product__c'=>'Product__c',
-        'Product_line__c'=>'Product_Line__c',
-        'Product_Program__c'=>'Product_Program__c',
-        'Referral_Email__c'=>'Referral_Email__c',
-        'Underwriting_Criteria__c'=>'Underwriting_Criteria__c'
-    };
 
-    public void onBeforeInsert(List<Lead> leadList){
-        List<Lead> communitySolarLeads = new List<Lead>();
-        for (Lead lead : leadList) {
-            if (lead.Product_Line__c == 'Community Solar') {
-                communitySolarLeads.add(lead);
-            }
-        }
-        UtilityLoadZoneService.updateLZUL(communitySolarLeads, null);
+    public List<Lead> newRecords = new List<Lead>();
+    public Map<Id, Lead> oldRecordMap = new Map<Id, Lead>();
+
+    public LeadTriggerHandler(List<Lead> triggerNew, Map<Id, Lead> triggerOldMap) {
+        this.newRecords = triggerNew;
+        this.oldRecordMap = triggerOldMap;
     }
-    public void onBeforeUpdate(List<Lead> oldLeads, List<Lead> updatedLeads, Map<ID, Lead> oldLeadMap, Map<ID, Lead> newLeadMap){
-        List<Lead> communitySolarLeads = new List<Lead>();
-        Map<Id, Lead> communitySolarOldLeadMap = new Map<Id, Lead>();
 
-        for (Lead lead : updatedLeads) {
-            if (lead.Product_Line__c == 'Community Solar') {
-                communitySolarLeads.add(lead);
-            }
-        }
-        for (Lead lead : oldLeadMap.values()) {
-            if (lead.Product_Line__c == 'Community Solar') {
-                communitySolarOldLeadMap.put(lead.Id, lead);
-            }
-        }
+    // <---- TRIGGER CONTEXT METHODS ---->
+    public void beforeInsert() {
+        UtilityLoadZoneService.updateLZUL(newRecords, null);
+    }
 
-        UtilityLoadZoneService.updateLZUL(communitySolarLeads, communitySolarOldLeadMap);
+    public void afterInsert() {
+        checkDuplicateWebsiteLeads();
+        CSApplicationStatusEventPublisher.publishEvent(null, newRecords);
+    }
+
+    public void beforeUpdate() {
+        UtilityLoadZoneService.updateLZUL(newRecords, oldRecordMap);
+        updateContinueApplicationLinks();
+    }
+
+    public void afterUpdate() {
+        LeadService leadService = new LeadService();
+        leadService.completeLeadConversion(newRecords, oldRecordMap);
+        leadService.convertCasesToContact(newRecords);
+        leadService.updateRelatedContracts(newRecords, oldRecordMap);
+
+        closeQCCasesForUnqualifiedLeads();
+        CSApplicationStatusEventPublisher.publishEvent(oldRecordMap, newRecords);
+    }
+
+    // <---- ROUTER METHODS ---->
+    private void checkDuplicateWebsiteLeads() {
+        List<Lead> websiteLeads = (List<Lead>)
+            new SObjectFilter(newRecords, Lead.LeadSource, SObjectFilter.EQUAL_TO, 'Website')
+                .filterByCriteria(SObjectFilter.SOBJECT_LIST);
+        if (!websiteLeads.isEmpty()) {
+            BatchLeadsDuplicateService leadsDuplicateService = new BatchLeadsDuplicateService();
+            leadsDuplicateService.leads = websiteLeads;
+            Database.executeBatch(leadsDuplicateService, 150);
+        }
+    }
+
+    private void updateContinueApplicationLinks() {
+        List<Lead> leadsWithEmailChanges = (List<Lead>)
+            new SObjectFilter(oldRecordMap, newRecords, Lead.Email, SObjectFilter.ANY_VALUE, SObjectFilter.ANY_VALUE)
+                .addFilterCriteria(Lead.Continue_Application_Link__c, SObjectFilter.NOT_EQUAL_TO, null)
+                .filterByFieldValueChange(SObjectFilter.SOBJECT_LIST);
+        for (Lead lead : leadsWithEmailChanges) {
+            CSLeadsRESTControllerV2.setContinueApplicationLinks(lead, null);
+        }
+    }
+
+    private void closeQCCasesForUnqualifiedLeads() {
+        Set<Id> newlyUnqualifiedLeadIds = (Set<Id>)
+            new SObjectFilter(oldRecordMap, newRecords, Lead.Status, SObjectFilter.ANY_VALUE, 'Unqualified')
+                .filterByFieldValueChange(SObjectFilter.SOBJECT_ID_SET);
+        if (!newlyUnqualifiedLeadIds.isEmpty()) {
+            LeadService.closeQCCasesForUnqualifiedLeads(newlyUnqualifiedLeadIds);
+        }
     }
 }
