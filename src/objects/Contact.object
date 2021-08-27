@@ -1268,6 +1268,19 @@ SUBSTITUTE(Phone, &quot;(&quot;, &quot;&quot;), &quot;)&quot;, &quot;&quot;), &q
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>SSF_Link__c</fullName>
+        <description>SSF link for partner contacts. Contact must have a partner lookup and a sales rep for the link to generate</description>
+        <externalId>false</externalId>
+        <formula>IF(( NOT( ISBLANK(Sales_Representative__c) ) &amp;&amp; NOT( ISBLANK(Partner_Lookup__c) )), HYPERLINK(&quot;https://bluewavememberportal.force.com/apply/s/switch?salesrepID=&quot;&amp;Sales_Representative__c&amp;&quot;&amp;partnerId=&quot;&amp;Partner_Lookup__c, &quot;SSF Rep/Partner Link&quot;,
+&quot;_blank&quot;),NULL)</formula>
+        <inlineHelpText>SSF link for partner contacts</inlineHelpText>
+        <label>SSF Link</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Sales_Representative__c</fullName>
         <deleteConstraint>Restrict</deleteConstraint>
         <description>This is the relationship to the Sales Team object. It allow the portal to show records unique to each Sales Rep.</description>
