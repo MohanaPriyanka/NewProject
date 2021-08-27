@@ -14,10 +14,8 @@ export default class LaunchSsfButtonCmp extends NavigationMixin(LightningElement
     connectedCallback() {
         getNewApplicationLink()
         .then(result => {
-            console.log(result);
             this.ssfURL = result;
-            this.renderButton = result == null ? false : true;
-
+            this.renderButton = result === '' ? false : true;
         })
         .catch(error => {
             this.error = error;
