@@ -130,30 +130,25 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
     }
 
     private void registerCapacityChanges(Shared_Solar_System__c sss, fflib_SObjectUnitOfWork uow) {
-        Boolean recordChanged = false;
-        recordChanged = updateSystemField(sss, Shared_Solar_System__c.Reserved_Capacity_kW_DC__c,
-            String.valueOf(sumCapacity(pendingSmallCSCapacityList)), recordChanged);
-        recordChanged = updateSystemField(sss, Shared_Solar_System__c.Capacity_Committed_kW_DC__c,
-            sumCapacity(committedSmallCSCapacityList), recordChanged);
-        recordChanged = updateSystemField(sss, Shared_Solar_System__c.Pending_Anchor_Capacity__c,
-            sumCapacity(pendingAnchorCapacityList), recordChanged);
-        recordChanged = updateSystemField(sss, Shared_Solar_System__c.Anchor_Capacity_Reserved__c,
-            sumCapacity(committedAnchorCapacityList), recordChanged);
-        recordChanged = updateSystemField(sss, Shared_Solar_System__c.Pending_Demand_Capacity__c,
-            sumCapacity(pendingDemandCapacityList), recordChanged);
-        recordChanged = updateSystemField(sss, Shared_Solar_System__c.Committed_Demand_Capacity__c,
-            sumCapacity(committedDemandCapacityList), recordChanged);
-        if (recordChanged) {
-            uow.registerDirty(sss);
-        }
+        updateSystemField(sss, Shared_Solar_System__c.Reserved_Capacity_kW_DC__c,
+            String.valueOf(sumCapacity(pendingSmallCSCapacityList)));
+        updateSystemField(sss, Shared_Solar_System__c.Capacity_Committed_kW_DC__c,
+            sumCapacity(committedSmallCSCapacityList));
+        updateSystemField(sss, Shared_Solar_System__c.Pending_Anchor_Capacity__c,
+            sumCapacity(pendingAnchorCapacityList));
+        updateSystemField(sss, Shared_Solar_System__c.Anchor_Capacity_Reserved__c,
+            sumCapacity(committedAnchorCapacityList));
+        updateSystemField(sss, Shared_Solar_System__c.Pending_Demand_Capacity__c,
+            sumCapacity(pendingDemandCapacityList));
+        updateSystemField(sss, Shared_Solar_System__c.Committed_Demand_Capacity__c,
+            sumCapacity(committedDemandCapacityList));
     }
 
-    private Boolean updateSystemField(Shared_Solar_System__c sss, SObjectField field, Object value, Boolean recordChanged) {
+    private void updateSystemField(Shared_Solar_System__c sss, SObjectField field, Object value) {
          if (sss.get(field) != value) {
              sss.put(field, value);
-             recordChanged = true;
+             uow.registerDirty(sss, new List<SObjectField>{field});
          }
-        return recordChanged;
     }
 
     private Decimal sumCapacity(List<Utility_Account_Subscription__c> uasList) {
