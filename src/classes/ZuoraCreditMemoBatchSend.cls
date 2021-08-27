@@ -8,6 +8,16 @@ public without sharing class ZuoraCreditMemoBatchSend implements Database.Batcha
     public enum AdjustmentType {
         POST_WHEN_APPROVED, POST_NEXT_BILL}
     public AdjustmentType mode = AdjustmentType.POST_NEXT_BILL;
+    private Set<Id> billAdjustmentsToSend = new Set<Id>();
+
+    /**
+     * @description Used to send specific Bill Adjustments to Zuora. Intended for the Bill Adjustment Trigger to send
+     * adjustments after approval (since multiple approvals can create duplicate records in Zuora per W-021849)
+     * @param billAdjustmentsToSend List of Bill_Adjustment__c Ids to send to Zuora
+     */
+    public void setBillAdjustmentsToSend(Set<Id> billAdjustmentsToSend) {
+        this.billAdjustmentsToSend = billAdjustmentsToSend;
+    }
 
     public void executeBatch(){
         // 7 callouts to create a debit memo from an invoice, so a max of 14 memos per transaction to stay under 100 callouts
@@ -18,7 +28,7 @@ public without sharing class ZuoraCreditMemoBatchSend implements Database.Batcha
         if (queryString != null) {
             return Database.getQueryLocator(queryString);
         } else {
-            return AdjustmentSelector.getAdjustmentsNotYetInZuora(false, mode);
+            return AdjustmentSelector.getAdjustmentsNotYetInZuora(false, mode, billAdjustmentsToSend);
         }
     }
 
@@ -48,12 +58,10 @@ public without sharing class ZuoraCreditMemoBatchSend implements Database.Batcha
                 batchApply.runBatch();
             }
 
-            if (Util.getSystemPropertyCheckbox('Update_Usage_Records_With_ZuoraId__c')) {
-                List<Bill_Adjustment__c> adjustmentsToUpdate = new List<Bill_Adjustment__c>();
-                stampEffectiveDate();
-                adjustmentsToUpdate.addAll(adjustToUpdateSet);
-                update adjustmentsToUpdate;
-            }
+            List<Bill_Adjustment__c> adjustmentsToUpdate = new List<Bill_Adjustment__c>();
+            stampEffectiveDate();
+            adjustmentsToUpdate.addAll(adjustToUpdateSet);
+            update adjustmentsToUpdate;
         } catch (Exception excep){
             Logger.logLater('ZuoraCreditMemoBatchSend', 'finish', excep.getMessage() + '\n' + excep.getStackTraceString());
         }
