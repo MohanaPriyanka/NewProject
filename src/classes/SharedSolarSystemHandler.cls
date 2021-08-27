@@ -49,7 +49,7 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
     public void updateSSS() {
         Map<Id, Shared_Solar_System__c> allSSSes = sssSelector.getAllSSSMap();
         SharedSolarSystemInvoicer systems = new SharedSolarSystemInvoicer();
-        summarizeCapacity(allSSSes, uow);
+        summarizeCapacity(allSSSes);
         systems.updateManagementRevenueStartDate(uow, allSSSes.values());
         uow.commitWork();
     }
@@ -68,17 +68,17 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
     }
 
     public void summarizeCapacityBeforeUpdate(Map<Id, Shared_Solar_System__c> sssMap) {
-        summarizeCapacity(sssMap, uow);
+        summarizeCapacity(sssMap);
         // Don't uow.commitWork() because this is intended to be called from beforeUpdate
     }
 
-    private void summarizeCapacity(Map<Id, Shared_Solar_System__c> sssMap, fflib_SObjectUnitOfWork uow) {
+    private void summarizeCapacity(Map<Id, Shared_Solar_System__c> sssMap) {
         //Requerying the sss loses any changes from beforeUpdate - still need to reference sssMap for updated record below
         List<Shared_Solar_System__c> sssesWithActiveUASes = sssSelector.getSSSWithActiveUASes(sssMap.values());
         for (Shared_Solar_System__c sssWithActiveUASes : sssesWithActiveUASes) {
             Shared_Solar_System__c sssToUpdate = sssMap.get(sssWithActiveUASes.Id);
             summarizeCapacityBySubscription(sssWithActiveUASes);
-            registerCapacityChanges(sssToUpdate, uow);
+            registerCapacityChanges(sssToUpdate);
         }
     }
 
@@ -129,7 +129,7 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
         return ualAverageDemand >= sss.Utility__r.Average_Demand_Threshold__c && !uas.Utility_Account_Log__r.Exclude_from_Demand_Capacity__c;
     }
 
-    private void registerCapacityChanges(Shared_Solar_System__c sss, fflib_SObjectUnitOfWork uow) {
+    private void registerCapacityChanges(Shared_Solar_System__c sss) {
         updateSystemField(sss, Shared_Solar_System__c.Reserved_Capacity_kW_DC__c,
             String.valueOf(sumCapacity(pendingSmallCSCapacityList)));
         updateSystemField(sss, Shared_Solar_System__c.Capacity_Committed_kW_DC__c,
