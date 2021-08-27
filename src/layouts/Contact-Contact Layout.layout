@@ -3,11 +3,9 @@
     <customButtons>Opt_in_for_Text_Messages</customButtons>
     <customButtons>Opt_out_for_Text_Messages</customButtons>
     <customButtons>LASER_Credit_Access_Custom</customButtons>
-    <excludeButtons>DataDotComClean</excludeButtons>
     <excludeButtons>DisableCustomerPortal</excludeButtons>
     <excludeButtons>DisablePrmSuperUser</excludeButtons>
     <excludeButtons>EnablePrmSuperUser</excludeButtons>
-    <excludeButtons>RequestUseSfdc</excludeButtons>
     <excludeButtons>Share</excludeButtons>
     <excludeButtons>Submit</excludeButtons>
     <layoutSections>
@@ -77,6 +75,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Partner_Lookup__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>SSF_Link__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -353,13 +355,6 @@
         <fields>OPPORTUNITY.NAME</fields>
         <fields>OPPORTUNITY.CLOSE_DATE</fields>
         <relatedList>Opportunity.Customer_Referral__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <fields>Town__c</fields>
-        <fields>MPM4_BASE__Status__c</fields>
-        <fields>Total_MWDC__c</fields>
-        <relatedList>MPM4_BASE__Milestone1_Project__c.Scout__c</relatedList>
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
