@@ -142,7 +142,6 @@ public without sharing class LeadSelector {
                 Partner_Lookup__r.Name,
                 Personal_Credit_Report__c,
                 Personal_Credit_Report__r.LASERCA__Credit_Score__c,
-                Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c,
                 Phone,
                 PostalCode,
                 Privacy_Policy_Acknowledged__c,
@@ -226,6 +225,8 @@ public without sharing class LeadSelector {
         return new Map<Id, Lead>([
             SELECT Id, Name,
                 Application_Complete_Date__c,
+                Credit_Provider__c,
+                Credit_Provider_Address__c,
                 Credit_Report_Detail_1__c,
                 Credit_Report_Detail_2__c,
                 Credit_Report_Detail_3__c,

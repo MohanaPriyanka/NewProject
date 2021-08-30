@@ -64,16 +64,16 @@ public class TestcaseRecordDeleterTest {
 
         LASERCA__Personal_Credit_Report__c pcrOne = new LASERCA__Personal_Credit_Report__c(
             LASERCA__Lead__c = leadOne.Id,
-            LASERCA__Credit_Score_TransUnion__c = '700'
+            LASERCA__Credit_Score__c = '700'
         );
         LASERCA__Personal_Credit_Report__c pcrTwo = new LASERCA__Personal_Credit_Report__c(
             LASERCA__Lead__c = leadTwo.Id,
-            LASERCA__Credit_Score_TransUnion__c = '700',
+            LASERCA__Credit_Score__c = '700',
             CreatedDate = System.today().addDays(-30)
         );
         LASERCA__Personal_Credit_Report__c pcrThree = new LASERCA__Personal_Credit_Report__c(
             LASERCA__Lead__c = leadThree.Id,
-            LASERCA__Credit_Score_TransUnion__c = '700'
+            LASERCA__Credit_Score__c = '700'
         );
         insert new List<LASERCA__Personal_Credit_Report__c>{
             pcrOne, pcrTwo, pcrThree

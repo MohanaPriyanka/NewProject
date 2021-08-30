@@ -4,11 +4,19 @@
     <protected>false</protected>
     <values>
         <field>Application_Complete_Email_Template__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">SSF_Partner_Application_Complete_1604092449238</value>
     </values>
     <values>
         <field>Continue_Application_Email_Template__c</field>
-        <value xsi:type="xsd:string">Test_Duplicate_Email_Send_1605639357489</value>
+        <value xsi:type="xsd:string">SSF_Partner_Continue_Application_1605625058741</value>
+    </values>
+    <values>
+        <field>Credit_Login_Account_Username__c</field>
+        <value xsi:type="xsd:string">bluewavesoft</value>
+    </values>
+    <values>
+        <field>Credit_Provider__c</field>
+        <value xsi:type="xsd:string">CREDITAPI</value>
     </values>
     <values>
         <field>Default_Build__c</field>
