@@ -192,19 +192,19 @@ public class CSQualificationTestclass {
         lead.Utility_relationship__c = central.Id;
         update lead;
 
-        pullCreditForLead(lead.Id, 'High FICO');
+        LASERCA__Credit_Report_Log__c crl = pullCreditForLead(lead.Id, 'High FICO');
+        // LASERCA can do multiple updates to Credit Report Logs (Insert -> Update with a PCR -> Update to be Complete ->
+        // post complete update), but we don't want to send multiple unqualified emails when that happens.
+        update crl;
 
         Lead checkLead = [
             SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c,
-
                 Moody_s_Risk_Calc__c
-
             FROM Lead
             WHERE Id = :lead.Id
         ];
         System.assertEquals('Unqualified', checkLead.Status, 'Lead status should be unqualified');
         System.assertNotEquals(null, checkLead.Personal_Credit_Report__c, 'Lead should have an attached personal credit report');
-
         System.assertEquals('700', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score__c, 'Credit score on lead personal credit report should be 700');
 
     }
@@ -223,15 +223,15 @@ public class CSQualificationTestclass {
         update sharedSolarSystems;
 
         Lead lead = [SELECT Id FROM Lead LIMIT 1];
-
-        lead.LeadSource = 'Switch';
-        lead.Application_Complete_Date__c = System.today();
         Utility__c central = [SELECT Id FROM Utility__c WHERE Name = 'Central Hudson Gas and Electric' LIMIT 1];
 
         lead.Utility_relationship__c = central.Id;
         update lead;
 
-        pullCreditForLead(lead.Id, 'High FICO');
+        LASERCA__Credit_Report_Log__c crl = pullCreditForLead(lead.Id, 'High FICO');
+        // LASERCA can do multiple updates to Credit Report Logs (Insert -> Update with a PCR -> Update to be Complete ->
+        // post complete update), but we don't want to send multiple unqualified emails when that happens.
+        update crl;
 
         Lead checkLead = [
             SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c,
@@ -240,7 +240,9 @@ public class CSQualificationTestclass {
             WHERE Id = :lead.Id
         ];
         System.assertEquals('Unqualified', checkLead.Status, 'Lead status should be unqualified');
-        System.assertEquals('700', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score__c, 'Credit score on lead personal credit report should be 700');
+        System.assertEquals(false, checkLead.Unqualified_due_to_FICO__c, 'Lead should not be unqualified due to FICO');
+        System.assertEquals(1, MessagingService.emailsSent.size(),
+            'Expected CSQualificationService to send one email that we were not able to approve the application');
     }
 
     @IsTest
@@ -255,7 +257,13 @@ public class CSQualificationTestclass {
 
         Lead checkLead = [
             SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c,
-                Moody_s_Risk_Calc__c
+                Moody_s_Risk_Calc__c, (
+                SELECT Id
+                FROM LASERCA__Personal_Credit_Reports__r
+            ), (
+                SELECT Id, LASERCA__Personal_Credit_Report__c
+                FROM LASERCA__Credit_Report_Logs__r
+            )
             FROM Lead
             WHERE Id = :lead.Id
         ];
@@ -264,10 +272,14 @@ public class CSQualificationTestclass {
         System.assertNotEquals(null, checkLead.Personal_Credit_Report__c, 'Lead should have an attached personal credit report');
         System.assertEquals('9999', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score__c, 'Credit score on lead personal credit report should be 9999');
         System.assertEquals(1, new CaseSelector().selectOpenNoMatchCasesFromLead(lead).size(), 'QC for No Match PCRs should only be created for completed SSF leads');
+        System.assertEquals(1, checkLead.LASERCA__Credit_Report_Logs__r.size(), 'There should only be one Credit Report Log after pulling credit');
+        System.assertEquals(checkLead.Personal_Credit_Report__c, checkLead.LASERCA__Credit_Report_Logs__r[0].LASERCA__Personal_Credit_Report__c,
+            'The CreditReportLog should have the No Match Credit Report attached to it that is found on the Lead');
+        System.assertEquals(1, checkLead.LASERCA__Personal_Credit_Reports__r.size(),
+            'Expected the CreditReportLogTrigger to create one No Match PCR if the CRL has an error status');
     }
 
     @IsTest
-
     public static void testLowFico() {
         Lead lead = [SELECT Id, Name FROM Lead LIMIT 1];
 
@@ -276,8 +288,7 @@ public class CSQualificationTestclass {
         Test.stopTest();
 
         Lead checkLead = [
-            SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c, Moody_s_Risk_Calc__c,
-                Unqualified_due_to_FICO__c
+            SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c, Moody_s_Risk_Calc__c
             FROM Lead
             WHERE Id = :lead.Id
         ];
@@ -286,47 +297,81 @@ public class CSQualificationTestclass {
         System.assertNotEquals(null, checkLead.Personal_Credit_Report__c, 'Lead should have an attached personal credit report');
         System.assertEquals('200', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score__c, 'Credit score on lead personal credit report should be 200');
         System.assertEquals(true, checkLead.Unqualified_due_to_FICO__c, 'Lead should be flagged as Unqualified due to FICO');
+        System.assertEquals(1, MessagingService.emailsSent.size(),
+            'Expected CSQualificationService to send one email that we were not able to approve the application');
         Messaging.SingleEmailMessage sentEmail = (Messaging.SingleEmailMessage) MessagingService.emailsSent[0];
         System.assertNotEquals(null, sentEmail, 'ACN should be automatically sent to customer');
         System.assert(!sentEmail.htmlBody.contains('{!Lead.FirstName}'), 'Merge fields should be replaced with data from record');
     }
 
-    public static void pullCreditForLead(Id leadId, String type) {
-        LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
-            LASERCA__Lead__c = leadId,
-            LASERCA__Date_of_Credit_Report__c = System.today()
-        );
-        if (type == 'High FICO') {
-            pcr.LASERCA__Credit_Score__c = '700';
-        } else if (type == 'Low FICO') {
-            pcr.LASERCA__Credit_Score__c = '200';
-        }
-        insert pcr;
+    @IsTest
+    // Some reports like a0F5b00000dh0FuEAI don't get a FICO because of
+    // SC3 - FILE NOT SCORED BECAUSE SUBJECT DOES NOT HAVE SUFFICIENT CREDIT
+    // in which case they should be handled like a NO MATCH
+    public static void testNoFico() {
+        Lead lead = [SELECT Id, Name FROM Lead LIMIT 1];
 
-        LASERCA__Trade_Accounts__c tradeAccounts = new LASERCA__Trade_Accounts__c(
-            LASERCA__Personal_Credit_Report__c = pcr.Id,
-            LASERCA__Monthly_Payment__c = 339
-        );
-        insert tradeAccounts;
+        Test.startTest();
+        pullCreditForLead(lead.Id, 'No FICO');
+        Test.stopTest();
 
+        Lead checkLead = [
+            SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c,
+                Moody_s_Risk_Calc__c, (
+                SELECT Id
+                FROM LASERCA__Personal_Credit_Reports__r
+            ), (
+                SELECT Id, LASERCA__Personal_Credit_Report__c
+                FROM LASERCA__Credit_Report_Logs__r
+            )
+            FROM Lead
+            WHERE Id = :lead.Id
+        ];
+
+        System.assertEquals('Qualified', checkLead.Status, 'Lead status should be Qualified');
+        System.assertNotEquals(null, checkLead.Personal_Credit_Report__c, 'Lead should have an attached personal credit report');
+        System.assertEquals('9999', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score__c, 'Credit score on lead personal credit report should be 9999');
+        System.assertEquals(0, new CaseSelector().selectOpenNoMatchCasesFromLead(lead).size(), 'No Match cases should only be created for credit pulls that do not match, not credit pulls that could not be scored');
+        System.assertEquals(1, checkLead.LASERCA__Credit_Report_Logs__r.size(), 'There should only be one Credit Report Log after pulling credit');
+        System.assertEquals(checkLead.Personal_Credit_Report__c, checkLead.LASERCA__Credit_Report_Logs__r[0].LASERCA__Personal_Credit_Report__c,
+            'The CreditReportLog should have the No Match Credit Report attached to it that is found on the Lead');
+        System.assertEquals(1, checkLead.LASERCA__Personal_Credit_Reports__r.size(),
+            'Expected the CreditReportLogTrigger to create one No Match PCR if the CRL has an error status');
+    }
+
+    private static LASERCA__Credit_Report_Log__c pullCreditForLead(Id leadId, String creditScoreType) {
+        Map<String, String> leadTypeToCreditScore = new Map<String, String>{
+            'High FICO' => '700',
+            'Low FICO' => '200',
+            'No FICO' => ''
+        };
         LASERCA__Credit_Report_Log__c crLog = new LASERCA__Credit_Report_Log__c(
-            LASERCA__Lead__c = leadId,
-            LASERCA__Personal_Credit_Report__c = pcr.Id
+            LASERCA__Lead__c = leadId
         );
-
-        if (type == 'No Match') {
-            crLog.LASERCA__Status__c = 'ERROR';
-            crLog.LASERCA__Personal_Credit_Report__c = null;
-        } else {
-            crLog.LASERCA__Status__c = 'Completed';
+        if (creditScoreType == 'No Match') {
+            crLog.LASERCA__Status__c = 'Error';
         }
         insert crLog;
+
+        if (creditScoreType != 'No Match') {
+            LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
+                LASERCA__Lead__c = leadId,
+                LASERCA__Date_of_Credit_Report__c = System.today(),
+                LASERCA__Credit_Score__c = leadTypeToCreditScore.get(creditScoreType)
+            );
+            insert pcr;
+
+            crLog.LASERCA__Personal_Credit_Report__c = pcr.Id;
+            crLog.LASERCA__Status__c = 'Completed';
+        }
+        update crLog;
 
         Lead lead = new Lead(
             Id = leadId,
             Moody_s_Risk_Calc__c = 'Aaa'
         );
         update lead;
+        return crLog;
     }
 
     @IsTest

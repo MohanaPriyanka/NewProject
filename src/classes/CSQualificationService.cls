@@ -11,6 +11,7 @@ public without sharing class CSQualificationService {
     @TestVisible private fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
         new List<Schema.SObjectType>{
             LASERCA__Personal_Credit_Report__c.SObjectType,
+            LASERCA__Credit_Report_Log__c.SObjectType,
             Lead.SObjectType
         }
     );
@@ -48,47 +49,81 @@ public without sharing class CSQualificationService {
         List<String> leadIds = new List<String>();
         for (LASERCA__Credit_Report_Log__c crl : triggerNewMap.values()) {
             leadIds.add(crl.LASERCA__Lead__c);
-            if (crl.LASERCA__Status__c == 'ERROR') {
+            if (isErrorCRL(crl)) {
                 errorCRLs.add(crl);
             } else {
                 pcrIds.add(crl.LASERCA__Personal_Credit_Report__c);
             }
         }
         leadMap = new LeadSelector().getLeadMap(leadIds);
-        if (errorCRLs.size() > 0) {
-            handleErrorCRL(errorCRLs[0]);
-        }
+        handleErrorCRL(errorCRLs);
         List<LASERCA__Personal_Credit_Report__c> completedPCRs = creditReportSelector.getCompletedPCRs(pcrIds);
         underwriteLeadWithFICO(completedPCRs);
 
         try {
+            // We want to prevent the CRLTrigger from running again and entering an infinite loop (since uow could be
+            // updating an error CRL with a No Match PCR.
+            Util.disableTrigger('Disable_CreditReportLogTrigger__c');
             uow.commitWork();
         } catch (Exception e) {
-            Logger.logLater(
+            Logger.logNow(
                 'CSQualificationService',
                 'checkCreditReportLog',
                 e.getMessage() + '\n' + e.getStackTraceString()
             );
+        } finally {
+            Util.enableTrigger('Disable_CreditReportLogTrigger__c');
         }
+    }
+
+    private Boolean isErrorCRL(LASERCA__Credit_Report_Log__c crl) {
+        Boolean errorWithNoPCR =
+            crl.LASERCA__Status__c == 'Error' &&
+                crl.LASERCA__Personal_Credit_Report__c == null;
+        Boolean pcrNotScored =
+            crl.LASERCA__Personal_Credit_Report__c != null &&
+                crl.File_Not_Scored__c;
+        return errorWithNoPCR || pcrNotScored;
     }
 
     /**
      * @description If a Credit Report is returned with Status = ERROR, we create a blank PCR to be used in
      * underwriting. The blank PCR will be populated with a score of 9999, resulting in a case to resolve
-     * @param errorCRL CRL with Status = Error
+     * @param errorCRLs CRLs with Status = Error
      */
-    private void handleErrorCRL(LASERCA__Credit_Report_Log__c errorCRL) {
-        LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c();
-        pcr.Name = 'NO MATCH for Lead: ';
-        pcr.LASERCA__Lead__c = errorCRL.LASERCA__Lead__c;
-        insert pcr;
-
-        Lead lead = leadMap.get(errorCRL.LASERCA__Lead__c);
-        lead.Personal_Credit_Report__c = pcr.Id;
-        uow.registerDirty(lead);
-        underwriteLeadWithFICO(new List<LASERCA__Personal_Credit_Report__c>{
-            pcr
-        });
+    private void handleErrorCRL(List<LASERCA__Credit_Report_Log__c> errorCRLs) {
+        List<LASERCA__Personal_Credit_Report__c> noMatchPCRs = new List<LASERCA__Personal_Credit_Report__c>();
+        for (LASERCA__Credit_Report_Log__c errorCRL : errorCRLs) {
+            LASERCA__Personal_Credit_Report__c pcr;
+            if (errorCRL.LASERCA__Personal_Credit_Report__c == null) {
+                pcr = new LASERCA__Personal_Credit_Report__c(
+                    Name = 'NO MATCH for Lead: ',
+                    LASERCA__Lead__c = errorCRL.LASERCA__Lead__c,
+                    LASERCA__Credit_Score__c = '9999'
+                );
+                uow.registerNew(pcr);
+                LASERCA__Credit_Report_Log__c crl = new LASERCA__Credit_Report_Log__c(
+                    Id = errorCRL.Id,
+                    LASERCA__Personal_Credit_Report__c = pcr.Id
+                );
+                uow.registerDirty(crl, LASERCA__Credit_Report_Log__c.LASERCA__Personal_Credit_Report__c, pcr);
+            } else {
+                pcr = new LASERCA__Personal_Credit_Report__c(
+                    Id = errorCRL.LASERCA__Personal_Credit_Report__c,
+                    LASERCA__Lead__c = errorCRL.LASERCA__Lead__c,
+                    LASERCA__Credit_Score__c = '9999'
+                );
+                uow.registerDirty(pcr);
+            }
+            noMatchPCRs.add(pcr);
+            Lead pcrLead = leadMap.get(errorCRL.LASERCA__Lead__c);
+            pcrLead.Personal_Credit_Report__c = pcr.Id;
+            uow.registerDirty(pcrLead, Lead.Personal_Credit_Report__c, pcr);
+            if (pcrLead.Application_Complete_Date__c != null) {
+                createNoMatchFICOCase(pcrLead);
+            }
+        }
+        underwriteLeadWithFICO(noMatchPCRs);
     }
 
     /**
@@ -100,15 +135,11 @@ public without sharing class CSQualificationService {
         SharedSolarSystems sharedSolarSystems = new SharedSolarSystems(systemsSelector.getSharedSolarSystemsForEnrollment());
         for (LASERCA__Personal_Credit_Report__c creditReport : pcrs) {
             Lead lead = leadMap.get(creditReport.LASERCA__Lead__c);
-            Decimal creditScore = 0;
-            if (creditReport.LASERCA__Credit_Score__c == null) {
-                creditScore = 9999;
-                handleNoMatchCreditPull(creditReport, lead);
-            } else if (creditReport.LASERCA__Credit_Score__c != '9999') {
-                creditScore = Decimal.valueOf(creditReport.LASERCA__Credit_Score__c);
+            creditReport.LASERCA__Credit_Score__c = creditReport.LASERCA__Credit_Score__c==null?'9999':creditReport.LASERCA__Credit_Score__c;
+            if (creditReport.LASERCA__Credit_Score__c != '9999') {
                 closeReportMissingCases(lead);
             }
-            lead.Status = sharedSolarSystems.checkCSQualification(lead, creditScore);
+            lead.Status = sharedSolarSystems.checkCSQualification(lead, Decimal.valueOf(creditReport.LASERCA__Credit_Score__c));
             uow.registerDirty(lead);
         }
     }
@@ -141,20 +172,6 @@ public without sharing class CSQualificationService {
             result = sharedSolarSystems.checkCSQualification(lead, null);
         }
         return result;
-    }
-
-    /**
-     * @description If score is missing, populates PCR with 9999 to be resolved later. Creates a case to resolve
-     * missing credit score for completed applications.
-     * @param noMatchPCR Personal Credit Report missing a credit score
-     * @param lead Lead related to the PCR
-     */
-    private void handleNoMatchCreditPull(LASERCA__Personal_Credit_Report__c noMatchPCR, Lead lead) {
-        noMatchPCR.LASERCA__Credit_Score__c = '9999';
-        uow.registerDirty(noMatchPCR);
-        if (lead.Application_Complete_Date__c != null) {
-            createNoMatchFICOCase(lead);
-        }
     }
 
     private void createNoMatchFICOCase(Lead lead) {
@@ -201,6 +218,11 @@ public without sharing class CSQualificationService {
         MessagingService.sendEmailTemplate(ee);
     }
 
+    /**
+     * @description Sends the lead the "unable to approve your application" email if the lead's status is not already
+     * Unqualified. Assumes the caller will then set the lead's status to unqualified
+     * @param lead The lead to get the email
+     */
     public static void sendGenericUnqualifiedNotice(Lead lead) {
         MessagingService.EmailEnvelope ee = new MessagingService.EmailEnvelope();
         ee.emailTemplateName = 'Credit Denied - No FICO product';
@@ -281,13 +303,8 @@ public without sharing class CSQualificationService {
             for (Shared_Solar_System__c sss : sssList) {
                 QualificationMatch matchResult = new QualificationMatch();
                 matchResult.sss = sss;
-                if (sss.Open__c) {
-                    matchResult.isOpen = true;
-                }
-                if (sss.Capacity_Available_to_be_Reserved__c > 0) {
-                    matchResult.hasCapacity = true;
-                }
-
+                matchResult.isOpen = sss.Open__c;
+                matchResult.hasCapacity = sss.Capacity_Available_to_be_Reserved__c > 0;
                 matchResult.hasLZ = SharedSolarSystemQualifier.loadZoneInServiceTerritory(this.loadZone, sss);
                 matchResult.hasPartner = SharedSolarSystemQualifier.isPartnerEligible(partnerId, sss);
                 matchResult.eligiblePartners = summarizeEligiblePartners(sss.Partner_Shared_Solar_System_Accesses__r);
@@ -333,12 +350,10 @@ public without sharing class CSQualificationService {
         CaseSelector caseSelector = new CaseSelector();
         List<Case> cases = caseSelector.selectOpenNoMatchCasesFromLead(lead);
         cases.addAll(caseSelector.selectOpenLowMatchCasesFromLead(lead));
-        if (cases.size() > 0) {
-            for (Case c : cases) {
-                c.Status = 'Closed';
-            }
-            update cases;
+        for (Case c : cases) {
+            c.Status = 'Closed';
         }
+        update cases;
     }
 
     /**
