@@ -246,6 +246,7 @@ public without sharing class LeadSelector {
                 Moody_s_Risk_Calc__c,
                 No_Payment__c,
                 OwnerId,
+                Personal_Credit_Report__c,
                 Product__c,
                 Product__r.Parent_Product__c,
                 Partner_Lookup__r.Name,

@@ -48,7 +48,7 @@ public without sharing class CSQualificationService {
         List<String> leadIds = new List<String>();
         for (LASERCA__Credit_Report_Log__c crl : triggerNewMap.values()) {
             leadIds.add(crl.LASERCA__Lead__c);
-            if (crl.LASERCA__Status__c == 'ERROR' && crl.LASERCA__Personal_Credit_Report__c == null) {
+            if (crl.LASERCA__Status__c == 'ERROR') {
                 errorCRLs.add(crl);
             } else {
                 pcrIds.add(crl.LASERCA__Personal_Credit_Report__c);

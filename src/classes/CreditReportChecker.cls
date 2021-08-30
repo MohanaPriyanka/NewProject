@@ -31,7 +31,7 @@ public without sharing class CreditReportChecker {
      */
     public CreditReportChecker(Id leadId) {
         this.leadId = leadId;
-        this.queryAfterDateTime = Datetime.newInstance(2000, 1, 1);
+        this.queryAfterDateTime = Datetime.newInstance(2000,1,1);
         this.reportList = retrieveCreditReportsByLead();
         this.latestReport = !reportList.isEmpty() ? reportList[0] : null;
         this.latestReportNoMatch = isNoMatch(this.latestReport);
