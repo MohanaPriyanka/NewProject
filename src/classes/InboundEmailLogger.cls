@@ -22,7 +22,6 @@ public without sharing class InboundEmailLogger implements Messaging.InboundEmai
             // about this class logging emails to Salesforce
             // https://salesforce.stackexchange.com/questions/170932/email-service-not-routing-error-email
             result.success = true;
-            System.debug(LoggingLevel.ERROR, e.getMessage() + e.getStackTraceString());
             Logger.logNow(
                 'InboundEmailLogger',
                 'handleInboundEmail',
