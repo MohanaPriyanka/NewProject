@@ -40,10 +40,13 @@ public without sharing class InboundEmailLogger implements Messaging.InboundEmai
             new List<SObjectType>{
                 EmailMessage.SObjectType,
                 EmailMessageRelation.SObjectType,
-                Attachment.SObjectType
+                ContentVersion.SObjectType,
+                ContentDocumentLink.SObjectType
             }
         );
+        FilesUnitOfWorkHelper customWork = new FilesUnitOfWorkHelper();
         uow.registerWork(new Logger());
+        uow.registerWork(customWork);
         List<List<SObject>> searchList = [
             FIND :email.toAddresses[0]
             IN EMAIL FIELDS
@@ -70,10 +73,14 @@ public without sharing class InboundEmailLogger implements Messaging.InboundEmai
         uow.registerNew(relation, EmailMessageRelation.EmailMessageId, emailMessage);
         if (email.binaryAttachments != null) {
             for (Messaging.InboundEmail.BinaryAttachment binaryAttachment : email.binaryAttachments) {
-                Attachment emailAttachment = new Attachment();
-                emailAttachment.Name = binaryAttachment.fileName;
-                emailAttachment.Body = binaryAttachment.body;
-                uow.registerNew(emailAttachment, Attachment.ParentId, emailMessage);
+                ContentVersion contentVersion = new ContentVersion(
+                    ContentLocation = 'S',
+                    VersionData = binaryAttachment.body,
+                    Title = binaryAttachment.fileName,
+                    PathOnClient = '/' + binaryAttachment.fileName
+                );
+                uow.registerNew(contentVersion);
+                customWork.registerContentDocumentLinkInsert(emailMessage, contentVersion, 'V', 'AllUsers');
             }
         }
         uow.commitWork();

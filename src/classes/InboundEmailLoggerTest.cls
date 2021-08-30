@@ -57,11 +57,13 @@ private with sharing class InboundEmailLoggerTest {
         System.assertEquals(email.fromName, relations[0].EmailMessage.FromName, 'Expected to set the From Name');
         System.assertEquals(email.plainTextBody, relations[0].EmailMessage.TextBody, 'Expected to set the text body');
         EmailMessage message = [
-            SELECT Id, (SELECT Id, Name FROM Attachments)
+            SELECT Id, (SELECT Id, ContentDocument.LatestPublishedVersion.Title FROM ContentDocumentLinks)
             FROM EmailMessage
             WHERE Id = :relations[0].EmailMessageId
         ];
-        System.assertEquals(1, message.Attachments.size(), 'Should have saved the test attachment to the email message');
+        System.assertEquals(1, message.ContentDocumentLinks.size(), 'Should have saved the test attachment to the email message');
+        System.assertEquals(binaryAttachment.fileName, message.ContentDocumentLinks[0].ContentDocument.LatestPublishedVersion.Title,
+            'Expected the title of hte related content document to be set');
 
         List<Error_Log__c> errorLogs = [
             SELECT Id, Message__c
