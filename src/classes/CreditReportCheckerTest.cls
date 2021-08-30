@@ -19,7 +19,8 @@ private class CreditReportCheckerTest {
             LASERCA__Lead__c = leadId,
             LASERCA__Credit_Score__c = '9999',
             LASERCA__TransUnion_Score_Factor__c = 'Score Factor',
-            LASERCA__TransUnion_Alert_Message__c = 'Alert'
+            LASERCA__TransUnion_Alert_Message__c = 'Alert',
+            LASERCA__TransUnion_Indicator__c = true
         );
         insert pcr;
         return pcr;

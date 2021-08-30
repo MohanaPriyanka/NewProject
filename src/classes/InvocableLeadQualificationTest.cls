@@ -18,7 +18,7 @@ public with sharing class InvocableLeadQualificationTest {
         insert utility1;
         
         LASERCA__Personal_Credit_Report__c pcr1 = new LASERCA__Personal_Credit_Report__c(
-            LASERCA__Credit_Score_TransUnion__c = '100'
+            LASERCA__Credit_Score__c = '100'
         );        
         insert pcr1;
         

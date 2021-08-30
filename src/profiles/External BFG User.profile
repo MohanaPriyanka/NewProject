@@ -179,6 +179,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>CSApplicationFinisher</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>CSLeadsRESTControllerV2</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -200,6 +204,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>CSQualificationService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CSQualificationTestclass</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -331,6 +339,18 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>CreditReportChecker</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CreditReportCheckerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CreditReportSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>CustomApexObject</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -407,6 +427,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>InvocableLeadQualificationTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>InvoiceTemplateAssignerTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -420,6 +444,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>LeadSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>LeadServiceTestclass</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -744,6 +772,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ZippexTests</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraAccountServiceTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -10463,16 +10495,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Lead.Credit_Approval_Status2__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Lead.Credit_Approval_Status_Helper__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Lead.Credit_Approval_Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -10484,6 +10506,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Credit_Partner_Alert__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.Credit_Provider_Address__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.Credit_Provider__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -10579,11 +10611,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Days_Since_App_Started__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Lead.Debt_Income_Approval__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -10700,11 +10727,6 @@
         <editable>false</editable>
         <field>Lead.External_System_Lead_ID__c</field>
         <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Lead.FICO_Approval_Status__c</field>
-        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -23157,11 +23179,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.approval_status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.customer_type_cs__c</field>
         <readable>true</readable>
@@ -28335,6 +28352,16 @@
         <editable>true</editable>
         <field>System_Bill__c.YTD_kWh_Production__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>System_Default__mdt.Credit_Login_Account_Username__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>System_Default__mdt.Credit_Provider__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -45613,6 +45640,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>System_Bill__c-System Bill Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>System_Default__mdt-System Default Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Task-Customer Care Task</layout>

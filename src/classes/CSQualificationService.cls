@@ -99,7 +99,8 @@ public without sharing class CSQualificationService {
                 pcr = new LASERCA__Personal_Credit_Report__c(
                     Name = 'NO MATCH for Lead: ',
                     LASERCA__Lead__c = errorCRL.LASERCA__Lead__c,
-                    LASERCA__Credit_Score_TransUnion__c = '9999',
+
+
                     LASERCA__Credit_Score__c = '9999'
                 );
                 uow.registerNew(pcr);
@@ -112,7 +113,8 @@ public without sharing class CSQualificationService {
                 pcr = new LASERCA__Personal_Credit_Report__c(
                     Id = errorCRL.LASERCA__Personal_Credit_Report__c,
                     LASERCA__Lead__c = errorCRL.LASERCA__Lead__c,
-                    LASERCA__Credit_Score_TransUnion__c = '9999',
+
+
                     LASERCA__Credit_Score__c = '9999'
                 );
                 uow.registerDirty(pcr);
@@ -212,8 +214,10 @@ public without sharing class CSQualificationService {
         MessagingService.ReplacementText detail2 = new MessagingService.ReplacementText('{!Lead.Credit_Report_Detail_2__c}', lead.Credit_Report_Detail_2__c);
         MessagingService.ReplacementText detail3 = new MessagingService.ReplacementText('{!Lead.Credit_Report_Detail_3__c}', lead.Credit_Report_Detail_3__c);
         MessagingService.ReplacementText detail4 = new MessagingService.ReplacementText('{!Lead.Credit_Report_Detail_4__c}', lead.Credit_Report_Detail_4__c);
+        MessagingService.ReplacementText creditprovider = new MessagingService.ReplacementText('{!Lead.Credit_Provider__c}', lead.Credit_Provider__c);
+        MessagingService.ReplacementText creditprovideraddress = new MessagingService.ReplacementText('{!Lead.Credit_Provider_Address__c}', lead.Credit_Provider_Address__c);
         ee.replacementTexts = new List<MessagingService.ReplacementText>{
-            leadName, creditDate, creditScore, detail1, detail2, detail3, detail4
+            leadName, creditDate, creditScore, detail1, detail2, detail3, detail4, creditprovider, creditprovideraddress
         };
         MessagingService.sendEmailTemplate(ee);
     }

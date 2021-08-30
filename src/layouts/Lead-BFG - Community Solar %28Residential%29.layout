@@ -103,7 +103,7 @@
         <detailHeading>true</detailHeading>
         <editHeading>false</editHeading>
         <label>Hubspot Information</label>
-        <layoutColumns/>
+        <layoutColumns />
         <style>OneColumn</style>
     </layoutSections>
     <layoutSections>
@@ -221,10 +221,6 @@
         <label>Credit Information</label>
         <layoutColumns>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Credit_Approval_Status2__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Unqualified_due_to_FICO__c</field>
             </layoutItems>
@@ -326,7 +322,7 @@
                 <customLink>et4ae5__ExactTarget_Resubscribe</customLink>
             </layoutItems>
         </layoutColumns>
-        <layoutColumns/>
+        <layoutColumns />
         <style>CustomLinks</style>
     </layoutSections>
     <layoutSections>
@@ -334,7 +330,7 @@
         <detailHeading>false</detailHeading>
         <editHeading>true</editHeading>
         <label>Description Information</label>
-        <layoutColumns/>
+        <layoutColumns />
         <style>OneColumn</style>
     </layoutSections>
     <platformActionList>

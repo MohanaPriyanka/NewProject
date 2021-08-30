@@ -156,12 +156,7 @@
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
         <label>BFG - Community Solar Information</label>
-        <layoutColumns>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Credit_Approval_Status2__c</field>
-            </layoutItems>
-        </layoutColumns>
+        <layoutColumns />
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
