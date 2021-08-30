@@ -75,7 +75,7 @@ public without sharing virtual class TestcaseRecordDeleter implements Schedulabl
                 recordsProcessed += 1;
             } else {
                 for (Database.Error err : dr.getErrors()) {
-                    Logger.logLater('DeleteTestcaseRecords', 'execute', 'The following error has occurred.', Logger.ERROR);
+                    Logger.logLater('DeleteTestcaseRecords', 'execute', 'The following error has occurred on: ' + dr.getId(), Logger.ERROR);
                     Logger.logLater('DeleteTestcaseRecords', 'execute', err.getStatusCode() + ': ' + err.getMessage(), Logger.ERROR);
                 }
             }
