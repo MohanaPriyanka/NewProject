@@ -170,7 +170,6 @@ public without sharing class LeadService {
         return lead;
     }
 
-    @Future
     public static void closeQCCasesForUnqualifiedLeads(Set<Id> leadIds) {
         try {
             CaseSelector caseSelector = new CaseSelector();
