@@ -739,7 +739,8 @@ public class LeadServiceTestclass {
             Sale_Status__c = 'Pre-Sale',
             Subject = 'No Match Credit Report',
             Priority = 'Medium',
-            Origin = 'Other'
+            Origin = 'Other',
+            RecordTypeId =  [SELECT Id, Name, DeveloperName FROM RecordType WHERE SobjectType = 'Case' AND DeveloperName = 'Customer_Care'].Id
         );
         insert newQCCase;
 
