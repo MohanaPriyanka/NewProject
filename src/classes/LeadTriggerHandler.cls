@@ -41,7 +41,7 @@ public without sharing class LeadTriggerHandler {
     private void checkDuplicateWebsiteLeads() {
         List<Lead> websiteLeads = (List<Lead>)
             new SObjectFilter(newRecords, Lead.LeadSource, SObjectFilter.EQUAL_TO, 'Website')
-                .filterByCriteria(SObjectFilter.SOBJECT_LIST);
+                .get(SObjectFilter.SOBJECT_LIST);
         if (!websiteLeads.isEmpty()) {
             BatchLeadsDuplicateService leadsDuplicateService = new BatchLeadsDuplicateService();
             leadsDuplicateService.leads = websiteLeads;
@@ -53,7 +53,7 @@ public without sharing class LeadTriggerHandler {
         List<Lead> leadsWithEmailChanges = (List<Lead>)
             new SObjectFilter(oldRecordMap, newRecords, Lead.Email, SObjectFilter.ANY_VALUE, SObjectFilter.ANY_VALUE)
                 .addFilterCriteria(Lead.Continue_Application_Link__c, SObjectFilter.NOT_EQUAL_TO, null)
-                .filterByFieldValueChange(SObjectFilter.SOBJECT_LIST);
+                .get(SObjectFilter.SOBJECT_LIST);
         for (Lead lead : leadsWithEmailChanges) {
             CSLeadsRESTControllerV2.setContinueApplicationLinks(lead, null);
         }
@@ -62,7 +62,7 @@ public without sharing class LeadTriggerHandler {
     private void closeQCCasesForUnqualifiedLeads() {
         Set<Id> newlyUnqualifiedLeadIds = (Set<Id>)
             new SObjectFilter(oldRecordMap, newRecords, Lead.Status, SObjectFilter.ANY_VALUE, 'Unqualified')
-                .filterByFieldValueChange(SObjectFilter.SOBJECT_ID_SET);
+                .get(SObjectFilter.SOBJECT_ID_SET);
         if (!newlyUnqualifiedLeadIds.isEmpty()) {
             LeadService.closeQCCasesForUnqualifiedLeads(newlyUnqualifiedLeadIds);
         }
