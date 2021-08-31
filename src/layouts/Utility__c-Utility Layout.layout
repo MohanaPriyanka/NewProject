@@ -38,6 +38,10 @@
                 <behavior>Edit</behavior>
                 <field>Host_Account_Bill_Transfer_Month__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Dual_Data__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
