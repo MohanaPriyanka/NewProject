@@ -240,7 +240,6 @@ public class CSQualificationTestclass {
             WHERE Id = :lead.Id
         ];
         System.assertEquals('Unqualified', checkLead.Status, 'Lead status should be unqualified');
-        System.assertEquals(false, checkLead.Unqualified_due_to_FICO__c, 'Lead should not be unqualified due to FICO');
         System.assertEquals(1, MessagingService.emailsSent.size(),
             'Expected CSQualificationService to send one email that we were not able to approve the application');
     }
@@ -296,7 +295,6 @@ public class CSQualificationTestclass {
         System.assertEquals('Unqualified', checkLead.Status, 'Lead status should be Unqualified');
         System.assertNotEquals(null, checkLead.Personal_Credit_Report__c, 'Lead should have an attached personal credit report');
         System.assertEquals('200', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score__c, 'Credit score on lead personal credit report should be 200');
-        System.assertEquals(true, checkLead.Unqualified_due_to_FICO__c, 'Lead should be flagged as Unqualified due to FICO');
         System.assertEquals(1, MessagingService.emailsSent.size(),
             'Expected CSQualificationService to send one email that we were not able to approve the application');
         Messaging.SingleEmailMessage sentEmail = (Messaging.SingleEmailMessage) MessagingService.emailsSent[0];
