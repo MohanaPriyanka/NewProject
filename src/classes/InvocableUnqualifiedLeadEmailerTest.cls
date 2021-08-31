@@ -17,7 +17,7 @@ public class InvocableUnqualifiedLeadEmailerTest {
         leadJSON.writeStringField('Credit_Report_Detail_4__c', 'test');
         leadJSON.writeStringField('Credit_Provider__c', 'Experian');
         leadJSON.writeStringField('Credit_Provider_Address__c', '1 Main Street');
-        leadJSON.writeDateField('Date_of_Credit_Report__c', System.today());
+        leadJSON.writeDateField('Date_of_Credit_Report__c', Date.today());
         leadJSON.writeEndObject();
         return (Lead) JSON.deserialize(leadJSON.getAsString(), Lead.class);
     }
