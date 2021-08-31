@@ -177,7 +177,7 @@ public without sharing class LeadService {
             List<Case> cases = caseSelector.openQCCasesForLeads(leadIds);
             for (Case c : cases) {
                 c.Status = 'Closed';
-                c.Resolution__c = 'No Longer an Issue';
+                c.Resolution__c = 'Other';
             }
             update cases;
         } catch (Exception e) {
