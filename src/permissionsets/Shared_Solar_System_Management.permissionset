@@ -558,6 +558,11 @@
         <field>Utility__c.Account__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility__c.Average_Demand_Threshold__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Shared Solar System Management</label>
     <objectPermissions>

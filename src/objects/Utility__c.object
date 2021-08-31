@@ -82,6 +82,20 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Average_Demand_Threshold__c</fullName>
+        <defaultValue>25.00</defaultValue>
+        <description>Average Demand (kW DC) at which a subscription is considered a &quot;Demand Subscription&quot; (used to identify Demand capacity limits on Projects)</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Average Demand (kW DC) at which a subscription is considered a &quot;Demand Subscription&quot; (used to identify Demand capacity limits on Projects)</inlineHelpText>
+        <label>Average Demand Threshold</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Collect_Customer_POD_Number__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
