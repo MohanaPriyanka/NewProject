@@ -1,24 +1,26 @@
 /**
- * Created by AlyssaCooper on 3/20/2019.
+ * @description Created by AlyssaCooper on 3/20/2019.
  */
 @IsTest
 public with sharing class SharedSolarSystemHandlerTest {
+    
     @TestSetup
     @SuppressWarnings('PMD.ApexUnitTestMethodShouldHaveIsTestAnnotation, PMD.AvoidHardcodingId')
     public static void setupData() {
-        Test.startTest();
-
         Utility__c eversource = new Utility__c(
             Name = 'Eversource',
-            Number_of_Decimal_Places__c = 2
+            Number_of_Decimal_Places__c = 2,
+            Average_Demand_Threshold__c = 25
         );
         Utility__c nationalGrid = new Utility__c(
             Name = 'National Grid',
-            Number_of_Decimal_Places__c = 2
+            Number_of_Decimal_Places__c = 2,
+            Average_Demand_Threshold__c = 25
         );
         Utility__c noSSS = new Utility__c(
             Name = 'No SSS Utility',
-            Number_of_Decimal_Places__c = 2
+            Number_of_Decimal_Places__c = 2,
+            Average_Demand_Threshold__c = 25
         );
         insert new List<Utility__c>{
             eversource, nationalGrid, noSSS
@@ -30,7 +32,7 @@ public with sharing class SharedSolarSystemHandlerTest {
             Class__c = 'Class 2',
             Value_of_Net_Metering_Credit__c = 0.1848,
             Size_Ratio__c = 1,
-            Current_Billing_Rate__c = TRUE);
+            Current_Billing_Rate__c = true);
         insert everbillNMC;
         Load_U__c everLZU = new Load_U__c(Name = '02633',
             LZ__c = 'SEMA',
@@ -42,19 +44,19 @@ public with sharing class SharedSolarSystemHandlerTest {
         );
         insert junction;
         RecordType clientRT = [SELECT Id FROM RecordType WHERE Name = 'Client Account' LIMIT 1];
-        Account clientAccount = new Account(name = 'Test Client', RecordTypeId = clientRT.Id);
+        Account clientAccount = new Account(Name = 'Test Client', RecordTypeId = clientRT.Id);
         insert clientAccount;
         Partner__c newPartner = new Partner__c(
             Name = 'Partner',
             Account__c = clientAccount.Id
         );
         insert newPartner;
-        Product2 normalCSProduct = new Product2( Name = 'BlueWave Community Solar',
+        Product2 normalCSProduct = new Product2(Name = 'BlueWave Community Solar',
             Family = 'Community Solar',
             Product_Type__c = 'Community Solar',
             State__c = 'MA',
             ProductCode = 'CS - BlueWave - 10%',
-            IsActive = True,
+            IsActive = true,
             Lender_of_Record__c = 'BlueWave',
             NMC_Discount__c = 10,
             Annual_kWh_Maximum__c = 100000000,
@@ -64,21 +66,23 @@ public with sharing class SharedSolarSystemHandlerTest {
             Sizing_Method__c = 'Rate Class Ratio',
             Monthly_Late_Fee__c = 1,
             Max_Subscription_kW_AC_for_DC_calc__c = 25);
-        Product2 publicCSProduct = new Product2(  Name = 'BlueWave Public Offtake CS',
+        Product2 publicCSProduct = new Product2(Name = 'BlueWave Public Offtake CS',
             Family = 'Community Solar',
             Product_Type__c = 'Community Solar',
             Customer_Subscription_Type__c = 'Electricity Cost ($)',
             Sizing_Method__c = 'Project Ratio',
             State__c = 'MA',
             ProductCode = 'CS - Bluewave - Public CS - 20%',
-            IsActive = True,
+            IsActive = true,
             Lender_of_Record__c = 'BlueWave',
             NMC_Discount__c = 20,
             Annual_kWh_Maximum__c = 63000,
             NM_Rate_Floor__c = 0.09,
             Days_in_Bill_Period__c = 20,
             Monthly_Late_Fee__c = 0.8333);
-        insert new List<Product2>{normalCSProduct, publicCSProduct};
+        insert new List<Product2>{
+            normalCSProduct, publicCSProduct
+        };
         Shared_Solar_System__c sss1 = new Shared_Solar_System__c(Name = 'SSS 1',
             Service_Territory__c = 'SEMA',
             Service_Territories__c = 'SEMA',
@@ -139,7 +143,9 @@ public with sharing class SharedSolarSystemHandlerTest {
             Assemblage_Count__c = 1,
             Maximum_Subscription_Capacity_kWDC__c = 25,
             Contract_Assignment_Entity__c = entity1.Id);
-        insert new List<Shared_Solar_System__c>{sss1, sss2, sss3};
+        insert new List<Shared_Solar_System__c>{
+            sss1, sss2, sss3
+        };
         List<Shared_Solar_System__c> noSharedSolarSystems =
             SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
                 new Set<Id>{
@@ -199,52 +205,63 @@ public with sharing class SharedSolarSystemHandlerTest {
         Account accountParent1 = new Account(Name = 'Parent Account 1', Client_Brand_Key__c = 'BluewaveLogo');
         Account accountParent2 = new Account(Name = 'Parent Account 2', Client_Brand_Key__c = 'AmpRed');
         Account accountParent3 = new Account(Name = 'Parent Account 3', Client_Brand_Key__c = 'BluewaveLogo');
-        insert new List<Account>{accountParent1, accountParent2, accountParent3};
-        Contact contactA = new Contact( FirstName = 'Contact A',
+        insert new List<Account>{
+            accountParent1, accountParent2, accountParent3
+        };
+        Contact contactA = new Contact(FirstName = 'Contact A',
             LastName = 'Last',
             Account = accountParent1,
             Email = 'acooper@bluewavesolar.com');
-        Contact contactB = new Contact( FirstName = 'Contact B',
+        Contact contactB = new Contact(FirstName = 'Contact B',
             LastName = 'Last',
             Account = accountParent2,
             Email = 'acooper@bluewavesolar.com');
-        Contact contactC = new Contact( FirstName = 'Contact C',
+        Contact contactC = new Contact(FirstName = 'Contact C',
             LastName = 'Last',
             Account = accountParent3,
             Email = 'acooper@bluewavesolar.com');
-        insert new List<Contact>{contactA, contactB, contactC};
-        Account propAcct1 = new Account( Name = 'Prop Account 1',
+        insert new List<Contact>{
+            contactA, contactB, contactC
+        };
+        Account propAcct1 = new Account(Name = 'Prop Account 1',
             Parent_Account__c = accountParent1.Id,
             Send_Bills_Contact__c = contactA.Id,
             RecordTypeId = '012j00000010HeQ',
             Client_Brand_Key__c = 'BluewaveLogo');
-        Account propAcct2 = new Account( Name = 'Prop Account 2',
+        Account propAcct2 = new Account(Name = 'Prop Account 2',
             Parent_Account__c = accountParent2.Id,
             Send_Bills_Contact__c = contactB.Id,
             RecordTypeId = '012j00000010HeQ',
             Client_Brand_Key__c = 'AmpRed');
-        Account propAcct3 = new Account( Name = 'Prop Account 3',
+        Account propAcct3 = new Account(Name = 'Prop Account 3',
             Parent_Account__c = accountParent3.Id,
             Send_Bills_Contact__c = contactC.Id,
             RecordTypeId = '012j00000010HeQ',
             Client_Brand_Key__c = 'BluewaveLogo');
-        insert new List<Account>{propAcct1, propAcct2, propAcct3};
+        insert new List<Account>{
+            propAcct1, propAcct2, propAcct3
+        };
         Utility_Account_Log__c ualog1 = new Utility_Account_Log__c(
             Name = '0000234',
             Account__c = propAcct1.Id,
             Annual_Cost_of_Electricity__c = 10000,
+            Average_Demand__c = 100,
             Name_on_Account__c = 'Name one');
         Utility_Account_Log__c ualog2 = new Utility_Account_Log__c(
             Name = '0000236',
             Account__c = propAcct2.Id,
             Annual_Cost_of_Electricity__c = 10000,
+            Average_Demand__c = 100,
             Name_on_Account__c = 'Name two');
         Utility_Account_Log__c ualog3 = new Utility_Account_Log__c(
             Name = '0000238',
             Account__c = propAcct3.Id,
             Annual_Cost_of_Electricity__c = 10000,
+            Average_Demand__c = 100,
             Name_on_Account__c = 'Name three');
-        insert new List<Utility_Account_Log__c>{ualog1, ualog2, ualog3};
+        insert new List<Utility_Account_Log__c>{
+            ualog1, ualog2, ualog3
+        };
         Opportunity opportunityone =
             new Opportunity(Name = 'Alyssa Testcase1 0000234',
                 AccountId = propAcct1.Id,
@@ -285,7 +302,9 @@ public with sharing class SharedSolarSystemHandlerTest {
                 Product__c = normalCSProduct.Id,
                 Product_Line__c = 'Community Solar',
                 CloseDate = System.today());
-        insert new List<Opportunity>{opportunityone, opportunitytwo, opportunitythree, opportunityFour};
+        insert new List<Opportunity>{
+            opportunityone, opportunitytwo, opportunitythree, opportunityFour
+        };
         Utility_Account_Subscription__c uasOne =
             new Utility_Account_Subscription__c(Name = '0000234',
                 Utility_Account_Log__c = ualog1.Id,
@@ -293,7 +312,7 @@ public with sharing class SharedSolarSystemHandlerTest {
                 Sizing_Method__c = everbillNMC.Id,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
                 Annual_kwh_subscription_future__c = 4000,
-                Calculated_Annual_Cost_of_Electricity__c = 4000,
+                calculated_annual_cost_of_electricity__c = 4000,
                 Subscribed_Annual_Cost_of_Electricity__c = 4000);
         Utility_Account_Subscription__c uasTwo =
             new Utility_Account_Subscription__c(Name = '0000236',
@@ -322,28 +341,32 @@ public with sharing class SharedSolarSystemHandlerTest {
                 Next_Schedule_Z_Status__c = 'Active Subscription',
                 Annual_kwh_subscription_future__c = 30000
             );
-        insert new List<Utility_Account_Subscription__c>{uasOne, uasTwo, uasThree, uasFour};
+        insert new List<Utility_Account_Subscription__c>{
+            uasOne, uasTwo, uasThree, uasFour
+        };
         Schedule_Z__c scheduleZ1 = new Schedule_Z__c(
             Name = '18-0515 Oxford Barrett St. P1',
             Shared_Solar_System__c = sss1.Id,
-            Date_Enacted_by_Utility__c = Date.newInstance(2018,1,1),
+            Date_Enacted_by_Utility__c = Date.newInstance(2018, 1, 1),
             Status__c = 'Billing'
         );
         Schedule_Z__c scheduleZ2 = new Schedule_Z__c(
             Name = '18-0515 Oxford Barrett St. P2',
             Shared_Solar_System__c = sss2.Id,
-            Date_Enacted_by_Utility__c = Date.newInstance(2018,1,1),
+            Date_Enacted_by_Utility__c = Date.newInstance(2018, 1, 1),
             Status__c = 'Billing'
         );
         Schedule_Z__c scheduleZ3 = new Schedule_Z__c(
             Name = '18-0515 Oxford Barrett St. P3',
             Shared_Solar_System__c = sss3.Id,
-            Date_Enacted_by_Utility__c = Date.newInstance(2018,1,1),
+            Date_Enacted_by_Utility__c = Date.newInstance(2018, 1, 1),
             Status__c = 'Billing'
         );
-        insert new List<Schedule_Z__c>{scheduleZ1, scheduleZ2, scheduleZ3};
-        Test.stopTest();
+        insert new List<Schedule_Z__c>{
+            scheduleZ1, scheduleZ2, scheduleZ3
+        };
     }
+    
     public static void addMoreTestRecords() {
         Shared_Solar_System__c sss2 = [
             SELECT Id, Product__c, Utility_NMC_Tariff__c
@@ -362,7 +385,9 @@ public with sharing class SharedSolarSystemHandlerTest {
         Account propAcct3 = new Account(
             Name = 'Prop Account 3',
             Parent_Account__c = accountParent.Id);
-        insert new List<Account>{propAcct1, propAcct2, propAcct3};
+        insert new List<Account>{
+            propAcct1, propAcct2, propAcct3
+        };
         Utility_Account_Log__c ualog1 = new Utility_Account_Log__c(
             Name = '1100234',
             Account__c = propAcct1.Id,
@@ -378,7 +403,9 @@ public with sharing class SharedSolarSystemHandlerTest {
             Account__c = propAcct3.Id,
             Annual_Cost_of_Electricity__c = 10000,
             Name_on_Account__c = 'Name three');
-        insert new List<Utility_Account_Log__c>{ualog1, ualog2, ualog3};
+        insert new List<Utility_Account_Log__c>{
+            ualog1, ualog2, ualog3
+        };
         Opportunity opportunityone =
             new Opportunity(Name = 'Test1 0000234',
                 AccountId = propAcct1.Id,
@@ -411,7 +438,9 @@ public with sharing class SharedSolarSystemHandlerTest {
                 Product__c = sss2.Product__c,
                 Product_Line__c = 'Community Solar',
                 CloseDate = System.today());
-        insert new List<Opportunity>{opportunityone, opportunitytwo, opportunitythree, opportunityFour};
+        insert new List<Opportunity>{
+            opportunityone, opportunitytwo, opportunitythree, opportunityFour
+        };
         Utility_Account_Subscription__c uasOne =
             new Utility_Account_Subscription__c(Name = '1100234',
                 Utility_Account_Log__c = ualog1.Id,
@@ -419,7 +448,7 @@ public with sharing class SharedSolarSystemHandlerTest {
                 Next_Schedule_Z_Status__c = 'Active Subscription',
                 Sizing_Method__c = sss2.Utility_NMC_Tariff__c,
                 Annual_kwh_subscription_future__c = 4200,
-                Calculated_Annual_Cost_of_Electricity__c = 4200,
+                calculated_annual_cost_of_electricity__c = 4200,
                 Subscribed_Annual_Cost_of_Electricity__c = 4200);
         Utility_Account_Subscription__c uasTwo =
             new Utility_Account_Subscription__c(Name = '1100236',
@@ -428,7 +457,7 @@ public with sharing class SharedSolarSystemHandlerTest {
                 Sizing_Method__c = sss2.Utility_NMC_Tariff__c,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
                 Annual_kwh_subscription_future__c = 8200,
-                Calculated_Annual_Cost_of_Electricity__c = 8200,
+                calculated_annual_cost_of_electricity__c = 8200,
                 Subscribed_Annual_Cost_of_Electricity__c = 8200);
         Utility_Account_Subscription__c uasThree =
             new Utility_Account_Subscription__c(Name = '1100238',
@@ -437,7 +466,7 @@ public with sharing class SharedSolarSystemHandlerTest {
                 Sizing_Method__c = sss2.Utility_NMC_Tariff__c,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
                 Annual_kwh_subscription_future__c = 320,
-                Calculated_Annual_Cost_of_Electricity__c = 320,
+                calculated_annual_cost_of_electricity__c = 320,
                 Subscribed_Annual_Cost_of_Electricity__c = 320);
         Utility_Account_Subscription__c uasFour =
             new Utility_Account_Subscription__c(Name = '1100239',
@@ -446,11 +475,14 @@ public with sharing class SharedSolarSystemHandlerTest {
                 Sizing_Method__c = sss2.Utility_NMC_Tariff__c,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
                 Annual_kwh_subscription_future__c = 32000,
-                Calculated_Annual_Cost_of_Electricity__c = 32000,
+                calculated_annual_cost_of_electricity__c = 32000,
                 Subscribed_Annual_Cost_of_Electricity__c = 32000);
-        insert new List<Utility_Account_Subscription__c>{uasOne, uasTwo, uasThree, uasFour};
+        insert new List<Utility_Account_Subscription__c>{
+            uasOne, uasTwo, uasThree, uasFour
+        };
     }
-    private static void createContractTestRecords(){
+    
+    private static void createContractTestRecords() {
         Account account = [SELECT Id FROM Account LIMIT 1];
         RecordType clientRT = [SELECT Id FROM RecordType WHERE Name = 'Client Contract' LIMIT 1];
         Contract contractA = new Contract(
@@ -463,7 +495,9 @@ public with sharing class SharedSolarSystemHandlerTest {
             AccountId = account.Id,
             RecordTypeId = clientRT.Id
         );
-        insert new List<Contract>{managementContract, contractA};
+        insert new List<Contract>{
+            managementContract, contractA
+        };
         Contract_Fee_Detail__c acq = new Contract_Fee_Detail__c(
             Contract__c = contractA.Id,
             Acquisition_Channels_BCS_Acquired__c = true,
@@ -579,6 +613,7 @@ public with sharing class SharedSolarSystemHandlerTest {
         insert clientContracts;
         update sssList;
     }
+    
     @IsTest
     public static void testApexContext() {
         Shared_Solar_System__c sss = [
@@ -628,32 +663,73 @@ public with sharing class SharedSolarSystemHandlerTest {
         System.assertEquals(false, sss.Apex_Context__c);
         System.assertEquals(80, sss.Total_System_Size_kWh_DC__c);
     }
+    
     @IsTest
     public static void testSharedSolarSystemUpdate() {
         Test.startTest();
-        List<Utility_Account_Subscription__c> uas = [SELECT Utility_Account_Log__c,
-            Opportunity__c,
-            Next_Schedule_Z_Status__c,
-            Calculated_Annual_Cost_of_Electricity__c,
-            Subscribed_Annual_Cost_of_Electricity__c,
-            Customer_Subscription_KW_DC__c,
-            Opportunity__r.Shared_Solar_System__c
-        FROM Utility_Account_Subscription__c
-        WHERE Name = '0000234'
-        LIMIT  1];
-        List<Shared_Solar_System__c> testSSS = [SELECT Name, Capacity_Committed_kW_DC__c
-        FROM Shared_Solar_System__c
-        WHERE Id =: uas[0].Opportunity__r.Shared_Solar_System__c];
+        List<Utility_Account_Subscription__c> uas = [
+            SELECT Utility_Account_Log__c,
+                Opportunity__c,
+                Next_Schedule_Z_Status__c,
+                calculated_annual_cost_of_electricity__c,
+                Subscribed_Annual_Cost_of_Electricity__c,
+                Customer_Subscription_KW_DC__c,
+                Opportunity__r.Shared_Solar_System__c
+            FROM Utility_Account_Subscription__c
+            WHERE Name = '0000234'
+            LIMIT 1
+        ];
+        List<Shared_Solar_System__c> testSSS = [
+            SELECT Name, Capacity_Committed_kW_DC__c
+            FROM Shared_Solar_System__c
+            WHERE Id = :uas[0].Opportunity__r.Shared_Solar_System__c
+        ];
         System.assertNotEquals(0, uas[0].Customer_Subscription_KW_DC__c);
         update testSSS;
         System.assertEquals(uas[0].Customer_Subscription_KW_DC__c, testSSS[0].Capacity_Committed_kW_DC__c);
         System.assertNotEquals(0, testSSS[0].Capacity_Committed_kW_DC__c);
         Test.stopTest();
     }
+
+    @IsTest
+    public static void testDemandCapacitySummarization() {
+        Shared_Solar_System__c originalSSS = [
+            SELECT Id, Pending_Demand_Capacity__c, Committed_Demand_Capacity__c, Demand_Customer_System_Utilization__c
+            FROM Shared_Solar_System__c
+            WHERE Name = 'SSS 2'
+            LIMIT 1
+        ];
+        // 2 UASes:  6.1538 , 0.2308 = 6.3846
+        // 1 Anchor: 23.0769
+        // All UASes (UAL: Average_Demand__c) are "Demand" => committed demand capacity on SSS should be sum of UASes
+        // Subscription Orders use the rounded version of the subscription
+        System.assertEquals(0, originalSSS.Pending_Demand_Capacity__c, 'All opps are Complete and subscriptions active, no pending data');
+        System.assertEquals(29.4624, originalSSS.Committed_Demand_Capacity__c, 'Invalid committed demand capacity');
+
+        // Set exclusion criteria for demand capacity on UAL 2, which should remove committed demand capacity from SSS
+        update new Utility_Account_Log__c(
+            Id = [SELECT Id FROM Utility_Account_Log__c WHERE Name = '0000236'].Id,
+            Exclude_from_Demand_Capacity__c = true
+        );
+
+        Test.startTest();
+            SharedSolarSystemHandler handler = new SharedSolarSystemHandler();
+            handler.updateSSS();
+        Test.stopTest();
+
+        Shared_Solar_System__c sssUpdated = [
+            SELECT Committed_Demand_Capacity__c, Demand_Customer_System_Utilization__c, Pending_Demand_Capacity__c
+            FROM Shared_Solar_System__c WHERE Name = 'SSS 2' LIMIT 1
+        ];
+        System.assertEquals(0, originalSSS.Pending_Demand_Capacity__c, 'All opps are Complete and subscriptions active, no pending data');
+        System.assertEquals(23.3088, sssUpdated.Committed_Demand_Capacity__c, 'Incorrect committed demand capacity');
+        System.assertEquals(72.84, sssUpdated.Demand_Customer_System_Utilization__c, 'Incorrect demand utilization');
+    }
+    
     @IsTest
     public static void testMultipleUASes() {
         Shared_Solar_System__c originalSSS = [
-            SELECT Id, Capacity_Committed_kW_DC__c, Anchor_capacity_reserved__c
+            SELECT Id, Capacity_Committed_kW_DC__c, Anchor_Capacity_Reserved__c
             FROM Shared_Solar_System__c
             WHERE Name = 'SSS 2'
             LIMIT 1
@@ -661,16 +737,15 @@ public with sharing class SharedSolarSystemHandlerTest {
         // 2 UASes:  6.1538 , 0.2308 = 6.3846
         // 1 Anchor: 23.0769
         // Subscription Orders use the rounded version of the subscription
-
-        System.assertEquals(6.384,originalSSS.Capacity_Committed_kW_DC__c);
-        System.assertEquals(23.0784,originalSSS.Anchor_capacity_reserved__c);
+        System.assertEquals(6.384, originalSSS.Capacity_Committed_kW_DC__c);
+        System.assertEquals(23.0784, originalSSS.Anchor_Capacity_Reserved__c);
 
         Utility_Account_Subscription__c selectedUAS = [
             SELECT Utility_Account_Log__c,
                 Opportunity__c,
                 Next_Schedule_Z_Status__c,
                 Annual_kwh_subscription_future__c,
-                Calculated_Annual_Cost_of_Electricity__c,
+                calculated_annual_cost_of_electricity__c,
                 Subscribed_Annual_Cost_of_Electricity__c,
                 Customer_Subscription_KW_DC__c,
                 Opportunity__r.Shared_Solar_System__c
@@ -679,29 +754,30 @@ public with sharing class SharedSolarSystemHandlerTest {
             LIMIT 1
         ];
         // Increase one subscription:
-            Subscription_Order__c resize = new Subscription_Order__c(
-                Utility_Account_Subscription__c = selectedUAS.Id,
-                New_Annual_kWh__c = 12000,
-                Type__c = 'Resize',
-                Approval_Status__c = 'Approved',
-                Effective_Date__c = System.now()
-            );
-            insert resize;
+        Subscription_Order__c resize = new Subscription_Order__c(
+            Utility_Account_Subscription__c = selectedUAS.Id,
+            New_Annual_kWh__c = 12000,
+            Type__c = 'Resize',
+            Approval_Status__c = 'Approved',
+            Effective_Date__c = System.now()
+        );
+        insert resize;
 
         Test.startTest();
         SharedSolarSystemHandler handler = new SharedSolarSystemHandler();
         handler.updateSSS();
         Test.stopTest();
         Shared_Solar_System__c sssUpdated = [
-            SELECT Id, Capacity_Committed_kW_DC__c, Anchor_capacity_reserved__c
+            SELECT Id, Capacity_Committed_kW_DC__c, Anchor_Capacity_Reserved__c
             FROM Shared_Solar_System__c
             WHERE Name = 'SSS 2'
             LIMIT 1
         ];
 
-        System.assertEquals(9.4624,sssUpdated.Capacity_Committed_kW_DC__c);
-        System.assertEquals(23.0784,sssUpdated.Anchor_capacity_reserved__c);
+        System.assertEquals(9.4624, sssUpdated.Capacity_Committed_kW_DC__c);
+        System.assertEquals(23.0784, sssUpdated.Anchor_Capacity_Reserved__c);
     }
+    
     @IsTest
     public static void testDifferentStatuses() {
         addMoreTestRecords();
@@ -713,7 +789,7 @@ public with sharing class SharedSolarSystemHandlerTest {
             AND Opportunity__r.Customer_Group__c != 'Anchor'
             ORDER BY Name
         ];
-        System.assertEquals(6,uasList.size());
+        System.assertEquals(6, uasList.size());
         Integer countComplete = 0;
         Decimal sumComplete = 0;
         Integer countReserved = 0;
@@ -721,8 +797,7 @@ public with sharing class SharedSolarSystemHandlerTest {
         Integer countOther = 0;
         Decimal sumOther = 0;
 
-
-        for (Utility_Account_Subscription__c uas : uasList){
+        for (Utility_Account_Subscription__c uas : uasList) {
             if (uas.Opportunity__r.StageName == 'Complete') {
                 countComplete += 1;
                 sumComplete += uas.Customer_Subscription_KW_DC__c;
@@ -735,11 +810,10 @@ public with sharing class SharedSolarSystemHandlerTest {
             }
         }
 
-        System.assertEquals(6.3840,sumComplete);
-        System.assertEquals(24.8608,sumReserved);
-        System.assertEquals(9.5392,sumOther);
+        System.assertEquals(6.3840, sumComplete);
+        System.assertEquals(24.8608, sumReserved);
+        System.assertEquals(9.5392, sumOther);
         sumReserved = sumReserved.setScale(6);
-
 
         System.assertEquals(4, countComplete + countReserved);
         Test.startTest();
@@ -747,27 +821,29 @@ public with sharing class SharedSolarSystemHandlerTest {
         handler.updateSSS();
         Test.stopTest();
         Shared_Solar_System__c sssUpdated = [
-            SELECT Id, Capacity_Committed_kW_DC__c, Anchor_capacity_reserved__c, Reserved_capacity_kW_DC__c
+            SELECT Id, Capacity_Committed_kW_DC__c, Anchor_Capacity_Reserved__c, Reserved_Capacity_kW_DC__c
             FROM Shared_Solar_System__c
             WHERE Name = 'SSS 2'
             LIMIT 1
         ];
-        System.assertEquals(sumComplete,sssUpdated.Capacity_Committed_kW_DC__c);
-        System.assertEquals(String.valueOf(sumReserved),sssUpdated.Reserved_capacity_kW_DC__c);
+        System.assertEquals(sumComplete, sssUpdated.Capacity_Committed_kW_DC__c);
+        System.assertEquals(String.valueOf(sumReserved), sssUpdated.Reserved_Capacity_kW_DC__c);
     }
+    
     @IsTest
-    public static void testStageUpdate(){
+    public static void testStageUpdate() {
         List<Shared_Solar_System__c> testSSS = [
             SELECT Name, Capacity_Committed_kW_DC__c, Stage__c
             FROM Shared_Solar_System__c
             WHERE Name = 'SSS 1'
         ];
-        String response = SharedSolarSystemHandler.updateStage(testSSS[0].Id,'Pending');
-        System.assertEquals('Success',response);
+        String response = SharedSolarSystemHandler.updateStage(testSSS[0].Id, 'Pending');
+        System.assertEquals('Success', response);
         //Does not update because of validation rules
-        String responseTwo = SharedSolarSystemHandler.updateStage(testSSS[0].Id,'Management');
-        System.assertNotEquals('Success',responseTwo);
+        String responseTwo = SharedSolarSystemHandler.updateStage(testSSS[0].Id, 'Management');
+        System.assertNotEquals('Success', responseTwo);
     }
+    
     @IsTest
     public static void testReservedAnchorCapacity() {
         List<Shared_Solar_System__c> sssList = [
@@ -780,8 +856,7 @@ public with sharing class SharedSolarSystemHandlerTest {
         update sssList[0];
         List<Shared_Solar_System__c> checkSSS = [
             SELECT Name, Capacity_Committed_kW_DC__c, Stage__c, Anchor_Capacity_Reserved__c, Reserved_Anchor_Capacity__c,
-                Capacity_Available_to_be_Reserved__c, Total_System_Size_kWh_DC__c, Pending_Anchor_Capacity__c,
-            (
+                Capacity_Available_to_be_Reserved__c, Total_System_Size_kWh_DC__c, Pending_Anchor_Capacity__c, (
                 SELECT Future_Customer_Subscription_KWDC_Rollup__c, Opportunity_Stage__c
                 FROM Utility_Account_Subscriptions__r
                 WHERE Customer_Group__c = 'Anchor'
@@ -813,9 +888,9 @@ public with sharing class SharedSolarSystemHandlerTest {
         update checkSSS;
         //Move the SSS1 into management --> Anchor Capacity should be 0
         //Move SSS2 into Management --> should be sum of anchor opps
-        String response = SharedSolarSystemHandler.updateStage(checkSSS[0].Id,'Management');
+        String response = SharedSolarSystemHandler.updateStage(checkSSS[0].Id, 'Management');
         System.assertEquals('Success', response);
-        String responseTwo = SharedSolarSystemHandler.updateStage(checkSSS[1].Id,'Management');
+        String responseTwo = SharedSolarSystemHandler.updateStage(checkSSS[1].Id, 'Management');
         System.assertEquals('Success', responseTwo, checkSSS[1]);
         checkSSS = [
             SELECT Name, Capacity_Committed_kW_DC__c, Stage__c, Anchor_Capacity_Reserved__c
@@ -827,10 +902,10 @@ public with sharing class SharedSolarSystemHandlerTest {
         System.assertEquals(0, checkSSS[0].Anchor_Capacity_Reserved__c);
         System.assertEquals('Management', checkSSS[1].Stage__c);
         System.assertEquals(23.0784, checkSSS[1].Anchor_Capacity_Reserved__c);
-        
     }
+    
     @IsTest
-    public static void testReacqStartDateChange(){
+    public static void testReacqStartDateChange() {
         createContractTestRecords();
         Date sevenDaysAgo = System.today().addDays(-7);
         Date threeDaysAgo = System.today().addDays(-3);
@@ -838,9 +913,9 @@ public with sharing class SharedSolarSystemHandlerTest {
             SELECT Id, Contract_Fee_Detail__c, Approval_Status__c
             FROM Subscription_Order__c
         ];
-        System.assertEquals(4,beforeOrders.size());
-        for (Subscription_Order__c order : beforeOrders){
-            System.assertEquals(null,order.Contract_Fee_Detail__c);
+        System.assertEquals(4, beforeOrders.size());
+        for (Subscription_Order__c order : beforeOrders) {
+            System.assertEquals(null, order.Contract_Fee_Detail__c);
         }
         Test.startTest();
         List<Shared_Solar_System__c> sssList = [
@@ -849,8 +924,8 @@ public with sharing class SharedSolarSystemHandlerTest {
             ORDER BY Name
             LIMIT 2
         ];
-        System.assertEquals(null,sssList[0].Reacquisition_Start_Date__c);
-        System.assertEquals(null,sssList[1].Reacquisition_Start_Date__c);
+        System.assertEquals(null, sssList[0].Reacquisition_Start_Date__c);
+        System.assertEquals(null, sssList[1].Reacquisition_Start_Date__c);
         sssList[0].Reacquisition_Start_Date__c = sevenDaysAgo;
         sssList[1].Reacquisition_Start_Date__c = threeDaysAgo;
         update sssList;
@@ -861,15 +936,16 @@ public with sharing class SharedSolarSystemHandlerTest {
                 Utility_Account_Subscription__r.Shared_Solar_System__r.Reacquisition_Start_Date__c
             FROM Subscription_Order__c
         ];
-        System.assertEquals(4,afterOrders.size());
-        for (Subscription_Order__c order : afterOrders){
-            System.assertNotEquals(null,order.Contract_Fee_Detail__c);
+        System.assertEquals(4, afterOrders.size());
+        for (Subscription_Order__c order : afterOrders) {
+            System.assertNotEquals(null, order.Contract_Fee_Detail__c);
         }
-        for (Subscription_Order__c order : afterOrders){
+        for (Subscription_Order__c order : afterOrders) {
             // Reacq has $0.20 fee, acq has $0.10 fee
             System.assertEquals(0.20, order.Contract_Fee_Detail__r.Fee__c);
         }
     }
+    
     @IsTest
     private static void testRecalculateMaximumSubscriptionCapacityForSMART() {
         Shared_Solar_System__c sss1 = [
@@ -880,7 +956,7 @@ public with sharing class SharedSolarSystemHandlerTest {
         ];
         System.assertEquals(25, sss1.Product__r.Max_Subscription_kW_AC_for_DC_calc__c,
             'Expected test setup to set the conversion rate on the product to 25');
-        Decimal expectedMaxSubscription = sss1.Product__r.Max_Subscription_kW_AC_for_DC_calc__c * sss1.Total_System_Size_kWh_DC__c/sss1.Total_System_Size_kW_AC__c;
+        Decimal expectedMaxSubscription = sss1.Product__r.Max_Subscription_kW_AC_for_DC_calc__c * sss1.Total_System_Size_kWh_DC__c / sss1.Total_System_Size_kW_AC__c;
         System.assertEquals(expectedMaxSubscription.setScale(4), sss1.Maximum_Subscription_Capacity_kWDC__c.setScale(4),
             'Expected the trigger to set Maximum_Subscription_Capacity_kWDC__c if the product has a conversion rate');
         Decimal startingMaxCapacitykWDC = sss1.Maximum_Subscription_Capacity_kWDC__c;
@@ -895,12 +971,13 @@ public with sharing class SharedSolarSystemHandlerTest {
         ];
         System.assertEquals(25, sss1.Product__r.Max_Subscription_kW_AC_for_DC_calc__c,
             'Expected test setup to set the conversion rate on the product to 25');
-        expectedMaxSubscription = sss1.Product__r.Max_Subscription_kW_AC_for_DC_calc__c * sss1.Total_System_Size_kWh_DC__c/sss1.Total_System_Size_kW_AC__c;
+        expectedMaxSubscription = sss1.Product__r.Max_Subscription_kW_AC_for_DC_calc__c * sss1.Total_System_Size_kWh_DC__c / sss1.Total_System_Size_kW_AC__c;
         System.assertEquals(expectedMaxSubscription.setScale(4), sss1.Maximum_Subscription_Capacity_kWDC__c.setScale(4),
             'Expected the trigger to set Maximum_Subscription_Capacity_kWDC__c if the product has a conversion rate');
         System.assertNotEquals(startingMaxCapacitykWDC, sss1.Maximum_Subscription_Capacity_kWDC__c,
             'Expected the trigger to update Max Subscription Capacity kW DC with system size change');
     }
+    
     @IsTest
     public static void testExecute() {
         createContractTestRecords();
