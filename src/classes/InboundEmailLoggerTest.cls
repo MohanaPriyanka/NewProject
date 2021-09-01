@@ -47,7 +47,7 @@ private with sharing class InboundEmailLoggerTest {
         System.assertEquals(null, result.message,
             'Result.message needs to be null, otherwise Salesforce will send the message back to the sender');
         relations = [
-            SELECT Id, EmailMessageId, EmailMessage.Subject, EmailMessage.TextBody, EmailMessage.FromName
+            SELECT Id, EmailMessageId, EmailMessage.Subject, EmailMessage.TextBody, EmailMessage.FromName, EmailMessage.BccAddress
             FROM EmailMessageRelation
             WHERE RelationId = :testContact.Id
         ];
@@ -56,6 +56,8 @@ private with sharing class InboundEmailLoggerTest {
         System.assertEquals(email.subject, relations[0].EmailMessage.Subject, 'Expected to set the subject');
         System.assertEquals(email.fromName, relations[0].EmailMessage.FromName, 'Expected to set the From Name');
         System.assertEquals(email.plainTextBody, relations[0].EmailMessage.TextBody, 'Expected to set the text body');
+        System.assertEquals(MessagingService.getCustomerCareEmail().Address, relations[0].EmailMessage.BccAddress,
+            'Expected to always set bcc to an org-wide email address so users can forward the email message');
         EmailMessage message = [
             SELECT Id, (SELECT Id, ContentDocument.LatestPublishedVersion.Title FROM ContentDocumentLinks)
             FROM EmailMessage
