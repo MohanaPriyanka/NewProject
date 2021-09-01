@@ -42,6 +42,10 @@
                 <behavior>Required</behavior>
                 <field>Average_Demand_Threshold__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Dual_Data__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
