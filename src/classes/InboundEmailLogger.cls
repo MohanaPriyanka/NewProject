@@ -14,6 +14,7 @@ public without sharing class InboundEmailLogger implements Messaging.InboundEmai
      * @return InboundEmailResult
      */
     public Messaging.InboundEmailResult handleInboundEmail(Messaging.InboundEmail email, Messaging.InboundEnvelope envelope) {
+        Logger.logNow('InboundEmailLogger', 'handleInboundEmail', JSON.serializePretty(email), Logger.FINE);
         try {
             return innerHandleInboundEmail(email, envelope);
         } catch (Exception e) {
@@ -53,6 +54,8 @@ public without sharing class InboundEmailLogger implements Messaging.InboundEmai
                 RETURNING Contact(Name), Lead(Name)
         ];
         Id parentId = getParentId(searchList, email);
+        // To allow users to forward an EmailMessage, they have to be on the To, From, CC, or BCC. Including an org-wide
+        // email address satisfies that requirement.
         EmailMessage emailMessage = new EmailMessage(
             Status = '3', // sent
             ToAddress = email.toAddresses[0],
@@ -60,7 +63,9 @@ public without sharing class InboundEmailLogger implements Messaging.InboundEmai
             FromName = email.fromName,
             Subject = email.subject,
             HtmlBody = email.htmlBody,
-            TextBody = email.plainTextBody
+            TextBody = email.plainTextBody,
+            Headers = JSON.serialize(email.headers),
+            BccAddress = MessagingService.getCustomerCareEmail().Address
         );
         uow.registerNew(emailMessage);
         // Since the ParentId of an EmailMessage has to be a Case, and the RelatedToId has to be a non-human object (Account,
