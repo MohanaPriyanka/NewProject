@@ -3,12 +3,12 @@
  * Description:
  * Test: ZuoraReturnedPaymentServiceTest, ZuoraInvoiceRegenServiceTest
  *************************************************************************************/
-
+@SuppressWarnings('PMD.FieldNamingConventions,PMD.VariableNamingConventions')
 public with sharing class ZuoraController implements ZuoraDataQueryService.Processor  {
     @SuppressWarnings('PMD.ApexCRUDViolation')
     @AuraEnabled
     public static ZuoraReturnedPaymentService.PaymentReturnResult reverseReturnedPayment(Id paymentId) {
-        return new ZuoraReturnedPaymentService().performReturn(paymentId);
+        return new ZuoraReturnedPaymentService(null).performReturn(paymentId);
     }
 
     public static String executeBillRun(Date invoiceDate) {
