@@ -34276,6 +34276,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Utility__c.Dual_Data__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Utility__c.EDI_Name_Override__c</field>
         <readable>true</readable>
     </fieldPermissions>
