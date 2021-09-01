@@ -129,6 +129,16 @@
         </valueSet>
     </fields>
     <fields>
+        <fullName>Dual_Data__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Whether the client requires both the POD and the account number for the EDI request.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When checked, both the POD and the account  number of the utility must be transferred to the client.</inlineHelpText>
+        <label>Send account number and POD ID for EDI</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>EDI_Name_Override__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Override field for the Utility Name that is sent in outbound EDI requests</inlineHelpText>
@@ -328,6 +338,15 @@
         <errorConditionFormula>AND(ISPICKVAL( Utility_Data_Collection_Mechanism__c , &quot;EDI&quot;),
     Use_Glynt__c)</errorConditionFormula>
         <errorMessage>Collecting data through both EDI and Glynt is not supported - choose one or the other</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Collect_POD_ID_Checked_For_Dual_Data</fullName>
+        <active>true</active>
+        <description>Collect Customer POD ID must be checked every time both the account number and POD ID have to be sent.</description>
+        <errorConditionFormula>IF(Dual_Data__c, 
+    NOT(Collect_Customer_POD_Number__c), 
+    FALSE)</errorConditionFormula>
+        <errorMessage>Collect Customer POD Number should be checked every time both the account number and POD Number are to be sent.</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>Lock_Number_of_Decimals</fullName>
