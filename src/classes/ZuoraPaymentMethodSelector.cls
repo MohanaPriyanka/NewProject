@@ -16,12 +16,15 @@ public with sharing class ZuoraPaymentMethodSelector {
     }
 
     @SuppressWarnings('PMD.ApexCRUDViolation')
-    public List<Zuora__PaymentMethod__c> getSFRecordFromZuoraId(List<String> zuoraIds) {
-        List<Zuora__PaymentMethod__c> sfPaymentMethods = [
+    public Zuora__PaymentMethod__c getSFRecordFromZuoraId(String zuoraId) {
+        List<Zuora__PaymentMethod__c> paymentMethods = [
             SELECT Id, Zuora__External_Id__c, Zuora__Type__c
             FROM Zuora__PaymentMethod__c
-            WHERE Zuora__External_Id__c IN : zuoraIds
+            WHERE Zuora__External_Id__c = :zuoraId
         ];
-        return sfPaymentMethods;
+        if (paymentMethods.size() > 0) {
+            return paymentMethods[0];
+        }
+        return null;
     }
 }

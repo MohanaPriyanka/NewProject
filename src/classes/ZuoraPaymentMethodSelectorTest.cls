@@ -50,9 +50,9 @@ public with sharing class ZuoraPaymentMethodSelectorTest {
 
     @IsTest
     private static void testGetSFRecordFromZuoraId() {
-        List<String> zuoraIds = new List<String>{'2c92c0f86a0c41a5016a1f41d63a2f96','2c92c0f86a0c41a5016a1f41d63a2f88'};
-
-        List<Zuora__PaymentMethod__c> payMethods = new ZuoraPaymentMethodSelector().getSFRecordFromZuoraId(zuoraIds);
-        System.assertEquals(2,payMethods.size());
+        Zuora__PaymentMethod__c payMethod = new ZuoraPaymentMethodSelector().getSFRecordFromZuoraId('2c92c0f86a0c41a5016a1f41d63a2f96');
+        System.assertNotEquals(null, payMethod, 'Expected to find payment method with external id ending in f96');
+        payMethod = new ZuoraPaymentMethodSelector().getSFRecordFromZuoraId('f97');
+        System.assertEquals(null, payMethod, 'Expected a null when getting payment method with external id f97');
     }
 }
