@@ -3066,7 +3066,7 @@ This field can be changed to a formula consistent with the other factors if LASE
     <fields>
         <fullName>LASER_Credit_Score__c</fullName>
         <externalId>false</externalId>
-        <formula>Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c</formula>
+        <formula>Personal_Credit_Report__r.LASERCA__Credit_Score__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>LASER Credit Score</label>
         <required>false</required>
