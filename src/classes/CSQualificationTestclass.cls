@@ -296,6 +296,8 @@ public class CSQualificationTestclass {
         Lead checkLead = [
 
             SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c, Moody_s_Risk_Calc__c,
+
+
                 Unqualified_due_to_FICO__c
 
             FROM Lead
