@@ -43,14 +43,13 @@ public without sharing class CreditReportChecker {
      */
     public LatestReportDetail getLatestReportDetail() {
         LatestReportDetail detail = new LatestReportDetail();
-        detail.noMatch = latestReportNoMatch;
-        detail.createdDate = latestReport?.CreatedDate;
-        if (latestReport.LASERCA__TransUnion_Indicator__c) {
-            detail.scoreFactor = latestReport?.LASERCA__TransUnion_Score_Factor__c;
-            detail.alertMessage = latestReport?.LASERCA__TransUnion_Alert_Message__c;
-        } else if (latestReport.LASERCA__Experian_Indicator__c) {
-            detail.scoreFactor = latestReport?.LASERCA__Experian_Score_Factor__c;
-            detail.alertMessage = latestReport?.LASERCA__Experian_Alert_Message__c;
+        if (latestReport != null) {
+            detail.noMatch = latestReportNoMatch;
+            detail.createdDate = latestReport.CreatedDate;
+            detail.scoreFactor = latestReport.LASERCA__Experian_Indicator__c ? latestReport.LASERCA__Experian_Score_Factor__c :
+                latestReport.LASERCA__TransUnion_Score_Factor__c;
+            detail.alertMessage = latestReport.LASERCA__Experian_Indicator__c ? latestReport.LASERCA__Experian_Alert_Message__c :
+                latestReport.LASERCA__TransUnion_Alert_Message__c;
         }
         return detail;
     }
