@@ -102,7 +102,6 @@ public without sharing class CSOpportunityFactory {
         opp.Customer_Referral__c = lead.Customer_Referral__c;
         opp.Customer_type__c = lead.Customer_type__c;
         opp.Date_of_Application__c = lead.Date_of_Application__c;
-        opp.Email__c = lead.Email_Re_Enter__c;
         opp.Lead_ID__c = lead.Lead_ID__c;
         opp.LoadZone__c = lead.LoadZone__c;
         opp.Name = lead.Company;
@@ -116,7 +115,6 @@ public without sharing class CSOpportunityFactory {
         opp.Product_Line__c = lead.Product_Line__c;
         opp.Project_Assignment__c = lead.System_Assignment__c;
         opp.Referral_Email__c = lead.Referral_Email__c;
-        opp.Security_Type__c = lead.Security_Type__c;
         opp.State_ab__c = lead.LASERCA__Home_State__c;
         opp.Underwriting_Criteria__c = lead.Underwriting_Criteria__c;
         return opp;

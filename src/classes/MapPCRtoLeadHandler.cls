@@ -25,9 +25,8 @@ public without sharing class MapPCRtoLeadHandler {
         }
 
         List<LASERCA__Personal_Credit_Report__c> completedPCRs = [
-            SELECT Id, LASERCA__Lead__c, LASERCA__Lead__r.Personal_Credit_Report__c, Approval_Status__c,
-                LASERCA__Contact__c, LASERCA__Sum_of_monthly_Personal_Debt__c, Lead_from_Contact__c,
-                Maximum_Disbursement_Monthly__c
+            SELECT Id, LASERCA__Lead__c, LASERCA__Lead__r.Personal_Credit_Report__c,
+                LASERCA__Contact__c, Lead_from_Contact__c
             FROM LASERCA__Personal_Credit_Report__c
             WHERE Id = :pcrIds
         ];
@@ -64,20 +63,10 @@ public without sharing class MapPCRtoLeadHandler {
             Lead leadFromContact = leadMap.get(pcr.Lead_from_Contact__c);
 
             if (lead != null && contactid == null &&
-                lead.Product_line__c == 'Residential Loan' &&
-                lead.Personal_Credit_Report__c != pcr.Id) {
-                lead.Personal_Credit_Report__c = pcr.Id;
-                lead.Maximum_monthly_Disbursement__c = pcr.Maximum_Disbursement_Monthly__c;
-                lead.debt_income_status__c = pcr.Approval_Status__c;
-                leadUpdateMap.put(lead.Id, lead);
-            }
-
-            if (lead != null && contactid == null &&
                 lead.Product_line__c == 'Community Solar' &&
                 lead.Personal_Credit_Report__c != pcr.Id) {
 
                 lead.Personal_Credit_Report__c = pcr.Id;
-                lead.FICO_Score_Approval__c = pcr.Approval_Status__c;
                 leadUpdateMap.put(lead.Id, lead);
             }
 

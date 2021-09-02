@@ -1,8 +1,8 @@
 /**
- * @author JeffParlin on 12/04/2020
  * @description Class structure to support checking credit report history/status of leads
  * <p>
  * Tested by CreditReportCheckerTest
+ * @author JeffParlin on 12/04/2020
  */
 public without sharing class CreditReportChecker {
 
@@ -45,8 +45,13 @@ public without sharing class CreditReportChecker {
         LatestReportDetail detail = new LatestReportDetail();
         detail.noMatch = latestReportNoMatch;
         detail.createdDate = latestReport?.CreatedDate;
-        detail.scoreFactor = latestReport?.LASERCA__TransUnion_Score_Factor__c;
-        detail.alertMessage = latestReport?.LASERCA__TransUnion_Alert_Message__c;
+        if (latestReport.LASERCA__TransUnion_Indicator__c) {
+            detail.scoreFactor = latestReport?.LASERCA__TransUnion_Score_Factor__c;
+            detail.alertMessage = latestReport?.LASERCA__TransUnion_Alert_Message__c;
+        } else if (latestReport.LASERCA__Experian_Indicator__c) {
+            detail.scoreFactor = latestReport?.LASERCA__Experian_Score_Factor__c;
+            detail.alertMessage = latestReport?.LASERCA__Experian_Alert_Message__c;
+        }
         return detail;
     }
 
@@ -66,9 +71,11 @@ public without sharing class CreditReportChecker {
     private List<LASERCA__Personal_Credit_Report__c> retrieveCreditReportsByLead() {
         return [
             SELECT Id, LASERCA__Credit_Score__c, LASERCA__TransUnion_Score_Factor__c,
-                LASERCA__TransUnion_Alert_Message__c, CreatedDate
+                LASERCA__TransUnion_Alert_Message__c, LASERCA__Experian_Alert_Message__c,
+                LASERCA__Experian_Score_Factor__c, LASERCA__TransUnion_Indicator__c,
+                LASERCA__Experian_Indicator__c, CreatedDate
             FROM LASERCA__Personal_Credit_Report__c
-            WHERE LASERCA__Lead__c =: leadId AND CreatedDate > :queryAfterDateTime
+            WHERE LASERCA__Lead__c = :leadId AND CreatedDate > :queryAfterDateTime
             ORDER BY CreatedDate DESC
         ];
     }

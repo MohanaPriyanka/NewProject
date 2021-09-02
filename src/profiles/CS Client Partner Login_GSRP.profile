@@ -24735,16 +24735,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Lead.Credit_Approval_Status2__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Lead.Credit_Approval_Status_Helper__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Lead.Credit_Approval_Status__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -24851,11 +24841,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Days_Since_App_Started__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Lead.Debt_Income_Approval__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -24981,11 +24966,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.External_System_Lead_ID__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Lead.FICO_Approval_Status__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -36931,11 +36911,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Zip_Code__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.approval_status__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>

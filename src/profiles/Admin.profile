@@ -235,6 +235,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>CSApplicationFinisher</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>CSCancellationScheduler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -548,6 +552,18 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ContractTriggerTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CreditReportChecker</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CreditReportCheckerTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CreditReportSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -12660,16 +12676,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Lead.Credit_Approval_Status2__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Lead.Credit_Approval_Status_Helper__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Lead.Credit_Approval_Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -12681,6 +12687,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Lead.Credit_Partner_Alert__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.Credit_Provider_Address__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.Credit_Provider__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -12781,11 +12797,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Days_Since_App_Started__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Lead.Debt_Income_Approval__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -12911,11 +12922,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Lead.External_System_Lead_ID__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Lead.FICO_Approval_Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -25909,11 +25915,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.approval_status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.customer_type_cs__c</field>
         <readable>true</readable>
@@ -31562,6 +31563,16 @@
         <editable>true</editable>
         <field>System_Bill__c.YTD_kWh_Production__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>System_Default__mdt.Credit_Login_Account_Username__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>System_Default__mdt.Credit_Provider__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -49673,6 +49684,9 @@
         <layout>System_Bill__c-System Bill Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>System_Default__mdt-System Default Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>System_Settings__c-System Settings Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -56088,6 +56102,10 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ViewDataLeakageEvents</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>ViewDeveloperName</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>

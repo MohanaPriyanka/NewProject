@@ -24,6 +24,28 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Credit_Login_Account_Username__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>Account used to pull credit from LaserCA</inlineHelpText>
+        <label>Credit Login Account Username</label>
+        <length>50</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Credit_Provider__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>Credit provider that is used by LaserCA to pull credit. Currently either CREDITAPI (TransUnion) or CBCNEW(Experian)</inlineHelpText>
+        <label>Credit Provider</label>
+        <length>50</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Default_Build__c</fullName>
         <externalId>false</externalId>
         <fieldManageability>DeveloperControlled</fieldManageability>
