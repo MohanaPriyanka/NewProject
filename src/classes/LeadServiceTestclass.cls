@@ -612,8 +612,7 @@ public class LeadServiceTestclass {
     public static void pullCreditForLead(Id leadId) {
         LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
             LASERCA__Lead__c = leadId,
-            LASERCA__Credit_Score__c = '700',
-            LASERCA__Credit_Score_TransUnion__c = '700'
+            LASERCA__Credit_Score__c = '700'
         );
         insert pcr;
         LASERCA__Trade_Accounts__c tradeAccounts = new LASERCA__Trade_Accounts__c(

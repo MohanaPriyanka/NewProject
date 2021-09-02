@@ -289,7 +289,8 @@ public class CSQualificationTestclass {
 
         Lead checkLead = [
             SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c, Moody_s_Risk_Calc__c,
-                Personal_Credit_Report__r.Approval_Status__c,
+
+
                 Unqualified_due_to_FICO__c
             FROM Lead
             WHERE Id = :lead.Id
@@ -297,7 +298,8 @@ public class CSQualificationTestclass {
 
         System.assertEquals('Unqualified', checkLead.Status, 'Lead status should be Unqualified');
         System.assertNotEquals(null, checkLead.Personal_Credit_Report__c, 'Lead should have an attached personal credit report');
-        System.assertEquals('Declined', checkLead.Personal_Credit_Report__r.Approval_Status__c, 'PCR should be declined because FICO lower than 680');
+
+
         System.assertEquals('200', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score__c, 'Credit score on lead personal credit report should be 200');
         System.assertEquals(true, checkLead.Unqualified_due_to_FICO__c, 'Lead should be flagged as Unqualified due to FICO');
         System.assertEquals(1, MessagingService.emailsSent.size(),
@@ -360,8 +362,9 @@ public class CSQualificationTestclass {
             LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
                 LASERCA__Lead__c = leadId,
                 LASERCA__Date_of_Credit_Report__c = System.today(),
-                LASERCA__Credit_Score__c = leadTypeToCreditScore.get(creditScoreType),
-                LASERCA__Credit_Score_TransUnion__c = leadTypeToCreditScore.get(creditScoreType)
+
+                LASERCA__Credit_Score__c = leadTypeToCreditScore.get(creditScoreType)
+
             );
             insert pcr;
 
