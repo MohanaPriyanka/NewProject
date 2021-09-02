@@ -1807,10 +1807,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>LeadDispatcher</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>LeadSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1828,10 +1824,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>LeadTriggerHandler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LeadTriggerHandlerTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
