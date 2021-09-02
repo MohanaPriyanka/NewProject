@@ -42,7 +42,7 @@
                     component,
                     'SSFApplicationController',
                     'helper.checkCreditPullStatus',
-                    errors[0].message);
+                    component.get('v.lead.id') + errors[0].message);
                 this.showFinalPage(component);
             }
         });
@@ -164,5 +164,4 @@
         });
         $A.enqueueAction(action);
     },
-
 });
