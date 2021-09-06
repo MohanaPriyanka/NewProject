@@ -1,5 +1,0 @@
-@IsTest
-public class LeadTriggerHandlerTest {
-
-  
-}
