@@ -276,7 +276,9 @@ private class UtilityDataRequestServiceTest {
         System.assertEquals(testUDR1.Request_Status_new__c, 'Partial Data Received',
             'Expect request status to be partial data received because details have not been returned');
 
-        List<Utility_Data_Request_Period__c> testUDRPList = udrpSelector.selectByUDR(new Set<Id>{testUDR1.Id}).values()[0];
+        List<Utility_Data_Request_Period__c> testUDRPList = udrpSelector.selectByUDR(new Set<Id>{
+            testUDR1.Id
+        }).values()[0];
         System.assertEquals(testUDRPList[0].Rate_Class_Lookup__c, null,
             'The Rate_Class_Lookup__c for testUDRP1 should still be null becuase '
                 + 'the status on the related UDR was not updated to Complete.');
@@ -300,7 +302,9 @@ private class UtilityDataRequestServiceTest {
         testUDR2.State__c = 'GA';
         update testUDR2;
 
-        List<Utility_Data_Request_Period__c> testUDRPList = udrpSelector.selectByUDR(new Set<Id>{testUDR2.Id}).values()[0];
+        List<Utility_Data_Request_Period__c> testUDRPList = udrpSelector.selectByUDR(new Set<Id>{
+            testUDR2.Id
+        }).values()[0];
 
         System.assertEquals(testUDRPList[0].Rate_Class_Lookup__c, null,
             'testUDRP6 is related to testUDR2, whose status was already Complete before the update,'
@@ -532,7 +536,9 @@ private class UtilityDataRequestServiceTest {
         List<Utility_Data_Request_Period__c> k1UDRPList = udrpSelector.selectTypeByUDR(udrList, 'K1', new List<String>{
             '51', '41', '42', '43'
         });
-        Set<String> udrpsNotUsedInCalculations = new Set<String>{'testUDRP12', 'testUDRP21', 'testUDRP23', 'testUDRP36', 'testUDRP47'};
+        Set<String> udrpsNotUsedInCalculations = new Set<String>{
+            'testUDRP12', 'testUDRP21', 'testUDRP23', 'testUDRP36', 'testUDRP47'
+        };
         for (Utility_Data_Request_Period__c udrp : khUDRPList) {
             System.assertEquals(!udrpsNotUsedInCalculations.contains(udrp.Load_Profile_Description__c), udrp.Used_in_Annual_kWh_Calculation__c,
                 udrp.Load_Profile_Description__c + ' has an incorrect Used_in_Annual_kwh_Calculation');
@@ -673,7 +679,88 @@ private class UtilityDataRequestServiceTest {
             'Multiple cases should not have been created for a single UDR in error');
     }
 
+    @IsTest
+    private static void testMultiplePeriodUDRPs() {
+        TestGenerator generator = new TestGenerator();
+        sfab_FabricatedSObject fabbedLead = new sfab_FabricatedSObject(Lead.class);
+        fabbedLead.setField(Lead.Customer_type__c, 'Residential');
+        sfab_FabricatedSObject ual = new sfab_FabricatedSObject(Utility_Account_Log__c.class);
+        ual.setParent('Lead__r', fabbedLead);
+        sfab_FabricatedSObject udr = new sfab_FabricatedSObject(Utility_Data_Request__c.class);
+        udr.setParent('Utility_Account_Log__r', ual);
+        List<Utility_Data_Request_Period__c> udrps = new List<Utility_Data_Request_Period__c>();
+        generator.getUDRPsWithMultiplePeriods(udrps, udr);
+        fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
+            new List<SObjectType>{
+                Utility_Data_Request_Period__c.getSObjectType(),
+                Utility_Account_Log__c.getSObjectType()
+            }
+        );
+
+        UDRPTotalCalculator calculator = new UDRPTotalCalculator(uow);
+        calculator.setAnnualkWh((Utility_Data_Request__c) udr.toSObject(), udrps);
+        for (Utility_Data_Request_Period__c udrp : udrps) {
+            System.assert(udrp.Used_in_Annual_kWh_Calculation__c, 'UDRP starting ' + udrp.Service_Start_Date__c + ' should be used in Annual kWh calc');
+        }
+    }
+
+
+
     private class TestGenerator {
+        private void getUDRPsWithMultiplePeriods(List<Utility_Data_Request_Period__c> udrps, sfab_FabricatedSObject udr) {
+            udrps.add(getUDRP(udr, '41', 'KH', 4560, 'KA', 29, Date.newInstance(2021, 5, 5), Date.newInstance(2021, 6, 2)));
+            udrps.add(getUDRP(udr, '42', 'KH', 2595, 'KA', 29, Date.newInstance(2021, 5, 5), Date.newInstance(2021, 6, 2)));
+            udrps.add(getUDRP(udr, '43', 'KH', 3117, 'KA', 29, Date.newInstance(2021, 5, 5), Date.newInstance(2021, 6, 2)));
+            udrps.add(getUDRP(udr, '41', 'KH', 4403, 'KA', 29, Date.newInstance(2021, 4, 6), Date.newInstance(2021, 5, 4)));
+            udrps.add(getUDRP(udr, '42', 'KH', 2505, 'KA', 29, Date.newInstance(2021, 4, 6), Date.newInstance(2021, 5, 4)));
+            udrps.add(getUDRP(udr, '43', 'KH', 3009, 'KA', 29, Date.newInstance(2021, 4, 6), Date.newInstance(2021, 5, 4)));
+            udrps.add(getUDRP(udr, '41', 'KH', 5189, 'KA', 33, Date.newInstance(2021, 3, 4), Date.newInstance(2021, 4, 5)));
+            udrps.add(getUDRP(udr, '42', 'KH', 2953, 'KA', 33, Date.newInstance(2021, 3, 4), Date.newInstance(2021, 4, 5)));
+            udrps.add(getUDRP(udr, '43', 'KH', 3547, 'KA', 33, Date.newInstance(2021, 3, 4), Date.newInstance(2021, 4, 5)));
+            udrps.add(getUDRP(udr, '41', 'KH', 4403, 'KA', 29, Date.newInstance(2021, 2, 3), Date.newInstance(2021, 3, 3)));
+            udrps.add(getUDRP(udr, '42', 'KH', 2505, 'KA', 29, Date.newInstance(2021, 2, 3), Date.newInstance(2021, 3, 3)));
+            udrps.add(getUDRP(udr, '43', 'KH', 3009, 'KA', 29, Date.newInstance(2021, 2, 3), Date.newInstance(2021, 3, 3)));
+            udrps.add(getUDRP(udr, '41', 'KH', 4403, 'KA', 28, Date.newInstance(2021, 1, 6), Date.newInstance(2021, 2, 2)));
+            udrps.add(getUDRP(udr, '42', 'KH', 2505, 'KA', 28, Date.newInstance(2021, 1, 6), Date.newInstance(2021, 2, 2)));
+            udrps.add(getUDRP(udr, '43', 'KH', 3009, 'KA', 28, Date.newInstance(2021, 1, 6), Date.newInstance(2021, 2, 2)));
+            udrps.add(getUDRP(udr, '41', 'KH', 5032, 'KA', 33, Date.newInstance(2020, 12, 4), Date.newInstance(2021, 1, 5)));
+            udrps.add(getUDRP(udr, '42', 'KH', 2863, 'KA', 33, Date.newInstance(2020, 12, 4), Date.newInstance(2021, 1, 5)));
+            udrps.add(getUDRP(udr, '43', 'KH', 3439, 'KA', 33, Date.newInstance(2020, 12, 4), Date.newInstance(2021, 1, 5)));
+            udrps.add(getUDRP(udr, '41', 'KH', 4874, 'KA', 31, Date.newInstance(2020, 11, 3), Date.newInstance(2020, 12, 3)));
+            udrps.add(getUDRP(udr, '42', 'KH', 2774, 'KA', 31, Date.newInstance(2020, 11, 3), Date.newInstance(2020, 12, 3)));
+            udrps.add(getUDRP(udr, '43', 'KH', 3332, 'KA', 31, Date.newInstance(2020, 11, 3), Date.newInstance(2020, 12, 3)));
+            udrps.add(getUDRP(udr, '41', 'KH', 2301, 'QD', 31, Date.newInstance(2020, 10, 3), Date.newInstance(2020, 11, 2)));
+            udrps.add(getUDRP(udr, '42', 'KH', 0, 'QD', 31, Date.newInstance(2020, 10, 3), Date.newInstance(2020, 11, 2)));
+            udrps.add(getUDRP(udr, '43', 'KH', 8204, 'QD', 31, Date.newInstance(2020, 10, 3), Date.newInstance(2020, 11, 2)));
+            udrps.add(getUDRP(udr, '41', 'KH', 4717, 'KA', 30, Date.newInstance(2020, 9, 3), Date.newInstance(2020, 10, 2)));
+            udrps.add(getUDRP(udr, '42', 'KH', 1, 'KA', 30, Date.newInstance(2020, 9, 3), Date.newInstance(2020, 10, 2)));
+            udrps.add(getUDRP(udr, '43', 'KH', 3224, 'KA', 30, Date.newInstance(2020, 9, 3), Date.newInstance(2020, 10, 2)));
+            udrps.add(getUDRP(udr, '41', 'KH', 4560, 'KA', 29, Date.newInstance(2020, 8, 5), Date.newInstance(2020, 9, 2)));
+            udrps.add(getUDRP(udr, '42', 'KH', 8, 'KA', 29, Date.newInstance(2020, 8, 5), Date.newInstance(2020, 9, 2)));
+            udrps.add(getUDRP(udr, '43', 'KH', 3117, 'KA', 29, Date.newInstance(2020, 8, 5), Date.newInstance(2020, 9, 2)));
+            udrps.add(getUDRP(udr, '41', 'KH', 5032, 'KA', 33, Date.newInstance(2020, 7, 3), Date.newInstance(2020, 8, 4)));
+            udrps.add(getUDRP(udr, '42', 'KH', 2863, 'KA', 33, Date.newInstance(2020, 7, 3), Date.newInstance(2020, 8, 4)));
+            udrps.add(getUDRP(udr, '43', 'KH', 3439, 'KA', 33, Date.newInstance(2020, 7, 3), Date.newInstance(2020, 8, 4)));
+            udrps.add(getUDRP(udr, '41', 'KH', 4717, 'KA', 30, Date.newInstance(2020, 6, 3), Date.newInstance(2020, 7, 2)));
+            udrps.add(getUDRP(udr, '42', 'KH', 2684, 'KA', 30, Date.newInstance(2020, 6, 3), Date.newInstance(2020, 7, 2)));
+            udrps.add(getUDRP(udr, '43', 'KH', 3224, 'KA', 30, Date.newInstance(2020, 6, 3), Date.newInstance(2020, 7, 2)));
+        }
+
+        private Utility_Data_Request_Period__c getUDRP(sfab_FabricatedSObject udr, String measurementSignificanceCode,
+            String measurementUnit, Decimal quantity, String quantityQualifier, Decimal numDays, Date startDate, Date endDate) {
+            sfab_FabricatedSObject udrp = new sfab_FabricatedSObject(Utility_Data_Request_Period__c.class);
+            udrp.setParent('Utility_Data_Request__r', udr);
+            udrp.setField(Utility_Data_Request_Period__c.Id, Util.getFakeId(Utility_Data_Request_Period__c.SObjectType));
+            udrp.setField(Utility_Data_Request_Period__c.Measurement_Significance_Code__c, measurementSignificanceCode);
+            udrp.setField(Utility_Data_Request_Period__c.Measurement_Unit__c, measurementUnit);
+            udrp.setField(Utility_Data_Request_Period__c.Quantity__c, quantity);
+            udrp.setField(Utility_Data_Request_Period__c.Quantity_Qualifier__c, quantityQualifier);
+            udrp.setField(Utility_Data_Request_Period__c.Num_Days__c, numDays);
+            udrp.setField(Utility_Data_Request_Period__c.Service_Start_Date__c, startDate);
+            udrp.setField(Utility_Data_Request_Period__c.Service_End_Date__c, endDate);
+            return (Utility_Data_Request_Period__c) udrp.toSObject();
+        }
+
         private void addUDRPsForUDR7(List<Utility_Data_Request_Period__c> testUDRPList, Utility_Data_Request__c testUDR7) {
             addTestUDRP(testUDRPList, testUDR7, 'testUDRP49', 'KH', '41', 25, Date.newInstance(2020, 1, 1), Date.newInstance(2020, 2, 1));
             addTestUDRP(testUDRPList, testUDR7, 'testUDRP50', 'KH', '42', 50, Date.newInstance(2020, 2, 2), Date.newInstance(2020, 3, 2));
