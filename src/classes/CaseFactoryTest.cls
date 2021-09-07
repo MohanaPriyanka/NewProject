@@ -370,5 +370,42 @@ public with sharing class CaseFactoryTest {
 
 
     }
-    
+
+    @IsTest
+    public static void testCloseRelatedBouncedEmailCases() {
+        List<Lead> testLeads = new List<Lead>();
+        Lead testLead1 = new Lead(
+            FirstName = 'John',
+            LastName = 'Testcase',
+            Company = 'Company',
+            Email = 'emailBounceTest1@email.com'
+        );
+
+        testLeads.add(testLead1);
+        insert testLeads;
+
+        testLead1.EmailBouncedDate = System.now();
+        update testLead1;
+
+        CaseFactory caseFactory = new CaseFactory();
+        caseFactory.createBouncedEmailCases(testLeads);
+
+        List<Case> existingCases = [SELECT Id, Status FROM Case WHERE Lead_Lookup__c = :testLead1.Id];
+
+        System.assertEquals('New', existingCases[0].Status, 'there should be one open case for this lead');
+
+
+        Test.startTest();
+        testLead1.EmailBouncedDate = null;
+        testLead1.Email = 'newEmail@email.com';
+        update testLead1;
+        Test.stopTest();
+
+
+        List<Case> closedCases = [SELECT Id, Status FROM Case WHERE Lead_Lookup__c = :testLead1.Id];
+
+        System.assertEquals('Closed', closedCases[0].Status, 'the case should now be closed for this lead');
+
+    }
+
 }
