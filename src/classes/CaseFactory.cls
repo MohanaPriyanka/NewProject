@@ -229,4 +229,51 @@ public without sharing class CaseFactory implements Queueable {
             .replaceAll('\\{UAL\\}', udr.Utility_Account_Log__r.Name);
         return newFieldValue;
     }
+
+    /**
+     * @description Creates a case for each lead that has a bounced email
+     * @param leadsWithBouncedEmail lead with bounced email address
+     */
+    @TestVisible
+    public void createBouncedEmailCases(List<Lead> leadsWithBouncedEmail) {
+        List<Case> newCases = new List<Case>();
+
+        for (Lead lead : leadsWithBouncedEmail) {
+            Case newCase = getCase('Customer_QC');
+            newCase.Subject = '- Other';
+            newCase.Priority = 'Medium';
+            newCase.Product_Line__c = 'Community Solar';
+            newCase.Category__c = 'QC';
+            newCase.Case_Type__c = '3rd Party';
+            newCase.Lead_Lookup__c = lead.Id;
+            newCase.Disable_Followup_Email__c = true;
+            newCase.Sale_Status__c = 'Pre-sale';
+            newCase.Origin = 'Other';
+            newCase.AccountId = lead.Partner_Account__c;
+            newCase.ContactId = lead.Partner_Contact__c;
+            newCase.Description = lead.FirstName + ' ' + lead.LastName + ' - email address, ' + lead.Email + ', bounced. Please provide new email address.';
+
+            newCases.add(newCase);
+        }
+
+        insert newCases;
+    }
+
+    public void closeRelatedBouncedEmailCases(Set<Id> leadIds) {
+        CaseSelector caseSelector = new CaseSelector();
+        List<Case> relatedCases = caseSelector.openQCCasesForLeads(leadIds);
+
+        if (relatedCases.size() > 0) {
+            for (Case c : relatedCases) {
+                if (c.Description != null && c.Description.contains('bounced. Please provide new email address')) {
+                    c.Status = 'Closed';
+                }
+            }
+
+            update relatedCases;
+        }
+
+    }
+
+
 }
