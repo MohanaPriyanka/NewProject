@@ -1,25 +1,23 @@
-/*
- * Tested by: OpportunityTriggerTest,LeadTriggerHandlerTest,CSCancellationServiceTest
+/**
+ * @description Opportunity trigger, executed by Opportunity record change
+ * Tested by: OpportunityTriggerTest, CSCancellationServiceTest, ClientBrandingServiceTest, PartnerCommissionHandlerTest
  */
-
 trigger OpportunityTrigger on Opportunity (before insert, after insert, before update, after update, after delete) {
     if (Util.isDisabled('Disable_OpportunityTrigger__c')) {
         return;
     }
-    OpportunityTriggerHandler opportunityTriggerHandler = new OpportunityTriggerHandler();
-
+    OpportunityTriggerHandler handler = new OpportunityTriggerHandler(Trigger.new, Trigger.newMap, Trigger.oldMap);
     switch on Trigger.operationType {
         when BEFORE_INSERT {
-            opportunityTriggerHandler.onBeforeInsert(Trigger.new);
+            handler.onBeforeInsert();
         } when AFTER_INSERT {
-            CSApplicationStatusEventPublisher.publishEvent(null, Trigger.new);
+            handler.onAfterInsert();
         } when BEFORE_UPDATE {
-            opportunityTriggerHandler.onBeforeUpdate(Trigger.new, Trigger.oldMap);
+            handler.onBeforeUpdate();
         } when AFTER_UPDATE {
-            opportunityTriggerHandler.onAfterUpdate(Trigger.oldMap, Trigger.newMap);
-            CSApplicationStatusEventPublisher.publishEvent(Trigger.oldMap, Trigger.new);
+            handler.onAfterUpdate();
         } when AFTER_DELETE {
-            CSApplicationStatusEventPublisher.publishEventAfterDelete(Trigger.old);
+            handler.onAfterDelete();
         }
     }
 }

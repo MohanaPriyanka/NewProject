@@ -1,5 +1,6 @@
 @IsTest
 public with sharing class OpportunityTriggerTest {
+
     @TestSetup
     public static void setupData() {
         Profile bfgStandardUser = [SELECT Id FROM Profile WHERE Name = 'BFG Standard User'];
@@ -34,7 +35,7 @@ public with sharing class OpportunityTriggerTest {
         List<Account> accounts = [SELECT Id, Name, AccountNumber FROM Account];
         Account byCostAccount;
         Account bykWhAccount;
-        
+
         for (Account acct : accounts) {
             accountNameMap.put(acct.Name, acct);
             if (acct.Name == 'TestRecalcPropA') {
@@ -51,9 +52,9 @@ public with sharing class OpportunityTriggerTest {
         update accounts;
     }
 
-    
+
     @IsTest
-    public static void testEventHandling(){
+    public static void testEventHandling() {
         Account newAccount = new Account(
             Name = 'newAccount'
         );
@@ -64,7 +65,7 @@ public with sharing class OpportunityTriggerTest {
             WHERE StageName != 'Cancelled'
         ];
         Map<Id, Opportunity> oldOppMap = new Map<Id, Opportunity>();
-        for (Opportunity opp : oppList){
+        for (Opportunity opp : oppList) {
             oldOppMap.put(opp.Id, opp);
         }
         Opportunity newOpp1 = new Opportunity(
@@ -85,11 +86,14 @@ public with sharing class OpportunityTriggerTest {
             StageName = oppList[2].StageName,
             AccountId = newAccount.Id
         );
-        List<Opportunity> newOppList = new List<Opportunity>{newOpp1, newOpp2, newOpp3};
+        Map<Id, Opportunity> newOppMap = new Map<Id, Opportunity>();
+        newOppMap.put(newOpp1.Id, newOpp1);
+        newOppMap.put(newOpp2.Id, newOpp2);
+        newOppMap.put(newOpp3.Id, newOpp3);
         Test.startTest();
-            Map<Id,Subscription_Change_Event__e> eventMap = new Map<Id,Subscription_Change_Event__e>();
-            OpportunityTriggerHandler handler = new OpportunityTriggerHandler();
-            eventMap = handler.eventHandling(newOppList, oldOppMap);
+        Map<Id, Subscription_Change_Event__e> eventMap = new Map<Id, Subscription_Change_Event__e>();
+        OpportunityTriggerHandler handler = new OpportunityTriggerHandler(newOppMap.values(), newOppMap, oldOppMap);
+        eventMap = handler.eventHandling();
         Test.stopTest();
         System.assert(eventMap.containsKey(oppList[0].AccountId));
         System.assert(eventMap.containsKey(oppList[1].AccountId));
