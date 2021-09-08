@@ -160,7 +160,8 @@ public class CSQualificationTestclass {
             Customer_type__c = 'Residential',
             Status = 'Sales Qualified',
             Partner_Lookup__c = partner.Id,
-            Moody_s_Risk_Calc__c = 'Baa1'
+            Moody_s_Risk_Calc__c = 'Baa1',
+            Underwriting_Criteria__c = 'FICO'
         );
 
         Database.DMLOptions dmo = new Database.DMLOptions();
@@ -296,8 +297,6 @@ public class CSQualificationTestclass {
         Lead checkLead = [
 
             SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c, Moody_s_Risk_Calc__c,
-
-
                 Unqualified_due_to_FICO__c
 
             FROM Lead
@@ -306,7 +305,6 @@ public class CSQualificationTestclass {
 
         System.assertEquals('Unqualified', checkLead.Status, 'Lead status should be Unqualified');
         System.assertNotEquals(null, checkLead.Personal_Credit_Report__c, 'Lead should have an attached personal credit report');
-
 
         System.assertEquals('200', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score__c, 'Credit score on lead personal credit report should be 200');
         System.assertEquals(true, checkLead.Unqualified_due_to_FICO__c, 'Lead should be flagged as Unqualified due to FICO');
@@ -370,9 +368,7 @@ public class CSQualificationTestclass {
             LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
                 LASERCA__Lead__c = leadId,
                 LASERCA__Date_of_Credit_Report__c = System.today(),
-
                 LASERCA__Credit_Score__c = leadTypeToCreditScore.get(creditScoreType)
-
             );
             insert pcr;
 
