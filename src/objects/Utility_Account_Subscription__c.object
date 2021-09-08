@@ -128,13 +128,7 @@ Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c* Opportunity__r.S
         <fullName>Annual_kWh_Subscription_Current__c</fullName>
         <description>Used in SMART contracts. It is the kWh equivalent of the Annual Cost of Electricity (Current) field. It shows how many kWhs are included in the Current Customer Subscription kW DC.</description>
         <externalId>false</externalId>
-        <formula>IF(
-$CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true,
-
-Shared_Solar_System__r.Expected_Yield_kWh_kW__c,
-
-Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c
-)*Customer_Subscription_KW_DC_STATIC__c</formula>
+        <formula>Shared_Solar_System__r.Expected_Yield_kWh_kW__c * Customer_Subscription_KW_DC_STATIC__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>Used in SMART contracts. It is the kWh equivalent of the Annual Cost of Electricity (Current) field. It shows how many kWhs are included in the Current Customer Subscription kW DC.</inlineHelpText>
         <label>Annual kWh Subscription (Current)</label>
@@ -260,13 +254,7 @@ IF(Opportunity__r.Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c &gt; 0,
     <fields>
         <fullName>Conga_Future_Share__c</fullName>
         <externalId>false</externalId>
-        <formula>IF(
-$CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true
-,
-Future_Share_of_System_Rollup__c
-,
-Future_Share_of_System__c
-)</formula>
+        <formula>Future_Share_of_System_Rollup__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Conga Future Share (share/100)</label>
         <precision>18</precision>
@@ -446,21 +434,7 @@ Round(( Subscribed_Annual_Cost_of_Electricity__c / Opportunity__r.NMC_Value__c/ 
         <fullName>Estimated_Annual_Subscription_kWh__c</fullName>
         <description>This is displayed to customers in the customer portal.</description>
         <externalId>false</externalId>
-        <formula>IF(
-$CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true
-,
-Future_Customer_Subscription_KWDC_Rollup__c
-,
-Customer_Subscription_KW_DC__c
-)
- *  
-IF(
-$CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true
-,
- Shared_Solar_System__r.Expected_Yield_kWh_kW__c
-,
-Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c
-)</formula>
+        <formula>Future_Customer_Subscription_KWDC_Rollup__c * Shared_Solar_System__r.Expected_Yield_kWh_kW__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>This is displayed to customers in the customer portal.</inlineHelpText>
         <label>Estimated Annual Subscription (kWh)</label>
@@ -664,7 +638,7 @@ Opportunity__r.Shared_Solar_System__r.Maximum_Subscription_Capacity_kWDC__c
         <description>This is the maximum annual kwh that can be put on a single UAS. It is driven by the Maximum Subscription Capacity on the SSS and the UAS&apos;s applied Sizing Method.</description>
         <externalId>false</externalId>
         <formula>IF(
-AND($CustomMetadata.Custom_Feature_Enablement__mdt.Sizing_Method.Feature_is_Enabled__c, NOT(ISBLANK(Sizing_Method__c)), Sizing_Method__r.Size_Ratio__c &gt; 0),
+AND(NOT(ISBLANK(Sizing_Method__c)), Sizing_Method__r.Size_Ratio__c &gt; 0),
 Shared_Solar_System__r.Maximum_Subscription_Capacity_kWDC__c * Shared_Solar_System__r.Expected_Yield_kWh_kW__c / Sizing_Method__r.Size_Ratio__c,
 Shared_Solar_System__r.Expected_Yield_kWh_kW__c * Shared_Solar_System__r.Maximum_Subscription_Capacity_kWDC__c
 )</formula>
@@ -1103,19 +1077,7 @@ IF(
     <fields>
         <fullName>Subscribed_NMC_Allocation_kWh__c</fullName>
         <externalId>false</externalId>
-        <formula>IF(
-$CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true
-,
-Future_Customer_Subscription_KWDC_Rollup__c
-,
-Customer_Subscription_KW_DC__c
-)
- *  
-IF(
-$CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true,
-Shared_Solar_System__r.Expected_Yield_kWh_kW__c,
-Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c
-)</formula>
+        <formula>Future_Customer_Subscription_KWDC_Rollup__c * Shared_Solar_System__r.Expected_Yield_kWh_kW__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>NMC Allocation (kWh)</label>
         <precision>18</precision>
