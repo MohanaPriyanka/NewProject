@@ -34,7 +34,7 @@ public without sharing class CaseSelector {
 
     public List<Case> openQCCasesForLeads(Set<Id> leadIds) {
         return [
-            SELECT Id, Status
+            SELECT Id, Status, Description 
             FROM Case
             WHERE Lead_Lookup__c IN : leadIds AND Category__c = 'QC' AND Status != 'Closed'
         ];
