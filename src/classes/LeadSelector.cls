@@ -279,4 +279,15 @@ public without sharing class LeadSelector {
             FOR UPDATE
         ];
     }
+
+    public List<Lead> getLeadsWithBouncedEmails() {
+        return [
+            SELECT Id, Status, FirstName, LastName, Email, Partner_Account__c, Partner_Contact__c, (
+                SELECT Id, Description FROM Cases__r WHERE Subject = '- Other' AND Product_Line__c = 'Community Solar' AND IsClosed = FALSE
+            )
+            FROM Lead
+            WHERE EmailBouncedDate != null AND EmailBouncedDate >= YESTERDAY
+        ];
+    } 
+
 }

@@ -5,8 +5,7 @@
 @IsTest
 private class BouncedEmailCaseCreationSchedulerTest {
 
-    // Dummy CRON expression: midnight on March 15.
-    private static String CRON_EXP = '0 0 0 15 3 ? 2022';
+    private static String dummyCronExp = '0 0 0 15 3 ? 2022';
 
     @TestSetup public static void setupTestData() {
 
@@ -49,7 +48,7 @@ private class BouncedEmailCaseCreationSchedulerTest {
         testLead1.EmailBouncedDate = System.now();
         testLead2.EmailBouncedDate = System.now();
         testLead3.EmailBouncedDate = System.now();
-        testLead4.EmailBouncedDate = System.now().addDays(-1);
+        testLead4.EmailBouncedDate = System.now().addDays(-2);
 
         update testLeads;
 
@@ -84,13 +83,13 @@ private class BouncedEmailCaseCreationSchedulerTest {
     static void testBouncedEmailCaseCreation() {
 
         Test.startTest();
-        System.schedule('ScheduledBouncedEmailTest', CRON_EXP, new BouncedEmailCaseCreationScheduler());
+        System.schedule('ScheduledBouncedEmailTest', dummyCronExp, new BouncedEmailCaseCreationScheduler());
         Test.stopTest();
 
         List<Lead> leads = [
             SELECT Id, Status, FirstName, LastName, Email,
             (SELECT Id, Description, Status FROM Cases__r)
-            FROM Lead
+            FROM Lead ORDER BY Email 
         ];
 
         System.assertEquals(1, leads[0].Cases__r.size(), 'Lead 1 should only have one new case in the system');
