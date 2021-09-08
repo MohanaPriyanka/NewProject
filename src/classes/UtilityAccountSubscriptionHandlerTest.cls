@@ -253,7 +253,6 @@ public class UtilityAccountSubscriptionHandlerTest {
         System.assertEquals(opp.Shared_Solar_System__c, checkUAS.Shared_Solar_System__c,'SSS on UAS should match SSS on Opportunity');
     }
 
-
     @IsTest
     public static void testChangeOpportunity() {
         List<Opportunity> opps = [
