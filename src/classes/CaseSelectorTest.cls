@@ -52,4 +52,5 @@ public with sharing class CaseSelectorTest {
         System.assertNotEquals(null, new CaseSelector().selectForPartnerApplicationStatusEvaluation(new Set<Id>()),
             'Expected a non-null response even when selecting with no ids');
     }
+    
 }

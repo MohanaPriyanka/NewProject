@@ -323,4 +323,89 @@ public with sharing class CaseFactoryTest {
 
         return (Utility_Data_Request__c) udr.toSObject();
     }
+
+    @IsTest
+    public static void testcreateBouncedEmailCases() {
+        // list of leads
+        List<Lead> leadsWithBouncedEmail = new List<Lead>();
+        CaseFactory caseFactory = new CaseFactory();
+
+        Account testAccount = new Account(
+            Name = 'Test Account'
+        );
+        insert testAccount;
+
+        Contact testContact = new Contact(
+            FirstName = 'John',
+            LastName = 'TestCase'
+        );
+        insert testContact;
+
+        Lead testLead = new Lead(
+            FirstName = 'Lead',
+            LastName = 'Testcase',
+            Email = 'testEmail@email.com',
+            Partner_Account__c = testAccount.Id,
+            Partner_Contact__c = testContact.Id,
+            Company = 'Company'
+        );
+        insert testLead;
+
+        leadsWithBouncedEmail.add(testLead);
+
+        List<Case> existingRelatedCases = [SELECT Id FROM Case WHERE Lead_Lookup__c = :testLead.Id];
+
+        System.assertEquals(0, existingRelatedCases.size(), 'there should be no cases for this lead');
+
+        Test.startTest();
+        caseFactory.createBouncedEmailCases(leadsWithBouncedEmail);
+        Test.stopTest();
+
+        List<Case> createdCases = [SELECT Id, Description, ContactId, AccountId, Category__c FROM Case WHERE Lead_Lookup__c = :testLead.Id];
+
+        System.assertEquals(1, createdCases.size(), 'there should be one new case for this lead');
+        System.assertEquals(testContact.Id, createdCases[0].ContactId, 'Contact Id on the case should be the Lead Partner Contact');
+        System.assertEquals(testAccount.Id, createdCases[0].AccountId, 'Account Id on the case should be the Lead Partner Account');
+
+
+
+    }
+
+    @IsTest
+    public static void testCloseRelatedBouncedEmailCases() {
+        List<Lead> testLeads = new List<Lead>();
+        Lead testLead1 = new Lead(
+            FirstName = 'John',
+            LastName = 'Testcase',
+            Company = 'Company',
+            Email = 'emailBounceTest1@email.com'
+        );
+
+        testLeads.add(testLead1);
+        insert testLeads;
+
+        testLead1.EmailBouncedDate = System.now();
+        update testLead1;
+
+        CaseFactory caseFactory = new CaseFactory();
+        caseFactory.createBouncedEmailCases(testLeads);
+
+        List<Case> existingCases = [SELECT Id, Status FROM Case WHERE Lead_Lookup__c = :testLead1.Id];
+
+        System.assertEquals('New', existingCases[0].Status, 'there should be one open case for this lead');
+
+
+        Test.startTest();
+        testLead1.EmailBouncedDate = null;
+        testLead1.Email = 'newEmail@email.com';
+        update testLead1;
+        Test.stopTest();
+
+
+        List<Case> closedCases = [SELECT Id, Status FROM Case WHERE Lead_Lookup__c = :testLead1.Id];
+
+        System.assertEquals('Closed', closedCases[0].Status, 'the case should now be closed for this lead');
+
+    }
+
 }

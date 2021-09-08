@@ -69,4 +69,39 @@ public with sharing class LeadSelectorTest {
         System.assertNotEquals(null, new LeadSelector().getLeadsForPartnerApplicationStatus(new Set<Id>()),
             'Expected a non-null value, even with an empty set of ids');
     }
+
+    @IsTest
+    private static void testGetLeadsWithBouncedEmails() {
+        List<Lead> testLeads = new List<Lead>();
+
+        Lead testLead1 = new Lead(
+            FirstName = 'John',
+            LastName = 'Testcase',
+            Company = 'Company',
+            Email = 'emailBounceTest1@email.com'
+        );
+
+        Lead testLead2 = new Lead(
+            FirstName = 'John',
+            LastName = 'Testcase',
+            Company = 'Company',
+            Email = 'emailBounceTest2@email.com'
+        );
+
+        testLeads.add(testLead1);
+        testLeads.add(testLead2);
+
+        insert testLeads;
+
+        testLead1.EmailBouncedDate = System.now();
+        testLead2.EmailBouncedDate = System.now().addDays(-3);
+
+        update testLeads;
+
+        LeadSelector leadSelector = new LeadSelector();
+
+        List<Lead> bouncedLeads = leadSelector.getLeadsWithBouncedEmails();
+        System.assertEquals(1, bouncedLeads.size(), 'Only one lead should be returned');
+
+    }
 }
