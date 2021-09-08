@@ -1,44 +1,61 @@
-/*************************************************************************************
- * Test: OpportunityTriggerTest,LeadTriggerHandlerTest,CSCancellationServiceTest,
- * ClientBrandingServiceTest, PartnerCommissionHandlerTest, mapDocuSignRSTestClass
- *************************************************************************************/
-
+/**
+ * @description Opportunity trigger handler
+ * Tested by: OpportunityTriggerTest, CSCancellationServiceTest, ClientBrandingServiceTest, PartnerCommissionHandlerTest
+ **/
 public without sharing class OpportunityTriggerHandler {
-    @TestVisible
-    private static PartnerCommissionHandler partnerCommissionHandler = new PartnerCommissionHandler();
+
+    @TestVisible private static PartnerCommissionHandler partnerCommissionHandler = new PartnerCommissionHandler();
     private static Id csRecordTypeId = Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get('Community Solar').getRecordTypeId();
+    private List<Opportunity> newList;
+    private Map<Id, Opportunity> newMap; // Not present in before insert trigger context
+    private Map<Id, Opportunity> oldMap;
 
-    public void onBeforeInsert(List<Opportunity> newOppList){
-        setLeadLookup(newOppList);
-        eventHandling(newOppList, null);
-        setPartnerForTests(newOppList);
-        setCSRecordType(newOppList);
-        setServicingOnBehalfOf(newOppList);
+    public OpportunityTriggerHandler(List<Opportunity> newList, Map<Id, Opportunity> newMap, Map<Id, Opportunity> oldMap) {
+        this.newList = newList;
+        this.newMap = newMap;
+        this.oldMap = oldMap;
     }
 
-    public void onBeforeUpdate(List<Opportunity> updatedOppList, Map<Id, Opportunity> oldOppMap){
-        eventHandling(updatedOppList, oldOppMap);
-        setCSRecordType(updatedOppList);
-        setServicingOnBehalfOf(updatedOppList);
+    public void onBeforeInsert() {
+        setPartnerForTests();
+        setLeadLookup();
+        eventHandling();
+        setCSRecordType();
+        setServicingOnBehalfOf();
     }
 
-    public void onAfterUpdate(Map<Id, Opportunity> oldMap, Map<Id, Opportunity> newMap) {
+    public void onAfterInsert() {
+        CSApplicationStatusEventPublisher.publishEvent(null, newList);
+    }
+
+    public void onBeforeUpdate() {
+        eventHandling();
+        setCSRecordType();
+        setServicingOnBehalfOf();
+    }
+
+    public void onAfterUpdate() {
         List<Account> acctsToCancel = CSCancellationService.getAccountsToClose(newMap, oldMap);
         if (!acctsToCancel.isEmpty()) {
             CSCancellationService.closeAccounts(acctsToCancel);
         }
-        createPartnerCommission(oldMap, newMap);
+        checkPartnerCommissionAfterUpdate();
+        CSApplicationStatusEventPublisher.publishEvent(oldMap, newList);
+    }
+
+    public void onAfterDelete() {
+        CSApplicationStatusEventPublisher.publishEventAfterDelete(oldMap.values());
     }
 
     @TestVisible
-    private Map<Id,Subscription_Change_Event__e> eventHandling(List<Opportunity> newOpps, Map<Id, Opportunity> oldOpps){
-        Map<Id,Subscription_Change_Event__e> subscriptionEventMap = createSubscriptionChangeEvents(newOpps, oldOpps);
+    private Map<Id, Subscription_Change_Event__e> eventHandling() {
+        Map<Id, Subscription_Change_Event__e> subscriptionEventMap = createSubscriptionChangeEvents(newList, oldMap);
         EventBus.publish(subscriptionEventMap.values());
         return subscriptionEventMap;
     }
 
     private Map<Id, Subscription_Change_Event__e> createSubscriptionChangeEvents(List<Opportunity> newOpps, Map<Id, Opportunity> oldOpps) {
-        Map<Id, Subscription_Change_Event__e> subscriptionEventMap = new Map<Id,Subscription_Change_Event__e>();
+        Map<Id, Subscription_Change_Event__e> subscriptionEventMap = new Map<Id, Subscription_Change_Event__e>();
         for (Opportunity newOpp : newOpps) {
             Opportunity oldOpp = oldOpps?.get(newOpp.Id);
             // Fire Subscription Change Event on insert, or on update if the Account, SSS or Stage change:
@@ -60,11 +77,11 @@ public without sharing class OpportunityTriggerHandler {
         Subscription_Change_Event__e stageChange = new Subscription_Change_Event__e(
             Property_Account_Id__c = accountId
         );
-        eventMap.put(accountId,stageChange);
+        eventMap.put(accountId, stageChange);
     }
 
     @SuppressWarnings('PMD.ApexCRUDViolation')
-    private static void setPartnerForTests(List<Opportunity> newOppList){
+    private void setPartnerForTests() {
         // Only for test records, to avoid validation rule error that opportunities must have a partner
         if (!Test.isRunningTest()) {
             return;
@@ -73,14 +90,14 @@ public without sharing class OpportunityTriggerHandler {
             SELECT Id
             FROM Partner__c
         ];
-        if (partners.size() == 0){
+        if (partners.size() == 0) {
             Partner__c newPartner = new Partner__c(
                 Name = 'BW Inside Sales'
             );
             insert newPartner;
             partners.add(newPartner);
         }
-        for (Opportunity opp : newOppList){
+        for (Opportunity opp : newList) {
             opp.Partner_tag_lookup__c = partners[0].Id;
         }
     }
@@ -90,22 +107,20 @@ public without sharing class OpportunityTriggerHandler {
         List<Opportunity> updatedOpps = OpportunitiesSelector.selectByIds(oppIdList);
         Set<Object> accountKeys = CollectionUtil.multiMapByField(updatedOpps, Opportunity.Parent_Account_ID__c).keySet();
         Set<Id> accountIds = CollectionUtil.toIds(accountKeys);
-        if (accountIds.size() > 0){
+        if (accountIds.size() > 0) {
             List<Contact> contactList = ContactSelector.selectByParentAccountIds(new List<Id>(accountIds));
             UserHandler userInsertJob = new UserHandler(contactList);
             System.enqueueJob(userInsertJob);
         }
     }
 
-    private void createPartnerCommission(Map<Id, Opportunity> oldOpps, Map<Id, Opportunity> newOpps){
+    private void checkPartnerCommissionAfterUpdate() {
         Set<Id> opportunityIdSet = new Set<Id>();
-
-        for (Opportunity newOpp : newOpps.values()) {
-            Opportunity oldOpp = oldOpps.get(newOpp.Id);
+        for (Opportunity newOpp : newList) {
+            Opportunity oldOpp = oldMap.get(newOpp.Id);
             if (oldOpp.StageName != 'Complete' && newOpp.StageName == 'Complete') {
                 opportunityIdSet.add(newOpp.Id);
-            } else if (oldOpp.Commission_Structure__c != null &&
-                newOpp.Commission_Structure__c != null &&
+            } else if (oldOpp.Commission_Structure__c != null && newOpp.Commission_Structure__c != null &&
                 oldOpp.Commission_Structure__c != newOpp.Commission_Structure__c) {
                 opportunityIdSet.add(newOpp.Id);
             }
@@ -113,26 +128,24 @@ public without sharing class OpportunityTriggerHandler {
         partnerCommissionHandler.queueCalculatePartnerCommission(opportunityIdSet);
     }
 
-    private void setLeadLookup(List<Opportunity> insertedOpportunities) {
-        for (Opportunity o : insertedOpportunities) {
-            if (!String.isBlank(o.Lead_ID__c)) {
-                o.Lead__c = o.Lead_ID__c;
+    private void setLeadLookup() {
+        for (Opportunity opp : newList) {
+            opp.Lead__c = opp.Lead_ID__c;
+        }
+    }
+
+    private void setCSRecordType() {
+        for (Opportunity opp : newList) {
+            if (opp.Product_Line__c == 'Community Solar') {
+                opp.RecordTypeId = csRecordTypeId;
             }
         }
     }
 
-    private void setCSRecordType(List<Opportunity> triggerNew) {
-        for (Opportunity opportunity : triggerNew) {
-            if (opportunity.Product_Line__c == 'Community Solar') {
-                opportunity.RecordTypeId = csRecordTypeId;
-            }
-        }
-    }
-
-    private void setServicingOnBehalfOf(List<Opportunity> triggerNew) {
-        for (Opportunity opportunity : triggerNew) {
-            if (opportunity.Product_Line__c == 'Community Solar' && opportunity.Servicing_on_Behalf_oftest__c == null) {
-                opportunity.Servicing_on_Behalf_oftest__c = opportunity.Servicing_on_behalf_of__c;
+    private void setServicingOnBehalfOf() {
+        for (Opportunity opp : newList) {
+            if (opp.Product_Line__c == 'Community Solar' && opp.Servicing_on_Behalf_oftest__c == null) {
+                opp.Servicing_on_Behalf_oftest__c = opp.Servicing_on_behalf_of__c;
             }
         }
     }
