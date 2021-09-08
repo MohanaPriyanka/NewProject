@@ -204,6 +204,57 @@ public class UtilityAccountSubscriptionHandlerTest {
     }
 
     @IsTest
+    public static void testUASUpdate() {
+        Opportunity opp = [
+            SELECT Id, Shared_Solar_System__c
+            FROM Opportunity
+            ORDER BY Name
+            LIMIT 1
+        ];
+
+        Utility_Account_Log__c ual = [
+            SELECT Id
+            FROM Utility_Account_Log__c
+            ORDER BY Name
+            LIMIT 1
+        ];
+
+        Utility_Account_Subscription__c uasone =
+            new Utility_Account_Subscription__c(Name = '0000234',
+                Utility_Account_Log__c = ual.Id,
+                Next_Schedule_Z_Status__c = 'Active Subscription',
+                Annual_kwh_subscription_future__c = 4000,
+                Calculated_Annual_Cost_of_Electricity__c = 4000,
+                Subscribed_Annual_Cost_of_Electricity__c = 4000);
+        insert uasone;
+
+        Utility_Account_Subscription__c nullUAS = [
+            SELECT Id, Shared_Solar_System__c
+            FROM Utility_Account_Subscription__c
+            WHERE Id = : uasone.id
+            LIMIT 1
+        ];
+
+        //Should be null because opp is null
+        System.assertEquals(null, nullUAS.Shared_Solar_System__c,'UAS SSS should be null because it does not have an opportunity');
+
+        nullUAS.Opportunity__c = opp.Id;
+        update nullUAS;
+
+        Utility_Account_Subscription__c checkUAS = [
+            SELECT Id, Shared_Solar_System__c
+            FROM Utility_Account_Subscription__c
+            WHERE Id = : uasone.id
+            LIMIT 1
+        ];
+
+        //Will now be populated because UAS has opportunity now
+        System.assertNotEquals(null, checkUAS.Shared_Solar_System__c, 'SSS should be populated on UAS after Opportunity is populated');
+        System.assertEquals(opp.Shared_Solar_System__c, checkUAS.Shared_Solar_System__c,'SSS on UAS should match SSS on Opportunity');
+    }
+
+
+    @IsTest
     public static void testChangeOpportunity() {
         List<Opportunity> opps = [
             SELECT Id, Shared_Solar_System__c
