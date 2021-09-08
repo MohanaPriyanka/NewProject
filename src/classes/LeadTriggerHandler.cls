@@ -35,6 +35,7 @@ public without sharing class LeadTriggerHandler {
 
         closeQCCasesForUnqualifiedLeads();
         CSApplicationStatusEventPublisher.publishEvent(oldRecordMap, newRecords);
+        bouncedEmailCleared();
     }
 
     // <---- ROUTER METHODS ---->
@@ -67,4 +68,22 @@ public without sharing class LeadTriggerHandler {
             LeadService.closeQCCasesForUnqualifiedLeads(newlyUnqualifiedLeadIds);
         }
     }
+
+    private void bouncedEmailCleared() {
+        Set<Id> leadsWithUpdatedEmails = new Set<Id>();
+        CaseFactory caseFactory = new CaseFactory();
+
+        for (Lead lead : newRecords) {
+            Lead oldLead = oldRecordMap.get(lead.Id);
+
+            if (lead.Email != oldLead.Email && oldLead.EmailBouncedDate != null) {
+                leadsWithUpdatedEmails.add(lead.Id);
+            }
+        }
+
+        caseFactory.closeRelatedBouncedEmailCases(leadsWithUpdatedEmails);
+ 
+    }
+
+
 }
