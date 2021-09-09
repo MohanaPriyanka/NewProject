@@ -9068,6 +9068,25 @@ SEMA = 13 -14</inlineHelpText>
         <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
         <label>BFG - Community Solar (Anchor)</label>
         <picklistValues>
+            <picklist>Underwriting_Criteria__c</picklist>
+            <values>
+                <fullName>FICO</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Financial Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investment-Grade</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Past Payment History</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>LASERCA__Request_Credit_Bureau__c</picklist>
             <values>
                 <fullName>Equifax</fullName>
@@ -11213,6 +11232,25 @@ SEMA = 13 -14</inlineHelpText>
         <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
         <label>BFG - DOER Solar Loan</label>
         <picklistValues>
+            <picklist>Underwriting_Criteria__c</picklist>
+            <values>
+                <fullName>FICO</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Financial Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investment-Grade</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Past Payment History</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>LASERCA__Request_Credit_Bureau__c</picklist>
             <values>
                 <fullName>Equifax</fullName>
@@ -12290,6 +12328,25 @@ SEMA = 13 -14</inlineHelpText>
         <businessProcess>Residential Loan</businessProcess>
         <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
         <label>BFG - DOER Solar Loan (Co-Applicant)</label>
+        <picklistValues>
+            <picklist>Underwriting_Criteria__c</picklist>
+            <values>
+                <fullName>FICO</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Financial Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investment-Grade</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Past Payment History</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>LASERCA__Request_Credit_Bureau__c</picklist>
             <values>
@@ -13369,6 +13426,25 @@ SEMA = 13 -14</inlineHelpText>
         <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
         <label>BFG - MA Solar Loan (Co-Applicant)</label>
         <picklistValues>
+            <picklist>Underwriting_Criteria__c</picklist>
+            <values>
+                <fullName>FICO</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Financial Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investment-Grade</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Past Payment History</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>LASERCA__Request_Credit_Bureau__c</picklist>
             <values>
                 <fullName>Equifax</fullName>
@@ -14439,6 +14515,25 @@ SEMA = 13 -14</inlineHelpText>
         <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
         <description>Record Type for All NC Residential Solar Loans</description>
         <label>BFG - NC Solar Loan</label>
+        <picklistValues>
+            <picklist>Underwriting_Criteria__c</picklist>
+            <values>
+                <fullName>FICO</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Financial Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investment-Grade</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Past Payment History</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>LASERCA__Request_Credit_Bureau__c</picklist>
             <values>
@@ -15517,6 +15612,25 @@ SEMA = 13 -14</inlineHelpText>
         <businessProcess>Residential Loan</businessProcess>
         <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
         <label>BFG - NC Solar Loan (Co-Applicant)</label>
+        <picklistValues>
+            <picklist>Underwriting_Criteria__c</picklist>
+            <values>
+                <fullName>FICO</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Financial Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investment-Grade</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Past Payment History</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>LASERCA__Request_Credit_Bureau__c</picklist>
             <values>
@@ -16597,6 +16711,25 @@ SEMA = 13 -14</inlineHelpText>
         <description>Record Type for All SC Residential Solar Loans</description>
         <label>BFG - SC Solar Loan</label>
         <picklistValues>
+            <picklist>Underwriting_Criteria__c</picklist>
+            <values>
+                <fullName>FICO</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Financial Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investment-Grade</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Past Payment History</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>LASERCA__Request_Credit_Bureau__c</picklist>
             <values>
                 <fullName>Equifax</fullName>
@@ -17674,6 +17807,25 @@ SEMA = 13 -14</inlineHelpText>
         <businessProcess>Residential Loan</businessProcess>
         <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
         <label>BFG - SC Solar Loan (Co-Applicant)</label>
+        <picklistValues>
+            <picklist>Underwriting_Criteria__c</picklist>
+            <values>
+                <fullName>FICO</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Financial Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investment-Grade</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Past Payment History</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>LASERCA__Request_Credit_Bureau__c</picklist>
             <values>
@@ -18753,6 +18905,25 @@ SEMA = 13 -14</inlineHelpText>
         <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
         <label>BFG - MA Solar Loan</label>
         <picklistValues>
+            <picklist>Underwriting_Criteria__c</picklist>
+            <values>
+                <fullName>FICO</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Financial Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investment-Grade</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Past Payment History</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>LASERCA__Request_Credit_Bureau__c</picklist>
             <values>
                 <fullName>Equifax</fullName>
@@ -19822,6 +19993,25 @@ SEMA = 13 -14</inlineHelpText>
         <businessProcess>Residential Loan</businessProcess>
         <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
         <label>BlueWave Solar Loan</label>
+        <picklistValues>
+            <picklist>Underwriting_Criteria__c</picklist>
+            <values>
+                <fullName>FICO</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Financial Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investment-Grade</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Past Payment History</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>LASERCA__Request_Credit_Bureau__c</picklist>
             <values>
@@ -20916,6 +21106,25 @@ SEMA = 13 -14</inlineHelpText>
         <businessProcess>C %26 I</businessProcess>
         <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
         <label>C&amp;I</label>
+        <picklistValues>
+            <picklist>Underwriting_Criteria__c</picklist>
+            <values>
+                <fullName>FICO</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Financial Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investment-Grade</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Past Payment History</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>LASERCA__Request_Credit_Bureau__c</picklist>
             <values>
@@ -24076,6 +24285,25 @@ SEMA = 13 -14</inlineHelpText>
         <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
         <label>Lead (General)</label>
         <picklistValues>
+            <picklist>Underwriting_Criteria__c</picklist>
+            <values>
+                <fullName>FICO</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Financial Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investment-Grade</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Past Payment History</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>LASERCA__Request_Credit_Bureau__c</picklist>
             <values>
                 <fullName>Equifax</fullName>
@@ -26181,6 +26409,25 @@ SEMA = 13 -14</inlineHelpText>
         <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
         <description>Utility - Duke Energy Lead Type</description>
         <label>Utility - Duke Energy</label>
+        <picklistValues>
+            <picklist>Underwriting_Criteria__c</picklist>
+            <values>
+                <fullName>FICO</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Financial Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investment-Grade</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Past Payment History</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>LASERCA__Request_Credit_Bureau__c</picklist>
             <values>
