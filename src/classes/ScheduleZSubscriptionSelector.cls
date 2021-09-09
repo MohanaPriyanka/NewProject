@@ -21,8 +21,6 @@ public with sharing class ScheduleZSubscriptionSelector {
         'Utility_Account_Subscription__r.Utility_Account_Log__r.Name,' +
         'Utility_Account_Subscription__r.Utility_Account_Log__r.Premise_Number__c,' +
         'Utility_Account_Subscription__r.UAS_Number__c,' +
-        'Utility_Account_Subscription__r.Share_of_System__c,' +
-        'Utility_Account_Subscription__r.Max_Account_Bill_Number__c,' +
         'Utility_Account_Subscription__r.Externally_Serviced__c,' +
         'Utility_Account_Subscription__r.Opportunity__c,' +
         'Utility_Account_Subscription__r.Opportunity__r.Name,' +
@@ -174,8 +172,6 @@ public with sharing class ScheduleZSubscriptionSelector {
                     Utility_Account_Subscription__r.Next_Schedule_Z_Status__c,
                     Utility_Account_Subscription__r.Utility_Account_Log__c,
                     Utility_Account_Subscription__r.UAS_Number__c,
-                    Utility_Account_Subscription__r.Share_of_System__c,
-                    Utility_Account_Subscription__r.Max_Account_Bill_Number__c,
                     Utility_Account_Subscription__r.Opportunity__r.Name,
                     Utility_Account_Subscription__r.Opportunity__r.Account.Name,
                     Utility_Account_Subscription__r.Opportunity_Stage__c,
