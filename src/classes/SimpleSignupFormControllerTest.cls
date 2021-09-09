@@ -24,7 +24,8 @@ public with sharing class SimpleSignupFormControllerTest {
             LastName = 'last',
             Company = 'Company',
             Email = 'foo@bar.com',
-            Product__c = product.Id
+            Product__c = product.Id,
+            Underwriting_Criteria__c = 'FICO'
         );
         insert lead;
         Account propertyAccount = new Account(
