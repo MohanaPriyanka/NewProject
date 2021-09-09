@@ -194,7 +194,7 @@ public without sharing class RestLead {
             Referral_Name__c = this.referralName,
             Referral_Email__c = this.referralEmail,
             Continue_Application_Link__c = this.continueApplicationLink,
-            Underwriting_Criteria__c = this.underwritingCriteria,
+            Underwriting_Criteria__c = this.underwritingCriteria == null ? 'None' : this.underwritingCriteria,
             No_Payment__c = this.noPayment,
             Utility_relationship__c = this.utilityId
         );

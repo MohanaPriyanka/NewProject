@@ -8803,6 +8803,29 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <businessProcess>BlueWave Capital</businessProcess>
         <label>BFG</label>
         <picklistValues>
+            <picklist>Underwriting_Criteria__c</picklist>
+            <values>
+                <fullName>FICO</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Financial Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investment-Grade</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Past Payment History</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Customer_Group__c</picklist>
             <values>
                 <fullName>Non-Residential</fullName>
@@ -8900,6 +8923,29 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <active>false</active>
         <businessProcess>Community Solar Anchor</businessProcess>
         <label>BFG - Community Solar (Anchor)</label>
+        <picklistValues>
+            <picklist>Underwriting_Criteria__c</picklist>
+            <values>
+                <fullName>FICO</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Financial Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investment-Grade</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Past Payment History</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>ForecastCategoryName</picklist>
             <values>
@@ -8999,6 +9045,29 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <businessProcess>Residential Loan</businessProcess>
         <label>BFG - DOER Solar Loan</label>
         <picklistValues>
+            <picklist>Underwriting_Criteria__c</picklist>
+            <values>
+                <fullName>FICO</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Financial Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investment-Grade</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Past Payment History</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Customer_Group__c</picklist>
             <values>
                 <fullName>Residential</fullName>
@@ -9012,6 +9081,29 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <businessProcess>Residential Loan</businessProcess>
         <label>BFG - DOER Solar Loan (Co-Applicant)</label>
         <picklistValues>
+            <picklist>Underwriting_Criteria__c</picklist>
+            <values>
+                <fullName>FICO</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Financial Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investment-Grade</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Past Payment History</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Customer_Group__c</picklist>
             <values>
                 <fullName>Residential</fullName>
@@ -9024,6 +9116,29 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <active>true</active>
         <businessProcess>Residential Loan</businessProcess>
         <label>BFG - MA Solar Loan (Co-Applicant)</label>
+        <picklistValues>
+            <picklist>Underwriting_Criteria__c</picklist>
+            <values>
+                <fullName>FICO</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Financial Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investment-Grade</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Past Payment History</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Customer_Group__c</picklist>
             <values>
@@ -9039,6 +9154,29 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <description>Record Type for All NC Residential Solar Loans</description>
         <label>BFG - NC Solar Loan</label>
         <picklistValues>
+            <picklist>Underwriting_Criteria__c</picklist>
+            <values>
+                <fullName>FICO</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Financial Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investment-Grade</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Past Payment History</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Customer_Group__c</picklist>
             <values>
                 <fullName>Residential</fullName>
@@ -9051,6 +9189,29 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <active>true</active>
         <businessProcess>Residential Loan</businessProcess>
         <label>BFG - NC Solar Loan (Co-Applicant)</label>
+        <picklistValues>
+            <picklist>Underwriting_Criteria__c</picklist>
+            <values>
+                <fullName>FICO</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Financial Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investment-Grade</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Past Payment History</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Customer_Group__c</picklist>
             <values>
@@ -9066,6 +9227,29 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <description>Record Type for All SC Residential Solar Loans</description>
         <label>BFG - SC Solar Loan</label>
         <picklistValues>
+            <picklist>Underwriting_Criteria__c</picklist>
+            <values>
+                <fullName>FICO</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Financial Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investment-Grade</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Past Payment History</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Customer_Group__c</picklist>
             <values>
                 <fullName>Residential</fullName>
@@ -9078,6 +9262,29 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <active>true</active>
         <businessProcess>Residential Loan</businessProcess>
         <label>BFG - SC Solar Loan (Co-Applicant)</label>
+        <picklistValues>
+            <picklist>Underwriting_Criteria__c</picklist>
+            <values>
+                <fullName>FICO</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Financial Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investment-Grade</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Past Payment History</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Customer_Group__c</picklist>
             <values>
@@ -9092,6 +9299,29 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <businessProcess>Residential Loan</businessProcess>
         <label>BFG - MA Solar Loan</label>
         <picklistValues>
+            <picklist>Underwriting_Criteria__c</picklist>
+            <values>
+                <fullName>FICO</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Financial Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investment-Grade</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Past Payment History</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Customer_Group__c</picklist>
             <values>
                 <fullName>Residential</fullName>
@@ -9105,6 +9335,29 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <businessProcess>BW Community Solar</businessProcess>
         <compactLayoutAssignment>BW_Community_Solar_BCS</compactLayoutAssignment>
         <label>BW Community Solar (BCS)</label>
+        <picklistValues>
+            <picklist>Underwriting_Criteria__c</picklist>
+            <values>
+                <fullName>FICO</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Financial Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investment-Grade</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Past Payment History</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Customer_Group__c</picklist>
             <values>
@@ -9150,6 +9403,29 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <businessProcess>BD</businessProcess>
         <label>Business Development- Offtake</label>
         <picklistValues>
+            <picklist>Underwriting_Criteria__c</picklist>
+            <values>
+                <fullName>FICO</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Financial Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investment-Grade</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Past Payment History</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Customer_Group__c</picklist>
             <values>
                 <fullName>Anchor</fullName>
@@ -9170,6 +9446,29 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <active>true</active>
         <businessProcess>C and I</businessProcess>
         <label>C and I</label>
+        <picklistValues>
+            <picklist>Underwriting_Criteria__c</picklist>
+            <values>
+                <fullName>FICO</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Financial Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investment-Grade</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Past Payment History</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Customer_Group__c</picklist>
             <values>
@@ -9269,6 +9568,29 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <businessProcess>BlueWave Capital</businessProcess>
         <label>Distribution Partners</label>
         <picklistValues>
+            <picklist>Underwriting_Criteria__c</picklist>
+            <values>
+                <fullName>FICO</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Financial Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investment-Grade</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Past Payment History</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Customer_Group__c</picklist>
             <values>
                 <fullName>Residential</fullName>
@@ -9282,6 +9604,29 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <businessProcess>BD</businessProcess>
         <description>Platform and Project Finance should use this record type to track opportunities</description>
         <label>Finance</label>
+        <picklistValues>
+            <picklist>Underwriting_Criteria__c</picklist>
+            <values>
+                <fullName>FICO</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Financial Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investment-Grade</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Past Payment History</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Customer_Group__c</picklist>
             <values>
@@ -9307,6 +9652,29 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <active>true</active>
         <businessProcess>BlueWave Capital</businessProcess>
         <label>Marketing</label>
+        <picklistValues>
+            <picklist>Underwriting_Criteria__c</picklist>
+            <values>
+                <fullName>FICO</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Financial Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investment-Grade</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Past Payment History</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Customer_Group__c</picklist>
             <values>
