@@ -1,8 +1,8 @@
-/*************************************************************************************
- * Created By: peteryao on 2019-04-30
+/**
+ * @description Created By: peteryao on 2019-04-30
  * Description:
  * Test: LeadSelectorTest
- *************************************************************************************/
+ **/
 @SuppressWarnings('PMD.ApexCRUDViolation, PMD.ApexDoc')
 public without sharing class LeadSelector {
     public List<String> apiLeadFields = new List<String>{
@@ -86,7 +86,9 @@ public without sharing class LeadSelector {
     }
 
     public Lead selectOne(Id leadId) {
-        List<Lead> leads = this.selectAll(new Set<Id>{leadId});
+        List<Lead> leads = this.selectAll(new Set<Id>{
+            leadId
+        });
         if (leads.isEmpty()) {
             return null;
         }
@@ -104,6 +106,8 @@ public without sharing class LeadSelector {
                 Business_Phone__c,
                 Business_Title__c,
                 City,
+                Credit_Provider__c,
+                Credit_Provider_Address__c,
                 Credit_Report_Detail_1__c,
                 Credit_Report_Detail_2__c,
                 Credit_Report_Detail_3__c,
@@ -164,8 +168,7 @@ public without sharing class LeadSelector {
                 Utility_relationship__r.Name,
                 Terms_Conditions__c,
                 Zuora_Payment_Ref_Id__c,
-                Zuora_Payment_Ref_Id_Expiration_Date__c,
-            (SELECT Id FROM Underwrite_Financial_Documents__r)
+                Zuora_Payment_Ref_Id_Expiration_Date__c, (SELECT Id FROM Underwrite_Financial_Documents__r)
             FROM Lead
             WHERE Id = :leadIds
         ];
@@ -191,12 +194,12 @@ public without sharing class LeadSelector {
 
     public Lead selectOneForContractCreation(Id leadId) {
         List<Lead> leads = [
-            SELECT Id, Customer_Signed_Date__c, Product__c, Product__r.Generic_Terms_Conga_Template__c, Moody_s_Risk_Calc__c,
-            (SELECT Id FROM Accounts__r ORDER BY CreatedDate ASC LIMIT 1)
-            FROM Lead WHERE Id = :leadId
+            SELECT Id, Customer_Signed_Date__c, Product__c, Product__r.Generic_Terms_Conga_Template__c, Moody_s_Risk_Calc__c, (SELECT Id FROM Accounts__r ORDER BY CreatedDate ASC LIMIT 1)
+            FROM Lead
+            WHERE Id = :leadId
         ];
 
-        if(leads.isEmpty()) {
+        if (leads.isEmpty()) {
             return null;
         }
 
@@ -206,10 +209,7 @@ public without sharing class LeadSelector {
     public Lead selectOneForStatusUpdate(Id leadId) {
         List<Lead> leads = [
             SELECT Id, Application_Complete_Date__c, Application_Status__c, Continue_Application_Link__c, Contract_eSign_Link__c,
-                Underwriting_Criteria__c, Partner_Lookup__c, Email, Moody_s_Risk_Calc__c,
-            (SELECT Id FROM Accounts__r),
-            (SELECT Id, Utility_lookup__r.Utility_Data_Collection_Mechanism__c FROM Utility_Account_Logs__r),
-            (SELECT Id, Customer_Signature_Date_Time__c FROM Contracts__r)
+                Underwriting_Criteria__c, Partner_Lookup__c, Email, Moody_s_Risk_Calc__c, (SELECT Id FROM Accounts__r), (SELECT Id, Utility_lookup__r.Utility_Data_Collection_Mechanism__c FROM Utility_Account_Logs__r), (SELECT Id, Customer_Signature_Date_Time__c FROM Contracts__r)
             FROM Lead
             WHERE Id = :leadId
         ];
@@ -270,9 +270,12 @@ public without sharing class LeadSelector {
     public List<Lead> getLeadsForPartnerApplicationStatus(Set<Id> leadIds) {
         return [
             SELECT Id, Status, Application_Complete_Date__c, Moody_s_Risk_Calc__c, Partner_Application_Status__c, (
-                SELECT Id FROM Cases__r WHERE Category__c = 'QC' AND IsClosed = FALSE
+                SELECT Id
+                FROM Cases__r
+                WHERE Category__c = 'QC' AND IsClosed = FALSE
             ), (
-                SELECT Id, StageName FROM Opportunities__r
+                SELECT Id, StageName
+                FROM Opportunities__r
             )
             FROM Lead
             WHERE Id = :leadIds
@@ -283,11 +286,14 @@ public without sharing class LeadSelector {
     public List<Lead> getLeadsWithBouncedEmails() {
         return [
             SELECT Id, Status, FirstName, LastName, Email, Partner_Account__c, Partner_Contact__c, (
-                SELECT Id, Description FROM Cases__r WHERE Subject = '- Other' AND Product_Line__c = 'Community Solar' AND IsClosed = FALSE
+                SELECT Id, Description
+                FROM Cases__r
+                WHERE Subject = '- Other' AND Product_Line__c = 'Community Solar' AND IsClosed = FALSE
             )
             FROM Lead
-            WHERE EmailBouncedDate != null AND EmailBouncedDate >= YESTERDAY
+            WHERE EmailBouncedDate != NULL
+            AND EmailBouncedDate >= YESTERDAY
         ];
-    } 
+    }
 
 }
