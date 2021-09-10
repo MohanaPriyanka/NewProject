@@ -46595,16 +46595,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Utility_Account_Subscription__c.Parent_Account_Id__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Utility_Account_Subscription__c.Partner__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Utility_Account_Subscription__c.SSS_Id__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -46617,11 +46607,6 @@
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Service_Address_From_Log__c</field>
         <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Utility_Account_Subscription__c.Shared_Solar_System_Name__c</field>
-        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -46655,11 +46640,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Utility_Account_Subscription__c.Subscription_Rate_Plan_Charge__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Utility_Account_Subscription__c.Subscription_Type__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -46686,11 +46666,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.UAS_Number__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Utility_Account_Subscription__c.Unlock_Password__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>

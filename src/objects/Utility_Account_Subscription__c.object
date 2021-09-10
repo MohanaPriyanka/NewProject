@@ -727,29 +727,6 @@ IF(
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Parent_Account_Id__c</fullName>
-        <description>Used by the UAS Lookup flow on Cases</description>
-        <externalId>false</externalId>
-        <formula>Utility_Account_Log__r.Account__r.Parent_Account_ID__c</formula>
-        <label>Parent Account Id</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Partner__c</fullName>
-        <externalId>false</externalId>
-        <label>Partner</label>
-        <length>20</length>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>SSS_Id__c</fullName>
         <externalId>false</externalId>
         <formula>IF(
@@ -786,22 +763,6 @@ Opportunity__r.Shared_Solar_System__c
         <label>Service Address</label>
         <required>false</required>
         <securityClassification>Restricted</securityClassification>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Shared_Solar_System_Name__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(
-$CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true,
-Shared_Solar_System__r.Name,
-Opportunity__r.Shared_Solar_System_Name__c
-)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Shared Solar System Name</label>
-        <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -940,20 +901,6 @@ IF(
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Subscription_Rate_Plan_Charge__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <description>Link between SF subscription and Zuora Subscription. There will be 1 Subscription Rate Plan Charge record for every customer, project and client combination (one Subscription Rate Plan Charge can have multiple UASes)</description>
-        <externalId>false</externalId>
-        <label>Subscription Rate Plan Charge</label>
-        <referenceTo>Zuora__SubscriptionProductCharge__c</referenceTo>
-        <relationshipLabel>Utility Account Subscriptions (Subscription Rate Plan Charge)</relationshipLabel>
-        <relationshipName>Utility_Account_Subscriptions1</relationshipName>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>Subscription_Type__c</fullName>
         <description>This is the Customer Subscription Type field from the Product assigned to the Opportunity the UAS is for. It determines if the UAS should use the Annual kWh of Annual Cost fields for sizing, and is used by a validation rule to prevent the wrong sizing fields from being used.</description>
         <externalId>false</externalId>
@@ -1029,17 +976,6 @@ IF(
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Unlock_Password__c</fullName>
-        <externalId>false</externalId>
-        <label>Unlock Password</label>
-        <length>10</length>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Utility_Account_Log_Name__c</fullName>
         <description>Used in the UAS display flow on cases</description>
         <externalId>false</externalId>
@@ -1097,7 +1033,6 @@ IF(
         <columns>Utility_Account_Log_Name__c</columns>
         <columns>Status__c</columns>
         <columns>Service_Address_From_Log__c</columns>
-        <columns>Shared_Solar_System_Name__c</columns>
         <filterScope>Everything</filterScope>
         <filters>
             <field>Next_Schedule_Z_Status__c</field>
@@ -1148,9 +1083,7 @@ IF(
             </values>
         </picklistValues>
     </recordTypes>
-    <searchLayouts>
-        <lookupDialogsAdditionalFields>Shared_Solar_System_Name__c</lookupDialogsAdditionalFields>
-    </searchLayouts>
+    <searchLayouts />
     <sharingModel>ControlledByParent</sharingModel>
     <validationRules>
         <fullName>Opportunity_and_SSS_Lock</fullName>
