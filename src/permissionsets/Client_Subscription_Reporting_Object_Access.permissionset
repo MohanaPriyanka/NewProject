@@ -167,11 +167,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Client_Utility_Account_Subscription__c.Project_Co_Assignment_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Client_Utility_Account_Subscription__c.Service_Address__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -198,11 +193,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Client_Utility_Account_Subscription__c.Utility_Account_Number__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Client_Utility_Account_Subscription__c.kW_Allocation__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

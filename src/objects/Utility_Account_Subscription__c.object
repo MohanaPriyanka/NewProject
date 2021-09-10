@@ -238,20 +238,6 @@ IF(Opportunity__r.Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c &gt; 0,
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Conga_Current_Share__c</fullName>
-        <externalId>false</externalId>
-        <formula>Share_of_System__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Conga Current Share (share/100)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>8</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Conga_Future_Share__c</fullName>
         <externalId>false</externalId>
         <formula>Future_Share_of_System_Rollup__c</formula>
@@ -570,39 +556,6 @@ IF (
         <type>Summary</type>
     </fields>
     <fields>
-        <fullName>Future_Share_of_System__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(
- $CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true
-,
- Future_Share_of_System_Rollup__c
-,
-ROUND(Customer_Subscription_KW_DC__c/ Opportunity__r.Shared_Solar_System__r.Total_System_Size_kWh_DC__c, Opportunity__r.Shared_Solar_System__r.Utility__r.Number_of_Decimal_Places__c + 2)
-
-)</formula>
-        <label>Future Share of System</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>5</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Percent</type>
-    </fields>
-    <fields>
-        <fullName>Max_Account_Bill_Number__c</fullName>
-        <externalId>false</externalId>
-        <formula>Opportunity__r.Account.Max_Account_Bill_Number__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Max Account Bill Number</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Max_Subscription_Capacity__c</fullName>
         <externalId>false</externalId>
         <formula>IF(
@@ -797,106 +750,6 @@ IF(
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Project_Co_Assignment_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>Project Co Assignment Date</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Project_Company__c</fullName>
-        <externalId>false</externalId>
-        <label>XXXX Project Company</label>
-        <required>false</required>
-        <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Fairhaven Mill Rd: BWC Origination Fairhaven One, LLC</fullName>
-                    <default>false</default>
-                    <label>Fairhaven Mill Rd: BWC Origination Fairhaven One, LLC</label>
-                </value>
-                <value>
-                    <fullName>Hopedale S Main St: BWC Origination 19 LLC</fullName>
-                    <default>false</default>
-                    <label>Hopedale S Main St: BWC Origination 19 LLC</label>
-                </value>
-                <value>
-                    <fullName>Mendon Milford St: BWC Mystic River, LLC</fullName>
-                    <default>false</default>
-                    <label>Mendon Milford St: BWC Mystic River, LLC</label>
-                </value>
-                <value>
-                    <fullName>Mendon Providence, Thayer and Bates : BWC Wading River, LLC</fullName>
-                    <default>false</default>
-                    <label>Mendon Providence, Thayer and Bates : BWC Wading River, LLC</label>
-                </value>
-                <value>
-                    <fullName>Oxford Barrett P1: BWC Stillwater River, LLC</fullName>
-                    <default>false</default>
-                    <label>Oxford Barrett P1: BWC Stillwater River, LLC</label>
-                </value>
-                <value>
-                    <fullName>Oxford Barrett P2: BWC French River, LLC</fullName>
-                    <default>false</default>
-                    <label>Oxford Barrett P2: BWC French River, LLC</label>
-                </value>
-                <value>
-                    <fullName>Oxford Clara Barton: BWC Fivemile River, LLC</fullName>
-                    <default>false</default>
-                    <label>Oxford Clara Barton: BWC Fivemile River, LLC</label>
-                </value>
-                <value>
-                    <fullName>Plympton: BWC Bluefish River, LLC</fullName>
-                    <default>false</default>
-                    <label>Plympton: BWC Bluefish River, LLC</label>
-                </value>
-                <value>
-                    <fullName>Sturbridge Hare Rd: BWC Originations 8 LLC</fullName>
-                    <default>false</default>
-                    <label>Sturbridge Hare Rd: BWC Originations 8 LLC</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
-        <fullName>Reason_for_Cancellation__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Moved to the Property Account, so cancellation reasons can be easily managed and viewed for multi-subscription accounts.</inlineHelpText>
-        <label>XXXReason for Cancellation</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Lack of Payment</fullName>
-                    <default>false</default>
-                    <label>Lack of Payment</label>
-                </value>
-                <value>
-                    <fullName>Utility Account Cancelled</fullName>
-                    <default>false</default>
-                    <label>Utility Account Cancelled</label>
-                </value>
-                <value>
-                    <fullName>Customer Request</fullName>
-                    <default>false</default>
-                    <label>Customer Request</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
         <fullName>SSS_Id__c</fullName>
         <externalId>false</externalId>
         <formula>IF(
@@ -937,19 +790,6 @@ Opportunity__r.Shared_Solar_System__c
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Share_of_System__c</fullName>
-        <externalId>false</externalId>
-        <formula>Customer_Subscription_KW_DC_STATIC__c /  Opportunity__r.Shared_Solar_System__r.Total_System_Size_kWh_DC__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Current Share of System</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>5</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Percent</type>
     </fields>
     <fields>
         <fullName>Shared_Solar_System_Name__c</fullName>
@@ -1177,18 +1017,6 @@ IF(
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>Trigger_Tester__c</fullName>
-        <externalId>false</externalId>
-        <label>Trigger Tester</label>
-        <precision>12</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>UAS_Number__c</fullName>
         <externalId>false</externalId>
         <label>UAS Number</label>
@@ -1210,16 +1038,6 @@ IF(
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Update_Dummy__c</fullName>
-        <defaultValue>false</defaultValue>
-        <description>Field used to fire subscription dilution trigger - fired by Process Builder</description>
-        <externalId>false</externalId>
-        <label>Update Dummy</label>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Utility_Account_Log_Name__c</fullName>
@@ -1273,24 +1091,6 @@ IF(
         <trackTrending>false</trackTrending>
         <type>Currency</type>
     </fields>
-    <fields>
-        <fullName>kW_Allocation__c</fullName>
-        <description>This field multiplies the ROUNDED Future Shared of System by the System Size in kW DC.</description>
-        <externalId>false</externalId>
-        <formula>Future_Share_of_System_Rollup__c
-* 
-Shared_Solar_System__r.Total_System_Size_kWh_DC__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>kW size based on % subscription on allocation schedule</inlineHelpText>
-        <label>kW Allocation</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>6</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
     <label>Utility Account Subscription</label>
     <listViews>
         <fullName>Customer_Community_List_Community_Solar_Subscriptions</fullName>
@@ -1331,60 +1131,6 @@ Shared_Solar_System__r.Total_System_Size_kWh_DC__c</formula>
                 <default>false</default>
             </values>
         </picklistValues>
-        <picklistValues>
-            <picklist>Project_Company__c</picklist>
-            <values>
-                <fullName>Fairhaven Mill Rd%3A BWC Origination Fairhaven One%2C LLC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Hopedale S Main St%3A BWC Origination 19 LLC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mendon Milford St%3A BWC Mystic River%2C LLC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mendon Providence%2C Thayer and Bates %3A BWC Wading River%2C LLC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Oxford Barrett P1%3A BWC Stillwater River%2C LLC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Oxford Barrett P2%3A BWC French River%2C LLC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Oxford Clara Barton%3A BWC Fivemile River%2C LLC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Plympton%3A BWC Bluefish River%2C LLC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sturbridge Hare Rd%3A BWC Originations 8 LLC</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Reason_for_Cancellation__c</picklist>
-            <values>
-                <fullName>Customer Request</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lack of Payment</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Utility Account Cancelled</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
     </recordTypes>
     <recordTypes>
         <fullName>Utility_Account_Subscription_on_Schedule_Z</fullName>
@@ -1401,81 +1147,11 @@ Shared_Solar_System__r.Total_System_Size_kWh_DC__c</formula>
                 <default>false</default>
             </values>
         </picklistValues>
-        <picklistValues>
-            <picklist>Project_Company__c</picklist>
-            <values>
-                <fullName>Fairhaven Mill Rd%3A BWC Origination Fairhaven One%2C LLC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Hopedale S Main St%3A BWC Origination 19 LLC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mendon Milford St%3A BWC Mystic River%2C LLC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mendon Providence%2C Thayer and Bates %3A BWC Wading River%2C LLC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Oxford Barrett P1%3A BWC Stillwater River%2C LLC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Oxford Barrett P2%3A BWC French River%2C LLC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Oxford Clara Barton%3A BWC Fivemile River%2C LLC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Plympton%3A BWC Bluefish River%2C LLC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sturbridge Hare Rd%3A BWC Originations 8 LLC</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Reason_for_Cancellation__c</picklist>
-            <values>
-                <fullName>Customer Request</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lack of Payment</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Utility Account Cancelled</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
     </recordTypes>
     <searchLayouts>
         <lookupDialogsAdditionalFields>Shared_Solar_System_Name__c</lookupDialogsAdditionalFields>
     </searchLayouts>
     <sharingModel>ControlledByParent</sharingModel>
-    <validationRules>
-        <fullName>Lock_Project_Company_Field</fullName>
-        <active>true</active>
-        <description>Restricts users who can edit project co field once it has already been updated to principals only</description>
-        <errorConditionFormula>AND(
- NOT(TEXT(PRIORVALUE(Project_Company__c)) = null),
- NOT(ISNEW()), 
- NOT(ISCLONE()),
- ISCHANGED(Project_Company__c), 
- NOT(OR(
-  $UserRole.Id = &quot;00E0a000000Nd2M&quot;,
-  $UserRole.Id = &quot;00E0a000000Nd2N&quot;,
-  $UserRole.Id = &quot;00E0a000000Nd2L&quot;))
-)</errorConditionFormula>
-        <errorMessage>The Project Company field cannot be changed by this user. Please contact your System Administrator or a BlueWave Executive if you need to change the assignment of a contract to a Project Company.</errorMessage>
-    </validationRules>
     <validationRules>
         <fullName>Opportunity_and_SSS_Lock</fullName>
         <active>true</active>

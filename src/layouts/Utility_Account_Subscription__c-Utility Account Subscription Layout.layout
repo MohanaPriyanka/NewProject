@@ -52,10 +52,6 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Reason_for_Cancellation__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>Date_Removed_from_Project__c</field>
             </layoutItems>
             <layoutItems>
@@ -98,10 +94,6 @@
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Max_Account_Bill_Number__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>UAS_Number__c</field>
             </layoutItems>
@@ -121,10 +113,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Entity_Assignment__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Project_Co_Assignment_Date__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -167,10 +155,6 @@
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Annual_Cost_Future_Rollup__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>kW_Allocation__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -219,12 +203,7 @@
                 <field>Most_Recent_Enacted_ALSS__c</field>
             </layoutItems>
         </layoutColumns>
-        <layoutColumns>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Share_of_System__c</field>
-            </layoutItems>
-        </layoutColumns>
+        <layoutColumns />
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
     <layoutSections>
@@ -274,8 +253,8 @@
         <detailHeading>false</detailHeading>
         <editHeading>true</editHeading>
         <label>Information</label>
-        <layoutColumns/>
-        <layoutColumns/>
+        <layoutColumns />
+        <layoutColumns />
         <style>TwoColumnsTopToBottom</style>
     </layoutSections>
     <layoutSections>
@@ -283,9 +262,9 @@
         <detailHeading>false</detailHeading>
         <editHeading>true</editHeading>
         <label>Custom Links</label>
-        <layoutColumns/>
-        <layoutColumns/>
-        <layoutColumns/>
+        <layoutColumns />
+        <layoutColumns />
+        <layoutColumns />
         <style>CustomLinks</style>
     </layoutSections>
     <platformActionList>
