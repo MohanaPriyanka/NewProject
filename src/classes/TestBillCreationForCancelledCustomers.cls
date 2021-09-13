@@ -13,7 +13,9 @@ public class TestBillCreationForCancelledCustomers {
             Number_of_Decimal_Places__c = 2
         );
 
-        insert new List<Utility__c>{eversource, nationalGrid};
+        insert new List<Utility__c>{
+            eversource, nationalGrid
+        };
 
         Load_U__c everLZU = new Load_U__c(
             Name = '02633',
@@ -37,7 +39,9 @@ public class TestBillCreationForCancelledCustomers {
             Load_Zone_Utility__c = ngridLZU.Id,
             Utility__c = nationalGrid.Id
         );
-        insert new List<ZipCode_Utility_Junction__c>{junction, junctionTwo};
+        insert new List<ZipCode_Utility_Junction__c>{
+            junction, junctionTwo
+        };
 
         Utility_NMC_Tariff__c everbillNMC = new Utility_NMC_Tariff__c(
             Name = 'Eversource SEMA Class 2',
@@ -119,7 +123,9 @@ public class TestBillCreationForCancelledCustomers {
                 Maximum_Subscription_Capacity_kWDC__c = 25,
                 Utility__c = eversource.Id);
 
-        insert new List<Shared_Solar_System__c>{sss1, sss2};
+        insert new List<Shared_Solar_System__c>{
+            sss1, sss2
+        };
 
         TestFactory.insertBWAddress();
         TestFactory.setCSBillSettings();
@@ -333,7 +339,9 @@ public class TestBillCreationForCancelledCustomers {
             Status__c = 'Billing'
         );
 
-        insert new List<Schedule_Z__c>{schZOne, schZTwo};
+        insert new List<Schedule_Z__c>{
+            schZOne, schZTwo
+        };
         Date todaysDate = Date.today();
         Date oneMonthAgo = todaysDate.addMonths(-1);
         Date oneMonthInFuture = todaysDate.addMonths(1);
@@ -351,7 +359,9 @@ public class TestBillCreationForCancelledCustomers {
         );
 
 
-        insert new List<Bill_Period__c>{bpA1, bpB1};
+        insert new List<Bill_Period__c>{
+            bpA1, bpB1
+        };
 
         Production__c prodA1 = new Production__c(
             Name = 'sssA August Production',
@@ -380,7 +390,9 @@ public class TestBillCreationForCancelledCustomers {
             Credits_Generated__c = 20000
         );
 
-        insert new List<Production__c>{prodA1, prodB1, prodB2};
+        insert new List<Production__c>{
+            prodA1, prodB1, prodB2
+        };
 
 
         Transfer__c transferA1 = new Transfer__c(
@@ -407,7 +419,7 @@ public class TestBillCreationForCancelledCustomers {
             Transferred_To__c = 'Customer',
             Bill_By__c = 'UASB',
             Allocation_Schedule__c = schZTwo.Id,
-            Attempted_Transfer__c =  40983.43,
+            Attempted_Transfer__c = 40983.43,
             Attempted_kWh_Transfer__c = 367918,
             Transfer_Amount__c = 40983.43,
             Default_Credit_Value__c = 0.13
@@ -423,32 +435,41 @@ public class TestBillCreationForCancelledCustomers {
             Transferred_To__c = 'Customer',
             Bill_By__c = 'UASB',
             Allocation_Schedule__c = schZTwo.Id,
-            Attempted_Transfer__c =  20000,
+            Attempted_Transfer__c = 20000,
             Attempted_kWh_Transfer__c = 153846,
             Transfer_Amount__c = 20000,
             Default_Credit_Value__c = 0.13
         );
 
-        insert new List<Transfer__c>{transferA1, transferB1, transferB2};
+        insert new List<Transfer__c>{
+            transferA1, transferB1, transferB2
+        };
 
         //If we have multiple months of Production for one Transfer, have to create parts in separate calls (in order)
         TransferPartService transferPartService = new TransferPartService();
-        transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferA1, transferB1});
-        transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferB2});
+        transferPartService.createPartsFromTransfer(new List<Transfer__c>{
+            transferA1, transferB1
+        });
+        transferPartService.createPartsFromTransfer(new List<Transfer__c>{
+            transferB2
+        });
 
-        List<Transfer_Part__c > parts = [SELECT Id, Name, Amount__c, Production__r.Name FROM Transfer_Part__c ];
+        List<Transfer_Part__c > parts = [SELECT Id, Name, Amount__c, Production__r.Name FROM Transfer_Part__c];
         System.assertEquals(3, parts.size());
 
-        BillGenerationServiceTest.generateBills(new List<Id>{bpA1.Id, bpB1.Id});
+        BillGenerationServiceTest.generateBills(new List<Id>{
+            bpA1.Id, bpB1.Id
+        });
 
-        List<UASB__c> uasbList = [SELECT Utility_Account_Subscription__r.Name, Shared_Solar_System__c,
-            Utility_Account_Subscription__r.Name_on_Account_From_Log__c,
-            Utility_Account_Subscription__r.Share_of_System__c,
-            Production_Update__r.Name, Credits_on_Bill_Period__c,
-            Utility_Account_Subscription__r.Next_Schedule_Z_Status__c,
-            Net_Metering_Credits_Allocated__c, Discounted_Bill__c,
-            Subscription_Production_kWh__c, System_Bill__r.Opportunity__r.Name
-        FROM UASB__c];
+        List<UASB__c> uasbList = [
+            SELECT Utility_Account_Subscription__r.Name, Shared_Solar_System__c,
+                Utility_Account_Subscription__r.Name_on_Account_From_Log__c,
+                Production_Update__r.Name, Credits_on_Bill_Period__c,
+                Utility_Account_Subscription__r.Next_Schedule_Z_Status__c,
+                Net_Metering_Credits_Allocated__c, Discounted_Bill__c,
+                Subscription_Production_kWh__c, System_Bill__r.Opportunity__r.Name
+            FROM UASB__c
+        ];
 
         setBillsToPublished();
         Test.stopTest();
@@ -471,7 +492,8 @@ public class TestBillCreationForCancelledCustomers {
         List<Shared_Solar_System__c> sssList = [
             SELECT Id, Name, BWC_Project_Entity_Manual__r.Id, Product__r.Id
             FROM Shared_Solar_System__c
-            ORDER BY Name DESC];
+            ORDER BY Name DESC
+        ];
 
         Schedule_Z__c schZOne = new Schedule_Z__c(
             Name = '18-0515 Project A Oak Rd',
@@ -485,7 +507,9 @@ public class TestBillCreationForCancelledCustomers {
             Status__c = 'Billing'
         );
 
-        insert new List<Schedule_Z__c>{schZOne, schZTwo};
+        insert new List<Schedule_Z__c>{
+            schZOne, schZTwo
+        };
 
         Date todaysDate = Date.today();
         Date oneMonthAgo = todaysDate.addMonths(-1);
@@ -503,7 +527,9 @@ public class TestBillCreationForCancelledCustomers {
             Bill_Date__c = todaysDate
         );
 
-        insert new List<Bill_Period__c>{bpA2, bpB2};
+        insert new List<Bill_Period__c>{
+            bpA2, bpB2
+        };
 
         Production__c prodB3 = new Production__c(
             Name = 'sssB September Production',
@@ -523,7 +549,9 @@ public class TestBillCreationForCancelledCustomers {
             Credits_Generated__c = 12033.73
         );
 
-        insert new List<Production__c>{prodB3, prodA2};
+        insert new List<Production__c>{
+            prodB3, prodA2
+        };
 
         Transfer__c transferB3 = new Transfer__c(
             Name = 'Main Transfer - sssB September',
@@ -534,7 +562,7 @@ public class TestBillCreationForCancelledCustomers {
             Transferred_To__c = 'Customer',
             Bill_By__c = 'UASB',
             Allocation_Schedule__c = schZOne.Id,
-            Attempted_Transfer__c =  12033.73,
+            Attempted_Transfer__c = 12033.73,
             Attempted_kWh_Transfer__c = 73072,
             Transfer_Amount__c = 12033.73,
             Transfer_kWh__c = 73072,
@@ -550,21 +578,27 @@ public class TestBillCreationForCancelledCustomers {
             Transferred_To__c = 'Customer',
             Bill_By__c = 'UASB',
             Allocation_Schedule__c = schZTwo.Id,
-            Attempted_Transfer__c =  12033.73,
+            Attempted_Transfer__c = 12033.73,
             Attempted_kWh_Transfer__c = 73072,
-            Transfer_Amount__c =  12033.73,
+            Transfer_Amount__c = 12033.73,
             Default_Credit_Value__c = 0.13
         );
 
-        insert new List<Transfer__c>{transferA2, transferB3};
+        insert new List<Transfer__c>{
+            transferA2, transferB3
+        };
 
         TransferPartService transferPartService = new TransferPartService();
-        transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferA2, transferB3});
+        transferPartService.createPartsFromTransfer(new List<Transfer__c>{
+            transferA2, transferB3
+        });
 
-        List<Transfer_Part__c > parts = [SELECT Id, Name, Amount__c, Production__r.Name FROM Transfer_Part__c ];
+        List<Transfer_Part__c > parts = [SELECT Id, Name, Amount__c, Production__r.Name FROM Transfer_Part__c];
         System.assertEquals(5, parts.size());
 
-        BillGenerationServiceTest.generateBills(new List<Id>{bpB2.Id, bpA2.Id});
+        BillGenerationServiceTest.generateBills(new List<Id>{
+            bpB2.Id, bpA2.Id
+        });
     }
 
     public static Map<String, List<UASB__c>> queryForBills() {
@@ -574,15 +608,18 @@ public class TestBillCreationForCancelledCustomers {
             SELECT Id, CS_Billing_Log__c, Net_Metering_Credits_Allocated__c, Savings__c,
                 Discounted_Bill__c, Opportunity__r.Name, Transfer__r.Date_of_Transfer__c, Date__c
             FROM UASB__c
-            ORDER BY Date__c, Transfer__r.Date_of_Transfer__c]) {
-                String billKey = insertedUASB.Opportunity__r.Name;
-                if (uasbMap.containsKey(billKey)){
-                    List<UASB__c> billList = uasbMap.get(billKey);
-                    billList.add(insertedUASB);
-                    uasbMap.put(billKey,billList);
-                } else {
-                    uasbMap.put(billKey,new List<UASB__c>{insertedUASB});
-                }
+            ORDER BY Date__c, Transfer__r.Date_of_Transfer__c
+        ]) {
+            String billKey = insertedUASB.Opportunity__r.Name;
+            if (uasbMap.containsKey(billKey)) {
+                List<UASB__c> billList = uasbMap.get(billKey);
+                billList.add(insertedUASB);
+                uasbMap.put(billKey, billList);
+            } else {
+                uasbMap.put(billKey, new List<UASB__c>{
+                    insertedUASB
+                });
+            }
         }
         return uasbMap;
 
@@ -604,28 +641,28 @@ public class TestBillCreationForCancelledCustomers {
     @IsTest
     public static void baseLineNoChange() {
         Map<String, List<UASB__c>> uasbMap = queryForBills();
-        System.assertEquals(6,uasbMap.values().size()); // 6 Opportunities, 8 UASBs
-        System.assertEquals(209.94,uasbMap.get('acA A_SSS1')[0].Discounted_Bill__c);
-        System.assertEquals(83.74,uasbMap.get('acB B_SSS1')[0].Discounted_Bill__c);
-        System.assertEquals(280.32,uasbMap.get('acB B_SSS2')[0].Discounted_Bill__c);
-        System.assertEquals(136.80,uasbMap.get('acB B_SSS2')[1].Discounted_Bill__c);
-        System.assertEquals(42.47,uasbMap.get('acC C_SSS1')[0].Discounted_Bill__c);
-        System.assertEquals(509.01,uasbMap.get('acC C_SSS2')[0].Discounted_Bill__c);
-        System.assertEquals(248.40,uasbMap.get('acC C_SSS2')[1].Discounted_Bill__c);
-        System.assertEquals(192.95,uasbMap.get('acC C_B_SSS1')[0].Discounted_Bill__c);
+        System.assertEquals(6, uasbMap.values().size()); // 6 Opportunities, 8 UASBs
+        System.assertEquals(209.94, uasbMap.get('acA A_SSS1')[0].Discounted_Bill__c);
+        System.assertEquals(83.74, uasbMap.get('acB B_SSS1')[0].Discounted_Bill__c);
+        System.assertEquals(280.32, uasbMap.get('acB B_SSS2')[0].Discounted_Bill__c);
+        System.assertEquals(136.80, uasbMap.get('acB B_SSS2')[1].Discounted_Bill__c);
+        System.assertEquals(42.47, uasbMap.get('acC C_SSS1')[0].Discounted_Bill__c);
+        System.assertEquals(509.01, uasbMap.get('acC C_SSS2')[0].Discounted_Bill__c);
+        System.assertEquals(248.40, uasbMap.get('acC C_SSS2')[1].Discounted_Bill__c);
+        System.assertEquals(192.95, uasbMap.get('acC C_B_SSS1')[0].Discounted_Bill__c);
 
         Test.startTest();
-            runSecondMonthBillPeriods();
+        runSecondMonthBillPeriods();
         Test.stopTest();
 
         Map<String, List<UASB__c>> uasbMapTwo = queryForBills();
-        System.assertEquals(6,uasbMapTwo.values().size()); // 6 Opportunities, 6 new UASBs
-        System.assertEquals(187.36,uasbMapTwo.get('acA A_SSS1')[1].Discounted_Bill__c);
-        System.assertEquals(74.73,uasbMapTwo.get('acB B_SSS1')[1].Discounted_Bill__c);
-        System.assertEquals(82.31,uasbMapTwo.get('acB B_SSS2')[2].Discounted_Bill__c);
-        System.assertEquals(37.91,uasbMapTwo.get('acC C_SSS1')[1].Discounted_Bill__c);
-        System.assertEquals(149.46,uasbMapTwo.get('acC C_SSS2')[2].Discounted_Bill__c);
-        System.assertEquals(172.21,uasbMapTwo.get('acC C_B_SSS1')[1].Discounted_Bill__c);
+        System.assertEquals(6, uasbMapTwo.values().size()); // 6 Opportunities, 6 new UASBs
+        System.assertEquals(187.36, uasbMapTwo.get('acA A_SSS1')[1].Discounted_Bill__c);
+        System.assertEquals(74.73, uasbMapTwo.get('acB B_SSS1')[1].Discounted_Bill__c);
+        System.assertEquals(82.31, uasbMapTwo.get('acB B_SSS2')[2].Discounted_Bill__c);
+        System.assertEquals(37.91, uasbMapTwo.get('acC C_SSS1')[1].Discounted_Bill__c);
+        System.assertEquals(149.46, uasbMapTwo.get('acC C_SSS2')[2].Discounted_Bill__c);
+        System.assertEquals(172.21, uasbMapTwo.get('acC C_B_SSS1')[1].Discounted_Bill__c);
     }
 
     private static void useMocks() {

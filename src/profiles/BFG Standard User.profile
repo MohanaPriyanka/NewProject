@@ -15467,11 +15467,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Client_Utility_Account_Subscription__c.kW_Allocation__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Commission_Payment__c.Amount_Due__c</field>
         <readable>true</readable>
@@ -40803,11 +40798,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Utility_Account_Subscription__c.Conga_Current_Share__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Utility_Account_Subscription__c.Conga_Future_Share__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -40893,16 +40883,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Utility_Account_Subscription__c.Future_Share_of_System__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Utility_Account_Subscription__c.Max_Account_Bill_Number__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Utility_Account_Subscription__c.Max_Subscription_Capacity__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -40958,31 +40938,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Utility_Account_Subscription__c.Parent_Account_Id__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Utility_Account_Subscription__c.Partner__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Utility_Account_Subscription__c.Project_Co_Assignment_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Utility_Account_Subscription__c.Project_Company__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Utility_Account_Subscription__c.Reason_for_Cancellation__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Utility_Account_Subscription__c.SSS_Id__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -40994,16 +40949,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Service_Address_From_Log__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Utility_Account_Subscription__c.Share_of_System__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Utility_Account_Subscription__c.Shared_Solar_System_Name__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -41033,11 +40978,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Utility_Account_Subscription__c.Subscription_Rate_Plan_Charge__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Utility_Account_Subscription__c.Subscription_Type__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -41053,22 +40993,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Utility_Account_Subscription__c.Trigger_Tester__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Utility_Account_Subscription__c.UAS_Number__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Utility_Account_Subscription__c.Unlock_Password__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Utility_Account_Subscription__c.Update_Dummy__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -41084,11 +41009,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Utility_Account_Subscription__c.calculated_annual_cost_of_electricity__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Utility_Account_Subscription__c.kW_Allocation__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

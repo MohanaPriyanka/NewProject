@@ -76,11 +76,6 @@
         <field>Utility_Account_Subscription__c.Date_Removed_from_Project__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Utility_Account_Subscription__c.Reason_for_Cancellation__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>CS Cancellation</label>
     <objectPermissions>
