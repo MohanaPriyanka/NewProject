@@ -892,7 +892,7 @@
         <required>false</required>
         <scale>2</scale>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
+        <trackHistory>false</trackHistory>
         <type>Number</type>
         <unique>false</unique>
     </fields>
@@ -1195,7 +1195,7 @@ Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c)
         <label>CAP Stage</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
+        <trackHistory>false</trackHistory>
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
@@ -1208,7 +1208,7 @@ Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c)
         <label>CSAP Stage</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
+        <trackHistory>false</trackHistory>
         <type>Picklist</type>
         <valueSet>
             <valueSetDefinition>
@@ -1312,7 +1312,7 @@ Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c)
         <label>Change Order Status</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
+        <trackHistory>false</trackHistory>
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
@@ -2849,7 +2849,7 @@ This field can be changed to a formula consistent with the other factors if LASE
         <label>Joint Applicant Type</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
+        <trackHistory>false</trackHistory>
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
@@ -3404,7 +3404,7 @@ TEXT( LZU__c ) = &apos;Manual Lookup Required&apos;,
         <required>false</required>
         <scale>2</scale>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
+        <trackHistory>false</trackHistory>
         <type>Currency</type>
     </fields>
     <fields>
@@ -3639,7 +3639,7 @@ IF(DOER_Solar_Loan__c=TRUE, 0.0399, 0.0599), VALUE(TEXT(Interest_Rate_Picklist__
         <externalId>false</externalId>
         <label>Manual Credit Decline</label>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
+        <trackHistory>false</trackHistory>
         <type>Checkbox</type>
     </fields>
     <fields>
@@ -4265,7 +4265,7 @@ Monthly_Payment__c)</formula>
         <label>Application Status</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
@@ -4936,7 +4936,7 @@ IF(AND(Risk_Level_Business_Type__c = &quot;Not Risky&quot;, VALUE(Number_of_Year
         <required>false</required>
         <scale>2</scale>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
+        <trackHistory>false</trackHistory>
         <type>Currency</type>
     </fields>
     <fields>
@@ -5288,7 +5288,7 @@ if( or(text(Status) = &quot;Cancelled&quot;, text(Status) = &quot;Not Interested
         <required>false</required>
         <scale>2</scale>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
+        <trackHistory>false</trackHistory>
         <type>Currency</type>
     </fields>
     <fields>
