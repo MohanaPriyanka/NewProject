@@ -687,7 +687,7 @@ public with sharing class SubscriptionSizingTestclass {
             There are also assertions to ensure the Percent Share is correctly calculated despite the change.
          */
         List<Utility_Account_Subscription__c> checkUASes = [
-            SELECT Id, Name, kW_Allocation__c, Customer_Subscription_KW_DC__c,
+            SELECT Id, Name, Customer_Subscription_KW_DC__c,
                 Future_Customer_Subscription_KWDC_Rollup__c, Future_Share_of_System_Rollup__c
             FROM Utility_Account_Subscription__c
             WHERE Name = '0000333' OR Name = '0000444'
@@ -697,12 +697,10 @@ public with sharing class SubscriptionSizingTestclass {
         for (Utility_Account_Subscription__c uas : checkUASes) {
             if (uas.Name == '0000333') {
                 //Unrounded: 25
-                System.assertEquals(25.014528, uas.kW_Allocation__c);
                 System.assertEquals(25.014528, uas.Future_Customer_Subscription_KWDC_Rollup__c);
                 System.assertEquals(2.31, uas.Future_Share_of_System_Rollup__c);
             } else {
                 //Unrounded: 3.0597
-                System.assertEquals(3.032064, uas.kW_Allocation__c);
                 System.assertEquals(3.032064, uas.Future_Customer_Subscription_KWDC_Rollup__c);
                 System.assertEquals(.28, uas.Future_Share_of_System_Rollup__c);
             }

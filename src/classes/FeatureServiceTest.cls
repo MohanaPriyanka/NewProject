@@ -28,7 +28,7 @@ private class FeatureServiceTest {
     @IsTest
     public static void testFeatureSelector() {
         FeatureSelector featureSelector = new FeatureSelector();
-        Custom_Feature_Enablement__mdt checkFeature = featureSelector.getCustomFeature('Subscription_Orders');
+        Custom_Feature_Enablement__mdt checkFeature = featureSelector.getCustomFeature('Relate_Debit_Memos_To_Invoices');
         System.assertNotEquals(null, checkFeature);
     }
     @IsTest
@@ -41,7 +41,9 @@ private class FeatureServiceTest {
     @IsTest
     public static void testFeatureServiceMock() {
         FeatureService featureService;
-        Map<String, Boolean> featureFlagMap = new Map<String, Boolean>{'Relate_Debit_Memos_To_Invoices'=>false,'Multiple_Subscriptions'=>true};
+        Map<String, Boolean> featureFlagMap = new Map<String, Boolean>{
+            'Relate_Debit_Memos_To_Invoices' => false, 'Multiple_Subscriptions' => true
+        };
         featureService = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(featureFlagMap));
         System.assert(!featureService.isEnabled('Relate_Debit_Memos_To_Invoices'), 'Relate_Debit_Memos_To_Invoices should not be enabled');
         System.assert(featureService.isEnabled('Multiple_Subscriptions'), 'Multiple_Subscriptions should be enabled');
@@ -65,7 +67,7 @@ private class FeatureServiceTest {
         }
 
         public override Object handleMethodCall(MethodCall methodCall) {
-            switch on methodCall.stubbedMethodName{
+            switch on methodCall.stubbedMethodName {
                 when 'getCustomFeature' {
                     Custom_Feature_Enablement__mdt feature = new Custom_Feature_Enablement__mdt(
                         Feature_is_Enabled__c = featureOn

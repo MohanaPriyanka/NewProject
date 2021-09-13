@@ -5,7 +5,7 @@ public class BillGenerationServiceTest {
     public static void testSetup() {
         TestBillCreationForCancelledCustomers.testSetupBillRecords();
         setCollectionsWindow(90);
-        CustomerCommunicationHandlerTest.setDaysPastDue(System.today().addDays(-30),3);
+        CustomerCommunicationHandlerTest.setDaysPastDue(System.today().addDays(-30), 3);
     }
 
     public static void generateBills(List<Id> billPeriodIdList) {
@@ -22,7 +22,8 @@ public class BillGenerationServiceTest {
         List<Shared_Solar_System__c> sssList = [
             SELECT Id, Name, BWC_Project_Entity_Manual__r.Id, Product__r.Id
             FROM Shared_Solar_System__c
-            ORDER BY Name DESC];
+            ORDER BY Name DESC
+        ];
 
         Schedule_Z__c schZOne = new Schedule_Z__c(
             Name = '18-0515 Project A Oak Rd',
@@ -36,7 +37,9 @@ public class BillGenerationServiceTest {
             Status__c = 'Billing'
         );
 
-        insert new List<Schedule_Z__c>{schZOne, schZTwo};
+        insert new List<Schedule_Z__c>{
+            schZOne, schZTwo
+        };
 
         Date todaysDate = Date.today();
         Date oneMonthAgo = todaysDate.addMonths(-1);
@@ -54,7 +57,9 @@ public class BillGenerationServiceTest {
             Bill_Date__c = oneMonthInFuture
         );
 
-        insert new List<Bill_Period__c>{bpB1, bpA1};
+        insert new List<Bill_Period__c>{
+            bpB1, bpA1
+        };
 
         Production__c prodB1 = new Production__c(
             Name = 'sssB September Production',
@@ -74,7 +79,9 @@ public class BillGenerationServiceTest {
             Credits_Generated__c = 12033.73
         );
 
-        insert new List<Production__c>{prodB1, prodA1};
+        insert new List<Production__c>{
+            prodB1, prodA1
+        };
 
         Transfer__c transferB1 = new Transfer__c(
             Name = 'Main Transfer - sssB September',
@@ -86,8 +93,8 @@ public class BillGenerationServiceTest {
             Bill_By__c = 'UASB',
             Allocation_Schedule__c = schZOne.Id,
             Attempted_kWh_Transfer__c = 73072.00,
-            Attempted_Transfer__c =  12033.73,
-            Transfer_Amount__c =  12033.73,
+            Attempted_Transfer__c = 12033.73,
+            Transfer_Amount__c = 12033.73,
             Default_Credit_Value__c = 0.1848
         );
 
@@ -102,20 +109,23 @@ public class BillGenerationServiceTest {
             Bill_By__c = 'UASB',
             Allocation_Schedule__c = schZTwo.Id,
             Attempted_kWh_Transfer__c = 73072.00,
-            Attempted_Transfer__c =  12033.73,
-            Transfer_Amount__c =  12033.73,
+            Attempted_Transfer__c = 12033.73,
+            Transfer_Amount__c = 12033.73,
             Default_Credit_Value__c = 0.1848
         );
 
-        insert new List<Transfer__c>{transferB1, transferA1};
-        return new List<Transfer__c>{transferA1, transferB1};
+        insert new List<Transfer__c>{
+            transferB1, transferA1
+        };
+        return new List<Transfer__c>{
+            transferA1, transferB1
+        };
     }
 
     public static List<UASB__c> queryForBills() {
-        List<UASB__c> uasbList= [
+        List<UASB__c> uasbList = [
             SELECT Utility_Account_Subscription__r.Name, Shared_Solar_System__c,
                 Utility_Account_Subscription__r.Name_on_Account_From_Log__c,
-                Utility_Account_Subscription__r.Share_of_System__c,
                 Production_Update__r.Name, Credits_on_Bill_Period__c,
                 Utility_Account_Subscription__r.Next_Schedule_Z_Status__c,
                 Utility_Account_Subscription__r.Opportunity__r.Name,
@@ -135,7 +145,7 @@ public class BillGenerationServiceTest {
         */
     }
 
-    public static void setCollectionsWindow(Integer daysToLookBack){
+    public static void setCollectionsWindow(Integer daysToLookBack) {
         System_Properties__c propertyAlreadyInserted = [
             SELECT Id
             FROM System_Properties__c
@@ -150,7 +160,7 @@ public class BillGenerationServiceTest {
     }
 
     @IsTest
-    public static void testGetCancelledCustomers(){
+    public static void testGetCancelledCustomers() {
         List<Opportunity> oppsToUpdate = new List<Opportunity>();
         List<Utility_Account_Subscription__c> uasesToDeactivate = [
             SELECT Id, Name, Opportunity__r.Id
@@ -159,7 +169,7 @@ public class BillGenerationServiceTest {
             OR Opportunity__r.Name = 'acC C_SSS1'
             LIMIT 2
         ];
-        for (Utility_Account_Subscription__c uas : uasesToDeactivate){
+        for (Utility_Account_Subscription__c uas : uasesToDeactivate) {
             uas.Next_Schedule_Z_Status__c = 'Inactive Subscription';
             Opportunity oppToUpdate = new Opportunity();
             oppToUpdate.Id = uas.Opportunity__r.Id;
@@ -171,7 +181,7 @@ public class BillGenerationServiceTest {
 
         Set<Id> scheduleZIds = new Set<Id>();
         List<Transfer__c> transfers = insertSecondMonthProduction();
-        for (Transfer__c transfer : transfers){
+        for (Transfer__c transfer : transfers) {
             scheduleZIds.add(transfer.Allocation_Schedule__c);
         }
 
@@ -187,8 +197,8 @@ public class BillGenerationServiceTest {
             maxPastDueDate,
             uasIdsAlreadyBilling
         );
-        System.assertEquals(4,uasIdsAlreadyBilling.size());
-        System.assertEquals(2,overdue.size());
+        System.assertEquals(4, uasIdsAlreadyBilling.size());
+        System.assertEquals(2, overdue.size());
     }
 
     @IsTest
@@ -196,14 +206,16 @@ public class BillGenerationServiceTest {
         List<UASB__c> beforeUASBs = queryForBills();
 
         Test.startTest();
-            List<Transfer__c> transfers = insertSecondMonthProduction();
-            generateBills(new List<Id>{transfers[0].Bill_Period__c, transfers[1].Bill_Period__c});
+        List<Transfer__c> transfers = insertSecondMonthProduction();
+        generateBills(new List<Id>{
+            transfers[0].Bill_Period__c, transfers[1].Bill_Period__c
+        });
         Test.stopTest();
 
         List<UASB__c> afterUASBs = queryForBills();
 
-        System.assertEquals(8,beforeUASBs.size());
-        System.assertEquals(14,afterUASBs.size());
+        System.assertEquals(8, beforeUASBs.size());
+        System.assertEquals(14, afterUASBs.size());
     }
 
     @IsTest
@@ -211,19 +223,19 @@ public class BillGenerationServiceTest {
         List<UASB__c> beforeUASBs = queryForBills();
 
         Test.startTest();
-            List<Transfer__c> transfers = insertSecondMonthProduction();
-            List<Bill_Period__c> billPeriods = [
-                SELECT Id, Shared_Solar_System__c, Bill_Date__c
-                FROM Bill_Period__c
-                WHERE Id = : transfers[0].Bill_Period__c
-            ];
-            BillGenerationAsyncService ee = new BillGenerationAsyncService(billPeriods);
-            Database.executeBatch(ee, 1);
+        List<Transfer__c> transfers = insertSecondMonthProduction();
+        List<Bill_Period__c> billPeriods = [
+            SELECT Id, Shared_Solar_System__c, Bill_Date__c
+            FROM Bill_Period__c
+            WHERE Id = :transfers[0].Bill_Period__c
+        ];
+        BillGenerationAsyncService ee = new BillGenerationAsyncService(billPeriods);
+        Database.executeBatch(ee, 1);
         Test.stopTest();
 
         List<UASB__c> afterUASBs = queryForBills();
 
-        System.assertEquals(8,beforeUASBs.size());
-        System.assertEquals(12,afterUASBs.size());
+        System.assertEquals(8, beforeUASBs.size());
+        System.assertEquals(12, afterUASBs.size());
     }
 }
