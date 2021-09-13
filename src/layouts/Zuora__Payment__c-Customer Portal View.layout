@@ -25,6 +25,10 @@
                 <behavior>Edit</behavior>
                 <field>Zuora__Effective_Date__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Method__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
