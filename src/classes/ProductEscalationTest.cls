@@ -13,7 +13,9 @@ public class ProductEscalationTest {
             Number_of_Decimal_Places__c = 6
         );
 
-        insert new List<Utility__c>{eversource, nationalGrid};
+        insert new List<Utility__c>{
+            eversource, nationalGrid
+        };
 
         Load_U__c everLZU = new Load_U__c(
             Name = '02633',
@@ -37,7 +39,9 @@ public class ProductEscalationTest {
             Load_Zone_Utility__c = ngridLZU.Id,
             Utility__c = nationalGrid.Id
         );
-        insert new List<ZipCode_Utility_Junction__c>{junction, junctionTwo};
+        insert new List<ZipCode_Utility_Junction__c>{
+            junction, junctionTwo
+        };
 
         Utility_NMC_Tariff__c everbillNMC = new Utility_NMC_Tariff__c(
             Name = 'Eversource SEMA Class 2',
@@ -60,7 +64,9 @@ public class ProductEscalationTest {
             NM_Rate_Floor__c = 0,
             Pricing_Structure__c = 'Use Solar Electric Rate',
             Monthly_Late_Fee__c = 1);
-        insert new List<Product2>{normalCSProduct};
+        insert new List<Product2>{
+            normalCSProduct
+        };
 
         Account clientAccount = new Account(name = 'Test Client');
         insert clientAccount;
@@ -118,7 +124,9 @@ public class ProductEscalationTest {
                 Maximum_Subscription_Capacity_kWDC__c = 25,
                 Utility__c = eversource.Id);
 
-        insert new List<Shared_Solar_System__c>{sss1, sss2};
+        insert new List<Shared_Solar_System__c>{
+            sss1, sss2
+        };
 
         TestFactory.insertBWAddress();
         TestFactory.setCSBillSettings();
@@ -332,7 +340,9 @@ public class ProductEscalationTest {
             Status__c = 'Billing'
         );
 
-        insert new List<Schedule_Z__c>{schZOne, schZTwo};
+        insert new List<Schedule_Z__c>{
+            schZOne, schZTwo
+        };
         Date todaysDate = Date.today();
         Date oneMonthAgo = todaysDate.addMonths(-1);
 
@@ -348,7 +358,9 @@ public class ProductEscalationTest {
             Bill_Date__c = oneMonthAgo
         );
 
-        insert new List<Bill_Period__c>{bpA1, bpB1};
+        insert new List<Bill_Period__c>{
+            bpA1, bpB1
+        };
 
         Production__c prodA1 = new Production__c(
             Name = 'sssA August Production',
@@ -376,7 +388,9 @@ public class ProductEscalationTest {
             Production_kWh__c = 153846,
             Credits_Generated__c = 20000
         );
-        insert new List<Production__c>{prodA1, prodB1, prodB2};
+        insert new List<Production__c>{
+            prodA1, prodB1, prodB2
+        };
 
         Transfer__c transferA1 = new Transfer__c(
             Name = 'Main Transfer - sssA August',
@@ -423,7 +437,9 @@ public class ProductEscalationTest {
             Default_Credit_Value__c = 0.13
         );
 
-        insert new List<Transfer__c>{transferA1, transferB1, transferB2};
+        insert new List<Transfer__c>{
+            transferA1, transferB1, transferB2
+        };
 
         Test.stopTest();
     }
@@ -434,7 +450,7 @@ public class ProductEscalationTest {
             FROM Opportunity
         ];
 
-        for (Opportunity opp : oppList){
+        for (Opportunity opp : oppList) {
             opp.Product_Escalation_Schedule__c = schedule.Id;
         }
 
@@ -454,14 +470,14 @@ public class ProductEscalationTest {
         Bill_Period__c bpA1 = new Bill_Period__c(
             Name = 'sssA - August 2016',
             Shared_Solar_System__c = schZList[0].Shared_Solar_System__r.Id,
-            Bill_Date__c =  todaysDate.addMonths(-4)
+            Bill_Date__c = todaysDate.addMonths(-4)
         );
 
         Production__c prodA1 = new Production__c(
             Name = 'sssA August Production',
             Shared_Solar_System__c = schZList[0].Shared_Solar_System__r.Id,
-            Start_Date__c =  todaysDate.addMonths(-4),
-            End_Date__c =  todaysDate.addMonths(-4).addMonths(1),
+            Start_Date__c = todaysDate.addMonths(-4),
+            End_Date__c = todaysDate.addMonths(-4).addMonths(1),
             Production_kWh__c = 81869,
             Credits_Generated__c = 13483.66
         );
@@ -469,7 +485,7 @@ public class ProductEscalationTest {
         Transfer__c transferA1 = new Transfer__c(
             Name = 'Main Transfer - sssA August',
             Bill_Period__c = bpA1.Id,
-            Date_of_Transfer__c =  todaysDate.addMonths(-4),
+            Date_of_Transfer__c = todaysDate.addMonths(-4),
             Shared_Solar_System__c = schZList[0].Shared_Solar_System__r.Id,
             Transfer_Type__c = 'Main',
             Allocation_Schedule__c = schZList[0].Id,
@@ -484,14 +500,14 @@ public class ProductEscalationTest {
         Bill_Period__c bpA2 = new Bill_Period__c(
             Name = 'sssA - August 2016',
             Shared_Solar_System__c = schZList[0].Shared_Solar_System__r.Id,
-            Bill_Date__c =  todaysDate.addMonths(-3)
+            Bill_Date__c = todaysDate.addMonths(-3)
         );
 
         Production__c prodA2 = new Production__c(
             Name = 'sssA August Production',
             Shared_Solar_System__c = schZList[0].Shared_Solar_System__r.Id,
-            Start_Date__c =  todaysDate.addMonths(-3),
-            End_Date__c =  todaysDate.addMonths(-3).addMonths(1),
+            Start_Date__c = todaysDate.addMonths(-3),
+            End_Date__c = todaysDate.addMonths(-3).addMonths(1),
             Production_kWh__c = 81869,
             Credits_Generated__c = 13483.66
         );
@@ -499,7 +515,7 @@ public class ProductEscalationTest {
         Transfer__c transferA2 = new Transfer__c(
             Name = 'Main Transfer - sssA August',
             Bill_Period__c = bpA1.Id,
-            Date_of_Transfer__c =  todaysDate.addMonths(-3),
+            Date_of_Transfer__c = todaysDate.addMonths(-3),
             Shared_Solar_System__c = schZList[0].Shared_Solar_System__r.Id,
             Transfer_Type__c = 'Main',
             Allocation_Schedule__c = schZList[0].Id,
@@ -513,14 +529,14 @@ public class ProductEscalationTest {
         Bill_Period__c bpA3 = new Bill_Period__c(
             Name = 'sssA - August 2016',
             Shared_Solar_System__c = schZList[0].Shared_Solar_System__r.Id,
-            Bill_Date__c =  todaysDate.addMonths(-2)
+            Bill_Date__c = todaysDate.addMonths(-2)
         );
 
         Production__c prodA3 = new Production__c(
             Name = 'sssA August Production',
             Shared_Solar_System__c = schZList[0].Shared_Solar_System__r.Id,
-            Start_Date__c =  todaysDate.addMonths(-2),
-            End_Date__c =  todaysDate.addMonths(-2).addMonths(1),
+            Start_Date__c = todaysDate.addMonths(-2),
+            End_Date__c = todaysDate.addMonths(-2).addMonths(1),
             Production_kWh__c = 81869,
             Credits_Generated__c = 13483.66
         );
@@ -528,7 +544,7 @@ public class ProductEscalationTest {
         Transfer__c transferA3 = new Transfer__c(
             Name = 'Main Transfer - sssA August',
             Bill_Period__c = bpA1.Id,
-            Date_of_Transfer__c =  todaysDate.addMonths(-2),
+            Date_of_Transfer__c = todaysDate.addMonths(-2),
             Shared_Solar_System__c = schZList[0].Shared_Solar_System__r.Id,
             Transfer_Type__c = 'Main',
             Allocation_Schedule__c = schZList[0].Id,
@@ -545,14 +561,14 @@ public class ProductEscalationTest {
         Bill_Period__c bpB1 = new Bill_Period__c(
             Name = 'sssB - August 2016',
             Shared_Solar_System__c = schZList[1].Shared_Solar_System__r.Id,
-            Bill_Date__c =  todaysDate.addMonths(-4)
+            Bill_Date__c = todaysDate.addMonths(-4)
         );
 
         Production__c prodB1 = new Production__c(
             Name = 'sssA September Production',
             Shared_Solar_System__c = schZList[1].Shared_Solar_System__r.Id,
-            Start_Date__c =  todaysDate.addMonths(-5),
-            End_Date__c =  todaysDate.addMonths(-5).addMonths(1),
+            Start_Date__c = todaysDate.addMonths(-5),
+            End_Date__c = todaysDate.addMonths(-5).addMonths(1),
             Production_kWh__c = 367918,
             Credits_Generated__c = 40983.43
         );
@@ -560,8 +576,8 @@ public class ProductEscalationTest {
         Production__c prodB2 = new Production__c(
             Name = 'sssB August Production',
             Shared_Solar_System__c = schZList[1].Shared_Solar_System__r.Id,
-            Start_Date__c =  todaysDate.addMonths(-4),
-            End_Date__c =  todaysDate.addMonths(-4).addMonths(1),
+            Start_Date__c = todaysDate.addMonths(-4),
+            End_Date__c = todaysDate.addMonths(-4).addMonths(1),
             Production_kWh__c = 153846,
             Credits_Generated__c = 20000
         );
@@ -569,7 +585,7 @@ public class ProductEscalationTest {
         Transfer__c transferB1 = new Transfer__c(
             Name = 'Main Transfer - sssB September',
             Bill_Period__c = bpB1.Id,
-            Date_of_Transfer__c =  todaysDate.addMonths(-5),
+            Date_of_Transfer__c = todaysDate.addMonths(-5),
             Shared_Solar_System__c = schZList[1].Shared_Solar_System__r.Id,
             Transfer_Type__c = 'Main',
             Allocation_Schedule__c = schZList[1].Id,
@@ -583,7 +599,7 @@ public class ProductEscalationTest {
         Transfer__c transferB2 = new Transfer__c(
             Name = 'Main Transfer - sssB August',
             Bill_Period__c = bpB1.Id,
-            Date_of_Transfer__c =  todaysDate.addMonths(-4),
+            Date_of_Transfer__c = todaysDate.addMonths(-4),
             Shared_Solar_System__c = schZList[1].Shared_Solar_System__r.Id,
             Transfer_Type__c = 'Main',
             Allocation_Schedule__c = schZList[1].Id,
@@ -595,18 +611,17 @@ public class ProductEscalationTest {
         );
 
 
-
         Bill_Period__c bpB2 = new Bill_Period__c(
             Name = 'sssB - August 2016',
             Shared_Solar_System__c = schZList[1].Shared_Solar_System__r.Id,
-            Bill_Date__c =  todaysDate.addMonths(-3)
+            Bill_Date__c = todaysDate.addMonths(-3)
         );
 
         Production__c prodB3 = new Production__c(
             Name = 'sssA September Production',
             Shared_Solar_System__c = schZList[1].Shared_Solar_System__r.Id,
-            Start_Date__c =  todaysDate.addMonths(-3),
-            End_Date__c =  todaysDate.addMonths(-3).addMonths(1),
+            Start_Date__c = todaysDate.addMonths(-3),
+            End_Date__c = todaysDate.addMonths(-3).addMonths(1),
             Production_kWh__c = 367918,
             Credits_Generated__c = 40983.43
         );
@@ -614,8 +629,8 @@ public class ProductEscalationTest {
         Production__c prodB4 = new Production__c(
             Name = 'sssB August Production',
             Shared_Solar_System__c = schZList[1].Shared_Solar_System__r.Id,
-            Start_Date__c =  todaysDate.addMonths(-2),
-            End_Date__c =  todaysDate.addMonths(-2).addMonths(1),
+            Start_Date__c = todaysDate.addMonths(-2),
+            End_Date__c = todaysDate.addMonths(-2).addMonths(1),
             Production_kWh__c = 153846,
             Credits_Generated__c = 20000
         );
@@ -623,7 +638,7 @@ public class ProductEscalationTest {
         Transfer__c transferB3 = new Transfer__c(
             Name = 'Main Transfer - sssB September',
             Bill_Period__c = bpB1.Id,
-            Date_of_Transfer__c =  todaysDate.addMonths(-3),
+            Date_of_Transfer__c = todaysDate.addMonths(-3),
             Shared_Solar_System__c = schZList[1].Shared_Solar_System__r.Id,
             Transfer_Type__c = 'Main',
             Allocation_Schedule__c = schZList[1].Id,
@@ -637,7 +652,7 @@ public class ProductEscalationTest {
         Transfer__c transferB4 = new Transfer__c(
             Name = 'Main Transfer - sssB August',
             Bill_Period__c = bpB1.Id,
-            Date_of_Transfer__c =  todaysDate.addMonths(-2),
+            Date_of_Transfer__c = todaysDate.addMonths(-2),
             Shared_Solar_System__c = schZList[1].Shared_Solar_System__r.Id,
             Transfer_Type__c = 'Main',
             Allocation_Schedule__c = schZList[1].Id,
@@ -649,19 +664,17 @@ public class ProductEscalationTest {
         );
 
 
-
-
         Bill_Period__c bpB3 = new Bill_Period__c(
             Name = 'sssB - August 2016',
             Shared_Solar_System__c = schZList[1].Shared_Solar_System__r.Id,
-            Bill_Date__c =  todaysDate.addMonths(-2)
+            Bill_Date__c = todaysDate.addMonths(-2)
         );
 
         Production__c prodB5 = new Production__c(
             Name = 'sssA September Production',
             Shared_Solar_System__c = schZList[1].Shared_Solar_System__r.Id,
-            Start_Date__c =  todaysDate.addMonths(-1),
-            End_Date__c =  todaysDate.addMonths(-3).addMonths(1),
+            Start_Date__c = todaysDate.addMonths(-1),
+            End_Date__c = todaysDate.addMonths(-3).addMonths(1),
             Production_kWh__c = 367918,
             Credits_Generated__c = 40983.43
         );
@@ -669,8 +682,8 @@ public class ProductEscalationTest {
         Production__c prodB6 = new Production__c(
             Name = 'sssB August Production',
             Shared_Solar_System__c = schZList[1].Shared_Solar_System__r.Id,
-            Start_Date__c =  todaysDate,
-            End_Date__c =  todaysDate.addMonths(1),
+            Start_Date__c = todaysDate,
+            End_Date__c = todaysDate.addMonths(1),
             Production_kWh__c = 153846,
             Credits_Generated__c = 20000
         );
@@ -678,7 +691,7 @@ public class ProductEscalationTest {
         Transfer__c transferB5 = new Transfer__c(
             Name = 'Main Transfer - sssB September',
             Bill_Period__c = bpB1.Id,
-            Date_of_Transfer__c =  todaysDate.addMonths(-1),
+            Date_of_Transfer__c = todaysDate.addMonths(-1),
             Shared_Solar_System__c = schZList[1].Shared_Solar_System__r.Id,
             Transfer_Type__c = 'Main',
             Allocation_Schedule__c = schZList[1].Id,
@@ -692,7 +705,7 @@ public class ProductEscalationTest {
         Transfer__c transferB6 = new Transfer__c(
             Name = 'Main Transfer - sssB August',
             Bill_Period__c = bpB1.Id,
-            Date_of_Transfer__c =  todaysDate,
+            Date_of_Transfer__c = todaysDate,
             Shared_Solar_System__c = schZList[1].Shared_Solar_System__r.Id,
             Transfer_Type__c = 'Main',
             Allocation_Schedule__c = schZList[1].Id,
@@ -706,26 +719,42 @@ public class ProductEscalationTest {
         List<Transfer__c> transfers = new List<Transfer__c>{
             transferA1, transferA2, transferA3, transferB1, transferB2, transferB3, transferB4, transferB5, transferB6
         };
-        insert new List<Bill_Period__c>{bpA1, bpA2, bpA3, bpB1, bpB2, bpB3};
-        insert new List<Production__c>{prodA1, prodA2, prodA3, prodB1, prodB2, prodB3, prodB4, prodB5, prodb6};
+        insert new List<Bill_Period__c>{
+            bpA1, bpA2, bpA3, bpB1, bpB2, bpB3
+        };
+        insert new List<Production__c>{
+            prodA1, prodA2, prodA3, prodB1, prodB2, prodB3, prodB4, prodB5, prodb6
+        };
         insert transfers;
 
         //Parts for multiple months of production in one Bill Period are created manually so that they can be ordered correctly
         TransferPartService transferPartService = new TransferPartService();
-        transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferA1, transferB1});
-        transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferA2, transferB2});
-        transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferA3, transferB3});
-        transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferB4});
-        transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferB5});
-        transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferB6});
+        transferPartService.createPartsFromTransfer(new List<Transfer__c>{
+            transferA1, transferB1
+        });
+        transferPartService.createPartsFromTransfer(new List<Transfer__c>{
+            transferA2, transferB2
+        });
+        transferPartService.createPartsFromTransfer(new List<Transfer__c>{
+            transferA3, transferB3
+        });
+        transferPartService.createPartsFromTransfer(new List<Transfer__c>{
+            transferB4
+        });
+        transferPartService.createPartsFromTransfer(new List<Transfer__c>{
+            transferB5
+        });
+        transferPartService.createPartsFromTransfer(new List<Transfer__c>{
+            transferB6
+        });
 
-        for (Transfer__c transfer : transfers){
+        for (Transfer__c transfer : transfers) {
             transfer.Bills_Generated__c = true;
         }
         update transfers;
     }
 
-    public static void switchProductToPercentDiscount(){
+    public static void switchProductToPercentDiscount() {
         Product2 productToUpdate = [
             SELECT Id, Name
             FROM Product2
@@ -765,14 +794,14 @@ public class ProductEscalationTest {
             ~(sss2 2nd transfer) NMCs = 138.33 Discount = 10% Bill = 124.49
         */
 
-        System.assertEquals(6,uasbMap.size());
-        System.assertEquals(83.93,uasbMap.get('acA A_SSS1')[0].Discounted_Bill__c);
-        System.assertEquals(83.93,uasbMap.get('acB B_SSS1')[0].Discounted_Bill__c);
-        System.assertEquals(255.11,uasbMap.get('acB B_SSS2')[0].Discounted_Bill__c);
-        System.assertEquals(83.93,uasbMap.get('acC C_SSS1')[0].Discounted_Bill__c);
-        System.assertEquals(255.11,uasbMap.get('acC C_SSS2')[0].Discounted_Bill__c);
-        System.assertEquals(124.50,uasbMap.get('acC C_SSS2')[1].Discounted_Bill__c);
-        System.assertEquals(83.93,uasbMap.get('acC C_B_SSS1')[0].Discounted_Bill__c);
+        System.assertEquals(6, uasbMap.size());
+        System.assertEquals(83.93, uasbMap.get('acA A_SSS1')[0].Discounted_Bill__c);
+        System.assertEquals(83.93, uasbMap.get('acB B_SSS1')[0].Discounted_Bill__c);
+        System.assertEquals(255.11, uasbMap.get('acB B_SSS2')[0].Discounted_Bill__c);
+        System.assertEquals(83.93, uasbMap.get('acC C_SSS1')[0].Discounted_Bill__c);
+        System.assertEquals(255.11, uasbMap.get('acC C_SSS2')[0].Discounted_Bill__c);
+        System.assertEquals(124.50, uasbMap.get('acC C_SSS2')[1].Discounted_Bill__c);
+        System.assertEquals(83.93, uasbMap.get('acC C_B_SSS1')[0].Discounted_Bill__c);
     }
 
     @IsTest public static void percentDiscountWithEscalator() {
@@ -803,7 +832,9 @@ public class ProductEscalationTest {
             Starting_Credit_Transfer__c = 5,
             New_NMC_Discount__c = 10
         );
-        insert new List<Product_Escalator__c>{escalatorOne, escalatorTwo};
+        insert new List<Product_Escalator__c>{
+            escalatorOne, escalatorTwo
+        };
 
         setEscalator(newSchedule);
 
@@ -814,7 +845,6 @@ public class ProductEscalationTest {
         for (UASB__c uasb : [
             SELECT Utility_Account_Subscription__r.Name, Shared_Solar_System__c,
                 Utility_Account_Subscription__r.Name_on_Account_From_Log__c,
-                Utility_Account_Subscription__r.Share_of_System__c,
                 Production_Update__r.Name, Credits_on_Bill_Period__c,
                 Utility_Account_Subscription__r.Next_Schedule_Z_Status__c,
                 Net_Metering_Credits_Allocated__c, Discounted_Bill__c,
@@ -822,18 +852,19 @@ public class ProductEscalationTest {
                 Shared_Solar_System__r.Name, Solar_Electricity_Rate__c,
                 Solar_Share_Rate_Bill_Value__c, Subscription_Production_kWh_Static__c,
                 NMC_Discount__c, Bill_Value__c
-            FROM UASB__c]){
-            if (uasb.Shared_Solar_System__r.Name == 'Project A Oak Road'){
+            FROM UASB__c
+        ]) {
+            if (uasb.Shared_Solar_System__r.Name == 'Project A Oak Road') {
                 System.assertEquals(100, uasb.NMC_Discount__c);
                 System.assertEquals(0, uasb.Bill_Value__c);
                 System.assertEquals(566.23, uasb.Subscription_Production_kWh_Static__c);
-            } else if ( uasb.Shared_Solar_System__r.Name == 'Project B Main St'
-                && uasb.Subscription_Production_kWh_Static__c == 1064.05){
+            } else if (uasb.Shared_Solar_System__r.Name == 'Project B Main St'
+                && uasb.Subscription_Production_kWh_Static__c == 1064.05) {
                 System.assertEquals(10, uasb.NMC_Discount__c);
                 System.assertEquals(124.50, uasb.Bill_Value__c);
                 System.assertEquals(1064.05, uasb.Subscription_Production_kWh_Static__c);
-            } else if ( uasb.Shared_Solar_System__r.Name == 'Project B Main St'
-                && uasb.Subscription_Production_kWh_Static__c != 1064.05){
+            } else if (uasb.Shared_Solar_System__r.Name == 'Project B Main St'
+                && uasb.Subscription_Production_kWh_Static__c != 1064.05) {
                 System.assertEquals(10, uasb.NMC_Discount__c);
                 System.assertEquals(255.11, uasb.Bill_Value__c);
                 System.assertEquals(2544.63, uasb.Subscription_Production_kWh_Static__c);
@@ -845,15 +876,15 @@ public class ProductEscalationTest {
 
         Map<String, List<UASB__c>> uasbMap = TestBillCreationForCancelledCustomers.queryForBills();
 
-        System.assertEquals(6,uasbMap.size());
-        System.assertEquals(0,uasbMap.get('acA A_SSS1')[0].Discounted_Bill__c);
-        System.assertEquals(0,uasbMap.get('acB B_SSS1')[0].Discounted_Bill__c);
-        System.assertEquals(255.11,uasbMap.get('acB B_SSS2')[0].Discounted_Bill__c);
-        System.assertEquals(124.50,uasbMap.get('acB B_SSS2')[1].Discounted_Bill__c);
-        System.assertEquals(0,uasbMap.get('acC C_SSS1')[0].Discounted_Bill__c);
-        System.assertEquals(255.11,uasbMap.get('acC C_SSS2')[0].Discounted_Bill__c);
-        System.assertEquals(124.50,uasbMap.get('acC C_SSS2')[1].Discounted_Bill__c);
-        System.assertEquals(0,uasbMap.get('acC C_B_SSS1')[0].Discounted_Bill__c);
+        System.assertEquals(6, uasbMap.size());
+        System.assertEquals(0, uasbMap.get('acA A_SSS1')[0].Discounted_Bill__c);
+        System.assertEquals(0, uasbMap.get('acB B_SSS1')[0].Discounted_Bill__c);
+        System.assertEquals(255.11, uasbMap.get('acB B_SSS2')[0].Discounted_Bill__c);
+        System.assertEquals(124.50, uasbMap.get('acB B_SSS2')[1].Discounted_Bill__c);
+        System.assertEquals(0, uasbMap.get('acC C_SSS1')[0].Discounted_Bill__c);
+        System.assertEquals(255.11, uasbMap.get('acC C_SSS2')[0].Discounted_Bill__c);
+        System.assertEquals(124.50, uasbMap.get('acC C_SSS2')[1].Discounted_Bill__c);
+        System.assertEquals(0, uasbMap.get('acC C_B_SSS1')[0].Discounted_Bill__c);
     }
 
     @IsTest public static void solarElectricRateNoEscalator() {
@@ -861,15 +892,15 @@ public class ProductEscalationTest {
         runOneMonthsBills();
         Map<String, List<UASB__c>> uasbMap = TestBillCreationForCancelledCustomers.queryForBills();
 
-        System.assertEquals(6,uasbMap.size());
-        System.assertEquals(79.27,uasbMap.get('acA A_SSS1')[0].Discounted_Bill__c);
-        System.assertEquals(79.27,uasbMap.get('acB B_SSS1')[0].Discounted_Bill__c);
-        System.assertEquals(356.25,uasbMap.get('acB B_SSS2')[0].Discounted_Bill__c);
-        System.assertEquals(148.97,uasbMap.get('acB B_SSS2')[1].Discounted_Bill__c);
-        System.assertEquals(79.27,uasbMap.get('acC C_SSS1')[0].Discounted_Bill__c);
-        System.assertEquals(356.25,uasbMap.get('acC C_SSS2')[0].Discounted_Bill__c);
-        System.assertEquals(148.97,uasbMap.get('acC C_SSS2')[1].Discounted_Bill__c);
-        System.assertEquals(79.27,uasbMap.get('acC C_B_SSS1')[0].Discounted_Bill__c);
+        System.assertEquals(6, uasbMap.size());
+        System.assertEquals(79.27, uasbMap.get('acA A_SSS1')[0].Discounted_Bill__c);
+        System.assertEquals(79.27, uasbMap.get('acB B_SSS1')[0].Discounted_Bill__c);
+        System.assertEquals(356.25, uasbMap.get('acB B_SSS2')[0].Discounted_Bill__c);
+        System.assertEquals(148.97, uasbMap.get('acB B_SSS2')[1].Discounted_Bill__c);
+        System.assertEquals(79.27, uasbMap.get('acC C_SSS1')[0].Discounted_Bill__c);
+        System.assertEquals(356.25, uasbMap.get('acC C_SSS2')[0].Discounted_Bill__c);
+        System.assertEquals(148.97, uasbMap.get('acC C_SSS2')[1].Discounted_Bill__c);
+        System.assertEquals(79.27, uasbMap.get('acC C_B_SSS1')[0].Discounted_Bill__c);
     }
 
     @IsTest public static void solarElectricRateWithEscalator() {
@@ -887,12 +918,12 @@ public class ProductEscalationTest {
 
         Product_Escalation_Schedule__c newSchedule = ProductService.createEscalationSchedule(0.03, 0.14, 20, 2);
 
-        System.assertEquals(4,newSchedule.Product_Escalators__r[2].Starting_Credit_Transfer__c);
-        System.assertEquals(6,newSchedule.Product_Escalators__r[3].Starting_Credit_Transfer__c);
-        System.assertEquals(8,newSchedule.Product_Escalators__r[4].Starting_Credit_Transfer__c);
-        System.assertEquals(0.1485,newSchedule.Product_Escalators__r[2].New_Solar_Electricity_Rate__c);
-        System.assertEquals(0.1530,newSchedule.Product_Escalators__r[3].New_Solar_Electricity_Rate__c);
-        System.assertEquals(0.1576,newSchedule.Product_Escalators__r[4].New_Solar_Electricity_Rate__c);
+        System.assertEquals(4, newSchedule.Product_Escalators__r[2].Starting_Credit_Transfer__c);
+        System.assertEquals(6, newSchedule.Product_Escalators__r[3].Starting_Credit_Transfer__c);
+        System.assertEquals(8, newSchedule.Product_Escalators__r[4].Starting_Credit_Transfer__c);
+        System.assertEquals(0.1485, newSchedule.Product_Escalators__r[2].New_Solar_Electricity_Rate__c);
+        System.assertEquals(0.1530, newSchedule.Product_Escalators__r[3].New_Solar_Electricity_Rate__c);
+        System.assertEquals(0.1576, newSchedule.Product_Escalators__r[4].New_Solar_Electricity_Rate__c);
 
         setEscalator(newSchedule);
 
@@ -918,45 +949,45 @@ public class ProductEscalationTest {
         for (UASB__c uasb : [
             SELECT Utility_Account_Subscription__r.Name, Shared_Solar_System__c,
                 Utility_Account_Subscription__r.Name_on_Account_From_Log__c,
-                Utility_Account_Subscription__r.Share_of_System__c,
                 Production_Update__r.Name, Credits_on_Bill_Period__c,
                 Utility_Account_Subscription__r.Next_Schedule_Z_Status__c,
                 Net_Metering_Credits_Allocated__c, Discounted_Bill__c,
                 Subscription_Production_kWh__c, System_Bill__r.Opportunity__r.Name,
                 Shared_Solar_System__r.Name, Solar_Electricity_Rate__c,
                 Solar_Share_Rate_Bill_Value__c, Subscription_Production_kWh_Static__c
-            FROM UASB__c]){
-                if (uasb.Shared_Solar_System__r.Name == 'Project A Oak Road'){
-                    System.assertEquals(0.1485, uasb.Solar_Electricity_Rate__c);
-                    System.assertEquals(84.09, uasb.Solar_Share_Rate_Bill_Value__c);
-                    System.assertEquals(566.23, uasb.Subscription_Production_kWh_Static__c);
-                } else if ( uasb.Shared_Solar_System__r.Name == 'Project B Main St'
-                            && uasb.Subscription_Production_kWh_Static__c == 1064.05){
-                    System.assertEquals(0.1576, uasb.Solar_Electricity_Rate__c);
-                    System.assertEquals(167.69, uasb.Solar_Share_Rate_Bill_Value__c);
-                    System.assertEquals(1064.05, uasb.Subscription_Production_kWh_Static__c);
-                } else if ( uasb.Shared_Solar_System__r.Name == 'Project B Main St'
-                            && uasb.Subscription_Production_kWh_Static__c != 1064.05){
-                    System.assertEquals(0.1530, uasb.Solar_Electricity_Rate__c);
-                    System.assertEquals(389.33, uasb.Solar_Share_Rate_Bill_Value__c);
-                    System.assertEquals(2544.63, uasb.Subscription_Production_kWh_Static__c);
-                } else {
-                    // Do not expect to hit this:
-                    System.assert(false);
-                }
+            FROM UASB__c
+        ]) {
+            if (uasb.Shared_Solar_System__r.Name == 'Project A Oak Road') {
+                System.assertEquals(0.1485, uasb.Solar_Electricity_Rate__c);
+                System.assertEquals(84.09, uasb.Solar_Share_Rate_Bill_Value__c);
+                System.assertEquals(566.23, uasb.Subscription_Production_kWh_Static__c);
+            } else if (uasb.Shared_Solar_System__r.Name == 'Project B Main St'
+                && uasb.Subscription_Production_kWh_Static__c == 1064.05) {
+                System.assertEquals(0.1576, uasb.Solar_Electricity_Rate__c);
+                System.assertEquals(167.69, uasb.Solar_Share_Rate_Bill_Value__c);
+                System.assertEquals(1064.05, uasb.Subscription_Production_kWh_Static__c);
+            } else if (uasb.Shared_Solar_System__r.Name == 'Project B Main St'
+                && uasb.Subscription_Production_kWh_Static__c != 1064.05) {
+                System.assertEquals(0.1530, uasb.Solar_Electricity_Rate__c);
+                System.assertEquals(389.33, uasb.Solar_Share_Rate_Bill_Value__c);
+                System.assertEquals(2544.63, uasb.Subscription_Production_kWh_Static__c);
+            } else {
+                // Do not expect to hit this:
+                System.assert(false);
+            }
         }
 
         Map<String, List<UASB__c>> uasbMap = TestBillCreationForCancelledCustomers.queryForBills();
 
-        System.assertEquals(6,uasbMap.size());
-        System.assertEquals(84.09,uasbMap.get('acA A_SSS1')[0].Discounted_Bill__c);
-        System.assertEquals(84.09,uasbMap.get('acB B_SSS1')[0].Discounted_Bill__c);
-        System.assertEquals(389.33,uasbMap.get('acB B_SSS2')[0].Discounted_Bill__c);
-        System.assertEquals(167.69,uasbMap.get('acB B_SSS2')[1].Discounted_Bill__c);
-        System.assertEquals(84.09,uasbMap.get('acC C_SSS1')[0].Discounted_Bill__c);
-        System.assertEquals(389.33,uasbMap.get('acC C_SSS2')[0].Discounted_Bill__c);
-        System.assertEquals(167.69,uasbMap.get('acC C_SSS2')[1].Discounted_Bill__c);
-        System.assertEquals(84.09,uasbMap.get('acC C_B_SSS1')[0].Discounted_Bill__c);
+        System.assertEquals(6, uasbMap.size());
+        System.assertEquals(84.09, uasbMap.get('acA A_SSS1')[0].Discounted_Bill__c);
+        System.assertEquals(84.09, uasbMap.get('acB B_SSS1')[0].Discounted_Bill__c);
+        System.assertEquals(389.33, uasbMap.get('acB B_SSS2')[0].Discounted_Bill__c);
+        System.assertEquals(167.69, uasbMap.get('acB B_SSS2')[1].Discounted_Bill__c);
+        System.assertEquals(84.09, uasbMap.get('acC C_SSS1')[0].Discounted_Bill__c);
+        System.assertEquals(389.33, uasbMap.get('acC C_SSS2')[0].Discounted_Bill__c);
+        System.assertEquals(167.69, uasbMap.get('acC C_SSS2')[1].Discounted_Bill__c);
+        System.assertEquals(84.09, uasbMap.get('acC C_B_SSS1')[0].Discounted_Bill__c);
     }
 
     private static void useMocks() {

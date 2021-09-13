@@ -8,7 +8,7 @@
         <actionName>InvocableLeadConvert</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>scrFinish</targetReference>
+            <targetReference>Update_Screen_GetLead</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Assign_Error_Log</targetReference>
@@ -24,8 +24,8 @@
     <actionCalls>
         <name>Get_Ordered_List_of_Qualified_SSS</name>
         <label>Get Ordered List of Qualified SSS</label>
-        <locationX>1188</locationX>
-        <locationY>211</locationY>
+        <locationX>1183</locationX>
+        <locationY>210</locationY>
         <actionName>InvocableQualifiedSSSSelector</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -49,12 +49,12 @@
     <actionCalls>
         <name>leadQualificationCheck</name>
         <label>leadQualificationCheck</label>
-        <locationX>1280</locationX>
-        <locationY>430</locationY>
+        <locationX>1377</locationX>
+        <locationY>360</locationY>
         <actionName>InvocableLeadQualification</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Update_Screen</targetReference>
+            <targetReference>Lead</targetReference>
         </connector>
         <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
@@ -68,12 +68,31 @@
         <description>Update Screen after some change to the record</description>
         <name>Update_Screen</name>
         <label>Update Screen</label>
-        <locationX>1030</locationX>
-        <locationY>472</locationY>
+        <locationX>2360</locationX>
+        <locationY>1344</locationY>
         <actionName>c:UpdateScreen</actionName>
         <actionType>component</actionType>
         <connector>
-            <targetReference>Lead</targetReference>
+            <targetReference>Resolve_UALs_Before_Conversion</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
+        <name>Update_Screen_Before_Error</name>
+        <label>Update Screen Before Error</label>
+        <locationX>2193</locationX>
+        <locationY>479</locationY>
+        <actionName>c:UpdateScreen</actionName>
+        <actionType>component</actionType>
+        <connector>
+            <targetReference>scrError</targetReference>
         </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
@@ -87,31 +106,12 @@
     <actionCalls>
         <name>Update_Screen_GetLead</name>
         <label>Update Screen GetLead</label>
-        <locationX>366</locationX>
-        <locationY>277</locationY>
+        <locationX>2462</locationX>
+        <locationY>794</locationY>
         <actionName>c:UpdateScreen</actionName>
         <actionType>component</actionType>
         <connector>
-            <targetReference>IsConverted</targetReference>
-        </connector>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
-        <inputParameters>
-            <name>recordId</name>
-            <value>
-                <elementReference>recordId</elementReference>
-            </value>
-        </inputParameters>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </actionCalls>
-    <actionCalls>
-        <name>Update_Screen_SSSSelection</name>
-        <label>Update Screen SSSSelection</label>
-        <locationX>1951</locationX>
-        <locationY>1148</locationY>
-        <actionName>c:UpdateScreen</actionName>
-        <actionType>component</actionType>
-        <connector>
-            <targetReference>LoopUALs</targetReference>
+            <targetReference>scrFinish</targetReference>
         </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
@@ -125,8 +125,8 @@
     <actionCalls>
         <name>updateScreenUnqualified</name>
         <label>updateScreenUnqualified</label>
-        <locationX>966</locationX>
-        <locationY>766</locationY>
+        <locationX>1068</locationX>
+        <locationY>824</locationY>
         <actionName>c:UpdateScreen</actionName>
         <actionType>component</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -142,8 +142,8 @@
     <assignments>
         <name>Add_Break</name>
         <label>Add Break</label>
-        <locationX>1397</locationX>
-        <locationY>1309</locationY>
+        <locationX>1517</locationX>
+        <locationY>1246</locationY>
         <assignmentItems>
             <assignToReference>selectedSSSIds</assignToReference>
             <operator>Add</operator>
@@ -174,8 +174,8 @@
     <assignments>
         <name>Add_Selected_SSS_Id</name>
         <label>Add Selected SSS Id</label>
-        <locationX>1395</locationX>
-        <locationY>1468</locationY>
+        <locationX>1517</locationX>
+        <locationY>1386</locationY>
         <assignmentItems>
             <assignToReference>selectedSSSIds</assignToReference>
             <operator>Add</operator>
@@ -190,8 +190,8 @@
     <assignments>
         <name>Assign_Designated_Product</name>
         <label>Assign Designated Product</label>
-        <locationX>1700</locationX>
-        <locationY>1480</locationY>
+        <locationX>1717</locationX>
+        <locationY>1608</locationY>
         <assignmentItems>
             <assignToReference>varSelectedProduct</assignToReference>
             <operator>Assign</operator>
@@ -267,7 +267,7 @@
         <name>assignLeadFields</name>
         <label>assignLeadFields</label>
         <locationX>803</locationX>
-        <locationY>280</locationY>
+        <locationY>218</locationY>
         <assignmentItems>
             <assignToReference>getLead.Moody_s_Risk_Calc__c</assignToReference>
             <operator>Assign</operator>
@@ -307,8 +307,8 @@
     <assignments>
         <name>Store_Selected_SSS_List_on_Lead</name>
         <label>Store Selected SSS List on Lead</label>
-        <locationX>1685</locationX>
-        <locationY>1132</locationY>
+        <locationX>1778</locationX>
+        <locationY>1144</locationY>
         <assignmentItems>
             <assignToReference>Lead.Selected_SSS_For_Conversion__c</assignToReference>
             <operator>Assign</operator>
@@ -400,8 +400,8 @@
     <decisions>
         <name>Check_Qualification</name>
         <label>Check Qualification</label>
-        <locationX>1254</locationX>
-        <locationY>762</locationY>
+        <locationX>1371</locationX>
+        <locationY>823</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Qualified</name>
@@ -454,7 +454,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Resolve_UALs_Before_Conversion</targetReference>
+                <targetReference>Update_Screen</targetReference>
             </connector>
             <label>Not Ready for Conversion</label>
         </rules>
@@ -462,8 +462,8 @@
     <decisions>
         <name>decUALStatusCheck</name>
         <label>UAL Status Check</label>
-        <locationX>1885</locationX>
-        <locationY>1508</locationY>
+        <locationX>1998</locationX>
+        <locationY>1505</locationY>
         <defaultConnector>
             <targetReference>LoopUALs</targetReference>
         </defaultConnector>
@@ -530,7 +530,7 @@
         <description>Populate the varSelectedProduct with the first SSS&apos;s Product from the selected SSS List.</description>
         <name>First_Selected_SSS</name>
         <label>First Selected SSS?</label>
-        <locationX>1484</locationX>
+        <locationX>1606</locationX>
         <locationY>1376</locationY>
         <defaultConnector>
             <targetReference>Same_Product</targetReference>
@@ -557,7 +557,7 @@
         <name>IsConverted</name>
         <label>decisionIsConverted</label>
         <locationX>495</locationX>
-        <locationY>280</locationY>
+        <locationY>218</locationY>
         <defaultConnector>
             <targetReference>updateLeadFields</targetReference>
         </defaultConnector>
@@ -581,7 +581,7 @@
     <decisions>
         <name>Same_Product</name>
         <label>SSS Same Product?</label>
-        <locationX>1487</locationX>
+        <locationX>1524</locationX>
         <locationY>1610</locationY>
         <defaultConnector>
             <targetReference>scrProducts_Do_Not_Match</targetReference>
@@ -636,8 +636,8 @@
     <loops>
         <name>Loop_Selected_SSS</name>
         <label>Loop Selected SSS</label>
-        <locationX>1493</locationX>
-        <locationY>1130</locationY>
+        <locationX>1613</locationX>
+        <locationY>1145</locationY>
         <collectionReference>selectedSSSList</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -683,8 +683,8 @@
     <recordLookups>
         <name>Get_Lead</name>
         <label>Get Lead</label>
-        <locationX>1056</locationX>
-        <locationY>275</locationY>
+        <locationX>1057</locationX>
+        <locationY>210</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Ordered_List_of_Qualified_SSS</targetReference>
@@ -704,8 +704,8 @@
     <recordLookups>
         <name>Get_UALS</name>
         <label>Get UALS</label>
-        <locationX>1288</locationX>
-        <locationY>568</locationY>
+        <locationX>1379</locationX>
+        <locationY>656</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Check_Qualification</targetReference>
@@ -734,10 +734,10 @@
         <name>getLead</name>
         <label>getLead</label>
         <locationX>256</locationX>
-        <locationY>278</locationY>
+        <locationY>216</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Update_Screen_GetLead</targetReference>
+            <targetReference>IsConverted</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -754,8 +754,8 @@
     <recordLookups>
         <name>Lead</name>
         <label>Lead</label>
-        <locationX>1181</locationX>
-        <locationY>568</locationY>
+        <locationX>1379</locationX>
+        <locationY>520</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_UALS</targetReference>
@@ -775,10 +775,10 @@
     <recordUpdates>
         <name>Update_Lead_with_Selected_SSS</name>
         <label>Update Lead with Selected SSS</label>
-        <locationX>1814</locationX>
-        <locationY>1139</locationY>
+        <locationX>1897</locationX>
+        <locationY>1144</locationY>
         <connector>
-            <targetReference>Update_Screen_SSSSelection</targetReference>
+            <targetReference>LoopUALs</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Assign_Error_Log</targetReference>
@@ -788,8 +788,8 @@
     <recordUpdates>
         <name>updateLeadRecord</name>
         <label>updateLeadRecord</label>
-        <locationX>936</locationX>
-        <locationY>278</locationY>
+        <locationX>938</locationX>
+        <locationY>218</locationY>
         <connector>
             <targetReference>Get_Lead</targetReference>
         </connector>
@@ -802,8 +802,8 @@
     <screens>
         <name>Qualification_Preview</name>
         <label>Qualification Preview</label>
-        <locationX>1375</locationX>
-        <locationY>212</locationY>
+        <locationX>1377</locationX>
+        <locationY>202</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -871,8 +871,8 @@
     <screens>
         <name>Resolve_UALs_Before_Conversion</name>
         <label>Resolve UALs Before Conversion</label>
-        <locationX>2364</locationX>
-        <locationY>1491</locationY>
+        <locationX>2360</locationX>
+        <locationY>1496</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -942,7 +942,7 @@
         <name>scrAlreadyConverted</name>
         <label>Already Converted Lead</label>
         <locationX>508</locationX>
-        <locationY>81</locationY>
+        <locationY>19</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -957,8 +957,8 @@
     <screens>
         <name>scrError</name>
         <label>Error Screen</label>
-        <locationX>2159</locationX>
-        <locationY>481</locationY>
+        <locationX>2310</locationX>
+        <locationY>479</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -973,8 +973,8 @@
     <screens>
         <name>scrFinish</name>
         <label>Finish</label>
-        <locationX>2525</locationX>
-        <locationY>799</locationY>
+        <locationX>2567</locationX>
+        <locationY>794</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -983,14 +983,14 @@
             <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 20px;&quot;&gt;Congrats! Lead has been converted!&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;You can close this window now&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
-        <showFooter>false</showFooter>
+        <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>scrProducts_Do_Not_Match</name>
         <label>Products Do Not Match</label>
-        <locationX>1139</locationX>
-        <locationY>1620</locationY>
+        <locationX>1378</locationX>
+        <locationY>1605</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1008,8 +1008,8 @@
     <screens>
         <name>scrQualifiedLead</name>
         <label>scrQualifiedLead</label>
-        <locationX>1280</locationX>
-        <locationY>1135</locationY>
+        <locationX>1378</locationX>
+        <locationY>1137</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1087,8 +1087,8 @@
     <screens>
         <name>showLeadStatus</name>
         <label>showLeadStatus</label>
-        <locationX>1097</locationX>
-        <locationY>765</locationY>
+        <locationX>1169</locationX>
+        <locationY>823</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1139,7 +1139,7 @@
         <name>updateLeadFields</name>
         <label>updateLeadFields</label>
         <locationX>663</locationX>
-        <locationY>280</locationY>
+        <locationY>218</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1306,8 +1306,8 @@
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>48</locationX>
-        <locationY>50</locationY>
+        <locationX>130</locationX>
+        <locationY>52</locationY>
         <connector>
             <targetReference>getLead</targetReference>
         </connector>
@@ -1319,7 +1319,7 @@
         <locationX>2053</locationX>
         <locationY>479</locationY>
         <connector>
-            <targetReference>scrError</targetReference>
+            <targetReference>Update_Screen_Before_Error</targetReference>
         </connector>
         <flowName>Error_Log_Creation</flowName>
         <inputAssignments>

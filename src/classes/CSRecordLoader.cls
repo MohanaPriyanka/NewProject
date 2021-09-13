@@ -917,7 +917,6 @@ public without sharing class CSRecordLoader implements Queueable {
             calculated_annual_cost_of_electricity__c = 1400,
             Subscribed_Annual_Cost_of_Electricity__c = 1400,
             Annual_kwh_subscription_future__c  = subscription*1300,
-            Customer_Subscription_KW_DC_STATIC__c = subscription,
             CreatedDate = csDataDate
         );
         uow.registerNew(uas1);

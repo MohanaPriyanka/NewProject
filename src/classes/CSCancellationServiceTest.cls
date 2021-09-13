@@ -8,7 +8,7 @@ public with sharing class CSCancellationServiceTest {
         CustomerCommunicationHandlerTest.setupData();
     }
 
-    public static void createBills(Date billDate, Id sssID){
+    public static void createBills(Date billDate, Id sssID) {
         Schedule_Z__c scheduleZ1 = new Schedule_Z__c(
             Name = '18-0515 Oxford Barrett St. P1',
             Shared_Solar_System__c = sssID,
@@ -53,7 +53,7 @@ public with sharing class CSCancellationServiceTest {
         List<Bill_Period__c> billPeriods = [
             SELECT Id, Name, Bill_Date__c, Shared_Solar_System__c
             FROM Bill_Period__c
-            WHERE Id = : bpA1.Id
+            WHERE Id = :bpA1.Id
         ];
         BillGenerationAsyncService ee = new BillGenerationAsyncService(billPeriods);
         ee.executeBatchJob();
@@ -61,7 +61,7 @@ public with sharing class CSCancellationServiceTest {
 
     @IsTest static void testOverdueAccounts() {
         //Set up delinquent customers
-        CustomerCommunicationHandlerTest.setDaysPastDue(System.Today().addDays(-68), 10);
+        CustomerCommunicationHandlerTest.setDaysPastDue(System.today().addDays(-68), 10);
 
         Test.startTest();
         CSCancellationService.handleOverdueAccounts();
@@ -70,7 +70,7 @@ public with sharing class CSCancellationServiceTest {
         List<Account> propertyAccounts = [
             SELECT Id, Cancellation_Request_Date__c, Cancellation_Comments__c, Cancellation_Reason__c
             FROM Account
-            WHERE Parent_Account__c != null
+            WHERE Parent_Account__c != NULL
         ];
 
         for (Account acct : propertyAccounts) {
@@ -89,7 +89,7 @@ public with sharing class CSCancellationServiceTest {
         update opps;
         Util.enableTrigger('Disable_OpportunityTrigger__c');
 
-        CustomerCommunicationHandlerTest.setDaysPastDue(System.Today().addDays(-68), 10);
+        CustomerCommunicationHandlerTest.setDaysPastDue(System.today().addDays(-68), 10);
 
         Test.startTest();
         CSCancellationService.handleOverdueAccounts();
@@ -98,7 +98,7 @@ public with sharing class CSCancellationServiceTest {
         List<Account> propertyAccounts = [
             SELECT Id, Cancellation_Request_Date__c, Cancellation_Comments__c, Cancellation_Reason__c
             FROM Account
-            WHERE Parent_Account__c != null
+            WHERE Parent_Account__c != NULL
         ];
 
         Set<Id> accountIds = new Set<Id>();
@@ -117,7 +117,7 @@ public with sharing class CSCancellationServiceTest {
 
     @IsTest static void testUASToInactive() {
         //Set up delinquent customers
-        CustomerCommunicationHandlerTest.setDaysPastDue(System.Today().addDays(-68), 10);
+        CustomerCommunicationHandlerTest.setDaysPastDue(System.today().addDays(-68), 10);
 
         Test.startTest();
         MessagingService.onlyUseActiveTemplates = false;
@@ -309,7 +309,7 @@ public with sharing class CSCancellationServiceTest {
         Schedule_Z__c scheduleZ1 = new Schedule_Z__c(
             Name = '18-0515 Oxford Barrett St. P1',
             Shared_Solar_System__c = uasUpdatedList[0].Shared_Solar_System__c,
-            Date_Enacted_by_Utility__c = Date.newInstance(2019,1,1),
+            Date_Enacted_by_Utility__c = Date.newInstance(2019, 1, 1),
             Status__c = 'Enacted by Utility'
         );
         insert scheduleZ1;
@@ -441,8 +441,8 @@ public with sharing class CSCancellationServiceTest {
 
         System.assertEquals(3, zeroSOList.size());
         for (Subscription_Order__c so : zeroSOList) {
-            System.assertEquals(so.Approved_Change_in_Subscription__c, (-1)*activeSubscriptionMap.get(so.Utility_Account_Subscription__r.Id).Future_Customer_Subscription_KWDC_Rollup__c);
-            System.assertEquals(so.Approved_Change_in_Percent_Share__c, (-1)*activeSubscriptionMap.get(so.Utility_Account_Subscription__r.Id).Future_Share_of_System_Rollup__c);
+            System.assertEquals(so.Approved_Change_in_Subscription__c, (-1) * activeSubscriptionMap.get(so.Utility_Account_Subscription__r.Id).Future_Customer_Subscription_KWDC_Rollup__c);
+            System.assertEquals(so.Approved_Change_in_Percent_Share__c, (-1) * activeSubscriptionMap.get(so.Utility_Account_Subscription__r.Id).Future_Share_of_System_Rollup__c);
         }
     }
 
@@ -471,18 +471,6 @@ public with sharing class CSCancellationServiceTest {
             System.assertEquals('Billing', schedZ.Schedule_Z_Status__c);
         }
 
-        //Assert all UAS have no reason for cancellation
-
-        List<Utility_Account_Subscription__c> uasList = [
-            SELECT Id, Reason_for_Cancellation__c
-            FROM Utility_Account_Subscription__c
-        ];
-
-        System.assertEquals(3, uasList.size());
-        for (Utility_Account_Subscription__c uas : uasList) {
-            System.assertEquals(null, uas.Reason_for_Cancellation__c);
-        }
-
         // Assert Accounts have no outstanding balance.  There should be a total of 6 accounts - 3 property and 3 parent.
 
         List<Account> acctList = [
@@ -503,8 +491,7 @@ public with sharing class CSCancellationServiceTest {
             SELECT Id, Utility_Account_Subscription__r.Opportunity__c
             FROM Schedule_Z_Subscription__c
             WHERE Utility_Account_Subscription__r.Next_Schedule_Z_Status__c = 'Inactive Subscription'
-            AND (Schedule_Z_Status__c = 'Replaced with newly Enacted Schedule Z'
-            OR Utility_Account_Subscription__r.Reason_for_Cancellation__c = 'Utility Account Cancelled')
+            AND Schedule_Z_Status__c = 'Replaced with newly Enacted Schedule Z'
             AND (Utility_Account_Subscription__r.Utility_Account_Log__r.Account__r.Total_Outstanding_Balance_Merge__c = 0
             OR Utility_Account_Subscription__r.Utility_Account_Log__r.Account__r.Last_Bill_Send_Date_New_Charges__c > :sixMonthsAgo)
             AND Utility_Account_Subscription__r.Opportunity__r.StageName != 'Cancelled'
@@ -702,7 +689,7 @@ public with sharing class CSCancellationServiceTest {
         System.assertEquals(2, uasbList.size());
         System.assertEquals('Active Subscription', uasbList[0].Utility_Account_Subscription__r.Next_Schedule_Z_Status__c);
         System.assertEquals('Inactive Subscription', uasbList[1].Utility_Account_Subscription__r.Next_Schedule_Z_Status__c);
-        System.assertEquals(Date.newInstance(2018,1,1), uasbList[0].Date__c);
+        System.assertEquals(Date.newInstance(2018, 1, 1), uasbList[0].Date__c);
         System.assertEquals('Complete', uasbList[0].Opportunity__r.StageName);
 
         Test.startTest();
@@ -712,7 +699,7 @@ public with sharing class CSCancellationServiceTest {
         List<Opportunity> oppList = [
             SELECT Id, StageName
             FROM Opportunity
-            WHERE Id = : uasbList[0].Opportunity__c
+            WHERE Id = :uasbList[0].Opportunity__c
         ];
         // The System Bill's opportunity shouldn't be cancelled, since it has an active UAS even though it has an inactive UAS
         System.assertEquals(1, oppList.size());
@@ -752,7 +739,7 @@ public with sharing class CSCancellationServiceTest {
         // Since there's a single opportunity for a single system, we generate a single bill with a single UAS that's still active
         System.assertEquals(1, uasbList.size());
         System.assertEquals('Inactive Subscription', uasbList[0].Utility_Account_Subscription__r.Next_Schedule_Z_Status__c);
-        System.assertEquals(Date.newInstance(2018,1,1), uasbList[0].Date__c);
+        System.assertEquals(Date.newInstance(2018, 1, 1), uasbList[0].Date__c);
         System.assertEquals('Complete', uasbList[0].Opportunity__r.StageName);
 
         Test.startTest();
@@ -762,7 +749,7 @@ public with sharing class CSCancellationServiceTest {
         List<Opportunity> oppList = [
             SELECT Id, StageName
             FROM Opportunity
-            WHERE Id = : uasbList[0].Opportunity__c
+            WHERE Id = :uasbList[0].Opportunity__c
         ];
         // The System Bill's opportunity should be cancelled, since it doesn't have an active UAS and hasn't had a recent bill generated
         System.assertEquals(1, oppList.size());
@@ -806,7 +793,7 @@ public with sharing class CSCancellationServiceTest {
         List<Opportunity> oppList = [
             SELECT Id, StageName
             FROM Opportunity
-            WHERE Id = : uasbList[0].Opportunity__c
+            WHERE Id = :uasbList[0].Opportunity__c
         ];
         // The System Bill's opportunity shouldn't be cancelled since it's an anchor
         System.assertEquals(1, oppList.size());
@@ -907,7 +894,9 @@ public with sharing class CSCancellationServiceTest {
 
         sfab_FabricatedSObject fabbedUASOne = new sfab_FabricatedSObject(Utility_Account_Subscription__c.class);
         sfab_FabricatedSObject fabbedUASTwo = new sfab_FabricatedSObject(Utility_Account_Subscription__c.class);
-        fabbedOpp.setChildren('Utility_Account_Subscriptions__r', new List<sfab_FabricatedSObject>{fabbedUASOne, fabbedUASTwo});
+        fabbedOpp.setChildren('Utility_Account_Subscriptions__r', new List<sfab_FabricatedSObject>{
+            fabbedUASOne, fabbedUASTwo
+        });
         System.assertEquals(false, Opportunities.anyUASIsTransferring((Opportunity) fabbedOpp.toSObject()),
             'anyUASIsTransferring should be false if all UASes are not transferring ' + JSON.serializePretty(fabbedOpp.toSObject()));
 
@@ -935,8 +924,7 @@ public with sharing class CSCancellationServiceTest {
     @IsTest static void testSetupDataForAccountDateRemovedIsCorrect() {
         // Ensures all data is set up correctly
         List<Account> propAccts = [
-            SELECT Id, Name, Date_Removed_from_Project__c,
-            (SELECT Id, Account__c FROM Utility_Account_Logs__r)
+            SELECT Id, Name, Date_Removed_from_Project__c, (SELECT Id, Account__c FROM Utility_Account_Logs__r)
             FROM Account
             WHERE RecordType.Name = 'Property'
             ORDER BY Name
@@ -975,8 +963,7 @@ public with sharing class CSCancellationServiceTest {
         Test.stopTest();
 
         List<Account> propAccts = [
-            SELECT Id, Name, Date_Removed_from_Project__c,
-            (SELECT Id, Account__c FROM Utility_Account_Logs__r)
+            SELECT Id, Name, Date_Removed_from_Project__c, (SELECT Id, Account__c FROM Utility_Account_Logs__r)
             FROM Account
             WHERE RecordType.Name = 'Property'
             ORDER BY Name
@@ -1055,8 +1042,7 @@ public with sharing class CSCancellationServiceTest {
         update uasToUpdate[0];
 
         List<Opportunity> opportunities = [
-            SELECT Id, StageName, Date_Removed_from_Project__c,
-            (SELECT Id, Next_Schedule_Z_Status__c FROM Utility_Account_Subscriptions__r)
+            SELECT Id, StageName, Date_Removed_from_Project__c, (SELECT Id, Next_Schedule_Z_Status__c FROM Utility_Account_Subscriptions__r)
             FROM Opportunity
             WHERE Id = :uasToUpdate[0].Opportunity__c
         ];
@@ -1072,8 +1058,7 @@ public with sharing class CSCancellationServiceTest {
 
         // We shouldn't have marked Prop Account 1 as Removed from Project, since it has one of two UASes marked as Removed
         List<Account> propAccts = [
-            SELECT Id, Name, Date_Removed_from_Project__c,
-            (SELECT Id, Account__c FROM Utility_Account_Logs__r)
+            SELECT Id, Name, Date_Removed_from_Project__c, (SELECT Id, Account__c FROM Utility_Account_Logs__r)
             FROM Account
             WHERE RecordType.Name = 'Property'
             ORDER BY Name
@@ -1094,8 +1079,7 @@ public with sharing class CSCancellationServiceTest {
         update uasToUpdate[1];
 
         opportunities = [
-            SELECT Id, StageName, Date_Removed_from_Project__c,
-            (SELECT Id, Next_Schedule_Z_Status__c FROM Utility_Account_Subscriptions__r)
+            SELECT Id, StageName, Date_Removed_from_Project__c, (SELECT Id, Next_Schedule_Z_Status__c FROM Utility_Account_Subscriptions__r)
             FROM Opportunity
             WHERE Id = :uasToUpdate[1].Opportunity__c
         ];
@@ -1110,8 +1094,7 @@ public with sharing class CSCancellationServiceTest {
         CSCancellationProjectRemover.processAccountsRemovedFromAllProjects(CSCancellationProjectRemover.getAccountsRemovedFromAllProjectsWithUpdatedDate());
 
         propAccts = [
-            SELECT Id, Name, Date_Removed_from_Project__c,
-            (SELECT Id, Account__c FROM Utility_Account_Logs__r)
+            SELECT Id, Name, Date_Removed_from_Project__c, (SELECT Id, Account__c FROM Utility_Account_Logs__r)
             FROM Account
             WHERE RecordType.Name = 'Property'
             ORDER BY Name
@@ -1156,8 +1139,7 @@ public with sharing class CSCancellationServiceTest {
         Test.stopTest();
 
         List<Account> propAccts = [
-            SELECT Id, Name, Date_Removed_from_Project__c,
-            (SELECT Id, Account__c, Number_of_Removed_UASes__c, Number_of_Subscribed_UASes__c, Last_Date_UAS_Removed_From_Project__c FROM Utility_Account_Logs__r)
+            SELECT Id, Name, Date_Removed_from_Project__c, (SELECT Id, Account__c, Number_of_Removed_UASes__c, Number_of_Subscribed_UASes__c, Last_Date_UAS_Removed_From_Project__c FROM Utility_Account_Logs__r)
             FROM Account
             WHERE RecordType.Name = 'Property'
             ORDER BY Name
@@ -1206,8 +1188,7 @@ public with sharing class CSCancellationServiceTest {
         Test.stopTest();
 
         List<Account> propAccts = [
-            SELECT Id, Name, Date_Removed_from_Project__c,
-            (SELECT Id, Name, Account__c FROM Utility_Account_Logs__r)
+            SELECT Id, Name, Date_Removed_from_Project__c, (SELECT Id, Name, Account__c FROM Utility_Account_Logs__r)
             FROM Account
             WHERE RecordType.Name = 'Property'
             ORDER BY Name
@@ -1243,9 +1224,10 @@ public with sharing class CSCancellationServiceTest {
 
     @IsTest static void testSetUpDataForUASNotOnNewScheduleZ() {
         List<Schedule_Z__c> scheduleZsReplaced = [
-            SELECT Id,
-            (SELECT Id, Utility_Account_Subscription__c
-            FROM Schedule_Z_Subscriptions__r)
+            SELECT Id, (
+                SELECT Id, Utility_Account_Subscription__c
+                FROM Schedule_Z_Subscriptions__r
+            )
             FROM Schedule_Z__c
             WHERE Date_Schedule_Z_Retired_by_Utility__c != NULL
         ];
@@ -1267,15 +1249,16 @@ public with sharing class CSCancellationServiceTest {
 
     @IsTest static void testUASNotOnNewScheduleZ() {
         Schedule_Z__c scheduleZ = [
-            SELECT Id, Status__c, Shared_Solar_System__c, Date_Schedule_Z_Retired_by_Utility__c, Date_Enacted_by_Utility__c,
-            (SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Date_Removed_from_Project__c
-            FROM Schedule_Z_Subscriptions__r)
+            SELECT Id, Status__c, Shared_Solar_System__c, Date_Schedule_Z_Retired_by_Utility__c, Date_Enacted_by_Utility__c, (
+                SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Date_Removed_from_Project__c
+                FROM Schedule_Z_Subscriptions__r
+            )
             FROM Schedule_Z__c
             LIMIT 1
         ];
 
         // There should be one enacted SZ, one UAS and one schedule Z subscription, and it shouldn't be removed from project
-        System.assertEquals(Date.newInstance(2018,1,1), scheduleZ.Date_Enacted_by_Utility__c);
+        System.assertEquals(Date.newInstance(2018, 1, 1), scheduleZ.Date_Enacted_by_Utility__c);
         System.assertEquals(1, scheduleZ.Schedule_Z_Subscriptions__r.size());
         System.assertEquals(null, scheduleZ.Schedule_Z_Subscriptions__r[0].Utility_Account_Subscription__r.Date_Removed_from_Project__c);
 
@@ -1289,7 +1272,7 @@ public with sharing class CSCancellationServiceTest {
         uas = [
             SELECT Id, Date_Removed_from_Project__c
             FROM Utility_Account_Subscription__c
-            WHERE Id = : uas.Id
+            WHERE Id = :uas.Id
         ];
         // It's still not marked as removed yet
         System.assertEquals(null, uas.Date_Removed_from_Project__c);
@@ -1305,8 +1288,7 @@ public with sharing class CSCancellationServiceTest {
         update newScheduleZ;
 
         newScheduleZ = [
-            SELECT Id, Status__c, Shared_Solar_System__c, Date_Schedule_Z_Retired_by_Utility__c,
-            (SELECT Id, Utility_Account_Subscription__c FROM Schedule_Z_Subscriptions__r)
+            SELECT Id, Status__c, Shared_Solar_System__c, Date_Schedule_Z_Retired_by_Utility__c, (SELECT Id, Utility_Account_Subscription__c FROM Schedule_Z_Subscriptions__r)
             FROM Schedule_Z__c
             WHERE Id = :newScheduleZ.Id
         ];
@@ -1316,7 +1298,7 @@ public with sharing class CSCancellationServiceTest {
         uas = [
             SELECT Id, Date_Removed_from_Project__c
             FROM Utility_Account_Subscription__c
-            WHERE Id = : uas.Id
+            WHERE Id = :uas.Id
         ];
 
         // Now it should be marked as removed
@@ -1326,9 +1308,10 @@ public with sharing class CSCancellationServiceTest {
     // Because we sometimes create Schedule Z's as Enacted, as opposed to updating the status to Enacted
     @IsTest static void testUASNotOnNewScheduleZOnCreate() {
         Schedule_Z__c scheduleZ = [
-            SELECT Id, Status__c, Shared_Solar_System__c, Date_Schedule_Z_Retired_by_Utility__c, Date_Enacted_by_Utility__c,
-            (SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Date_Removed_from_Project__c
-            FROM Schedule_Z_Subscriptions__r)
+            SELECT Id, Status__c, Shared_Solar_System__c, Date_Schedule_Z_Retired_by_Utility__c, Date_Enacted_by_Utility__c, (
+                SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Date_Removed_from_Project__c
+                FROM Schedule_Z_Subscriptions__r
+            )
             FROM Schedule_Z__c
             LIMIT 1
         ];
@@ -1348,7 +1331,7 @@ public with sharing class CSCancellationServiceTest {
         uas = [
             SELECT Id, Date_Removed_from_Project__c
             FROM Utility_Account_Subscription__c
-            WHERE Id = : uas.Id
+            WHERE Id = :uas.Id
         ];
         // It's still not marked as removed yet
         System.assertEquals(null, uas.Date_Removed_from_Project__c);
@@ -1361,8 +1344,7 @@ public with sharing class CSCancellationServiceTest {
         insert newScheduleZ;
 
         newScheduleZ = [
-            SELECT Id, Status__c, Shared_Solar_System__c, Date_Schedule_Z_Retired_by_Utility__c,
-            (SELECT Id, Utility_Account_Subscription__c FROM Schedule_Z_Subscriptions__r)
+            SELECT Id, Status__c, Shared_Solar_System__c, Date_Schedule_Z_Retired_by_Utility__c, (SELECT Id, Utility_Account_Subscription__c FROM Schedule_Z_Subscriptions__r)
             FROM Schedule_Z__c
             WHERE Id = :newScheduleZ.Id
         ];
@@ -1372,7 +1354,7 @@ public with sharing class CSCancellationServiceTest {
         uas = [
             SELECT Id, Date_Removed_from_Project__c
             FROM Utility_Account_Subscription__c
-            WHERE Id = : uas.Id
+            WHERE Id = :uas.Id
         ];
 
         // Now it should be marked as removed
@@ -1393,9 +1375,10 @@ public with sharing class CSCancellationServiceTest {
         update scheduleZToUpdate;
 
         Schedule_Z__c updatedSchedZ = [
-            SELECT Id, Date_Schedule_Z_Retired_by_Utility__c,
-            (SELECT Id, Utility_Account_Subscription__c
-            FROM Schedule_Z_Subscriptions__r)
+            SELECT Id, Date_Schedule_Z_Retired_by_Utility__c, (
+                SELECT Id, Utility_Account_Subscription__c
+                FROM Schedule_Z_Subscriptions__r
+            )
             FROM Schedule_Z__c
             WHERE Id = :scheduleZToUpdate.Id
         ];
@@ -1430,9 +1413,10 @@ public with sharing class CSCancellationServiceTest {
         update scheduleZToUpdate;
 
         Schedule_Z__c updatedSchedZ = [
-            SELECT Id, Date_Schedule_Z_Retired_by_Utility__c,
-            (SELECT Id, Utility_Account_Subscription__c
-            FROM Schedule_Z_Subscriptions__r)
+            SELECT Id, Date_Schedule_Z_Retired_by_Utility__c, (
+                SELECT Id, Utility_Account_Subscription__c
+                FROM Schedule_Z_Subscriptions__r
+            )
             FROM Schedule_Z__c
             WHERE Id = :scheduleZToUpdate.Id
         ];
@@ -1465,9 +1449,9 @@ public with sharing class CSCancellationServiceTest {
         }
 
         List<Account> acctList = [
-          SELECT Id, Name, Cancellation_Request_Date__c, Status__c
-          FROM Account
-          WHERE RecordType.Name = 'Property'
+            SELECT Id, Name, Cancellation_Request_Date__c, Status__c
+            FROM Account
+            WHERE RecordType.Name = 'Property'
         ];
 
         System.assertEquals(3, acctList.size());
@@ -1521,14 +1505,14 @@ public with sharing class CSCancellationServiceTest {
         MessagingService.onlyUseActiveTemplates = false;
         update propAcct1;
         System.assertEquals(1, MessagingService.emailsSent.size());
-        
-        
+
+
         MessagingService.emailsSent = null;
 
         List<Opportunity> oppsToUpdate = [
-          SELECT Id
-          FROM Opportunity
-          WHERE AccountId = :propAcct1.Id
+            SELECT Id
+            FROM Opportunity
+            WHERE AccountId = :propAcct1.Id
         ];
 
         oppsToUpdate[0].StageName = 'Cancelled';
@@ -1572,7 +1556,7 @@ public with sharing class CSCancellationServiceTest {
             acctIdList.add(acct.Id);
             acct.Cancellation_Reason__c = 'Customer Moved';
             acct.Cancellation_Request_Date__c = System.today();
-            if (acct.Name == 'Prop Account 2'){
+            if (acct.Name == 'Prop Account 2') {
                 acct.Client_Brand_Key__c = 'AmpRed';
             }
         }
@@ -1580,16 +1564,15 @@ public with sharing class CSCancellationServiceTest {
         update acctsToClose;
         for (Messaging.Email email : MessagingService.emailsSent) {
             Messaging.SingleEmailMessage sem = (Messaging.SingleEmailMessage) email;
-            if (sem.getToAddresses().contains('jpentalerib@bluewavesolar.com'))    /*this contact has an AmpRed client brand key */
-            {
-                System.assert(sem.getHtmlBody().contains('Amp'),'Cancellation emails sent to customers assigned the AmpBlack or AmpRed branding should' +
-                ' see Amp in their emails, not BlueWave');
-                System.assert(!sem.getHtmlBody().contains('BlueWave Community Solar'),'Cancellation emails sent to customers assigned the AmpBlack' +
-                ' or AmpRed branding should not see BlueWave Community Solar in their emails');    
+            if (sem.getToAddresses().contains('jpentalerib@bluewavesolar.com'))    /*this contact has an AmpRed client brand key */ {
+                System.assert(sem.getHtmlBody().contains('Amp'), 'Cancellation emails sent to customers assigned the AmpBlack or AmpRed branding should' +
+                    ' see Amp in their emails, not BlueWave');
+                System.assert(!sem.getHtmlBody().contains('BlueWave Community Solar'), 'Cancellation emails sent to customers assigned the AmpBlack' +
+                    ' or AmpRed branding should not see BlueWave Community Solar in their emails');
             } else {
-                System.assert(!sem.getHtmlBody().contains('Amp'),'Cancellation emails sent to customers with BlueWave branding should not see Amp in their emails');
-                System.assert(sem.getHtmlBody().contains('BlueWave Community Solar'),'Cancellation emails sent to customers assigned the BlueWave ' +
-                ' branding should see BlueWave in their emails, not Amp');    
+                System.assert(!sem.getHtmlBody().contains('Amp'), 'Cancellation emails sent to customers with BlueWave branding should not see Amp in their emails');
+                System.assert(sem.getHtmlBody().contains('BlueWave Community Solar'), 'Cancellation emails sent to customers assigned the BlueWave ' +
+                    ' branding should see BlueWave in their emails, not Amp');
             }
         }
 
@@ -1662,9 +1645,9 @@ public with sharing class CSCancellationServiceTest {
         ];
 
         List<Opportunity> oppList = [
-          SELECT Id, StageName
-          FROM Opportunity
-          WHERE AccountId = :acct.Id
+            SELECT Id, StageName
+            FROM Opportunity
+            WHERE AccountId = :acct.Id
         ];
 
         System.assertEquals('Closed', acct.Status__c);
@@ -1703,7 +1686,9 @@ public with sharing class CSCancellationServiceTest {
         insert newUAS;
 
         Map<Account, Map<String, String>> accountCancellationTextMap =
-            CSCancellationService.accountToCancellationParagraphs(UASSelector.selectUASesByAccounts(new Set<Id>{opportunity.AccountId}));
+            CSCancellationService.accountToCancellationParagraphs(UASSelector.selectUASesByAccounts(new Set<Id>{
+                opportunity.AccountId
+            }));
         System.assertEquals(1, accountCancellationTextMap.keySet().size());
         System.assertEquals(1, accountCancellationTextMap.values().size());
         List<Account> accounts = new List<Account>(accountCancellationTextMap.keySet());
@@ -1745,7 +1730,9 @@ public with sharing class CSCancellationServiceTest {
         insert newUAS;
 
         Map<Account, Map<String, String>> accountCancellationTextMap =
-            CSCancellationService.accountToCancellationParagraphs(UASSelector.selectUASesByAccounts(new Set<Id>{opportunity.AccountId}));
+            CSCancellationService.accountToCancellationParagraphs(UASSelector.selectUASesByAccounts(new Set<Id>{
+                opportunity.AccountId
+            }));
         System.assertEquals(1, accountCancellationTextMap.keySet().size());
         System.assertEquals(1, accountCancellationTextMap.values().size());
         List<Account> accounts = new List<Account>(accountCancellationTextMap.keySet());
@@ -1775,7 +1762,9 @@ public with sharing class CSCancellationServiceTest {
 
         Boolean exceptionCaught = false;
         try {
-            CSCancellationService.accountToCancellationParagraphs(UASSelector.selectUASesByAccounts(new Set<Id>{opportunity.AccountId}));
+            CSCancellationService.accountToCancellationParagraphs(UASSelector.selectUASesByAccounts(new Set<Id>{
+                opportunity.AccountId
+            }));
         } catch (Exception bwe) {
             exceptionCaught = true;
             System.assert(bwe.getMessage().contains('Cancellation Paragraph Two'));
@@ -1787,7 +1776,9 @@ public with sharing class CSCancellationServiceTest {
 
         exceptionCaught = false;
         try {
-            CSCancellationService.accountToCancellationParagraphs(UASSelector.selectUASesByAccounts(new Set<Id>{opportunity.AccountId}));
+            CSCancellationService.accountToCancellationParagraphs(UASSelector.selectUASesByAccounts(new Set<Id>{
+                opportunity.AccountId
+            }));
         } catch (Util.BWException bwe) {
             exceptionCaught = true;
             System.assert(false);
@@ -1801,46 +1792,46 @@ public with sharing class CSCancellationServiceTest {
         List<Account> accounts;
         String accountWithOneExpiredOppNotRemoved =
             '[{"attributes":{"type":"Account","url":"/services/data/v47.0/sobjects/Account/0010a00001RmBuQAAV"},' +
-            '"Id":"0010a00001RmBuQAAV",' +
-            '"Name":"12313",' +
-            '"RecordTypeId":"012j00000010HeQAAU",' +
-            '"Number_of_Active_Opportunities__c":"0",' +
-            '"Opportunities":{"totalSize":0,"done":true,"records":[]}}]';
+                '"Id":"0010a00001RmBuQAAV",' +
+                '"Name":"12313",' +
+                '"RecordTypeId":"012j00000010HeQAAU",' +
+                '"Number_of_Active_Opportunities__c":"0",' +
+                '"Opportunities":{"totalSize":0,"done":true,"records":[]}}]';
         accounts = (List<Account>) JSON.deserialize(accountWithOneExpiredOppNotRemoved, List<Account>.class);
         System.assertEquals(0, CSCancellationProjectRemover.getAccountsWithDateRemovedSet(accounts).size(), 'Expected no accounts to set a Date Removed From Project');
 
         String accountWithTwoCancelledButNotRemovedOpps =
             '[{"attributes":{"type":"Account","url":"/services/data/v47.0/sobjects/Account/0010a00001Tf2j2AAB"},' +
-            '"Id":"0010a00001Tf2j2AAB",' +
-            '"Name":"127 Main Street Realty",' +
-            '"Send_Bills_Contact__c":"0030a000026UGX6AAO",' +
-            '"RecordTypeId":"012j00000010HeQAAU",' +
-            '"Number_of_Active_Opportunities__c":"0",' +
-            '"Opportunities":{"totalSize":0,"done":true,"records":[]}}]';
+                '"Id":"0010a00001Tf2j2AAB",' +
+                '"Name":"127 Main Street Realty",' +
+                '"Send_Bills_Contact__c":"0030a000026UGX6AAO",' +
+                '"RecordTypeId":"012j00000010HeQAAU",' +
+                '"Number_of_Active_Opportunities__c":"0",' +
+                '"Opportunities":{"totalSize":0,"done":true,"records":[]}}]';
         accounts = (List<Account>) JSON.deserialize(accountWithTwoCancelledButNotRemovedOpps, List<Account>.class);
         System.assertEquals(0, CSCancellationProjectRemover.getAccountsWithDateRemovedSet(accounts).size(), 'Expected no accounts to set a Date Removed From Project');
 
         String accountWithDuplicateAndNotRemovedOpps =
             '[{"attributes":{"type":"Account","url":"/services/data/v47.0/sobjects/Account/0010a00001ZKcEvAAL"},' +
-            '"Id":"0010a00001ZKcEvAAL",' +
-            '"Name":"NY DUPLICATE ACCT",' +
-            '"Send_Bills_Contact__c":"0030a00002F2vZrAAJ",' +
-            '"RecordTypeId":"012j00000010HeQAAU",' +
-            '"Number_of_Active_Opportunities__c":"0",' +
-            '"Opportunities":{"totalSize":0,"done":true,"records":[]}}]';
+                '"Id":"0010a00001ZKcEvAAL",' +
+                '"Name":"NY DUPLICATE ACCT",' +
+                '"Send_Bills_Contact__c":"0030a00002F2vZrAAJ",' +
+                '"RecordTypeId":"012j00000010HeQAAU",' +
+                '"Number_of_Active_Opportunities__c":"0",' +
+                '"Opportunities":{"totalSize":0,"done":true,"records":[]}}]';
 
         accounts = (List<Account>) JSON.deserialize(accountWithDuplicateAndNotRemovedOpps, List<Account>.class);
         System.assertEquals(0, CSCancellationProjectRemover.getAccountsWithDateRemovedSet(accounts).size(), 'Expected no accounts to set a Date Removed From Project');
 
-        Datetime removedDate = Datetime.newInstance(2019,3,25);
+        Datetime removedDate = Datetime.newInstance(2019, 3, 25);
         String accountWithCancelledAndRemovedOpp =
             '[{"attributes":{"type":"Account","url":"/services/data/v47.0/sobjects/Account/001j0000011mR6LAAU"},' +
-            '"Id":"001j0000011mR6LAAU",' +
-            '"Name":"128 Main Street Realty - Cancelled",' +
-            '"Send_Bills_Contact__c":"003j000001LJTYKAA5",' +
-            '"RecordTypeId":"012j00000010HeQAAU",' +
-            '"Number_of_Active_Opportunities__c":"0",' +
-            '"Opportunities":{"totalSize":1,"done":true,"records":[{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/006j000000VVn3EAAT"},"AccountId":"001j0000011mR6LAAU","Id":"006j000000VVn3EAAT","Date_Removed_from_Project__c":"'+removedDate.format('yyyy-MM-dd')+'","StageName":"Cancelled"}]},"Send_Bills_Contact__r":{"attributes":{"type":"Contact","url":"/services/data/v47.0/sobjects/Contact/003j000001LJTYKAA5"},"Id":"003j000001LJTYKAA5","FirstName":"James","Email":"foo@bar.com","Additional_Email__c":"foo@bar.com"}}]';
+                '"Id":"001j0000011mR6LAAU",' +
+                '"Name":"128 Main Street Realty - Cancelled",' +
+                '"Send_Bills_Contact__c":"003j000001LJTYKAA5",' +
+                '"RecordTypeId":"012j00000010HeQAAU",' +
+                '"Number_of_Active_Opportunities__c":"0",' +
+                '"Opportunities":{"totalSize":1,"done":true,"records":[{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/006j000000VVn3EAAT"},"AccountId":"001j0000011mR6LAAU","Id":"006j000000VVn3EAAT","Date_Removed_from_Project__c":"' + removedDate.format('yyyy-MM-dd') + '","StageName":"Cancelled"}]},"Send_Bills_Contact__r":{"attributes":{"type":"Contact","url":"/services/data/v47.0/sobjects/Contact/003j000001LJTYKAA5"},"Id":"003j000001LJTYKAA5","FirstName":"James","Email":"foo@bar.com","Additional_Email__c":"foo@bar.com"}}]';
 
         accounts = (List<Account>) JSON.deserialize(accountWithCancelledAndRemovedOpp, List<Account>.class);
         System.assertEquals(1, CSCancellationProjectRemover.getAccountsWithDateRemovedSet(accounts).size(), 'Expected an account to get Date Removed set');
@@ -1849,15 +1840,15 @@ public with sharing class CSCancellationServiceTest {
             CSCancellationProjectRemover.getAccountsWithDateRemovedSet(accounts)[0].Date_Removed_from_Project__c,
             'Expected Date Removed From Project to get set with the latest Opp Date Removed From Project');
 
-        Datetime laterRemovedDate = Datetime.newInstance(2020,1,13);
+        Datetime laterRemovedDate = Datetime.newInstance(2020, 1, 13);
         String accountWithTwoCompleteAndRemovedOpps =
             '[{"attributes":{"type":"Account","url":"/services/data/v47.0/sobjects/Account/0010a00001Pw94HAAR"},' +
-            '"Id":"0010a00001Pw94HAAR",' +
-            '"Name":"Complete LLC",' +
-            '"Send_Bills_Contact__c":"0030a0000203IjxAAE",' +
-            '"RecordTypeId":"012j00000010HeQAAU",' +
-            '"Number_of_Active_Opportunities__c":"2",' +
-            '"Opportunities":{"totalSize":2,"done":true,"records":[{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/0060a00000fRdh7AAC"},"AccountId":"0010a00001Pw94HAAR","Id":"0060a00000fRdh7AAC","Date_Removed_from_Project__c":"'+laterRemovedDate.format('yyyy-MM-dd')+'","StageName":"Complete"},{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/0060a00000fRdh8AAC"},"AccountId":"0010a00001Pw94HAAR","Id":"0060a00000fRdh8AAC","Date_Removed_from_Project__c":"2019-07-26","StageName":"Complete"}]},"Send_Bills_Contact__r":{"attributes":{"type":"Contact","url":"/services/data/v47.0/sobjects/Contact/0030a0000203IjxAAE"},"Id":"0030a0000203IjxAAE","FirstName":"Ronald","Email":"foo@bar.com"}}]';
+                '"Id":"0010a00001Pw94HAAR",' +
+                '"Name":"Complete LLC",' +
+                '"Send_Bills_Contact__c":"0030a0000203IjxAAE",' +
+                '"RecordTypeId":"012j00000010HeQAAU",' +
+                '"Number_of_Active_Opportunities__c":"2",' +
+                '"Opportunities":{"totalSize":2,"done":true,"records":[{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/0060a00000fRdh7AAC"},"AccountId":"0010a00001Pw94HAAR","Id":"0060a00000fRdh7AAC","Date_Removed_from_Project__c":"' + laterRemovedDate.format('yyyy-MM-dd') + '","StageName":"Complete"},{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/0060a00000fRdh8AAC"},"AccountId":"0010a00001Pw94HAAR","Id":"0060a00000fRdh8AAC","Date_Removed_from_Project__c":"2019-07-26","StageName":"Complete"}]},"Send_Bills_Contact__r":{"attributes":{"type":"Contact","url":"/services/data/v47.0/sobjects/Contact/0030a0000203IjxAAE"},"Id":"0030a0000203IjxAAE","FirstName":"Ronald","Email":"foo@bar.com"}}]';
         accounts = (List<Account>) JSON.deserialize(accountWithTwoCompleteAndRemovedOpps, List<Account>.class);
         System.assertEquals(0, CSCancellationProjectRemover.getAccountsWithDateRemovedSet(accounts).size(), 'Expected to not get a Date Removed From Project until the opps are cancelled');
 
@@ -1868,7 +1859,7 @@ public with sharing class CSCancellationServiceTest {
                 '"Send_Bills_Contact__c":"0030a0000203IjxAAE",' +
                 '"RecordTypeId":"012j00000010HeQAAU",' +
                 '"Number_of_Active_Opportunities__c":"0",' +
-                '"Opportunities":{"totalSize":2,"done":true,"records":[{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/0060a00000fRdh7AAC"},"AccountId":"0010a00001Pw94HAAR","Id":"0060a00000fRdh7AAC","Date_Removed_from_Project__c":"'+laterRemovedDate.format('yyyy-MM-dd')+'","StageName":"Cancelled"},{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/0060a00000fRdh8AAC"},"AccountId":"0010a00001Pw94HAAR","Id":"0060a00000fRdh8AAC","Date_Removed_from_Project__c":"2019-07-26","StageName":"Cancelled"}]},"Send_Bills_Contact__r":{"attributes":{"type":"Contact","url":"/services/data/v47.0/sobjects/Contact/0030a0000203IjxAAE"},"Id":"0030a0000203IjxAAE","FirstName":"Ronald","Email":"foo@bar.com"}}]';
+                '"Opportunities":{"totalSize":2,"done":true,"records":[{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/0060a00000fRdh7AAC"},"AccountId":"0010a00001Pw94HAAR","Id":"0060a00000fRdh7AAC","Date_Removed_from_Project__c":"' + laterRemovedDate.format('yyyy-MM-dd') + '","StageName":"Cancelled"},{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/0060a00000fRdh8AAC"},"AccountId":"0010a00001Pw94HAAR","Id":"0060a00000fRdh8AAC","Date_Removed_from_Project__c":"2019-07-26","StageName":"Cancelled"}]},"Send_Bills_Contact__r":{"attributes":{"type":"Contact","url":"/services/data/v47.0/sobjects/Contact/0030a0000203IjxAAE"},"Id":"0030a0000203IjxAAE","FirstName":"Ronald","Email":"foo@bar.com"}}]';
         accounts = (List<Account>) JSON.deserialize(accountWithTwoCancelledAndRemovedOpps, List<Account>.class);
         System.assertEquals(1, CSCancellationProjectRemover.getAccountsWithDateRemovedSet(accounts).size(), 'Expected to not get a Date Removed From Project until the opps are cancelled');
         System.assertEquals(
@@ -1878,12 +1869,12 @@ public with sharing class CSCancellationServiceTest {
 
         String accountWithOneRemovedOneDuplicateOpp =
             '[{"attributes":{"type":"Account","url":"/services/data/v47.0/sobjects/Account/0010a00001Pw94HAAR"},' +
-            '"Id":"0010a00001Pw94HAAR",' +
-            '"Name":"Complete LLC",' +
-            '"Send_Bills_Contact__c":"0030a0000203IjxAAE",' +
-            '"RecordTypeId":"012j00000010HeQAAU",' +
-            '"Number_of_Active_Opportunities__c":"0",' +
-            '"Opportunities":{"totalSize":2,"done":true,"records":[{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/0060a00000fRdh7AAC"},"AccountId":"0010a00001Pw94HAAR","Id":"0060a00000fRdh7AAC","Date_Removed_from_Project__c":"'+laterRemovedDate.format('yyyy-MM-dd')+'","StageName":"Cancelled"},{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/0060a00000fRdh8AAC"},"AccountId":"0010a00001Pw94HAAR","Id":"0060a00000fRdh8AAC","StageName":"DUPLICATE"}]},"Send_Bills_Contact__r":{"attributes":{"type":"Contact","url":"/services/data/v47.0/sobjects/Contact/0030a0000203IjxAAE"},"Id":"0030a0000203IjxAAE","FirstName":"Ronald","Email":"foo@bar.com"}}]';
+                '"Id":"0010a00001Pw94HAAR",' +
+                '"Name":"Complete LLC",' +
+                '"Send_Bills_Contact__c":"0030a0000203IjxAAE",' +
+                '"RecordTypeId":"012j00000010HeQAAU",' +
+                '"Number_of_Active_Opportunities__c":"0",' +
+                '"Opportunities":{"totalSize":2,"done":true,"records":[{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/0060a00000fRdh7AAC"},"AccountId":"0010a00001Pw94HAAR","Id":"0060a00000fRdh7AAC","Date_Removed_from_Project__c":"' + laterRemovedDate.format('yyyy-MM-dd') + '","StageName":"Cancelled"},{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/0060a00000fRdh8AAC"},"AccountId":"0010a00001Pw94HAAR","Id":"0060a00000fRdh8AAC","StageName":"DUPLICATE"}]},"Send_Bills_Contact__r":{"attributes":{"type":"Contact","url":"/services/data/v47.0/sobjects/Contact/0030a0000203IjxAAE"},"Id":"0030a0000203IjxAAE","FirstName":"Ronald","Email":"foo@bar.com"}}]';
         accounts = (List<Account>) JSON.deserialize(accountWithOneRemovedOneDuplicateOpp, List<Account>.class);
         System.assertEquals(1, CSCancellationProjectRemover.getAccountsWithDateRemovedSet(accounts).size(), 'Expected an account to get Date Removed set');
         System.assertEquals(
