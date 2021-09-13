@@ -498,19 +498,4 @@ IF( INCLUDES(Utility_Account_Subscription__r.Shared_Solar_System__r.Service_Terr
         <type>Text</type>
         <unique>false</unique>
     </fields>
-    <fields>
-        <fullName>kW_Allocation__c</fullName>
-        <externalId>false</externalId>
-        <formula>Utility_Account_Subscription__r.kW_Allocation__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>kW size based on % subscription on allocation schedule</inlineHelpText>
-        <label>kW Allocation</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>6</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
 </CustomObject>
