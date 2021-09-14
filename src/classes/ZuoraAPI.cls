@@ -1013,8 +1013,15 @@ public with sharing class ZuoraAPI {
         public String Batch;
     }
 
-    public class AccountingPeriod{
+    public class AccountingPeriods {
+        public List<AccountingPeriod> accountingPeriods;
+    }
+
+    public class AccountingPeriod {
+        public String Name;
+        public Date StartDate;
         public Date EndDate;
+        public String Status;
     }
 
     public class PaymentRun {
