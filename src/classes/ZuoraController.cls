@@ -8,7 +8,15 @@ public with sharing class ZuoraController implements ZuoraDataQueryService.Proce
     @SuppressWarnings('PMD.ApexCRUDViolation')
     @AuraEnabled
     public static ZuoraReturnedPaymentService.PaymentReturnResult reverseReturnedPayment(Id paymentId) {
-        return new ZuoraReturnedPaymentService(null).performReturn(paymentId);
+        try {
+            return new ZuoraReturnedPaymentService(null).performReturn(paymentId);
+        } catch (Exception e) {
+            ZuoraReturnedPaymentService.PaymentReturnResult paymentReturnResult =
+                new ZuoraReturnedPaymentService.PaymentReturnResult();
+            paymentReturnResult.message = e.getMessage();
+            paymentReturnResult.success = false;
+            return paymentReturnResult;
+        }
     }
 
     public static String executeBillRun(Date invoiceDate) {

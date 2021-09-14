@@ -2,9 +2,20 @@
  * @description Created by PeterYao on 8/26/2019.
  */
 @IsTest
-public with sharing class ZuoraReturnedPaymentServiceTest {
-    public static void useMocks() {
+private with sharing class ZuoraReturnedPaymentServiceTest {
+    private static void useMocks() {
         ZuoraReturnedPaymentService.paymentSelector = (ZuoraPaymentSelector) Test.createStub(ZuoraPaymentSelector.class, new MockZuoraPaymentSelector());
+        ZuoraAPIMock.addEndpointResult(
+            '/v1/accounting-periods',
+            '{' +
+                '  "accountingPeriods" : [ {' +
+                '    "id" : "2c92c0f86a583eb9016a6af37fbb0355",' +
+                '    "name" : "Period1",' +
+                '    "startDate" : "2000-01-01",' +
+                '    "status" : "Closed"' +
+                '  } ],' +
+                '  "success" : true' +
+                '}');
     }
 
     @TestSetup public static void testDataSetup() {
@@ -67,9 +78,34 @@ public with sharing class ZuoraReturnedPaymentServiceTest {
     }
 
     @IsTest
-    private static void testPaymentReturnWebservice() {
+    private static void testPaymentReturnForClosedPeriod() {
         Test.startTest();
         useMocks();
+        ZuoraAPIMock.addEndpointResult(
+            '/v1/payments/2c92c0fb6cb90e36016cc137e05d46dc',
+            '{' +
+                '"type":"External",' +
+                '"paymentMethodId":"2c92c0f868a2023a0168a79e7f4f3f70",' +
+                '"id":"2c92c0fb6cb90e36016cc137e05d46dc",' +
+                '"effectiveDate":"2019-06-20",' +
+                '"amount":1668.290000000,' +
+                '"accountId":"2c92c0f96c8afb5d016c8c5b4d4c7b6e",' +
+                '"success":true' +
+                '}'
+        );
+        ZuoraAPIMock.addEndpointResult(
+            '/v1/accounting-periods',
+            '{' +
+                '  "accountingPeriods" : [ {' +
+                '    "id" : "2c92c0f86a583eb9016a6af37fbb0355",' +
+                '    "name" : "Period1",' +
+                '    "startDate" : "2019-06-01",' +
+                '    "endDate" : "2019-06-30",' +
+                '    "status" : "Closed"' +
+                '  } ],' +
+                '  "success" : true' +
+                '}');
+
         ZuoraController.reverseReturnedPayment(Util.getFakeId(Schema.Zuora__Payment__c.SObjectType));
         Test.stopTest();
         Integer paymentCalls = 0;
@@ -83,6 +119,52 @@ public with sharing class ZuoraReturnedPaymentServiceTest {
         }
         System.assertEquals(5, paymentCalls, 'Expected a GET payment, GET payment part, two GET payment part items, and PUT payment');
         System.assertEquals(7, debitMemoCalls, 'Expected a GET debitmemo, 3 POST debitmemo, and 3 POST debitmemo/post');
+    }
+
+    @IsTest
+    private static void testPaymentReturnForOpenPeriod() {
+        Test.startTest();
+        useMocks();
+        ZuoraAPIMock.addEndpointResult(
+            '/v1/payments/2c92c0fb6cb90e36016cc137e05d46dc',
+            '{' +
+                '"type":"External",' +
+                '"paymentMethodId":"2c92c0f868a2023a0168a79e7f4f3f70",' +
+                '"id":"2c92c0fb6cb90e36016cc137e05d46dc",' +
+                '"effectiveDate":"2019-06-20",' +
+                '"amount":1668.290000000,' +
+                '"accountId":"2c92c0f96c8afb5d016c8c5b4d4c7b6e",' +
+                '"success":true' +
+                '}'
+        );
+        ZuoraAPIMock.addEndpointResult(
+            '/v1/accounting-periods',
+            '{' +
+                '  "accountingPeriods" : [ {' +
+                '    "id" : "2c92c0f86a583eb9016a6af37fbb0355",' +
+                '    "name" : "Period1",' +
+                '    "startDate" : "2019-06-01",' +
+                '    "endDate" : "2019-06-30",' +
+                '    "status" : "Open"' +
+                '  } ],' +
+                '  "success" : true' +
+                '}');
+
+        ZuoraController.reverseReturnedPayment(Util.getFakeId(Schema.Zuora__Payment__c.SObjectType));
+        Test.stopTest();
+        Integer paymentCalls = 0;
+        Integer debitMemoCalls = 0;
+        for (ZuoraAPIHelper.EndpointCall endpointCall : ZuoraAPIHelper.endpointsCalled) {
+            if (endpointCall.endpoint.contains('payments')) {
+                paymentCalls++;
+            } else if (endpointCall.endpoint.contains('debitmemos')) {
+                debitMemoCalls++;
+            }
+        }
+        System.assertEquals(3, paymentCalls,
+            'Expected a GET payment, PUT payment to mark Returned and PUT payment to cancel');
+        System.assertEquals(0, debitMemoCalls,
+            'Expected no debit memo calls because we should cancel payments if they are made in an open period');
     }
 
     @IsTest

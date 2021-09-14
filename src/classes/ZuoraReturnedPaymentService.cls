@@ -10,6 +10,7 @@ public with sharing class ZuoraReturnedPaymentService implements Queueable, Data
     @TestVisible private List<Id> paymentIdsToReturn;
     @TestVisible private static ZuoraReturnedPaymentService chainedReturnedPaymentService;
     ZuoraDebitMemoGenerator debitMemoGenerator = new ZuoraDebitMemoGenerator();
+    ZuoraAccountingPeriodService accountingPeriodService = new ZuoraAccountingPeriodService();
     private static Map<Object, SObject> emailTemplatesForReturnedPayments {
         get {
             if (emailTemplatesForReturnedPayments == null) {
@@ -100,11 +101,11 @@ public with sharing class ZuoraReturnedPaymentService implements Queueable, Data
         return payment;
     }
 
-    /**
+    /**b
      * @description Updates the Zuora payment's Response Status to be "Returned"
      * @param paymentId The Zuora Id of the Payment to mark returned
      */
-    private void markPaymentReturned(String paymentId) {
+    public void markPaymentReturned(String paymentId) {
         ZuoraAPI.Payment payment = new ZuoraAPI.Payment();
         payment.ResponseStatus_Zcustom = 'Returned';
         HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('PUT', '/v1/payments/' + paymentId, payment, false);
@@ -210,14 +211,13 @@ public with sharing class ZuoraReturnedPaymentService implements Queueable, Data
     private PaymentReturnResult executeMarkPaymentAsReturned(ZuoraAPI.Payment zuoraPayment, Zuora__Payment__c sfPayment) {
         PaymentReturnResult paymentReturnResult = new PaymentReturnResult();
         try {
-            List<ZuoraAPI.DebitMemo> debitMemos = debitMemoGenerator.convertPaymentToDebitMemos(zuoraPayment);
-            if (ZuoraAPIHelper.getCalloutsRemaining() < 2 * debitMemos.size() + 1) {
-                throw new Util.FatalBWException('Not enough callouts remaining to create and post debit memos and mark ' +
-                    'the payment as returned: ' + JSON.serialize(debitMemos));
+            if (accountingPeriodService.isInOpenPeriod(zuoraPayment.effectiveDate)) {
+                cancelPayment(sfPayment);
+                paymentReturnResult.message = 'Payment successfully cancelled';
+            } else {
+                createDebitMemosForPayment(zuoraPayment, sfPayment, paymentReturnResult);
+                paymentReturnResult.message = paymentReturnResult.debitMemos.size() + ' debit memos created and posted successfully';
             }
-            ZuoraCreditDebitMemoService.createAndPostDebitMemos(debitMemos);
-            markPaymentReturned(sfPayment.Zuora__EXT_ID__c);
-            paymentReturnResult.debitMemos = debitMemos;
             paymentReturnResult.success = true;
             removePaymentMethodFromAccount(sfPayment);
         } catch (Exception e) {
@@ -232,6 +232,28 @@ public with sharing class ZuoraReturnedPaymentService implements Queueable, Data
             paymentReturnResult.success = false;
         }
         return paymentReturnResult;
+    }
+
+    private void createDebitMemosForPayment(ZuoraAPI.Payment zuoraPayment, Zuora__Payment__c sfPayment, PaymentReturnResult paymentReturnResult) {
+        List<ZuoraAPI.DebitMemo> debitMemos = debitMemoGenerator.convertPaymentToDebitMemos(zuoraPayment);
+        if (ZuoraAPIHelper.getCalloutsRemaining() < 2 * debitMemos.size() + 1) {
+            throw new Util.FatalBWException('Not enough callouts remaining to create and post debit memos and mark ' +
+                'the payment as returned: ' + JSON.serialize(debitMemos));
+        }
+        ZuoraCreditDebitMemoService.createAndPostDebitMemos(debitMemos);
+        markPaymentReturned(sfPayment.Zuora__EXT_ID__c);
+        paymentReturnResult.debitMemos = debitMemos;
+    }
+
+    private void cancelPayment(Zuora__Payment__c sfPayment) {
+        markPaymentReturned(sfPayment.Zuora__EXT_ID__c);
+        HttpResponse response =
+            ZuoraAPIHelper.callJsonEndpoint('PUT', '/v1/payments/' + sfPayment.Zuora__EXT_ID__c + '/cancel', null, false);
+        ZuoraAPI.GenericResponse genericResponse =
+            (ZuoraAPI.GenericResponse) JSON.deserialize(response.getBody(), (ZuoraAPI.GenericResponse.class));
+        if (!genericResponse.success) {
+            throw new Util.BWException('Did not cancel payment ' + sfPayment.Zuora__EXT_ID__c + '\n' + genericResponse.reasons);
+        }
     }
 
     public class PaymentReturnResult {
