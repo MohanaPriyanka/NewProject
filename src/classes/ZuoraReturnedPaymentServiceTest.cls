@@ -4,12 +4,9 @@
 @IsTest
 public with sharing class ZuoraReturnedPaymentServiceTest {
     public static void useMocks() {
-        useMocks(false);
-    }
-    public static void useMocks(Boolean associateDMToInvoices) {
         ZuoraReturnedPaymentService.paymentSelector = (ZuoraPaymentSelector) Test.createStub(ZuoraPaymentSelector.class, new MockZuoraPaymentSelector());
-        ZuoraReturnedPaymentService.featureService = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(associateDMToInvoices));
     }
+
     @TestSetup public static void testDataSetup() {
         ZuoraCreditDebitMemoServiceTest.testDataSetup();
         ZuoraAPIHelperTest.testSetup();
@@ -59,7 +56,7 @@ public with sharing class ZuoraReturnedPaymentServiceTest {
         Boolean exceptionCaught = false;
         try {
             ZuoraAPI.Payment payment = returnedPaymentService.checkIfPaymentIsAlreadyReturned('ALREADYRETURNED');
-            returnedPaymentService.convertPaymentToDebitMemos(payment);
+            new ZuoraDebitMemoGenerator().convertPaymentToDebitMemos(payment);
         } catch (Exception e) {
             exceptionCaught = true;
             System.assert(e.getMessage().contains('This payment is already marked as returned'),
@@ -72,7 +69,7 @@ public with sharing class ZuoraReturnedPaymentServiceTest {
     @IsTest
     private static void testPaymentReturnWebservice() {
         Test.startTest();
-        useMocks(true);
+        useMocks();
         ZuoraController.reverseReturnedPayment(Util.getFakeId(Schema.Zuora__Payment__c.SObjectType));
         Test.stopTest();
         Integer paymentCalls = 0;
@@ -110,7 +107,7 @@ public with sharing class ZuoraReturnedPaymentServiceTest {
 
     @IsTest
     private static void testNotEnoughCalloutsToReversePaymentWithDMsAssociatedToInvoices() {
-        useMocks(true);
+        useMocks();
         // Reversing the payment requires 10 callouts, plus 6 callouts to create/post debit memos, and 1 to update the payment.
         // Setting the number of callouts used at 85 won't give it enough
         ZuoraAPIHelper.numberCalloutsForZuoraNamespace = 85;
@@ -130,12 +127,12 @@ public with sharing class ZuoraReturnedPaymentServiceTest {
 
     @IsTest
     private static void testConvertPaymentToDebitMemosAssociatedToInvoices() {
-        useMocks(true);
+        useMocks();
         Test.startTest();
         ZuoraReturnedPaymentService returnedPaymentService = new ZuoraReturnedPaymentService(null);
         ZuoraAPI.Payment payment = returnedPaymentService.checkIfPaymentIsAlreadyReturned('2c92c0fb6cb90e36016cc137e05d46dc');
         List<ZuoraAPI.DebitMemo> debitMemos =
-            returnedPaymentService.convertPaymentToDebitMemos(payment);
+            new ZuoraDebitMemoGenerator().convertPaymentToDebitMemos(payment);
         Test.stopTest();
         Integer itemPartCalls = 0;
         Integer invoiceItemCalls = 0;
