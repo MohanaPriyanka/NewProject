@@ -318,19 +318,13 @@ private class BatchAuthNetReturnedTransactionsTest {
                         '"totalNumInResultSet":0,' +
                         '"messages":{"resultCode":"Ok","message":[{"code":"I00004","text":"No records found."}]}}';
                 } else if (req.getBody().contains('HasReturnedItems')) {
-                    String transactionList = '';
-                    for (Integer i = 0; i < transactionsToReturn; i++) {
-                        transactionList += getTransaction(true) + ',';
-                    }
+                    String transactionList = generateTransactionList(transactionsToReturn, true);
                     responseBody = '{ "transactions": ' +
                         '[ ' + transactionList.substring(0, transactionList.length() - 1) + '], ' +
                         '"totalNumInResultSet": ' + transactionsToReturn + ', ' +
                         '"messages": { "resultCode": "Ok", "message": [ { "code": "I00001", "text": "Successful." } ] } }';
                 } else if (req.getBody().contains('NoReturnedItems')) {
-                    String transactionList = '';
-                    for (Integer i = 0; i < transactionsToReturn; i++) {
-                        transactionList += getTransaction(false) + ',';
-                    }
+                    String transactionList = generateTransactionList(transactionsToReturn, false);
                     responseBody = '{ "transactions": ' +
                         '[ ' + transactionList.substring(0, transactionList.length() - 1) + '], ' +
                         '"totalNumInResultSet": ' + transactionsToReturn + ', ' +
@@ -344,6 +338,14 @@ private class BatchAuthNetReturnedTransactionsTest {
             res.setBody(responseBody);
             res.setStatusCode(200);
             return res;
+        }
+
+        private String generateTransactionList(Integer transactionsToReturn, Boolean hasReturnedItems) {
+            String transactionList = '';
+            for (Integer i = 0; i < transactionsToReturn; i++) {
+                transactionList += getTransaction(hasReturnedItems) + ',';
+            }
+            return transactionList;
         }
 
         private String getTransaction(Boolean hasReturnedItems) {
@@ -360,9 +362,6 @@ private class BatchAuthNetReturnedTransactionsTest {
     }
 
     public class MockAPICredentialSelector extends MockProvider {
-        public MockAPICredentialSelector() {
-        }
-
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
                 when 'getApiCredentials' {
