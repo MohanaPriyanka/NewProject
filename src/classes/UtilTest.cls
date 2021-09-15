@@ -160,9 +160,7 @@ public with sharing class UtilTest {
         System.assertEquals(true, Util.isDisabled('Disable_LeadTrigger__c'));
         Util.disableTrigger('Disable_AccountTrigger__c');
         System.assertEquals(true, Util.isDisabled('Disable_AccountTrigger__c'));
-        // There should only be one System Property
-        System.assertEquals(1, System_Properties__c.getAll().values().size());
-        // All This shouldn't use any SOQL queries
+        // All this shouldn't use any SOQL queries
         System.assertEquals(0, Limits.getQueries());
     }
     @IsTest

@@ -15,6 +15,7 @@ public without sharing class Util {
     private static Boolean mockDML = false;
     @TestVisible
     private static List<SObject> objectsUpdatedIfMockingDML;
+    private static Set<String> disabledTriggers = new Set<String>();
 
     public static void insertSObj(SObject sobj) {
         insertSObjs(new List<SObject>{sobj}, 0, null, null);
@@ -147,7 +148,7 @@ public without sharing class Util {
             } when 'UP' {
                 newvalue = valueToRound.setScale(numPlaces, RoundingMode.UP);
             } when else {
-                newvalue = valueToRound.setScale(numPlaces, roundingMode.HALF_UP);
+                newvalue = valueToRound.setScale(numPlaces, RoundingMode.HALF_UP);
             }
         }
         return newvalue;
@@ -226,23 +227,38 @@ public without sharing class Util {
     }
 
     public static Boolean isDisabled(String triggerType) {
+        if (disabledTriggers.contains(triggerType)) {
+            return true;
+        }
         Boolean property = (Boolean) getSystemPropertyCheckbox(triggerType);
         return (property==null?false:property);
     }
+
+    /**
+     * @description Makes Util.isDisabled() see a trigger as it's currently set in the database (typically enabled)
+     * for the transaction in which this is called. Intended to be called after disableTrigger() to resume a trigger.
+     * @param triggerType The name of the custom setting field to enable, e.g. Disable_LeadTrigger__c
+     */
     public static void enableTrigger(String triggerType) {
-        toggleTrigger(triggerType, false);
+        disabledTriggers.remove(triggerType);
     }
+
+    /**
+     * @description Makes Util.isDisabled() see a trigger as disabled for the transaction in which this is called
+     * @param triggerType The name of the custom setting field to disable, e.g. Disable_LeadTrigger__c
+     */
     public static void disableTrigger(String triggerType) {
-        toggleTrigger(triggerType, true);
+        disabledTriggers.add(triggerType);
     }
-    private static void toggleTrigger(String triggerType, Boolean onOrOff) {
+
+    public static void toggleCheckbox(String checkbox, Boolean onOrOff) {
         List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
         if (systemProperties.size() > 0) {
-            systemProperties[0].put(triggerType, onOrOff);
+            systemProperties[0].put(checkbox, onOrOff);
             Util.updateSObjs(systemProperties);
         } else {
             System_Properties__c property = new System_Properties__c(Name = 'System');
-            property.put(triggerType, onOrOff);
+            property.put(checkbox, onOrOff);
             insert property;
         }
     }
@@ -315,7 +331,7 @@ public without sharing class Util {
         String selects = '';
 
         //Get a map of field name and field token
-        Map<String, Schema.SObjectField> fieldMap = Schema.getGlobalDescribe().get(objectName.toLowerCase()).getDescribe().Fields.getMap();
+        Map<String, Schema.SObjectField> fieldMap = Schema.getGlobalDescribe().get(objectName.toLowerCase()).getDescribe().fields.getMap();
         List<String> selectFields = new List<String>();
 
         //Loop through fields and store only Creatable fields
@@ -342,7 +358,7 @@ public without sharing class Util {
 
     @TestVisible
     /**
-     * Method to generate a fake Id based on the SObject Type
+     * @description Method to generate a fake Id based on the SObject Type
      */
     private static String getFakeId(Schema.SObjectType type) {
         return type.getDescribe().getKeyPrefix() + '0'.repeat(12);
