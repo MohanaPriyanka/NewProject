@@ -1,20 +1,28 @@
-/*************************************************************************************
- * Created By: peteryao on 2019-04-18  
- * Description: 
- * Test: 
- *************************************************************************************/
+/**
+ * @description Created By: peteryao on 2019-04-18
+ **/
 @IsTest
 @SuppressWarnings('PMD')
 public with sharing class ZuoraAPIMock implements HttpCalloutMock {
     public static String genericId = '2c92c0f96a6e3c3f016a6fc817180743';
+    private static Map<String, String> endpointToResult = new Map<String, String>();
+
+    public static void addEndpointResult(String endpoint, String result) {
+        endpointToResult.put(endpoint, result);
+    }
 
     public HttpResponse respond(HttpRequest req) {
         // Only send a mock response for a specific endpoint and method.
         String endpoint = req.getEndpoint();
         String method = req.getMethod();
+        String path = new Url(endpoint).getPath();
 
         // Create a fake response
-        if (endpoint.contains('rsa-signatures')) {
+        if (endpointToResult.containsKey(path)) {
+            HttpResponse res = getJSON();
+            res.setBody(endpointToResult.get(path));
+            return res;
+        } else if (endpoint.contains('rsa-signatures')) {
             return getRSASignatures();
         } else if (endpoint.contains('/oauth/token')) {
             return getOAuthToken();
@@ -744,7 +752,7 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
         return res;
     }
 
-    private static HttpResponse getCreditMemoParts(){
+    private static HttpResponse getCreditMemoParts() {
         HttpResponse res = getJSON();
         res.setBody('{"parts" : [ ' +
             '{"id" : "2c92c0fb715ce76701717490112a5069",' +
@@ -759,7 +767,7 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
         return res;
     }
 
-    private static HttpResponse getCreditMemoPartItems(){
+    private static HttpResponse getCreditMemoPartItems() {
         HttpResponse res = getJSON();
         res.setBody('{"itemParts" : [ ' +
             '{"id" : "2c92c0fb715ce76701717490112a5068",' +
