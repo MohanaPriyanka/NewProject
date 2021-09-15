@@ -179,6 +179,17 @@ private class BatchAuthNetReturnedTransactionsTest {
 
     @IsTest
     private static void testMarkTransactionsAsReturned(){
+        ZuoraAPIMock.addEndpointResult(
+            '/v1/accounting-periods',
+            '{' +
+                '  "accountingPeriods" : [ {' +
+                '    "id" : "2c92c0f86a583eb9016a6af37fbb0355",' +
+                '    "name" : "Period1",' +
+                '    "startDate" : "2000-01-01",' +
+                '    "status" : "Closed"' +
+                '  } ],' +
+                '  "success" : true' +
+                '}');
         insertTestBillingAccountRecords();
 
         List<Error_Log__c> beforeLogs = [
@@ -222,8 +233,8 @@ private class BatchAuthNetReturnedTransactionsTest {
             WHERE Method__c = 'callJsonEndpoint'
         ];
         System.assert(afterLogs.size() > 0);
-        System.assert(afterLogs[0].Message__c.contains('/v1/debitmemos/'));
-        System.assert(afterLogs[0].Message__c.contains('/v1/payments/'));
+        System.assert(afterLogs[0].Message__c.contains('/v1/debitmemos/'), afterLogs[0].Message__c);
+        System.assert(afterLogs[0].Message__c.contains('/v1/payments/'), afterLogs[0].Message__c);
     }
 
     public static void insertTestBillingAccountRecords(){
