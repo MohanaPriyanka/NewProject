@@ -89,7 +89,7 @@ public with sharing class OpportunityTriggerTest {
         List<Opportunity> newOppList = new List<Opportunity>{newOpp1, newOpp2, newOpp3};
         Test.startTest();
         Map<Id,Subscription_Change_Event__e> eventMap = new Map<Id,Subscription_Change_Event__e>();
-        OpportunityTriggerHandler handler = new OpportunityTriggerHandler(oldOppMap, null, newOppList, null);
+        OpportunityTriggerHandler handler = new OpportunityTriggerHandler(oldOppMap, null, newOppList);
         eventMap = handler.eventHandling();
         Test.stopTest();
         System.assert(eventMap.containsKey(oppList[0].AccountId));
