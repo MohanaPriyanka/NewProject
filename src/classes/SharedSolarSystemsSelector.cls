@@ -1,6 +1,5 @@
 /**
- * @description Created by mstackhouse on 1/23/2019.
- * Description: Used to query shared solar systems
+ * @description Created by mstackhouse on 1/23/2019. Used to query shared solar systems
  * Test: SharedSolarSystemsSelectorTest
  */
 @SuppressWarnings('PMD.ApexCRUDViolation,PMD.ApexDoc')
@@ -176,11 +175,11 @@ public inherited sharing class SharedSolarSystemsSelector {
         ];
     }
 
-    public List<Shared_Solar_System__c> getSSSWithActiveUASes(List<Shared_Solar_System__c> sssList) {
+    public List<Shared_Solar_System__c> getSSSWithActiveUASes(Set<Id> sssList) {
         return [
             SELECT Id, Name, Reserved_Capacity_kW_DC__c, Capacity_Committed_kW_DC__c, Anchor_Capacity_Reserved__c, Reserved_Anchor_Capacity__c,
                 Stage__c, Utility__r.Average_Demand_Threshold__c,Pending_Demand_Capacity__c, Committed_Demand_Capacity__c,
-                Demand_Customer_System_Utilization__c,
+                Demand_Customer_System_Utilization__c,Pending_Anchor_Capacity__c,
                 (SELECT Id, Customer_Group__c, Opportunity__r.Customer_Sub_Group__c, Shared_Solar_System__r.Name,
                     Future_Customer_Subscription_KWDC_Rollup__c, Customer_Subscription_KW_DC__c, Opportunity_Stage__c,
                     Utility_Account_Log__c, Utility_Account_Log__r.Average_Demand__c, Utility_Account_Log__r.Exclude_from_Demand_Capacity__c
@@ -192,25 +191,24 @@ public inherited sharing class SharedSolarSystemsSelector {
         ];
     }
 
+    public Set<Id> getSSSByUAL(Set<Utility_Account_Log__c> uals) {
+        Set<Id> systems = new Set<Id>();
+        List<Utility_Account_Subscription__c> subscriptions = [
+            SELECT Shared_Solar_System__c
+            FROM Utility_Account_Subscription__c
+            WHERE Utility_Account_Log__c IN : uals
+        ];
+        for (Utility_Account_Subscription__c subscription : subscriptions) {
+            systems.add(subscription.Shared_Solar_System__c);
+        }
+        return systems;
+    }
+
     public List<Shared_Solar_System__Share> getSSSSharesForUsers(List<User> users) {
         return [
             SELECT ParentId, UserOrGroupId
             FROM Shared_Solar_System__Share
             WHERE UserOrGroupId IN :users
-        ];
-    }
-
-    public List<Shared_Solar_System__c> getSharedSolarSystemsWithEnactedSZs(List<Id> sssIds) {
-        return [
-            SELECT Id, Reacquisition_Start_Date__c, (
-                SELECT Id, Date_Enacted_by_Utility__c
-                FROM Schedule_Zs__r
-                WHERE Date_Schedule_Z_Retired_by_Utility__c = NULL
-                AND Date_Enacted_by_Utility__c != NULL
-                ORDER BY Date_Enacted_by_Utility__c DESC
-            )
-            FROM Shared_Solar_System__c
-            WHERE Id IN :sssIds
         ];
     }
 
@@ -228,5 +226,13 @@ public inherited sharing class SharedSolarSystemsSelector {
             WHERE Id = :givenContract.Opportunity__r.Shared_Solar_System__c
         ];
         return resultSSS;
+    }
+
+    public Map<Id, Shared_Solar_System__c> getAllSSSByUtility(Set<Id> utilityIds) {
+        return new Map<Id, Shared_Solar_System__c>([
+            SELECT Id
+            FROM Shared_Solar_System__c
+            WHERE Utility__c IN : utilityIds
+        ]);
     }
 }

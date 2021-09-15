@@ -1,24 +1,74 @@
 /**
- * Created by SarahRenfro on 12/2/2019.
- *
+ * @description Created by SarahRenfro on 12/2/2019.
  * Tested By: UtilityAccountSubscriptionHandlerTest, PartnerCommissionHandlerTest
  */
-
 public without sharing class UtilityAccountSubscriptionHandler {
-    @TestVisible
-    private static OpportunitiesSelector oppSelector = new OpportunitiesSelector();
-    @TestVisible
-    private static PartnerCommissionHandler partnerCommissionHandler = new PartnerCommissionHandler();
 
-    public static void assignSSSBeforeInsert(List<Utility_Account_Subscription__c> uasList) {
+    @TestVisible private static OpportunitiesSelector oppSelector = new OpportunitiesSelector();
+    @TestVisible private static PartnerCommissionHandler partnerCommissionHandler = new PartnerCommissionHandler();
+    private FeatureService featureService = new FeatureService();
+    private SubscriptionManagementService subscriptionManagementService = new SubscriptionManagementService();
+    private Map<Id,Utility_Account_Subscription__c> oldMap;
+    private List<Utility_Account_Subscription__c> newList;
+    private TriggerOperation triggerType;
+
+    public UtilityAccountSubscriptionHandler(Map<Id,Utility_Account_Subscription__c> oldMap,
+        List<Utility_Account_Subscription__c> newList, TriggerOperation triggerOperation) {
+        this.oldMap = oldMap;
+        this.newList = newList;
+        this.triggerType = triggerOperation;
+    }
+
+    public void beforeInsert() {
+        assignSSSBeforeInsert();
+    }
+
+    public void afterInsert() {
+        ClientReportingService.insertClientUAS(newList);
+        if (Test.isRunningTest() && featureService.isEnabled('Subscription_Orders')) {
+            subscriptionManagementService.insertSubscriptionOrdersForTests(newList);
+        }
+        new SystemCapacityRollupCalculator(oldMap, newList, triggerType).performRollup();
+    }
+
+    public void beforeUpdate() {
+        assignSSSBeforeUpdate();
+    }
+
+    public void afterUpdate() {
+        CSCancellationProjectRemover.handleOpportunitiesRemovedFromProject(oldMap, constructNewMap());
+        ClientReportingService.updateClientUAS(newList, oldMap);
+        new SystemCapacityRollupCalculator(oldMap, newList, triggerType).performRollup();
+    }
+    
+    public void beforeDelete() {
+        subscriptionManagementService.publishSubscriptionOrderChangeEventsOnDelete(null, oldMap);
+        ClientReportingService.deleteClientUAS(Trigger.old);
+    }
+
+    public void afterDelete() {
+        new SystemCapacityRollupCalculator(oldMap, newList, triggerType).performRollup();
+    }
+
+    public void afterUndelete() {
+        new SystemCapacityRollupCalculator(oldMap, newList, triggerType).performRollup();
+    }
+
+    private Map<Id,Utility_Account_Subscription__c> constructNewMap() {
+        Map<Id,Utility_Account_Subscription__c> returnMap = new Map<Id,Utility_Account_Subscription__c>();
+        for (Utility_Account_Subscription__c uas : newList) {
+            returnMap.put(uas.Id, uas);
+        }
+        return returnMap;
+    }
+    
+    private void assignSSSBeforeInsert() {
         Set<Id> oppIds = new Set<Id>();
-        for (Utility_Account_Subscription__c uas : uasList) {
+        for (Utility_Account_Subscription__c uas : newList) {
             oppIds.add(uas.Opportunity__c);
         }
-
         Map<Id, Opportunity> uasToOppMap = oppSelector.selectOpportunityMap(oppIds);
-
-        for (Utility_Account_Subscription__c uas : uasList) {
+        for (Utility_Account_Subscription__c uas : newList) {
             Opportunity opp = uasToOppMap.get(uas.Opportunity__c);
             if (opp != null && uas.Shared_Solar_System__c == null) {
                 uas.Shared_Solar_System__c = opp.Shared_Solar_System__c;
@@ -26,10 +76,10 @@ public without sharing class UtilityAccountSubscriptionHandler {
         }
     }
 
-    public static void assignSSSBeforeUpdate(List<Utility_Account_Subscription__c> uasList, Map<Id, Utility_Account_Subscription__c> oldMap) {
+    public void assignSSSBeforeUpdate() {
         Set<Id> oppIds = new Set<Id>();
         List<Utility_Account_Subscription__c> uasesWithUpdatedOpportunities = new List<Utility_Account_Subscription__c>();
-        for (Utility_Account_Subscription__c uas : uasList) {
+        for (Utility_Account_Subscription__c uas : newList) {
             if (uas.Opportunity__c != null && (
                 (uas.Opportunity__c != oldMap.get(uas.Id).Opportunity__c) || oldMap.get(uas.Id).Opportunity__c == null)) {
                 uasesWithUpdatedOpportunities.add(uas);
@@ -37,12 +87,10 @@ public without sharing class UtilityAccountSubscriptionHandler {
             }
         }
         Map<Id, Opportunity> uasToOppMap = oppSelector.selectOpportunityMap(oppIds);
-
         for (Utility_Account_Subscription__c uas : uasesWithUpdatedOpportunities) {
             Opportunity opp = uasToOppMap.get(uas.Opportunity__c);
             uas.Shared_Solar_System__c = opp.Shared_Solar_System__c;
         }
-
     }
 
     @SuppressWarnings('PMD.ApexCRUDViolation')
@@ -52,13 +100,12 @@ public without sharing class UtilityAccountSubscriptionHandler {
         List<Utility_Account_Subscription__c> anchorUASes = new List<Utility_Account_Subscription__c>();
         for (AggregateResult result : anchorAggregateResults) {
             Utility_Account_Subscription__c anchorUAS = new Utility_Account_Subscription__c(
-                Id = (Id)result.get('uasId'),
-                Annual_Subscription_Production_Summary__c = (Decimal)result.get('productionSummary')
+                Id = (Id) result.get('uasId'),
+                Annual_Subscription_Production_Summary__c = (Decimal) result.get('productionSummary')
             );
             anchorUASes.add(anchorUAS);
         }
         GenericBatchDMLOperation batchDMLOperation = new GenericBatchDMLOperation(anchorUASes, 'Update');
         Database.executeBatch(batchDMLOperation);
     }
-    
 }

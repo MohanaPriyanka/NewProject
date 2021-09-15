@@ -1,13 +1,12 @@
 /**
- * Created by mstackhouse on 12/17/2018.
- * Description: 
- * Test: 
+ * @description Created by mstackhouse on 12/17/2018.
  */
 @IsTest
 public with sharing class UtilityAccountLogTriggerHandlerTest {
+    
     @IsTest
     public static void testUpdateProposedkWhWithTariff() {
-        Utility_NMC_Tariff__c eversourceG1 =  new Utility_NMC_Tariff__c(
+        Utility_NMC_Tariff__c eversourceG1 = new Utility_NMC_Tariff__c(
             Value_of_Net_Metering_Credit__c = .70578,
             Name = 'Eversource G1',
             Utility__c = 'Eversource',
@@ -43,6 +42,7 @@ public with sharing class UtilityAccountLogTriggerHandlerTest {
         System.assertEquals(productTariff.Id, ualAfterUpdate.Product_Tariff__c);
         System.assertNotEquals(ual.Proposed_kWh__c, ualAfterUpdate.Proposed_kWh__c);
     }
+    
     @IsTest
     public static void testUpdateProposedkWhWithoutTariff() {
         Utility_Account_Log__c ual = new Utility_Account_Log__c(
@@ -65,6 +65,7 @@ public with sharing class UtilityAccountLogTriggerHandlerTest {
         System.assertEquals(null, ualAfterUpdate.Product_Tariff__c);
         System.assertNotEquals(ual.Proposed_kWh__c, ualAfterUpdate.Proposed_kWh__c);
     }
+    
     @IsTest
     public static void testDontUpdateProposedkWh() {
         Utility_Account_Log__c ual = new Utility_Account_Log__c(
@@ -102,48 +103,49 @@ public with sharing class UtilityAccountLogTriggerHandlerTest {
         insert contract;
         Rate_Class__c rateClass0 = new Rate_Class__c(Name = 'Rate Class 0', Suppress_Disclosure_Form__c = false);
         Rate_Class__c rateClass1 = new Rate_Class__c(Name = 'Rate Class 1', Suppress_Disclosure_Form__c = true);
-        insert new List<Rate_Class__c>{rateClass0, rateClass1};
+        insert new List<Rate_Class__c>{
+            rateClass0, rateClass1
+        };
         Utility_Account_Log__c ual = new Utility_Account_Log__c(Lead__c = lead.Id, Account__c = propertyAccount.Id);
         insert ual;
 
         Test.startTest();
-            // product.Disclosure_Form_Conga_Template__c = null
-            //  ==> contract.Generate_Disclosure_Form__c = false
-            ual.Utility_Rate_Class__c = rateClass0.Id;
-            update ual;
-            contract = [SELECT Id, Generate_Disclosure_Form__c FROM Contract WHERE Id = :contract.Id];
-            System.assert(!contract.Generate_Disclosure_Form__c, 'No matter what the rate class is, Generate_Disclosure_Form__c should always be false when the product\'s Disclosure_Form_Conga_Template__c is null');
+        // product.Disclosure_Form_Conga_Template__c = null
+        //  ==> contract.Generate_Disclosure_Form__c = false
+        ual.Utility_Rate_Class__c = rateClass0.Id;
+        update ual;
+        contract = [SELECT Id, Generate_Disclosure_Form__c FROM Contract WHERE Id = :contract.Id];
+        System.assert(!contract.Generate_Disclosure_Form__c, 'No matter what the rate class is, Generate_Disclosure_Form__c should always be false when the product\'s Disclosure_Form_Conga_Template__c is null');
 
 
+        ual.Utility_Rate_Class__c = rateClass1.Id;
+        update ual;
+        contract = [SELECT Id, Generate_Disclosure_Form__c FROM Contract WHERE Id = :contract.Id];
+        System.assert(!contract.Generate_Disclosure_Form__c, 'No matter what the rate class is, Generate_Disclosure_Form__c should always be false when the product\'s Disclosure_Form_Conga_Template__c is null');
 
-            ual.Utility_Rate_Class__c = rateClass1.Id;
-            update ual;
-            contract = [SELECT Id, Generate_Disclosure_Form__c FROM Contract WHERE Id = :contract.Id];
-            System.assert(!contract.Generate_Disclosure_Form__c, 'No matter what the rate class is, Generate_Disclosure_Form__c should always be false when the product\'s Disclosure_Form_Conga_Template__c is null');
+        // product.Disclosure_Form_Conga_Template__c != null
+        product0.Disclosure_Form_Conga_Template__c = 'abc123';
+        update product0;
+        // rate class = null
+        //  ==> contract.Generate_Disclosure_Form__c = true
+        ual.Utility_Rate_Class__c = null;
+        update ual;
+        contract = [SELECT Id, Generate_Disclosure_Form__c FROM Contract WHERE Id = :contract.Id];
+        System.assert(contract.Generate_Disclosure_Form__c, 'When the product\'s Disclosure_Form_Conga_Template__c is not null and the rate class is null, Generate_Disclosure_Form__c should be true');
 
-            // product.Disclosure_Form_Conga_Template__c != null
-            product0.Disclosure_Form_Conga_Template__c = 'abc123';
-            update product0;
-            // rate class = null
-            //  ==> contract.Generate_Disclosure_Form__c = true
-            ual.Utility_Rate_Class__c = null;
-            update ual;
-            contract = [SELECT Id, Generate_Disclosure_Form__c FROM Contract WHERE Id = :contract.Id];
-            System.assert(contract.Generate_Disclosure_Form__c, 'When the product\'s Disclosure_Form_Conga_Template__c is not null and the rate class is null, Generate_Disclosure_Form__c should be true');
+        // rate class.Suppress_Disclosure_Form__c = true
+        //  ==> contract.Generate_Disclosure_Form__c = false
+        ual.Utility_Rate_Class__c = rateClass1.Id;
+        update ual;
+        contract = [SELECT Id, Generate_Disclosure_Form__c FROM Contract WHERE Id = :contract.Id];
+        System.assert(!contract.Generate_Disclosure_Form__c, 'When the rate class\'s Suppress_Disclosure_Form__c is true, Generate_Disclosure_Form__c should be false');
 
-            // rate class.Suppress_Disclosure_Form__c = true
-            //  ==> contract.Generate_Disclosure_Form__c = false
-            ual.Utility_Rate_Class__c = rateClass1.Id;
-            update ual;
-            contract = [SELECT Id, Generate_Disclosure_Form__c FROM Contract WHERE Id = :contract.Id];
-            System.assert(!contract.Generate_Disclosure_Form__c, 'When the rate class\'s Suppress_Disclosure_Form__c is true, Generate_Disclosure_Form__c should be false');
-
-            // rate class.Suppress_Disclosure_Form__c = false
-            //  ==> contract.Generate_Disclosure_Form__c = true
-            ual.Utility_Rate_Class__c = rateClass0.Id;
-            update ual;
-            contract = [SELECT Id, Generate_Disclosure_Form__c FROM Contract WHERE Id = :contract.Id];
-            System.assert(contract.Generate_Disclosure_Form__c, 'When the rate class\'s Suppress_Disclosure_Form__c is false, Generate_Disclosure_Form__c should be true');
+        // rate class.Suppress_Disclosure_Form__c = false
+        //  ==> contract.Generate_Disclosure_Form__c = true
+        ual.Utility_Rate_Class__c = rateClass0.Id;
+        update ual;
+        contract = [SELECT Id, Generate_Disclosure_Form__c FROM Contract WHERE Id = :contract.Id];
+        System.assert(contract.Generate_Disclosure_Form__c, 'When the rate class\'s Suppress_Disclosure_Form__c is false, Generate_Disclosure_Form__c should be true');
         Test.stopTest();
     }
 
@@ -161,12 +163,13 @@ public with sharing class UtilityAccountLogTriggerHandlerTest {
         ];
         System.assertEquals('12340000', ualRetrieved.Cleaned_Utility_Account_Number__c);
 
-        System.assertEquals('12340000', UtilityAccountLogTriggerHandler.cleanUtilityAccountNumber('0-0-12340000-'));
-        System.assertEquals('', UtilityAccountLogTriggerHandler.cleanUtilityAccountNumber('0000'));
-        System.assertEquals('', UtilityAccountLogTriggerHandler.cleanUtilityAccountNumber('   '));
-        System.assertEquals('10000', UtilityAccountLogTriggerHandler.cleanUtilityAccountNumber(' 10000'));
-        System.assertEquals('10000', UtilityAccountLogTriggerHandler.cleanUtilityAccountNumber(' -010000'));
-        System.assertEquals('1234', UtilityAccountLogTriggerHandler.cleanUtilityAccountNumber('1234'));
-        System.assertEquals('123456789', UtilityAccountLogTriggerHandler.cleanUtilityAccountNumber('1234 56 789'));
+        UtilityAccountLogTriggerHandler handler = new UtilityAccountLogTriggerHandler(null, null);
+        System.assertEquals('12340000', handler.cleanUtilityAccountNumber('0-0-12340000-'));
+        System.assertEquals('', handler.cleanUtilityAccountNumber('0000'));
+        System.assertEquals('', handler.cleanUtilityAccountNumber('   '));
+        System.assertEquals('10000', handler.cleanUtilityAccountNumber(' 10000'));
+        System.assertEquals('10000', handler.cleanUtilityAccountNumber(' -010000'));
+        System.assertEquals('1234', handler.cleanUtilityAccountNumber('1234'));
+        System.assertEquals('123456789', handler.cleanUtilityAccountNumber('1234 56 789'));
     }
 }
