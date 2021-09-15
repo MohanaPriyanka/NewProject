@@ -41718,6 +41718,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Zuora__Payment__c.Method__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Zuora__Payment__c.Payment_Gateway__c</field>
         <readable>true</readable>
     </fieldPermissions>
