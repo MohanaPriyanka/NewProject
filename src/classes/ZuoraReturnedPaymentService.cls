@@ -101,11 +101,11 @@ public with sharing class ZuoraReturnedPaymentService implements Queueable, Data
         return payment;
     }
 
-    /**b
+    /**
      * @description Updates the Zuora payment's Response Status to be "Returned"
      * @param paymentId The Zuora Id of the Payment to mark returned
      */
-    public void markPaymentReturned(String paymentId) {
+    private void markPaymentReturned(String paymentId) {
         ZuoraAPI.Payment payment = new ZuoraAPI.Payment();
         payment.ResponseStatus_Zcustom = 'Returned';
         HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('PUT', '/v1/payments/' + paymentId, payment, false);
