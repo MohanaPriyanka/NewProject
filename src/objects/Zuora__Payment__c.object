@@ -82,6 +82,20 @@ The Payment object holds all of the information about an individual payment, inc
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Method__c</fullName>
+        <description>Used to show the check number or CC information on the customer portal</description>
+        <externalId>false</externalId>
+        <formula>IF( ISPICKVAL(Zuora__Type__c, &quot;Electronic&quot;), 
+    Zuora__PaymentMethod__c, 
+    Zuora__PaymentMethod__c + &quot; &quot; +  Zuora__ReferenceId__c)</formula>
+        <inlineHelpText>Details about the payment (check number, CC, or ACH information)</inlineHelpText>
+        <label>Method</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Payment_Gateway__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
