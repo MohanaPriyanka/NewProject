@@ -15,7 +15,6 @@ public without sharing class SystemCapacityRollupCalculator {
     @TestVisible private static SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
     private Initializer initializer;
     private Boolean bypassInitializer = false;
-    private Boolean logChanges = false; // TODO: Deprecate later, used only in SharedSolarSystemHandler.execute() for debugging
     private Set<Id> systemIds;
     private List<Shared_Solar_System__c> systems;
     private List<Utility_Account_Subscription__c> pendingSmallCSCapacityList;
@@ -31,12 +30,10 @@ public without sharing class SystemCapacityRollupCalculator {
     /**
      * @description Constructor for use when Shared_Solar_System__c records change
      * @param sharedSolarSystemIds List of Shared_Solar_System__c records to process (typically from SSS Trigger.new)
-     * @param logChanges Log if changes are detected on SSS records (TO BE REMOVED AT DEPRECATION OF SCHEDULED JOB)
      */
-    public SystemCapacityRollupCalculator(Set<Id> sharedSolarSystemIds, Boolean logChanges) {
+    public SystemCapacityRollupCalculator(Set<Id> sharedSolarSystemIds) {
         this.bypassInitializer = true;
         this.systemIds = sharedSolarSystemIds;
-        this.logChanges = logChanges; // TODO: Deprecate later, used only in SharedSolarSystemHandler.execute() for debugging
     }
 
     /**
@@ -209,7 +206,7 @@ public without sharing class SystemCapacityRollupCalculator {
             uow.registerDirty(sss, new List<SObjectField>{
                 field
             });
-            if (logChanges) { // TODO: Deprecate in the future if realtime updates work as expected
+            if (Request.getCurrent().getQuiddity() == Quiddity.SCHEDULED) { // TODO: Deprecate in the future if realtime updates work as expected
                 String message = 'Out of sync field ' + field + ' on system ' + sss.Id + '/' + sss.Name +
                     '. Expected: ' + value + ', Actual: ' + sss.get(field);
                 Logger.logLater('SystemCapacityRollupCalculator', 'updateSystemField', message, Logger.ERROR);

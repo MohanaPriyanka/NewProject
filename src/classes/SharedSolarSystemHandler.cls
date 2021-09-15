@@ -41,7 +41,7 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
     }
     
     public void beforeUpdate() {
-        new SystemCapacityRollupCalculator(newMap.keySet(), false).performRollupBeforeUpdate(newMap);
+        new SystemCapacityRollupCalculator(newMap.keySet()).performRollupBeforeUpdate(newMap);
         capacityCalculator.calculateMaximumSubscriptionCapacityForSMART(newList);
         invoicer.updateManagementRevenueStartDateBeforeTrigger(newList);
     }
@@ -89,7 +89,7 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
     @TestVisible
     private void updateAllSSS() {
         Map<Id, Shared_Solar_System__c> allSSSes = sssSelector.getAllSSSMap();
-        new SystemCapacityRollupCalculator(allSSSes.keySet(), true).performRollup();
+        new SystemCapacityRollupCalculator(allSSSes.keySet()).performRollup();
         SharedSolarSystemInvoicer systemInvoicer = new SharedSolarSystemInvoicer();
         systemInvoicer.updateManagementRevenueStartDate(uow, allSSSes.values());
         uow.commitWork();

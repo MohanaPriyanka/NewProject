@@ -25,7 +25,7 @@ public without sharing class OpportunityCapacityRollupInitializer implements Sys
         Set<Id> systems = new Set<Id>();
         for (Opportunity newOpp : newList) {
             Opportunity oldOpp = oldMap.get(newOpp.Id);
-            if (newOpp.StageName != oldOpp.StageName && (newOpp.StageName == 'Complete' || oldOpp.StageName == 'Complete')) {
+            if (newOpp.StageName != oldOpp.StageName) {
                 systems.add(newOpp.Shared_Solar_System__c);
             }
         }

@@ -2,7 +2,7 @@
  * @description Created by jeffparlin on 9/10/21.
  * Aggregates Shared_Solar_System__c records to queue for capacity rollup recalculation based on changes on Utility__c records
  * Intended for use with SystemCapacityRollupCalculator. Included on UtilityTrigger.
- * Tested By:
+ * Tested By: SystemCapacityRollupCalculatorTest
  */
 public with sharing class UtilityCapacityRollupInitializer implements SystemCapacityRollupCalculator.Initializer {
 
