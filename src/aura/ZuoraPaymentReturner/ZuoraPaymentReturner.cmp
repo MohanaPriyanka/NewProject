@@ -2,22 +2,27 @@
  - Created by PeterYao on 8/27/2019.
  -->
 
-<aura:component description="ZuoraPaymentReturner" implements="force:lightningQuickAction,force:hasRecordId" controller="ZuoraController">
+<aura:component description="ZuoraPaymentReturner" implements="force:lightningQuickActionWithoutHeader,force:hasRecordId" controller="ZuoraController">
   <aura:attribute name="confirm" type="Boolean" default="true"/>
   <aura:attribute name="loading" type="Boolean" default="false"/>
   <aura:attribute name="result" type="Object"/>
   <aura:attribute name="successMessage" type="String"/>
 
-  <div class="slds-m-bottom--medium">
-    If the Payment has not already been marked as returned, this will create debit memos for each of the payment part items in Zuora.
+  <header class="slds-modal__header">
+    <h2 class="slds-modal__title">Return Payment</h2>
+  </header>
+  <div class="slds-m-top_medium">
+    <p>If the payment's effective date is in an open period, this will cancel the payment.</p>
+    <p>Otherwise, this will create debit memos for each of the payment part items in Zuora.</p>
+    <p>In either case, it will create a case and email for the customer to resubmit their payment</p>
   </div>
   <aura:if isTrue="{!v.confirm}">
-    <div class="slds-m-bottom--medium">
+    <div class="slds-m-top_medium">
       Do you want to continue?
     </div>
-    <div>
+    <div class="slds-m-top_medium">
       <lightning:button label="Yes" onclick="{!c.returnPayment}"/>
-    </div>
+      <lightning:button label="No" onclick="{!c.cancel}"/></div>
   </aura:if>
 
   <aura:if isTrue="{!v.loading}">
@@ -28,15 +33,21 @@
 
   <aura:if isTrue="{!v.result != null}">
     <aura:if isTrue="{!v.result.success}">
-      <div>
+      <div class="slds-m-top_medium">
         {!v.successMessage}
       </div>
+      <div class="slds-m-top_medium">
+        <lightning:button label="Close" onclick="{!c.cancel}"/>
+      </div>
       <aura:set attribute="else">
-        <div class="slds-m-bottom--medium">
+        <div class="slds-m-top_medium slds-m-bottom_medium">
           Return failed:
         </div>
         <div>
           {!v.result.message}
+        </div>
+        <div class="slds-m-top_medium">
+          <lightning:button label="Close" onclick="{!c.cancel}"/>
         </div>
       </aura:set>
     </aura:if>

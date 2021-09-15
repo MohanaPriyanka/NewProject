@@ -179,6 +179,17 @@ private class BatchAuthNetReturnedTransactionsTest {
 
     @IsTest
     private static void testMarkTransactionsAsReturned(){
+        ZuoraAPIMock.addEndpointResult(
+            '/v1/accounting-periods',
+            '{' +
+                '  "accountingPeriods" : [ {' +
+                '    "id" : "2c92c0f86a583eb9016a6af37fbb0355",' +
+                '    "name" : "Period1",' +
+                '    "startDate" : "2000-01-01",' +
+                '    "status" : "Closed"' +
+                '  } ],' +
+                '  "success" : true' +
+                '}');
         insertTestBillingAccountRecords();
 
         List<Error_Log__c> beforeLogs = [
@@ -222,8 +233,8 @@ private class BatchAuthNetReturnedTransactionsTest {
             WHERE Method__c = 'callJsonEndpoint'
         ];
         System.assert(afterLogs.size() > 0);
-        System.assert(afterLogs[0].Message__c.contains('/v1/debitmemos/'));
-        System.assert(afterLogs[0].Message__c.contains('/v1/payments/'));
+        System.assert(afterLogs[0].Message__c.contains('/v1/debitmemos/'), afterLogs[0].Message__c);
+        System.assert(afterLogs[0].Message__c.contains('/v1/payments/'), afterLogs[0].Message__c);
     }
 
     public static void insertTestBillingAccountRecords(){
@@ -307,19 +318,13 @@ private class BatchAuthNetReturnedTransactionsTest {
                         '"totalNumInResultSet":0,' +
                         '"messages":{"resultCode":"Ok","message":[{"code":"I00004","text":"No records found."}]}}';
                 } else if (req.getBody().contains('HasReturnedItems')) {
-                    String transactionList = '';
-                    for (Integer i = 0; i < transactionsToReturn; i++) {
-                        transactionList += getTransaction(true) + ',';
-                    }
+                    String transactionList = generateTransactionList(transactionsToReturn, true);
                     responseBody = '{ "transactions": ' +
                         '[ ' + transactionList.substring(0, transactionList.length() - 1) + '], ' +
                         '"totalNumInResultSet": ' + transactionsToReturn + ', ' +
                         '"messages": { "resultCode": "Ok", "message": [ { "code": "I00001", "text": "Successful." } ] } }';
                 } else if (req.getBody().contains('NoReturnedItems')) {
-                    String transactionList = '';
-                    for (Integer i = 0; i < transactionsToReturn; i++) {
-                        transactionList += getTransaction(false) + ',';
-                    }
+                    String transactionList = generateTransactionList(transactionsToReturn, false);
                     responseBody = '{ "transactions": ' +
                         '[ ' + transactionList.substring(0, transactionList.length() - 1) + '], ' +
                         '"totalNumInResultSet": ' + transactionsToReturn + ', ' +
@@ -333,6 +338,14 @@ private class BatchAuthNetReturnedTransactionsTest {
             res.setBody(responseBody);
             res.setStatusCode(200);
             return res;
+        }
+
+        private String generateTransactionList(Integer transactionsToReturn, Boolean hasReturnedItems) {
+            String transactionList = '';
+            for (Integer i = 0; i < transactionsToReturn; i++) {
+                transactionList += getTransaction(hasReturnedItems) + ',';
+            }
+            return transactionList;
         }
 
         private String getTransaction(Boolean hasReturnedItems) {
@@ -349,9 +362,6 @@ private class BatchAuthNetReturnedTransactionsTest {
     }
 
     public class MockAPICredentialSelector extends MockProvider {
-        public MockAPICredentialSelector() {
-        }
-
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
                 when 'getApiCredentials' {
