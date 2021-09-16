@@ -201,7 +201,7 @@ public class UASBSelectorTest {
             Account__c = uas.Opportunity__r.AccountId,
             Externally_Serviced__c = true,
             Utility_Account_Subscription__c = uas.Id,
-            Bill_Date__c = Date.today().addDays(-1),
+            Date__c = Date.today().addDays(-1),
             Billing_Method__c = 'UCB',
             Ending_Banked_Credits__c = 100
         );
@@ -209,7 +209,7 @@ public class UASBSelectorTest {
             Account__c = uas.Opportunity__r.AccountId,
             Externally_Serviced__c = true,
             Utility_Account_Subscription__c = uas.Id,
-            Bill_Date__c = Date.today().addDays(-60),
+            Date__c = Date.today().addDays(-60),
             Billing_Method__c = 'UCB',
             Ending_Banked_Credits__c = 50
         );
@@ -224,7 +224,7 @@ public class UASBSelectorTest {
         String mapKey = new List<String>(priorUASBMap.keySet())[0];
         UASB__c priorUASBResult = priorUASBMap.get(szs.Id);
         System.assertEquals(szs.Id, mapKey, 'Incorrect map key for query return data');
-        System.assertEquals(Date.today().addDays(-1), priorUASBResult.Bill_Date__c, 'Incorrect Bill_Date__c field on UASB');
+        System.assertEquals(Date.today().addDays(-1), priorUASBResult.Date__c, 'Incorrect Date__c field on UASB');
         System.assertEquals(previousBillOne.Ending_Banked_Credits__c, priorUASBResult.Ending_Banked_Credits__c, 'Wrong ending banked credits');
         System.assertEquals(previousBillOne.Id, priorUASBResult.Id, 'Incorrect prior UASB__c record in map');
     }
