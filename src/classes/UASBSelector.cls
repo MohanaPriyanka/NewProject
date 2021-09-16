@@ -86,10 +86,10 @@ public without sharing class UASBSelector {
         Map<String,UASB__c> priorUasbBySzs = new Map<String,UASB__c>();
         for (Utility_Account_Subscription__c uas :
             [SELECT Id,
-                (SELECT Id, Ending_Banked_Credits__c, Bill_Date__c
+                (SELECT Id, Ending_Banked_Credits__c, Date__c
                  FROM Utility_Account_Subscription_Bills__r
                  WHERE Billing_Method__c = 'UCB'
-                 ORDER BY Bill_Date__c DESC LIMIT 1)
+                 ORDER BY Date__c DESC LIMIT 1)
             FROM Utility_Account_Subscription__c
             WHERE Id IN : uasToSzs.keySet()])
         {

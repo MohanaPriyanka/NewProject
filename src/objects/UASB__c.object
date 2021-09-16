@@ -92,30 +92,6 @@
         <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <fields>
-        <fullName>Adjusted_Credits__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Sum of Adjusted Credits Allocated to this UASB from Production Bill Adjustments, used to summarize total savings and total credits on the property account.</inlineHelpText>
-        <label>Adjusted Credits</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Adjusted_Discount__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Sum of Adjusted Discounts to this UASB from Production Bill Adjustments, used to summarize total savings</inlineHelpText>
-        <label>Adjusted Discount</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Adjustment_Amount__c</fullName>
         <defaultValue>0</defaultValue>
         <externalId>false</externalId>
@@ -139,15 +115,6 @@
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Bill_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>Bill Date</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
     </fields>
     <fields>
         <fullName>Bill_Value__c</fullName>
@@ -388,15 +355,6 @@ MONTH(Billing_Period_End_Date__c),
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Due_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>Due Date</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
         <fullName>Early_Removal__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -553,40 +511,6 @@ MONTH(Billing_Period_End_Date__c),
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>PreGen_Additional_Id__c</fullName>
-        <externalId>false</externalId>
-        <label>PreGen Additional Id</label>
-        <length>15</length>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>PreGen_CreditOnBillPeriod__c</fullName>
-        <externalId>false</externalId>
-        <label>PreGen CreditOnBillPeriod</label>
-        <length>100</length>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>PreGen_Discounted_Bill__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Used for Pre-generation of Bills Table Only</inlineHelpText>
-        <label>PreGen Discounted Bill</label>
-        <precision>16</precision>
-        <required>false</required>
-        <scale>4</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>PreGen_IsPreGen__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -595,18 +519,6 @@ MONTH(Billing_Period_End_Date__c),
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>PreGen_NMCs_Allocated__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Used for Pre-generation of Bills Table Only</inlineHelpText>
-        <label>PreGen NMCs Allocated</label>
-        <precision>16</precision>
-        <required>false</required>
-        <scale>4</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
     </fields>
     <fields>
         <fullName>PreGen_Name_on_Account__c</fullName>
@@ -619,54 +531,6 @@ MONTH(Billing_Period_End_Date__c),
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>PreGen_Production_Update__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Used for Pre-generation of Bills Table Only</inlineHelpText>
-        <label>PreGen Production Update</label>
-        <length>50</length>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>PreGen_Schedule_Z_Status__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Used for Pre-generation of Bills Table Only</inlineHelpText>
-        <label>PreGen Allocation Schedule Status</label>
-        <length>50</length>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>PreGen_Subscription_Production__c</fullName>
-        <externalId>false</externalId>
-        <label>PreGen Subscription Production</label>
-        <precision>12</precision>
-        <required>false</required>
-        <scale>6</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>PreGen_System_Share__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Used for Pre-generation of Bills Table Only</inlineHelpText>
-        <label>PreGen System Share</label>
-        <precision>7</precision>
-        <required>false</required>
-        <scale>4</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Percent</type>
     </fields>
     <fields>
         <fullName>PreGen_Utility_Acct__c</fullName>
@@ -885,18 +749,6 @@ MONTH(Billing_Period_End_Date__c),
         <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>System_Production_kWh__c</fullName>
-        <externalId>false</externalId>
-        <label>System Production (kWh)</label>
-        <precision>10</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>System_Share__c</fullName>
