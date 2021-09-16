@@ -227,8 +227,8 @@ public without sharing class SimpleSignupFormController {
         try {
             MessagingService.sendEmailTemplate(ee);
         } catch (Exception e) {
-            Logger.logNow('SimpleSignupFormController', 'sendContinueApplicationEmail', e.getMessage() +
-                '; ' + e.getStackTraceString());
+            Logger.logNow('SimpleSignupFormController', 'sendContinueApplicationEmail',
+                'Lead Id: ' + leadId + ' ' + e.getMessage() + '; ' + e.getStackTraceString());
         }
     }
 
