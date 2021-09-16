@@ -36,6 +36,20 @@ public without sharing class SystemCapacityRollupCalculatorTest {
         System.assertEquals(0, SSS.Pending_Demand_Capacity__c, 'Invalid pending demand capacity after demand thresh change');
         System.assertEquals(0, SSS.Committed_Demand_Capacity__c, 'Invalid committed demand capacity after demand thresh change');
         System.assertEquals(0, SSS.Demand_Customer_System_Utilization__c, 'Invalid demand sys util after demand thresh change');
+
+        // Test disabled utility trigger causing no recalculation
+        Util.disableTrigger('Disable_UtilityTrigger__c');
+        utility.Average_Demand_Threshold__c = 25;
+        update utility;
+        SSS = [
+            SELECT Id, Pending_Demand_Capacity__c, Committed_Demand_Capacity__c, Demand_Customer_System_Utilization__c
+            FROM Shared_Solar_System__c
+            WHERE Name = 'SSS 2'
+            LIMIT 1
+        ];
+        System.assertEquals(0, SSS.Pending_Demand_Capacity__c, 'Invalid pending demand capacity after demand thresh change');
+        System.assertEquals(0, SSS.Committed_Demand_Capacity__c, 'Invalid committed demand capacity after demand thresh change');
+        System.assertEquals(0, SSS.Demand_Customer_System_Utilization__c, 'Invalid demand sys util after demand thresh change');
     }
 
     @IsTest

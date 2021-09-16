@@ -3,10 +3,6 @@
  */
 @IsTest
 public with sharing class SharedSolarSystemHandlerTest {
-
-    public static Utility__c eversourceUtility;
-    public static Utility__c nationalGridUtility;
-    public static Utility__c noSSSUtility;
     
     @TestSetup
     @SuppressWarnings('PMD.ApexUnitTestMethodShouldHaveIsTestAnnotation, PMD.AvoidHardcodingId')
@@ -16,19 +12,16 @@ public with sharing class SharedSolarSystemHandlerTest {
             Number_of_Decimal_Places__c = 2,
             Average_Demand_Threshold__c = 25
         );
-        eversourceUtility = eversource;
         Utility__c nationalGrid = new Utility__c(
             Name = 'National Grid',
             Number_of_Decimal_Places__c = 2,
             Average_Demand_Threshold__c = 25
         );
-        nationalGridUtility = nationalGrid;
         Utility__c noSSS = new Utility__c(
             Name = 'No SSS Utility',
             Number_of_Decimal_Places__c = 2,
             Average_Demand_Threshold__c = 25
         );
-        noSSSUtility = noSSS;
         insert new List<Utility__c>{
             eversource, nationalGrid, noSSS
         };
@@ -567,6 +560,10 @@ public with sharing class SharedSolarSystemHandlerTest {
 
     @IsTest
     public static void testSSSSelectorForSystemsWithCapacity() {
+        Utility__c eversourceUtility = [SELECT Id FROM Utility__c WHERE Name = 'Eversource'];
+        Utility__c nationalGridUtility = [SELECT Id FROM Utility__c WHERE Name = 'National Grid'];
+        Utility__c noSSSUtility = [SELECT Id FROM Utility__c WHERE Name = 'No SSS Utility'];
+
         List<Shared_Solar_System__c> noSharedSolarSystems =
             SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
                 new Set<Id>{
