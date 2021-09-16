@@ -23,7 +23,7 @@ private class PaymentCaseTest {
 
     @IsTest
     private static void testExecutePostQueryJob() {
-        Util.disableTrigger('Send_Payment_Case_Emails__c');
+        Util.toggleCheckbox('Send_Payment_Case_Emails__c', true);
         useMocks();
         ZuoraAPI.Payment payment = new ZuoraAPI.Payment();
         Id accountId = '001S000000yKIZjIAO';
@@ -83,7 +83,7 @@ private class PaymentCaseTest {
 
     @IsTest
     private static void testDoNotSendEmail() {
-        Util.disableTrigger('Send_Payment_Case_Emails__c');
+        Util.toggleCheckbox('Send_Payment_Case_Emails__c', true);
         useMocks();
         ZuoraAPI.Payment payment = new ZuoraAPI.Payment();
         Id accountId = '001S000000yKIZjIAO';
@@ -105,7 +105,7 @@ private class PaymentCaseTest {
 
     @IsTest
     private static void testDoSendEmail() {
-        Util.disableTrigger('Send_Payment_Case_Emails__c');
+        Util.toggleCheckbox('Send_Payment_Case_Emails__c', true);
         useMocks();
         ZuoraAPI.Payment payment = new ZuoraAPI.Payment();
         Id accountId = '001S000000yKIZjIAO';

@@ -1,12 +1,14 @@
-public without sharing class ZuoraUsageBatchSend implements Database.Batchable<sObject>, Database.Stateful, Database.AllowsCallouts{
+public without sharing class ZuoraUsageBatchSend implements Database.Batchable<SObject>, Database.Stateful, Database.AllowsCallouts {
     public List<UASB__c> uasbToUpdate = new List<UASB__c>();
     public List<Bill_Adjustment__c> adjustToUpdate = new List<Bill_Adjustment__c>();
     public String queryString;
     public Date invoiceDate;
-    public enum UsageType {UASBS, ADJUSTMENTS}
+    public enum UsageType {
+        UASBS, ADJUSTMENTS
+    }
     public UsageType type;
 
-    public void executeBatch(){
+    public void executeBatch() {
         Database.executeBatch(this, 50);
     }
 
@@ -15,7 +17,7 @@ public without sharing class ZuoraUsageBatchSend implements Database.Batchable<s
         this.invoiceDate = invoiceDate;
     }
 
-    public Database.QueryLocator start(Database.BatchableContext bc){
+    public Database.QueryLocator start(Database.BatchableContext bc) {
         if (queryString != null) {
             return Database.getQueryLocator(queryString);
         } else {
@@ -33,7 +35,7 @@ public without sharing class ZuoraUsageBatchSend implements Database.Batchable<s
         try {
             ZuoraUsageService.ZuoraUsageItems zuoraUsage = ZuoraUsageService.convertSFUsageToZuoraUsage(scope, invoiceDate);
             Logger.clearLogs();
-            HttpResponse usageUploadResponse = ZuoraAPIHelper.callJsonEndpoint('POST','/v1/action/create',zuoraUsage,false);
+            HttpResponse usageUploadResponse = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/action/create', zuoraUsage, false);
             Map<String, List<SObject>> recordsToUpdate = ZuoraUsageService.handleAPIResponse(zuoraUsage.objects, usageUploadResponse, invoiceDate);
             List<UASB__c> newUASBToUpdate = recordsToUpdate.get('UASB');
             List<Bill_Adjustment__c> newAdjustToUpdate = recordsToUpdate.get('Bill_Adjustment');
@@ -43,33 +45,30 @@ public without sharing class ZuoraUsageBatchSend implements Database.Batchable<s
             if (newAdjustToUpdate != null) {
                 adjustToUpdate.addAll(newAdjustToUpdate);
             }
-        } catch(Exception excep) {
+        } catch (Exception excep) {
             Logger.logLater('ZuoraUsageBatchSend', 'execute', excep.getMessage() + '\n' + excep.getStackTraceString());
         }
         Logger.flushLogs();
     }
 
-    public void finish(Database.BatchableContext bc){
-        if (Util.getSystemPropertyCheckbox('Update_Usage_Records_With_ZuoraId__c')) {
+    public void finish(Database.BatchableContext bc) {
+        // For historical migration, we want to make sure old data doesn't change when we update UASBs and Adjustments,
+        // so we track historical changes and log them:
 
-            // For historical migration, we want to make sure old data doesn't change when we update UASBs and Adjustments,
-            // so we track historical changes and log them:
-
-            List<SObject> recordsToUpdate = new List<SObject>();
-            if (uasbToUpdate.size() > 0){
-                recordsToUpdate.addAll(uasbToUpdate);
-            }
-            if (adjustToUpdate.size() > 0){
-                recordsToUpdate.addAll(adjustToUpdate);
-            }
-            if (recordsToUpdate.size() > 0){
-                GenericBatchDMLOperation batchDML = new GenericBatchDMLOperation(recordsToUpdate, 'Update');
-                batchDML.triggersToDisable = new List<String>{
-                    'Disable_AccountTrigger__c',
-                    'Disable_BillAdjustmentTrigger__c'
-                };
-                Database.executeBatch(batchDML);
-            }
+        List<SObject> recordsToUpdate = new List<SObject>();
+        if (uasbToUpdate.size() > 0) {
+            recordsToUpdate.addAll(uasbToUpdate);
+        }
+        if (adjustToUpdate.size() > 0) {
+            recordsToUpdate.addAll(adjustToUpdate);
+        }
+        if (recordsToUpdate.size() > 0) {
+            GenericBatchDMLOperation batchDML = new GenericBatchDMLOperation(recordsToUpdate, 'Update');
+            batchDML.triggersToDisable = new List<String>{
+                'Disable_AccountTrigger__c',
+                'Disable_BillAdjustmentTrigger__c'
+            };
+            Database.executeBatch(batchDML);
         }
     }
 }
