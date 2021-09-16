@@ -3,6 +3,10 @@
  */
 @IsTest
 public with sharing class SharedSolarSystemHandlerTest {
+
+    public static Utility__c eversourceUtility;
+    public static Utility__c nationalGridUtility;
+    public static Utility__c noSSSUtility;
     
     @TestSetup
     @SuppressWarnings('PMD.ApexUnitTestMethodShouldHaveIsTestAnnotation, PMD.AvoidHardcodingId')
@@ -12,16 +16,19 @@ public with sharing class SharedSolarSystemHandlerTest {
             Number_of_Decimal_Places__c = 2,
             Average_Demand_Threshold__c = 25
         );
+        eversourceUtility = eversource;
         Utility__c nationalGrid = new Utility__c(
             Name = 'National Grid',
             Number_of_Decimal_Places__c = 2,
             Average_Demand_Threshold__c = 25
         );
+        nationalGridUtility = nationalGrid;
         Utility__c noSSS = new Utility__c(
             Name = 'No SSS Utility',
             Number_of_Decimal_Places__c = 2,
             Average_Demand_Threshold__c = 25
         );
+        noSSSUtility = noSSS;
         insert new List<Utility__c>{
             eversource, nationalGrid, noSSS
         };
@@ -146,62 +153,6 @@ public with sharing class SharedSolarSystemHandlerTest {
         insert new List<Shared_Solar_System__c>{
             sss1, sss2, sss3
         };
-        List<Shared_Solar_System__c> noSharedSolarSystems =
-            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
-                new Set<Id>{
-                    noSSS.Id
-                },
-                new Set<String>{
-                    'No Load Zone'
-                }
-            );
-        System.assertEquals(0, noSharedSolarSystems.size());
-        noSharedSolarSystems =
-            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
-                new Set<Id>{
-                    eversource.Id
-                },
-                new Set<String>{
-                    'No Load Zone'
-                }
-            );
-        System.assertEquals(0, noSharedSolarSystems.size());
-        noSharedSolarSystems =
-            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
-                new Set<Id>(),
-                new Set<String>()
-            );
-        System.assertEquals(0, noSharedSolarSystems.size());
-        noSharedSolarSystems =
-            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
-                new Set<Id>{
-                    noSSS.Id
-                },
-                new Set<String>{
-                    'SEMA'
-                }
-            );
-        System.assertEquals(0, noSharedSolarSystems.size());
-        List<Shared_Solar_System__c> eversourceSharedSolarSystems =
-            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
-                new Set<Id>{
-                    eversource.Id
-                },
-                new Set<String>{
-                    'SEMA', 'NEMA'
-                }
-            );
-        System.assertEquals(3, eversourceSharedSolarSystems.size(), 'Expected 3 Eversource systems with capacity but got: ' + eversourceSharedSolarSystems);
-        List<Shared_Solar_System__c> ngAndEversourceSharedSolarSystems =
-            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
-                new Set<Id>{
-                    nationalGrid.Id, eversource.Id
-                },
-                new Set<String>{
-                    'SEMA', 'NEMA'
-                }
-            );
-        System.assertEquals(3, ngAndEversourceSharedSolarSystems.size());
         Account accountParent1 = new Account(Name = 'Parent Account 1', Client_Brand_Key__c = 'BluewaveLogo');
         Account accountParent2 = new Account(Name = 'Parent Account 2', Client_Brand_Key__c = 'AmpRed');
         Account accountParent3 = new Account(Name = 'Parent Account 3', Client_Brand_Key__c = 'BluewaveLogo');
@@ -612,6 +563,66 @@ public with sharing class SharedSolarSystemHandlerTest {
         }
         insert clientContracts;
         update sssList;
+    }
+
+    @IsTest
+    public static void testSSSSelectorForSystemsWithCapacity() {
+        List<Shared_Solar_System__c> noSharedSolarSystems =
+            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
+                new Set<Id>{
+                    noSSSUtility.Id
+                },
+                new Set<String>{
+                    'No Load Zone'
+                }
+            );
+        System.assertEquals(0, noSharedSolarSystems.size());
+        noSharedSolarSystems =
+            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
+                new Set<Id>{
+                    eversourceUtility.Id
+                },
+                new Set<String>{
+                    'No Load Zone'
+                }
+            );
+        System.assertEquals(0, noSharedSolarSystems.size());
+        noSharedSolarSystems =
+            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
+                new Set<Id>(),
+                new Set<String>()
+            );
+        System.assertEquals(0, noSharedSolarSystems.size());
+        noSharedSolarSystems =
+            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
+                new Set<Id>{
+                    noSSSUtility.Id
+                },
+                new Set<String>{
+                    'SEMA'
+                }
+            );
+        System.assertEquals(0, noSharedSolarSystems.size());
+        List<Shared_Solar_System__c> eversourceSharedSolarSystems =
+            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
+                new Set<Id>{
+                    eversourceUtility.Id
+                },
+                new Set<String>{
+                    'SEMA', 'NEMA'
+                }
+            );
+        System.assertEquals(3, eversourceSharedSolarSystems.size(), 'Expected 3 Eversource systems with capacity but got: ' + eversourceSharedSolarSystems);
+        List<Shared_Solar_System__c> ngAndEversourceSharedSolarSystems =
+            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
+                new Set<Id>{
+                    nationalGridUtility.Id, eversourceUtility.Id
+                },
+                new Set<String>{
+                    'SEMA', 'NEMA'
+                }
+            );
+        System.assertEquals(3, ngAndEversourceSharedSolarSystems.size());
     }
     
     @IsTest

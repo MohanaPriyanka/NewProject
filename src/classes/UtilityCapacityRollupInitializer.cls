@@ -4,7 +4,7 @@
  * Intended for use with SystemCapacityRollupCalculator. Included on UtilityTrigger.
  * Tested By: SystemCapacityRollupCalculatorTest
  */
-public with sharing class UtilityCapacityRollupInitializer implements SystemCapacityRollupCalculator.Initializer {
+public without sharing class UtilityCapacityRollupInitializer implements SystemCapacityRollupCalculator.Initializer {
 
     public Map<Id,Utility__c> oldMap;
     public List<Utility__c> newList;

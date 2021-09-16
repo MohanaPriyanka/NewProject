@@ -16,9 +16,8 @@ public without sharing class OpportunityCapacityRollupInitializer implements Sys
 
     /**
      * @description Get Shared_Solar_System__c records to queue for capacity rollup recalculation based on scenarios:
-     * 1. Opps that change Stage to 'Complete'
-     * 2. Opps that move from 'Complete' to any other Stage
-     * These situations indicate a value change for Pending or Committed capacity SSS rollup field(s))
+     * 1. Opps that change Stage
+     * These situations indicate a possible value change for Pending or Committed capacity SSS rollup field(s))
      * @return Set of Shared_Solar_System__c Ids
      */
     public Set<Id> getSystemsToCheckCapacityRollups() {

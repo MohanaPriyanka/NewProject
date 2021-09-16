@@ -2,7 +2,7 @@
  * @description  Created by jeffparlin on 09/13/2021.
  * Tested By: SubscriptionManagementServiceTest, SubscriptionSizingTestclass
  */
-public with sharing class SubscriptionOrderTriggerHandler {
+public without sharing class SubscriptionOrderTriggerHandler {
 
     private SubscriptionManagementService subscriptionManagementService = new SubscriptionManagementService();
     private Map<Id, Subscription_Order__c> oldMap;
