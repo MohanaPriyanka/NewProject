@@ -1,5 +1,6 @@
 @IsTest
 public with sharing class OpportunityTriggerTest {
+
     @TestSetup
     public static void setupData() {
         Profile bfgStandardUser = [SELECT Id FROM Profile WHERE Name = 'BFG Standard User'];
@@ -88,8 +89,8 @@ public with sharing class OpportunityTriggerTest {
         List<Opportunity> newOppList = new List<Opportunity>{newOpp1, newOpp2, newOpp3};
         Test.startTest();
         Map<Id,Subscription_Change_Event__e> eventMap = new Map<Id,Subscription_Change_Event__e>();
-        OpportunityTriggerHandler handler = new OpportunityTriggerHandler();
-        eventMap = handler.eventHandling(newOppList, oldOppMap);
+        OpportunityTriggerHandler handler = new OpportunityTriggerHandler(oldOppMap, null, newOppList);
+        eventMap = handler.eventHandling();
         Test.stopTest();
         System.assert(eventMap.containsKey(oppList[0].AccountId));
         System.assert(eventMap.containsKey(oppList[1].AccountId));
@@ -112,7 +113,6 @@ public with sharing class OpportunityTriggerTest {
         noCustomerGroup = [SELECT RecordType.Name FROM Opportunity WHERE Id = :noCustomerGroup.Id];
         System.assertEquals('Community Solar', noCustomerGroup.RecordType.Name,
             'The default record type for an opportunity with Product Line of Community Solar should be Community Solar');
-
     }
 
     @IsTest
