@@ -146,62 +146,6 @@ public with sharing class SharedSolarSystemHandlerTest {
         insert new List<Shared_Solar_System__c>{
             sss1, sss2, sss3
         };
-        List<Shared_Solar_System__c> noSharedSolarSystems =
-            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
-                new Set<Id>{
-                    noSSS.Id
-                },
-                new Set<String>{
-                    'No Load Zone'
-                }
-            );
-        System.assertEquals(0, noSharedSolarSystems.size());
-        noSharedSolarSystems =
-            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
-                new Set<Id>{
-                    eversource.Id
-                },
-                new Set<String>{
-                    'No Load Zone'
-                }
-            );
-        System.assertEquals(0, noSharedSolarSystems.size());
-        noSharedSolarSystems =
-            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
-                new Set<Id>(),
-                new Set<String>()
-            );
-        System.assertEquals(0, noSharedSolarSystems.size());
-        noSharedSolarSystems =
-            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
-                new Set<Id>{
-                    noSSS.Id
-                },
-                new Set<String>{
-                    'SEMA'
-                }
-            );
-        System.assertEquals(0, noSharedSolarSystems.size());
-        List<Shared_Solar_System__c> eversourceSharedSolarSystems =
-            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
-                new Set<Id>{
-                    eversource.Id
-                },
-                new Set<String>{
-                    'SEMA', 'NEMA'
-                }
-            );
-        System.assertEquals(3, eversourceSharedSolarSystems.size(), 'Expected 3 Eversource systems with capacity but got: ' + eversourceSharedSolarSystems);
-        List<Shared_Solar_System__c> ngAndEversourceSharedSolarSystems =
-            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
-                new Set<Id>{
-                    nationalGrid.Id, eversource.Id
-                },
-                new Set<String>{
-                    'SEMA', 'NEMA'
-                }
-            );
-        System.assertEquals(3, ngAndEversourceSharedSolarSystems.size());
         Account accountParent1 = new Account(Name = 'Parent Account 1', Client_Brand_Key__c = 'BluewaveLogo');
         Account accountParent2 = new Account(Name = 'Parent Account 2', Client_Brand_Key__c = 'AmpRed');
         Account accountParent3 = new Account(Name = 'Parent Account 3', Client_Brand_Key__c = 'BluewaveLogo');
@@ -613,6 +557,70 @@ public with sharing class SharedSolarSystemHandlerTest {
         insert clientContracts;
         update sssList;
     }
+
+    @IsTest
+    public static void testSSSSelectorForSystemsWithCapacity() {
+        Utility__c eversourceUtility = [SELECT Id FROM Utility__c WHERE Name = 'Eversource'];
+        Utility__c nationalGridUtility = [SELECT Id FROM Utility__c WHERE Name = 'National Grid'];
+        Utility__c noSSSUtility = [SELECT Id FROM Utility__c WHERE Name = 'No SSS Utility'];
+
+        List<Shared_Solar_System__c> noSharedSolarSystems =
+            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
+                new Set<Id>{
+                    noSSSUtility.Id
+                },
+                new Set<String>{
+                    'No Load Zone'
+                }
+            );
+        System.assertEquals(0, noSharedSolarSystems.size());
+        noSharedSolarSystems =
+            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
+                new Set<Id>{
+                    eversourceUtility.Id
+                },
+                new Set<String>{
+                    'No Load Zone'
+                }
+            );
+        System.assertEquals(0, noSharedSolarSystems.size());
+        noSharedSolarSystems =
+            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
+                new Set<Id>(),
+                new Set<String>()
+            );
+        System.assertEquals(0, noSharedSolarSystems.size());
+        noSharedSolarSystems =
+            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
+                new Set<Id>{
+                    noSSSUtility.Id
+                },
+                new Set<String>{
+                    'SEMA'
+                }
+            );
+        System.assertEquals(0, noSharedSolarSystems.size());
+        List<Shared_Solar_System__c> eversourceSharedSolarSystems =
+            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
+                new Set<Id>{
+                    eversourceUtility.Id
+                },
+                new Set<String>{
+                    'SEMA', 'NEMA'
+                }
+            );
+        System.assertEquals(3, eversourceSharedSolarSystems.size(), 'Expected 3 Eversource systems with capacity but got: ' + eversourceSharedSolarSystems);
+        List<Shared_Solar_System__c> ngAndEversourceSharedSolarSystems =
+            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
+                new Set<Id>{
+                    nationalGridUtility.Id, eversourceUtility.Id
+                },
+                new Set<String>{
+                    'SEMA', 'NEMA'
+                }
+            );
+        System.assertEquals(3, ngAndEversourceSharedSolarSystems.size());
+    }
     
     @IsTest
     public static void testApexContext() {
@@ -665,68 +673,6 @@ public with sharing class SharedSolarSystemHandlerTest {
     }
     
     @IsTest
-    public static void testSharedSolarSystemUpdate() {
-        Test.startTest();
-        List<Utility_Account_Subscription__c> uas = [
-            SELECT Utility_Account_Log__c,
-                Opportunity__c,
-                Next_Schedule_Z_Status__c,
-                calculated_annual_cost_of_electricity__c,
-                Subscribed_Annual_Cost_of_Electricity__c,
-                Customer_Subscription_KW_DC__c,
-                Opportunity__r.Shared_Solar_System__c
-            FROM Utility_Account_Subscription__c
-            WHERE Name = '0000234'
-            LIMIT 1
-        ];
-        List<Shared_Solar_System__c> testSSS = [
-            SELECT Name, Capacity_Committed_kW_DC__c
-            FROM Shared_Solar_System__c
-            WHERE Id = :uas[0].Opportunity__r.Shared_Solar_System__c
-        ];
-        System.assertNotEquals(0, uas[0].Customer_Subscription_KW_DC__c);
-        update testSSS;
-        System.assertEquals(uas[0].Customer_Subscription_KW_DC__c, testSSS[0].Capacity_Committed_kW_DC__c);
-        System.assertNotEquals(0, testSSS[0].Capacity_Committed_kW_DC__c);
-        Test.stopTest();
-    }
-
-    @IsTest
-    public static void testDemandCapacitySummarization() {
-        Shared_Solar_System__c originalSSS = [
-            SELECT Id, Pending_Demand_Capacity__c, Committed_Demand_Capacity__c, Demand_Customer_System_Utilization__c
-            FROM Shared_Solar_System__c
-            WHERE Name = 'SSS 2'
-            LIMIT 1
-        ];
-        // 2 UASes:  6.1538 , 0.2308 = 6.3846
-        // 1 Anchor: 23.0769
-        // All UASes (UAL: Average_Demand__c) are "Demand" => committed demand capacity on SSS should be sum of UASes
-        // Subscription Orders use the rounded version of the subscription
-        System.assertEquals(0, originalSSS.Pending_Demand_Capacity__c, 'All opps are Complete and subscriptions active, no pending data');
-        System.assertEquals(29.4624, originalSSS.Committed_Demand_Capacity__c, 'Invalid committed demand capacity');
-
-        // Set exclusion criteria for demand capacity on UAL 2, which should remove committed demand capacity from SSS
-        update new Utility_Account_Log__c(
-            Id = [SELECT Id FROM Utility_Account_Log__c WHERE Name = '0000236'].Id,
-            Exclude_from_Demand_Capacity__c = true
-        );
-
-        Test.startTest();
-            SharedSolarSystemHandler handler = new SharedSolarSystemHandler();
-            handler.updateSSS();
-        Test.stopTest();
-
-        Shared_Solar_System__c sssUpdated = [
-            SELECT Committed_Demand_Capacity__c, Demand_Customer_System_Utilization__c, Pending_Demand_Capacity__c
-            FROM Shared_Solar_System__c WHERE Name = 'SSS 2' LIMIT 1
-        ];
-        System.assertEquals(0, originalSSS.Pending_Demand_Capacity__c, 'All opps are Complete and subscriptions active, no pending data');
-        System.assertEquals(23.3088, sssUpdated.Committed_Demand_Capacity__c, 'Incorrect committed demand capacity');
-        System.assertEquals(72.84, sssUpdated.Demand_Customer_System_Utilization__c, 'Incorrect demand utilization');
-    }
-    
-    @IsTest
     public static void testMultipleUASes() {
         Shared_Solar_System__c originalSSS = [
             SELECT Id, Capacity_Committed_kW_DC__c, Anchor_Capacity_Reserved__c
@@ -764,8 +710,7 @@ public with sharing class SharedSolarSystemHandlerTest {
         insert resize;
 
         Test.startTest();
-        SharedSolarSystemHandler handler = new SharedSolarSystemHandler();
-        handler.updateSSS();
+        new SharedSolarSystemHandler().execute(null);
         Test.stopTest();
         Shared_Solar_System__c sssUpdated = [
             SELECT Id, Capacity_Committed_kW_DC__c, Anchor_Capacity_Reserved__c
@@ -817,8 +762,7 @@ public with sharing class SharedSolarSystemHandlerTest {
 
         System.assertEquals(4, countComplete + countReserved);
         Test.startTest();
-        SharedSolarSystemHandler handler = new SharedSolarSystemHandler();
-        handler.updateSSS();
+        new SharedSolarSystemHandler().execute(null);
         Test.stopTest();
         Shared_Solar_System__c sssUpdated = [
             SELECT Id, Capacity_Committed_kW_DC__c, Anchor_Capacity_Reserved__c, Reserved_Capacity_kW_DC__c
