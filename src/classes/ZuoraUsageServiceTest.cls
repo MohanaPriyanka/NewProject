@@ -1,11 +1,11 @@
-@isTest
+@IsTest
 public class ZuoraUsageServiceTest {
-    @testSetup public static void testDataSetup() {
+    @TestSetup public static void testDataSetup() {
         MultipleMonthProductionUpdateTest.multipleMonthTest();
     }
 
     // To avoid SOQL Limits, do this method inside Test.StartTest()
-    public static void finishTestSetup(){
+    public static void finishTestSetup() {
         Shared_Solar_System__c sss = [
             SELECT Id, Name, Unique_ID__c, BWC_Project_Entity_Manual__r.Client_Account__r.Account_Number__c
             FROM Shared_Solar_System__c
@@ -37,7 +37,7 @@ public class ZuoraUsageServiceTest {
         // If ZuoraId contains CID, mocked subscriptions will be returned for this client/shared solar system pair:
         String accountKey = 'CID' + clientAccount.Account_Number__c + 'SID' + sss.Unique_ID__c + 'END';
 
-        for (Account accts : propertyAccounts){
+        for (Account accts : propertyAccounts) {
             accts.Zuora_Id__c = accountKey;
         }
         update propertyAccounts;
@@ -87,7 +87,7 @@ public class ZuoraUsageServiceTest {
             Approval_Status__c = 'Approved',
             Client__c = clientAccount.Id,
             Reason_For_Adjustment__c = 'Needs adjustment');
-        Bill_Adjustment__c adjustFour   = new Bill_Adjustment__c(
+        Bill_Adjustment__c adjustFour = new Bill_Adjustment__c(
             Name = 'UASoneAdjustment2',
             Utility_Account_Subscription__c = uasbList[0].Utility_Account_Subscription__r.Id,
             Account__c = uasbList[0].Utility_Account_Subscription__r.Opportunity__r.AccountId,
@@ -100,14 +100,16 @@ public class ZuoraUsageServiceTest {
             Approval_Status__c = 'Approved',
             Client__c = clientAccount.Id,
             Reason_For_Adjustment__c = 'Needs adjustment');
-        insert new List<Bill_Adjustment__c>{adjustOne, adjustTwo, adjustThree, adjustFour};
+        insert new List<Bill_Adjustment__c>{
+            adjustOne, adjustTwo, adjustThree, adjustFour
+        };
     }
 
     @IsTest
     private static void testQueries() {
         Test.startTest();
         finishTestSetup();
-        Database.QueryLocator queryLocator = UASBSelector.uasbsNotYetInZuora(Date.newInstance(2050,01,01));
+        Database.QueryLocator queryLocator = UASBSelector.uasbsNotYetInZuora(Date.newInstance(2050, 01, 01));
         Database.QueryLocatorIterator iterator = queryLocator.iterator();
         Integer i = 0;
         while (iterator.hasNext()) {
@@ -144,7 +146,7 @@ public class ZuoraUsageServiceTest {
             Customer_Subscription_KW_DC__c = 25,
             CS_Billing_Log__c = uasb.CS_Billing_Log__r.Id,
             Date__c = uasb.Date__c,
-            NMC_Discount__c	= uasb.NMC_Discount__c,
+            NMC_Discount__c = uasb.NMC_Discount__c,
             Share_of_System__c = 2.5,
             Total_System_Production_kWh__c = 150000,
             Total_System_NMCs__c = 18000,
@@ -153,7 +155,7 @@ public class ZuoraUsageServiceTest {
             Account__c = uasb.Opportunity__r.AccountId,
             System_Bill__c = uasb.System_Bill__r.Id,
             Shared_Solar_System__c = uasb.Shared_Solar_System__r.Id,
-            Total_System_Size_kw_DC__c = uasb.Total_System_Size_kw_DC__c,
+            Total_System_Size_kW_DC__c = uasb.Total_System_Size_kW_DC__c,
             NMC_Rate__c = uasb.NMC_Rate__c,
             Credits_Allocated__c = 450,
             Subscription_Production_kWh_Static__c = 3750,
@@ -162,7 +164,7 @@ public class ZuoraUsageServiceTest {
         );
         insert uasbAnchor;
 
-        Database.QueryLocator queryLocator = UASBSelector.uasbsNotYetInZuora(Date.newInstance(2050,01,01));
+        Database.QueryLocator queryLocator = UASBSelector.uasbsNotYetInZuora(Date.newInstance(2050, 01, 01));
         Database.QueryLocatorIterator iterator = queryLocator.iterator();
         Integer i = 0;
         while (iterator.hasNext()) {
@@ -178,8 +180,6 @@ public class ZuoraUsageServiceTest {
     @IsTest
     private static void testAPIUASBCallsWithMock() {
         ZuoraUsageService.featureService = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(false));
-        // disableTrigger just sets a system property checkbox to true
-        Util.disableTrigger('Update_Usage_Records_With_ZuoraId__c');
         Test.startTest();
         finishTestSetup();
         ZuoraUsageBatchSend zSend = new ZuoraUsageBatchSend(ZuoraUsageBatchSend.UsageType.UASBS, System.today());
@@ -187,11 +187,10 @@ public class ZuoraUsageServiceTest {
         Test.stopTest();
 
         // API Mock returns 14 rows, 3 errors, 11 successes:
-        System.assertEquals(true, Util.getSystemPropertyCheckbox('Update_Usage_Records_With_ZuoraId__c'));
         List<UASB__c> uasbList = [
             SELECT Id, Name, Zuora_Id__c, Client_Account_Number__c
             FROM UASB__c
-            WHERE Zuora_Id__c != null
+            WHERE Zuora_Id__c != NULL
         ];
         System.assertEquals(10, uasbList.size());
 
@@ -202,7 +201,7 @@ public class ZuoraUsageServiceTest {
         ];
         System.assertEquals(1, errors.size());
 
-        Database.QueryLocator queryLocator = UASBSelector.uasbsNotYetInZuora(Date.newInstance(2050,01,01));
+        Database.QueryLocator queryLocator = UASBSelector.uasbsNotYetInZuora(Date.newInstance(2050, 01, 01));
         Database.QueryLocatorIterator iterator = queryLocator.iterator();
         List<UASB__c> failedUASB = new List<UASB__c>();
         while (iterator.hasNext()) {
@@ -215,8 +214,6 @@ public class ZuoraUsageServiceTest {
     @IsTest
     private static void testAPIAdjustmentCallsWithMock() {
         ZuoraUsageService.featureService = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(false));
-        // disableTrigger just sets a system property checkbox to true
-        Util.disableTrigger('Update_Usage_Records_With_ZuoraId__c');
         Date invoiceDate = System.today().addDays(3);
         Test.startTest();
         finishTestSetup();
@@ -225,7 +222,6 @@ public class ZuoraUsageServiceTest {
         Test.stopTest();
 
         // API Mock returns 14 rows, 3 errors, 11 successes:
-        System.assertEquals(true, Util.getSystemPropertyCheckbox('Update_Usage_Records_With_ZuoraId__c'));
         List<Bill_Adjustment__c> adjustList = [
             SELECT Id, Name, Zuora_Id__c, Effective_Date__c
             FROM Bill_Adjustment__c
@@ -256,12 +252,9 @@ public class ZuoraUsageServiceTest {
     private static void testCallWithoutUpdatingUASBs() {
         Test.startTest();
         finishTestSetup();
-        ZuoraUsageBatchSend zSend = new ZuoraUsageBatchSend(ZuoraUsageBatchSend.UsageType.UASBS, Date.newInstance(2018,04,20));
+        ZuoraUsageBatchSend zSend = new ZuoraUsageBatchSend(ZuoraUsageBatchSend.UsageType.UASBS, Date.newInstance(2018, 04, 20));
         zSend.executeBatch();
         Test.stopTest();
-
-        // This should be unchecked by default
-        System.assertEquals(false, Util.getSystemPropertyCheckbox('Update_Usage_Records_With_ZuoraId__c'));
 
         // API Mock returns 14 rows, 3 errors, 11 successes, but since we're not updating usage records, uasbs and
         // bill adjustments shouldn't be updated
