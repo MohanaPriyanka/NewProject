@@ -3,19 +3,23 @@
  */
 
 ({
-    returnPayment : function(component, event, helper) {
+    returnPayment : function(component) {
         component.set('v.loading', true);
         component.set('v.confirm', false);
-        var action = component.get('c.reverseReturnedPayment');
+        let action = component.get('c.reverseReturnedPayment');
         action.setParams({"paymentId": component.get("v.recordId")});
         action.setCallback(this, function(resp) {
             component.set('v.loading', false);
-            var result = resp.getReturnValue();
+            let result = resp.getReturnValue();
             component.set('v.result', result);
             if (result.success) {
-                component.set('v.successMessage', result.debitMemos.length + ' debit memos created and posted successfully');
+                component.set('v.successMessage', result.message);
             }
         });
         $A.enqueueAction(action);
+    },
+
+    cancel : function() {
+        $A.get("e.force:closeQuickAction").fire();
     }
 });
