@@ -28,7 +28,7 @@ public without sharing class UtilityAccountSubscriptionHandler {
         if (Test.isRunningTest() && featureService.isEnabled('Subscription_Orders')) {
             subscriptionManagementService.insertSubscriptionOrdersForTests(newList);
         }
-        new SystemCapacityRollupCalculator(oldMap, newList, triggerType).performRollup();
+        new SystemCapacityRollupCalculator(new UASCapacityRollupInitializer(oldMap, newList, triggerType)).performRollup();
     }
 
     public void beforeUpdate() {
@@ -38,7 +38,7 @@ public without sharing class UtilityAccountSubscriptionHandler {
     public void afterUpdate() {
         CSCancellationProjectRemover.handleOpportunitiesRemovedFromProject(oldMap, constructNewMap());
         ClientReportingService.updateClientUAS(newList, oldMap);
-        new SystemCapacityRollupCalculator(oldMap, newList, triggerType).performRollup();
+        new SystemCapacityRollupCalculator(new UASCapacityRollupInitializer(oldMap, newList, triggerType)).performRollup();
     }
     
     public void beforeDelete() {
@@ -47,11 +47,11 @@ public without sharing class UtilityAccountSubscriptionHandler {
     }
 
     public void afterDelete() {
-        new SystemCapacityRollupCalculator(oldMap, newList, triggerType).performRollup();
+        new SystemCapacityRollupCalculator(new UASCapacityRollupInitializer(oldMap, newList, triggerType)).performRollup();
     }
 
     public void afterUndelete() {
-        new SystemCapacityRollupCalculator(oldMap, newList, triggerType).performRollup();
+        new SystemCapacityRollupCalculator(new UASCapacityRollupInitializer(oldMap, newList, triggerType)).performRollup();
     }
 
     private Map<Id,Utility_Account_Subscription__c> constructNewMap() {

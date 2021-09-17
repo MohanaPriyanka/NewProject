@@ -42,7 +42,7 @@ public without sharing class OpportunityTriggerHandler {
         }
         createPartnerCommission(oldMap, newMap);
         CSApplicationStatusEventPublisher.publishEvent(oldMap, newList);
-        new SystemCapacityRollupCalculator(oldMap, newList).performRollup();
+        new SystemCapacityRollupCalculator(new OpportunityCapacityRollupInitializer(oldMap, newList)).performRollup();
     }
 
     public void afterDelete() {

@@ -36,7 +36,7 @@ public without sharing class UtilityAccountLogTriggerHandler {
         if (!leadIdSet.isEmpty()) {
             updateRateClassOnContract(leadIdSet);
         }
-        new SystemCapacityRollupCalculator(oldMap, newList).performRollup();
+        new SystemCapacityRollupCalculator(new UALCapacityRollupInitializer(oldMap, newList)).performRollup();
     }
 
     private void updateProposedkWh() {

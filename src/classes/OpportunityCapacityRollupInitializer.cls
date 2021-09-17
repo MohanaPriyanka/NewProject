@@ -16,7 +16,8 @@ public without sharing class OpportunityCapacityRollupInitializer implements Sys
 
     /**
      * @description Get Shared_Solar_System__c records to queue for capacity rollup recalculation based on scenarios:
-     * 1. Opps that change Stage
+     *   1. Opps that change Stage
+     *   2. Opps that change customer group or customer sub group
      * These situations indicate a possible value change for Pending or Committed capacity SSS rollup field(s))
      * @return Set of Shared_Solar_System__c Ids
      */
@@ -25,6 +26,10 @@ public without sharing class OpportunityCapacityRollupInitializer implements Sys
         for (Opportunity newOpp : newList) {
             Opportunity oldOpp = oldMap.get(newOpp.Id);
             if (newOpp.StageName != oldOpp.StageName) {
+                systems.add(newOpp.Shared_Solar_System__c);
+            }
+            if (newOpp.Customer_Group__c != oldOpp.Customer_Group__c ||
+                newOpp.Customer_Sub_Group__c != oldOpp.Customer_Sub_Group__c) {
                 systems.add(newOpp.Shared_Solar_System__c);
             }
         }

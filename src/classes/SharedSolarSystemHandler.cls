@@ -59,7 +59,6 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
         uow = new fflib_SObjectUnitOfWork(new List<SObjectType>{Shared_Solar_System__c.SObjectType});
         try {
             Util.disableTrigger('Disable_SharedSolarSystemTrigger__c');
-            uow.registerWork(new Logger());
             updateAllSSS();
             Util.enableTrigger('Disable_SharedSolarSystemTrigger__c');
         } catch (Exception e) {

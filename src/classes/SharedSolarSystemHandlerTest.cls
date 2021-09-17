@@ -673,33 +673,6 @@ public with sharing class SharedSolarSystemHandlerTest {
     }
     
     @IsTest
-    public static void testSharedSolarSystemUpdate() {
-        Test.startTest();
-        List<Utility_Account_Subscription__c> uas = [
-            SELECT Utility_Account_Log__c,
-                Opportunity__c,
-                Next_Schedule_Z_Status__c,
-                calculated_annual_cost_of_electricity__c,
-                Subscribed_Annual_Cost_of_Electricity__c,
-                Customer_Subscription_KW_DC__c,
-                Opportunity__r.Shared_Solar_System__c
-            FROM Utility_Account_Subscription__c
-            WHERE Name = '0000234'
-            LIMIT 1
-        ];
-        List<Shared_Solar_System__c> testSSS = [
-            SELECT Name, Capacity_Committed_kW_DC__c
-            FROM Shared_Solar_System__c
-            WHERE Id = :uas[0].Opportunity__r.Shared_Solar_System__c
-        ];
-        System.assertNotEquals(0, uas[0].Customer_Subscription_KW_DC__c);
-        update testSSS;
-        System.assertEquals(uas[0].Customer_Subscription_KW_DC__c, testSSS[0].Capacity_Committed_kW_DC__c);
-        System.assertNotEquals(0, testSSS[0].Capacity_Committed_kW_DC__c);
-        Test.stopTest();
-    }
-    
-    @IsTest
     public static void testMultipleUASes() {
         Shared_Solar_System__c originalSSS = [
             SELECT Id, Capacity_Committed_kW_DC__c, Anchor_Capacity_Reserved__c

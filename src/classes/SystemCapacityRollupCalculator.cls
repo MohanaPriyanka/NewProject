@@ -2,11 +2,9 @@
  * @description Created by jeffparlin on 9/9/21.
  * - Gathers Shared_Solar_System__c records which are in need of capacity (rollup) field recalculation based on related record
  *     changes, and performs the recalculation in realtime (synchronously)
- * - Different constructors correspond to the different the objects/records that, when changed in a specified way,
- *     indicate that capacity rollups on Shared_Solar_System__c are due for recalculation.
  * - Fields on Shared_Solar_System__c modified: Shared_Solar_System__c.Capacity_Committed_kW_DC__c, etc.
  * - If in the future changes to other object types should result in this same sort of recalculation, create a new class
- *     constructor here and also a new class which implements SystemCapacityRollupCalculator.Initializer
+ *     which implements SystemCapacityRollupCalculator.Initializer
  *
  * Tested By: SystemCapacityRollupCalculatorTest, SharedSolarSystemHandlerTest
  */
@@ -14,7 +12,6 @@ public without sharing class SystemCapacityRollupCalculator {
 
     @TestVisible private static SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
     private Initializer initializer;
-    private Boolean bypassInitializer = false;
     private Set<Id> systemIds;
     private List<Shared_Solar_System__c> systems;
     private List<Utility_Account_Subscription__c> pendingSmallCSCapacityList;
@@ -32,46 +29,15 @@ public without sharing class SystemCapacityRollupCalculator {
      * @param sharedSolarSystemIds List of Shared_Solar_System__c records to process (typically from SSS Trigger.new)
      */
     public SystemCapacityRollupCalculator(Set<Id> sharedSolarSystemIds) {
-        this.bypassInitializer = true;
         this.systemIds = sharedSolarSystemIds;
     }
 
     /**
-     * @description Constructor for use when Utility__c records change
-     * @param utilityOldMap Trigger.oldMap from UtilityTrigger
-     * @param utilityNew Trigger.new from UtilityTrigger
+     * @description Constructor for use when other (related) object records change
+     * @param init Initializer interface to use with the class to determine systems to inspect
      */
-    public SystemCapacityRollupCalculator(Map<Id, Utility__c> utilityOldMap, List<Utility__c> utilityNew) {
-        this.initializer = new UtilityCapacityRollupInitializer(utilityOldMap, utilityNew);
-    }
-
-    /**
-     * @description Constructor for use when Utility_Account_Log__c records change
-     * @param ualOldMap Trigger.oldMap from UtilityAccountLogTrigger
-     * @param ualNew Trigger.new from UtilityAccountLogTrigger
-     */
-    public SystemCapacityRollupCalculator(Map<Id, Utility_Account_Log__c> ualOldMap, List<Utility_Account_Log__c> ualNew) {
-        this.initializer = new UALCapacityRollupInitializer(ualOldMap, ualNew);
-    }
-
-    /**
-     * @description Constructor for use when Utility_Account_Subscription__c records change
-     * @param uasOldMap Trigger.oldMap from UtilityAccountSubscriptionTrigger
-     * @param uasNew Trigger.new from UtilityAccountSubscriptionTrigger
-     * @param triggerOperation Trigger operation
-     */
-    public SystemCapacityRollupCalculator(Map<Id, Utility_Account_Subscription__c> uasOldMap,
-        List<Utility_Account_Subscription__c> uasNew, TriggerOperation triggerOperation) {
-        this.initializer = new UASCapacityRollupInitializer(uasOldMap, uasNew, triggerOperation);
-    }
-
-    /**
-     * @description Constructor for use when Opportunity records change
-     * @param oppOldMap Trigger.oldMap from OpportunityTrigger
-     * @param oppNew Trigger.new from OpportunityTrigger
-     */
-    public SystemCapacityRollupCalculator(Map<Id, Opportunity> oppOldMap, List<Opportunity> oppNew) {
-        this.initializer = new OpportunityCapacityRollupInitializer(oppOldMap, oppNew);
+    public SystemCapacityRollupCalculator(Initializer init) {
+        this.initializer = init;
     }
 
     /**
@@ -86,7 +52,7 @@ public without sharing class SystemCapacityRollupCalculator {
      * @description Performs rollup operation for all Shared_Solar_System__c records requested and commits changes to the database
      */
     public void performRollup() {
-        if (!bypassInitializer) {
+        if (initializer != null) {
             systemIds = initializer.getSystemsToCheckCapacityRollups();
         }
         if (systemIds.isEmpty()) {
@@ -100,11 +66,11 @@ public without sharing class SystemCapacityRollupCalculator {
     /**
      * @description Performs rollup operation in a BEFORE_UPDATE context for SharedSolarSystemHandler
      *      Does NOT run uow.commitWork() because this is intended to be called from beforeUpdate
-     * @param sssTriggerOldMap Trigger.oldMap from SharedSolarSystemHandler/SharedSolarSystemTrigger
+     * @param sssTriggerNewMap Trigger.newMap from SharedSolarSystemHandler/SharedSolarSystemTrigger
      */
-    public void performRollupBeforeUpdate(Map<Id, Shared_Solar_System__c> sssTriggerOldMap) {
+    public void performRollupBeforeUpdate(Map<Id, Shared_Solar_System__c> sssTriggerNewMap) {
         systems = sssSelector.getSSSWithActiveUASes(systemIds);
-        summarizeCapacityBeforeUpdate(sssTriggerOldMap);
+        summarizeCapacityBeforeUpdate(sssTriggerNewMap);
     }
 
     private void summarizeCapacity() {
@@ -202,15 +168,15 @@ public without sharing class SystemCapacityRollupCalculator {
      */
     private void updateSystemField(Shared_Solar_System__c sss, SObjectField field, Object value) {
         if (sss.get(field) != value) {
-            sss.put(field, value);
-            uow.registerDirty(sss, new List<SObjectField>{
-                field
-            });
             if (Request.getCurrent().getQuiddity() == Quiddity.SCHEDULED) { // TODO: Deprecate in the future if realtime updates work as expected
                 String message = 'Out of sync field ' + field + ' on system ' + sss.Id + '/' + sss.Name +
                     '. Expected: ' + value + ', Actual: ' + sss.get(field);
                 Logger.logLater('SystemCapacityRollupCalculator', 'updateSystemField', message, Logger.ERROR);
             }
+            sss.put(field, value);
+            uow.registerDirty(sss, new List<SObjectField>{
+                field
+            });
         }
     }
 
