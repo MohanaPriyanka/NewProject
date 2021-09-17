@@ -1,21 +1,19 @@
 /**
- * Created by SarahRenfro on 11/14/2019.
- *
+ * @description Created by SarahRenfro on 11/14/2019.
  * Tested By: SubscriptionManagementServiceTest, SubscriptionSizingTestclass
  */
-trigger SubscriptionOrderTrigger on Subscription_Order__c (before insert, after update, after insert, before delete) {
+trigger SubscriptionOrderTrigger on Subscription_Order__c (before insert, after insert, before delete) {
     if (Util.isDisabled('Disable_SubscriptionOrder_Trigger__c')) {
         return;
     }
-    SubscriptionManagementService subscriptionManagementService = new SubscriptionManagementService();
-
+    SubscriptionOrderTriggerHandler handler = new SubscriptionOrderTriggerHandler(Trigger.oldMap, Trigger.newMap, Trigger.new);
     switch on Trigger.operationType {
         when BEFORE_INSERT {
-            subscriptionManagementService.populateSubscriptionOrder(Trigger.new);
+            handler.beforeInsert();
         } when AFTER_INSERT {
-            subscriptionManagementService.evaluateApprovedSubscriptionOrders(Trigger.newMap);
+            handler.afterInsert();
         } when BEFORE_DELETE {
-            subscriptionManagementService.publishSubscriptionOrderChangeEventsOnDelete(Trigger.old, null);
+            handler.beforeDelete();
         }
     }
 }

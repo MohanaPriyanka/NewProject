@@ -1,33 +1,29 @@
 /**
- * Created by SarahRenfro on 8/6/2019.
- *
+ * @description Created by SarahRenfro on 8/6/2019.
  * Tested By: UtilityAccountSubscriptionHandlerTest and ClientReportingServiceTest
  */
-
-trigger UtilityAccountSubscriptionTrigger on Utility_Account_Subscription__c (after insert, after update, before insert, before update, before delete) {
+trigger UtilityAccountSubscriptionTrigger on Utility_Account_Subscription__c (
+    before insert, after insert, before update, after update, before delete, after delete, after undelete) {
     if (Util.isDisabled('Disable_Client_Objects_Trigger__c')) {
         return;
     }
-
-    SubscriptionManagementService subscriptionManagementService = new SubscriptionManagementService();
-    FeatureService featureService = new FeatureService();
-
+    UtilityAccountSubscriptionHandler handler = new UtilityAccountSubscriptionHandler(
+        Trigger.oldMap, Trigger.new, Trigger.operationType);
     switch on Trigger.operationType {
         when BEFORE_INSERT {
-            UtilityAccountSubscriptionHandler.assignSSSBeforeInsert(Trigger.new);
-        } when BEFORE_UPDATE {
-            UtilityAccountSubscriptionHandler.assignSSSBeforeUpdate(Trigger.new, Trigger.oldMap);
-        } when BEFORE_DELETE {
-            subscriptionManagementService.publishSubscriptionOrderChangeEventsOnDelete(null, Trigger.oldMap);
-            ClientReportingService.deleteClientUAS(Trigger.old);
+            handler.beforeInsert();
         } when AFTER_INSERT {
-            ClientReportingService.insertClientUAS(Trigger.new);
-            if (Test.isRunningTest() && featureService.isEnabled('Subscription_Orders')) {
-                subscriptionManagementService.insertSubscriptionOrdersForTests(Trigger.new);
-            }
+            handler.afterInsert();
+        } when BEFORE_UPDATE {
+            handler.beforeUpdate();
         } when AFTER_UPDATE {
-            CSCancellationProjectRemover.handleOpportunitiesRemovedFromProject(Trigger.oldMap, Trigger.newMap);
-            ClientReportingService.updateClientUAS(Trigger.new, Trigger.oldMap);
+            handler.afterUpdate();
+        } when BEFORE_DELETE {
+            handler.beforeDelete();
+        } when AFTER_DELETE {
+            handler.afterDelete();
+        } when AFTER_UNDELETE {
+            handler.afterUndelete();
         }
     }
 }

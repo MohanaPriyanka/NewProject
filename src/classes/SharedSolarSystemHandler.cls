@@ -1,26 +1,65 @@
-// Tested By : ClientBrandingServiceTest, SharedSolarSystemHandlerTest
+/**
+ * @description Trigger handler for Shared_Solar_System__c
+ * Tested By : ClientBrandingServiceTest, SharedSolarSystemHandlerTest
+*/
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class SharedSolarSystemHandler implements Schedulable {
 
     @TestVisible private static SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
     @TestVisible private static SubscriptionOrderSelector subscripOrderSelector = new SubscriptionOrderSelector();
-    private static fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
-        new List<SObjectType>{
-            Shared_Solar_System__c.SObjectType
-        }
-    );
-    private List<Utility_Account_Subscription__c> pendingSmallCSCapacityList;
-    private List<Utility_Account_Subscription__c> committedSmallCSCapacityList;
-    private List<Utility_Account_Subscription__c> pendingAnchorCapacityList;
-    private List<Utility_Account_Subscription__c> committedAnchorCapacityList;
-    private List<Utility_Account_Subscription__c> pendingDemandCapacityList;
-    private List<Utility_Account_Subscription__c> committedDemandCapacityList;
+    private SharedSolarSystemInvoicer invoicer = new SharedSolarSystemInvoicer();
+    private SharedSolarSystemCapacityCalculator capacityCalculator = new SharedSolarSystemCapacityCalculator();
+    private fflib_SObjectUnitOfWork uow;
+    private Map<Id,Shared_Solar_System__c> oldMap;
+    private Map<Id,Shared_Solar_System__c> newMap;
+    private List<Shared_Solar_System__c> newList;
 
+    /**
+     * @description No-arg constructor for use with Schedulable interface
+     */
+    @SuppressWarnings('PMD.EmptyStatementBlock')
+    public SharedSolarSystemHandler() {
+    }
+
+    /**
+     * @description Constructor for trigger context
+     * @param oldMap Trigger.oldMap
+     * @param newMap Trigger.newMap
+     * @param newList Trigger.new
+     */
+    public SharedSolarSystemHandler(Map<Id,Shared_Solar_System__c> oldMap, Map<Id,Shared_Solar_System__c> newMap,
+        List<Shared_Solar_System__c> newList) 
+    {
+        this.oldMap = oldMap;
+        this.newMap = newMap;
+        this.newList = newList;
+    }
+    
+    public void beforeInsert() {
+        capacityCalculator.calculateMaximumSubscriptionCapacityForSMART(newList);
+        invoicer.updateManagementRevenueStartDateBeforeTrigger(newList);
+    }
+    
+    public void beforeUpdate() {
+        new SystemCapacityRollupCalculator(newMap.keySet()).performRollupBeforeUpdate(newMap);
+        capacityCalculator.calculateMaximumSubscriptionCapacityForSMART(newList);
+        invoicer.updateManagementRevenueStartDateBeforeTrigger(newList);
+    }
+    
+    public void afterUpdate() {
+        uncheckApexContext(newList);
+        onUpdateCheckForChangedValues(oldMap, newList);
+    }
+
+    /**
+     * @description Checks/updates Shared_Solar_System__c records on a scheduled frequency as needed
+     * @param sch SchedulableContext
+     */
     public void execute(SchedulableContext sch) {
+        uow = new fflib_SObjectUnitOfWork(new List<SObjectType>{Shared_Solar_System__c.SObjectType});
         try {
             Util.disableTrigger('Disable_SharedSolarSystemTrigger__c');
-            uow.registerWork(new Logger());
-            updateSSS();
+            updateAllSSS();
             Util.enableTrigger('Disable_SharedSolarSystemTrigger__c');
         } catch (Exception e) {
             Logger.logNow('SharedSolarSystemHandler', 'execute', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
@@ -46,15 +85,17 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
         }
     }
 
-    public void updateSSS() {
+    @TestVisible
+    private void updateAllSSS() {
         Map<Id, Shared_Solar_System__c> allSSSes = sssSelector.getAllSSSMap();
-        SharedSolarSystemInvoicer systems = new SharedSolarSystemInvoicer();
-        summarizeCapacity(allSSSes);
-        systems.updateManagementRevenueStartDate(uow, allSSSes.values());
+        new SystemCapacityRollupCalculator(allSSSes.keySet()).performRollup();
+        SharedSolarSystemInvoicer systemInvoicer = new SharedSolarSystemInvoicer();
+        systemInvoicer.updateManagementRevenueStartDate(uow, allSSSes.values());
         uow.commitWork();
+        Logger.flushLogs();
     }
 
-    public void uncheckApexContext(List<Shared_Solar_System__c> sssList) {
+    private void uncheckApexContext(List<Shared_Solar_System__c> sssList) {
         List<Shared_Solar_System__c> sssToUpdateList = new List<Shared_Solar_System__c>();
         for (Shared_Solar_System__c sss : sssList) {
             if (sss.Apex_Context__c) {
@@ -67,114 +108,7 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
         update sssToUpdateList;
     }
 
-    public void summarizeCapacityBeforeUpdate(Map<Id, Shared_Solar_System__c> sssMap) {
-        summarizeCapacity(sssMap);
-        // Don't uow.commitWork() because this is intended to be called from beforeUpdate
-    }
-
-    private void summarizeCapacity(Map<Id, Shared_Solar_System__c> sssMap) {
-        //Requerying the sss loses any changes from beforeUpdate - still need to reference sssMap for updated record below
-        List<Shared_Solar_System__c> sssesWithActiveUASes = sssSelector.getSSSWithActiveUASes(sssMap.values());
-        for (Shared_Solar_System__c sssWithActiveUASes : sssesWithActiveUASes) {
-            Shared_Solar_System__c sssToUpdate = sssMap.get(sssWithActiveUASes.Id);
-            summarizeCapacityBySubscription(sssWithActiveUASes);
-            registerCapacityChanges(sssToUpdate);
-        }
-    }
-
-    /**
-     * @description Determines Pending/Committed Small CS Capacity, Pending/Committed Anchor capacity, and Pending/Committed
-     * Demand Capacity based on the individual subscription (UAS)
-     * existing subscriptions on the SSS
-     * @param sssWithActiveUASes SSS with all necessary fields from selector, including UAS (subscriptions) and UAL fields
-     */
-    private void summarizeCapacityBySubscription(Shared_Solar_System__c sssWithActiveUASes) {
-        pendingSmallCSCapacityList = new List<Utility_Account_Subscription__c>();
-        committedSmallCSCapacityList = new List<Utility_Account_Subscription__c>();
-        pendingAnchorCapacityList = new List<Utility_Account_Subscription__c>();
-        committedAnchorCapacityList = new List<Utility_Account_Subscription__c>();
-        pendingDemandCapacityList = new List<Utility_Account_Subscription__c>();
-        committedDemandCapacityList = new List<Utility_Account_Subscription__c>();
-        for (Utility_Account_Subscription__c uas : sssWithActiveUASes.Utility_Account_Subscriptions__r) {
-            if (isAnchorOrPublicOfftake(uas)) {
-                addCapacityToCapacityList(uas, committedAnchorCapacityList, pendingAnchorCapacityList);
-            } else {
-                addCapacityToCapacityList(uas, committedSmallCSCapacityList, pendingSmallCSCapacityList);
-            }
-            if (isDemandSubscription(sssWithActiveUASes, uas)) {
-                addCapacityToCapacityList(uas, committedDemandCapacityList, pendingDemandCapacityList);
-            }
-        }
-    }
-
-    private void addCapacityToCapacityList(
-        Utility_Account_Subscription__c uas, List<Utility_Account_Subscription__c> committedCapacityList,
-        List<Utility_Account_Subscription__c> pendingCapacityList) {
-        if (uas.Opportunity_Stage__c == 'Complete') {
-            committedCapacityList.add(uas);
-        } else if (!isCancelledStatus(uas)) {
-            pendingCapacityList.add(uas);
-        }
-    }
-
-    /**
-     * @description Checks if the UAL is a "Demand" customer (typically exceeding 25 kW of Average Demand). We track this
-     * because some projects have caps as to how much capacity can go to "Demand" customers
-     * @param sss SSS with necessary parent Utility fields
-     * @param uas UAS with necessary parent UAL fields
-     * @return TRUE if a demand subscription, else FALSE
-     */
-    private Boolean isDemandSubscription(Shared_Solar_System__c sss, Utility_Account_Subscription__c uas) {
-        Decimal ualAverageDemand = Util.nullToZero(uas.Utility_Account_Log__r.Average_Demand__c);
-        return ualAverageDemand >= sss.Utility__r.Average_Demand_Threshold__c && !uas.Utility_Account_Log__r.Exclude_from_Demand_Capacity__c;
-    }
-
-    private void registerCapacityChanges(Shared_Solar_System__c sss) {
-        updateSystemField(sss, Shared_Solar_System__c.Reserved_Capacity_kW_DC__c,
-            String.valueOf(sumCapacity(pendingSmallCSCapacityList)));
-        updateSystemField(sss, Shared_Solar_System__c.Capacity_Committed_kW_DC__c,
-            sumCapacity(committedSmallCSCapacityList));
-        updateSystemField(sss, Shared_Solar_System__c.Pending_Anchor_Capacity__c,
-            sumCapacity(pendingAnchorCapacityList));
-        updateSystemField(sss, Shared_Solar_System__c.Anchor_Capacity_Reserved__c,
-            sumCapacity(committedAnchorCapacityList));
-        updateSystemField(sss, Shared_Solar_System__c.Pending_Demand_Capacity__c,
-            sumCapacity(pendingDemandCapacityList));
-        updateSystemField(sss, Shared_Solar_System__c.Committed_Demand_Capacity__c,
-            sumCapacity(committedDemandCapacityList));
-    }
-
-    private void updateSystemField(Shared_Solar_System__c sss, SObjectField field, Object value) {
-         if (sss.get(field) != value) {
-             sss.put(field, value);
-             uow.registerDirty(sss, new List<SObjectField>{field});
-         }
-    }
-
-    private Decimal sumCapacity(List<Utility_Account_Subscription__c> uasList) {
-        Decimal summarizedCapacity = 0;
-        for (Utility_Account_Subscription__c uas : uasList) {
-            summarizedCapacity += Util.nullToZero(uas.Future_Customer_Subscription_KWDC_Rollup__c);
-        }
-        return summarizedCapacity;
-    }
-
-    private Boolean isAnchorOrPublicOfftake(Utility_Account_Subscription__c uas) {
-        return (uas.Customer_Group__c == 'Anchor' || uas.Opportunity__r.Customer_Sub_Group__c == 'Public Offtake');
-    }
-
-    private Boolean isCancelledStatus(Utility_Account_Subscription__c uas) {
-        return (uas.Opportunity_Stage__c == 'Expired'
-            || uas.Opportunity_Stage__c == 'Cancelled'
-            || uas.Opportunity_Stage__c == 'DUPLICATE'
-            || uas.Opportunity_Stage__c == 'Unqualified'
-            || uas.Opportunity_Stage__c == 'Rejected Contract'
-            || uas.Opportunity_Stage__c == 'Dead'
-            || uas.Opportunity_Stage__c == 'Lost'
-        );
-    }
-
-    public void onUpdateCheckForChangedValues(Map<Id, Shared_Solar_System__c> oldSSSMap, List<Shared_Solar_System__c> newSSSes) {
+    private void onUpdateCheckForChangedValues(Map<Id, Shared_Solar_System__c> oldSSSMap, List<Shared_Solar_System__c> newSSSes) {
         Set<Id> sssWithChangedBrandKey = new Set<Id>();
         Map<Id, Shared_Solar_System__c> sssWithChangedReacqStartDate = new Map<Id, Shared_Solar_System__c>();
 
