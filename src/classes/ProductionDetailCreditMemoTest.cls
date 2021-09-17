@@ -126,7 +126,7 @@ public with sharing class ProductionDetailCreditMemoTest {
         // it should try.
         Journal_Entry__c creditMemo = new Journal_Entry__c(
             Id = Util.getFakeId(Journal_Entry__c.SObjectType),
-            External_Id__c = 'does not matter'
+            External_Id__c = 'doesNotMatter'
         );
         HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('GET', '/v1/creditmemos/' + creditMemo.External_Id__c + '/parts', null, false);
         ZuoraAPI.CreditMemoWithParts memoParts = (ZuoraAPI.CreditMemoWithParts) JSON.deserialize(response.getBody(), ZuoraAPI.CreditMemoWithParts.class);
