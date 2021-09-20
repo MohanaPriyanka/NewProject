@@ -7,9 +7,9 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
 
     @TestVisible private static SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
     @TestVisible private static SubscriptionOrderSelector subscripOrderSelector = new SubscriptionOrderSelector();
+    private static fflib_SObjectUnitOfWork uow;
     private SharedSolarSystemInvoicer invoicer = new SharedSolarSystemInvoicer();
     private SharedSolarSystemCapacityCalculator capacityCalculator = new SharedSolarSystemCapacityCalculator();
-    private fflib_SObjectUnitOfWork uow;
     private Map<Id,Shared_Solar_System__c> oldMap;
     private Map<Id,Shared_Solar_System__c> newMap;
     private List<Shared_Solar_System__c> newList;
