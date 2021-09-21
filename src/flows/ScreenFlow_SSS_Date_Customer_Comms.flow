@@ -88,6 +88,20 @@
                 <elementReference>varSSSSeason</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempProperties</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>varEmail</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempProperties</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>varDateAdded</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Set_Marketing_Journey_Enrollment_Details</targetReference>
         </connector>
@@ -123,6 +137,20 @@
             <operator>Add</operator>
             <value>
                 <elementReference>varSSSName</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempProperties</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>varEmail</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>tempProperties</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>varDateAdded</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -236,6 +264,34 @@
                 <elementReference>inpNewDateForEmail</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEmail.key</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>EmailAddress</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEmail.value</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Change_in_COD_Contacts.Email</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varDateAdded.key</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>DateAdded</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varDateAdded.value</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Add_email_variables_to_collection</targetReference>
         </connector>
@@ -299,6 +355,34 @@
             <operator>Assign</operator>
             <value>
                 <elementReference>getSSSData.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEmail.key</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>EmailAddress</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varEmail.value</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Credits_Flowing_Contacts.Email</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varDateAdded.key</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>DateAdded</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varDateAdded.value</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -1312,7 +1396,7 @@ MONTH({!New_Est_PTO_Date} ),
             <targetReference>getSSSData</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <textTemplates>
         <name>ttContactQuery</name>
         <isViewedAsPlainText>true</isViewedAsPlainText>
@@ -1386,6 +1470,22 @@ Flow actions let you pass the value of the record&apos;s ID field into the flow,
     </variables>
     <variables>
         <name>varContactProperties</name>
+        <apexClass>FlowMap</apexClass>
+        <dataType>Apex</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varDateAdded</name>
+        <apexClass>FlowMap</apexClass>
+        <dataType>Apex</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varEmail</name>
         <apexClass>FlowMap</apexClass>
         <dataType>Apex</dataType>
         <isCollection>false</isCollection>
