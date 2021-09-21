@@ -1,5 +1,5 @@
 /**
- * Created by PeterYao on 11/12/2019.
+ * @description Created by PeterYao on 11/12/2019.
  * Tested By: ContactSelectorTest
  */
 @SuppressWarnings('PMD.ApexCRUDViolation')
@@ -46,11 +46,11 @@ public inherited sharing class ContactSelector {
 
     public static List<Contact> selectSendBillsContactBySSSId(Id  sharedSolarSystemId) {
         Set<Id> sendBillsContacts = new Set<Id>();
-        List<Opportunity> getSendBillsContactsFromOpp =  [
+        List<Opportunity> getSendBillsContactsFromOpp = [
             SELECT Account.Send_Bills_Contact__c
             FROM Opportunity 
             WHERE Shared_Solar_System__c = :sharedSolarSystemId
-            AND Opportunity.StageName = 'Complete'
+            AND Opportunity.StageName = 'Complete' 
             AND Account.Send_Bills_Contact__r.Email != NULL
         ];
         for (Opportunity opportunity : getSendBillsContactsFromOpp) {
@@ -66,7 +66,7 @@ public inherited sharing class ContactSelector {
             FROM Contract 
             WHERE Id IN :contractIds
         ];
-        for(Contract con : contractList){
+        for (Contract con : contractList){
             contactIdList.add(con.Account.Send_Bills_Contact__r.Id);
         }
         List<Contact> returnList = [
@@ -76,7 +76,7 @@ public inherited sharing class ContactSelector {
         ];
         return returnList;
     }
-    
+
     public static Map<Id,Contact> selectMultipleSendBillsContactByContracts(Set<Id> contractIds){
         Map<Id, Contact> contractIdToContactMap = new Map<Id, Contact>();
         List<Contract> contractList = [
@@ -91,11 +91,11 @@ public inherited sharing class ContactSelector {
         return contractIdToContactMap;
     }
     
-    public static List<Contact> selectActiveAlsSendBillsContactBySSSId(Id  sharedSolarSystemId) {
+    public static List<Contact> selectActiveAlsSendBillsContactBySSSId(Id sharedSolarSystemId) {
         Set<Id> sendBillsContacts = new Set<Id>();
         List<Schedule_Z_Subscription__c> getSendBillsContactsfromALS =  [
             SELECT Utility_Account_Subscription__r.Opportunity__r.Account.Send_Bills_Contact__c
-            FROM Schedule_Z_Subscription__c 
+            FROM Schedule_Z_Subscription__c
             WHERE Schedule_Z__r.Shared_Solar_System__c = :sharedSolarSystemId
             AND Schedule_Z__r.Status__c IN ('Submitted to Utility', 'Enacted by Utility')
             AND Schedule_Z__r.Date_Submitted_to_Utility__c !=NULL
@@ -107,10 +107,10 @@ public inherited sharing class ContactSelector {
         }
         return getContactsWithRelatedFields(sendBillsContacts);
     }
-    
+
     private static List<Contact> getContactsWithRelatedFields(Set<Id> contactIds) {
         return [
-            SELECT Id, Account.Client_Brand_Key__c
+            SELECT Id, Account.Client_Brand_Key__c, Email
             FROM Contact
             WHERE Id IN : contactIds
         ];
