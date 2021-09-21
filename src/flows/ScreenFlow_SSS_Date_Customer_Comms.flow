@@ -1396,7 +1396,7 @@ MONTH({!New_Est_PTO_Date} ),
             <targetReference>getSSSData</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <textTemplates>
         <name>ttContactQuery</name>
         <isViewedAsPlainText>true</isViewedAsPlainText>
