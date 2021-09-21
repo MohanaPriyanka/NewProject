@@ -709,6 +709,41 @@ Time_to_Close__c
                     <default>false</default>
                     <label>Update Customer Info</label>
                 </value>
+                <value>
+                    <fullName>Partner Onboarding</fullName>
+                    <default>false</default>
+                    <label>Partner Onboarding</label>
+                </value>
+                <value>
+                    <fullName>Customer Enrollment</fullName>
+                    <default>false</default>
+                    <label>Customer Enrollment</label>
+                </value>
+                <value>
+                    <fullName>Partner Portal</fullName>
+                    <default>false</default>
+                    <label>Partner Portal</label>
+                </value>
+                <value>
+                    <fullName>Commission Payments</fullName>
+                    <default>false</default>
+                    <label>Commission Payments</label>
+                </value>
+                <value>
+                    <fullName>Customer Updates</fullName>
+                    <default>false</default>
+                    <label>Customer Updates</label>
+                </value>
+                <value>
+                    <fullName>Project Availability</fullName>
+                    <default>false</default>
+                    <label>Project Availability</label>
+                </value>
+                <value>
+                    <fullName>Sales Materials</fullName>
+                    <default>false</default>
+                    <label>Sales Materials</label>
+                </value>
             </valueSetDefinition>
             <valueSettings>
                 <controllingFieldValue>Community Solar</controllingFieldValue>
@@ -853,10 +888,6 @@ Time_to_Close__c
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Community Solar</controllingFieldValue>
-                <valueName>Billing-Issue</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Community Solar</controllingFieldValue>
                 <valueName>Collections</valueName>
             </valueSettings>
             <valueSettings>
@@ -870,6 +901,34 @@ Time_to_Close__c
             <valueSettings>
                 <controllingFieldValue>Community Solar</controllingFieldValue>
                 <valueName>Update Customer Info</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>Partner Onboarding</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>Customer Enrollment</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>Partner Portal</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>Commission Payments</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>Customer Updates</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>Project Availability</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>Sales Materials</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Solar Loan</controllingFieldValue>
@@ -4209,6 +4268,77 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <businessProcess>Customer Care Case</businessProcess>
         <label>Partner Care Case</label>
         <picklistValues>
+            <picklist>Category__c</picklist>
+            <values>
+                <fullName>Billing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Billing Payment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cancellation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Commission Payments</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Enrollment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Updates</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Feedback%2FFeature Request</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner Onboarding</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner Portal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Portal Issue</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Question</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Project Availability</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SREC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sales Materials</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Subscription Adjustment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Subscription Change</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>QC_Case_Subject__c</picklist>
             <values>
                 <fullName>File Not Scored Due to Insufficient Credit</fullName>
@@ -4322,53 +4452,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
             <values>
                 <fullName>Trevor Lennox</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Category__c</picklist>
-            <values>
-                <fullName>Billing</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Billing Payment</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Cancellation</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Feedback%2FFeature Request</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner Payment</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Portal Issue</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Product Question</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SREC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Subscription Adjustment</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Subscription Change</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
