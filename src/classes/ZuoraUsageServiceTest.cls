@@ -278,24 +278,8 @@ public class ZuoraUsageServiceTest {
         ZuoraUsageService.featureService = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(false));
         Test.startTest();
         finishTestSetup();
-        ZuoraUsageBatchSend zSend = new ZuoraUsageBatchSend(ZuoraUsageBatchSend.UsageType.UASBS, null);
-        String query =
-            'SELECT Id, Name, Date__c, System_Bill__c,' +
-                '    Net_Metering_Credits_Allocated__c, Savings__c,' +
-                '    Discounted_Bill__c, Shared_Solar_System__r.Name,' +
-                '    Shared_Solar_System__r.System_Utility__c,' +
-                '    Utility_Account_Subscription__r.Name,' +
-                '    Shared_Solar_System__r.Utility__r.Name,' +
-                '    Utility_Account_Subscription__r.Utility_Account_Log__r.Name,' +
-                '    Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__r.Account_Number__c,' +
-                '    Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c,' +
-                '    Utility_Account_Subscription__r.Opportunity__r.Account.Zuora_Id__c,' +
-                '    System_Bill__r.Account_Bill__c,' +
-                '    Client_Account_Number__c ' +
-                'FROM UASB__c ' +
-                'ORDER BY Utility_Account_Subscription__r.Opportunity__r.AccountId, Date__c';
-        zSend.queryString = query;
-        zSend.executeBatch();
+        ZuoraUsageBatchSend zSend = new ZuoraUsageBatchSend(ZuoraUsageBatchSend.UsageType.UASBS, Date.today());
+        Database.executeBatch(zSend);
         Test.stopTest();
 
         System.assertEquals(2, ZuoraAPIHelper.endpointsCalled.size());
@@ -313,11 +297,8 @@ public class ZuoraUsageServiceTest {
             '"Utility__r":{"Id":"a1M3I0000009HazUAE","Name":"National Grid"}},' +
             '"Utility_Account_Subscription__r":{"Id":"a1d3I000000HP94QAG","Name":"0002340","Utility_Account_Log__c":"a1b3I000000Hk6dQAC","Opportunity__c":"0063I000002Y9OsQAK",' +
             '"Utility_Account_Log__r":{"Id":"a1b3I000000Hk6dQAC","Name":"0000234"},' +
-            '"Opportunity__r":{"Id":"0063I000002Y9OsQAK","Shared_Solar_System__c":"a1J3I0000003QoOUAU","AccountId":"0013I00000I77l7QAB",' +
-            '"Shared_Solar_System__r":{"Id":"a1J3I0000003QoOUAU","BWC_Project_Entity_Manual__c":"a1I3I000000NPYbUAO","Unique_ID__c":"SSS-000009",' +
-            '"BWC_Project_Entity_Manual__r":{"Id":"a1I3I000000NPYbUAO","Client_Account__c":"0013I00000Lk8VZQAZ",' +
-            '"Client_Account__r":{"Id":"0013I00000Lk8VZQAZ","Account_Number__c":"BW-0021776"}}},' +
-            '"Account":{"Id":"0013I00000I77l7QAB","Zuora_Id__c":"2c92c0f871bae3ce0171bc5bc5634378"}}}}';
+            '"Shared_Solar_System__r":{"Id":"a1J3I0000003QoOUAU","BWC_Project_Entity_Manual__c":"a1I3I000000NPYbUAO","Unique_ID__c":"SSS-000009"},' +
+            '"Opportunity__r":{"Id":"0063I000002Y9OsQAK","AccountId":"0013I00000I77l7QAB","Account":{"Id":"0013I00000I77l7QAB","Zuora_Id__c":"2c92c0f871bae3ce0171bc5bc5634378"}}}}';
         UASB__c uasb = (UASB__c) JSON.deserialize(uasbJSON, UASB__c.class);
         ZuoraUsageService.ZuoraUsage zuoraUsage = ZuoraUsageService.convertUASBToUsage(uasb);
         System.assertEquals('A-S00029335', zuoraUsage.SubscriptionNumber);
