@@ -10,7 +10,7 @@ public without sharing class BouncedEmailCaseCreationScheduler implements Schedu
 
     private CaseFactory caseFactory = new CaseFactory();
     private LeadSelector leadSelector = new LeadSelector();
-    private List<Lead> leadsNeedingCases = new List<Lead>();
+
 
     public void execute(SchedulableContext ctx) {
         try {
@@ -26,6 +26,7 @@ public without sharing class BouncedEmailCaseCreationScheduler implements Schedu
     }
 
     private void processLeads(List<Lead> bouncedLeads) {
+        List<Lead> leadsNeedingCases = new List<Lead>();
         for (Lead l : bouncedLeads) {
             Boolean caseNeeded = isCaseNeeded(l);
             if(caseNeeded) {
