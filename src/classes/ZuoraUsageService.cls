@@ -77,7 +77,7 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         ZuoraUsage usage = new ZuoraUsage();
         String zuoraAcctId = uasb.Utility_Account_Subscription__r.Opportunity__r.Account.Zuora_Id__c;
         String client = uasb.Client_Account_Number__c;
-        String project = uasb.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c;
+        String project = uasb.Utility_Account_Subscription__r.Shared_Solar_System__r.Unique_ID__c;
         String subscriptionNumber;
         String chargeNumber;
         if (featureService.isEnabled('Multiple_Subscriptions')) {

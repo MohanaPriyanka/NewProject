@@ -11,11 +11,10 @@ public without sharing class UASBSelector {
             '    Shared_Solar_System__r.System_Utility__c,' +
             '    Utility_Account_Subscription__r.Name,' +
             '    Utility_Account_Subscription__r.Utility_Account_Log__r.Name,' +
-            '    Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__r.Account_Number__c,' +
-            '    Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c,' +
+            '    Utility_Account_Subscription__r.Shared_Solar_System__r.Unique_ID__c,' +
             '    Utility_Account_Subscription__r.Opportunity__r.Account.Zuora_Id__c,' +
             '    System_Bill__r.Account_Bill__c,' +
-            '    Client_Account_Number__c ' +
+            '    Client_Account_Number__c ' + // A formula for the Client Account that is stamped on UASB on insert
             'FROM UASB__c ' +
             'WHERE Zuora_Id__c = NULL ' +
             'AND Date__c <= ' + String.valueOf(invoiceDate) + ' ' +
