@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Sends link to Co-Applicant to fill out form with additional info</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>DOER - CoApplicant Send Link to Complete Application</name>
+    <style>none</style>
+    <subject>Your Solar Loan May Be Eligible for Co-Signer Approval</subject>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

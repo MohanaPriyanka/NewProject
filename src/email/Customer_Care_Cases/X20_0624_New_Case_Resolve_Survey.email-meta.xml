@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>20_0624 New Case Resolve Survey</name>
+    <style>none</style>
+    <subject>Did BlueWave help you resolve your issue?</subject>
+    <textOnly>On a scale of 1-5, how easy did BlueWave make it to solve your issue?
+
+
+Really Hard to Really Easy
+
+BlueWave Customer Care
+844.786.4100 | customercare@bluewavesolar.com</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

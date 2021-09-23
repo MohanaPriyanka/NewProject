@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>CS sales resources for loan partners</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>18-05 CS Sales Support</name>
+    <style>none</style>
+    <subject>We want to make Community Solar an easy sell.</subject>
+    <textOnly>We want to make Community Solar an Easy Sell.
+
+We want to support you as you unlock the benefits of selling Community Solar to your customers.
+
+To support your sales, please make use of the resources listed below.
+Shared Collateral Library: Access a library of collateral for your customers including brochures, a contract overview, high-res project photos, an intro video, and more!
+
+Training Guide: You can always reference the guide BlueWave provided in the same folder as our shared marketing collateral. Plus, we can set up additional trainings as needed with your team.
+
+Launch Events: Talk to our Marketing Team to discuss co-branded launch events with your team.
+
+Field Support: We know that selling Community Solar is new to you, so we have a Partner Support team standing by to answer any questions you have or to join you in the field to answer your customers&apos; questions.
+
+Thank you for working with us to revolutionize energy,
+
+- All of us here at BlueWave</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Partner Portal Outage 8.15.17</name>
+    <style>none</style>
+    <subject>Important: BlueWave Portal Down for Upgrades 8/15/2017</subject>
+    <textOnly>*|MC:SUBJECT|*
+
+Dear {!Opportunity.Partner_tag_lookup__c},
+
+Our portal will be undergoing planned maintenance on Tuesday, August 15th from 9:00 am -11:00 am, causing limitations to your access.
+
+During this time, the following webforms will be down:
+
+1.  Application initiation via email
+2. Income documentation submission and application finalization
+3.  Installation contract upload
+4.  Mechanical completion documentation upload
+5.  Final interconnection documentation upload
+
+You will still be able to add a customer, run a credit check, select a customer’s product, and provide system information directly in the portal.
+
+We will be making upgrades during this time to make your life easier, including:
+1. Validating your application in the Add a Customer page and making edits easier
+2. Showing tool tips to help you with common questions
+3. Allowing you to add a Co-Signer right from the portal, which we will manually review
+
+
+Please call Partner Support with any questions. Or, feel free to email us with customer information, which we will be happy to upload for you as soon as the outage ends.
+
+Partner Support Line: 888.817.2703
+Partner Support Email: partnersupport@bluewavesolar.com
+
+We apologize for this inconvenience while we improve your future experience. Thank you for your understanding!
+- All of us here at BlueWave</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

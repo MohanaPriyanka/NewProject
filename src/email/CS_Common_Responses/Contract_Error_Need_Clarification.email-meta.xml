@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>When we need clarification on a contract</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Contract Error- Need Clarification</name>
+    <style>none</style>
+    <subject>We need come clarification on your BlueWave Community Solar contract</subject>
+    <type>text</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

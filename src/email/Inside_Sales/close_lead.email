@@ -1,0 +1,11 @@
+Hi {!Lead.FirstName},
+
+I see that you've begun your BlueWave community solar application!  To finalize your enrollment, please proceed to the link below and then enter in your email to resume your application.
+
+https://bluewavememberportal.force.com/apply/s/csap?leadId={!Lead.Lead_ID__c}
+
+I'm here if you need any assistance along the way so don't hesitate to call or email me.
+
+We look forward to the prospect of you becoming a BlueWave community solar member!
+
+Best regards,

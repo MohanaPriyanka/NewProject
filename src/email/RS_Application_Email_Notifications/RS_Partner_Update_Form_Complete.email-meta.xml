@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Notifies RS partner that their update form is complete and contract has been sent to customer</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>RS Partner - Update Form Complete</name>
+    <style>none</style>
+    <subject>{!Opportunity.Name}&apos;s Solar Loan contract has been sent</subject>
+    <textOnly>*|MC:SUBJECT|*
+
+Dear {!Opportunity.Partner_tag2__c},
+
+Congratulations! You have completed {!Opportunity.Name}&apos;s Installer Update Form! The Solar Loan contract will now be sent to the customer.
+
+Please review the information entered below to verify its correctness and notify us if any corrections are needed.
+
+Name: {!Opportunity.Name}
+Loan Amount: {!Opportunity.Requested_Loan_Amount__c}
+System Size: {!Opportunity.System_Size__c}
+Annual System Yield: {!Opportunity.Residential_Yield__c}
+Annual Consumption: {!Opportunity.Annual_Consumption_kWh2__c}
+Annual Cost: {!Opportunity.Annual_Electricity_Cost2__c}
+Panel Type: {!Opportunity.Panel_Type__c}
+Number of Panels: {!Opportunity.Number_of_Panels__c}
+Inverter Type: {!Opportunity.Additional_Components__c}
+Number of Inverters: {!Opportunity.Number_of_Inverters__c}
+
+We will notify you when the customer&apos;s contract has been executed and your disbursal has been sent.
+
+Sincerely,
+BlueWave Customer Care
+customercare@bluewavesolar.com
+(844) 786 - 4100</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

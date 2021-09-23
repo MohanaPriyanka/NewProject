@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Reminding partners about 3/1 brewery event</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>18-02 See you tomorrow</name>
+    <style>none</style>
+    <subject>See you tomorrow, {!Contact.FirstName}!</subject>
+    <textOnly>Dear {!Contact.FirstName},
+
+We are looking forward to seeing you tomorrow night to drink beer &amp; talk solar with BlueWave!
+
+EVENT DETAILS:
+
+WHERE: Captain Lawrence Brewery, 444 Saw Mill River Rd, Elmsford, NY
+WHEN: Tomorrow, Thursday, March 1st from 6-9PM.
+(We&apos;ll be there starting at4pm if you&apos;d like to come early!)
+WHAT: Beer, wine, refreshments, a brewery tour, and talk of a solar future.
+WHY: BlueWave recently launched our solan loan in New York and we want to celebrate with you!
+
+GETTING THERE: Please note, the Brewery is set back from the main road as shown on the map below. Self-parking and valet parking are both available upon arrival.
+
+SAFETY FIRST: This event will have alcoholic (&amp; non-alcoholic) beverages served. Please be sure you have a safe, sober ride home.
+
+If you have any questions, please reach out to George Wissing, our New York Business Development Manager.</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

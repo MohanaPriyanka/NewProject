@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Solicit list of portal logins, logo, and bank info needed from partner</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Partner Info Requests</name>
+    <style>none</style>
+    <subject>Onboarding complete - please provide user information</subject>
+    <textOnly>Hi {!Contact.FirstName},
+
+We&apos;ve processed all your necessary onboarding documents - welcome aboard! To gain access to your BlueWave Portal, please provide us with the following:
+
+1) List of users
+A list of all individuals you&apos;d like to grant portal access to, including: their full name, email, title, rep access (to view only their customers) or administrative access (to view all customers), and phone number (send via email).
+
+2) Your Company Logo
+A copy of your organization&apos;s logo (send via email).
+
+3) Bank Info
+Your company banking info so we can create an ACH account to disburse your funds (call 888-817-2703 to provide)
+
+- Bank Name
+- Routing #
+- Account #
+
+Once we&apos;ve received this information, we will be in touch regarding next steps.
+
+Thanks for partnering with us to revolutionize energy.
+- All of us here at BlueWave
+
+BlueWave Partner Support
+888.817.2703 | partnersupport@bluewavesolar.com</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

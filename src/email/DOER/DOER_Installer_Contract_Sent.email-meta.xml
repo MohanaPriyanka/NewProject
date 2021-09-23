@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Notifies DOER installer that contract has been sent to customer</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>DOER Installer - Contract Sent</name>
+    <style>none</style>
+    <subject>{!Opportunity.Name}&apos;s Mass Solar Loan contract has been sent</subject>
+    <textOnly>*|MC:SUBJECT|*
+
+Dear {!Opportunity.Partner_tag_lookup__c},
+
+This is a notification that {!Opportunity.Name}’s Mass Solar Loan application is complete and their Loan contract has been sent for execution.
+
+Sincerely,
+BlueWave Customer Care
+customercare@bluewavesolar.com
+(844) 786 - 4100</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

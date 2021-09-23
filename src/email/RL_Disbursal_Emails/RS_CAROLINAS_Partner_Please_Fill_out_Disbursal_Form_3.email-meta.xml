@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Notifies RS partner that funds have been disbursed</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>RS CAROLINAS Partner - Please Fill out Disbursal Form 3</name>
+    <style>none</style>
+    <subject>Please complete {!Opportunity.Name}&apos;s Confirmation of Interconnection</subject>
+    <textOnly>*|MC:SUBJECT|*
+
+Dear {!Opportunity.Partner_tag_lookup__c},
+
+Thank you for partnering with BlueWave for {!Opportunity.Name}&apos;s Solar Loan .
+
+Please remember that in order to receive the additional disbursements, you will need to upload a confirmation of interconnection. Once the system has been interconnected to the grid, these documents can be uploaded here.
+
+It is extremely important that you fill out this webform immediately to ensure your customer is billed fairly. Please feel free to contact us with any concerns or questions.
+
+Sincerely,
+BlueWave Customer Care
+customercare@bluewavesolar.com
+(844) 786 - 4100</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

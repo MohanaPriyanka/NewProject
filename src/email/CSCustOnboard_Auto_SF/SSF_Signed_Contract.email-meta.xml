@@ -5,8 +5,21 @@
     <encodingKey>ISO-8859-1</encodingKey>
     <name>SSF Signed Contract</name>
     <style>none</style>
-    <subject>Your BlueWave Community Solar Docs</subject>
-    <textOnly>Hi {!Lead.Name},  Here is a copy of your BlueWave Solar Docs.</textOnly>
+    <subject>You&apos;re one step closer to savings</subject>
+    <textOnly>HTML:
+
+Hi {!Lead.Name},
+
+Thank you for choosing BlueWave Community Solar! Please see your attached signed community solar agreement outlining the terms and benefits of your subscription.
+
+Our team is reviewing your application and will send a counter-signed agreement as soon as it is approved. If your application is not approved, we will send you an email letting you know why.
+
+Stay tuned and thanks for choosing BlueWave Community Solar!
+
+- From all of us here at BlueWave
+
+BlueWave Customer Care
+844.786.4100 | customercare@bluewavesolar.com</textOnly>
     <type>custom</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

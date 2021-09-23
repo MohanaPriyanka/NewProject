@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Alerting partners we have asked customers to add solar to their insurance</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Insurance Request</name>
+    <style>none</style>
+    <subject>Proof of Insurance Request FAQs</subject>
+    <textOnly>Proof of Insurance Request
+
+We want to let you know that we have sent an email reminder to all BlueWave Solar Loan customers to provide a Certificate of Insurance indicating that they have updated their current policies to cover their new solar system in the event of loss or damage.  This requirement is outlined in the “Security Agreement” clause of customer agreements and is intended to both protect a customer&apos;s new solar investment as well as BlueWave’s interest in the system.
+
+We have requested that customers submit this documentation by September 22nd. If a customer&apos;s system is not yet operational, the proof of insurance can be submitted once the system has reached completion, or anytime before this date.
+
+Please be assured that this request will not impact disbursal schedules.
+
+Please refer to this set of Customer FAQs below as a reference. You can also feel free to direct customers to our Customer Care line: 844.786.4100.
+
+Customer FAQs Regarding Proof of Insurance Request:
+
+Can you please explain what the Homeowner&apos;s Insurance request is?
+BlueWave requires you to add your solar system to a current home insurance policy. This requirement can be found under the &quot;Security Agreement&quot; clause on your Home Solar Contract. Please be sure that the added coverage for your solar system is shown as a separate line item on the policy, and that the proof of insurance you submit shows clearly the policy effective and expiration dates. Please also be sure that BlueWave is listed as a Loss Payee as shown here: &quot;BlueWave Finance Group LLC., 111 Huntington Ave, Suite 650, Boston MA 02199.&quot;
+
+Am I obligated to add BlueWave as a loss payee on my policy?
+Yes, as stated on page 4 under the &quot;Security Agreement&quot; clause of your Home Solar Loan Contract, you are required to notify your insurance company to add us or our assignee as an additional insured and loss payee on the solar system coverage.
+
+My insurance company doesn’t do itemizations, therefore I cannot add my solar system as a separate line item on the policy. What do I do?
+If this is not possible, please provide the Certificate of Insurance that shows an increase in coverage was added to your policy to cover the solar installation, also showing the policy effective date and expiration date.
+
+Why are you asking me to do this with such short notice?
+Your obligation to insure your solar system on your existing homeowner&apos;s insurance policy as well as list BlueWave as the loss payee in the event anything should happen to the system is clearly defined in the &quot;Security Agreement&quot; clause of your Home Solar Loan Contract. This email was sent as a reminder to customers who have not yet submitted this proof of insurance.
+
+My system is still under construction/hasn’t been built yet. Why do I need to add this coverage now?
+If your system is not operational yet you do not need to add the system to your coverage at this time. You can wait until after the system has been fully constructed and is operational.
+
+If you would like to complete this required step before your system is operational, your insurance company should be able to add this additional coverage for your solar system with an effective date on the policy in the future. Please contact your insurance company and have them add this coverage to your policy using the estimated operation date provided by your solar installer.
+
+As always, please feel free to call or email us with additional questions.
+
+- BlueWave Partner Support
+
+Phone: (888) 817-2703
+Email: PartnerSupport@bluewavesolar.com</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Notifies RS partner that funds have been disbursed</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>SLP Partner - 30% Funds Disbursed</name>
+    <style>none</style>
+    <subject>{!Disbursal__c.Loan__c}&apos;s Solar Loan funds have been disbursed</subject>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

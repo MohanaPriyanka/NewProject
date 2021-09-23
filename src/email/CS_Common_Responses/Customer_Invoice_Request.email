@@ -1,0 +1,11 @@
+Hi {!Contact.FirstName},
+
+Thanks for reaching out to us here at BlueWave! We have attached the invoices you requested.
+
+Please let me know if you have any further questions, I'm happy to help.
+
+Best,
+{!Case.OwnerFullName}
+Support Operations
+BlueWave Solar
+bluewavesolar.com

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Sturbridge LIVE announcement to customers</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Sturbridge - PTO announcement</name>
+    <style>none</style>
+    <subject>Your Community Solar Share is about to plug in!</subject>
+    <textOnly>*|MC:SUBJECT|*
+
+View this email in your browser
+
+Dear {!Contact.Name},
+
+We&apos;ve got some good news to share about your
+Community Solar project!
+
+It looks like your project is going to be completed in early May!
+
+While that exciting date approaches, we want to run through a few reminders regarding how your Community Solar Share works and what you can expect to see from BlueWave.
+
+1. TIMING
+
+(When you’ll start to see solar credits on your electricity bill)
+
+Once your project is fully constructed, it takes some time to connect the project to the electricity grid so that you can start receiving your solar credits on your utility bill. Once your utility provider has signed off on connecting the solar project to the grid, your Community Solar farm will begin to generate solar electricity!
+
+This process of approval can take 2-6 months, depending on the timeline of your utility. We are working hard to get this approved as quickly as possible so you can start receiving the benefits from your solar project asap!
+
+After the utility is done with their work, your solar credits will appear on your utility bill every month.
+
+2. BILLING
+
+(How billing works once your solar credits start flowing to my electricity account)
+
+Once your solar credits start showing up on your electricity bill, you’ll see a bill from BlueWave for those credits (with a 10% discount applied).
+
+We will bill you a month after the credits show up on your bill, usually on the 17th of the month.
+
+BlueWave will send your bills by email and standard mail.
+
+3. PAYING YOUR BILL
+
+(How do I pay my bill?)
+
+To set up your automatic Community Solar Share monthly payments, please login to your BlueWave member portal here. You can pay by automatic withdrawal, your preferred credit card, or by mailed check.
+
+We&apos;ve just sent you a separate email with your portal login details.
+
+If you haven&apos;t received this email, no problem, just click &quot;Need to set up your account&quot; on the login page and start from the beginning.
+
+Thanks for choosing BlueWave as your
+Community Solar provider.
+
+If you have any questions about your
+Community Solar Share, you can call us at 844.786.4100
+or email us at customercare@bluewavesolar.com
+
+p.s. if you already have a BlueWave Community Solar Share
+and your account is set up, please disregard this note.
+
+Thanks for joining us to make
+&apos;Solar for the 100%&apos;
+not just a mission, but a reality.
+
+Our mailing address is:
+111 Huntington Ave, Suite 650
+Boston, MA 02199
+
+Want to change how you receive these emails?
+You can update your preferences or unsubscribe from this list</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

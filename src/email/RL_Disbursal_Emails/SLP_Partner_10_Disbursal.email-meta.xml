@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Notifies RS partner that funds have been disbursed</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>SLP Partner - 10% Disbursal</name>
+    <style>none</style>
+    <subject>{!Disbursal__c.Loan__c}&apos;s Solar Loan funds have been disbursed</subject>
+    <textOnly>*|MC:SUBJECT|*
+
+Dear {!Opportunity.Partner_tag_lookup__c},
+
+BlueWave has disbursed the first 10% of {!Opportunity.Name}&apos;s Solar Loan . Please contact a member of our Customer Care team if you do not receive these funds within 5 business days.
+
+Please remember that in order to receive the additional 0% disbursement, you will need to upload PTO documentation, answer questions about the rebate program and provide ISA documentation. To do so please fill out the form found here or found on our website.
+
+Sincerely,
+BlueWave Customer Care
+customercare@bluewave-capital.com
+(844) SUN-4100</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

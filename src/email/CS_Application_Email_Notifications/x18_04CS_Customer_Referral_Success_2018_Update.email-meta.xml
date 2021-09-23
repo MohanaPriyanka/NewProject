@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Notifies existing customer that their referral was used successfully</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>18-04 CS Customer - Referral Success</name>
+    <style>none</style>
+    <subject>Congratulations - your friend joined BlueWave Community Solar!</subject>
+    <textOnly>Your sharing paid off!
+Great news! The friend you referred successfully joined a BlueWave Community Solar farm and you have both earned $100!
+
+We will send you your $100 Visa Gift card to the billing address that we have on file for your account.
+
+Good things come to those who share in saving the planet.
+Thanks for being part of the Community!
+
+- All of us here at BlueWave
+
+| BlueWaveSolar.com |</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

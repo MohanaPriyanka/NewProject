@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Notice to NextSun customers that credits are flowing to their National Grid account</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Credit flowing notice_NextSun</name>
+    <style>none</style>
+    <subject>Your Solar Credits are Flowing!</subject>
+    <textOnly>*|MC:SUBJECT|*
+
+Dear {!Contact.Name},
+
+The Shirley Community Solar Farm is now operating and credits are flowing to your National Grid account!
+
+
+Credits? National Grid Bill? BlueWave Bill?
+
+Your solar Net-Metering Credits have begun to appear on your National Grid bill! You should have seen them on this month&apos;s bill. If you haven&apos;t seen them, give us a call.
+Now that your solar credits are flowing to your National Grid account,
+you will receive your first BlueWave bill this month.
+Bills will be sent via email and standard mail.
+For more information on how billing works, please click here.
+
+If you have any questions about your
+Community Solar Share, visit our FAQs here, give us a call at 844.786.4100 or email us at customercare@bluewavesolar.com
+
+Thanks for joining us to make
+&apos;Solar for the 100%&apos;
+not just a mission, but a reality.</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

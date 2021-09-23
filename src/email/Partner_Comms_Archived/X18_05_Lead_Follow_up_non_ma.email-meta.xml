@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>offering to follow up with lead lists for non-MA partners</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>18-05 Lead Follow up non ma</name>
+    <style>none</style>
+    <subject>You have unfinished leads with BlueWave.</subject>
+    <textOnly>You have loan leads pending with BlueWave!
+
+Hi {!Contact.FirstName},
+
+Based on BlueWave&apos;s tracking of all customer applications, we currently have a list of {!Account.Name} leads who never completed their applications for financing with BlueWave.
+
+Please email partnersupport@bluewavesolar.com if you would like us to provide you with the names and email addresses of your leads who did not complete their loan applications!
+
+How to Re-Engage:
+
+BlueWave has launched a new way to go solar since you last worked with these potential customers. Please feel free to use some of the language below to reach out to your leads to re-capture their attention!
+
+Introducing the FlexRate Loan: We now offer a new loan structure with a lower interest rate for years 1-5 to reduce total cost of ownership during this time.
+
+No Money Down – Pay nothing until after your installation is finished.
+12- or 18-month interest only period – Ease into payments by paying interest only for the beginning of your loan term.
+Double Capped Rates - Even though the rate adjusts starting in year 6, we have annual and lifetime rate caps in place for your protection.
+
+Thanks for partnering with us to revolutionize energy
+
+- All of us here at BlueWave
+
+partnersupport@bluewavesolar.com
+(888) 817-2703
+
+bluewavesolar.com</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

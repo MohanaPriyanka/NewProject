@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Notifying customers that credits should start appearing soon - Dover project live</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Dover Credits Flowing</name>
+    <style>none</style>
+    <subject>Your Community Solar Share on Dover Solar Farm is Live!</subject>
+    <textOnly>Dear {!Contact.FirstName},
+
+Dover Community Solar Farm is up and running, and solar credits will soon begin to flow to your Eversource account!
+
+Keep your eyes peeled for credits on your coming utility bills
+
+While you wait...take a look back at the site&apos;s construction with this time-lapse video.
+
+Community Solar FAQs:
+
+1. What do solar credits look like on my electricity bill?
+Your solar credits will appear on the second page of your Eversource utility bill as &quot;Net Metering Credits&quot;.
+
+2. When do I start paying for my solar credits?
+After solar credits start showing up on your electricity bill from Eversource you’ll see your BlueWave Community Solar Share bill for those solar credits (with a 10% discount applied). You’ll receive your BlueWave Community Solar Share bill by email and in the mail at this time.
+
+Since most of your energy use will be covered by your Community Solar Share production, your old electricity bill will decrease and your solar savings will start growing.
+
+3. How do I pay my BlueWave Community Solar Share bill?
+If you&apos;ve signed up for auto-pay, great! Read no further.
+
+If not, you will be able to pay your monthly Community Solar Share bill by direct deposit or credit card through your online member portal.
+You can also pay by check.
+
+For more information about how your
+Community Solar Share billing works, visit our FAQs here.
+
+If you have any questions about your
+Community Solar Share, you can call us at 844.786.4100
+or email us at customercare@bluewavesolar.com
+
+Thanks for trusting BlueWave to bring you
+innovative solar services!
+
+- All of us here at BlueWave</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

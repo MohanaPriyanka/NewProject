@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Reminder email to customer when they have&apos;t signed CS contract</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>CA - Did Not Sign Contract</name>
+    <style>none</style>
+    <subject>Your Community Solar contract is about to expire!</subject>
+    <textOnly>Hi {!Opportunity.Name},
+
+Your BlueWave Community Solar contract is about to expire - don&apos;t miss out on fresh, local solar savings!
+
+To save your Community Solar share, please open and sign the contract DoucSign sent you.
+
+- Thanks from all of us here at BlueWave
+
+BlueWave Customer Care
+844.786.4100 | customercare@bluewavesolar.com</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

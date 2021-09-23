@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Notifies Doer installer that customer application has been submitted and is pending approval</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>DOER Installer - Application is pending approval</name>
+    <style>none</style>
+    <subject>{!Lead.Name}’s Solar Loan application is pending approval</subject>
+    <textOnly>*|MC:SUBJECT|*
+
+Dear {!Lead.Partner_Name__c},
+
+The Solar Loan Application for {!Lead.Name} has been submitted and their credit is pending review.
+
+You will be notified via email once a credit decision has been made on {!Lead.Name}&apos;s application.
+
+Sincerely,
+BlueWave Partner Support
+partnersupport@bluewavesolar.com
+(888) 817 - 2703</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

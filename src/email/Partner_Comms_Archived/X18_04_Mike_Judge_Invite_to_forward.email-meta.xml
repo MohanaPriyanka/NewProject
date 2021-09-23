@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Mike Judge invite</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>18-04 Mike Judge Invite to forward</name>
+    <style>none</style>
+    <subject>Join us on April 24th to learn about SMART</subject>
+    <textOnly>Learn about the transition to SMART from an expert.BlueWave is thrilled to present an opportunity reserved for our valued partners to hear directly from Mike Judge, MA Department of Energy Resources (DOER), on the upcoming transition to the SMART program.
+
+Mike&apos;s presentation will provide an overview of what&apos;s to come this summer and will be able to answer questions that you may have about this transition.  Don&apos;t miss this unique opportunity to engage directly with the MA DOER!
+
+Webinar DetailsWhen: Friday, April 27th at 10:00AM EST.
+Where: This webinar will take place virtually, please register using the link below by Thursday, April 26th to receive your free access code.
+Why: The new SMART program will impact the benefits that your customers receive from solar installations as early as this month depending on the length of their decision and installation process.
+
+Register Here: https://zoom.us/webinar/register/WN_U_aeFXDBRIes9CE-My1S1A
+
+Brief Bio: Mike Judge, DOERMike currently serves as a member of the Senior Staff at the Massachusetts Department of Energy Resources (DOER). Reporting to the Commissioner of the DOER, Mike oversees the implementation of all the renewable and alternative energy policies for the Commonwealth.
+
+Thank you for working with BlueWave to revolutionize energy with simple, powerful solar solutions!
+
+- All of us here at BlueWave
+
+Learn More About Us!</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

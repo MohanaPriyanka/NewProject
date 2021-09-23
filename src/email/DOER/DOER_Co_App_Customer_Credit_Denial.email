@@ -1,0 +1,119 @@
+<style>
+p
+{
+  margin:0;
+  padding:0;
+  font-size:15px;
+}
+
+</style>
+
+<h2 align="center"> NOTICE OF CREDIT DECISION </h2>
+
+<p align="right" > <b>Avidia Bank </b></p>
+<p align="right" > <b>42 Main Street </b></p>
+<p align="right"><b>Hudson, Massachusetts 01749</b></p>
+<p align="right"><b>(800)508-2265</b></p>
+<p align="right"><b>NMLS Company Identifier: 422902</b></p>
+<p align="right"> <b></b></p>
+
+<table border="1" cellspacing="0" cellpadding="5" > 
+<tbody>
+<tr>
+<td valign="top" ><p><b>NOTICE DATE</b></p></td>
+</tr>
+
+<tr>
+<td valign="top" ><p> {!Lead.Today__c} </p></td>
+
+</tr>
+
+</tbody>
+</table>
+
+<hr>
+
+<h3 align="left"> Applicant Information </h3>
+
+<p> {!Lead.Co_Applicant_First_Name__c} {!Lead.Co_Applicant_Last_Name__c}</p>
+<p> {!Lead.Co_Applicant_Address__c} </p>
+
+<br>
+
+<p>This notice is in response to your application for a(n): <b>Solar Loan </b></p>
+
+<p>The requested amount is {!Lead.Loan_Principal__c} </p>
+
+<br>
+
+<p>Please be advised that your request for credit has been Denied for the following reason(s):</p>
+
+<ul>
+
+{!IF(NOT(ISBLANK(Lead.Co_App_Adverse_Credit_Notice_1__c)),"<li>"&Lead.Co_App_Adverse_Credit_Notice_1__c&"</li>","")}
+{!IF(NOT(ISBLANK(Lead.Co_App_Adverse_Credit_Notice_2__c)),"<li>"&Lead.Co_App_Adverse_Credit_Notice_2__c&"</li>","")}
+{!IF(NOT(ISBLANK(Lead.Co_App_Adverse_Credit_Notice_3__c)),"<li>"&Lead.Co_App_Adverse_Credit_Notice_3__c&"</li>","")}
+
+</ul>
+
+<br>
+
+<p><b>DISCLOSURE OF USE OF INFORMATION OBTAINED FROM AN OUTSIDE SOURCE. </b>Information was obtained in a report from a consumer reporting agency as noted below:</p>
+
+<br>
+
+<p><b>Your credit score: </b> {!Lead.Co_App_FICO__c}
+</p>
+
+<p><b>Source: </b>TransUnion</p>
+
+<p><b>Address: </b>PO Box 1000, Chester, Pennsylvania 19022</p>
+
+<p><b>Phone: </b>(800)916-8800</p>
+
+<p><b>Date:</b>   {!Lead.Co_App_Date_of_Credit_Report__c} </p>
+
+<p><b>Scores range from a low of 341 to a high of 850.</b></p>
+
+<p><b>Key factors that adversely affected your credit score:</b></p>
+
+<ul>
+
+{!IF(NOT(ISBLANK(Lead.Co_App_Credit_Report_Detail_1_c__c)), "<li>"&Lead.Co_App_Credit_Report_Detail_1_c__c&"</li>","")}{!IF(NOT(ISBLANK(Lead.Co_App_Credit_Report_Detail_2__c)), "<li>"&Lead.Co_App_Credit_Report_Detail_2__c&"</li>","")}
+{!IF(NOT(ISBLANK(Lead.Co_App_Credit_Report_Detail_3__c)), "<li>"&Lead.Co_App_Credit_Report_Detail_3__c&"</li>","")}
+{!IF(NOT(ISBLANK(Lead.Co_App_Credit_Report_Detail_4__c)), "<li>"&Lead.Co_App_Credit_Report_Detail_4__c&"</li>","")}
+{!IF(NOT(ISBLANK(Lead.Co_App_Credit_Report_Detail_5__c)), "<li>"&Lead.Co_App_Credit_Report_Detail_5__c&"</li>","")}
+
+
+</ul>
+
+<p>We also obtained your credit score from the above referenced consumer reporting agency, and used it in making our credit decision. Your credit score is a number that reflects the information in your credit report. Your credit score can change, depending on how your credit history changes.</p>
+
+<p>The consumer reporting agency which has been identified on this notice did not make the decision of adverse action described above, and is unable to provide you with the specific reasons why the decision was made.</p>
+
+<br />
+<p>You have the right to obtain a free copy of your credit report within sixty days from the consumer credit reporting agency which has been identified on this notice. The consumer credit reporting agency must provide someone to help you interpret the information on your credit report. Each calendar year you are entitled to receive, upon request, one free consumer report.</p>
+
+<p>You have the right to dispute inaccurate information by contacting the consumer credit reporting agency directly. If you have notified a consumer credit reporting agency in writing that you dispute the accuracy of information in your file, the agency must then, within thirty business days, reinvestigate and modify or remove inaccurate information. The consumer credit reporting agency may not charge a fee for this service.</p>
+
+<p>If reinvestigation does not resolve the dispute to your satisfaction, you may send a statement to the consumer credit reporting agency, to be kept in your file, explaining why you think the record is inaccurate. The consumer credit reporting agency must include your statement about the disputed information in a report it issues about you.</p>
+
+<br>
+
+<table border="1" cellspacing="0" cellpadding="0" > 
+<tbody>
+<tr>
+<td colspan="2" valign="top" ><p>Notice: The Federal Equal Credit Opportunity Act prohibits creditors from discriminating against credit applicants on the basis of race, color, religion, national origin, sex, marital status, or age (provided that the applicant has the capacity to enter into a binding contract); or because all or part of the applicant's income derives from any public assistance program; or because the applicant has in good faith exercised any right under the Consumer Credit Protection Act. In addition, Massachusetts law prohibits discrimination because of the gender identity, sexual orientation, (which shall not include persons whose sexual orientation involves minor children as the sex object) children, genetic information, ancestry, or handicap. The state agency that administers compliance with the state law concerning this Creditor is the Massachusetts Commission Against Discrimination, One Ashburton Place, Boston, MA 02108. The Federal Agency that administers compliance with this law concerning this Creditor is noted below:</p></td>
+</tr>
+
+<tr>
+<td valign="top" ><p>FDIC Consumer Response Center 1100 Walnut Street, Box 11 Kansas City, MO 64106</p></td>
+<td valign="top" ><p><b>NAME AND TITLE OF PREPARER:</b></p>
+
+<p>Avidia Bank (800) 508-2265</p></td>
+</tr>
+
+</tbody>
+</table>
+
+<p>This Notice has been delivered on {!Lead.Today__c} by Avidia Bank.</p>

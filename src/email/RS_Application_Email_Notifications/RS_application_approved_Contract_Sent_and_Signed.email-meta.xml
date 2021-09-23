@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>RS application approved - Contract Sent and Signed</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>RS application approved - Contract Sent and Signed</name>
+    <style>none</style>
+    <subject>Congratulations - your BlueWave Solar Loan application has been approved!</subject>
+    <textOnly>Hi {!Lead.FirstName},
+Congratulations!
+
+Your BlueWave Home Solar Loan Application has been approved!
+
+You&apos;ve already signed your BlueWave Home Solar Loan contract - hooray! Once we&apos;ve successfully reviewed your entire loan package, your loan process will be complete.
+
+- All of us here at BlueWave
+
+BlueWave Solar
+{!Organization.Street}
+Boston, MA {!Organization.PostalCode}
+
+Questions or concerns about solar?
+Call us at 844.786.4100
+Email us at customercare@bluewavesolar.com</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

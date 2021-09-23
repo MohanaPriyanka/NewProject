@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Sent to Eversource CS customers that have executed contracts</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Eversource Customer Billing + Timing Note</name>
+    <style>none</style>
+    <subject>Welcome to BlueWave!</subject>
+    <textOnly>*|MC:SUBJECT|*
+
+
+Welcome to BlueWave!
+
+Your Community Solar Share agreement with
+BlueWave is fully executed!
+
+
+Now that you’re signed up, we’d like to go over a couple important things about your Community Solar Share:
+
+TIMING
+
+(When you’ll start to see solar credits on your electricity bill)
+
+Your Community Solar project is generating energy!
+This means you’re going to see solar credits appear on your next National Grid bill.
+
+After that, your solar credits will appear on your bill each month.
+
+BILLING
+(How billing works once your solar credits start flowing)
+
+Once your solar credits start showing up on your electricity bill from National Grid you’ll see a bill from BlueWave for those credits
+(with a 10% discount applied).
+
+We will bill you a month after the credits show up on your bill, usually on the 17th of the month.
+
+Your electricity bill will look something like this:
+(The highlighted section is where your solar credits will appear)
+
+Your BlueWave bill will look like this:
+
+P.S. You’ll be able to view all your account details and project updates on your portal.
+
+You can login to your portal at www.bluewavesolar.com and update your payment details at any time.
+
+
+Thanks for joining us to make
+&apos;Solar for the 100%&apos;
+not just a mission, but a reality.
+
+
+- All of us here at BlueWave
+
+Our mailing address is:
+111 Huntington Ave, Suite 650
+Boston, MA 02199</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

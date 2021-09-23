@@ -1,0 +1,11 @@
+Hi {!Contact.FirstName},
+
+I have submitted your request to our subscription management team for review and will update you as soon as they process your request.
+
+Please let me know if you have any further questions, I'm happy to help.
+
+Best,
+{!Case.OwnerFullName}
+Support Operations
+BlueWave Solar
+bluewavesolar.com

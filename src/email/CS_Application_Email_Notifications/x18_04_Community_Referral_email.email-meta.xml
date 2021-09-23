@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Sent when customer triggers email from portal</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>18-04 CS Portal Referral</name>
+    <style>none</style>
+    <subject>A Community Solar Share for you!</subject>
+    <textOnly>I&apos;d like to share the sun with you!
+I&apos;ve been enjoying saving on my electric bill and greening my footprint through my membership with BlueWave Community Solar and I thought you may like to join, too.
+
+Besides your monthly savings, we each earn $100 if you use my referral code when you sign up!
+
+Just go to bluewavesolar.com/sign-up/ and input my code “{!Contact.Referral_Code__c}” into the Referral Code box.
+
+Not sure if Community Solar is right for you?
+
+Do you live in MA and pay a utility bill? Great! Anyone with a utility bill in MA is eligible for BlueWave Community Solar.
+
+Do you want to save on your monthly costs? 10% savings each month from Community Solar means more money can be spent on groceries, savings for the future, or other things you love!
+
+Do you like fresh, local products? Community Solar means local jobs, local clean energy, and no local emissions.
+
+Happy to share in this fresh, local power with you!
+
+- {!Contact.FirstName} {!Contact.LastName}
+
+P.S. Curious about BlueWave?BlueWave Solar is a local renewable energy company on a mission to revolutionize energy with simple, solar solutions. BlueWave is a B Corp which means they believe in doing good things for customers, the industry, and our planet.
+
+Learn More About BlueWave
+
+| BlueWaveSolar.com |</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

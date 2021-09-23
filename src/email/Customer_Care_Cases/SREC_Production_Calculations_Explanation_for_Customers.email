@@ -1,0 +1,33 @@
+Hi {!Contact.FirstName},
+
+NOTE THAT THESE PRODUCTION NUMBERS ARE AN EXAMPLE. USE THIS AS A GUIDELINE AND WHEN USING THIS TEMPLATE CHANGE PRODUCTION NUMBERS ACCORDINGLY AS WELL AS QUARTERS AND YEAR. DELETE THIS NOTE BEFORE SENDING.
+
+I just looked into your account and for the prior Quarter, which was Q4 of 2017 (Oct 1 - Dec 31), you produced 926.4 kWh of energy. The kWh production gets converted into megawatts (MWh) and then multiplied by the state mandated .8 factor. 
+ 
+Q4 2017 (Oct 1 - Dec 31) Production:
+ 
+926.4 kWh = .9264 MWh 
+ 
+.9264 x .8 = .7411 
+ 
+Therefore, you did not mint any SRECs, so this .7411 is carried over into the next Quarter, which is Q1 of 2018 (Jan 1 - March 31).
+ 
+Q1 2018 (Jan 1 - March 31) Production:
+ 
+This quarter you produced 855.9 kWh. 
+ 
+855.9 kWh = .8559 MWh
+ 
+.8559 x .8 = .6847 
+ 
+.6847 does not mint an SREC for Q1 production, however, since you have production from last quarter it carries into this quarter.
+ 
+.6847 + .7411 = 1.42 
+ 
+Therefore, you minted one SREC for both Q4 2017 and Q1 2018. The .42 will carry over into Q2 2018. 
+ 
+I hope this makes sense of things. If you still have questions just send me an email or give us a call at (844) 786-4100.
+ 
+Thank you!
+ 
+{!User.FirstName}

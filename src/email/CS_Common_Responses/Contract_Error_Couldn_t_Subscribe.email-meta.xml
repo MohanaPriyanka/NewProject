@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>When UAL&apos;s cannot be subscribed</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Contract Error- Couldn&apos;t Subscribe</name>
+    <style>none</style>
+    <subject>We could not subscribe all the utilities on your BlueWave Community Solar contract</subject>
+    <type>text</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

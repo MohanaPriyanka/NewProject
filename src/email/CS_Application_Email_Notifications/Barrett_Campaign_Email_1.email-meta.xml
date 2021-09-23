@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Email to Barrett customers to initiate their billing account process.</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Barrett Campaign Email 1</name>
+    <style>none</style>
+    <subject>Let&apos;s set up your BlueWave Community Solar Share account!</subject>
+    <textOnly>*|MC:SUBJECT|*
+
+View this email in your browser
+
+DEAR {!Contact.Name}
+
+It&apos;s BlueWave here,  your Community Solar Share provider!
+
+In December, your share is going to start generating energy,
+which means we need you to set up your BlueWave billing account
+and get ready to start seeing savings on your utility bill!
+
+To set up your automatic Community Solar Share
+monthly payments, please fill out your account form here and
+login to your BlueWave portal to update your password.
+
+For security reasons, we&apos;ve sent you a separate email
+with your personal portal login details.
+If you haven&apos;t received this email, let us know immediately!
+
+We&apos;re hosting an event to celebrate the
+launch of your Community Solar Farm!
+
+Come sip hot chocolate, check out your Solar Share
+in person and meet the BlueWave team!
+
+Thanks for choosing BlueWave as your
+Community Solar provider.
+
+If you have any questions about your
+Community Solar Share, you can call us at 844.786.4100
+or email us at customercare@bluewave-capital.com
+
+
+Thanks for joining us to make
+&apos;Solar for the 100%&apos;
+not just a mission, but a reality.
+
+Our mailing address is:
+111 Huntington Ave, Suite 650
+Boston, MA 02139
+
+Want to change how you receive these emails?
+You can update your preferences or unsubscribe from this list</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

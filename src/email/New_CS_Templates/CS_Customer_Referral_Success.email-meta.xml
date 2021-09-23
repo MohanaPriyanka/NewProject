@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Customer aq - customer referee email</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>CS - Customer Referral Success</name>
+    <style>none</style>
+    <subject>Congratulations - your friend joined BlueWave Community Solar!</subject>
+    <textOnly>Hi (NAME),
+
+I&apos;d like to share the sun with you.
+
+I signed up for BlueWave Community Solar to save on my electric bill and green my footprint, and I thought you might like to join too.
+
+Besides your monthly savings, we each earn $100 if you use my referral code when you sign up!
+
+Just go to bluewavesolar.com/sign-up/ and input my code “{!Contact.Referral_Code__c}” into the Referral Code box.
+_______________________________________________________________________
+
+Not sure if Community Solar is right for you?
+
+Do you live in MA and pay an electric bill? Great! Anyone with a utility bill in MA is eligible for BlueWave Community Solar.
+
+Do you want to save on your monthly costs? 10% savings each month from Community Solar means more money for the other things you love!
+
+Do you like fresh, local products? Community Solar means your electricity supports local jobs and clean energy.
+
+One of BlueWave&apos;s partners, (PARTNER NAME) will also be in touch with you to help answer any questions you may have.
+_______________________________________________________________________
+
+- {!Contact.FirstName} {!Contact.LastName}
+
+Learn More About BlueWave
+
+BlueWave Solar
+111 Huntington Ave, Suite 650
+Boston, MA 02199
+
+Questions or concerns about solar?
+Call us at 844.768.4100
+Email us at customercare@bluewavesolar.com</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Notifies RS customer that funds have been disbursed</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>RS Customer - 30% Funds Disbursed</name>
+    <style>none</style>
+    <subject>{!Disbursal__c.Loan__c}&apos;s Solar Loan funds have been disbursed</subject>
+    <textOnly>*|MC:SUBJECT|*
+
+Dear {!Opportunity.Name},
+
+BlueWave has disbursed the first 30% of your Solar Loan to {!Opportunity.Partner_tag2__c}.
+
+In order for {!Opportunity.Partner_tag2__c} to receive the next 60% disbursement, they will need to upload mechanical completion documentation. If you have any questions about your loan, feel free to contact us at 844.786.4100.
+
+Sincerely,
+BlueWave Customer Care
+customercare@bluewavesolar.com
+(844) 786 - 4100</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

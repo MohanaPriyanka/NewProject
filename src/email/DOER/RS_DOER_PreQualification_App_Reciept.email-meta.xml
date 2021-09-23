@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>RS application submittal</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>RS DOER - PreQualification App Reciept</name>
+    <style>none</style>
+    <subject>Your BlueWave Solar Loan Pre-Qualification Application has been Received!</subject>
+    <textOnly>Your BlueWave Solar Loan Pre-Qualification Application has been Received!
+
+Dear {!Lead.Name},
+
+Thank you for submitting your BlueWave solar loan application for the Mass Solar Loan.
+
+Note: The terms of the Mass Solar Loan depend on income verification and eligibility from the MassCEC.You will need to provide your Technical Confirmation from Mass CEC, proof of your stated income, and driver&apos;s license information.
+
+You should receive notice of the status of your application in the next few days.
+If you have any other questions, please contact us: customercare@bluewavesolar.com or (844) 786 - 4100.
+
+Thanks for joining us to make &apos;Solar for the 100%&apos;
+not just a mission, but a reality.
+- All of us here at BlueWave</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

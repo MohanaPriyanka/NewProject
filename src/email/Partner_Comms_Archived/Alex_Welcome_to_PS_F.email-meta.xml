@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Alex - Welcome to PS F</name>
+    <style>none</style>
+    <subject>Welcome to BlueWave Partner Support</subject>
+    <textOnly>Hi {!Contact.FirstName},
+
+Welcome to solar financing with BlueWave Solar! My name is Alex, and I will be your go-to resource for all things Partner Support related.
+
+I have set up a BlueWave Portal login for you. The portal will allow you to efficiently process and track customers as they progress through the loan application process, including sending the initial application to new customers and uploading related documents.
+
+I have attached a start guide to help you navigate the portal and highlight some of its key features. I have also included some more insights on what&apos;s to come now that you&apos;re a BlueWave Partner.
+
+Your BlueWave Resource Checklist:
+
+Partner Support - We are available 7 days a week from 8am-8pm EST at (888) 817-2703 or partnersupport@bluewavesolar.com.
+
+Customer Support - We have a separate Customer Care Team dedicated to answering all of your customers&apos; questions for the lifetime of their loan.
+
+Sales Bonuses - We&apos;ll send you SWAG for hitting milestone deals.
+
+We&apos;re happy to have you on our team.
+- All of us here at BlueWave
+
+BlueWave Partner Support
+888.817.2703 | partnersupport@bluewavesolar.com</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Link to online CS app and prompt to fill out application</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>CS Partner Application</name>
+    <style>none</style>
+    <subject>Partner application</subject>
+    <type>text</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

@@ -1,0 +1,13 @@
+Hi {!Contact.FirstName},
+
+We received notice from your utility provider, (customer's utility), that your utility account (#####) has been closed.
+
+We have cancelled your community solar subscription for that account with BlueWave as we cannot send credits to a closed utility account.
+
+If you have any questions, please do not hesitate to reach out.
+
+Best,
+{!Case.OwnerFullName}
+Support Operations
+BlueWave Solar
+bluewavesolar.com

@@ -1,0 +1,9 @@
+Hi {!Lead.FirstName},
+
+I see that you're BlueWave community solar application was approved- congratulations!  To finalize your enrollment, the next step is to complete the Docusign agreement that was sent {!dsfs__DocuSign_Status__c.dsfs__Sent_Date_Time__c}.
+
+If you had anything you want to discuss before signing up, don't hesitate to reach out here or via phone. 
+
+We look forward to the prospect of you becoming a BlueWave community solar member!
+
+Best regards,

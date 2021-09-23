@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Email to clients which includes an attached bill report</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Bill Report Request</name>
+    <style>none</style>
+    <subject>Please See Attached For Your Bill Report</subject>
+    <textOnly>Hey (Client Service Name), ​
+
+Thanks for visiting your BlueWave Portal today! The attached .csv file contains a full report of the bills you recently requested.
+
+Thanks for partnering with us to revolutionize energy.
+
+- All of us here at BlueWave
+
+Please contact your Client Services Manager if you have any questions.</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

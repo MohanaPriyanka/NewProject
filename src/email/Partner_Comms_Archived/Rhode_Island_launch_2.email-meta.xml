@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Rhode Island launch_2</name>
+    <style>none</style>
+    <subject>Good news! BlueWave Solar loans now available in Rhode Island</subject>
+    <textOnly>New Ocean State offerings!
+
+{!User.FirstName}, Did you know that Rhode Island is one of the top 3 states to go solar in the US?
+
+On August 15th BlueWave Solar will launch its loan products in Rhode Island, providing a simple loan solution to help your customers sign up for solar with confidence.
+
+BlueWave Solar Loan Features:
+
+No money down: 0 payments during installation period
+Interest only payments for the entire first year
+No penalties for early repayment
+Online bill-pay with optional automated payments
+High quality, personal BlueWave Customer Care
+
+Who is BlueWave Solar?
+
+We focus on bringing local, low-cost solar to communities. That’s our vision for a cleaner planet. And it’s our energy solution for the 100 percent.
+
+BlueWave Solar is committed to our founding principles: preserving the environment, honesty and transparency in everything we do; and respecting and supporting our employees, partners and customers.
+
+Interested? Contact Wells
+whowe@bluewavesolar.com
+1.781.771.9820
+Or check out bluewavesolar.com/home-solar-loan-rhode-island/
+
+We hope you join us to make
+&apos;Solar for the 100%&apos;
+not just a mission, but a reality.
+
+- Your BlueWave Partner Support Team
+
+General Partner Support
+888-817-2703 PartnerSupport@bluewavesolar.com
+Partner Support is available 8AM - 8PM EST
+Please add Partner Support to your contacts.</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

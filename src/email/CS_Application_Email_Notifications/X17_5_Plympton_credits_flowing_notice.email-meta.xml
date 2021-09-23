@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>17/05 Note to Plympton customers re: credits flowing</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>17/5 Plympton credits flowing notice</name>
+    <style>none</style>
+    <subject>Your solar savings have started!</subject>
+    <textOnly>*|MC:SUBJECT|*
+
+Dear {!Contact.Name},
+
+Your Community Solar Share is generating energy and solar credits have started to flow to your utility account!
+
+Be sure to check out your next bill to see your credits!
+
+Now that your solar credits are flowing, we want to run through a few Community Solar FAQs:
+
+1. What do solar credits look like on my electricity bill?
+Below is a picture of what your new electricity bill will look like.
+Your solar credits are highlighted in yellow.
+
+2. When do I start paying for my solar credits?
+A month after solar credits start showing up on your electricity bill from Eversource you’ll see your BlueWave Community Solar Share bill for those solar credits (with a 10% discount applied).
+
+You&apos;ll get your first Community Solar bill by email (and in the mail) in July.
+
+Since most of your energy use will be covered by your Community Solar Share production, your old electricity bill will decrease and your solar savings will start growing.
+
+3. How do I pay my BlueWave Community Solar Share bill?
+If you&apos;ve signed up for auto-pay, great! Read no further. If not, you will be able to pay your monthly Community Solar Share bill by direct deposit or credit card through your online member portal. You can also pay by check.
+
+For more information about how your
+Community Solar Share billing works, visit our FAQs here.
+
+If you have any questions about your
+Community Solar Share, you can call us at 844.786.4100
+or email us at customercare@bluewavesolar.com
+
+Thanks for joining us to make
+&apos;Solar for the 100%&apos;
+not just a mission, but a reality.</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

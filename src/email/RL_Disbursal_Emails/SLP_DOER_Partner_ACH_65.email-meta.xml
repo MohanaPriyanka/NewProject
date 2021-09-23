@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Notifies RS partner that funds have been disbursed</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>SLP - DOER Partner - ACH 65%</name>
+    <style>none</style>
+    <subject>{!Opportunity.Name}&apos;s Solar Loan funds have been disbursed</subject>
+    <textOnly>*|MC:SUBJECT|*
+
+Dear {!Opportunity.Partner_tag_lookup__c},
+
+BlueWave has disbursed {!Opportunity.Disbursal_3_Full_Install__c} to {!Opportunity.Partner_tag2__c} for {!Opportunity.Name}&apos;s Solar Loan. Please contact a member of our Customer Care team if you do not receive these funds within 5 business days.
+
+If you have not already, please report interconnection within your BlueWave Solar Loan Portal.  This information is essential to apply for SRECs.
+
+Sincerely,
+BlueWave Customer Care
+customercare@bluewavesolar.com
+(844) 786 - 4100</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

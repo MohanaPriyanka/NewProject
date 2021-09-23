@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Lets the requestor of a Work Request know that their request is complete</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Requestor - Product Team Work Request Complete</name>
+    <style>none</style>
+    <subject>Your {!agf__ADM_Work__c.agf__Scrum_Team__c} Team Work Request is Complete</subject>
+    <textOnly>I&apos;ve just completed this Work Request that you&apos;ve made:
+
+{!agf__ADM_Work__c.agf__Subject__c}
+{!agf__ADM_Work__c.agf__Details__c}
+
+Please do not hesitate to reach out to one of us if you have any questions or if the implemented solution is not meeting your needs.
+
+Thanks,
+{!User.FirstName}</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

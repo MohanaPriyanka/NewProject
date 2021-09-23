@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Letting partners know the launch is coming soon</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>18-0108 PRELaunch NY Email</name>
+    <style>none</style>
+    <subject>Coming Soon to New York...</subject>
+    <textOnly>We&apos;ll still be based in Boston, but, starting soon, BlueWave Solar will be providing financing in New York!
+
+Who We Are
+BlueWave Solar (“BlueWave”) is a renewable energy company founded on a mission to make solar available for everyone, everywhere. BlueWave partners with solar contractors like you to help achieve this mission!
+
+Residential Solar Loan
+Our proprietary loan platform will be our first product we launch in New York. Our platform makes financing solar a smooth process for customers and you, the installer. Working with BlueWave means seamless online approvals, best in class disbursals, and sales rep incentives based on sales volume!
+
+We simplify the loan process without hiding anything from our partners or customers.
+
+ASK US ABOUT COMMUNITY SOLAR
+As a solar contractor ourselves, we have developed over 100 MW of community solar and manage these community solar customers through our powerful platform. Let&apos;s talk!
+
+New York, we&apos;re almost ready to launch!
+In the next few days, we will share more information on our launch timing as well as what makes BlueWave a terrific partner for you.
+
+Interested?
+Please contact our New York Business Development Manager, George Wissing (917) 439-8982.
+
+We hope to partner with you to provide Solar for Everyone, Everywhere.
+
+- All of us here at BlueWave</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>
