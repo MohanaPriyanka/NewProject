@@ -446,5 +446,13 @@ ISPICKVAL(Type__c, &quot;Transfer&quot;),
 )</errorConditionFormula>
         <errorMessage>Transfer field cannot be blank if your Type is selected as Transfer.</errorMessage>
     </validationRules>
+    <validationRules>
+        <fullName>Type_Required_In_Production_Detail</fullName>
+        <active>true</active>
+        <description>Type field cannot be null in Production Detail</description>
+        <errorConditionFormula>ISPICKVAL( Type__c , &quot;&quot;)</errorConditionFormula>
+        <errorDisplayField>Type__c</errorDisplayField>
+        <errorMessage>Type field is required while creating Production Details.</errorMessage>
+    </validationRules>
     <visibility>Public</visibility>
 </CustomObject>

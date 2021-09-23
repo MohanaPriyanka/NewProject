@@ -183,19 +183,23 @@ private class ProductionSelectorTest {
 
         Transfer_Part__c part1 = new Transfer_Part__c(
             Transfer__c = transfer1SSS1.Id,
-            Production__c = prod1.Id
+            Production__c = prod1.Id,
+            Type__c = 'Fee'
         );
         Transfer_Part__c part2 = new Transfer_Part__c(
             Transfer__c = transfer2SSS1.Id,
-            Production__c = prod2.Id
+            Production__c = prod2.Id,
+            Type__c = 'Fee'
         );
         Transfer_Part__c part3 = new Transfer_Part__c(
             Transfer__c = transfer1SSS2.Id,
-            Production__c = prod3.Id
+            Production__c = prod3.Id,
+            Type__c = 'Fee'
         );
         Transfer_Part__c part4 = new Transfer_Part__c(
             Transfer__c = transfer2SSS2.Id,
-            Production__c = prod4.Id
+            Production__c = prod4.Id,
+            Type__c = 'Fee'
         );
         insert new List<Transfer_Part__c>{
             part1, part2, part3, part4
