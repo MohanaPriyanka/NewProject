@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>When we fix acceptable typos in contracts for the customer or partner</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Contract Error- Typo Fixed, No Further Action Needed</name>
+    <style>none</style>
+    <subject>We have corrected a small error on your BlueWave Community Solar contract</subject>
+    <type>text</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

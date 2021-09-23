@@ -1,0 +1,9 @@
+Hi {!Contact.FirstName},
+
+When we tried to send you your SREC payment, we had an invalid routing number. Could you please resubmit your account info using the link below? We will still honor the $10 Direct Deposit bonus. If you could please let me know once you have completed this, that would be great and we can send your payment. 
+
+bluewavememberportal.force.com/apply/apex/PaymentRequestLanding?OppId= (USE code from OPPORTUNITY and add to this link after the equal sign)
+
+Thanks so much!
+
+{!User.FirstName}

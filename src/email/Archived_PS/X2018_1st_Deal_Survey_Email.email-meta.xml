@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Updated email for first deal BW Bonus survey</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>2018 1st Deal Survey Email</name>
+    <style>none</style>
+    <subject>Congratulations on your latest deal, you&apos;ve earned a BlueWave Bonus!</subject>
+    <textOnly>We&apos;re psyched about the deal you closed! Thanks for bringing another customer closer to solar ownership.
+
+To celebrate, we&apos;re hooking you up with your choice of a sweet S&apos;Well water bottle or Yeti thermos to fuel your solar adventures!
+
+How to Cash In:
+Let us know how we’re doing by filling out this brief survey: https://www.getfeedback.com/r/8uyaee29
+
+Once you’ve filled out the survey, you’ll have the option to tell us what you want us to send your way.
+
+Take the Survey!
+
+What&apos;s next?
+
+At Deal #3 you will earn a Patagonia bag to celebrate this milestone.
+We look forward to seeing you bring more homes solar power!
+
+- All of us here at BlueWave
+
+Questions or concerns?
+
+Partner Support Line (888) 817-2703
+PartnerSupport@bluewavesolar.com</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

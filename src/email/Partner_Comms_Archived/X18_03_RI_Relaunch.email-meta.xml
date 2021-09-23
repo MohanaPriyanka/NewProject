@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Relaunching RI</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>18-03 RI Relaunch</name>
+    <style>none</style>
+    <subject>Now Accepting RI Loan Applications!</subject>
+    <textOnly>We&apos;re ready to sail into solar! Are you?
+
+Start selling solar systems before the rush!
+
+While the Rhode Island Renewable Energy Growth Program does not open new capacity until April 2018, BlueWave Solar is ready to receive applicants now.
+
+Solar will be selling faster than Dels on a hot summer day, don&apos;t miss out!
+
+Contact Wells today to learn more.
+
+STAY IN THE KNOW: This year, National Grid will be posting weekly updates on the amount of capacity remaining in the Renewable Energy Growth Program. You can sign up for notifications to stay up to date.
+
+We are dedicated to your succss:
+
+Simple online portal: Add and manage your customers easily online.
+Sales based incentives: We have a volume-based reward program for sales representatives to celebrate their work.
+A Proven Track Record: To date, we have developed over 100MW of solar projects and manage over 900 solar loan customers.
+BlueWave Partner Support: We&apos;re here for you 7 days a week from 8am-8pm by phone (888) 817-2703 or partnersupport@bluewavesolar.com.
+
+BlueWave Solar Loan Features for Customers
+
+No money down: Pay nothing during system installation period.
+18-Month interest only period: Upfront savings after installation.
+No penalties for early repayment: Pay down your loan as quickly as you like!
+Automated online bill-pay: Seamless and secure access
+Personal BlueWave Customer Care: Provided for the length of the loan.
+
+Who is BlueWave Solar?
+
+BlueWave is a B-Corp on a mission to revolutionize energy with simple, powerful solar solution. Our vision is to protect our planet by expanding access to solar for everyone, everywhere.
+
+BlueWave’s proprietary fintech platform delivers innovative, high-value products and services to its partners and customers, enabling communities and consumers to choose local, low-cost renewable power.
+
+Interested?
+Contact Wells!
+(844) 786-4100
+
+Or check out
+bluewavesolar.com/home-solar-loan-rhode-island/
+
+We hope to work with you to provide solar for everyone, everywhere!
+
+- All of us here at BlueWave</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

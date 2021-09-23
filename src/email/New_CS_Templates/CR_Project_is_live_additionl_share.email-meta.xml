@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>CR - Project is live - additionl share</name>
+    <style>none</style>
+    <subject>Your additional Community Solar share is now live!</subject>
+    <textOnly>Life just got a little sunnier.
+
+Congrats on your additional Community Solar Share!
+
+Solar credits from your additional share are now flowing to your electric account! Keep your eyes out for these credits on your upcoming utility bills.
+
+Community Solar FAQs
+
+Please reach out if you have any questions about your new Community Solar Share.
+
+- Thanks from all of us here at BlueWave</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

@@ -1,0 +1,9 @@
+This Community Solar lead with UAL: {!Utility_Account_Log__c.Id} ({!Utility_Account_Log__c.Name})
+
+was created with the question 'Have you applied for a BlueWave Home Solar Loan in the last 60 days' set to true. 
+
+1.) Please see if we have a personal credit report from the past 60 days to attach to the newly created CS lead 
+
+2.) Find the previously created loan account and link it to the CS parent account 
+
+3.) Combine any duplicate contacts. This report shows all contacts with the same email address as this lead: https://na54.salesforce.com/00O0a000004PYRs?pv0={!Lead.Email}

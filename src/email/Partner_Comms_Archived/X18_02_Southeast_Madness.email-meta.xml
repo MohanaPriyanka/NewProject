@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Promotion for Tier 1 Southeast partners for Feb</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>18-02 Southeast Madness</name>
+    <style>none</style>
+    <subject>Hey, {!Contact.Name}, want to go to March Madness this year?</subject>
+    <textOnly>WELCOME TO BLUEWAVE MADNESS
+
+Special Offer for our Top Tier Partners!
+
+We know selling solar in the winter can be a challenge, so we are offering a MAD promotion for our best, Loyal Blue, partners...
+Sell the most solar in February 2018, and we will send you the
+2018 NCAA Men&apos;s Basketball
+First/Second Rounds Games in Charlotte, NC.
+
+THAT&apos;S RIGHT.
+SELL SOLAR, GET TICKETS.
+
+Let the Games Begin!
+
+We Can&apos;t Wait to See Who Wins it All
+
+-All of Us Here at BlueWave
+
+Terms &amp; Conditions:
+
+Sales must be tracked to individual Sales Rep email addresses in Salesforce, no combined company efforts will qualify for tickets
+Minimum of 4 loans closed to win
+Loans sold between 5:00pm on Friday, February 2nd and 11:00pm on Wednesday, February 28th are eligible for this promotion
+We will announce the winning sales rep on Friday, March 2nd, 2018 via phone call from your BlueWave partner
+BlueWave will not cover any associated travel expenses to attend these games
+Tickets will be in the balcony section, enjoy the experience with the real fans!</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Informing MA installers on updates to programs w SMART</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>SMART Updates</name>
+    <style>none</style>
+    <subject>Stay smart on SMART.</subject>
+    <textOnly>The launch of the SMART program in MA will impact the residential solar market. Please see the following updates on anticipated timing.
+
+Let&apos;s prepare together.
+
+Remind me, what is &quot;SMART&quot;?
+The MA Dept. of Energy Resources (DOER) is in the process of implementing SMART (Solar Massachusetts Renewable Target), a new compensation program with the goal of promoting cost-effective solar development in Massachusetts. SMART will replace the existing SREC program in MA.
+
+What may change?
+
+Under SMART, SRECs will no longer be available for new projects. Solar will instead receive an all-in value per kWh.
+Residential solar compensation is likely to face a reduction in value of 10% or more.
+SMART compensation for residential solar spans 10 years, rather than the 20 years for larger capacity projects.
+Energy storage is covered as a value &quot;adder&quot; for residential solar, but with complex qualifications. Connect with us for more details if your team offers, or is considering offering, solar storage in 2018.
+
+When will this impact offerings for customers?
+
+Results on base compensation rates are expected by mid-January – this will provide more detail on how SMART compares to the current SREC program.
+The start date of the SMART program depends on when the Dept. of Public Utilities (DPU) reaches a final decision about certain aspects of the program.
+The latest policy updates indicate that that SMART may begin in June or July 2018.
+
+How should my team prepare?
+
+BlueWave is here for you to answer any questions you may have and to help you determine how to be most effective with future program changes
+Feel free to reach out to our team directly with additional questions
+
+Learn more:
+
+Visit the DOER webpage to learn more, including an overview presentation and the regulation itself.
+
+Important Announcement:
+Due to the Equifax data breach, many of your customers have frozen their credit. In order for us to process an application as quickly as possible, we need to make sure the applicant unfreezes their credit before we run a credit check. This is a friendly reminder to please make sure all loan applicants unfreeze their credit before we begin processing an application. Customers can use the link below to unfreeze credit.
+
+Unfreeze Credit
+
+Why Work With BlueWave Solar?
+
+BlueWave Solar (“BlueWave”) is a renewable energy company founded on a mission to make solar available to everyone, everywhere.
+
+BlueWave’s proprietary fintech platform delivers innovation, high-value products, and services to its partners and customers, enabling communities and consumers to choose local, low-cost power.
+
+Thanks for working with us to provide Solar for Everyone, Everywhere.
+
+- All of us here at BlueWave
+
+General Partner Support
+888-817-2703 PartnerSupport@bluewavesolar.com
+Partner Support is available 8AM - 8PM EST</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

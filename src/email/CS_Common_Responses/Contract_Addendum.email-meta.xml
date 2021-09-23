@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Sending subscriber a contract addendum</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Contract Error- Contract Addendum</name>
+    <style>none</style>
+    <subject>There has been an addendum to your BlueWave Community Solar contract</subject>
+    <type>text</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

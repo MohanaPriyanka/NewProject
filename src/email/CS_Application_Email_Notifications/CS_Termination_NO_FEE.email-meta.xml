@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Final CS termination notice - NO FEE</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>CS Termination NO FEE</name>
+    <style>none</style>
+    <subject>Terminating Your BlueWave Community Solar Agreement</subject>
+    <textOnly>*|MC:SUBJECT|*
+
+Hello {!Account.Name},
+
+Your Net Metering Credit Allocation Agreement (Community Solar Agreement) with BlueWave has been terminated. We are now removing you from the Community Solar project. Please note that per your agreement, this date is subject to rules set forth by your utility provider and the date of official removal may not be specified at this point.
+
+Due to your circumstances, you will not be charged a Termination Fee.
+
+Attached please find
+
+1. Your mutually executed Community Solar Agreement that outlines your termination fee obligations.
+
+BlueWave reserves all other rights available according to the mutually executed Net Metering Credit Allocation Agreement.
+
+If you have any questions, please call us at 844.786.4100
+
+- All of us here at BlueWave
+
+P.S. If you have any questions, please feel free
+to contact us at customercare@bluewavesolar.com or
+(844) 786 - 4100. We’re happy to help.</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

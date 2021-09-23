@@ -1,0 +1,30 @@
+<table border="0" cellpadding="5" width="550" cellspacing="5" height="400" >
+<tr valign="top" height="400" >
+<td tEditID="c1r1" style=" background-color:#FFFFFF; bEditID:r3st1; color:#000000; bLabel:main; font-size:12pt; font-family:arial;" aEditID="c1r1" locked="0" >
+<![CDATA[<div style="text-align: center;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><div style="text-align: left;"><p class="MsoNormal" style="margin-bottom: 0.0001pt;"><span style="font-size: 12pt; font-family: Arial, sans-serif;">Dear
+{!Opportunity.Name},<br><br></span></p>
+
+<p class="MsoNormal" style="margin-bottom: 0.0001pt;"><span style="font-size: 12pt; font-family: Arial, sans-serif;">Congratulations, your
+BlueWave Community Solar Application has been approved!<br><br></span></p>
+
+<p class="MsoNormal" style="margin-bottom: 0.0001pt;"><span style="font-size: 12pt; font-family: Arial, sans-serif;">You have been assigned
+Net Metering Credits from our {!Opportunity.Shared_Solar_System__r} Community
+Solar Project.<br><br></span></p>
+
+<p class="MsoNormal" style="margin-bottom: 0.0001pt;"><span style="font-size: 12pt; font-family: Arial, sans-serif;">You should receive an
+email from DocuSign containing your contract, which can be signed and sent back
+to us electronically.&nbsp;You will have one week to review and execute the
+contract, after which your application will expire.<br><br></span></p>
+
+<p class="MsoNormal" style="margin-bottom: 0.0001pt;"><span style="font-size: 12pt; font-family: Arial, sans-serif;">If you do not receive
+the contract, or have any other questions<span style="background:white">&nbsp;you&nbsp;can
+reach email us&nbsp;at&nbsp;</span></span><u><span style="font-size:12.0pt;
+font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
+color:blue;background:white"><a href="mailto:info@bluewave-capital.com">info@bluewave-capital.com</a></span></u><span style="font-size:12.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#1155CC;background:white">&nbsp;</span><span style="font-size: 12pt; font-family: Arial, sans-serif; background: white;">or give us a call at&nbsp;<b>(617)-418-4001.</b><br><br></span></p>
+
+<p class="MsoNormal" style="margin-bottom: 0.0001pt;"><span style="font-size: 12pt; font-family: Arial, sans-serif;">Sincerely,<br><br></span></p>
+
+<p class="MsoNormal" style="margin-bottom: 0.0001pt;"><span style="font-size: 12pt; font-family: Arial, sans-serif;">The Customer Care Team<o:p></o:p></span></p></div></blockquote></div>]]></td>
+</tr>
+</table>

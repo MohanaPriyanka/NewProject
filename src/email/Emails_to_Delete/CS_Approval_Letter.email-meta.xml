@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>To be sent upon approval of a CS opportunity</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <letterhead>BlueWave_Solar</letterhead>
+    <name>BlueWave - CS - Capacity Reserved Email</name>
+    <style>freeForm</style>
+    <subject>Community Solar Approval</subject>
+    <textOnly>Dear {!Opportunity.Name},
+
+Congratulations, your BlueWave Community Solar Application has been approved!
+
+You have been assigned Net Metering Credits from our {!Opportunity.Shared_Solar_System__r} Community Solar Project.
+
+You should receive an email from DocuSign containing your contract, which can be signed and sent back to us electronically. You will have one week to review and execute the contract, after which your application will expire.
+
+If you do not receive the contract, or have any other questions you can reach email us at info@bluewave-capital.com or give us a call at (617)-418-4001.
+
+Sincerely,
+
+The Customer Care Team</textOnly>
+    <type>html</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

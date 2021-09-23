@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>PS CS - Partner NDA</name>
+    <style>none</style>
+    <subject>Greetings from BlueWave Partner Support</subject>
+    <textOnly>Hello {!Contact.FirstName}
+Thanks for considering partnering with BlueWave! My name is {!User.Name} and I&apos;m with the Partner Support team. We&apos;re dedicated to answering any questions you have and assisting however possible. If you ever need to reach us, you can email partnersupport@bluewavesolar.com or call 888.817.2703.
+
+To get the ball rolling, we will be sending over an NDA form via DocuSign shortly. Once you complete it, a member of our Community Solar Business Development team will be in touch to review the terms of the agreement.
+
+Please let us know if you have any questions.
+
+Thanks for partnering with us to revolutionize energy.
+- All of us here at BlueWave
+
+BlueWave Partner Support
+888.817.2703 | partnersupport@bluewavesolar.com</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

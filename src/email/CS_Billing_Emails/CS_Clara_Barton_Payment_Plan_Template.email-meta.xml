@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>With conga generated bill attached</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>CS Clara Barton - Payment Plan Template</name>
+    <style>none</style>
+    <subject>Your BlueWave Bill is ready!</subject>
+    <textOnly>*|MC:SUBJECT|*
+
+Dear {!Account_Bill__c.Property_Account_Name__c},
+Your February BlueWave Community Solar Share statement has been posted!
+
+This statement reflects the net metering credits your Community Solar Share generated from 12/04/16 - 1/4/17.
+
+View the attachment in this email to see your statement.
+
+You are currently signed up for automatic billing, due to be charged next on 2/20/2017. If you would like to modify your method of payment please call us at 844.786.4100
+
+
+Thanks for joining us to make
+‘Solar for the 100%&apos;
+not just a mission, but a reality.
+-All of us here at BlueWave
+P.S. If you have any questions, please feel free
+to contact us at customercare@bluewavesolar.com or
+(844) 786 - 4100. We’re happy to help.</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

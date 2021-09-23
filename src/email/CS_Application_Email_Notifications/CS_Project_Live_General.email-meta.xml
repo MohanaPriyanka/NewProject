@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>General PTO announcement</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>CS Project Live_General</name>
+    <style>none</style>
+    <subject>We&apos;ve got good news about your BlueWave Community Solar Share!</subject>
+    <textOnly>Your BlueWave Community Solar Share is Now live!
+
+We&apos;ve got some good news to share about your
+BlueWave Community Solar share!
+
+Your Community Solar farm is generating power, and solar credits are flowing to your account! Keep your eyes out for these credits to appear on your coming utility bills.
+
+A few important reminders about your BlueWave Community Solar Share:
+
+1. Billing (How your electricity billling works now that your solar credits are flowing)
+
+Your solar credits will show up on your regular electricity statement and will be applied against your account balance. You’ll then receive a bill from BlueWave for those credits (with a 10% discount applied). We will bill you a month after the solar credits get applied to your bill. You’ll be able to view all your account details and project updates on your BlueWave member portal.
+
+2. Tracking Your Savings (Accessing your online portal)
+
+You can login to your portal at www.bluewavesolar.com and update your payment details whenever you need. Through your portal, you can see how much you’re saving, view your monthly statements, and make easy online payments at any time.
+
+More questions? Visit our website for more answers!
+
+Thanks for trusting us to bring you innovative solar services.
+- All of us here at BlueWave
+
+P.S. Want to see something cool?
+Check out live footage of your BlueWave Solar site on our YouTube page.</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

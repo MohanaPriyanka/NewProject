@@ -1,0 +1,31 @@
+<html>
+    <style>
+        * {
+            font-family: Helvetica;
+            font-size: 16px;
+            line-height:125%;          
+          }
+    </style>
+    <body>
+        <center>
+            <img src="https://gallery.mailchimp.com/7d3664585512fbeca00466dd5/images/c1fc23b0-4d1f-497f-89d5-fa15ac2b9ec6.png" 
+                 width="280" 
+                 style="max-width:280px; padding-bottom: 0; display: inline !important; vertical-align: bottom;"/>
+        </center>
+        <strong>We've received your work request. It will be reviewed shortly.</strong>
+        <br/>
+        <br/>
+        <strong>You can always see the status of this request by clicking the link below.</strong>
+        <br/>
+        <a href="https://login.salesforce.com/{!agf__ADM_Work__c.Id}">{!agf__ADM_Work__c.agf__Subject__c}</a>
+        <br/>
+        {!agf__ADM_Work__c.agf__Details__c}
+        <br/>
+        <br/>
+        Please do not hesitate to reach out to one of us if you have any questions or this request has changed.
+        <br/>
+        <br/>
+        Thanks,
+        {!agf__ADM_Work__c.agf__Scrum_Team__c} Team
+    </body>
+</html>

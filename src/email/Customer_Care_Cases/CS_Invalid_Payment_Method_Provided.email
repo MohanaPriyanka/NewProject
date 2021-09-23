@@ -1,0 +1,12 @@
+Hello {!Contact.FirstName},                                     
+
+This email is to notify you that the credit card information you provided to us as payment for your Community Solar bill was deemed invalid. 
+
+You can update your payment method in your online Community Solar Customer Portal: https://bluewavememberportal.force.com/s/
+
+As a reminder, your login is your email address. You can configure your account or reset your password by clicking “Click here to set up your Account or reset your password.”
+
+If you prefer to set up payment with us over the phone or have other questions regarding your account, please call our Customer Support Team at (844) 786-4100. 
+
+Thank you and have a nice day,
+{!User.FirstName}

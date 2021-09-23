@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Letting partners know they&apos;ve earned a 3rd deal bonus</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>2018 3rd Deal BW Bonus Email</name>
+    <style>none</style>
+    <subject>Congratulations! You&apos;ve scored another BlueWave Bonus.</subject>
+    <textOnly>Congratulations on hitting your next BlueWave Bonus milestone! Thank you for working with BlueWave to bring yet another customer solar ownership.
+
+To celebrate your 3rd loan sale during our promotional period, we&apos;d like to send you your choice of the Patagonia bags shown below.
+
+How to Cash In:
+Please email our team with your shipping address and which item you would prefer, the backpack shown on the left or the duffel shown on the right.
+
+If you already have one of these bags and want a surprise gift instead, just let us know.
+
+Atom 18L backpack
+
+Black Hole 45L duffel
+
+Email Us! Marketing@bluewavesolar.com 
+
+Enjoying your BlueWave Bonuses?
+
+We&apos;d love to see pictures of your new gear in action, powering your solar adventures! Please email us or post on social media tagging @BlueWaveSolar.
+
+- All of us here at BlueWave
+
+Questions or concerns?
+
+Partner Support Line (888) 817-2703
+PartnerSupport@bluewavesolar.com</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

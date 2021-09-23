@@ -1,0 +1,17 @@
+Hi {!Contact.FirstName},
+
+I hope this finds you well. I wanted to reach out as we changed our address back in June to a new payment lockbox, but your most recent payments were remitted to our old address at 111 Huntington Ave. The new address is:
+
+BCS Customer Management, LLC
+P.O. Box 22818
+New York, NY 10087-2818
+
+Continuing to remit payment to the old address will cause significant delays in payment processing, so we wanted to reach out and see if you had any further questions or needed anything else from us to make this change.
+
+Please let me know if you have any further questions, I'm happy to help.
+
+Best,
+{!Case.OwnerFullName}
+Support Operations
+BlueWave Solar
+bluewavesolar.com

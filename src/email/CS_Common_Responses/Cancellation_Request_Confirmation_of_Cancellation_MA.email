@@ -1,0 +1,17 @@
+Hi {!Contact.FirstName},
+
+Your community solar subscription cancellation request has been submitted. 
+
+Please note that this does not mean you will stop receiving BlueWave bills immediately. 
+
+Due to Massachusetts state and utility regulations, BlueWave can only alter solar farm subscriber lists twice a year. Therefore, even though your cancellation request has been submitted, it may be approximately 6 months before you are removed. 
+
+Once you are taken off the solar farm by the utility, please remember you will receive bills for all credits transferred to your utility account. Because it takes about 2 months from when credits are transferred to when BlueWave sends a bill, you will likely receive 2 or 3 more BlueWave bills after you are removed from the solar farm. 
+
+If you have any questions or concerns, please let me know.
+
+Best,
+{!Case.OwnerFullName}
+Support Operations
+BlueWave Solar
+bluewavesolar.com

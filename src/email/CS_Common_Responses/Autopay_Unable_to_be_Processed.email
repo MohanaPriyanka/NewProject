@@ -1,0 +1,19 @@
+Hi {!Contact.FirstName},
+
+Your autopay this month was not able to be processed. You can give us a call at (844)786-4100 to update your payment information, or follow the steps below to update your payment information on your customer portal:
+
+	1. Log in to your Community Solar Portal
+	2. Click on 'View Account/Make a Payment'
+	3. To update and save your payment information select 'Manage Autopay'.
+	4. If you have an outstanding balance, you can make the payment now with your preferred payment method and sign up for auto-pay
+	5. You can update your payment information using a checking/savings account or a debit/credit card
+	6. Click the 'Submit Securely' box and then click on 'Update Account'
+	7. Make sure your account is set to auto-pay with the correct information and you're all set!
+
+Please let me know if you have any questions!
+
+Best,
+{!Case.OwnerFullName}
+Support Operations
+BlueWave Solar
+bluewavesolar.com

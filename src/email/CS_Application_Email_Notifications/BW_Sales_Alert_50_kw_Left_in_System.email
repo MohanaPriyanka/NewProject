@@ -1,0 +1,5 @@
+CS Project Capacity Alert: 
+
+Project : {!Shared_Solar_System__c.Name}
+
+Capacity Available to be Reserved: {!Shared_Solar_System__c.Capacity_Available_to_be_Reserved__c}

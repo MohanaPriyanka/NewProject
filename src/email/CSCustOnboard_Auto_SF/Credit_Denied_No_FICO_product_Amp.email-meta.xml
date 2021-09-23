@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Application denied email for no-FICO customers, Amp</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Credit Denied - No FICO product - Amp</name>
+    <style>none</style>
+    <subject>Sorry, we were unable to approve your application</subject>
+    <textOnly>Dear %%Send Bills Contact: First Name%%,
+
+Thank you for your recent community solar application - unfortunately we&apos;re unable to approve your application at this time for one of the following reasons:
+
+1) You have less than 1,000 kWh in annual electricity use
+2) You have less than 3 months of usage history
+3) Your account is listed as demand rate and/or has over 25kw DC in demand
+
+We&apos;re sorry we&apos;re unable to approve your application at this time, but we&apos;re happy to revisit your application once the above criteria has been met.
+
+Thank you for considering Amp powered by BlueWave, we hope to be able to serve you in the future.
+
+- Amp powered by BlueWave
+
+BlueWave Customer Care
+844.786.4100 | customercare@bluewavesolar.com</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

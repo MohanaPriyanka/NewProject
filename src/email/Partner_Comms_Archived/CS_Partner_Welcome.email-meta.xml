@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>CS Partner has been fully onboarded</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>CS Partner Welcome</name>
+    <style>none</style>
+    <subject>Welcome to BlueWave</subject>
+    <type>text</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

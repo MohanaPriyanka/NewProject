@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>When a customer requests an invoice to be emailed</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Customer Invoice Request</name>
+    <style>none</style>
+    <subject>BlueWave: Here are the invoices you requested</subject>
+    <type>text</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

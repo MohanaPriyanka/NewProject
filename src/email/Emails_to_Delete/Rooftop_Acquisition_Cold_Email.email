@@ -1,0 +1,47 @@
+<table border="0" cellpadding="5" width="600" cellspacing="5" height="400" >
+<tr valign="top" height="50" >
+<td tEditID="c1r1" style=" background-color:#FFFFFF; bEditID:r3st1; color:#000000; bLabel:main; font-size:12pt; font-family:arial;" aEditID="c1r1" locked="0" >
+<![CDATA[Dear {!Contact.Salutation} {!Contact.LastName},]]></td>
+</tr>
+<tr valign="top" height="300" >
+<td tEditID="c1r2" style=" background-color:#FFFFFF; bEditID:r3st1; color:#000000; bLabel:main; font-size:12pt; font-family:arial;" aEditID="c1r2" locked="0" >
+<![CDATA[<div><p class="MsoNormal" style="background:white"><span style="font-family: Arial, sans-serif;">Your property at&nbsp;&lt;INSERT STREET ADDRESS&gt;&nbsp;is a
+prime site for a rooftop solar installation with the&nbsp;potential to generate
+lease revenue or electricity savings ranging from $20k-45k annually.<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="background:white"><br></p>
+
+<p class="MsoNormal" style="margin-bottom:12.0pt;background:white"><span style="font-family: Arial, sans-serif;">As a member of BlueWave
+Capital, an international solar energy finance and development firm, I write to
+identify the opportunity of integrating solar on one or more of your
+properties.<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="background:white"><span style="font-family: Arial, sans-serif;">With headquarters in Boston, BlueWave has developed solar projects
+for over 30 local Municipalities, Community Colleges and Private Schools throughout
+MA. Our mission is to reduce carbon emissions, while delivering meaningful
+lease revenue and energy savings for property owners.<br>
+<br>
+I&nbsp;would be happy to further discuss the logistics and economics associated
+with this proposal. Timing is critical in this business, and the economic
+benefits depend on limited government incentives supporting solar PV projects,
+and these incentives have a distinct tendency to become less lucrative as the
+solar market matures. In order to ensure your property has the best possible
+opportunity to yield a viable solar PV project, we would be eager to begin this
+discussion in the oncoming month.&nbsp; <o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom:12.0pt;background:white"><span style="font-family: Arial, sans-serif;"><br>
+I have attached some additional information on BlueWave's solar rooftop
+program. I would be happy to schedule a meeting to share our preliminary
+financial analysis of your site and answer any questions you may have.<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="background:white"><span style="font-family: Arial, sans-serif;">I look forward to hearing from you.<o:p></o:p></span></p></div><br style="color: rgb(33, 33, 33); font-family: Arial; font-size: 13.3333px;">]]></td>
+</tr>
+<tr valign="top" height="50" >
+<td tEditID="c1r3" style=" background-color:#FFFFFF; bEditID:r3st1; color:#000000; bLabel:main; font-size:12pt; font-family:arial;" aEditID="c1r3" locked="0" >
+<![CDATA[<font face="Arial, sans-serif">Best,</font><div><font face="Arial, sans-serif"><br></font></div><div><font face="Arial, sans-serif">Ryan B. Cooney<br></font><div><div style="background-color: rgb(255, 255, 255);"><font face="Arial, sans-serif">&nbsp;</font></div><div style="color: rgb(0, 0, 0); font-size: 12pt; font-family: Calibri, Arial, Helvetica, sans-serif; background-color: rgb(255, 255, 255);"><font face="Calibri,Arial,Helvetica,sans-serif" size="2"><span style="font-size: 16px;"><div style="margin: 0px;"><font size="3" color="#212121"><span style="font-size: 12pt;"><font color="#335DCF"><b>BLUE</b></font><font color="#000083"><b>WAVE&nbsp;</b></font><font color="#335DCF"><b>CAPITAL, LLC</b></font></span></font></div><div style="margin: 0px;"><p class="MsoNormal" style="background-image: initial; background-attachment: initial; background-size: initial; background-origin: initial; background-clip: initial; background-position: initial; background-repeat: initial;">137
+Newbury St, 4<sup>th</sup> Floor<o:p></o:p></p>
+
+<p class="MsoNormal" style="background-image: initial; background-attachment: initial; background-size: initial; background-origin: initial; background-clip: initial; background-position: initial; background-repeat: initial;">Boston,
+MA 02116<o:p></o:p></p></div></span></font></div><div style="color: rgb(0, 0, 0); font-size: 12pt; font-family: Calibri, Arial, Helvetica, sans-serif; background-color: rgb(255, 255, 255);"><font face="Calibri,Arial,Helvetica,sans-serif" size="2"><span style="font-size: 16px;">m:&nbsp;<font color="#3366FF">619.990.2862</font></span></font></div><div style="color: rgb(0, 0, 0); font-size: 12pt; font-family: Calibri, Arial, Helvetica, sans-serif; background-color: rgb(255, 255, 255);"><font face="Calibri,Arial,Helvetica,sans-serif" size="2"><span style="font-size: 16px;">e: &nbsp;<font color="#006FC9">rcooney@bluewave-capital.com</font></span></font></div><div style="color: rgb(0, 0, 0); font-size: 12pt; font-family: Calibri, Arial, Helvetica, sans-serif; background-color: rgb(255, 255, 255);"><font face="Calibri,Arial,Helvetica,sans-serif" size="2"><span style="font-size: 16px;">w:&nbsp;<a href="http://www.bluewave-capital.com/" target="_blank" id="LPNoLP"><b>www.bluewave-capital.com</b></a></span></font></div></div></div>]]></td>
+</tr>
+</table>

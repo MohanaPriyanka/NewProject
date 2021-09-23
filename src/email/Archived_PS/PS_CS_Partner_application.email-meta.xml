@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>PS CS - Partner application</name>
+    <style>none</style>
+    <subject>BlueWave Community Solar Partner Application</subject>
+    <textOnly>Hi {Contact.Name},
+
+My name is {!User.Name} and I&apos;m with BlueWave Partner Support. Thank you for your interest in partnering with BlueWave!
+
+To begin, please click here to start your application. In the application you will be asked to provide documentation and relevant business information. Once the application is complete, we will review it and follow up regarding the next steps for becoming a BlueWave Community Solar Partner.
+
+Please let us know if you have any questions and feel free to reach out to partnersupport@bluewavesolar.com if you need assistance.
+
+Thanks for partnering with us to revolutionize energy.
+- All of us here at BlueWave
+
+BlueWave Partner Support
+888.817.2703 | partnersupport@bluewavesolar.com</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Confirming 18 month IO for error contracts</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>18-02 Contract Correction</name>
+    <style>none</style>
+    <subject>A note on your loan contract - please review</subject>
+    <textOnly>Dear {!Opportunity.Name},
+
+It has come to our attention that your customer contract had an error in which your interest-only period was stated as twelve months rather than eighteen.
+
+While the first page of your contract states an eighteen month interest-only period, the second sentence of the &quot;Payment&quot; section on page 3 states, &quot;Beginning shortly after the operation date, you must make twelve monthly payments of interest only...&quot; This should say &quot;eighteen&quot;, not &quot;twelve&quot;.
+
+We would like to grant you the full 18 month interest-only period for your loan with our lending partner Avidia Bank. If you would like to keep this 18 month interest-only period, no action is needed at this time. If you would like to convert your loan to a 12 month interest-only period, please let us know by next Friday, March 9th, 2018.
+
+We sincerely apologize for any confusion this error in the contract may have caused. Please do not hesitate to contact us with any questions you may have.
+
+If you have any questions about your Home Solar Loan, please contact us at customercare@bluewavesolar.com or (844) 786-4100.
+
+Kind Regards,
+- BlueWave Customer Care</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

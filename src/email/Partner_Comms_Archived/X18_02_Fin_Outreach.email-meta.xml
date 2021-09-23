@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Advertising financial partnerships to partners</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>18-02 Fin Outreach</name>
+    <style>none</style>
+    <subject>Invitation for {!Account.Name} to Join BlueWave Primary Group</subject>
+    <textOnly>Want reserved access to investment opportunties?
+BlueWave Solar is rolling out a new program in which we invite our best potential financial partners to learn about opportunities to work with us first.
+
+Who We Are:BlueWave is a Boston based renewable energy company founded on a mission to provide solar for everyone, everywhere. To demonstrate our dedication to our mission, we became a certified B Corporation in 2017.
+
+To achieve our mission, BlueWave both develops large scale community solar projects and manages customer relationships for community solar and solar loan customers. To date, we have developed over 100MW of Community Solar and supported the financing of over 1,000 residential solar installations.
+
+As we scale our residential loan business, we maintain high quality borrower standards;
+
+All of our customers have 700+ FICO scores
+Our loans are collateralized by the rooftop systems that they finance
+Our customers generate net savings leading to &lt;1% delinquency rates
+
+Partnership Opportunities:As BlueWave continues to grow our residential loan business we will be expanding beyond our current footprint in MA, RI, NY, SC, NC, and FL across the eastern seaboard. As we expand in both geography and scale of customers managed, we have the opportuntiy to expand our base of financial partners.
+
+We primarily offer two ways for financial institutions to partner with BlueWave:
+
+Warehouse Line of Credit: Participate in our syndicated warehouse line of credit to support direct loans to customers or the purchase of loans from partner banks.
+Whole Sale Loans: Purchase portfolios of whole loans that BlueWave has originated to date. Portfolio size remains flexible per transaction and BlueWave can offer servicing upon buyer&apos;s request.
+
+Would you like first access to Warehouse or Whole Loan Sales opportunities with BlueWave?
+
+Email us to apply for membership to the BlueWave Primary Group.
+
+Get in Touch! Mwang@bluewavesolar.com</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

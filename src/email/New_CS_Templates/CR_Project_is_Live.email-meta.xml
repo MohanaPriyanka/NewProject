@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Credits Rolling - Project is Live</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>CR - Project is Live</name>
+    <style>none</style>
+    <subject>Your Community Solar share is live!</subject>
+    <textOnly>We have great news about your Community Solar share!
+
+Solar credits from your shared solar farm are now flowing to your electric account! Keep your eyes out for these credits on your upcoming utility bills.   While you wait, here are some Community Solar FAQs:
+
+1. What do solar credits look like on my electricity bill?
+Your solar credits will appear on your electric utility bill as credits, decreasing the total amount you owe.
+
+2. When do I start paying for my solar credits?
+
+After solar credits start showing up on your electricity bill, you&apos;ll receive a BlueWave Community Solar bill for the solar credits generated (with a 10%  discount applied). You&apos;ll receive your BlueWave Community Solar share by email and in the mail. Since most of your energy use will be covered by your Community Solar production, your old electricity bill will decrease and your solar savings will start to grow.
+
+3. How do I pay my BlueWave Community Solar bill?
+
+If you&apos;ve signed up for auto-pay, great! Read no further.
+
+If not, you will be able to pay your monthly Community Solar bill by direct deposit or credit card through your online member portal. You can also pay by check.
+
+Additional Community Solar FAQs
+
+Please reach out if you have any questions about your Community Solar share.
+
+- Thanks from all of us here at BlueWave</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

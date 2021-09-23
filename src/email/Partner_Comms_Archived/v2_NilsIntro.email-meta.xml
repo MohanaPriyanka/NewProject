@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Nils email w formatting</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <letterhead>basic</letterhead>
+    <name>v2_NilsIntro</name>
+    <style>freeForm</style>
+    <subject>New BlueWave Account Manager</subject>
+    <textOnly>Happy 4th of July Week!
+
+I just wanted to take a minute to introduce myself as your new rep over here at BlueWave Solar. I’m really excited to be a part of the BlueWave team and to have the opportunity to work with you.
+
+BlueWave has some fantastic new solar loan offerings with more on the way. I’d love to schedule a time to meet with you and your teams to make sure you’re fully up to speed on what BlueWave has to offer and to get an idea of what we can be doing to better serve your needs.
+
+I will be reaching out to schedule a time that works for you and would be happy to provide lunch for you and your team.
+
+Let me know if there’s anything I can do for you in the meantime.
+
+Best,
+Nils
+
+Nils Helander
+Business Development Manager
+BlueWave Solar
+111 Huntington Ave, Suite 650
+Boston, MA 02199
+c: (860) 805-0583
+www.bluewavesolar.com</textOnly>
+    <type>html</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

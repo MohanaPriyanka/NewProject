@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>when CS bills are returned</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Undeliverable Mail Outreach</name>
+    <style>none</style>
+    <subject>BlueWave Community Solar: Your bill was undeliverable</subject>
+    <type>text</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

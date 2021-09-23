@@ -1,0 +1,20 @@
+Hi {!Contact.FirstName},
+
+Thank you for reaching out. To make a one time payment, please follow the steps below.
+
+1) Log into the BlueWave portal
+2) Click "Open your Account"
+3) Click "Make a payment" button
+4) Select Yes or No to "Do you want to enroll in autopay?", then Click Next
+5) Select "Full Balance" or "Other" and enter the payment amount
+6) Select your Payment Method and enter the payment information
+7) Click "Submit Securely" button
+8) Click "Make a payment" button
+
+If you have any questions, please let us know.
+
+Best,
+{!Case.OwnerFullName}
+Support Operations
+BlueWave Solar
+bluewavesolar.com

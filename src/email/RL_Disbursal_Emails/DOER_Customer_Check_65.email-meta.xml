@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Notifies RS customer that funds have been disbursed</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>DOER Customer - Check 65%</name>
+    <style>none</style>
+    <subject>Your Solar Loan funds have been disbursed</subject>
+    <textOnly>*|MC:SUBJECT|*
+
+Dear  {!Opportunity.Name},
+
+BlueWave has disbursed {!Opportunity.Disbursal_3_Full_Install__c} via a two party check for your Solar Loan. The check was sent to the following address:
+
+{!Opportunity.Concatenated_Billing_Address__c}
+
+Please contact a member of our Customer Care if this is the incorrect address or you do not receive this check in the next 7 business days.
+
+Please see the below details of the BlueWave SREC program:
+
+SRECs are minted according to the following schedule:
+
+Q1 generation (Jan 1 – March 31): July 15th
+Q2 generation (April 1 – June 31): October 15th
+Q3 generation (July 1 – September 30): January 15th
+Q4 generation (October 1 – December 31): April 15th
+
+BlueWave will pay you according to the following schedule:
+
+Q1 generation: paid on or close to 9/1
+Q2 generation: paid on or close to 12/1
+Q3 generation: paid on or close to 3/1 (of following year)
+Q4 generation: paid on or close to 6/1 (of following year)
+
+
+SREC program update:
+
+The State has made a change to the SREC program that becomes effective on January 8th, 2017. Home solar systems interconnected after that date will receive a reduced SREC factor of 0.8. The SREC factor determines the dollar value you receive per SREC created by your solar system’s energy production. Every 1 MWh of production will receive 80% of full SREC value. However, partial SRECs can not be minted. Therefore, any generation less than 1 MWh in a quarter will be rolled into your next quarter’s production total to be recognized at the subsequent SREC mint date. For more information about SRECs visit our FAQs.
+
+Please remember that there is a built-in delay – which was established by the state of MA – between the time of generation and the time at which SRECs are minted and sold.
+
+
+To be extra efficient, we&apos;d like to deposit your SREC earnings directly into your bank account! To make this happen, please provide your direct deposit information  here. Otherwise, we will mail your SREC earning as a paper check to the address we have on file.
+
+If you have any questions, do not hesitate to email us at customercare@bluewavesolar.com or by visiting the Support Page on our website.
+
+Sincerely,
+BlueWave Customer Care
+customercare@bluewavesolar.com
+(844) 786 - 4100</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

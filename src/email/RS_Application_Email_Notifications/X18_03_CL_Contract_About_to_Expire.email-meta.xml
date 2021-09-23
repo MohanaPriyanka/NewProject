@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Email to contacts letting them know their contract is about to expire</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>18-03 CL Contract About to Expire</name>
+    <style>none</style>
+    <subject>Attention: Your Consumer Loan Contract is About to Expire</subject>
+    <textOnly>Dear {!Contact.FirstName},
+
+It looks like your BlueWave Solar Loan Contract is about to expire!
+
+This occurs when a signature hasn&apos;t been registered within 14 days of the contract being sent.
+
+Please let us know if you are still interested in signing your promissory note and we will gladly resend your contract.
+
+Additionally, feel free to contact us at customercare@bluewavesolar.com or (844) 786-4100 if you have any questions.
+
+Sincerely,
+
+BlueWave Customer Care
+
+Thank you for helping us to provide
+Solar for Everyone, Everywhere.
+
+- All of us here at BlueWave</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

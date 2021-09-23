@@ -1,0 +1,8 @@
+Hello {!Contact.FirstName},
+
+Please find the attached Sales fee statement for the month of {MONTH}. This statement indicates the payment amounts that will be sent, for opportunities closed during the month of {MONTH}. Please review the statement carefully and notify us of any discrepancies by {DEADLINE DATE}.
+
+Best, 
+
+
+CONFIDENTIAL COMMUNICATION: This message is intended only for the use of the addressee and may contain information that is privileged, confidential and exempt from disclosure under applicable law. If the reader of this message is not the intended recipient, or the employee or agent responsible for delivering the message to the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication is strictly prohibited. If you have received this e-mail in error, please notify us immediately by return e-mail and delete this e-mail and all attachments from your system

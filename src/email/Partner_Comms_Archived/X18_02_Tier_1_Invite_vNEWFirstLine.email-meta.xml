@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>New partner Catered messaging on CS launch</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>18-02 Tier 1 Invite vNEWFirstLine</name>
+    <style>none</style>
+    <subject>Introducing Loyal Blue Partner Status for {!Account.Name}</subject>
+    <textOnly>*You&apos;re Loyal Blue*
+
+YOU&apos;RE INVITED
+
+Congratulations!
+Based on {!Account.Name} offering BlueWave to customers first, we are thrilled to invite you to our Tier 1, Loyal Blue, perks program.
+
+&quot;Loyal Blue&quot; partner status means your team is eligible to sell Community Solar, and much more!
+
+Why offer Community Solar?
+
+Re-Connect with leads who did not follow through with rooftop installations
+Offer &quot;one-stop-solar&quot; for new leads
+Top-off eligible solar loan customers for 100% solar power
+Earn up to $1,500 in commission per customer, per project
+
+Community Solar is Just the Beginning...
+
+Additional Loyal Blue Benefits:
+
+Event Sponsorship: Co-Exhibiting at key industry events
+Exclusive Sales Perks: Think tickets to March Madness 2018
+Training: Subsidies available for your team
+And more..!
+
+Interested?
+Talk to your BlueWave partner about signing a Sales Service Agreement (SSA) to unlock the ability to sell Community Solar to customers.
+
+Thanks for working with BlueWave to provide Solar for Everyone, Everywhere.
+
+- All of us here at BlueWave
+
+General Partner Support
+888-817-2703 PartnerSupport@bluewavesolar.com
+Partner Support is available 8AM - 8PM EST</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

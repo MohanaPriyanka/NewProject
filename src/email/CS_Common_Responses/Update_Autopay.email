@@ -1,0 +1,20 @@
+Hi {!Contact.FirstName},
+
+Thank you for reaching out. To update your autopay setting, please follow the steps below.
+
+1) Log in to your Community Solar Portal
+2) Click on "Open Your Account"
+3) Select "Manage Autopay". If you have an outstanding balance, you can make the payment now with your preferred payment method and sign up for auto-pay
+4) Under the Autopay drop down, select Yes or No to "Do you want to enroll in autopay?" then click Next.
+5) Under the Payment Method drop down, select to add a new Bank Account or Credit Card. You can update your payment information using a checking/savings account or a debit/credit card.
+6) Click "Submit Securely".
+7) Click on 'Update Account'
+8) Make sure your account has the correct auto-pay setting with the correct information and you're all set!
+
+If you have any questions, please let us know.
+
+Best,
+{!Case.OwnerFullName}
+Support Operations
+BlueWave Solar
+bluewavesolar.com
