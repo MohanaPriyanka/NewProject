@@ -1,7 +1,0 @@
-Dear Avidia,
-
-{!Opportunity.Name}'s loan is ready FOR REVIEW. 
-
-Loan Principal: {!Opportunity.Loan_Amount_Financed__c}
-MCEC Loan ID: {!Opportunity.project_identification_number__c}
-Construction Period:{!Opportunity.00Nj0000000gNnc}
