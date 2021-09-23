@@ -3,10 +3,10 @@
  * @description Created to handle when a user's email is changed through verification
  */
 
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class UserChangeEventTriggerHandler {
 
     public static void afterInsert(List<UserChangeEvent> newRecords) {
-        System.debug('user change event trigger handler');
         filterUsersWithEmailUpdates(newRecords);
     }
 
@@ -28,7 +28,6 @@ public without sharing class UserChangeEventTriggerHandler {
 
     @Future
     public static void updateRelatedContact(Set<Id> userIds) {
-        System.debug('update contacts');
         Map<Id, String> emailToContactIdMap = new Map<Id, String>();
         UserAndGroupSelector userSelector = new UserAndGroupSelector();
         List<User> users = userSelector.getUsersFromId(userIds);
@@ -38,7 +37,7 @@ public without sharing class UserChangeEventTriggerHandler {
                 emailToContactIdMap.put(u.ContactId, u.Email);
             }
         }
-        
+
         List<Contact> relatedContacts = ContactSelector.getContactsWithRelatedFields(emailToContactIdMap.keySet());
 
         for (Contact con : relatedContacts) {
