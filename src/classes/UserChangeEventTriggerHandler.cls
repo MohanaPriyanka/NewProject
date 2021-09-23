@@ -46,7 +46,6 @@ public without sharing class UserChangeEventTriggerHandler {
 
         for (Contact con : relatedContacts) {
             con.Email = emailToContactIdMap.get(con.Id);
-            System.debug(con.Email);
         }
 
         update relatedContacts;
