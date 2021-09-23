@@ -1,0 +1,6 @@
+<table border="0" cellpadding="5" width="550" cellspacing="5" height="400" >
+<tr valign="top" height="400" >
+<td tEditID="c1r1" style=" background-color:#FFFFFF; bEditID:r3st1; color:#000000; bLabel:main; font-size:12pt; font-family:arial;" aEditID="c1r1" locked="0" >
+<![CDATA[<div style="text-align: center;"><blockquote style="margin: 0 0 0 40px; border: none; padding: 0px;"><div style="text-align: left;"><br></div><div style="text-align: left;"><br></div><div style="text-align: left;">Dear {!Lead.Name},</div><div style="text-align: left;"><br></div><div style="text-align: left;">Thank you for your interest in BlueWave's Community Solar program. At this time there is no available capacity in your Service Territory.&nbsp;</div><div style="text-align: left;"><br></div><div style="text-align: left;">You have been added to a Waitlist and will be notified when capacity becomes available.&nbsp;</div><div style="text-align: left;"><br></div><div style="text-align: left;">As we are consistently developing new projects throughout Massachusetts the wait should not be too long. We will be in touch.&nbsp;</div><div style="text-align: left;"><br></div><div style="text-align: left;">Sincerely,</div><div style="text-align: left;"><br></div><div style="text-align: left;">The BlueWave Customer Care Team</div></blockquote></div>]]></td>
+</tr>
+</table>

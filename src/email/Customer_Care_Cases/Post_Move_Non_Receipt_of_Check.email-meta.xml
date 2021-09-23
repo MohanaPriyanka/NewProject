@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Lots of emails from people who mailed us a check that hasn&apos;t been fwded to the new address</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Post Move Non-Receipt of Check</name>
+    <style>none</style>
+    <subject>Update on your payment to BlueWave Solar</subject>
+    <type>text</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

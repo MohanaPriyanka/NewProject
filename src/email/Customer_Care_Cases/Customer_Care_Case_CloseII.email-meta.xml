@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>When a case is closed, this email is sent to the customer</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Customer Care Case Close</name>
+    <style>none</style>
+    <subject>Did BlueWave help you resolve your issue? Case: {!Case.CaseNumber}</subject>
+    <textOnly>Thanks for reaching out to BlueWave!
+
+Thanks for reaching out to BlueWave!
+
+We hope all your questions were answered today.
+You can always reach us at customercare@bluewavesolar.com.
+We&apos;re happy to help.
+
+How was your experience with BlueWave today?</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

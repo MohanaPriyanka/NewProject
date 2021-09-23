@@ -1,0 +1,11 @@
+Hi {!Contact.FirstName},
+
+Thanks for reaching out to let us know. I'd be happy to help transfer the account to your new address. If you could please send us a recent copy of your utility bill for your new address along with the Green Button data, I will pass that along to my team to begin the transfer process.
+
+If you have any questions, please do not hesitate to reach out.
+
+Best,
+{!Case.OwnerFullName}
+Support Operations
+BlueWave Solar
+bluewavesolar.com

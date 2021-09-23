@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Sent to NGRID CS customers that have executed contracts</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>NGrid Customer Billing + Timing Note</name>
+    <style>none</style>
+    <subject>Welcome to BlueWave!</subject>
+    <textOnly>Your Community Solar Share agreement with BlueWave is fully executed!
+
+Now that you&apos;re signed up, we&apos;d like to go over a couple important things about your Community Solar Share:
+
+Here&apos;s how it will work
+
+(What the timing will look like once credits start rolling)
+
+Once your Community Solar Farm begins generating solar electricity, your solar credits will begin appearing on your electricity bill each month.
+
+We’ll send you monthly progress updates as we go along so you know where things are at.
+
+(How billing works once your solar credits start flowing)
+
+Once your solar credits start showing up on your electricity bill from your utility you’ll see a bill from BlueWave for those credits (with a 10% discount applied).
+
+We will bill you a month after the credits show up on your bill, usually on the 15th of every month.
+
+You can view your account details and project updates on your portal.
+
+Login to Your Portal</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Email sent when Customer cancels Subscription</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>BWOC - Customer Cancellation</name>
+    <style>none</style>
+    <subject>Subscription Cancellation - {!01Ij0000001JLxa.00Nj0000009pvFq}</subject>
+    <type>text</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

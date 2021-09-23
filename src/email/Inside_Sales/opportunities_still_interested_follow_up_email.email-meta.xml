@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>opps, who may have come in organically with no guidance, follow up/close email</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>close opp</name>
+    <style>none</style>
+    <subject>You&apos;re nearly enrolled! Last step</subject>
+    <type>text</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

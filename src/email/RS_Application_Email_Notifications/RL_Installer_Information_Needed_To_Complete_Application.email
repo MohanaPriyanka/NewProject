@@ -1,0 +1,55 @@
+<table border="0" cellpadding="5" width="550" cellspacing="5" height="400" >
+<tr valign="top" height="400" >
+<td tEditID="c1r1" style=" background-color:#FFFFFF; bEditID:r3st1; color:#000000; bLabel:main; font-size:12pt; font-family:arial;" aEditID="c1r1" locked="0" >
+<![CDATA[<p class="MsoNormal" style="margin-bottom: 0.0001pt;"><span style="font-size:12.0pt;font-family:&quot;Arial&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:#1F497D">Dear&nbsp;{!Opportunity.Partner_tag_lookup__c},</span><span style="font-size: 12pt; font-family: Arial, sans-serif;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 0.25in;"><span style="font-size:12.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#1F497D">&nbsp;</span><span style="font-size: 12pt; font-family: Arial, sans-serif;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 0.25in;"><span style="font-size:12.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#1F497D">The Solar Loan Application for {!Opportunity.Name} has been
+submitted and their credit has been approved. &nbsp;We now need you to give us some information about the Solar Installation so we can issue a loan contract for signature. &nbsp;</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 0.25in;"><span style="font-size: 12pt; font-family: Arial, sans-serif;"><br>
+</span><span style="font-size:12.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#1F497D">Please complete the&nbsp;</span><span style="font-size: 13.5pt; font-family: 'Times New Roman', serif;"><a href="https://forms.bluewaverenewables.com/381452"><span style="font-size:12.0pt;
+font-family:&quot;Arial&quot;,sans-serif;color:blue">installer update form</span></a></span><span style="font-size:12.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#1F497D">&nbsp;to&nbsp;update
+his/her information. You will need to enter the information
+below in order to update the correct customer's record. Please keep in mind
+that the&nbsp;</span><span style="font-size:13.5pt;font-family:&quot;Arial&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:#1F497D">Referral</span><span style="font-size:12.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#1F497D">&nbsp;Code is&nbsp;<b>CASE SENSITIVE</b></span><span style="font-size: 13.5pt; font-family: 'Times New Roman', serif;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 0.25in;"><span style="font-size: 12pt; font-family: Arial, sans-serif;">&nbsp;<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 0.25in;"><b><span style="font-size:12.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#1F497D">Customer Name:&nbsp;{!Opportunity.Name}</span></b><span style="font-size: 12pt; font-family: Arial, sans-serif;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 0.25in;"><b><span style="font-size:12.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#1F497D">Referral Code
+Used:&nbsp;{!Opportunity.Custom_ID__c}</span></b><span style="font-size: 12pt; font-family: Arial, sans-serif;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 0.25in;"><span style="font-size: 12pt; font-family: Arial, sans-serif;">&nbsp;<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 0.25in;"><span style="font-size:12.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#1F497D">Please do not forget to attach your agreement
+between&nbsp;{!Opportunity.Name} and&nbsp;{!Opportunity.Partner_tag_lookup__c}.</span><span style="font-size: 12pt; font-family: Arial, sans-serif;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 0.25in;"><span style="color: rgb(31, 73, 125); font-family: Arial, sans-serif; font-size: 12pt;">&nbsp;</span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 0.25in;"><span style="font-size:12.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#1F497D">You can access the update form at any time by
+scrolling to the bottom of our homepage at&nbsp;</span><span style="font-size: 12pt; font-family: Arial, sans-serif;"><span style="font-family:&quot;Calibri&quot;,sans-serif;color:#1F497D"><a href="http://www.bluewavesolar.com">www.bluewaveresolar.com</a></span><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin: 0in 0in 0.0001pt 0.25in;"><span style="font-size:12.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
+&quot;Times New Roman&quot;;color:#1F497D">&nbsp;</span><span style="font-size: 12pt; font-family: Arial, sans-serif;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom: 0.0001pt;"><span style="font-size:12.0pt;font-family:&quot;Arial&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:#1F497D">Thank you,</span><span style="font-size: 12pt; font-family: Arial, sans-serif;"><o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-bottom: 0.0001pt;"><span style="font-size:12.0pt;font-family:&quot;Arial&quot;,sans-serif;
+mso-fareast-font-family:&quot;Times New Roman&quot;;color:#1F497D">BlueWave Customer Care</span><span style="font-size: 12pt; font-family: Arial, sans-serif;"><o:p></o:p></span></p>]]></td>
+</tr>
+</table>

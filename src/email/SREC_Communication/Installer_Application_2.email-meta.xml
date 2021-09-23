@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Installer Application 2</name>
+    <style>none</style>
+    <subject>BlueWave Sales Partner Application</subject>
+    <textOnly>Hello {!Account.Name},
+
+Thanks for your interest in partnering with BlueWave!
+
+To get started, please fill out the BlueWave Installer Application below. The application will ask for company details such as ownership and licensing information, as well as some general company history.
+
+It may also ask you to upload necessary licenses.
+
+A member of our BlueWave Quality Control Team will be in touch within 24 hours of completing your application.
+
+Click here to start your application
+
+Thanks for your interest and we look forward to a bright future ahead!
+
+- All of us here at BlueWave
+
+BlueWave Partner Support
+888.817.2703 | partnersupport@bluewavesolar.com</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

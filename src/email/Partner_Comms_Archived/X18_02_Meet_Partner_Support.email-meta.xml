@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Email to our partners introducing them to partner support</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>18-02 Meet Partner Support</name>
+    <style>none</style>
+    <subject>Meet Your BlueWave Partner Support Leaders!</subject>
+    <textOnly>Dear {!Contact.FirstName},
+
+You&apos;ve talked to them on the phone. They&apos;ve helped answer your questions. Now, meet the people behind BlueWave Partner Support.
+
+
+Your Partner Support Leaders:
+
+Who We Are
+BlueWave Partner Support works alongside Business Development Managers to provide top-notch customer service to BlueWave’s partners.  We respond to phone and email inquiries from partners during the sales process, as well as coordinate communication between partners and BlueWave’s Operations Team during the underwriting process.
+
+About BlueWave
+BlueWave Solar (“BlueWave”) is a renewable energy company founded on a mission to provide Solar to Everyone, Everywhere. BlueWave partners with solar contractors like you to help achieve this mission!
+
+Now that you&apos;ve met your Partner Support Leaders, please feel free to give us a call at (888) 817-2703, or email us at partnersupport@bluewavesolar.com. We&apos;d love to help.
+
+Thank you for partnering with us to provide
+Solar for Everyone, Everywhere.
+
+- All of us here at BlueWave</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

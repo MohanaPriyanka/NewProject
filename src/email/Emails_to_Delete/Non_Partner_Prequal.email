@@ -1,0 +1,5 @@
+Please check credit for the following lead:
+
+{!Lead.FirstName} {!Lead.LastName} - {!Lead.Id}
+
+This lead was created by the preapproval form that is not linked to a partner - https://forms.bluewaverenewables.com/381519

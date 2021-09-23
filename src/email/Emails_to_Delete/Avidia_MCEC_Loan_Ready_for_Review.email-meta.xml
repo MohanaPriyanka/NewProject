@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Email to go to Avidia when a contract is sent, and ready for Avidia review.</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Avidia - MCEC Loan Ready for Review</name>
+    <style>none</style>
+    <subject>{!Opportunity.Name}&apos;s loan is ready FOR REVIEW</subject>
+    <type>text</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

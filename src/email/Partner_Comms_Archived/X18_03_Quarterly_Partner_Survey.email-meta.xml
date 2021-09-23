@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Quarterly survey to get partner feedback &amp; NPS - Updated 2018</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>18-03 Quarterly Partner Survey</name>
+    <style>none</style>
+    <subject>BlueWave needs your input on future offerings</subject>
+    <textOnly>Help us help you.
+
+We constantly strive to bring you the best partner experience. Help us serve you better by completing this brief survey: https://www.getfeedback.com/r/6nOG8T31. 
+
+To thank you for your time, all survey respondents have the option of entering into a raffle for a $100 Visa gift card!
+
+We will be following up with you on a quarterly basis to ensure you receive the support that you need as we continue to work together to help customers go solar.
+Questions?
+Call: (888) 817-2703
+Email: PartnerSupport@bluewavesolar.com
+
+Thank you!
+
+- BlueWave Partner Support</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

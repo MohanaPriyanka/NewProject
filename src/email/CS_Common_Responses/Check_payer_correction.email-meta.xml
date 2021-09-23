@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Change lockbox if necessary</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Check payer correction</name>
+    <style>none</style>
+    <subject>BlueWave Community Solar payments have a new address</subject>
+    <type>text</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

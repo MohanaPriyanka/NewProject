@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Portal Link Email - Amp customers - On Autopay</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Portal Live Email AMP Autopay Merge</name>
+    <style>none</style>
+    <subject>Your Community Solar Portal is Live!</subject>
+    <textOnly>Dear {!Receiving_User.FirstName},
+
+Your Community Solar Portal is now live!
+
+On your Community Solar Portal you can:
+
+Track your solar savings
+View your statements
+
+Since you&apos;re already signed up for Autopay, your payments will automatically be collected on the first of each month - no action required!
+
+To register your Community Solar Portal account, click on the link below. Enter the assigned username below and create a password to finish registering. Once complete, you will have access to your Community Solar Portal!
+
+{!Opportunity.Name}&apos;s Member Portal
+Username: {!Receiving_User.Username}
+
+Have questions? Visit our FAQ page. If you have additional questions, please contact our Customer Care team at customercare@bluewavesolar.com or (844) 786-4100. We&apos;re happy to help.
+
+We look forward to a bright future ahead
+- All of us here at Amp and BlueWave</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

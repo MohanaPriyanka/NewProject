@@ -1,0 +1,11 @@
+Hi {!Contact.FirstName},
+
+Thanks for reaching out to us here at BlueWave! We would be happy to submit a subscription adjustment request for you. Please reply to this email with a legible  copy of a utility bill that is no more than 90 days old and we will submit the request to our internal team.
+
+Please let me know if you have any further questions, I'm happy to help.
+
+Best,
+{!Case.OwnerFullName}
+Support Operations
+BlueWave Solar
+bluewavesolar.com

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Congratulating partners on closing their first BlueWave Bonus deal</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>1st Deal BlueWave Bonus</name>
+    <style>none</style>
+    <subject>Congratulations on your latest deal! You&apos;ve earned a BlueWave Bonus.</subject>
+    <textOnly>*|MC:SUBJECT|*
+
+We&apos;re psyched about the deal you closed bringing another customer solar ownership.
+
+To celebrate, we&apos;re hooking you up with Patagonia gear for all your solar adventures!
+
+How to Cash In:
+Let us know how we’re doing by filling out this brief survey https://www.getfeedback.com/r/8uyaee29?ContactID={!Contact.Id}.
+
+Once you’ve filled out the survey, you’ll have the option to select which bag you want us to send your way.
+
+What&apos;s Next?
+You are just 4 deals away from your next BlueWave Bonus of a Visa Gift Card when you close your 5th deal!
+
+Thanks for working with BlueWave to provide Solar for Everyone, Everywhere.
+
+- All of us here at BlueWave
+
+General Partner Support
+888-817-2703 PartnerSupport@bluewavesolar.com
+Partner Support is available 8AM - 8PM EST</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

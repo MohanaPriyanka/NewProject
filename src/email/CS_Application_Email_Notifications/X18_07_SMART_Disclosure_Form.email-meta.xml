@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Collecting SMART Disclosure Forms</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>18-07 SMART Disclosure Form: Westport Only</name>
+    <style>none</style>
+    <subject>Urgent Action Required for your Community Solar Share</subject>
+    <textOnly>Urgent Action Required
+
+Hey BlueWaver,
+
+We’re touching base with an important update from the Massachusetts Dept. of Energy Resources (DOER). To improve transparency around community solar membership, DOER is requiring all community solar customers in MA to review a disclosure form stating the system details of your farm.
+
+We need you to electronically review &amp; sign the disclosure form by Friday, September 14th, 2018.   Not having this form on time could allow the DOER to prevent us from activating your subscription.
+
+(FYI: this form was just released by DOER, so it was not included when you originally signed up with BlueWave).
+
+We’ve made it super easy for you to review and sign. Just click the button below.
+
+Please copy this URL into your browser to review and sign: 
+https://www.docusign.net/Member/PowerFormSigning.aspx?PowerFormId=e330a0e4-47d5-48f0-bbdc-eff8296f4152 
+&amp;Customer_UserName={First Name} {Last Name} 
+&amp;Customer_Email={Email} 
+&amp;Customer_Address1={Home Address Line 1} 
+&amp;Customer_Address2={City} {State/Province} {Zip/Postal Code} 
+&amp;Customer_Phone={Phone} 
+&amp;Customer_Campaign Member ID={Campaign Member ID} 
+&amp;ContactID={Contact ID} 
+
+FAQs:
+
+How does the form impact my agreement?
+This form does not change any of the terms of your community solar share agreement, but not having this form could allow the DOER to prevent us from activating your subscription.
+
+Why does DOER require acknowledgement of this form?
+DOER created community solar programs to incentivize the production and adoption of solar energy in Massachusetts. This form ensures that all participants understand the terms of their agreement. To learn more, click here.
+
+What do I need to do, and by when?
+Review and electronically sign the form. We need to have your signed form returned to us by 9/14/2018 to avoid disruption with your solar share.
+
+- Thanks from all of us here at BlueWave
+
+Questions for BlueWave?
+Call us at 844.786.4100
+Email us at customercare@bluewavesolar.com</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

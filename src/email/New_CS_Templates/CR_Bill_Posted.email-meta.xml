@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Credits Rolling - Bill has been posted</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>CR - Bill Posted</name>
+    <style>none</style>
+    <subject>Your BlueWave Community Solar Bill has been posted!</subject>
+    <textOnly>Hey {!Account.Name},
+
+Your BlueWave Community Solar statement has been posted!
+
+This statement reflects the credits your Community Solar share generated in {!Credits_Period}.
+
+View the attachment in this email to see your statement.
+
+You can choose to pay your bill in one of three ways:
+
+Autopay using your credit card or checking account
+Manual online payment
+Paper check
+
+​To pay your bill online, login to your BlueWave Member Portal.
+
+Thanks for joining the Wave, we&apos;re happy you&apos;re here.
+
+- All of us here at BlueWave
+
+BlueWave Customer Care
+844.786.4100 | customercare@bluewavesolar.com</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

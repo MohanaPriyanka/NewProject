@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Reassuring customers their data has not been compromised</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Data Security_Equifax</name>
+    <style>none</style>
+    <subject>BlueWave Solar Not Impacted by Equifax Breach</subject>
+    <textOnly>A note on data security
+
+Please be assured that your personal data with BlueWave has NOT been impacted by the Equifax data breach.
+
+BlueWave works with TransUnion for our consumer credit services, which was not impacted by this event. As a consumer loan provider, we take matters of data protection seriously and will always remain transparent with you, our customers.
+
+We are sending this message in light of the news this morning regarding the cyberattack compromising Equifax.
+
+If you would like to speak directly with our credit reporting agency, please feel free to reach out to TransUnion:
+1.800.680.7289
+
+If you have any questions regarding BlueWave&apos;s data security or your Solar loan, please feel free to reach out to us at customercare@bluewavesolar.com or give us a call at 844.786.4100.
+
+
+Thanks for trusting BlueWave to provide you with innovative solar services.
+
+- All of us here at BlueWave
+customercare@bluewavesolar.com
+(844) 786 - 4100. We’re happy to help.
+
+Our mailing address is:
+111 Huntington Ave, Suite 650
+Boston, MA 02199</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

@@ -1,0 +1,2 @@
+Lead: {!Lead.FirstName} {!Lead.LastName}
+{!Lead.Lead_ID__c}

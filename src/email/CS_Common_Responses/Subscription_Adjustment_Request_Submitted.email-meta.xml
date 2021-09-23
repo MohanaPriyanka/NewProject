@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>When a customer requests a subscription adjustment and we have the info we need</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Subscription Adjustment Request - Submitted</name>
+    <style>none</style>
+    <subject>BlueWave: We have submitted your subscription adjustment request</subject>
+    <type>text</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

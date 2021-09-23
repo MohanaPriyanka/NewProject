@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>letting PM partners know about potential email scam</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>180724 PM Email Security</name>
+    <style>none</style>
+    <subject>Alert: Email Security</subject>
+    <textOnly>Dear {!Contact.FirstName},
+
+We were recently made aware that phishing emails pertaining to our Solar Development business were sent out from at least one spoofed version of our domain. If you receive an email that appears to be from BlueWave and it looks at all unusual (such as requesting that you click on a link to make an urgent payment), please do not click on any links or attachments and double check that the email’s “from” address has our properly spelled domain: bluewavesolar.com.
+
+We apologize for any inconvenience this may cause. Your privacy and security are a high priority and will continue to be going forward.
+
+Please do not hesitate to reach out to us with any questions at (617) 209-3122, ext. 5.
+
+Best Regards, 
+Eric Graber-Lopez 
+President</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

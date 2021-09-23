@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>NY Launch, B-Corp Status</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>NY Launch, B-Corp Status</name>
+    <style>none</style>
+    <subject>BlueWave is a B-Corp, So What?</subject>
+    <textOnly>You now know BlueWave launched its solar loan product in NY, but did you know that BlueWave is a certified B-Corp?
+
+What does it mean to be a B-Corp?
+
+We believe BlueWave can be a better company - both in the world, and for the world.
+Our mission to make clean energy accessible to everyone, everywhere includes our company contributing to that positivie change. Using business as a force for good is not just good business, it&apos;s the only way we want to do business.
+
+BlueWave is part of a global community of over 2,000 companies in 50 countries and 130 industries that believe in doing business not just for success, but for the greater good.
+
+Click here to see what being a B-Corp is all about!
+
+Learn more about BlueWave&apos;s B-Corp Certification here!
+
+We&apos;re here to fight for you in NY!
+
+BlueWave’s External Affairs team will be actively engaged with the solar industry in New  York in support of policies and programs that continue the growth of the solar market.  This will include working with NYSEIA and others on Phase 2 of VDER, the Clean Energy Standard, the NY-Sun program, and energy storage.
+
+We&apos;re excited to be in NY and look forward to a bright together!
+- All of us here at BlueWave</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

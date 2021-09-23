@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>notifies solar loans that a customer has submitted homeowner&apos;s insurance for review</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Internal - RS - Homeowner&apos;s insurance submitted Alert</name>
+    <style>none</style>
+    <subject>Alert - Homeowners Insurance Submitted</subject>
+    <type>text</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Partner Comms, sign up for ACH</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>18-04 ACH Signup</name>
+    <style>none</style>
+    <subject>Sign Up for ACH And Get Your Community Solar Commission Faster!</subject>
+    <textOnly>Dear {!Contact.FirstName},
+
+To sign up for ACH commission payments, please call Partner Support at 888.817.2703.
+
+How it Works
+Signing up to receive your Community Solar commission payments via ACH means you&apos;ll receive your money faster!
+
+Instead of a check payment taking weeks to be processed and deposited, ACH payments will be directly deposited into your account within 1-2 business days.
+
+Your ACH commission payment will be processed on the 15th of every month, and will include all the Community Solar deals you closed during the previous month.
+
+For example, on June 15th all the Community Solar deals you closed in May would be processed, and you would receive your ACH payment 1-2 business days later.
+
+What We Will Need From You
+When you call Partner Support 888.817.2703 to set up ACH, we will need your bank account and routing number to complete the set up for payment.
+
+Thank you for partnering with BlueWave
+to revolutionize energy.
+
+- All of us here at BlueWave</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

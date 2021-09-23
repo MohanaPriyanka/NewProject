@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Notify BWOC if fields have been incomplete for more than 24 hours</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <letterhead>BlueWave_Solar</letterhead>
+    <name>RL - BWOC Notification Installer Form Incomplete for 24 Hours</name>
+    <style>freeForm</style>
+    <subject>Installer Form Incomplete for {!Lead.Name}</subject>
+    <textOnly>{!Lead.Partner_Name__c} has not completed the installer form in 24 hours.</textOnly>
+    <type>html</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

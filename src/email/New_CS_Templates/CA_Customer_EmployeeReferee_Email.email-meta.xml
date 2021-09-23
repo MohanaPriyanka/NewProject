@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Customer aq - customer referee email part of employee program</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>CA - Referral Successful - Employee Referee</name>
+    <style>none</style>
+    <subject>$250, in the name of Solar.</subject>
+    <textOnly>Congrats on signing up for Community Solar through our BlueWave Friends and Family program. We’re glad to have you on board!
+
+First things first, redeem your $250 bonus by emailing marketing@bluewavesolar.com.
+
+
+Here&apos;s what to expect next on your solar journey:
+
+1. We&apos;ll let you know when your solar farm &quot;goes online&quot;, meaning credits will begin flowing to your electric bill, reducing what you owe the utility each month.
+ 
+2. You’ll start receiving bills from BlueWave for those solar credits, with a discount of 10% applied.
+ 
+3. You can feel great about supporting solar development and your solar-powered savings.
+
+Good things come to those who share in saving the planet.
+- Thanks from all of us here at BlueWave
+
+Questions or concerns about solar?
+Call us at 844.768.4100
+Email us at customercare@bluewavesolar.com
+
+BlueWave Solar
+111 Huntington Ave, Suite 650
+Boston, MA 02199</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

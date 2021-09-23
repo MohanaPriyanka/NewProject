@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>BlueWaveX Invite</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>18-04 BlueWaveX</name>
+    <style>none</style>
+    <subject>Learn how BlueWaveX will expand your horizons!</subject>
+    <textOnly>You&apos;re invited to the kickoff of the BlueWaveX Speaker Series tomorrow!
+
+Session 1: BlueWaveXStudyAbroad
+As you&apos;ve seen from the Outlook invite teaser, Professor Marsch will be presenting on how your role at BlueWave could bring you to far off magical lands like South Africa, Charlotte/Charleston, and Newport Beach!
+
+In case you needed any more temptation, please see details below on this presentation and the BlueWaveX series in general.
+
+What: BlueWave wants to encourage teambuilding and global mindsets, to this end Prof. Marsch will be presenting a new opportunity for employees to spend time working in our remote offices.
+When: Thursday, April 5th, 2018 from 12:00-1:00pm (AKA lunch will be served!)
+Where (physical): Clarendon Conference Room, with overflow streaming coverage in Dartmouth
+Where (virtual): +1(857)327-8594 or Join online meeting
+
+If you haven&apos;t already, RSVP here!
+
+What&apos;s the BlueWaveX Speaker Series?
+Dean S. Thompson is kicking off an engaging &amp; educational series known as BlueWaveX to keep all of us sharp on our industry &amp; BlueWave knowledge.
+
+Have session ideas? Submit them to the Dean.
+
+Why Attend this Series?
+
+Engaging Content - Learn how solar interconnects (hehe) with the global energy and business landscape.
+Incredible Speakers - BlueWavers &amp; our guests will wow you with their presentations.
+No Exams - Stress-free learning environment!
+Good Food - Almost always.
+Good Feelings! Learning makes your brain stronger &amp; healthier, and fights aging (maybe).
+
+We hope you join us!
+
+- BWC3
+
+| BlueWaveSolar.com |</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

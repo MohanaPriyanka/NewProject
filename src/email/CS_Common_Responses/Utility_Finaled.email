@@ -1,0 +1,13 @@
+Hi {!Contact.FirstName},
+
+We received notice from your utility provider, {!Shared_Solar_System__c.Utility__c}, that your utility account (##########) has been closed.
+
+We cannot allocate credits to a closed utility account. If you would like to transfer your community solar subscription to a different utility account or cancel your subscription, please let me know.
+
+Please let me know if you have any further questions, I'm happy to help.
+
+Best,
+{!Case.OwnerFullName}
+Support Operations
+BlueWave Solar
+bluewavesolar.com

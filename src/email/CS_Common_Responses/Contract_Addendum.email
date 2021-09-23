@@ -1,0 +1,11 @@
+Hi {!Contact.FirstName},
+
+We are sending you an addendum for your community solar application with us, listing all of the utility accounts we will be subscribing, as well as listing the ones that do not meet our underwriting criteria which we will not be able to subscribe, for your review.
+
+Please let me know if you have any further questions, or if you find an error with this addendum. I'm happy to help.
+
+Best,
+{!Case.OwnerFullName}
+Support Operations
+BlueWave Solar
+bluewavesolar.com

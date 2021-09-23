@@ -1,0 +1,5 @@
+Your adjustment amount request has been approved by {!User.Name} for the following Bill Adjustment: <br><br>
+
+Adjustment Title: <a href={!Bill_Adjustment__c.Link}>{!Bill_Adjustment__c.Name}</a><br>
+Bill: {!Bill_Adjustment__c.UASB__c}<br>
+Adjustment Amount: {!Bill_Adjustment__c.Adjustment_Amount__c}

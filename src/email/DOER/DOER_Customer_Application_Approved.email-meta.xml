@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>notifies DOER customer that application has been approved</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>DOER Customer - Application Approved</name>
+    <style>none</style>
+    <subject>Congratulations – your Mass Solar Loan application has been approved!</subject>
+    <textOnly>*|MC:SUBJECT|*
+
+Dear {!Opportunity.Name},
+
+Congratulations, your Mass Solar Loan Application has been approved!
+
+You should receive an email from DocuSign containing your loan contract shortly. It can be signed and sent back to us electronically.
+
+If you do not receive the contract in the next few minutes, or if you have any other questions, please contact us at customercare@bluewavesolar.com or (844) 786 - 4100.
+
+Thank you again from all of us here at Avidia and BlueWave.
+Our cleaner, brighter energy future starts with you.
+
+Sincerely,
+BlueWave Customer Care
+customercare@bluewavesolar.com
+(844) 786 - 4100</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

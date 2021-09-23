@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Letting customers know they have earned $100 bc they were referred to CS</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>18-04 Referee Rewards Success</name>
+    <style>none</style>
+    <subject>It pays to have friends in solar!</subject>
+    <textOnly>My what a good friend you have.
+Great news! Because your friend referred you to BlueWave, both of you have just scored $100 in referral bonus payments, on top of the 10% in solar savings you&apos;ll begin earning each month.
+
+We will send you your $100 Visa Gift card to the billing address that we have on file for your account.
+
+We&apos;re so happy to have you as a BlueWaver,
+thanks for being part of the Community!
+
+- All of us here at BlueWave
+
+| BlueWaveSolar.com |</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

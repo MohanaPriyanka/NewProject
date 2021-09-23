@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Notifies RS partner that credit check has been approved and requests them to complete the installer update form</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>RL - Installer - Completed Loan</name>
+    <style>none</style>
+    <subject>{!Opportunity.Name}’s Solar Loan is complete</subject>
+    <textOnly>*|MC:SUBJECT|*
+
+Dear {!Opportunity.Partner_tag_lookup__c},
+
+The Loan Contract with {!Opportunity.Name} has been signed and completed. You can expect your first disbursal of {!Opportunity.Disbursal_1_Contract_Signature__c} to arrive within the next five business days.
+
+In the meantime, please verify that all of the following information is correct.
+
+Name: {!Opportunity.Name}
+Loan Amount: {!Opportunity.Requested_Loan_Amount__c}
+System Size: {!Opportunity.System_Size__c}
+
+Sincerely,
+BlueWave Customer Care
+customercare@bluewavesolar.com
+(844) 786 - 4100
+
+
+How likely are you to recommend BlueWave to a friend or colleague?
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+
+Not At All Likely  Extremely Likely</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

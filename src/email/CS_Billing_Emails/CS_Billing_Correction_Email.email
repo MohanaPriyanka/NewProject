@@ -1,0 +1,137 @@
+<div>
+		<div style="text-align: center;">
+			<img src="https://gallery.mailchimp.com/7d3664585512fbeca00466dd5/images/ab6472d5-69fc-4812-8b42-c33692ec43a6.png" style="float: center; height: 149px; width: 560px;" />
+		<br />
+		<br />
+		<font color="#266092" face="Helvetica" size="4">
+			<b>
+				Dear {!AccountName},
+			<br/>
+			<br/>
+			</b>
+		</font>
+		</div>
+		<font color="#00b2a9" face="Helvetica" size="4">
+		<p style="text-align: center;">
+			<span><strong>			 
+				Please review this updated BlueWave Community Solar bill for payment.&nbsp; </strong></size=14>
+			</span>
+			<br> 
+			<span>
+<p style="text-align: center;"><font color="#266092" face="Helvetica" size="2">
+				We sent you a bill with a slight error previously, please ignore that statement as we have corrected the charges here.			<br> 
+ This statement reflects the solar net metering credits that you should see on your utility bill from {!Credits_Period}.
+			</span>
+			<br />
+		</p>
+		<p style="text-align: center;">
+			<font color="#266092" face="Helvetica" size="4">
+                         <span>
+                             <br>
+				<b>View the attachment in this email to see your statement. </b>
+				<br/>
+                             <br>
+			</span>
+                    </font>
+		</p>
+		<p style="text-align: center;">
+			<span>
+				To pay your bill, login to your 
+				<a href="http://bluewavememberportal.force.com" target="_blank">
+					<span>BlueWave Customer Portal</span>
+				</a>.
+				<br/>
+			</span>
+			<br />
+			&nbsp;
+		</p>
+	</font>
+
+	<p style="text-align: center;">
+		<font color="#266092" face="Helvetica" size="2">
+			<span>
+				<b>Would you recommend BlueWave to a friend?</b>
+			</span>
+			<br/>
+			<br/>
+		</font>
+		<font color="#266092" face="Helvetica" size="4">
+			<span>
+				<b>
+					<a style="text-decoration: none;" href="https://www.getfeedback.com/r/Ydzb9HhU?gf_q%5B5376188%5D=0&amp;accountID={!Account_Bill_Property_Id}" target="_self">
+						<span style="color: #FFF0F5; background-color: #00b2a9;">&nbsp;0&nbsp;</span>
+					</a>
+					<a style="text-decoration: none;" href="https://www.getfeedback.com/r/Ydzb9HhU?gf_q%5B5376188%5D=1&amp;accountID={!Account_Bill_Property_Id}" target="_self">
+						<span style="color: #FFF0F5; background-color: #00b2a9;">&nbsp;1&nbsp;</span>
+					</a>
+					<a style="text-decoration: none;" href="https://www.getfeedback.com/r/Ydzb9HhU?gf_q%5B5376188%5D=2&amp;accountID={!Account_Bill_Property_Id}" target="_self">
+						<span style="color: #FFF0F5; background-color: #00b2a9;">&nbsp;2&nbsp;</span>
+					</a>
+					<a style="text-decoration: none;" href="https://www.getfeedback.com/r/Ydzb9HhU?gf_q%5B5376188%5D=3&amp;accountID={!Account_Bill_Property_Id}" target="_self">
+						<span style="color: #FFF0F5; background-color: #00b2a9;">&nbsp;3&nbsp;</span>
+					</a>
+					<a style="text-decoration: none;" href="https://www.getfeedback.com/r/Ydzb9HhU?gf_q%5B5376188%5D=4&amp;accountID={!Account_Bill_Property_Id}" target="_self">
+						<span style="color: #FFF0F5; background-color: #00b2a9;">&nbsp;4&nbsp;</span>
+					</a>
+					<a style="text-decoration: none;" href="https://www.getfeedback.com/r/Ydzb9HhU?gf_q%5B5376188%5D=5&amp;accountID={!Account_Bill_Property_Id}" target="_self">
+						<span style="color: #FFF0F5; background-color: #00b2a9;">&nbsp;5&nbsp;</span>
+					</a>
+					<a style="text-decoration: none;" href="https://www.getfeedback.com/r/Ydzb9HhU?gf_q%5B5376188%5D=6&amp;accountID={!Account_Bill_Property_Id}" target="_self">
+						<span style="color: #FFF0F5; background-color: #00b2a9;">&nbsp;6&nbsp;</span>
+					</a>
+					<a style="text-decoration: none;" href="https://www.getfeedback.com/r/Ydzb9HhU?gf_q%5B5376188%5D=7&amp;accountID={!Account_Bill_Property_Id}" target="_self">
+						<span style="color: #FFF0F5; background-color: #00b2a9;">&nbsp;7&nbsp;</span>
+					</a>
+					<a style="text-decoration: none;" href="https://www.getfeedback.com/r/Ydzb9HhU?gf_q%5B5376188%5D=8&amp;accountID={!Account_Bill_Property_Id}" target="_self">
+						<span style="color: #FFF0F5; background-color: #00b2a9;">&nbsp;8&nbsp;</span>
+					</a>
+					<a style="text-decoration: none;" href="https://www.getfeedback.com/r/Ydzb9HhU?gf_q%5B5376188%5D=9&amp;accountID={!Account_Bill_Property_Id}" target="_self">
+						<span style="color: #FFF0F5; background-color: #00b2a9;">&nbsp;9&nbsp;</span>
+					</a>
+					<a style="text-decoration: none;" href="https://www.getfeedback.com/r/Ydzb9HhU?gf_q%5B5376188%5D=10&amp;accountID={!Account_Bill_Property_Id}" target="_self">
+						<span style="color: #FFF0F5; background-color: #00b2a9;">&nbsp;10&nbsp;</span>
+					</a>
+				</b>
+			</span>
+		</font>
+		<br />
+		<br />
+		<span style="font-size: 14px;">
+			<span style="color: #00b2a9;">
+				<span style="font-family:Helvetica">
+					<b>Thanks for joining us to make<br/>
+					&#39;Solar for the&nbsp;100%&#39;<br/>
+					not just a mission, but a reality.</b>
+				</span>
+			</span>
+		</span>
+	</p>
+	<p style="text-align: center;">
+		<span style="font-size: 14px;">
+			<b>
+				<span style="color: #236192;">
+					<span style="font-family:Helvetica">You can always give us a call at 
+					</span>
+				</span>
+				<span style="color: #00b2a9;">
+					<span style="font-family:Helvetica">844.786.4100
+					</span>
+				</span>
+				<br />
+				<span style="color: #236192;">
+					<span style="font-family:Helvetica">or email us at 
+					</span>
+				</span>
+				<a href="mailto:customercare@bluewave-capital.com?subject=I%20have%20a%20question%20about%20Community%20Solar!" target="_blank">
+					<span style="color: #00b2a9;">
+						<span style="font-family:Helvetica">customercare@bluewavesolar.com
+						</span>
+					</span>
+				</a>
+			</b>
+		</span>
+		<br />
+		<br />
+		&nbsp;
+	</p>
+</div>

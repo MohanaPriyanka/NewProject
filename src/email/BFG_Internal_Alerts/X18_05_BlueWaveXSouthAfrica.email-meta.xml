@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>BlueWaveX Invite - South Africa</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>18-05 BlueWaveXSouthAfrica</name>
+    <style>none</style>
+    <subject>BlueWaveXSouthAfrica - Join BWC3 Next Week to Learn More!</subject>
+    <textOnly>Don&apos;t Miss Session II of the
+BlueWaveX Speaker Series!
+
+Session II: BlueWaveXSouthAfrica
+As you&apos;ve seen from the Outlook invite teaser, Professors Smithyman and Cowie (better known as Dean and Wayne) will be presenting an overview of the South African renewable landscape. Their presentation will cover the opportunities and challenges faced in each of the major segments of the market, particularly the barriers that exist at a political and policy level which are a microcosm of the country’s challenges as a whole.
+
+After this session, you will be able to answer your friends&apos;/spouses&apos;/parents&apos; question on why BlueWave has an office in Cape Town, and much, much more!
+
+When: Next Wednesday, May 30th, 2018 from 12:00-1:00pm (lunch will be served!)
+Where (physical): Clarendon Conference Room
+Where (virtual): +1(857)327-8594 or Join online meeting
+
+If you haven&apos;t already, RSVP by letting Shauna know you can make it. 
+
+Remind me, what&apos;s a BlueWaveX?
+
+The Goal:
+Dean S. Thompson is kicking off an engaging &amp; educational series known as BlueWaveX to keep all of us sharp on our industry &amp; BlueWave knowledge.
+
+
+What&apos;s in it for you?
+
+Engaging Content - Learn how solar interconnects (hehe) with the global energy and business landscape.
+Incredible Speakers - BlueWavers &amp; our guests will wow you with their presentations.
+No Exams - Stress-free learning environemnt!
+Good Food - Almost always.
+Good Feelings! Learning makes your brain stronger &amp; healthier, and fights aging (maybe).
+
+We hope you join us!
+
+- BWC3</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

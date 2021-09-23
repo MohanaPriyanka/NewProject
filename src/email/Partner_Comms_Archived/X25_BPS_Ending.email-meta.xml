@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>25 BPS Ending</name>
+    <style>none</style>
+    <subject>Update to BlueWave Solar Loan Product Offerings</subject>
+    <textOnly>Hello,
+
+As a valued BlueWave Partner, we wanted to let you know of an upcoming change in our loan product offering for potential new customers.
+
+As of Monday, November 6th, 2017, we will be ending the previous offer of a 0.25% rate reduction associated with creating a checking account with Avidia. We are making this change to streamline the loan application process for all of our customers. Please note, we will still be honoring this discounted rate for customers that have submitted a complete application* by noon on Monday, November 6th, 2017.
+
+If you have any further questions, please do not hesitate to contact Partner Support at partnersupport@bluewavesolar.com or (888) 817-2703.
+
+Due to high volume, the Partner Support line may be busy, please be assured that our team answers all voicemails promptly.
+
+Thank you for your support in working with customers through the application process.
+
+- BlueWave Partner Support
+(888) 817-2703
+partnersupport@bluewavesolar.com
+
+*Complete application submission entails all steps up to and including the loan product selection for pre-qualified customers.</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

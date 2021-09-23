@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>RS contract received</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>RS Customer - Contract Received</name>
+    <style>none</style>
+    <subject>Your BlueWave Solar Loan contract has been received!</subject>
+    <textOnly>*|MC:SUBJECT|*
+
+Dear {!Opportunity.Name},
+
+Your BlueWave Solar Loan contract has been received. You will receive your fully executed contract from DocuSign shortly.
+
+If you do not receive the fully executed contract in your email, or if you have any further questions, please contact us at customercare@bluewavesolar.com or call us at (844) 786 - 4100 to access a member of our Customer Care team.
+
+Thanks for joining us to make ‘solar for the 100%&apos;
+not just a mission, but a reality.
+- All of us here at BlueWave</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

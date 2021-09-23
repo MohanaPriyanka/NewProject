@@ -1,0 +1,16 @@
+Hi {!Contact.FirstName},
+
+Thanks for reaching out. We request your Green Button Data in order to verify your electricity usage to accurately determine the size of your community solar subscription share.
+
+National Grid Customers can log into their National Grid online account here:
+https://www.nationalgridus.com/Default
+
+and look for the "Track Usage" menu to download their GBD. Please contact National Grid customer support if you have any trouble accessing your GBD at 1-800-322-3223.
+
+If you have any other questions, please let me know.
+
+Best,
+{!Case.OwnerFullName}
+Support Operations
+BlueWave Solar
+bluewavesolar.com

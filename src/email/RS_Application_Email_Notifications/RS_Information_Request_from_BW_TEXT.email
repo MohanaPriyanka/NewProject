@@ -1,0 +1,20 @@
+BlueWave Solar
+137  Newbury St. 
+Boston, MA 02116
+844.786.4100
+{!Lead.Today__c}
+
+Dear Applicant: 
+
+Thank you for your application for credit. The following information is needed to make a decision on your application:
+
+{!Lead.00Nj000000AR8fr}
+Income Verification Documentation (pay stub or tax return)
+
+Please upload the documentation at this link: https://forms.bluewaverenewables.com/381561&tfa_814={!Lead.Lead_ID__c}
+
+We need to receive this information by {!Lead.Today_Plus_60__c}. If we do not receive it by that date, we will regrettably be unable to give further consideration to your credit request.
+
+Sincerely,
+
+Customer Care Team

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>false</available>
+    <description>Email to customers letting them know # of SREC&apos;s they minted in Q3</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Q3 Minted SREC&apos;s</name>
+    <style>none</style>
+    <subject>Quarter 3 Minted SREC&apos;s!</subject>
+    <textOnly>Congratulations Name!
+
+Based on your solar generation during Q3 2017, you minted Number of SREC&apos;s SREC&apos;s that are in the process of being sold.
+
+Based on the BlueWave SREC payment schedule, you will receive this payment around 3/1/2018.
+
+Warning: If you have not set up direct deposit, your payment will be received approximately 1-2 weeks later.
+
+Along with your payment, we will send you detailed information on all SREC sale prices and costs on your next statement.
+
+Want payment ASAP? Set up direct deposit today.
+If you haven&apos;t already signed up for direct deposit, enter your information here so that we can have all of your SREC earnings deposited directly into your bank account.
+
+Filling out this form is optional. If you choose not to provide this information we will still mail you paper checks for your solar earnings.
+
+Reminder: SREC Minting and BlueWave Payments Schedule
+
+SRECs are minted according to the following schedule:
+Q1 generation (Jan 1 – March 31): July 15th
+Q2 generation (April 1 – June 31): October 15th
+Q3 generation (July 1 – September 30): January 15th
+Q4 generation (October 1 – December 31): April 15th
+
+BlueWave will pay you according to the following schedule:
+Q1 generation: paid on or close to 9/1
+Q2 generation: paid on or close to 12/1
+Q3 generation: paid on or close to 3/1 (of following year)
+Q4 generation: paid on or close to 6/1 (of following year)
+
+Here&apos;s an example of how that works:
+An interconnection date of 8/23/2017 would set your first quarter of SREC production to be Q3 2017. Based on the payment and mint schedule, if you produced enough electricity to mint at least one SREC within Q3 (July 1-Sept 30), that SREC would mint on Jan 15 of 2018 and be paid to you at the beginning of March 2018.
+
+BlueWave manages the sale of your SRECs to ensure you receive your solar earnings in the most efficient way.
+
+If you have any questions about SRECs or your Home Solar Loan,
+contact us at customercare@bluewavesolar.com or (844) 786-4100.
+We’re happy to help.
+
+- BlueWave Customer Care</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

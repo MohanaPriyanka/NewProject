@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Announcing March Madness campaign 2/12-3/11</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>18-02 March Madness Northeast</name>
+    <style>none</style>
+    <subject>Hey {!Contact.FirstName}, want to go to March Madness this year?</subject>
+    <textOnly>Celebrate Your Elite Status at the Elite Eight
+
+We know selling solar in the winter can be a challenge - so we are offering a MAD promotion for our Loyal Blue partners:
+
+Sell the most solar in February 2018, and we will send you to the NCAA ELITE EIGHT East Regional Championship in Boston on Sunday, March 25th.
+
+This promotion is the first of many that we will be offering only for our Loyal Blue partners like you!
+See detailed Terms &amp; Conditions below.
+
+The Competition Runs Now through Selection Sunday (3/11/18)
+
+Let the Games Begin!
+
+We can&apos;t wait to see who wins it all,
+-All of Us Here at BlueWave
+
+Terms &amp; Conditions:
+
+Sales must be tracked to individual Sales Rep email addresses in Salesforce, no combined company efforts will qualify for tickets
+Mass Solar Loan sales are not eligible for this promotion
+Minimum of 5 loans closed to win
+Loans closed between 5:00pm today (2/12/18) and 11:00pm on Selection Sunday (3/11/18) are eligible for this promotion
+We will announce the winning sales rep on Monday, March 12th, 2018 via phone call from your BlueWave partner
+
+The second place prize will be tickets to the Sweet Sixteen games in Boston on Friday, March 23rd, 2018
+
+BlueWave will not cover any associated travel expenses to attend these games
+Tickets will be in the balcony section, enjoy the experience with the real fans!</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

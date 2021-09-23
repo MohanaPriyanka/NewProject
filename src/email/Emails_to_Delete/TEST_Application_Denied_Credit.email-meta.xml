@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>RS Application Denied TEST</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <letterhead>BlueWave_Solar</letterhead>
+    <name>RS - Application Denied (Credit) TEST</name>
+    <style>freeForm</style>
+    <subject>BlueWave - Residential Solar Loan Application Not Approved</subject>
+    <textOnly>Dear,
+
+Thank you for submitting your application to BlueWave Community.  We are excited to work with you to build a cleaner tomorrow!  
+
+You will receive notice on your application status within the next two business days.  Upon application approval, we will assign you to a Community Solar project and send you your enrollment contract.  
+
+In the meantime, if you have any questions, please contact us at info@bluewave-capital.com.
+
+Sincerely,
+
+BlueWave Customer Care</textOnly>
+    <type>html</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

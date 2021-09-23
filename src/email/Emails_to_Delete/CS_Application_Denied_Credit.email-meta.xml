@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Application Denied</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <letterhead>BlueWave_Solar</letterhead>
+    <name>BlueWave - CS - Credit Denied</name>
+    <style>freeForm</style>
+    <subject>BlueWave - Community Solar Application Not Approved</subject>
+    <textOnly>Dear {!Lead.FirstName},
+
+Thank you for your recent application to participate in BlueWave&apos;s Community Solar program. Regretfully, we are unable to approve your application at this time. The denial of your application was based upon information contained in a consumer credit report obtained from TransUnion. The Fair Credit Reporting Act requires that we inform you that your credit score, taken on {!Lead.Date_of_Credit_Report__c} , is {!Lead.LASER_Credit_Score__c} on a range of 501-990.
+
+Major factors adversely affecting your credit score are the following:
+
+{!Lead.Credit_Report_Detail_1__c}
+{!Lead.Credit_Report_Detail_2__c}
+{!Lead.Credit_Report_Detail_3__c}
+{!Lead.Credit_Report_Detail_4__c}
+
+Please note that you have certain rights with respect to your credit report. If you request a copy of the information in your credit file from TransUnion within 60 days of receiving this denial, you are entitled to a free copy of your report. You have the right to directly dispute with the consumer reporting agency the accuracy and completeness of any information furnished by that agency.
+
+We welcome a new credit application from you in the future if and when your credit profile has improved.
+
+Credit information was taken from TransUnion, which can be contacted at (877)-322-8228.TransUnion is located at 555 West Adams St., Chicago IL.
+
+Have a question? Reply to info@bluewave-capital.com to access our Customer Care team.
+
+Sincerely,
+
+BlueWave Customer Care</textOnly>
+    <type>html</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

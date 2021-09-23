@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Letter to Customers to Give SREC info</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>SREC Payment Info Updated</name>
+    <style>none</style>
+    <subject>Direct deposit your home solar energy earnings</subject>
+    <textOnly>*|MC:SUBJECT|*
+
+Hi {!Contact.Name},
+
+Thanks for participating in the BlueWave Home Solar Loan Program!
+
+Your home solar system is qualified to generate Solar Renewable Energy Certificates (SRECs). Utilities in Massachusetts are required to purchase SRECs to meet their renewable energy generation targets. BlueWave manages the sale of your SRECs to ensure you receive your solar earnings in the most efficient way.
+
+To be extra efficient, we&apos;d like to deposit your SREC earnings directly into your bank account. To make this happen, please provide your direct deposit information  here.
+
+If you have any questions about your Home Solar Loan,
+contact us at customercare@bluewavesolar.com or (844) SUN-4100
+We’re happy to help.
+
+Thanks for joining us to make
+&apos;Solar for the 100%&apos; not just a mission, but a reality.
+- All of us here at BlueWave</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

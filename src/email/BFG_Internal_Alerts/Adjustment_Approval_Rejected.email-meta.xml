@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Adjustment Approval - Rejected</name>
+    <style>none</style>
+    <subject>Your Bill Adjustment Request has been Rejected</subject>
+    <textOnly>Hi {!User.Name},
+
+Your adjustment amount request has been REJECTED for the following Bill Adjustment:
+
+{!Bill_Adjustment__c.Name}
+Account Bill: {!Bill_Adjustment__c.Account_Bill__c}
+Adjustment Amount: {!Bill_Adjustment__c.Proposed_Adjustment_Amount__c}</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

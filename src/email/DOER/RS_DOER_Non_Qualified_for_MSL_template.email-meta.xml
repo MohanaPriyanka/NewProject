@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Not qualified for MSL but could use BlueWave</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>RS DOER - Non Qualified for MSL template</name>
+    <style>none</style>
+    <subject>BlueWave Solar Loan Options for You</subject>
+    <textOnly>Your BlueWave Solar Loan Pre-Qualification Application has been Approved
+
+Dear {!Lead.Name},
+
+It seems you do not meet the eligibility requirements for the income based Mass Solar Loan Program.BlueWave would still like to assist you with financing your home solar system.
+
+In MA, BlueWave currently offers a 10 year, 5.99% APR loan with an 18 month interest only period.
+
+If you are interested in using this loan to finance your home solar system, please contact us: customercare@bluewavesolar.com or (844) 786 - 4100.
+
+Thanks for joining us to make ‘solar for the 100%&apos;
+not just a mission, but a reality.
+- All of us here at BlueWave</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

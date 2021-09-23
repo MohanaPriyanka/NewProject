@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Note to Loan customers re: Shrewsbury loan transfer offer</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Shrewsbury Offer</name>
+    <style>none</style>
+    <subject>Special offer for your BlueWave Home Solar Loan!</subject>
+    <textOnly>*|MC:SUBJECT|*
+
+View this email in your browser
+
+HI, {!Contact.Name}
+
+We hope you&apos;re enjoying the benefits of your new home solar system!
+
+We&apos;re checking in with an exciting, limited time offer!
+
+We have partnered with a local credit union - Shrewsbury Federal Credit Union - and, for a limited time, Shrewsbury is offering BlueWave customers $100 to sign up for one of their banking products.
+This offer includes:
+
+• No-cost Checking Account
+
+• No-cost Savings or Money Market Accounts
+
+• No-cost Holiday Club Accounts
+
+• CDs
+
+• IRAs
+
+Shrewsbury was voted the #1 Community Bank in 2016, and we&apos;re excited they&apos;re providing this local offer exclusively to BlueWave solar loan customers.
+
+To learn more about this offer and how to earn $100, click the button below and we&apos;ll get in touch right away.
+
+Learn More
+
+Thanks for joining us to make
+&apos;Solar for the 100%&apos;
+not just a mission, but a reality.
+
+
+- All of us here at BlueWave
+
+Our mailing address is:
+111 Huntington Ave, Suite 650
+Boston, MA 02199</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

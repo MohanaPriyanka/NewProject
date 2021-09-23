@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Email to partner notifying them they have a new lead</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Partner Comms - You have a new lead</name>
+    <style>none</style>
+    <subject>You have a new Community Solar lead!</subject>
+    <textOnly>You have a new Community Solar lead!
+
+One of our customers has referred a friend to BlueWave Community Solar.
+
+Please check your BlueWave portal to follow up with this new lead and assist with the sign up process.
+
+We look forward to growing the BlueWave Solar Community!
+- Thanks from all of us here at BlueWave</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

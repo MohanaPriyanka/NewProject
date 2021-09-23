@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>March 2018 Partner Survey</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>18-0315 Quarterly Partner Survey</name>
+    <style>none</style>
+    <subject>BlueWave needs your input on future offerings</subject>
+    <textOnly>Help us help you.
+
+We constantly strive to bring you the best partner experience. Help us serve you better by completing this brief survey.
+
+This survey can be taken anonymously, but if you include your contact information we will enter you into a raffle to win a $100 Visa gift card!*
+
+https://www.getfeedback.com/r/6nOG8T31 
+
+We will be following up with you on a quarterly basis to ensure you receive the support that you need as we continue to work together to make solar accessible for everyone, everywhere.
+
+Thank you!
+
+- BlueWave Partner Support
+
+*Winners to be announced on April 1st, 2018, you must complete the survey by March 30th to be eligible.
+
+Questions?
+Call: (888) 817-2703
+Email: PartnerSupport@bluewavesolar.com</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>
