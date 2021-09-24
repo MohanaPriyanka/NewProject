@@ -53,7 +53,7 @@ public with sharing class UserChangeEventTriggerHandlerTest {
         Test.startTest();
         userToUpdate.Email = newEmail;
         update userToUpdate;
-        Test.stopTest();
+        Test.stopTest(); 
 
 
         User updatedUser = [SELECT Id, Email FROM User WHERE Id = :userToUpdate.Id LIMIT 1];

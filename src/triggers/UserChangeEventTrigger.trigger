@@ -5,8 +5,10 @@
 
 trigger UserChangeEventTrigger on UserChangeEvent (after insert) {
 
+    UserChangeEventTriggerHandler handler = new UserChangeEventTriggerHandler(Trigger.new);
+
     if (Trigger.isAfter && Trigger.isInsert) {
-        UserChangeEventTriggerHandler.afterInsert(Trigger.new);
+        handler.afterInsert();
     }
 
 }
