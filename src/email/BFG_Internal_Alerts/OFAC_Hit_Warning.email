@@ -1,5 +1,5 @@
 ALERT:
 The personal credit report for: {!LASERCA__Regulatory_Product__c.LASERCA__Personal_Credit_Report__c}
-has been flagged for OFAC violations. Please investigate and deny this applicant's application if necessary. 
+has been flagged for OFAC violations. Please investigate and deny this applicant's application if necessary.
 
 (OFAC: Office of Foreign Assets Control (OFAC) restricts "targeted foreign countries and regimes, terrorists, international narcotics traffickers, those engaged in activities related to the proliferation of weapons of mass destruction, and other threats to the national security, foreign policy or economy of the United States" )
