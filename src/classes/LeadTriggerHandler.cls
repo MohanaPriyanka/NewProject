@@ -105,7 +105,7 @@ public without sharing class LeadTriggerHandler {
             }
             uow.commitWork();
         } catch (Exception e) {
-            Logger.logLater(
+            Logger.logNow(
                 'LeadTriggerHandler',
                 'attachLeadsToCampaign',
                 'Exception caught attaching leads:\n' + e.getMessage() + '\n' + e.getStackTraceString() + '\n' + JSON.serialize(newList),
