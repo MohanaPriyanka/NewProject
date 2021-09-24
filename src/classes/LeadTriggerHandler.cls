@@ -3,9 +3,11 @@
  * Tested By: LeadServiceTestclass, CSLeadsDuplicateServiceTest
  */
 public without sharing class LeadTriggerHandler {
-
     public List<Lead> newRecords = new List<Lead>();
     public Map<Id, Lead> oldRecordMap = new Map<Id, Lead>();
+    @TestVisible private static fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(new List<SObjectType>{
+        CampaignMember.SObjectType
+    });
 
     public LeadTriggerHandler(List<Lead> triggerNew, Map<Id, Lead> triggerOldMap) {
         this.newRecords = triggerNew;
@@ -20,6 +22,7 @@ public without sharing class LeadTriggerHandler {
     public void afterInsert() {
         checkDuplicateWebsiteLeads();
         CSApplicationStatusEventPublisher.publishEvent(null, newRecords);
+        attachLeadsToCampaign(newRecords);
     }
 
     public void beforeUpdate() {
@@ -82,8 +85,32 @@ public without sharing class LeadTriggerHandler {
         }
 
         caseFactory.closeRelatedBouncedEmailCases(leadsWithUpdatedEmails);
- 
     }
 
-
+    /**
+     * @description Attaches Leads to a Campaign via it's Manual_Campaign_Id__c field, set by Unbounce
+     * @param newList List of leads, from Trigger.New
+     */
+    @TestVisible
+    private void attachLeadsToCampaign(List<Lead> newList) {
+        try {
+            for (Lead lead : newList) {
+                if (lead.Manual_Campaign_ID__c != null) {
+                    uow.registerNew(new CampaignMember(
+                        CampaignId = lead.Manual_Campaign_ID__c,
+                        LeadId = lead.Id,
+                        Status = 'Responded'
+                    ));
+                }
+            }
+            uow.commitWork();
+        } catch (Exception e) {
+            Logger.logLater(
+                'LeadTriggerHandler',
+                'attachLeadsToCampaign',
+                'Exception caught attaching leads:\n' + e.getMessage() + '\n' + e.getStackTraceString() + '\n' + JSON.serialize(newList),
+                Logger.ERROR
+            );
+        }
+    }
 }

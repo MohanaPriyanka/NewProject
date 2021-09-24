@@ -848,4 +848,25 @@ public class LeadServiceTestclass {
         System.assert(updatedLead.Continue_Application_Link__c.contains('updated%40email.com'), 'Continue_Application_Link should get updated after a lead email is updated so the customer/partner does not experience an error when trying continue their application');
         System.assert(updatedLead.Contract_eSign_Link__c.contains('updated%40email.com'), 'Contract_eSign_Link__c should get updated after a lead email is updated so the customer/partner does not experience an error when trying to re-sign their contract.');
     }
+
+    @IsTest
+    private static void testAttachLeadsToCampaign() {
+        LeadTriggerHandler.uow = new fflib_SObjectUnitOfWork(
+            new List<SObjectType>{
+                CampaignMember.SObjectType
+            },
+            new FFLibHelperTest.MockDML()
+        );
+        List<Lead> newLeads = new List<Lead>();
+        newLeads.add(new Lead(
+            Id = Util.getFakeId(Lead.SObjectType),
+            Manual_Campaign_ID__c = Util.getFakeId(Campaign.SObjectType)
+        ));
+        newLeads.add(new Lead(
+            Id = Util.incrementFakeId(Util.getFakeId(Lead.SObjectType))
+        ));
+        new LeadTriggerHandler(null, null).attachLeadsToCampaign(newLeads);
+
+        System.assertEquals(1, FFLibHelperTest.getRegisterNewListFromUnitOfWork(LeadTriggerHandler.uow, 'CampaignMember').size());
+    }
 }
