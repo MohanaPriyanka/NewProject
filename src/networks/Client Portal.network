@@ -9,7 +9,6 @@
     <emailSenderName>BlueWave Client Services</emailSenderName>
     <enableCustomVFErrorPageOverrides>false</enableCustomVFErrorPageOverrides>
     <enableDirectMessages>false</enableDirectMessages>
-    <enableExperienceBundleBasedSnaOverrideEnabled>true</enableExperienceBundleBasedSnaOverrideEnabled>
     <enableGuestChatter>false</enableGuestChatter>
     <enableGuestFileAccess>true</enableGuestFileAccess>
     <enableGuestMemberVisibility>false</enableGuestMemberVisibility>
