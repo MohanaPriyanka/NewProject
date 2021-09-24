@@ -848,4 +848,44 @@ public class LeadServiceTestclass {
         System.assert(updatedLead.Continue_Application_Link__c.contains('updated%40email.com'), 'Continue_Application_Link should get updated after a lead email is updated so the customer/partner does not experience an error when trying continue their application');
         System.assert(updatedLead.Contract_eSign_Link__c.contains('updated%40email.com'), 'Contract_eSign_Link__c should get updated after a lead email is updated so the customer/partner does not experience an error when trying to re-sign their contract.');
     }
+
+    @IsTest
+    private static void testAttachLeadsToCampaign() {
+        LeadTriggerHandler.uow = new fflib_SObjectUnitOfWork(
+            new List<SObjectType>{
+                CampaignMember.SObjectType
+            },
+            new FFLibHelperTest.MockDML()
+        );
+        List<Lead> newLeads = new List<Lead>();
+        newLeads.add(new Lead(
+            Id = Util.incrementFakeId(Util.getFakeId(Lead.SObjectType))
+        ));
+        new LeadTriggerHandler(null, null).attachLeadsToCampaign(newLeads);
+        System.assertEquals(0, FFLibHelperTest.getRegisterNewListFromUnitOfWork(LeadTriggerHandler.uow, 'CampaignMember').size(),
+            'There should be no CampaignMembers created if a lead is inserted without a Manual Campaign Id');
+
+        newLeads.add(new Lead(
+            Id = Util.getFakeId(Lead.SObjectType),
+            Manual_Campaign_ID__c = Util.getFakeId(Campaign.SObjectType)
+        ));
+        new LeadTriggerHandler(null, null).attachLeadsToCampaign(newLeads);
+
+        System.assertEquals(1, FFLibHelperTest.getRegisterNewListFromUnitOfWork(LeadTriggerHandler.uow, 'CampaignMember').size(),
+            'There is one Lead that came from an Unbounce landing page with a Manual Campaign Id that should have been related to a Campaign');
+
+        newLeads.add(new Lead(
+            Id = Util.getFakeId(Lead.SObjectType),
+            Manual_Campaign_ID__c = 'invalidId'
+        ));
+        new LeadTriggerHandler(null, null).attachLeadsToCampaign(newLeads);
+        List<Error_Log__c> errorLogs = [
+            SELECT Id
+            FROM Error_Log__c
+            WHERE Method__c = 'attachLeadsToCampaign'
+            AND Severity__c = :Logger.ERROR
+        ];
+        System.assertEquals(1, errorLogs.size(),
+            'Expected one error log about not being able to attach a lead to a campaign, but got this: ' + errorLogs);
+    }
 }
