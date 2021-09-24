@@ -108,11 +108,12 @@ public inherited sharing class ContactSelector {
         return getContactsWithRelatedFields(sendBillsContacts);
     }
 
-    private static List<Contact> getContactsWithRelatedFields(Set<Id> contactIds) {
+    public static List<Contact> getContactsWithRelatedFields(Set<Id> contactIds) {
         return [
             SELECT Id, Account.Client_Brand_Key__c, Email
             FROM Contact
             WHERE Id IN : contactIds
         ];
     }
+
 }
