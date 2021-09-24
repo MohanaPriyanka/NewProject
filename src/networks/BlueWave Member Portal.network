@@ -24,7 +24,7 @@
     <enableTopicAssignmentRules>true</enableTopicAssignmentRules>
     <enableTopicSuggestions>false</enableTopicSuggestions>
     <enableUpDownVote>false</enableUpDownVote>
-    <forgotPasswordTemplate>Emails_to_Delete/CommunityForgotPasswordEmailTemplate</forgotPasswordTemplate>
+    <forgotPasswordTemplate>BFG_Internal_Alerts/CommunityForgotPasswordEmailTemplate</forgotPasswordTemplate>
     <gatherCustomerSentimentData>false</gatherCustomerSentimentData>
     <networkMemberGroups>
         <permissionSet>AccessToModifyCSPortal</permissionSet>
@@ -32,7 +32,7 @@
         <profile>admin</profile>
         <profile>customer community plus login user</profile>
         <profile>community solar community user</profile>
-        <profile>Community Solar User</profile>
+        <profile>community solar user</profile>
     </networkMemberGroups>
     <networkPageOverrides>
         <changePasswordPageOverrideSetting>Standard</changePasswordPageOverrideSetting>
