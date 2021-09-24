@@ -37,7 +37,7 @@ public inherited sharing class UserAndGroupSelector {
 
     public List<User> getUsersFromId(Set<Id> userIds){
         return new List<User>([
-            SELECT Id, ContactId
+            SELECT Id, ContactId, Contact.Id, Email
             FROM User
             WHERE Id IN : userIds
         ]);
