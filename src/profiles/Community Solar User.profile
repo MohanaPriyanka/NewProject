@@ -4572,6 +4572,14 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>UserChangeEventTriggerHandler</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UserChangeEventTriggerHandlerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>UserHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -80201,7 +80209,7 @@
         <layout>User-User Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>UserAlt-User Profile Layout</layout>
+        <layout>UserAlt-Member Portal User Profile Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>UserAppMenuItem-Application Layout</layout>

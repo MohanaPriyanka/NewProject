@@ -44,7 +44,7 @@
         <label>Settings</label>
         <position>4</position>
         <publiclyAvailable>false</publiclyAvailable>
-        <target>/accountinfo</target>
+        <target>/profile/home</target>
         <type>InternalLink</type>
     </navigationMenuItem>
     <navigationMenuItem>
