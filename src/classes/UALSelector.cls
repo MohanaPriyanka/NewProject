@@ -19,7 +19,7 @@ public without sharing class UALSelector {
                 Service_Zip_Code__c, Annual_kWh__c, Annual_Cost_of_Electricity__c, Account__c, Lead__c,
                 Average_Demand__c, Utility_lookup__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Name,
             	Num_UDRPs_Annual_kWh__c, Num_UDRPs_Avg_Demand__c, NYPA__c, RNY__c, Address_Update__c,
-            	Username__c, Previous_Name_on_Utility_Account__c, Previous_Service_Address__c, QC_Status__c,
+            	Previous_Name_on_Utility_Account__c, Previous_Service_Address__c, QC_Status__c,
             	Previous_Service_City__c, Previous_Service_State__c, Previous_Service_Zip_Code__c, Premise_Number__c,
                 Auto_QC_Reject_Reason__c, Utility_lookup__r.Auto_QC_Maximum_Demand__c, Utility_lookup__r.Auto_QC_Minimum_kWH__c
             FROM Utility_Account_Log__c
@@ -33,7 +33,7 @@ public without sharing class UALSelector {
                 Service_Zip_Code__c, Annual_kWh__c, Annual_Cost_of_Electricity__c, Account__c, Lead__c,
                 Average_Demand__c, Utility_lookup__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Name,
             	Num_UDRPs_Annual_kWh__c, Num_UDRPs_Avg_Demand__c, NYPA__c, RNY__c, Address_Update__c,
-            	Username__c, Previous_Name_on_Utility_Account__c, Previous_Service_Address__c, QC_Status__c,
+            	Previous_Name_on_Utility_Account__c, Previous_Service_Address__c, QC_Status__c,
             	Previous_Service_City__c, Previous_Service_State__c, Previous_Service_Zip_Code__c, Premise_Number__c,
                 Auto_QC_Reject_Reason__c, Utility_lookup__r.Auto_QC_Maximum_Demand__c, Utility_lookup__r.Auto_QC_Minimum_kWH__c,
                 Cleaned_Utility_Account_Number__c
@@ -48,7 +48,7 @@ public without sharing class UALSelector {
                 Service_Zip_Code__c, Annual_kWh__c, Annual_Cost_of_Electricity__c, Account__c, Lead__c,
                 Average_Demand__c, Utility_lookup__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Name,
             	Num_UDRPs_Annual_kWh__c, Num_UDRPs_Avg_Demand__c, NYPA__c, RNY__c, Address_Update__c,
-            	Username__c, Previous_Name_on_Utility_Account__c, Previous_Service_Address__c, QC_Status__c,
+            	Previous_Name_on_Utility_Account__c, Previous_Service_Address__c, QC_Status__c,
             	Previous_Service_City__c, Previous_Service_State__c, Previous_Service_Zip_Code__c, Premise_Number__c
             FROM Utility_Account_Log__c
             WHERE Lead__c = :leadIds
@@ -70,6 +70,7 @@ public without sharing class UALSelector {
     }
 
     public List<Utility_Account_Log__c> selectDuplicateUALs(String ualNumber) {
+
         return [
             SELECT
                 Id,
@@ -78,8 +79,7 @@ public without sharing class UALSelector {
                 Lead__r.Continue_Application_Link__c,
                 Lead__r.IsConverted,
                 Lead__r.Status,
-                Opportunity__r.StageName,
-                (SELECT Id, Opportunity__r.StageName
+                (SELECT Id
                     FROM Utility_Account_Subscriptions__r
                     WHERE Next_Schedule_Z_Status__c = 'Active Subscription'
                 )
