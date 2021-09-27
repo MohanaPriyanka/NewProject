@@ -644,7 +644,7 @@ Used for customer sizing on SMART contracts.</inlineHelpText>
         <fullName>Product_Tariff__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <label>Product Tariff</label>
+        <label>XXXProduct Tariff</label>
         <referenceTo>Product_Tariff__c</referenceTo>
         <relationshipLabel>Utility Account Logs</relationshipLabel>
         <relationshipName>Utility_Account_Logs</relationshipName>
@@ -658,7 +658,7 @@ Used for customer sizing on SMART contracts.</inlineHelpText>
         <description>Is equal to Annual kWh * ual.Tariff.Sizing_Ratio</description>
         <externalId>false</externalId>
         <inlineHelpText>Used to size customer&apos;s subscriptions by kWh, is based on Annual kWh * Sizing Ratio. Should be value used when re-sizing customers</inlineHelpText>
-        <label>Proposed kWh</label>
+        <label>XXXProposed kWh</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
