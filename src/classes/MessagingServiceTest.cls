@@ -117,6 +117,13 @@ public with sharing class MessagingServiceTest {
         System.assert(Logger.logs.values()[0][0].message.contains('Unknown error'),
             'Expected the mock unknown error, but got: ' + Logger.logs.values()[0][0].message);
 
+        sendEmailResultJSON = '{"success":false,' +
+            '"errors":[{"message":"email address has bounced for id : 0030a00001vJY0o"}]}';
+        Logger.logs = new Map<String, List<Logger.Log>>();
+        failedMessageResult =
+            (Messaging.SendEmailResult) JSON.deserialize(sendEmailResultJSON, Messaging.SendEmailResult.class);
+        MessagingService.logErrors(new List<Messaging.SendEmailResult>{failedMessageResult}, null);
+        System.assertEquals(0, Logger.logs.size(), 'Expected no errors to be logged for bounced emails');
     }
     
     @IsTest
