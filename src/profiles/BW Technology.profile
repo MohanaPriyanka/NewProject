@@ -45496,11 +45496,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Utility_Account_Log__c.Account_ID__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Utility_Account_Log__c.Account__c</field>
         <readable>true</readable>
@@ -45521,11 +45516,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Utility_Account_Log__c.Anticipated_NMC_Alloaction_kWh__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Utility_Account_Log__c.Auto_QC_Reject_Reason__c</field>
         <readable>true</readable>
@@ -45533,11 +45523,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Utility_Account_Log__c.Average_Demand__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Utility_Account_Log__c.Calculated_Subscription_KW_DC_Rounded__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -45552,27 +45537,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Utility_Account_Log__c.Cost_not_yet_Allocated__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Utility_Account_Log__c.Create_Online_Account__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Utility_Account_Log__c.Customer_Subscription_KW_DC__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Utility_Account_Log__c.Date_Utility_Account_Cancelled__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Utility_Account_Log__c.Estimated_LIfetime_Savings__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -45588,11 +45553,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Utility_Account_Log__c.Lead__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Utility_Account_Log__c.Max_Capacity_of_System__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -45633,16 +45593,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Log__c.Number_of_Subscribed_UASes__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Utility_Account_Log__c.Opportunity__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Utility_Account_Log__c.Password__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -45697,22 +45647,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Utility_Account_Log__c.Same_Address__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Utility_Account_Log__c.Service_Address_Formula__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Utility_Account_Log__c.Service_Address__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Utility_Account_Log__c.Service_Apt_Suit_Formula__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -45721,18 +45656,8 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Utility_Account_Log__c.Service_City_Formula__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Utility_Account_Log__c.Service_City__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Utility_Account_Log__c.Service_State_Formula__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -45762,16 +45687,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Utility_Account_Log__c.UAS_Count__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Utility_Account_Log__c.Username__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Utility_Account_Log__c.Utility_Acct_Number_no_dashes__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -45788,11 +45703,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Utility_Account_Log__c.Utility_lookup__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Utility_Account_Log__c.calculated_subscription_size_kw_dc__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
