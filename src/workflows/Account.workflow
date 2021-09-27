@@ -1,22 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
     <alerts>
-        <fullName>Recurring_Billing_Reciept</fullName>
-        <description>Recurring Billing Reciept</description>
-        <protected>false</protected>
-        <recipients>
-            <field>Send_Bills_Contact__c</field>
-            <type>contactLookup</type>
-        </recipients>
-        <recipients>
-            <recipient>jpentaleri@bluewavesolar.com</recipient>
-            <type>user</type>
-        </recipients>
-        <senderAddress>customercare@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
-        <template>CS_Billing_Emails/CS_Recurring_Payments</template>
-    </alerts>
-    <alerts>
         <fullName>Sales_Partner_Application_Submitted_Notification</fullName>
         <description>Sales Partner Application Submitted Notification</description>
         <protected>false</protected>
