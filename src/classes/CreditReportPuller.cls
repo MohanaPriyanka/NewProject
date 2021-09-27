@@ -6,7 +6,7 @@ public without sharing class CreditReportPuller {
     @TestVisible private static LeadSelector leadSelector = new LeadSelector();
     @TestVisible private static FeatureSelector featureSelector = new FeatureSelector();
 
-    public void handleSoftPullCreditChecked(List<Lead> newLeads, Map<Id, Lead> oldLeadMap) {
+    public void handleSoftPullCreditCheckedBeforeUpdate(List<Lead> newLeads, Map<Id, Lead> oldLeadMap) {
         Set<Id> leadsWithSoftPullCreditReportChecked = new Set<Id>();
         for (Lead newLead : newLeads) {
             if (oldLeadMap.get(newLead.Id).Soft_Pull_Credit_Report__c == false &&

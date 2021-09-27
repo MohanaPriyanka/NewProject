@@ -29,7 +29,7 @@ public without sharing class LeadTriggerHandler {
     public void beforeUpdate() {
         UtilityLoadZoneService.updateLZUL(newRecords, oldRecordMap);
         updateContinueApplicationLinks();
-        creditReportPuller.handleSoftPullCreditChecked(newRecords, oldRecordMap);
+        creditReportPuller.handleSoftPullCreditCheckedBeforeUpdate(newRecords, oldRecordMap);
     }
 
     public void afterUpdate() {
