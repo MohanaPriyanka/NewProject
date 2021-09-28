@@ -8,6 +8,7 @@ public without sharing class LeadTriggerHandler {
     @TestVisible private static fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(new List<SObjectType>{
         CampaignMember.SObjectType
     });
+    CreditReportPuller creditReportPuller = new CreditReportPuller();
 
     public LeadTriggerHandler(List<Lead> triggerNew, Map<Id, Lead> triggerOldMap) {
         this.newRecords = triggerNew;
@@ -28,6 +29,7 @@ public without sharing class LeadTriggerHandler {
     public void beforeUpdate() {
         UtilityLoadZoneService.updateLZUL(newRecords, oldRecordMap);
         updateContinueApplicationLinks();
+        creditReportPuller.handleSoftPullCreditCheckedBeforeUpdate(newRecords, oldRecordMap);
     }
 
     public void afterUpdate() {
