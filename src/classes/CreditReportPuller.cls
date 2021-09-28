@@ -15,7 +15,9 @@ public without sharing class CreditReportPuller {
                 leadsWithSoftPullCreditReportChecked.add(newLead.Id);
             }
         }
-        sendRequest(leadsWithSoftPullCreditReportChecked);
+        if (!leadsWithSoftPullCreditReportChecked.isEmpty()) {
+            sendRequest(leadsWithSoftPullCreditReportChecked);
+        }
     }
 
     private void sendRequest(Set<Id> leadIds) {
