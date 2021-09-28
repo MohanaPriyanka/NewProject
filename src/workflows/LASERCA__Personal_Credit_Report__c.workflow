@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <alerts>
-        <fullName>Alert_Ops_Avidia_Approval</fullName>
-        <ccEmails>solarloans@bluewave-capital.com</ccEmails>
-        <description>Alert Ops Avidia Approval</description>
-        <protected>false</protected>
-        <senderAddress>customercare@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
-        <template>BFG_Internal_Alerts/Solar_Loans_Avidia_Approval_Alert</template>
-    </alerts>
     <fieldUpdates>
         <fullName>Avidia_Approval_Override</fullName>
         <field>Solar_Loan_Manual_Approval__c</field>
