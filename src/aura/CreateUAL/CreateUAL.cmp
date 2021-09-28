@@ -1,0 +1,110 @@
+<aura:component controller="CreateUALController" extends="c:BlueWaveParent" access="global">
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+      
+  <aura:attribute name="OppId" type="String" default=""/>
+  <aura:attribute name="acctId" type="String" default=""/>
+  <aura:attribute name="SSSsize" type="Decimal" default=""/>
+  <aura:attribute name="SSSname" type="String" default=""/>
+  <aura:attribute name="errorMessage" type="String" default=""/>
+
+  <aura:attribute name="ListofUALs" type="Utility_Account_Log__c[]" />
+  <aura:attribute name="selectedUAL" type="String"/>
+  <aura:attribute name="createNew" type="Boolean" default="false"/>
+  <aura:attribute name="showPage" type="Boolean" default="true"/>
+  <aura:attribute name="successText" type="String" default=""/>
+  <aura:attribute name="UAL" type="Utility_Account_Log__c" default="{'sobjectType': 'Utility_Account_Log__c',
+                                                              'Name' : '',
+                                                              'Account__c' : '',
+                                                              'Annual_Cost_of_Electricity__c' : '',
+                                                              'Service_Address__c' : '',
+                                                              'Service_City__c' : '',
+                                                              'Service_State__c' : '',
+                                                              'Service_Zip_Code__c' : '',
+                                                              'Name_on_Account__c' : ''}"/>
+  <aura:attribute name="UAS" type="Utility_Account_Subscription__c" default="{'sobjectType': 'Utility_Account_Subscription__c',
+                                                              'Name' : '',
+                                                              'Utility_Account_Log__c' : '',
+                                                              'Opportunity__c' : '',
+                                                              'Next_Schedule_Z_Status__c' : 'Enacted',
+                                                              'Customer_Subscription_KW_DC_STATIC__c' : ''}"/>
+
+  <aura:if isTrue="{!v.showPage}">  
+    <div class="slds-form slds-form_stacked slds-p-bottom_large">
+     <fieldset class="slds-form-element"> 
+       <h3 class="slds-text-heading_medium slds-p-bottom_small">Utility Account Info</h3>
+         <h3 class="slds-text-body_small">This form should be used to add utility account information to a pre-existing opportunity.</h3>
+         <h3 class="slds-text-body_small slds-p-bottom_small"><b>Info should be the exact same as is listed on the utility bill.</b></h3>
+         
+       <div class="slds-form-element slds-is-required slds-form-element slds-size_1-of-2 ">
+        <div class="slds-form-element__control">
+          <label class="slds-form-element__label" for="input-03">Add to Existing Utility Account Log or Create New:*</label>
+              <ui:inputSelect aura:id="ualInput" 
+                              required="true"
+                              class="slds-input"
+                              change="{!c.selectUAL}">
+                  <ui:inputSelectOption label="Select Choice" text=""/>
+                  <ui:inputSelectOption label="Create New" text="createNewUAL"/>
+                <aura:iteration items="{!v.ListofUALs}" var="ualInList">
+                  <ui:inputSelectOption label="{!ualInList.Name}" text="{!ualInList.Id + '-' + ualInList.Name}"/>
+                </aura:iteration>
+              </ui:inputSelect>
+        </div>                  
+       </div>    
+         
+       <aura:if isTrue="{!v.createNew}">
+       <div aura:id="UtilityAccountNumber" class="slds-form-element slds-size_1-of-2 ">
+          <label class="slds-form-element__label" ><b>Utility Account Number: </b></label>
+        <ui:inputText class="slds-input" value="{!v.UAL.Name}"/>       
+       </div>
+       <div aura:id="NameOnAccount" class="slds-form-element slds-size_1-of-2 ">
+         <label class="slds-form-element__label" ><b>Name on Account:</b></label>
+        <ui:inputText class="slds-input" value="{!v.UAL.Name_on_Account__c}"/>       
+       </div> 
+       <div aura:id="AddressLineOne" class="slds-form-element slds-size_1-of-2 ">
+           
+         <label class="slds-form-element__label" ><b>Address Line One:</b></label>
+        <ui:inputText class="slds-input" value="{!v.UAL.Service_Address__c}"/>       
+       </div>   
+       <div aura:id="AddressLinetwo" class="slds-form-element slds-size_1-of-2 ">
+         <label class="slds-form-element__label" ><b>Address City:</b></label>
+        <ui:inputText class="slds-input" value="{!v.UAL.Service_City__c}"/>       
+       </div> 
+       <div aura:id="AddressLinethree" class="slds-form-element slds-size_1-of-2 ">
+         <label class="slds-form-element__label" ><b>Address State:</b></label>
+        <ui:inputText class="slds-input" value="{!v.UAL.Service_State__c}"/>       
+       </div> 
+       <div aura:id="AddressLinefour" class="slds-form-element slds-size_1-of-2 ">
+         <label class="slds-form-element__label" ><b>Address Zipcode:</b></label>
+        <ui:inputText class="slds-input" value="{!v.UAL.Service_Zip_Code__c}"/>       
+       </div> 
+       </aura:if> 
+     </fieldset>
+  </div>  
+  <div class="slds-form-element slds-size_1-of-2 ">
+    <label class="slds-form-element__label" ><b>Project Size (kW DC)</b></label>
+    <ui:outputNumber class="slds-output" value="{!v.SSSsize}"/>       
+  </div> 
+  <div class="slds-form-element slds-size_1-of-2 slds-p-bottom_small">
+    <label class="slds-form-element__label" ><b>Project Name</b></label>
+    <ui:outputText class="slds-output" value="{!v.SSSname}"/>       
+  </div> 
+  <div class="slds-form-element slds-size_1-of-2  slds-p-bottom_small">
+    <label class="slds-form-element__label" ><b>% Share:</b></label>
+    <ui:inputNumber aura:id="sharePercent" class="slds-input"/>       
+  </div>  
+  <ui:outputText class="slds-output slds-p-bottom_small" value="{!v.errorMessage}"/>  
+  <lightning:button aura:id="viewLoanData"
+                    name="submitTable"
+                    label="Submit"
+                    class="slds-button slds-button--brand bwcolorforcard"
+                    onclick="{!c.submitUAL}"/>
+   <aura:set attribute="else">
+    <ui:outputText class="slds-output slds-p-bottom_small" value="{!v.successText}"/>  
+    <lightning:button aura:id="viewLoanData"
+                    name="submitTable"
+                    label="Go Back"
+                    class="slds-button slds-button--brand bwcolorforcard"
+                    onclick="{!c.goBack}"/>
+   </aura:set>
+  </aura:if>
+</aura:component>

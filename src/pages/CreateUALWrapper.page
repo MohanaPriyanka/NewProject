@@ -1,0 +1,30 @@
+<apex:page standardStylesheets="false">
+  <apex:includeLightning />
+  <apex:slds />
+  <style>  
+    div.padded {  
+      padding-top: 20px;
+      padding-right: 20px;
+      padding-bottom: 20px;
+      padding-left: 25px;
+      background-color: #DCDCDC;
+  }  
+  </style>   
+  <div class="slds-scope padded" id="lightning"/>
+  <script>
+  const OppIdt="{!$CurrentPage.parameters.OppId}";
+  const acctIdt="{!$CurrentPage.parameters.acctId}";
+  const SSSsizet="{!$CurrentPage.parameters.SSSsize}";
+  const SSSnamet="{!$CurrentPage.parameters.SSSname}";
+
+      $Lightning.use("c:CreateUALApp", function() {
+          $Lightning.createComponent("c:CreateUAL", {
+          "OppId": OppIdt,
+          "acctId": acctIdt,
+          "SSSsize": SSSsizet,
+          "SSSname": SSSnamet}
+          ,"lightning", function(cmp) {console.log('component created');});
+      });
+      
+  </script>        
+</apex:page>
