@@ -11,6 +11,7 @@ public without sharing class UtilityAccountSubscriptionHandler {
     private Map<Id,Utility_Account_Subscription__c> oldMap;
     private List<Utility_Account_Subscription__c> newList;
     private TriggerOperation triggerType;
+    private UALSelector ualSelector = new UALSelector();
 
     public UtilityAccountSubscriptionHandler(Map<Id,Utility_Account_Subscription__c> oldMap,
         List<Utility_Account_Subscription__c> newList, TriggerOperation triggerOperation) {
@@ -21,6 +22,7 @@ public without sharing class UtilityAccountSubscriptionHandler {
 
     public void beforeInsert() {
         assignSSSBeforeInsert();
+        verifyUALSubscriptionType();
     }
 
     public void afterInsert() {
@@ -75,6 +77,35 @@ public without sharing class UtilityAccountSubscriptionHandler {
             }
         }
     }
+
+    private void verifyUALSubscriptionType() {
+        Set<Id> ualIds = new Set<Id>();
+
+        for (Utility_Account_Subscription__c uas : newList) {
+            ualIds.add(uas.Utility_Account_Log__c);
+        }
+
+        Map<Id,Utility_Account_Log__c> ualMap = ualSelector.selectUALSWithUASMap(ualIds);
+
+        for (Utility_Account_Subscription__c uas : newList) {
+            Utility_Account_Log__c ual = ualMap.get(uas.Utility_Account_Log__c);
+            List<Utility_Account_Subscription__c> childUASList = ual.Utility_Account_Subscriptions__r;
+            if (childUASList.size() == 0) continue;
+            if (verifyMultipleSubscriptionsAllowed(childUASList)) continue;
+            throw new Util.BWException('A UAS already exists for this UAL and only a single subscription per Utility Account is allowed.');
+        }
+
+    }
+
+    private Boolean verifyMultipleSubscriptionsAllowed(List<Utility_Account_Subscription__c> uasList) {
+        for (Utility_Account_Subscription__c uas : uasList) {
+            if (uas.Shared_Solar_System__r.Product__r.Utility_Account_Subscription_Type__c == 'Single subscription per Utility Account') {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     public void assignSSSBeforeUpdate() {
         Set<Id> oppIds = new Set<Id>();
