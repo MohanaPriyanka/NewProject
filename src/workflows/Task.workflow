@@ -1,16 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <alerts>
-        <fullName>Internal_Product_Team_Task_is_Complete</fullName>
-        <description>Internal_Product_Team_Task_is_Complete</description>
-        <protected>false</protected>
-        <recipients>
-            <field>Requested_By__c</field>
-            <type>email</type>
-        </recipients>
-        <senderType>CurrentUser</senderType>
-        <template>BFG_Internal_Alerts/Requestor_Product_Team_Task_Complete</template>
-    </alerts>
     <fieldUpdates>
         <fullName>Record_Type_to_Customer_Care</fullName>
         <field>RecordTypeId</field>
@@ -19,16 +8,6 @@
         <name>Record Type to Customer Care</name>
         <notifyAssignee>false</notifyAssignee>
         <operation>LookupValue</operation>
-        <protected>false</protected>
-    </fieldUpdates>
-    <fieldUpdates>
-        <fullName>Set_Task_Start_Date_for_Product_team</fullName>
-        <description>Sets the start date of a new task as the date on which that task is created. Set to only apply to product group tasks.</description>
-        <field>Start_Date__c</field>
-        <formula>today()</formula>
-        <name>Set Task Start Date for Product Team</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>Formula</operation>
         <protected>false</protected>
     </fieldUpdates>
     <fieldUpdates>
@@ -64,26 +43,6 @@
             <value>Completed,Unsuccesful</value>
         </criteriaItems>
         <description>Populates TASK field: Actual Complete Date upon task completion</description>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
-        <fullName>Product Team Task is Complete</fullName>
-        <actions>
-            <name>Internal_Product_Team_Task_is_Complete</name>
-            <type>Alert</type>
-        </actions>
-        <active>true</active>
-        <criteriaItems>
-            <field>Task.Category__c</field>
-            <operation>equals</operation>
-            <value>Product Team</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Task.Status</field>
-            <operation>equals</operation>
-            <value>Completed</value>
-        </criteriaItems>
-        <description>Runs when a Product Team Task is complete</description>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
     <rules>
@@ -134,21 +93,6 @@
             <operation>equals</operation>
             <value>vcoloma@bluewavesolar.com</value>
         </criteriaItems>
-        <triggerType>onCreateOnly</triggerType>
-    </rules>
-    <rules>
-        <fullName>Set Task Start Date for Product Team</fullName>
-        <actions>
-            <name>Set_Task_Start_Date_for_Product_team</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <active>true</active>
-        <criteriaItems>
-            <field>Task.Category__c</field>
-            <operation>equals</operation>
-            <value>Product Team</value>
-        </criteriaItems>
-        <description>Sets the Task Start Date for Product Team Tasks as the date on which the task was created.</description>
         <triggerType>onCreateOnly</triggerType>
     </rules>
     <rules>

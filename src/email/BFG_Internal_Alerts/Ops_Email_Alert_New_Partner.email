@@ -1,3 +1,0 @@
-Operations,
-
-A new partner has been created, {!Partner__c.Name} for the product line(s): {!Partner__c.Products__c}
