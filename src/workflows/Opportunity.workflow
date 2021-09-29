@@ -467,40 +467,6 @@ IF(MOD(YEAR(Commencement_Date__c) + FLOOR((MONTH(Commencement_Date__c) + 1)/12),
         <protected>false</protected>
     </flowActions>
     <rules>
-        <fullName>Avidia - Email - Loan Ready for Avidia Review</fullName>
-        <actions>
-            <name>Avidia_MCEC_Loan_Ready_for_Review</name>
-            <type>Alert</type>
-        </actions>
-        <actions>
-            <name>EMAIL_LOG_Avidia_Email_Loan_Ready_for_Avidia_Review</name>
-            <type>Task</type>
-        </actions>
-        <active>true</active>
-        <criteriaItems>
-            <field>Opportunity.Product_Line__c</field>
-            <operation>equals</operation>
-            <value>Residential Loan</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.DOER_Solar_Loan__c</field>
-            <operation>equals</operation>
-            <value>True</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.StageName</field>
-            <operation>equals</operation>
-            <value>Contract Pending</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.Disable_Emails__c</field>
-            <operation>notEqual</operation>
-            <value>True</value>
-        </criteriaItems>
-        <description>Sends and email to Avidia when a contract is sent, letting Avidia know that a loan is ready for review.</description>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
         <fullName>Interest Only Start Date</fullName>
         <actions>
             <name>Interest_Only_Start_Date_Opp</name>
@@ -667,19 +633,6 @@ IF(MOD(YEAR(Commencement_Date__c) + FLOOR((MONTH(Commencement_Date__c) + 1)/12),
         <protected>false</protected>
         <status>Completed</status>
         <subject>EMAIL LOG: 60% Disbursal for Non-MA States</subject>
-    </tasks>
-    <tasks>
-        <fullName>EMAIL_LOG_Avidia_Email_Loan_Ready_for_Avidia_Review</fullName>
-        <assignedTo>api@bluewavesolar.com</assignedTo>
-        <assignedToType>user</assignedToType>
-        <description>EMAIL LOG: Avidia - Email - Loan Ready for Avidia Review
-using TEMPLATE: Avidia - MCEC Loan Ready for Review</description>
-        <dueDateOffset>0</dueDateOffset>
-        <notifyAssignee>false</notifyAssignee>
-        <priority>Normal</priority>
-        <protected>false</protected>
-        <status>Completed</status>
-        <subject>EMAIL LOG: Avidia - Email - Loan Ready for Avidia Review</subject>
     </tasks>
     <tasks>
         <fullName>EMAIL_LOG_CS_Application_Approval</fullName>
