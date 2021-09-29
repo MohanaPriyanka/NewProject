@@ -1,24 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
     <fieldUpdates>
-        <fullName>Avidia_Approval_Override</fullName>
-        <field>Solar_Loan_Manual_Approval__c</field>
-        <literalValue>1</literalValue>
-        <name>Avidia Approval Override</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>Literal</operation>
-        <protected>false</protected>
-    </fieldUpdates>
-    <fieldUpdates>
-        <fullName>Avidia_Declined_Override</fullName>
-        <field>Solar_Loan_Manual_Decline__c</field>
-        <literalValue>1</literalValue>
-        <name>Avidia Declined Override</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>Literal</operation>
-        <protected>false</protected>
-    </fieldUpdates>
-    <fieldUpdates>
         <fullName>CS_PCR_Record_Type</fullName>
         <description>Changes the PCR Record Type to Community Solar when the product line is equal to Community Solar</description>
         <field>RecordTypeId</field>
@@ -62,44 +44,6 @@
         <triggerType>onCreateOnly</triggerType>
     </rules>
     <rules>
-        <fullName>Avidia Approval Override</fullName>
-        <actions>
-            <name>Avidia_Approval_Override</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <active>true</active>
-        <criteriaItems>
-            <field>LASERCA__Personal_Credit_Report__c.Avidia_Review_Status__c</field>
-            <operation>equals</operation>
-            <value>Reviewed - Approved</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>LASERCA__Personal_Credit_Report__c.Solar_Loan_Approval_Status__c</field>
-            <operation>equals</operation>
-            <value>,Declined,Pending Review</value>
-        </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
-        <fullName>Avidia Declined Override</fullName>
-        <actions>
-            <name>Avidia_Declined_Override</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <active>true</active>
-        <criteriaItems>
-            <field>LASERCA__Personal_Credit_Report__c.Avidia_Review_Status__c</field>
-            <operation>equals</operation>
-            <value>Reviewed - Declined</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>LASERCA__Personal_Credit_Report__c.Solar_Loan_Approval__c</field>
-            <operation>equals</operation>
-            <value>Approved</value>
-        </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
         <fullName>CS - PCR Record Type</fullName>
         <actions>
             <name>CS_PCR_Record_Type</name>
@@ -124,20 +68,6 @@
             <field>LASERCA__Personal_Credit_Report__c.Credit_PreApproval_Email_Sent__c</field>
             <operation>equals</operation>
             <value>True</value>
-        </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
-        <fullName>PCR%3A Avidia Alerts - Reviewed Approved</fullName>
-        <actions>
-            <name>Alert_Ops_Avidia_Approval</name>
-            <type>Alert</type>
-        </actions>
-        <active>true</active>
-        <criteriaItems>
-            <field>LASERCA__Personal_Credit_Report__c.Avidia_Review_Status__c</field>
-            <operation>equals</operation>
-            <value>Reviewed - Approved,Reviewed - Pre-Approved,Reviewed - Declined</value>
         </criteriaItems>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
