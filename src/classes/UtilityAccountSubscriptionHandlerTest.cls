@@ -22,6 +22,38 @@ public class UtilityAccountSubscriptionHandlerTest {
             Sizing_Rate__c = TRUE);
         insert eversizeNMC;
 
+        Product2 normalCSProduct = new Product2(Name = 'BlueWave Community Solar',
+            Family = 'Community Solar',
+            Product_Type__c = 'Community Solar',
+            State__c = 'MA',
+            ProductCode = 'CS - BlueWave - 10%',
+            IsActive = True,
+            Lender_of_Record__c = 'BlueWave',
+            NMC_Discount__c = 10,
+            Annual_kWh_Maximum__c = 100000000,
+            NM_Rate_Floor__c = 0,
+            Days_In_Bill_Period__c = 20,
+            Customer_Subscription_Type__c = 'kWh',
+            Monthly_Late_Fee__c = 1,
+            Utility_Account_Subscription_Type__c = 'Multiple subscriptions per Utility Account');
+
+        Product2 singleSubProduct = new Product2(Name = 'Single Sub BlueWave Community Solar',
+            Family = 'Community Solar',
+            Product_Type__c = 'Community Solar',
+            State__c = 'MA',
+            ProductCode = 'CS - BlueWave - 10%',
+            IsActive = True,
+            Lender_of_Record__c = 'BlueWave',
+            NMC_Discount__c = 10,
+            Annual_kWh_Maximum__c = 100000000,
+            NM_Rate_Floor__c = 0,
+            Days_In_Bill_Period__c = 20,
+            Customer_Subscription_Type__c = 'kWh',
+            Monthly_Late_Fee__c = 1,
+            Utility_Account_Subscription_Type__c = 'Single subscription per Utility Account');
+
+        insert new List<Product2>{normalCSProduct, singleSubProduct};
+
         Shared_Solar_System__c sss1 = new Shared_Solar_System__c(Name = 'Project A',
             Service_Territory__c = 'SEMA',
             Service_Territories__c = 'SEMA',
@@ -38,7 +70,8 @@ public class UtilityAccountSubscriptionHandlerTest {
             Assignment_Order__c = '1',
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
-            Maximum_Subscription_Capacity_kWDC__c = 25);
+            Maximum_Subscription_Capacity_kWDC__c = 25,
+            Product__c = normalCSProduct.Id);
 
         Shared_Solar_System__c sss2 = new Shared_Solar_System__c(Name = 'Project B',
             Service_Territory__c = 'SEMA',
@@ -56,9 +89,29 @@ public class UtilityAccountSubscriptionHandlerTest {
             Assignment_Order__c = '1',
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
-            Maximum_Subscription_Capacity_kWDC__c = 25);
+            Maximum_Subscription_Capacity_kWDC__c = 25,
+            Product__c = normalCSProduct.Id);
 
-        insert new List<Shared_Solar_System__c>{sss1, sss2};
+        Shared_Solar_System__c sss3 = new Shared_Solar_System__c(Name = 'Project C',
+            Service_Territory__c = 'SEMA',
+            Service_Territories__c = 'SEMA',
+            Open__c = true,
+            Client_Account__c = clientAccount.Id,
+            Utility_NMC_Tariff__c = eversizeNMC.Id,
+            Billing_Method__c = 'NMC',
+            Reserved_Capacity_kW_DC__c = '10',
+            Capacity_Committed_kW_DC__c = 0,
+            Total_System_Size_kWh_DC__c = 1445.86,
+            Total_System_Size_kW_AC__c = 1000,
+            Utility__c = ngrid.Id,
+            Credit_Score_Requirement__c = 300,
+            Assignment_Order__c = '1',
+            Expected_Yield_kWh_kW__c = 1300,
+            Assemblage_Count__c = 1,
+            Maximum_Subscription_Capacity_kWDC__c = 25,
+            Product__c = singleSubProduct.Id);
+
+        insert new List<Shared_Solar_System__c>{sss1, sss2, sss3};
 
         Partner__c partner = new Partner__c(
             Name = 'Some Partner'
@@ -85,21 +138,6 @@ public class UtilityAccountSubscriptionHandlerTest {
 
         insert new List<Account> {partnerAccount, accountParent, propAccountA, propAccountB};
 
-        Product2 normalCSProduct = new Product2(Name = 'BlueWave Community Solar',
-            Family = 'Community Solar',
-            Product_Type__c = 'Community Solar',
-            State__c = 'MA',
-            ProductCode = 'CS - BlueWave - 10%',
-            IsActive = True,
-            Lender_of_Record__c = 'BlueWave',
-            NMC_Discount__c = 10,
-            Annual_kWh_Maximum__c = 100000000,
-            NM_Rate_Floor__c = 0,
-            Days_In_Bill_Period__c = 20,
-            Customer_Subscription_Type__c = 'kWh',
-            Monthly_Late_Fee__c = 1);
-        insert normalCSProduct;
-
         Opportunity opportunityone =
             new Opportunity(Name = 'AOpp',
                 AccountId = propAccountA.Id,
@@ -111,28 +149,9 @@ public class UtilityAccountSubscriptionHandlerTest {
                 Customer_Group__c = 'Residential',
                 Product__c = normalCSProduct.Id,
                 Product_Line__c = 'Community Solar',
-                CloseDate = System.today());
+                CloseDate = System.today()
+            );
 
-        insert opportunityone;
-
-        Utility_Account_Log__c ualog =
-            new Utility_Account_Log__c(Name = '0000234',
-                Account__c = propAccountA.Id,
-                Annual_Cost_of_Electricity__c = 10000,
-                Name_on_Account__c = 'A Testcase');
-
-        insert ualog;
-
-        Utility_Account_Subscription__c uasone = new Utility_Account_Subscription__c(
-            Name = '0000234',
-            Utility_Account_Log__c = ualog.Id,
-            Opportunity__c = opportunityone.Id,
-            Next_Schedule_Z_Status__c = 'Active Subscription',
-            Annual_kwh_subscription_future__c = 4000,
-            Calculated_Annual_Cost_of_Electricity__c = 4000,
-            Subscribed_Annual_Cost_of_Electricity__c = 4000
-        );
-        insert uasone;
 
         Opportunity opportunitytwo =
             new Opportunity(Name = 'BOpp',
@@ -145,16 +164,60 @@ public class UtilityAccountSubscriptionHandlerTest {
                 Customer_Group__c = 'Residential',
                 Product__c = normalCSProduct.Id,
                 Product_Line__c = 'Community Solar',
-                CloseDate = System.today());
-        insert opportunitytwo;
+                CloseDate = System.today()
+            );
+
+        Opportunity opportunitythree =
+            new Opportunity(Name = 'COpp',
+                AccountId = propAccountB.Id,
+                Shared_Solar_System__c = sss3.Id,
+                StageName = 'Complete',
+                NMC_Tariff__c = eversizeNMC.Id,
+                Partner_tag_lookup__c = partner.Id,
+                Partner_Account__c = partnerAccount.Id,
+                Customer_Group__c = 'Residential',
+                Product__c = singleSubProduct.Id,
+                Product_Line__c = 'Community Solar',
+                CloseDate = System.today()
+            );
+
+        insert new List<Opportunity>{opportunityone, opportunitytwo, opportunitythree};
+
+        Utility_Account_Log__c ualogOne =
+            new Utility_Account_Log__c(Name = '0000234',
+                Account__c = propAccountA.Id,
+                Annual_Cost_of_Electricity__c = 10000,
+                Name_on_Account__c = 'A Testcase'
+            );
+
 
         Utility_Account_Log__c ualogTwo =
             new Utility_Account_Log__c(Name = '0000236',
                 Account__c = propAccountB.Id,
                 Annual_Cost_of_Electricity__c = 20000,
-                Name_on_Account__c = 'B Testcase');
+                Name_on_Account__c = 'B Testcase'
+            );
 
-        insert ualogTwo;
+
+        Utility_Account_Log__c ualogThree =
+            new Utility_Account_Log__c(Name = '0000237',
+                Account__c = propAccountB.Id,
+                Annual_Cost_of_Electricity__c = 20000,
+                Name_on_Account__c = 'C Testcase'
+            );
+
+        insert new List<Utility_Account_Log__c>{ualogOne, ualogTwo, ualogThree};
+
+
+        Utility_Account_Subscription__c uasOne = new Utility_Account_Subscription__c(
+            Name = '0000234',
+            Utility_Account_Log__c = ualogOne.Id,
+            Opportunity__c = opportunityone.Id,
+            Next_Schedule_Z_Status__c = 'Active Subscription',
+            Annual_kwh_subscription_future__c = 4000,
+            Calculated_Annual_Cost_of_Electricity__c = 4000,
+            Subscribed_Annual_Cost_of_Electricity__c = 4000
+        );
 
         Utility_Account_Subscription__c uasTwo =
             new Utility_Account_Subscription__c(Name = '0000236',
@@ -163,8 +226,22 @@ public class UtilityAccountSubscriptionHandlerTest {
                 Next_Schedule_Z_Status__c = 'Active Subscription',
                 Annual_kwh_subscription_future__c = 4000,
                 Calculated_Annual_Cost_of_Electricity__c = 4000,
-                Subscribed_Annual_Cost_of_Electricity__c = 4000);
-        insert uasTwo;
+                Subscribed_Annual_Cost_of_Electricity__c = 4000
+            );
+
+        Utility_Account_Subscription__c uasThree =
+            new Utility_Account_Subscription__c(Name = '0000237',
+                Utility_Account_Log__c = ualogThree.Id,
+                Opportunity__c = opportunitythree.Id,
+                Next_Schedule_Z_Status__c = 'Active Subscription',
+                Annual_kwh_subscription_future__c = 4000,
+                Calculated_Annual_Cost_of_Electricity__c = 4000,
+                Subscribed_Annual_Cost_of_Electricity__c = 4000
+            );
+
+        insert new List<Utility_Account_Subscription__c>{uasOne, uasTwo, uasThree};
+
+
     }
 
     @IsTest
@@ -372,6 +449,55 @@ public class UtilityAccountSubscriptionHandlerTest {
         ];
 
         System.assertEquals(300, anchorUAS.Annual_Subscription_Production_Summary__c,'The rollup of Anchor production should = 300');
+    }
+
+    @IsTest
+    public static void verifyUALSingleSubscriptionTypeTest() {
+
+        Utility_Account_Log__c ual = [SELECT Id, Name FROM Utility_Account_Log__c WHERE Name = '0000237' LIMIT 1];
+        Opportunity opp = [SELECT Id, Name FROM Opportunity WHERE Name = 'COpp' LIMIT 1];
+
+        Utility_Account_Subscription__c newSingleUAS =
+            new Utility_Account_Subscription__c(Name = '0000239',
+                Utility_Account_Log__c = ual.Id,
+                Opportunity__c = opp.Id,
+                Next_Schedule_Z_Status__c = 'Active Subscription',
+                Annual_kwh_subscription_future__c = 4000,
+                Calculated_Annual_Cost_of_Electricity__c = 4000,
+                Subscribed_Annual_Cost_of_Electricity__c = 4000
+            );
+
+        Test.startTest();
+        Database.SaveResult uasResult = Database.insert(newSingleUAS, false);
+        Test.stopTest();
+
+        System.assert(uasResult.isSuccess() == false, 'Result should not be successful');
+
+    }
+
+    @IsTest
+    public static void verifyUALMultipleSubscriptionTypeTest() {
+
+        Utility_Account_Log__c ual = [SELECT Id, Name FROM Utility_Account_Log__c WHERE Name = '0000236' LIMIT 1];
+        Opportunity opp = [SELECT Id, Name FROM Opportunity WHERE Name = 'BOpp' LIMIT 1];
+
+        Utility_Account_Subscription__c newMultipleUAS =
+            new Utility_Account_Subscription__c(Name = '0000238',
+                Utility_Account_Log__c = ual.Id,
+                Opportunity__c = opp.Id,
+                Next_Schedule_Z_Status__c = 'Active Subscription',
+                Annual_kwh_subscription_future__c = 4000,
+                Calculated_Annual_Cost_of_Electricity__c = 4000,
+                Subscribed_Annual_Cost_of_Electricity__c = 4000
+            );
+
+        Test.startTest();
+        Database.SaveResult uasResult = Database.insert(newMultipleUAS, false);
+        Test.stopTest();
+
+        System.assert(uasResult.isSuccess() == true, 'Result should be successful');
+
+
     }
     
 }
