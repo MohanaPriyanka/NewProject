@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
     <alerts>
-        <fullName>CS_Opportunity_Complete_Email</fullName>
-        <description>CS Opportunity Complete Email</description>
-        <protected>false</protected>
-        <recipients>
-            <field>Email__c</field>
-            <type>email</type>
-        </recipients>
-        <senderAddress>customercare@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
-        <template>CSCustomerOnboardingEmails/CS_Customer_Executed_Survey</template>
-    </alerts>
-    <alerts>
         <fullName>CS_Partner_Contract_Complete</fullName>
         <description>CS Partner - Contract Complete</description>
         <protected>false</protected>
