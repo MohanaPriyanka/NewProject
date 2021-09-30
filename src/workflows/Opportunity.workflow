@@ -41,22 +41,6 @@
         <template>CSPartnerEmails/Cust_Application_Finalized</template>
     </alerts>
     <alerts>
-        <fullName>CS_Partner_Notification_Application_Approval</fullName>
-        <description>CS Partner Notification - Application Approval</description>
-        <protected>false</protected>
-        <recipients>
-            <field>Partner_Email__c</field>
-            <type>email</type>
-        </recipients>
-        <recipients>
-            <field>Salesperson_Email_2__c</field>
-            <type>email</type>
-        </recipients>
-        <senderAddress>partnersupport@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
-        <template>CSPartnerEmails/CS_Partner_CS_Contract_Signed</template>
-    </alerts>
-    <alerts>
         <fullName>CS_Referral_Program</fullName>
         <description>CS Referral Program</description>
         <protected>false</protected>
