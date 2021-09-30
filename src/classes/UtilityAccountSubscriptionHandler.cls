@@ -90,8 +90,12 @@ public without sharing class UtilityAccountSubscriptionHandler {
         for (Utility_Account_Subscription__c uas : newList) {
             Utility_Account_Log__c ual = ualMap.get(uas.Utility_Account_Log__c);
             List<Utility_Account_Subscription__c> childUASList = ual.Utility_Account_Subscriptions__r;
-            if (childUASList.size() == 0) continue;
-            if (verifyMultipleSubscriptionsAllowed(childUASList)) continue;
+            if (childUASList.size() == 0) {
+                continue;
+            }
+            if (verifyMultipleSubscriptionsAllowed(childUASList)) {
+                continue;
+            }
             throw new Util.BWException('A UAS already exists for this UAL and only a single subscription per Utility Account is allowed.');
         }
 
