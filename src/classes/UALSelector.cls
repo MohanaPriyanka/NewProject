@@ -127,7 +127,8 @@ public without sharing class UALSelector {
 
     public Map<Id,Utility_Account_Log__c> selectUALSWithUASMap(Set<Id> utilityAccountLogIds) {
         return new Map<Id, Utility_Account_Log__c>([
-            SELECT Id, (SELECT Id, Shared_Solar_System__c, Shared_Solar_System__r.Product__r.Utility_Account_Subscription_Type__c FROM Utility_Account_Subscriptions__r)
+            SELECT Id, (SELECT Id, Shared_Solar_System__c, Shared_Solar_System__r.Product__r.Utility_Account_Subscription_Type__c
+                        FROM Utility_Account_Subscriptions__r WHERE Next_Schedule_Z_Status__c = 'Active Subscription')
             FROM Utility_Account_Log__c
             WHERE Id = :utilityAccountLogIds
         ]);

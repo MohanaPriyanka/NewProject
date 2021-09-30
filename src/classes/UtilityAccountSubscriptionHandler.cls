@@ -106,7 +106,6 @@ public without sharing class UtilityAccountSubscriptionHandler {
         return true;
     }
 
-
     public void assignSSSBeforeUpdate() {
         Set<Id> oppIds = new Set<Id>();
         List<Utility_Account_Subscription__c> uasesWithUpdatedOpportunities = new List<Utility_Account_Subscription__c>();
