@@ -225,7 +225,6 @@ pip-log.txt
 
 # MavensMate
 *.log
-config/
 deploy/
 debug/
 
