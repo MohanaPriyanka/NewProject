@@ -748,39 +748,6 @@ Time_to_Close__c
             <valueSettings>
                 <controllingFieldValue>Community Solar</controllingFieldValue>
                 <controllingFieldValue>Solar Loan</controllingFieldValue>
-                <valueName>Billing</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-                <valueName>Subscription Change</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-                <controllingFieldValue>Solar Loan</controllingFieldValue>
-                <valueName>Technical Assistance</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-                <controllingFieldValue>Solar Loan</controllingFieldValue>
-                <valueName>Product Question</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-                <valueName>Subscription Adjustment</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-                <controllingFieldValue>Solar Loan</controllingFieldValue>
-                <valueName>Other</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-                <controllingFieldValue>Solar Loan</controllingFieldValue>
-                <valueName>Portal Issue</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-                <controllingFieldValue>Solar Loan</controllingFieldValue>
                 <valueName>Poor Review</valueName>
             </valueSettings>
             <valueSettings>
@@ -829,11 +796,6 @@ Time_to_Close__c
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Community Solar</controllingFieldValue>
-                <controllingFieldValue>Solar Loan</controllingFieldValue>
-                <valueName>Cancellation</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Community Solar</controllingFieldValue>
                 <valueName>Product Terms</valueName>
             </valueSettings>
             <valueSettings>
@@ -871,36 +833,6 @@ Time_to_Close__c
             <valueSettings>
                 <controllingFieldValue>Community Solar</controllingFieldValue>
                 <valueName>Both_Customer_Management_and_Acquisition</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-                <controllingFieldValue>Solar Loan</controllingFieldValue>
-                <valueName>Billing Payment</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-                <controllingFieldValue>Solar Loan</controllingFieldValue>
-                <valueName>Feedback/Feature Request</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-                <valueName>QC</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-                <valueName>Collections</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-                <valueName>Finaled UAL</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-                <valueName>Account Question</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-                <valueName>Update Customer Info</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Community Solar</controllingFieldValue>
@@ -944,6 +876,22 @@ Time_to_Close__c
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Solar Loan</controllingFieldValue>
+                <valueName>Billing</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Solar Loan</controllingFieldValue>
+                <valueName>Technical Assistance</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Solar Loan</controllingFieldValue>
+                <valueName>Product Question</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Solar Loan</controllingFieldValue>
+                <valueName>Other</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Solar Loan</controllingFieldValue>
                 <valueName>SRECs</valueName>
             </valueSettings>
             <valueSettings>
@@ -964,7 +912,23 @@ Time_to_Close__c
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Solar Loan</controllingFieldValue>
+                <valueName>Portal Issue</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Solar Loan</controllingFieldValue>
                 <valueName>Underwriting</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Solar Loan</controllingFieldValue>
+                <valueName>Cancellation</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Solar Loan</controllingFieldValue>
+                <valueName>Billing Payment</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Solar Loan</controllingFieldValue>
+                <valueName>Feedback/Feature Request</valueName>
             </valueSettings>
         </valueSet>
     </fields>
