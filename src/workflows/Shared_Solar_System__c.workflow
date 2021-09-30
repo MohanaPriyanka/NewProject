@@ -1,39 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <alerts>
-        <fullName>Shared_Solar_System_is_Full</fullName>
-        <description>Shared Solar System is Full</description>
-        <protected>false</protected>
-        <recipients>
-            <recipient>CS_Small_Offtake_Sales</recipient>
-            <type>group</type>
-        </recipients>
-        <senderType>DefaultWorkflowUser</senderType>
-        <template>CS_Application_Email_Notifications/BW_Sales_Alert_No_Capacity_Left_in_System</template>
-    </alerts>
-    <alerts>
-        <fullName>X100_kW_Left_in_System</fullName>
-        <ccEmails>customersupportteam@bluewavesolar.com</ccEmails>
-        <description>100 kW Left in System</description>
-        <protected>false</protected>
-        <recipients>
-            <recipient>CS_Small_Offtake_Sales</recipient>
-            <type>group</type>
-        </recipients>
-        <senderType>DefaultWorkflowUser</senderType>
-        <template>CS_Application_Email_Notifications/BW_Sales_Alert_100_kw_Left_in_System</template>
-    </alerts>
-    <alerts>
-        <fullName>X50_kW_Left_in_System</fullName>
-        <description>50 kW Left in System</description>
-        <protected>false</protected>
-        <recipients>
-            <recipient>CS_Small_Offtake_Sales</recipient>
-            <type>group</type>
-        </recipients>
-        <senderType>DefaultWorkflowUser</senderType>
-        <template>CS_Application_Email_Notifications/BW_Sales_Alert_50_kw_Left_in_System</template>
-    </alerts>
     <fieldUpdates>
         <fullName>Close_SSS_on_Full</fullName>
         <field>Open__c</field>
@@ -144,62 +110,5 @@
             <timeLength>4</timeLength>
             <workflowTimeTriggerUnit>Hours</workflowTimeTriggerUnit>
         </workflowTimeTriggers>
-    </rules>
-    <rules>
-        <fullName>Sales Alert - 100 kW left</fullName>
-        <actions>
-            <name>X100_kW_Left_in_System</name>
-            <type>Alert</type>
-        </actions>
-        <active>true</active>
-        <criteriaItems>
-            <field>Shared_Solar_System__c.Capacity_Available_to_be_Reserved__c</field>
-            <operation>lessThan</operation>
-            <value>100</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Shared_Solar_System__c.Open__c</field>
-            <operation>equals</operation>
-            <value>True</value>
-        </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
-        <fullName>Sales Alert - 50 kW left</fullName>
-        <actions>
-            <name>X50_kW_Left_in_System</name>
-            <type>Alert</type>
-        </actions>
-        <active>true</active>
-        <criteriaItems>
-            <field>Shared_Solar_System__c.Capacity_Available_to_be_Reserved__c</field>
-            <operation>lessThan</operation>
-            <value>50</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Shared_Solar_System__c.Open__c</field>
-            <operation>equals</operation>
-            <value>True</value>
-        </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
-        <fullName>Sales Alert - System Full</fullName>
-        <actions>
-            <name>Shared_Solar_System_is_Full</name>
-            <type>Alert</type>
-        </actions>
-        <active>true</active>
-        <criteriaItems>
-            <field>Shared_Solar_System__c.Capacity_Available_to_be_Reserved__c</field>
-            <operation>lessThan</operation>
-            <value>1</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Shared_Solar_System__c.Open__c</field>
-            <operation>equals</operation>
-            <value>True</value>
-        </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
 </Workflow>
