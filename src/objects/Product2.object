@@ -2239,7 +2239,7 @@ IF (Loan_Term__c = 162, &quot;fifteenth&quot;, &quot;&quot;) )</formula>
     <fields>
         <fullName>Utility_Account_Subscription_Type__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Determines whether a utility account will be able to be subscribed to more than one system</inlineHelpText>
+        <inlineHelpText>Determines whether a utility account will be able to be subscribed to more than one system. Most NY utility accounts are only allowed to be subscribed to a single system.</inlineHelpText>
         <label>Utility Account Subscription Type</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
