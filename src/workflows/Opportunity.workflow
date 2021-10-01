@@ -1,30 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
     <alerts>
-        <fullName>CS_Application_Approval</fullName>
-        <description>CS Application Approval</description>
-        <protected>false</protected>
-        <recipients>
-            <field>Email__c</field>
-            <type>email</type>
-        </recipients>
-        <senderAddress>customercare@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
-        <template>CS_Application_Email_Notifications/CS_Customer_Application_Approval</template>
-    </alerts>
-    <alerts>
-        <fullName>CS_Opportunity_Complete_Email</fullName>
-        <description>CS Opportunity Complete Email</description>
-        <protected>false</protected>
-        <recipients>
-            <field>Email__c</field>
-            <type>email</type>
-        </recipients>
-        <senderAddress>customercare@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
-        <template>CSCustomerOnboardingEmails/CS_Customer_Executed_Survey</template>
-    </alerts>
-    <alerts>
         <fullName>CS_Partner_Contract_Complete</fullName>
         <description>CS Partner - Contract Complete</description>
         <protected>false</protected>
@@ -39,58 +15,6 @@
         <senderAddress>partnersupport@bluewavesolar.com</senderAddress>
         <senderType>OrgWideEmailAddress</senderType>
         <template>CSPartnerEmails/Cust_Application_Finalized</template>
-    </alerts>
-    <alerts>
-        <fullName>CS_Partner_Notification_Application_Approval</fullName>
-        <description>CS Partner Notification - Application Approval</description>
-        <protected>false</protected>
-        <recipients>
-            <field>Partner_Email__c</field>
-            <type>email</type>
-        </recipients>
-        <recipients>
-            <field>Salesperson_Email_2__c</field>
-            <type>email</type>
-        </recipients>
-        <senderAddress>partnersupport@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
-        <template>CSPartnerEmails/CS_Partner_CS_Contract_Signed</template>
-    </alerts>
-    <alerts>
-        <fullName>CS_Referral_Program</fullName>
-        <description>CS Referral Program</description>
-        <protected>false</protected>
-        <recipients>
-            <field>Customer_Referral__c</field>
-            <type>contactLookup</type>
-        </recipients>
-        <senderAddress>customercare@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
-        <template>CS_Application_Email_Notifications/x18_04CS_Customer_Referral_Success_2018_Update</template>
-    </alerts>
-    <alerts>
-        <fullName>CS_Referral_Program_Referred_Customer</fullName>
-        <description>CS Referral Program: Referred Customer</description>
-        <protected>false</protected>
-        <recipients>
-            <field>Email__c</field>
-            <type>email</type>
-        </recipients>
-        <senderAddress>customercare@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
-        <template>CS_Application_Email_Notifications/X18_04_Referee_Rewards_Success</template>
-    </alerts>
-    <alerts>
-        <fullName>Sends_CS_Contract_Receipt_Email</fullName>
-        <description>CS  - Contract Receipt</description>
-        <protected>false</protected>
-        <recipients>
-            <field>Email__c</field>
-            <type>email</type>
-        </recipients>
-        <senderAddress>customercare@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
-        <template>CS_Application_Email_Notifications/CS_Welcome_Email</template>
     </alerts>
     <fieldUpdates>
         <fullName>CS_RL_Stage_Update_Declined</fullName>
