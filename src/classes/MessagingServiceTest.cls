@@ -147,7 +147,7 @@ public with sharing class MessagingServiceTest {
         
         InvocableMessagingService.EmailTemplateSendInfo testInfo = 
             new InvocableMessagingService.EmailTemplateSendInfo(
-            'Change in COD Date', contactList, templateValues);
+            'MessagingServiceTest_Active_Template', contactList, templateValues);
         List<InvocableMessagingService.EmailTemplateSendInfo> emailInfo = 
             new List<InvocablemessagingService.EmailTemplateSendInfo>();
         emailInfo.add(testInfo);
