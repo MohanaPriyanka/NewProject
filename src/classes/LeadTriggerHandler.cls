@@ -41,6 +41,7 @@ public without sharing class LeadTriggerHandler {
         closeQCCasesForUnqualifiedLeads();
         CSApplicationStatusEventPublisher.publishEvent(oldRecordMap, newRecords);
         bouncedEmailCleared();
+        creditReportPuller.requestCreditPullsAfterUpdate();
     }
 
     // <---- ROUTER METHODS ---->
