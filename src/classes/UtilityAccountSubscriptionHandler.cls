@@ -96,7 +96,7 @@ public without sharing class UtilityAccountSubscriptionHandler {
             if (verifyMultipleSubscriptionsAllowed(childUASList)) {
                 continue;
             }
-            throw new Util.BWException('A UAS already exists for this UAL and only a single subscription per Utility Account is allowed.');
+            uas.addError('A UAS already exists for this UAL and only a single subscription per Utility Account is allowed.');
         }
 
     }
