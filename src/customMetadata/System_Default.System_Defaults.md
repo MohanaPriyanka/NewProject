@@ -12,11 +12,11 @@
     </values>
     <values>
         <field>Credit_Login_Account_Username__c</field>
-        <value xsi:type="xsd:string">bluewavesoft</value>
+        <value xsi:type="xsd:string">bluewave_prod_1</value>
     </values>
     <values>
         <field>Credit_Provider__c</field>
-        <value xsi:type="xsd:string">CREDITAPI</value>
+        <value xsi:type="xsd:string">CBCNEW</value>
     </values>
     <values>
         <field>Default_Build__c</field>
@@ -25,5 +25,9 @@
     <values>
         <field>Default_Copado_Project_ID__c</field>
         <value xsi:type="xsd:string">a5r0a000000TSsKAAW</value>
+    </values>
+    <values>
+        <field>Test_Credit_Login_Account_Username__c</field>
+        <value xsi:type="xsd:string">bluewave_test_2</value>
     </values>
 </CustomMetadata>
