@@ -1,40 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <actionCalls>
-        <name>Convert_Lead</name>
-        <label>Convert Lead</label>
-        <locationX>2357</locationX>
-        <locationY>794</locationY>
-        <actionName>InvocableLeadConvert</actionName>
-        <actionType>apex</actionType>
-        <connector>
-            <targetReference>Update_Screen_GetLead</targetReference>
-        </connector>
-        <faultConnector>
-            <targetReference>Assign_Error_Log</targetReference>
-        </faultConnector>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
-        <inputParameters>
-            <name>leadIdsToConvert</name>
-            <value>
-                <elementReference>leadIdToConvert</elementReference>
-            </value>
-        </inputParameters>
-    </actionCalls>
-    <actionCalls>
-        <name>Get_Ordered_List_of_Qualified_SSS</name>
-        <label>Get Ordered List of Qualified SSS</label>
-        <locationX>1183</locationX>
-        <locationY>210</locationY>
+        <name>Get_Qualifying_Systems</name>
+        <label>Get Qualifying Systems</label>
+        <locationX>1502</locationX>
+        <locationY>878</locationY>
         <actionName>InvocableQualifiedSSSSelector</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Qualification_Preview</targetReference>
+            <targetReference>Set_Number_of_Qualifying_Systems</targetReference>
         </connector>
         <faultConnector>
-            <targetReference>Assign_Error_Log</targetReference>
+            <targetReference>Assign_Error_Log_0_0</targetReference>
         </faultConnector>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
             <name>leadsFromFlow</name>
             <value>
@@ -48,14 +27,17 @@
     </actionCalls>
     <actionCalls>
         <name>leadQualificationCheck</name>
-        <label>leadQualificationCheck</label>
-        <locationX>1377</locationX>
-        <locationY>360</locationY>
+        <label>Run Lead Qualification</label>
+        <locationX>1502</locationX>
+        <locationY>1238</locationY>
         <actionName>InvocableLeadQualification</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Lead</targetReference>
+            <targetReference>Lead_After_Qualification</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Assign_Error_Log_0_0</targetReference>
+        </faultConnector>
         <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
             <name>leadIds</name>
@@ -65,15 +47,48 @@
         </inputParameters>
     </actionCalls>
     <actionCalls>
-        <description>Update Screen after some change to the record</description>
-        <name>Update_Screen</name>
+        <name>Run_Lead_Conversion</name>
+        <label>Run Lead Conversion</label>
+        <locationX>842</locationX>
+        <locationY>2054</locationY>
+        <actionName>CSLeadsConverter</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Determine_Results</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Assign_Error_Log_0_0</targetReference>
+        </faultConnector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>leadId</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>selectedProductId</name>
+            <value>
+                <elementReference>currentProduct</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>selectedSystemIds</name>
+            <value>
+                <elementReference>selectedSystemIds</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
+        <name>Update_Screen_Before_Error_0</name>
         <label>Update Screen</label>
-        <locationX>2360</locationX>
-        <locationY>1344</locationY>
+        <locationX>314</locationX>
+        <locationY>2654</locationY>
         <actionName>c:UpdateScreen</actionName>
         <actionType>component</actionType>
         <connector>
-            <targetReference>Resolve_UALs_Before_Conversion</targetReference>
+            <targetReference>scrError_0</targetReference>
         </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
@@ -85,33 +100,14 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <actionCalls>
-        <name>Update_Screen_Before_Error</name>
-        <label>Update Screen Before Error</label>
-        <locationX>2193</locationX>
-        <locationY>479</locationY>
+        <name>Update_Screen_GetLead_0</name>
+        <label>Update Screen</label>
+        <locationX>1106</locationX>
+        <locationY>2294</locationY>
         <actionName>c:UpdateScreen</actionName>
         <actionType>component</actionType>
         <connector>
-            <targetReference>scrError</targetReference>
-        </connector>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
-        <inputParameters>
-            <name>recordId</name>
-            <value>
-                <elementReference>recordId</elementReference>
-            </value>
-        </inputParameters>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </actionCalls>
-    <actionCalls>
-        <name>Update_Screen_GetLead</name>
-        <label>Update Screen GetLead</label>
-        <locationX>2462</locationX>
-        <locationY>794</locationY>
-        <actionName>c:UpdateScreen</actionName>
-        <actionType>component</actionType>
-        <connector>
-            <targetReference>scrFinish</targetReference>
+            <targetReference>scrFinish_0</targetReference>
         </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
@@ -124,9 +120,9 @@
     </actionCalls>
     <actionCalls>
         <name>updateScreenUnqualified</name>
-        <label>updateScreenUnqualified</label>
-        <locationX>1068</locationX>
-        <locationY>824</locationY>
+        <label>Update Screen</label>
+        <locationX>1898</locationX>
+        <locationY>1718</locationY>
         <actionName>c:UpdateScreen</actionName>
         <actionType>component</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -138,28 +134,12 @@
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
-    <apiVersion>50.0</apiVersion>
+    <apiVersion>52.0</apiVersion>
     <assignments>
-        <name>Add_Break</name>
-        <label>Add Break</label>
-        <locationX>1517</locationX>
-        <locationY>1246</locationY>
-        <assignmentItems>
-            <assignToReference>selectedSSSIds</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>/</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Loop_Selected_SSS</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Add_Error_Log_to_List</name>
+        <name>Add_Error_Log_to_List_0</name>
         <label>Add Error Log to List</label>
-        <locationX>1969</locationX>
-        <locationY>484</locationY>
+        <locationX>314</locationX>
+        <locationY>2414</locationY>
         <assignmentItems>
             <assignToReference>sovc_ErrorLogs</assignToReference>
             <operator>Add</operator>
@@ -168,53 +148,68 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Log_Errors</targetReference>
+            <targetReference>Log_Errors_0</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <name>Add_Selected_SSS_Id</name>
-        <label>Add Selected SSS Id</label>
-        <locationX>1517</locationX>
-        <locationY>1386</locationY>
+        <description>Adds selected system into Id collection for use with LeadConvertDetail/CSLeadsConverter</description>
+        <name>Add_Selected_System_Id_to_List</name>
+        <label>Add Selected System Id to List</label>
+        <locationX>930</locationX>
+        <locationY>1838</locationY>
         <assignmentItems>
-            <assignToReference>selectedSSSIds</assignToReference>
+            <assignToReference>selectedSystemIds</assignToReference>
             <operator>Add</operator>
             <value>
-                <elementReference>Loop_Selected_SSS.Id</elementReference>
+                <elementReference>Loop_Thru_Selected_Systems.Id</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Add_Break</targetReference>
+            <targetReference>Loop_Thru_Selected_Systems</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <name>Assign_Designated_Product</name>
-        <label>Assign Designated Product</label>
-        <locationX>1717</locationX>
-        <locationY>1608</locationY>
-        <assignmentItems>
-            <assignToReference>varSelectedProduct</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Loop_Selected_SSS.Product__c</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varSubscriptionType</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Loop_Selected_SSS.Product__r.Customer_Subscription_Type__c</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Same_Product</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Assign_Error_Log</name>
+        <name>Assign_Error_Log_0</name>
         <label>Assign Error Log</label>
-        <locationX>1860</locationX>
-        <locationY>484</locationY>
+        <locationX>314</locationX>
+        <locationY>2294</locationY>
+        <assignmentItems>
+            <assignToReference>sov_ErrorLog.Severity__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Error</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sov_ErrorLog.Timestamp__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sov_ErrorLog.User__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>formula_RunningUserId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sov_ErrorLog.Message__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>apexConversionErrorMessage</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_Error_Log_to_List_0</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Error_Log_0_0</name>
+        <label>Assign Error Log</label>
+        <locationX>2954</locationX>
+        <locationY>758</locationY>
         <assignmentItems>
             <assignToReference>sov_ErrorLog.Severity__c</assignToReference>
             <operator>Assign</operator>
@@ -244,30 +239,14 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Add_Error_Log_to_List</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Assign_Not_Ready_For_Conversion</name>
-        <label>Assign Not Ready for Conversion</label>
-        <locationX>2217</locationX>
-        <locationY>1501</locationY>
-        <assignmentItems>
-            <assignToReference>ualsReadyForConversion</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>LoopUALs</targetReference>
+            <targetReference>Add_Error_Log_to_List_0</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>assignLeadFields</name>
-        <label>assignLeadFields</label>
-        <locationX>803</locationX>
-        <locationY>218</locationY>
+        <label>Assign Lead Fields</label>
+        <locationX>1502</locationX>
+        <locationY>518</locationY>
         <assignmentItems>
             <assignToReference>getLead.Moody_s_Risk_Calc__c</assignToReference>
             <operator>Assign</operator>
@@ -305,40 +284,19 @@
         </connector>
     </assignments>
     <assignments>
-        <name>Store_Selected_SSS_List_on_Lead</name>
-        <label>Store Selected SSS List on Lead</label>
-        <locationX>1778</locationX>
-        <locationY>1144</locationY>
+        <name>Set_Number_of_Qualifying_Systems</name>
+        <label>Set Number of Qualifying Systems</label>
+        <locationX>1502</locationX>
+        <locationY>998</locationY>
         <assignmentItems>
-            <assignToReference>Lead.Selected_SSS_For_Conversion__c</assignToReference>
-            <operator>Assign</operator>
+            <assignToReference>numberOfQualifyingSystemsForLead</assignToReference>
+            <operator>AssignCount</operator>
             <value>
-                <elementReference>selectedSSSIds</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Lead.OwnerId</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>formula_RunningUserId</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Lead.Product__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>varSelectedProduct</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>leadIdToConvert</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Lead.Id</elementReference>
+                <elementReference>orderedSSSList</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Update_Lead_with_Selected_SSS</targetReference>
+            <targetReference>Qualification_Preview</targetReference>
         </connector>
     </assignments>
     <choices>
@@ -399,15 +357,18 @@
     </choices>
     <decisions>
         <name>Check_Qualification</name>
-        <label>Check Qualification</label>
-        <locationX>1371</locationX>
-        <locationY>823</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <label>Check Lead Status</label>
+        <locationX>1502</locationX>
+        <locationY>1478</locationY>
+        <defaultConnector>
+            <targetReference>showLeadStatusInvalid</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Any Other Lead Status</defaultConnectorLabel>
         <rules>
             <name>Qualified</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Lead.Status</leftValueReference>
+                <leftValueReference>Lead_After_Qualification.Status</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Qualified</stringValue>
@@ -422,7 +383,7 @@
             <name>Not_Qualified</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Lead.Status</leftValueReference>
+                <leftValueReference>Lead_After_Qualification.Status</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Unqualified</stringValue>
@@ -435,133 +396,86 @@
         </rules>
     </decisions>
     <decisions>
-        <name>Check_UALs_Statuses</name>
-        <label>Check UALs Statuses</label>
-        <locationX>2351</locationX>
-        <locationY>1149</locationY>
+        <name>Determine_Results</name>
+        <label>Determine Results</label>
+        <locationX>842</locationX>
+        <locationY>2174</locationY>
         <defaultConnector>
-            <targetReference>Convert_Lead</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Ready for Conversion</defaultConnectorLabel>
-        <rules>
-            <name>Not_Ready_for_Conversion</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>ualsReadyForConversion</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Update_Screen</targetReference>
-            </connector>
-            <label>Not Ready for Conversion</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>decUALStatusCheck</name>
-        <label>UAL Status Check</label>
-        <locationX>1998</locationX>
-        <locationY>1505</locationY>
-        <defaultConnector>
-            <targetReference>LoopUALs</targetReference>
+            <targetReference>scrError_0_0</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
-            <name>Pending_QC</name>
-            <conditionLogic>(1 OR (2 AND 3) OR (4 AND 5) OR 6) AND 7</conditionLogic>
-            <conditions>
-                <leftValueReference>LoopUALs.QC_Status__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Pending Utility Data</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>varSubscriptionType</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>kWh</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>LoopUALs.Annual_kWh__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>varSubscriptionType</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Electricity Cost ($)</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>LoopUALs.Annual_Cost_of_Electricity__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>LoopUALs.QC_Status__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Pending BW Review</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>LoopUALs.QC_Status__c</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Unqualified</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Assign_Not_Ready_For_Conversion</targetReference>
-            </connector>
-            <label>Pending QC</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <description>Populate the varSelectedProduct with the first SSS&apos;s Product from the selected SSS List.</description>
-        <name>First_Selected_SSS</name>
-        <label>First Selected SSS?</label>
-        <locationX>1606</locationX>
-        <locationY>1376</locationY>
-        <defaultConnector>
-            <targetReference>Same_Product</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Next SSS</defaultConnectorLabel>
-        <rules>
-            <name>First_SSS_of_Loop</name>
+            <name>Conversion_Failure</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>varSelectedProduct</leftValueReference>
-                <operator>IsNull</operator>
+                <leftValueReference>Run_Lead_Conversion.error</leftValueReference>
+                <operator>EqualTo</operator>
                 <rightValue>
-                    <booleanValue>true</booleanValue>
+                    <stringValue>Conversion Failure</stringValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Assign_Designated_Product</targetReference>
+                <targetReference>Assign_Error_Log_0</targetReference>
             </connector>
-            <label>First SSS of Loop</label>
+            <label>Conversion Failure</label>
+        </rules>
+        <rules>
+            <name>System_Product_Mismatch</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Run_Lead_Conversion.error</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>System Product Mismatch</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>scrProducts_Do_Not_Match_0_0</targetReference>
+            </connector>
+            <label>System Product Mismatch</label>
+        </rules>
+        <rules>
+            <name>Incomplete_UALs</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Run_Lead_Conversion.error</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Incomplete UALs</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_UALs_For_Incomplete</targetReference>
+            </connector>
+            <label>Incomplete UALs</label>
+        </rules>
+        <rules>
+            <name>Successful_Conversion</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Run_Lead_Conversion.error</leftValueReference>
+                <operator>EqualTo</operator>
+            </conditions>
+            <conditions>
+                <leftValueReference>Run_Lead_Conversion.errorMessage</leftValueReference>
+                <operator>EqualTo</operator>
+            </conditions>
+            <connector>
+                <targetReference>Update_Screen_GetLead_0</targetReference>
+            </connector>
+            <label>Successful Conversion</label>
         </rules>
     </decisions>
     <decisions>
         <description>If Lead is already converted, no need to try again</description>
         <name>IsConverted</name>
-        <label>decisionIsConverted</label>
-        <locationX>495</locationX>
-        <locationY>218</locationY>
+        <label>Is Lead Converted?</label>
+        <locationX>776</locationX>
+        <locationY>278</locationY>
         <defaultConnector>
             <targetReference>updateLeadFields</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <defaultConnectorLabel>Not Converted Yet</defaultConnectorLabel>
         <rules>
             <name>IsConvertedTrue</name>
             <conditionLogic>and</conditionLogic>
@@ -575,32 +489,7 @@
             <connector>
                 <targetReference>scrAlreadyConverted</targetReference>
             </connector>
-            <label>IsConverted</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>Same_Product</name>
-        <label>SSS Same Product?</label>
-        <locationX>1524</locationX>
-        <locationY>1610</locationY>
-        <defaultConnector>
-            <targetReference>scrProducts_Do_Not_Match</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Mismatch</defaultConnectorLabel>
-        <rules>
-            <name>Product_Match</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>varSelectedProduct</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <elementReference>Loop_Selected_SSS.Product__c</elementReference>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Add_Selected_SSS_Id</targetReference>
-            </connector>
-            <label>Product Match</label>
+            <label>Is Converted</label>
         </rules>
     </decisions>
     <dynamicChoiceSets>
@@ -629,36 +518,22 @@
     <formulas>
         <name>formulaShowProductWarning</name>
         <dataType>Boolean</dataType>
-        <expression>{!Lead.Product__r.Has_Project_Specific_Products__c}</expression>
+        <expression>{!Lead_After_Qualification.Product__r.Has_Project_Specific_Products__c}</expression>
     </formulas>
     <interviewLabel>Lead {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Lead Qualification/Conversion</label>
     <loops>
-        <name>Loop_Selected_SSS</name>
-        <label>Loop Selected SSS</label>
-        <locationX>1613</locationX>
-        <locationY>1145</locationY>
+        <name>Loop_Thru_Selected_Systems</name>
+        <label>Loop Thru Selected Systems</label>
+        <locationX>842</locationX>
+        <locationY>1718</locationY>
         <collectionReference>selectedSSSList</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
-            <targetReference>First_Selected_SSS</targetReference>
+            <targetReference>Add_Selected_System_Id_to_List</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <targetReference>Store_Selected_SSS_List_on_Lead</targetReference>
-        </noMoreValuesConnector>
-    </loops>
-    <loops>
-        <name>LoopUALs</name>
-        <label>Loop UALs</label>
-        <locationX>2109</locationX>
-        <locationY>1144</locationY>
-        <collectionReference>Get_UALS</collectionReference>
-        <iterationOrder>Asc</iterationOrder>
-        <nextValueConnector>
-            <targetReference>decUALStatusCheck</targetReference>
-        </nextValueConnector>
-        <noMoreValuesConnector>
-            <targetReference>Check_UALs_Statuses</targetReference>
+            <targetReference>Run_Lead_Conversion</targetReference>
         </noMoreValuesConnector>
     </loops>
     <processMetadataValues>
@@ -670,7 +545,7 @@
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>FREE_FORM_CANVAS</stringValue>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -682,12 +557,12 @@
     <processType>Flow</processType>
     <recordLookups>
         <name>Get_Lead</name>
-        <label>Get Lead</label>
-        <locationX>1057</locationX>
-        <locationY>210</locationY>
+        <label>Get Updated Lead</label>
+        <locationX>1502</locationX>
+        <locationY>758</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_Ordered_List_of_Qualified_SSS</targetReference>
+            <targetReference>Get_Qualifying_Systems</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -702,23 +577,20 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <name>Get_UALS</name>
-        <label>Get UALS</label>
-        <locationX>1379</locationX>
-        <locationY>656</locationY>
+        <name>Get_UALs_For_Incomplete</name>
+        <label>Get UALs For Incomplete</label>
+        <locationX>842</locationX>
+        <locationY>2294</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Check_Qualification</targetReference>
+            <targetReference>Resolve_UALs_Before_Conversion_0_0</targetReference>
         </connector>
-        <faultConnector>
-            <targetReference>Assign_Error_Log</targetReference>
-        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Lead__c</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>Lead.Id</elementReference>
+                <elementReference>recordId</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
@@ -732,9 +604,9 @@
     </recordLookups>
     <recordLookups>
         <name>getLead</name>
-        <label>getLead</label>
-        <locationX>256</locationX>
-        <locationY>216</locationY>
+        <label>Get Lead</label>
+        <locationX>776</locationX>
+        <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>IsConverted</targetReference>
@@ -752,13 +624,13 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <name>Lead</name>
-        <label>Lead</label>
-        <locationX>1379</locationX>
-        <locationY>520</locationY>
+        <name>Lead_After_Qualification</name>
+        <label>Get Updated Lead</label>
+        <locationX>1502</locationX>
+        <locationY>1358</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_UALS</targetReference>
+            <targetReference>Check_Qualification</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -773,28 +645,15 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
-        <name>Update_Lead_with_Selected_SSS</name>
-        <label>Update Lead with Selected SSS</label>
-        <locationX>1897</locationX>
-        <locationY>1144</locationY>
-        <connector>
-            <targetReference>LoopUALs</targetReference>
-        </connector>
-        <faultConnector>
-            <targetReference>Assign_Error_Log</targetReference>
-        </faultConnector>
-        <inputReference>Lead</inputReference>
-    </recordUpdates>
-    <recordUpdates>
         <name>updateLeadRecord</name>
-        <label>updateLeadRecord</label>
-        <locationX>938</locationX>
-        <locationY>218</locationY>
+        <label>Update Lead</label>
+        <locationX>1502</locationX>
+        <locationY>638</locationY>
         <connector>
             <targetReference>Get_Lead</targetReference>
         </connector>
         <faultConnector>
-            <targetReference>Assign_Error_Log</targetReference>
+            <targetReference>Assign_Error_Log_0_0</targetReference>
         </faultConnector>
         <inputReference>getLead</inputReference>
     </recordUpdates>
@@ -802,8 +661,8 @@
     <screens>
         <name>Qualification_Preview</name>
         <label>Qualification Preview</label>
-        <locationX>1377</locationX>
-        <locationY>202</locationY>
+        <locationX>1502</locationX>
+        <locationY>1118</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -812,13 +671,28 @@
         </connector>
         <fields>
             <name>previewHeaderText</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(0, 153, 255); font-size: 20px;&quot;&gt;PREVIEW&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Consult the table below to preview qualifying systems for this Lead.&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(0, 153, 255); font-size: 20px;&quot;&gt;QUALIFICATION PREVIEW&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>qualificationPreviewHelptext</name>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;Consult the table below to preview qualifying systems for this Lead.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
             <name>previewError</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;background-color: rgb(255, 255, 255); color: rgb(255, 0, 0);&quot;&gt;NOTE:&lt;/b&gt;&lt;b style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt; &lt;/b&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;If you proceed and the table below is empty, the Lead will be marked &apos;Unqualified&apos; and the customer would receive an email indicating that their application has been denied.﻿&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(255, 0, 0); background-color: rgb(255, 255, 255);&quot;&gt;NOTE:&lt;/b&gt;&lt;b style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt; No qualifying systems were found. &lt;/b&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;If you proceed, the Lead will be marked &apos;Unqualified&apos; and the customer will receive an email indicating that their application has been denied.﻿&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>numberOfQualifyingSystemsForLead</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <numberValue>0.0</numberValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
         </fields>
         <fields>
             <name>tableSSSPreview</name>
@@ -869,20 +743,20 @@
         <showHeader>false</showHeader>
     </screens>
     <screens>
-        <name>Resolve_UALs_Before_Conversion</name>
-        <label>Resolve UALs Before Conversion</label>
-        <locationX>2360</locationX>
-        <locationY>1496</locationY>
-        <allowBack>true</allowBack>
+        <name>Resolve_UALs_Before_Conversion_0_0</name>
+        <label>UALs Incomplete</label>
+        <locationX>842</locationX>
+        <locationY>2414</locationY>
+        <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
+        <allowPause>false</allowPause>
         <fields>
-            <name>txtResolveUALs</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(255, 0, 0);&quot;&gt;The Utility Account Logs for this lead are not ready for conversion.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Please confirm all UALs have their proper Annual Usage populated and the QC Status is set to Complete.&lt;/p&gt;</fieldText>
+            <name>txtResolveUALs_0_0</name>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(255, 0, 0); font-size: 20px;&quot;&gt;INCOMPLETE UTILITY ACCOUNT LOGS&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(255, 0, 0);&quot;&gt;The Utility Account Logs for this lead are not ready for conversion.&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;Please confirm all Utility Account Logs (UALs) have their proper Annual Usage populated and the QC Status updated to Complete.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
-            <name>ualDatatable</name>
+            <name>ualDatatable_0_0</name>
             <dataTypeMappings>
                 <typeName>T</typeName>
                 <typeValue>Utility_Account_Log__c</typeValue>
@@ -928,78 +802,96 @@
             <inputParameters>
                 <name>tableData</name>
                 <value>
-                    <elementReference>Get_UALS</elementReference>
+                    <elementReference>Get_UALs_For_Incomplete</elementReference>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
-        <showFooter>false</showFooter>
+        <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>scrAlreadyConverted</name>
         <label>Already Converted Lead</label>
-        <locationX>508</locationX>
-        <locationY>19</locationY>
+        <locationX>50</locationX>
+        <locationY>398</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <fields>
             <name>txtAlreadyConverted</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(7, 202, 7); font-size: 20px;&quot;&gt;ALREADY CONVERTED&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This lead has already been converted! No further action necessary.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;You can close this window now.&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(7, 202, 7); font-size: 20px;&quot;&gt;LEAD ALREADY CONVERTED&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>leadAlreadyConvertedHelptext</name>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;This lead has already been converted. No further action necessary.&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;You may close this window now.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <screens>
-        <name>scrError</name>
+        <name>scrError_0</name>
         <label>Error Screen</label>
-        <locationX>2310</locationX>
-        <locationY>479</locationY>
+        <locationX>314</locationX>
+        <locationY>2774</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
+        <allowPause>false</allowPause>
         <fields>
-            <name>txtError</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(255, 0, 0); font-size: 20px;&quot;&gt;ERROR ENCOUNTERED&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Oops! There was an error in the Qualification and Conversion of the lead!&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;BizApps has already been notified. You can close this window now.&lt;/p&gt;</fieldText>
+            <name>txtError_0</name>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 20px; color: rgb(255, 0, 0);&quot;&gt;ERROR ENCOUNTERED&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;An unhandled error was encountered during Qualification and Conversion of the lead. BizApps has been notified.&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;You may close this window or go back to re-attempt your request.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <screens>
-        <name>scrFinish</name>
+        <name>scrError_0_0</name>
+        <label>Error Screen</label>
+        <locationX>1370</locationX>
+        <locationY>2294</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>txtError_0_0</name>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(255, 0, 0); font-size: 20px;&quot;&gt;ERROR ENCOUNTERED&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;An unhandled error was encountered during Qualification and Conversion of the lead.&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;You may close this window or go back to re-attempt your request.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>scrFinish_0</name>
         <label>Finish</label>
-        <locationX>2567</locationX>
-        <locationY>794</locationY>
+        <locationX>1106</locationX>
+        <locationY>2414</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <fields>
-            <name>txttest</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 20px;&quot;&gt;Congrats! Lead has been converted!&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;You can close this window now&lt;/p&gt;</fieldText>
+            <name>txttest_0</name>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(10, 205, 79); font-size: 20px; background-color: rgb(255, 255, 255);&quot;&gt;SUCCESS&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;The Lead has been successfully converted!&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;You may now close this window.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <screens>
-        <name>scrProducts_Do_Not_Match</name>
+        <name>scrProducts_Do_Not_Match_0_0</name>
         <label>Products Do Not Match</label>
-        <locationX>1378</locationX>
-        <locationY>1605</locationY>
+        <locationX>578</locationX>
+        <locationY>2294</locationY>
         <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <connector>
-            <targetReference>scrQualifiedLead</targetReference>
-        </connector>
+        <allowFinish>false</allowFinish>
+        <allowPause>false</allowPause>
         <fields>
-            <name>txtProductNoMatch</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(255, 0, 0); font-size: 20px;&quot;&gt;PRODUCT MISMATCH&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Oops! The Shared Solar Systems you selected do not all have the same product.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;When selecting SSSes, please make sure all projects are for the same product.&lt;/p&gt;</fieldText>
+            <name>txtProductNoMatch_0_0</name>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 20px; color: rgb(255, 0, 0);&quot;&gt;PRODUCT MISMATCH&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(255, 0, 0);&quot;&gt;The Shared Solar Systems you selected do not all have the same Product, or one or more Systems do not match the Product on the Lead.&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Please go back and make changes to the selections of Systems and/or Products for this Lead, or close this window.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -1007,18 +899,23 @@
     </screens>
     <screens>
         <name>scrQualifiedLead</name>
-        <label>scrQualifiedLead</label>
-        <locationX>1378</locationX>
-        <locationY>1137</locationY>
+        <label>Qualified - Select Systems</label>
+        <locationX>842</locationX>
+        <locationY>1598</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Loop_Selected_SSS</targetReference>
+            <targetReference>Loop_Thru_Selected_Systems</targetReference>
         </connector>
         <fields>
+            <name>selectSystemsHeader</name>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(0, 153, 255); font-size: 20px;&quot;&gt;SELECT SHARED SOLAR SYSTEMS&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
             <name>warningProduct</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(255, 15, 15); background-color: rgb(255, 255, 255);&quot;&gt;WARNING&lt;/b&gt;&lt;span style=&quot;color: rgb(255, 15, 15); background-color: rgb(255, 255, 255);&quot;&gt;: This lead is assigned a Parent Product. When selecting SSSes below, please only select project with the &lt;/span&gt;&lt;b style=&quot;color: rgb(255, 15, 15); background-color: rgb(255, 255, 255);&quot;&gt;SAME PRODUCT.&lt;/b&gt;&lt;span style=&quot;color: rgb(255, 15, 15); background-color: rgb(255, 255, 255);&quot;&gt; The customer&apos;s product will then be updated based off your selection. &lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;background-color: rgb(255, 255, 255); color: rgb(255, 15, 15);&quot;&gt;WARNING&lt;/b&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(255, 15, 15);&quot;&gt;: This lead is assigned a Parent Product. When selecting SSSes below, please only select project with the &lt;/span&gt;&lt;b style=&quot;background-color: rgb(255, 255, 255); color: rgb(255, 15, 15);&quot;&gt;SAME PRODUCT.&lt;/b&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(255, 15, 15);&quot;&gt; The customer&apos;s product will then be updated based off your selection. &lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
@@ -1033,7 +930,7 @@
         </fields>
         <fields>
             <name>txtDatable</name>
-            <fieldText>&lt;p&gt;Select the Shared Solar Systems that you want to be &lt;b&gt;considered &lt;/b&gt;for subscriptions. &lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;Subscriptions will be created and sized based on the customer&apos;s annual usage, available capacity, and project maximums.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;NOTE: This does &lt;b&gt;not &lt;/b&gt;guarantee subscriptions will be created for &lt;b&gt;all &lt;/b&gt;projects. If the project is not selected, no subscriptions will be created for the project.&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Select the Shared Solar Systems that you want to be &lt;/span&gt;&lt;b style=&quot;color: rgb(0, 0, 0);&quot;&gt;considered &lt;/b&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;for subscriptions. &lt;/span&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);&quot;&gt;Subscriptions will be created and sized based on the customer&apos;s annual usage, available capacity, and project maximums.&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;NOTE: This does &lt;/span&gt;&lt;b style=&quot;color: rgb(0, 0, 0);&quot;&gt;not &lt;/b&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;guarantee subscriptions will be created for &lt;/span&gt;&lt;b style=&quot;color: rgb(0, 0, 0);&quot;&gt;all &lt;/b&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;projects. If the project is not selected, no subscriptions will be created for the project.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -1086,9 +983,9 @@
     </screens>
     <screens>
         <name>showLeadStatus</name>
-        <label>showLeadStatus</label>
-        <locationX>1169</locationX>
-        <locationY>823</locationY>
+        <label>Unqualified</label>
+        <locationX>1898</locationX>
+        <locationY>1598</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1097,7 +994,7 @@
         </connector>
         <fields>
             <name>leadStatus</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(234, 8, 8); font-size: 20px;&quot;&gt;LEAD IS UNQUALIFIED&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Consult the table below to determine why there are no Projects available for this customer.&lt;/li&gt;&lt;li&gt;&lt;b&gt;NOTE&lt;/b&gt;: An email has been sent to the customer indicating &apos;Sorry, we were unable to approve your application&apos;&lt;/li&gt;&lt;/ul&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(234, 8, 8); font-size: 20px;&quot;&gt;LEAD IS UNQUALIFIED&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;color: rgb(62, 62, 60);&quot;&gt;﻿&lt;/span&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Consult the table below to determine why there are no Projects available for this customer.&lt;/li&gt;&lt;li&gt;&lt;b&gt;NOTE&lt;/b&gt;: An email has been sent to the customer indicating &apos;Sorry, we were unable to approve your application&apos;&lt;/li&gt;&lt;/ul&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -1107,25 +1004,25 @@
             <inputParameters>
                 <name>leadId</name>
                 <value>
-                    <elementReference>Lead.Id</elementReference>
+                    <elementReference>Lead_After_Qualification.Id</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
                 <name>partner</name>
                 <value>
-                    <elementReference>Lead.Partner_Lookup__c</elementReference>
+                    <elementReference>Lead_After_Qualification.Partner_Lookup__c</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
                 <name>product</name>
                 <value>
-                    <elementReference>Lead.Product__c</elementReference>
+                    <elementReference>Lead_After_Qualification.Product__c</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
                 <name>underwriting</name>
                 <value>
-                    <elementReference>Lead.Underwriting_Criteria__c</elementReference>
+                    <elementReference>Lead_After_Qualification.Underwriting_Criteria__c</elementReference>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -1136,10 +1033,26 @@
         <showHeader>false</showHeader>
     </screens>
     <screens>
+        <name>showLeadStatusInvalid</name>
+        <label>Bad Lead Status</label>
+        <locationX>2162</locationX>
+        <locationY>1598</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>leadStatusInvalid</name>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 20px; color: rgb(234, 8, 8);&quot;&gt;LEAD STATUS INVALID&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b&gt;Lead Status = &lt;/b&gt;&lt;b style=&quot;color: rgb(255, 0, 0);&quot;&gt;{!Lead_After_Qualification.Status}&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;The Status of the Lead is invalid for the continuation of this process. Please contact BizApps for assistance.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
         <name>updateLeadFields</name>
-        <label>updateLeadFields</label>
-        <locationX>663</locationX>
-        <locationY>218</locationY>
+        <label>Current Lead Info Screen</label>
+        <locationX>1502</locationX>
+        <locationY>398</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1148,12 +1061,17 @@
         </connector>
         <fields>
             <name>currentLeadInfoDisplay</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(3, 56, 231); font-size: 20px;&quot;&gt;CURRENT LEAD INFO&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Utility:&lt;/b&gt; &lt;span style=&quot;font-family: var(--lwc-fontFamily,&amp;quot;Salesforce Sans&amp;quot;, Arial, sans-serif); font-size: var(--lwc-fontSize3,0.8125rem); color: var(--lwc-colorTextWeak,rgb(62, 62, 60)); background-color: var(--lwc-colorBackgroundInput,rgb(255, 255, 255));&quot;&gt;{!getLead.Utility_relationship__r.Name}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Load Zone:&lt;/b&gt; {!getLead.LoadZone__c}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Product:&lt;/b&gt; {!getLead.Product__r.Name}&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 20px; color: rgb(0, 153, 255);&quot;&gt;CURRENT LEAD INFO&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>currentLeadInfo</name>
+            <fieldText>&lt;p&gt;&lt;b&gt;Utility:&lt;/b&gt; &lt;span style=&quot;background-color: var(--lwc-colorBackgroundInput,rgb(255, 255, 255)); color: var(--lwc-colorTextWeak,rgb(62, 62, 60)); font-size: var(--lwc-fontSize3,0.8125rem); font-family: var(--lwc-fontFamily,&amp;quot;Salesforce Sans&amp;quot;, Arial, sans-serif);&quot;&gt;{!getLead.Utility_relationship__r.Name}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Load Zone:&lt;/b&gt; {!getLead.LoadZone__c}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Product:&lt;/b&gt; {!getLead.Product__r.Name}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
             <name>txtMoodyScore</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;Moody&apos;s Rick Calc:&lt;/b&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt; {!getLead.Moody_s_Risk_Calc__c}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Moody&apos;s Rick Calc:&lt;/b&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt; {!getLead.Moody_s_Risk_Calc__c}&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
@@ -1168,7 +1086,7 @@
         </fields>
         <fields>
             <name>selectedFieldCollection</name>
-            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;You can update the fields below.&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Update the fields below if required.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -1224,11 +1142,6 @@
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <fields>
-            <name>spacer1</name>
-            <fieldText>&lt;p&gt; &lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
             <name>txtSplitLoadZone</name>
             <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(255, 0, 0);&quot;&gt;Please resolve Split Load Zone before proceeding.&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
@@ -1259,11 +1172,6 @@
             <fieldText>Load Zone:</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>false</isRequired>
-        </fields>
-        <fields>
-            <name>spacer2</name>
-            <fieldText>&lt;p&gt; &lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
             <name>updateProduct</name>
@@ -1306,20 +1214,20 @@
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>130</locationX>
-        <locationY>52</locationY>
+        <locationX>650</locationX>
+        <locationY>0</locationY>
         <connector>
             <targetReference>getLead</targetReference>
         </connector>
     </start>
     <status>Active</status>
     <subflows>
-        <name>Log_Errors</name>
+        <name>Log_Errors_0</name>
         <label>Log Errors</label>
-        <locationX>2053</locationX>
-        <locationY>479</locationY>
+        <locationX>314</locationX>
+        <locationY>2534</locationY>
         <connector>
-            <targetReference>Update_Screen_Before_Error</targetReference>
+            <targetReference>Update_Screen_Before_Error_0</targetReference>
         </connector>
         <flowName>Error_Log_Creation</flowName>
         <inputAssignments>
@@ -1341,6 +1249,22 @@
         <isCollection>true</isCollection>
         <isInput>true</isInput>
         <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Error code provided by CSLeadsConverter, if any, during lead conversion, which instructs flow how to process the results of the transaction</description>
+        <name>apexConversionErrorCode</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+    </variables>
+    <variables>
+        <name>apexConversionErrorMessage</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>currentId</name>
@@ -1374,7 +1298,7 @@
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
-        <isOutput>false</isOutput>
+        <isOutput>true</isOutput>
         <value>
             <elementReference>getLead.Product__c</elementReference>
         </value>
@@ -1396,7 +1320,7 @@
         <isInput>false</isInput>
         <isOutput>true</isOutput>
         <value>
-            <elementReference>Lead.Id</elementReference>
+            <elementReference>Lead_After_Qualification.Id</elementReference>
         </value>
     </variables>
     <variables>
@@ -1414,6 +1338,14 @@
         <isInput>false</isInput>
         <isOutput>true</isOutput>
         <objectType>Lead</objectType>
+    </variables>
+    <variables>
+        <name>numberOfQualifyingSystemsForLead</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
     </variables>
     <variables>
         <name>old_currentMoody</name>
@@ -1457,26 +1389,19 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <name>selectedCollection</name>
-        <dataType>String</dataType>
-        <isCollection>true</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-    </variables>
-    <variables>
-        <name>selectedSSSIds</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>true</isOutput>
-    </variables>
-    <variables>
         <name>selectedSSSList</name>
         <dataType>SObject</dataType>
         <isCollection>true</isCollection>
-        <isInput>true</isInput>
+        <isInput>false</isInput>
         <isOutput>true</isOutput>
         <objectType>Shared_Solar_System__c</objectType>
+    </variables>
+    <variables>
+        <name>selectedSystemIds</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>sov_ErrorLog</name>
@@ -1511,13 +1436,6 @@
         <isInput>true</isInput>
         <isOutput>true</isOutput>
         <objectType>Utility__c</objectType>
-    </variables>
-    <variables>
-        <name>varSelectedProduct</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>varSubscriptionType</name>

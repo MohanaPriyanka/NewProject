@@ -298,4 +298,13 @@ public without sharing class LeadSelector {
         ];
     }
 
+    public Lead getLeadForLeadConversion(Id leadId) {
+        return [
+            SELECT Id,Utility_relationship__c,
+                (SELECT Id, QC_Status__c, Annual_kWh__c, Annual_Cost_of_Electricity__c, Name FROM Utility_Account_Logs__r)
+            FROM Lead
+            WHERE Id =: leadId
+        ];
+    }
+
 }

@@ -170,13 +170,15 @@ public with sharing class CSTestDataFactory {
         contractCongaTemplate = new APXTConga4__Conga_Template__c();
         insert contractCongaTemplate;
 
-        // Find and update a product to use for tests
+        // Find and update a product to use for tests (tests need to provide this record)
         product = [SELECT Id,Name FROM Product2 LIMIT 1];
+        product.Product_Type__c = 'Community Solar';
         product.Disclosure_Form_Conga_Template__c = contractCongaTemplate.Id;
         product.Ignore_Load_Zones_When_Qualifying__c = true;
+        product.Customer_Subscription_Type__c = 'kWh';
         update product;
 
-        // Find and set a utility for tests
+        // Find and set a utility for tests (tests need to provide this record)
         utilityId = [SELECT Id FROM Utility__c WHERE Name = 'Utility with EIA ID'].Id;
 
         // Insert a rate class
