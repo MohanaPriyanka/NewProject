@@ -12,6 +12,7 @@ public without sharing class UtilityAccountSubscriptionHandler {
     private List<Utility_Account_Subscription__c> newList;
     private TriggerOperation triggerType;
     private UALSelector ualSelector = new UALSelector();
+    private SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
 
     public UtilityAccountSubscriptionHandler(Map<Id,Utility_Account_Subscription__c> oldMap,
         List<Utility_Account_Subscription__c> newList, TriggerOperation triggerOperation) {
@@ -80,20 +81,27 @@ public without sharing class UtilityAccountSubscriptionHandler {
 
     private void verifyUALSubscriptionType() {
         Set<Id> ualIds = new Set<Id>();
+        Set<Id> sssIds = new Set<Id>();
 
         for (Utility_Account_Subscription__c uas : newList) {
             ualIds.add(uas.Utility_Account_Log__c);
+            sssIds.add(uas.Shared_Solar_System__c);
         }
 
+        Map<Id,Shared_Solar_System__c> sssMap = sssSelector.getSSSMap(sssIds);
         Map<Id,Utility_Account_Log__c> ualMap = ualSelector.selectUALSWithUASMap(ualIds);
 
         for (Utility_Account_Subscription__c uas : newList) {
             Utility_Account_Log__c ual = ualMap.get(uas.Utility_Account_Log__c);
+            Shared_Solar_System__c sss = sssMap.get(uas.Shared_Solar_System__c);
+            Boolean currentProductAllowsMultiple = sss.Product__r.Utility_Account_Subscription_Type__c == 'Multiple subscriptions per Utility Account' ? true : false;
             List<Utility_Account_Subscription__c> childUASList = ual.Utility_Account_Subscriptions__r;
             if (childUASList.size() == 0) {
                 continue;
             }
-            if (verifyMultipleSubscriptionsAllowed(childUASList)) {
+            System.debug(currentProductAllowsMultiple);
+            System.debug(verifyMultipleSubscriptionsAllowed(childUASList));
+            if (verifyMultipleSubscriptionsAllowed(childUASList) && currentProductAllowsMultiple) {
                 continue;
             }
             uas.addError('A UAS already exists for this UAL and only a single subscription per Utility Account is allowed.');
