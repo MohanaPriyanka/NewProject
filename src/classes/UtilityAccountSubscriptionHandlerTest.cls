@@ -457,6 +457,14 @@ public class UtilityAccountSubscriptionHandlerTest {
         Utility_Account_Log__c ual = [SELECT Id, Name FROM Utility_Account_Log__c WHERE Name = '0000237' LIMIT 1];
         Opportunity opp = [SELECT Id, Name FROM Opportunity WHERE Name = 'COpp' LIMIT 1];
 
+        List<Utility_Account_Subscription__c> existingUASList = [
+            SELECT Id
+            FROM Utility_Account_Subscription__c
+            WHERE Next_Schedule_Z_Status__c = 'Active Subscription'
+            AND Shared_Solar_System__r.Product__r.Utility_Account_Subscription_Type__c = 'Single subscription per Utility Account'
+            AND Utility_Account_Log__c = :ual.Id
+        ];
+
         Utility_Account_Subscription__c newSingleUAS =
             new Utility_Account_Subscription__c(Name = '0000239',
                 Utility_Account_Log__c = ual.Id,
@@ -471,7 +479,8 @@ public class UtilityAccountSubscriptionHandlerTest {
         Database.SaveResult uasResult = Database.insert(newSingleUAS, false);
         Test.stopTest();
 
-        System.assert(uasResult.isSuccess() == false, 'Result should not be successful');
+        System.assertEquals(1, existingUASList.size(), 'There should be an existing UAS already attached to the UAL that restricts it to a single subscription');
+        System.assert(uasResult.isSuccess() == false, 'Result should not be successful since there is already an active UAS attached to the UAL');
 
     }
 
@@ -479,6 +488,7 @@ public class UtilityAccountSubscriptionHandlerTest {
     public static void verifyUALMultipleSubscriptionTypeTest() {
 
         Utility_Account_Log__c ual = [SELECT Id, Name FROM Utility_Account_Log__c WHERE Name = '0000236' LIMIT 1];
+
         Opportunity opp = [SELECT Id, Name FROM Opportunity WHERE Name = 'BOpp' LIMIT 1];
 
         Utility_Account_Subscription__c newMultipleUAS =
@@ -491,11 +501,13 @@ public class UtilityAccountSubscriptionHandlerTest {
                 Subscribed_Annual_Cost_of_Electricity__c = 4000
             );
 
+
+
         Test.startTest();
         Database.SaveResult uasResult = Database.insert(newMultipleUAS, false);
         Test.stopTest();
 
-        System.assert(uasResult.isSuccess() == true, 'Result should be successful');
+        System.assert(uasResult.isSuccess() == true, 'Result should be successful since the newly inserted UAS and the existing UAS records allow multiple subscriptions');
 
 
     }

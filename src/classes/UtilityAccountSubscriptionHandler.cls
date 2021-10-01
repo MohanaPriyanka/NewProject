@@ -82,6 +82,7 @@ public without sharing class UtilityAccountSubscriptionHandler {
     private void verifyUALSubscriptionType() {
         Set<Id> ualIds = new Set<Id>();
         Set<Id> sssIds = new Set<Id>();
+        Boolean currentProductAllowsMultiple = true;
 
         for (Utility_Account_Subscription__c uas : newList) {
             ualIds.add(uas.Utility_Account_Log__c);
@@ -93,14 +94,18 @@ public without sharing class UtilityAccountSubscriptionHandler {
 
         for (Utility_Account_Subscription__c uas : newList) {
             Utility_Account_Log__c ual = ualMap.get(uas.Utility_Account_Log__c);
-            Shared_Solar_System__c sss = sssMap.get(uas.Shared_Solar_System__c);
-            Boolean currentProductAllowsMultiple = sss.Product__r.Utility_Account_Subscription_Type__c == 'Multiple subscriptions per Utility Account' ? true : false;
+
+            if (uas.Shared_Solar_System__c != null) {
+                Shared_Solar_System__c sss = sssMap.get(uas.Shared_Solar_System__c);
+                currentProductAllowsMultiple = sss.Product__r.Utility_Account_Subscription_Type__c == 'Multiple subscriptions per Utility Account' ? true : false;
+            }
+
+
             List<Utility_Account_Subscription__c> childUASList = ual.Utility_Account_Subscriptions__r;
             if (childUASList.size() == 0) {
                 continue;
             }
-            System.debug(currentProductAllowsMultiple);
-            System.debug(verifyMultipleSubscriptionsAllowed(childUASList));
+
             if (verifyMultipleSubscriptionsAllowed(childUASList) && currentProductAllowsMultiple) {
                 continue;
             }
