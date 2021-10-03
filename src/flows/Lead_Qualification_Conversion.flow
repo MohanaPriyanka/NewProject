@@ -198,7 +198,7 @@
             <assignToReference>sov_ErrorLog.Message__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>apexConversionErrorMessage</elementReference>
+                <elementReference>Run_Lead_Conversion.errorMessage</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -208,8 +208,8 @@
     <assignments>
         <name>Assign_Error_Log_0_0</name>
         <label>Assign Error Log</label>
-        <locationX>2954</locationX>
-        <locationY>758</locationY>
+        <locationX>1634</locationX>
+        <locationY>2174</locationY>
         <assignmentItems>
             <assignToReference>sov_ErrorLog.Severity__c</assignToReference>
             <operator>Assign</operator>
@@ -1249,22 +1249,6 @@
         <isCollection>true</isCollection>
         <isInput>true</isInput>
         <isOutput>true</isOutput>
-    </variables>
-    <variables>
-        <description>Error code provided by CSLeadsConverter, if any, during lead conversion, which instructs flow how to process the results of the transaction</description>
-        <name>apexConversionErrorCode</name>
-        <dataType>Number</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <scale>0</scale>
-    </variables>
-    <variables>
-        <name>apexConversionErrorMessage</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>currentId</name>
