@@ -104,6 +104,9 @@ public without sharing class CreditReportPuller {
      */
     @TestVisible
     private void convertTestcaseRequestsForExperian(LASERCA.PullCreditReportAction.PullCreditReportActionRequest request, System_Default__mdt systemDefault) {
+        if (Util.isSandboxOrTest()) {
+            request.loginAccount = systemDefault.Test_Credit_Login_Account_Username__c;
+        }
         if (request.lastName.toLowerCase().contains('testcase')) {
             request.loginAccount = systemDefault.Test_Credit_Login_Account_Username__c;
             request.firstName = 'Paul';
