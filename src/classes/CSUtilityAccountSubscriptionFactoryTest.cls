@@ -244,7 +244,6 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
         List<Utility_Account_Log__c> uals = new List<Utility_Account_Log__c>();
         Utility_Account_Log__c ual = new Utility_Account_Log__c(
             Annual_kWh__c = 5000,
-            Proposed_kWh__c = 15000,
             Lead__c = lead.Id,
             Name_on_Account__c = 'Joey Chan',
             Name = 'Account 1'
@@ -252,7 +251,6 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
         uals.add(ual);
         Utility_Account_Log__c ual2 = new Utility_Account_Log__c(
             Annual_kWh__c = 5000,
-            Proposed_kWh__c = 15000,
             Lead__c = lead.Id,
             Name_on_Account__c = 'Joey Chan',
             Name = 'Account 2'
@@ -269,7 +267,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
                 Shared_Solar_System__c = sss.Id
             ));
             ++counter;
-            setMaximumSubscriptionCapactity(sss, ual.Proposed_kWh__c);
+            setMaximumSubscriptionCapactity(sss, ual.Annual_kWh__c);
         }
         update sharedSolarSystems;
         sharedSolarSystems = getSharedSolarSystems(kwhProduct.Name);
@@ -351,7 +349,6 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
     public static void testCreateUASforUALbyCapacity() {
         useMocks(false);
         Utility_Account_Log__c ual = new Utility_Account_Log__c(
-            Proposed_kWh__c = 15000,
             Annual_kWh__c = 15000,
             Name_on_Account__c = 'Joey Chan',
             Name = 'Account 1'
@@ -371,12 +368,12 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             CSUtilityAccountSubscriptionFactory.SSSSubscription sssSubscription = new CSUtilityAccountSubscriptionFactory.SSSSubscription(sss);
             sssSubscription.sss = sss;
             // set the maximum cost to get 1 subscription
-            sssSubscription.maximumkWh = ual.Proposed_kWh__c;
+            sssSubscription.maximumkWh = ual.Annual_kWh__c;
             sssSingleSubscriptionMap.put(sss.Id, sssSubscription);
             CSUtilityAccountSubscriptionFactory.SSSSubscription sssSubscription2 = new CSUtilityAccountSubscriptionFactory.SSSSubscription(sss);
             sssSubscription2.sss = sss;
             // set the maximum cost to get 2 subscriptions
-            sssSubscription2.maximumkWh = ual.Proposed_kWh__c / 2;
+            sssSubscription2.maximumkWh = ual.Annual_kWh__c / 2;
             sssMultipleSubscriptionMap.put(sss.Id, sssSubscription2);
         }
         CSUtilityAccountSubscriptionFactory.sssSubscriptionMap = sssSingleSubscriptionMap;
@@ -407,7 +404,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
     public static List<Utility_Account_Log__c> getUtilityAccountLogs() {
         List<Utility_Account_Log__c> ualList = [
             SELECT Id, Name, Annual_Cost_of_Electricity__c, Name_on_Account__c, Lead__c,
-                Annual_kWh__c, Proposed_kWh__c, Lead__r.Product__r.Customer_Subscription_Type__c,
+                Annual_kWh__c, Lead__r.Product__r.Customer_Subscription_Type__c,
                 Utility_NMC_Tariff__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Utility_NMC_Tariff__c,
                 Utility_Rate_Class__r.Utility_NMC_Tariff__r.Size_Ratio__c, Subsc_Annual_Cost_of_Electricity_Rollup__c,
                 Subscribed_Annual_kWhs_Rollup__c
