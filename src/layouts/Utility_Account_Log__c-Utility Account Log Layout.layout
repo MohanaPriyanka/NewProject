@@ -32,10 +32,6 @@
                 <behavior>Edit</behavior>
                 <field>Auto_QC_Reject_Reason__c</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Product_Tariff__c</field>
-            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
@@ -177,10 +173,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Annual_Cost_of_Electricity__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Proposed_kWh__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
