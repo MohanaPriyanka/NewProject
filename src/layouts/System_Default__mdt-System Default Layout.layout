@@ -38,6 +38,10 @@
                 <behavior>Edit</behavior>
                 <field>Credit_Login_Account_Username__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Test_Credit_Login_Account_Username__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

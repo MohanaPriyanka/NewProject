@@ -18,7 +18,7 @@ public inherited sharing class FeatureSelector {
     public System_Default__mdt getSystemDefaults() {
         return [
             SELECT Id, Application_Complete_Email_Template__c, Continue_Application_Email_Template__c,
-                Credit_Login_Account_Username__c, Credit_Provider__c
+                Credit_Login_Account_Username__c, Credit_Provider__c, Test_Credit_Login_Account_Username__c
             FROM System_Default__mdt
         ];
     }

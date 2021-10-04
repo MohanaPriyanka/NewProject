@@ -67,6 +67,17 @@
         <type>Text</type>
         <unique>false</unique>
     </fields>
+    <fields>
+        <fullName>Test_Credit_Login_Account_Username__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>Account used to pull credit from LaserCA for testcases or in sandboxes</inlineHelpText>
+        <label>Test Credit Login Account Username</label>
+        <length>50</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
     <label>System Default</label>
     <pluralLabel>System Defaults</pluralLabel>
     <visibility>Public</visibility>
