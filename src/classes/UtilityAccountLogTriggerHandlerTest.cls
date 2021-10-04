@@ -52,8 +52,6 @@ public with sharing class UtilityAccountLogTriggerHandlerTest {
         insert ual;
 
         Test.startTest();
-        // product.Disclosure_Form_Conga_Template__c = null
-        //  ==> contract.Generate_Disclosure_Form__c = false
         ual.Utility_Rate_Class__c = rateClass0.Id;
         update ual;
         contract = [SELECT Id, Generate_Disclosure_Form__c FROM Contract WHERE Id = :contract.Id];
