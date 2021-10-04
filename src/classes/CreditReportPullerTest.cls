@@ -45,6 +45,58 @@ private with sharing class CreditReportPullerTest {
             'Expected SSN ending in 08 for failure testcases, indicating to TU to return a credit report that has low FICO');
     }
 
+    @IsTest
+    private static void testExperianRequests() {
+        CreditReportPuller creditReportPuller = new CreditReportPuller();
+
+        System_Default__mdt systemDefault = new System_Default__mdt(
+            Credit_Provider__c = 'CBCNEW',
+            Credit_Login_Account_Username__c = 'productionuser',
+            Test_Credit_Login_Account_Username__c = 'testuser'
+        );
+
+        Lead lead = new Lead(
+            Id = Util.getFakeId(Lead.SObjectType),
+            LastName = 'Testcase'
+        );
+
+        LASERCA.PullCreditReportAction.PullCreditReportActionRequest request = creditReportPuller.getRequest(lead, systemDefault);
+        System.assertEquals('666390426', request.ssn, 'Expected to request a test SSN if the last name is Testcase and using CBCNEW');
+        System.assertEquals('Burnia', request.lastName, 'Expected to map lastname Testcase to a Burnia, an experian test subject');
+        System.assertEquals('testuser', request.loginAccount, 'Expected to use the test account for test pulls since there is no charge');
+
+        lead.LastName = 'Smith';
+        request = creditReportPuller.getRequest(lead, systemDefault);
+        System.assertEquals('000000000', request.ssn, 'Expected to request all zeros if the last name is not testcase');
+        System.assertEquals('Smith', request.lastName, 'Expected to send the applicant last name if it is not testcase');
+        System.assertEquals('testuser', request.loginAccount,
+            'Expected to use the test user even for non-test pulls since we always use the test user in sandboxes or running tests');
+    }
+
+    @IsTest
+    private static void testTransunionRequests() {
+        CreditReportPuller creditReportPuller = new CreditReportPuller();
+
+        System_Default__mdt systemDefault = new System_Default__mdt(
+            Credit_Provider__c = 'CREDITAPI',
+            Credit_Login_Account_Username__c = 'productionuser'
+        );
+
+        Lead lead = new Lead(
+            Id = Util.getFakeId(Lead.SObjectType),
+            LastName = 'Testcase'
+        );
+
+        LASERCA.PullCreditReportAction.PullCreditReportActionRequest request = creditReportPuller.getRequest(lead, systemDefault);
+        System.assertEquals('000000001', request.ssn, 'Expected to request a test SSN if the last name is Testcase and using CREDITAPI');
+        System.assertEquals('productionuser', request.loginAccount, 'Expected to use the production account for TU test pulls');
+
+        lead.LastName = 'Smith';
+        request = creditReportPuller.getRequest(lead, systemDefault);
+        System.assertEquals('000000000', request.ssn, 'Expected to request all zeros if the last name is not testcase');
+        System.assertEquals('productionuser', request.loginAccount, 'Expected to use the production account for TU non-test pulls');
+    }
+
     public class MockedFeatureSelector extends MockProvider {
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
