@@ -2308,10 +2308,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>InvocableLeadConvert</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>InvocableLeadQualification</apexClass>
         <enabled>false</enabled>
     </classAccesses>
