@@ -82,45 +82,72 @@ public without sharing class UtilityAccountSubscriptionHandler {
     private void verifyUALSubscriptionType() {
         Set<Id> ualIds = new Set<Id>();
         Set<Id> sssIds = new Set<Id>();
-        Boolean currentProductAllowsMultiple = true;
 
         for (Utility_Account_Subscription__c uas : newList) {
             ualIds.add(uas.Utility_Account_Log__c);
             sssIds.add(uas.Shared_Solar_System__c);
         }
 
+        Map<Id, List<Utility_Account_Subscription__c>> uasToUALMap = createUASToUALMap(ualIds);
         Map<Id,Shared_Solar_System__c> sssMap = sssSelector.getSSSMap(sssIds);
-        Map<Id,Utility_Account_Log__c> ualMap = ualSelector.selectUALSWithUASMap(ualIds);
+        System.debug('sssMap');
+        System.debug(sssMap);
+        Map<Id,Utility_Account_Log__c> ualMap = ualSelector.selectUALSWithActiveUASMap(ualIds);
 
         for (Utility_Account_Subscription__c uas : newList) {
+
+
             Utility_Account_Log__c ual = ualMap.get(uas.Utility_Account_Log__c);
+            List<Utility_Account_Subscription__c> existingUASList = ual.Utility_Account_Subscriptions__r;
+            List<Utility_Account_Subscription__c> newRelatedUAS = uasToUALMap.get(uas.Utility_Account_Log__c);
+            List<Utility_Account_Subscription__c> combinedRelatedUASList = new List<Utility_Account_Subscription__c>();
+            combinedRelatedUASList.addAll(existingUASList);
+            combinedRelatedUASList.addAll(newRelatedUAS);
 
-            if (uas.Shared_Solar_System__c != null) {
-                Shared_Solar_System__c sss = sssMap.get(uas.Shared_Solar_System__c);
-                currentProductAllowsMultiple = sss.Product__r.Utility_Account_Subscription_Type__c == 'Multiple subscriptions per Utility Account' ? true : false;
-            }
-
-
-            List<Utility_Account_Subscription__c> childUASList = ual.Utility_Account_Subscriptions__r;
-            if (childUASList.size() == 0) {
+            if (uas.Shared_Solar_System__c == null) {
                 continue;
             }
 
-            if (verifyMultipleSubscriptionsAllowed(childUASList) && currentProductAllowsMultiple) {
+            if (existingUASList.size() == 0 && newRelatedUAS.size() == 1) {
                 continue;
             }
-            uas.addError('A UAS already exists for this UAL and only a single subscription per Utility Account is allowed.');
+
+            if (verifyMultipleSubscriptionsAllowedByRelatedUAS(combinedRelatedUASList, sssMap)) {
+                continue;
+            }
+            System.debug('Only a single subscription per Utility Account is allowed for UAL: ' + ual.Name);
+            uas.addError('Only a single subscription per Utility Account is allowed for UAL: ' + ual.Name);
         }
 
     }
 
-    private Boolean verifyMultipleSubscriptionsAllowed(List<Utility_Account_Subscription__c> uasList) {
+    private Boolean verifyMultipleSubscriptionsAllowedByRelatedUAS(List<Utility_Account_Subscription__c> uasList, Map<Id,Shared_Solar_System__c> sssMap) {
         for (Utility_Account_Subscription__c uas : uasList) {
-            if (uas.Shared_Solar_System__r.Product__r.Utility_Account_Subscription_Type__c == 'Single subscription per Utility Account') {
-                return false;
-            }
+                Shared_Solar_System__c sss = sssMap.get(uas.Shared_Solar_System__c);
+                if (sss.Product__r.Utility_Account_Subscription_Type__c == 'Single subscription per Utility Account') {
+                    return false;
+                }
         }
         return true;
+    }
+
+    private Map<Id, List<Utility_Account_Subscription__c>> createUASToUALMap(Set<Id> ualIds) {
+        Map<Id, List<Utility_Account_Subscription__c>> uasToUALMap = new Map<Id, List<Utility_Account_Subscription__c>>();
+
+        for (Id ualId : ualIds) {
+            uasToUALMap.put(ualId, new List<Utility_Account_Subscription__c>());
+        }
+
+        for (Utility_Account_Subscription__c uas : newList) {
+            List<Utility_Account_Subscription__c> uasList = uasToUALMap.get(uas.Utility_Account_Log__c);
+            System.debug(uasList);
+            uasList.add(uas);
+        }
+
+        System.debug(uasToUALMap);
+        return uasToUALMap;
+
+
     }
 
     public void assignSSSBeforeUpdate() {

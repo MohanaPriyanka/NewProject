@@ -206,7 +206,14 @@ public class UtilityAccountSubscriptionHandlerTest {
                 Name_on_Account__c = 'C Testcase'
             );
 
-        insert new List<Utility_Account_Log__c>{ualogOne, ualogTwo, ualogThree};
+        Utility_Account_Log__c ualogFour =
+            new Utility_Account_Log__c(Name = '0000238',
+                Account__c = propAccountB.Id,
+                Annual_Cost_of_Electricity__c = 20000,
+                Name_on_Account__c = 'D Testcase'
+            );
+
+        insert new List<Utility_Account_Log__c>{ualogOne, ualogTwo, ualogThree, ualogFour};
 
 
         Utility_Account_Subscription__c uasOne = new Utility_Account_Subscription__c(
@@ -510,6 +517,42 @@ public class UtilityAccountSubscriptionHandlerTest {
         System.assert(uasResult.isSuccess() == true, 'Result should be successful since the newly inserted UAS and the existing UAS records allow multiple subscriptions');
 
 
+    }
+
+    @IsTest
+    public static void verifyBulkInsert() {
+        Utility_Account_Log__c ual = [SELECT Id, Name FROM Utility_Account_Log__c WHERE Name = '0000238' LIMIT 1];
+        Opportunity opp = [SELECT Id, Name FROM Opportunity WHERE Name = 'COpp' LIMIT 1];
+
+        Utility_Account_Subscription__c newUAS1 =
+            new Utility_Account_Subscription__c(Name = '0000239',
+                Utility_Account_Log__c = ual.Id,
+                Opportunity__c = opp.Id,
+                Next_Schedule_Z_Status__c = 'Active Subscription',
+                Annual_kwh_subscription_future__c = 4000,
+                Calculated_Annual_Cost_of_Electricity__c = 4000,
+                Subscribed_Annual_Cost_of_Electricity__c = 4000
+            );
+
+        Utility_Account_Subscription__c newUAS2 =
+            new Utility_Account_Subscription__c(Name = '0000240',
+                Utility_Account_Log__c = ual.Id,
+                Opportunity__c = opp.Id,
+                Next_Schedule_Z_Status__c = 'Active Subscription',
+                Annual_kwh_subscription_future__c = 4000,
+                Calculated_Annual_Cost_of_Electricity__c = 4000,
+                Subscribed_Annual_Cost_of_Electricity__c = 4000
+            );
+
+        List<Utility_Account_Subscription__c> newUASList = new List<Utility_Account_Subscription__c>{newUAS1, newUAS2};
+
+        Test.startTest();
+        List<Database.SaveResult> uasResult = Database.insert(newUASList, false);
+        Test.stopTest();
+
+        for (Database.SaveResult result : uasResult) {
+            System.assert(result.isSuccess() == false, 'No UAS should have been entered since the trigger contained two for the same UAL where only a single subscription is allowed');
+        }
     }
     
 }
