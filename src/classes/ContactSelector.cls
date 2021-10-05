@@ -99,6 +99,7 @@ public inherited sharing class ContactSelector {
             WHERE Schedule_Z__r.Shared_Solar_System__c = :sharedSolarSystemId
             AND Schedule_Z__r.Status__c IN ('Submitted to Utility', 'Enacted by Utility', 'Billing')
             AND Schedule_Z__r.Date_Submitted_to_Utility__c !=NULL
+            AND Utility_Account_Subscription__r.Opportunity__r.Account.Send_Bills_Contact__r.Email != NULL
         ];
         for (Schedule_Z_Subscription__c sendBillsContactfromALS : getSendBillsContactsfromALS) {
             sendBillsContacts.add(

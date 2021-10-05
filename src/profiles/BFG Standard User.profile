@@ -40510,16 +40510,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Utility_Account_Log__c.Product_Tariff__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Utility_Account_Log__c.Proposed_kWh__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Utility_Account_Log__c.QC_Status__c</field>
         <readable>true</readable>
