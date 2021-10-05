@@ -727,10 +727,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>InvocableLeadConvert</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>InvocableLeadQualification</apexClass>
         <enabled>true</enabled>
     </classAccesses>

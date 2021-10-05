@@ -341,7 +341,7 @@ public with sharing class ZuoraAccountServiceTest {
         ZuoraAccountService.createAccounts(new Set<Id>{residentialLead.Id});
         List<Id> leadIdList = new List<Id>();
         leadIdList.add(residentialLead.Id);
-        InvocableLeadConvert.convertLead(leadIdList);
+        convertLead(leadIdList);
         Test.stopTest();
 
         residentialLead = [
@@ -510,7 +510,7 @@ public with sharing class ZuoraAccountServiceTest {
         Test.startTest();
         List<Id> leadIdList = new List<Id>();
         leadIdList.add(residentialLead.Id);
-        InvocableLeadConvert.convertLead(leadIdList);
+        convertLead(leadIdList);
         residentialLead = [
             SELECT Id, Email, IsConverted, ConvertedAccountId
             FROM Lead
@@ -599,7 +599,7 @@ public with sharing class ZuoraAccountServiceTest {
         Test.startTest();
         List<Id> leadIdList = new List<Id>();
         leadIdList.add(residentialLead.Id);
-        InvocableLeadConvert.convertLead(leadIdList);
+        convertLead(leadIdList);
         Test.stopTest();
 
         residentialLead = [
@@ -696,7 +696,7 @@ public with sharing class ZuoraAccountServiceTest {
         List<Id> convertedLeadIds = new List<Id>();
         convertedLeadIds.add(residentialLead.Id);
         // Lead conversion queues the ZuoraAccountAsyncService via CSSubscriptionEnroller.enroll()
-        InvocableLeadConvert.convertLead(new List<Id>{residentialLead.Id});
+        convertLead(new List<Id>{residentialLead.Id});
         // And in this test we want force a callout to fail, which the ZuoraAPIMock does when it sees "ThrowException" in
         // the body of the request
         List<Lead> convertedLeads = LeadSelector.selectConvertedByIds(convertedLeadIds);
@@ -912,6 +912,16 @@ public with sharing class ZuoraAccountServiceTest {
         );
     }
 
+    public static void convertLead(List<Id> leadIdsToConvert) {
+        Lead leadToConvert = new LeadSelector().selectOne(leadIdsToConvert[0]);
+        List<Database.LeadConvert> leadConverts = new List<Database.LeadConvert>();
+        Database.LeadConvert leadConvert = new Database.LeadConvert();
+        leadConvert.setLeadId(leadToConvert.Id);
+        leadConvert.setConvertedStatus('Qualified');
+        leadConvert.setDoNotCreateOpportunity(true);
+        leadConverts.add(leadConvert);
+        Database.convertLead(leadConverts, false);
+    }
 
     /*************
       *** MOCKS ***
