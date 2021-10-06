@@ -115,8 +115,7 @@ public without sharing class UtilityAccountSubscriptionHandler {
             if (verifyMultipleSubscriptionsAllowedByRelatedUAS(combinedRelatedUASList, sssMap)) {
                 continue;
             }
-            System.debug('Only a single subscription per Utility Account is allowed for UAL: ' + ual.Name);
-            uas.addError('Only a single subscription per Utility Account is allowed for UAL.');
+            uas.addError('Only a single subscription per Utility Account is allowed for UAL: ' + + ual.Id);
         }
 
     }
