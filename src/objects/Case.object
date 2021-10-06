@@ -747,6 +747,11 @@ Time_to_Close__c
             </valueSetDefinition>
             <valueSettings>
                 <controllingFieldValue>Community Solar</controllingFieldValue>
+                <controllingFieldValue>Solar Loan</controllingFieldValue>
+                <valueName>Billing</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
                 <valueName>Subscription Change</valueName>
             </valueSettings>
             <valueSettings>
@@ -936,10 +941,6 @@ Time_to_Close__c
             <valueSettings>
                 <controllingFieldValue>Solar Loan</controllingFieldValue>
                 <valueName>SREC</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Solar Loan</controllingFieldValue>
-                <valueName>Billing</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Solar Loan</controllingFieldValue>
