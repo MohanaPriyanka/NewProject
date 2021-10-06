@@ -547,7 +547,6 @@ public with sharing class SubscriptionTransferServiceTest {
         Opportunity oppWithDraftAA = getMockedOpp(true, 'Draft');
         Shared_Solar_System__c sssWithDifferentContractAssignmentEntity =
             getMockedSSSForDifferentContractAssignmentEntity(oppWithDraftAA.Shared_Solar_System__r.Contract_Assignment_Entity__c);
-        System.debug(LoggingLevel.ERROR, sssWithDifferentContractAssignmentEntity.Id);
         System.assertNotEquals(
             oppWithDraftAA.Shared_Solar_System__r.Contract_Assignment_Entity__c,
             sssWithDifferentContractAssignmentEntity.Contract_Assignment_Entity__c,
