@@ -240,4 +240,19 @@ public with sharing class ScheduleZSubscriptionSelector {
         }
         return enactedScheduleZS;
     }
+
+    /**
+     * @description Used to find Opportunities that should not have their system changed
+     * @param opportunityIds Opportunity Ids to review
+     * @return List of active ALSSes with their Opportunity and ALS
+     */
+    public List<Schedule_Z_Subscription__c> getActiveALSSesForOpportunities(Set<Id> opportunityIds) {
+        return [
+            SELECT Id, Utility_Account_Subscription__r.Name, Utility_Account_Subscription__r.Opportunity__c,
+                Schedule_Z__c, Schedule_Z__r.Status__c, Schedule_Z__r.Date_Submitted_to_Utility__c, Schedule_Z__r.Date_Enacted_by_Utility__c
+            FROM Schedule_Z_Subscription__c
+            WHERE Utility_Account_Subscription__r.Opportunity__c IN :opportunityIds
+            AND Schedule_Z__r.Date_Rejected_by_Utility__c = NULL
+        ];
+    }
 }
