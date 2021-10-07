@@ -2669,11 +2669,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Account.Initiative__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Account.Instagram_URL__c</field>
         <readable>true</readable>
     </fieldPermissions>

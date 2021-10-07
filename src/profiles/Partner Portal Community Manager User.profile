@@ -19843,11 +19843,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account.Initiative__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account.Instagram_URL__c</field>
         <readable>false</readable>
     </fieldPermissions>
