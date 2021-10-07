@@ -177,6 +177,7 @@ public class CustomerCommunicationHandlerTest{
                 Annual_kWh_Maximum__c = 100000000,
                 NM_Rate_Floor__c = 0,
                 Days_In_Bill_Period__c = 20,
+                Customer_Subscription_Type__c = 'Electricity Cost ($)',
                 Monthly_Late_Fee__c = 1,
                 Cancellation_Paragraph_Two__c = 'Your cancellation will take up to 6 months',
                 Cancellation_Paragraph_Three__c = 'There is a termination fee');
@@ -190,6 +191,7 @@ public class CustomerCommunicationHandlerTest{
                 Lender_of_Record__c = 'BlueWave',
                 NMC_Discount__c = 20,
                 Annual_kWh_Maximum__c = 63000,
+                Customer_Subscription_Type__c = 'Electricity Cost ($)',
                 NM_Rate_Floor__c = 0.09,
                 Days_In_Bill_Period__c = 20,
                 Monthly_Late_Fee__c = 0.8333,
@@ -233,29 +235,54 @@ public class CustomerCommunicationHandlerTest{
                                                     Opportunity__c = opportunityone.Id,
                                                     Sizing_Method__c = everbillNMC.Id,
                                                     Next_Schedule_Z_Status__c = 'Active Subscription',
-                                                    Annual_kwh_subscription_future__c = 4000,
-                                                    Calculated_Annual_Cost_of_Electricity__c = 4000,
-                                                    Subscribed_Annual_Cost_of_Electricity__c = 4000);
+                                                    Calculated_Annual_Cost_of_Electricity__c = 4000);
+
             Utility_Account_Subscription__c uasTwo =
                 new Utility_Account_Subscription__c(Name = '0000236',
                                                     Utility_Account_Log__c = ualog2.Id,
                                                     Opportunity__c = opportunitytwo.Id,
                                                     Sizing_Method__c = everbillNMC.Id,
                                                     Next_Schedule_Z_Status__c = 'Active Subscription',
-                                                    Annual_kwh_subscription_future__c = 8000,
-                                                    Calculated_Annual_Cost_of_Electricity__c = 8000,
-                                                    Subscribed_Annual_Cost_of_Electricity__c = 8000);
+                                                    Calculated_Annual_Cost_of_Electricity__c = 8000);
             Utility_Account_Subscription__c uasThree =
                 new Utility_Account_Subscription__c(Name = '0000238',
                                                     Utility_Account_Log__c = ualog3.Id,
                                                     Opportunity__c = opportunitythree.Id,
                                                     Sizing_Method__c = everbillNMC.Id,
                                                     Next_Schedule_Z_Status__c = 'Active Subscription',
-                                                    Annual_kwh_subscription_future__c = 300,
-                                                    Calculated_Annual_Cost_of_Electricity__c = 300,
-                                                    Subscribed_Annual_Cost_of_Electricity__c = 300);
+                                                    Calculated_Annual_Cost_of_Electricity__c = 300);
 
         insert new List<Utility_Account_Subscription__c>{uasOne, uasTwo, uasThree};
+
+        Utility_Account_Subscription__c uas01 = [
+            SELECT Id, Subscription_Comment_c__c, Subscription_Type__c, Opportunity__c
+            FROM Utility_Account_Subscription__c
+            WHERE Id = :uasOne.Id
+        ];
+
+        SubscriptionManagementService.UASWrapper uasw1 = new SubscriptionManagementService.UASWrapper(uas01, 4000, 4000);
+
+        Utility_Account_Subscription__c uas02 = [
+            SELECT Id, Subscription_Comment_c__c, Subscription_Type__c, Opportunity__c
+            FROM Utility_Account_Subscription__c
+            WHERE Id = :uasTwo.Id
+        ];
+
+        SubscriptionManagementService.UASWrapper uasw2 = new SubscriptionManagementService.UASWrapper(uas01, 8000, 8000);
+
+        Utility_Account_Subscription__c uas03 = [
+            SELECT Id, Subscription_Comment_c__c, Subscription_Type__c, Opportunity__c
+            FROM Utility_Account_Subscription__c
+            WHERE Id = :uasThree.Id
+        ];
+
+        SubscriptionManagementService.UASWrapper uasw3 = new SubscriptionManagementService.UASWrapper(uas01, 300, 300);
+
+        List<SubscriptionManagementService.UASWrapper> listUASW = new List<SubscriptionManagementService.UASWrapper> {
+            uasw1, uasw2, uasw3
+        };
+
+        new SubscriptionManagementService().insertSubscriptionOrdersWithWrapper(listUASW);
 
         Schedule_Z__c scheduleZ1 = new Schedule_Z__c(
             Name = '18-0515 Oxford Barrett St. P1',

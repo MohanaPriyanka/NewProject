@@ -191,8 +191,7 @@ public class ScheduleZTriggerHandlerTest {
                 Utility_Account_Log__c = ualog.Id,
                 Opportunity__c = opportunityone.Id,
                 Sizing_Method__c = eversizeNMC.Id,
-                Next_Schedule_Z_Status__c = 'Active Subscription',
-                Annual_kwh_subscription_future__c = 26300.5
+                Next_Schedule_Z_Status__c = 'Active Subscription'
             );
 
         Utility_Account_Subscription__c uasoneB =
@@ -200,8 +199,7 @@ public class ScheduleZTriggerHandlerTest {
                 Utility_Account_Log__c = ualogB.Id,
                 Opportunity__c = opportunityoneB.Id,
                 Sizing_Method__c = eversizeNMC.Id,
-                Next_Schedule_Z_Status__c = 'Active Subscription',
-                Annual_kwh_subscription_future__c = 26300.5
+                Next_Schedule_Z_Status__c = 'Active Subscription'
             );
 
         Utility_Account_Subscription__c uastwo =
@@ -209,8 +207,8 @@ public class ScheduleZTriggerHandlerTest {
                 Utility_Account_Log__c = ualog.Id,
                 Opportunity__c = opportunitytwo.Id,
                 Sizing_Method__c = eversizeNMC.Id,
-                Next_Schedule_Z_Status__c = 'Active Subscription',
-                Annual_kwh_subscription_future__c = 6000);
+                Next_Schedule_Z_Status__c = 'Active Subscription'
+            );
 
         // Test for only active subscriptions have Sched Z Subs created
         Utility_Account_Subscription__c uasthree =
@@ -218,8 +216,7 @@ public class ScheduleZTriggerHandlerTest {
                 Utility_Account_Log__c = ualog.Id,
                 Opportunity__c = opportunityone.Id,
                 Sizing_Method__c = eversizeNMC.Id,
-                Next_Schedule_Z_Status__c = 'Inactive Subscription',
-                Annual_kwh_subscription_future__c = 1300009.8
+                Next_Schedule_Z_Status__c = 'Inactive Subscription'
 
             );
 
@@ -229,11 +226,36 @@ public class ScheduleZTriggerHandlerTest {
                 Utility_Account_Log__c = ualog.Id,
                 Opportunity__c = opportunitythree.Id,
                 Sizing_Method__c = eversizeNMC.Id,
-                Next_Schedule_Z_Status__c = 'Inactive Subscription',
-                Annual_kwh_subscription_future__c = 1300009.8
+                Next_Schedule_Z_Status__c = 'Inactive Subscription'
             );
 
-        insert new List<Utility_Account_Subscription__c>{uasone, uasoneB, uastwo, uasthree, uasfour};
+        List<Utility_Account_Subscription__c> listUAS = new List<Utility_Account_Subscription__c>{
+            uasone, uasoneB, uastwo, uasthree, uasfour
+        };
+
+        insert listUAS;
+
+        List<Id> listID = new List<Id>();
+
+        for (Utility_Account_Subscription__c uas: listUAS) {
+            listID.add(uas.Id);
+        }
+
+        listUAS = [
+            SELECT Id, Subscription_Comment_c__c, Subscription_Type__c, Opportunity__c
+            FROM Utility_Account_Subscription__c
+            WHERE Id in :listID
+        ];
+
+        List<SubscriptionManagementService.UASWrapper> listUASW = new List<SubscriptionManagementService.UASWrapper>();
+
+        listUASW.add(new SubscriptionManagementService.UASWrapper(listUAS[0], 26300.5, null));
+        listUASW.add(new SubscriptionManagementService.UASWrapper(listUAS[1], 26300.5, null));
+        listUASW.add(new SubscriptionManagementService.UASWrapper(listUAS[2], 6000, null));
+        listUASW.add(new SubscriptionManagementService.UASWrapper(listUAS[3], 1300009.8, null));
+        listUASW.add(new SubscriptionManagementService.UASWrapper(listUAS[4], 1300009.8, null));
+
+        new SubscriptionManagementService().insertSubscriptionOrdersWithWrapper(listUASW);
 
         zqu__ZProduct__c zProduct = new zqu__ZProduct__c(
             Name = 'Community Solar'

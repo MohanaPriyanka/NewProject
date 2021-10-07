@@ -280,8 +280,7 @@ public with sharing class SubscriptionSizingTestclass {
             Utility_Account_Log__c = ualA.Id,
             Opportunity__c = opportunityA.Id,
             Sizing_Method__c = kwhSizingMethodR1.Id,
-            Next_Schedule_Z_Status__c = 'Active Subscription',
-            Annual_kwh_subscription_future__c = 7587
+            Next_Schedule_Z_Status__c = 'Active Subscription'
         );
 
         Utility_Account_Subscription__c uasB = new Utility_Account_Subscription__c(
@@ -289,8 +288,7 @@ public with sharing class SubscriptionSizingTestclass {
             Utility_Account_Log__c = ualB.Id,
             Opportunity__c =  opportunityB.Id,
             Sizing_Method__c = kwhSizingMethodR1.Id,
-            Next_Schedule_Z_Status__c = 'Active Subscription',
-            Annual_kwh_subscription_future__c = 14345
+            Next_Schedule_Z_Status__c = 'Active Subscription'
         );
 
         Utility_Account_Subscription__c uasB2 = new Utility_Account_Subscription__c(
@@ -298,8 +296,7 @@ public with sharing class SubscriptionSizingTestclass {
             Utility_Account_Log__c = ualB.Id,
             Opportunity__c =  opportunityB.Id,
             Sizing_Method__c = kwhSizingMethodR1.Id,
-            Next_Schedule_Z_Status__c = 'Active Subscription',
-            Annual_kwh_subscription_future__c = 5000
+            Next_Schedule_Z_Status__c = 'Active Subscription'
         );
 
         Utility_Account_Subscription__c uasC = new Utility_Account_Subscription__c(
@@ -307,8 +304,7 @@ public with sharing class SubscriptionSizingTestclass {
             Utility_Account_Log__c = ualC.Id,
             Opportunity__c = opportunityC.Id,
             Sizing_Method__c = costSizingMethod.Id,
-            Next_Schedule_Z_Status__c = 'Active Subscription',
-            Subscribed_Annual_Cost_of_Electricity__c = 5889
+            Next_Schedule_Z_Status__c = 'Active Subscription'
         );
 
         Utility_Account_Subscription__c uasD = new Utility_Account_Subscription__c(
@@ -316,11 +312,37 @@ public with sharing class SubscriptionSizingTestclass {
             Utility_Account_Log__c = ualD.Id,
             Opportunity__c = opportunityD.Id,
             Sizing_Method__c = costSizingMethod.Id,
-            Next_Schedule_Z_Status__c = 'Active Subscription',
-            Subscribed_Annual_Cost_of_Electricity__c = 720.75
+            Next_Schedule_Z_Status__c = 'Active Subscription'
         );
 
-        insert new List<Utility_Account_Subscription__c> {uasA, uasB, uasB2, uasC, uasD};
+        List<Utility_Account_Subscription__c> uasList = new List<Utility_Account_Subscription__c> {uasA, uasB, uasB2, uasC, uasD};
+
+        insert uasList;
+
+        List<Id> uasIdList = new List<Id>();
+
+        for (Utility_Account_Subscription__c uas : uasList) {
+            uasIdList.add(uas.Id);
+        }
+
+        uasList = [
+            SELECT Id, Subscription_Comment_c__c, Subscription_Type__c, Opportunity__c
+            FROM Utility_Account_Subscription__c
+            WHERE Id in :uasIdList
+        ];
+
+        SubscriptionManagementService.UASWrapper uaswA = new SubscriptionManagementService.UASWrapper(uasList[0], 7587, null);
+        SubscriptionManagementService.UASWrapper uaswB = new SubscriptionManagementService.UASWrapper(uasList[1], 14345, null);
+        SubscriptionManagementService.UASWrapper uaswB2 = new SubscriptionManagementService.UASWrapper(uasList[2], 5000, null);
+        SubscriptionManagementService.UASWrapper uaswC = new SubscriptionManagementService.UASWrapper(uasList[3], null, 5889);
+        SubscriptionManagementService.UASWrapper uaswD = new SubscriptionManagementService.UASWrapper(uasList[4], null, 720.75);
+
+        List<SubscriptionManagementService.UASWrapper> uaswList = new List<SubscriptionManagementService.UASWrapper> {
+            uaswA, uaswB, uaswB2, uaswC, uaswD
+        };
+
+        new SubscriptionManagementService().insertSubscriptionOrdersWithWrapper(uaswList);
+
     }
 
     @IsTest

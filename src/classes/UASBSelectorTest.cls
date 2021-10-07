@@ -33,10 +33,11 @@ public class UASBSelectorTest {
             Utility_Account_Log__c = ualog1.Id,
             Opportunity__c = opportunity1.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
-            calculated_annual_cost_of_electricity__c = 1400,
-            Subscribed_Annual_Cost_of_Electricity__c = 1400
+            calculated_annual_cost_of_electricity__c = 1400
+            //Subscribed_Annual_Cost_of_Electricity__c = 1400
         );
         insert uas1;
+
     }
 
     @IsTest public static void testGetUASBsFromExternalIds() {

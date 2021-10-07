@@ -143,8 +143,7 @@ public class MultipleMonthProductionUpdateTest {
                                                 Shared_Solar_System__c = sss1.Id,
                                                 Sizing_Method__c = eversizeNMC.Id,
                                                 Next_Schedule_Z_Status__c = 'Active Subscription',
-                                                Calculated_Annual_Cost_of_Electricity__c = 4804.8,
-                                                Subscribed_Annual_Cost_of_Electricity__c = 4804.8);
+                                                Calculated_Annual_Cost_of_Electricity__c = 4804.8);
 
         Utility_Account_Subscription__c uasTwo = 
             new Utility_Account_Subscription__c(Name = '000999999',
@@ -153,8 +152,7 @@ public class MultipleMonthProductionUpdateTest {
                                                 Shared_Solar_System__c = sss1.Id,
                                                 Sizing_Method__c = eversizeNMC.Id,
                                                 Next_Schedule_Z_Status__c = 'Active Subscription',
-                                                Calculated_Annual_Cost_of_Electricity__c = 3363.36,
-                                                Subscribed_Annual_Cost_of_Electricity__c = 3363.36);
+                                                Calculated_Annual_Cost_of_Electricity__c = 3363.36);
 
         insert new List<Utility_Account_Subscription__c>{uasOne, uasTwo};
 
