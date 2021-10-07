@@ -1118,6 +1118,7 @@ Specify the global country code setting or record level country code to automati
     <fields>
         <fullName>Client_Brand_Key__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>Set before an opportunity is inserted, or if the Account, SSS, or Stage is updated on the opportunity. Also set if the Client Brand Key on a SSS is updated.</inlineHelpText>
         <label>Client Brand Key</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
