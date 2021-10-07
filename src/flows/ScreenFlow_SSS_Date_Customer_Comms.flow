@@ -1021,8 +1021,33 @@ MONTH({!New_Est_PTO_Date} ),
         <allowPause>false</allowPause>
         <fields>
             <name>Error_Notice_0</name>
-            <fieldText>&lt;p&gt;The date(s) have been updated on the Shared Solar System, however &lt;b style=&quot;color: rgb(255, 0, 0);&quot;&gt;an error has occurred, and emails may not have been sent to customers. Please contact BizApps for assistance.&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;The date(s) have been updated on the Shared Solar System, however &lt;b style=&quot;color: rgb(255, 0, 0);&quot;&gt;no customer contacts were found to send email communications to regarding this change.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Please ensure that an &lt;b&gt;Allocation Schedule &lt;/b&gt;record exists for this system which meets the following criteria:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;Status &lt;/b&gt;field is set to Submitted to Utility, Enacted by Utility, or Billing&lt;/li&gt;&lt;li&gt;&lt;b&gt;Date Submitted to Utility &lt;/b&gt;field contains a value&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Please re-run this process once the above criteria is met.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>choiceActualCODDate</leftValueReference>
+                    <operator>WasSelected</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>Error2</name>
+            <fieldText>&lt;p&gt;The date(s) have been updated on the Shared Solar System, however &lt;b style=&quot;color: rgb(255, 0, 0);&quot;&gt;no customer contacts were found to send email communications to regarding this change.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Please ensure that &lt;b&gt;Opportunity &lt;/b&gt;records exists for this system. Re-run this process once valid Opportunities (e.g. prospective customers) can be identified.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>choiceEstimatedDates</leftValueReference>
+                    <operator>WasSelected</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
