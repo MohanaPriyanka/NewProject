@@ -153,19 +153,6 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ControlledByParent</externalSharingModel>
-    <fields>
-        <fullName>Feeder__c</fullName>
-        <externalId>false</externalId>
-        <label>Feeder</label>
-        <referenceTo>Feeder__c</referenceTo>
-        <relationshipLabel>FeederProjectAssociation</relationshipLabel>
-        <relationshipName>FeederProjectAssociation</relationshipName>
-        <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>true</reparentableMasterDetail>
-        <trackTrending>false</trackTrending>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
-    </fields>
     <label>FeederProjectAssociation</label>
     <listViews>
         <fullName>All</fullName>
