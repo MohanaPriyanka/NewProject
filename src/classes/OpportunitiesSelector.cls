@@ -1,8 +1,7 @@
-/*************************************************************************************
- * Created By: peteryao on 1/19/19  
- * Description: Can extend fflib_SObjectSelector
+/**
+ * @description : Can extend fflib_SObjectSelector
  * Test: OpportunitiesSelectorTest
- *************************************************************************************/
+ **/
 @SuppressWarnings('PMD.ApexCRUDViolation, PMD.ApexDoc')
 public without sharing class OpportunitiesSelector {
     private static String fieldsToGenerateCommissions = 'Id, \n' +
@@ -29,9 +28,15 @@ public without sharing class OpportunitiesSelector {
     // To be used when cancelling opportunities, so we also exclude Anchors and Public Offtake
     public static List<Opportunity> selectAllCompleteCSWithUASesAndSystemBills() {
         return [
-            SELECT Id, Name,
-            (SELECT Id, Name, Next_Schedule_Z_Status__c, Total_Count_of_Schedule_Zs__c, Transferring_Subsc_to_Another_UAS__c, Transferred_To__c FROM Utility_Account_Subscriptions__r),
-            (SELECT Id, Name, Date__c FROM Utility_Account_Subscription_Bills__r ORDER BY Date__c DESC LIMIT 1)
+            SELECT Id, Name, (
+                SELECT Id, Name, Next_Schedule_Z_Status__c, Total_Count_of_Schedule_Zs__c, Transferring_Subsc_to_Another_UAS__c, Transferred_To__c
+                FROM Utility_Account_Subscriptions__r
+            ), (
+                SELECT Id, Name, Date__c
+                FROM Utility_Account_Subscription_Bills__r
+                ORDER BY Date__c DESC
+                LIMIT 1
+            )
             FROM Opportunity
             WHERE StageName = 'Complete'
             AND Product_Line__c = 'Community Solar'
@@ -42,17 +47,22 @@ public without sharing class OpportunitiesSelector {
     }
     public static List<Opportunity> selectByIds(List<Id> oppIds) {
         return [
-            SELECT Id, Product_Line__c,
+            SELECT
+                Id,
+                Contract.Assignment_Agreement__c,
+                Contract.Assignment_Agreement__r.Status,
+                Lead__c,
+                Product_Line__c,
                 Parent_Account_ID__c,
-                Lead__c, StageName
+                Shared_Solar_System__r.Contract_Assignment_Entity__c,
+                StageName
             FROM Opportunity
-            WHERE Id IN: oppIds
+            WHERE Id IN:oppIds
         ];
     }
     public static List<Opportunity> selectAllCompleteCSWithUASes(Set<Id> oppIds) {
         return [
-            SELECT Id, Name, Date_Removed_from_Project__c,
-            (
+            SELECT Id, Name, Date_Removed_from_Project__c, (
                 SELECT Id, Name, Most_Recent_Enacted_ALSS__c, Next_Schedule_Z_Status__c, Total_Count_of_Schedule_Zs__c,
                     Transferring_Subsc_to_Another_UAS__c, Transferred_To__c, Date_Removed_from_Project__c
                 FROM Utility_Account_Subscriptions__r
@@ -65,16 +75,17 @@ public without sharing class OpportunitiesSelector {
             AND Id = :oppIds
         ];
     }
-    public static Opportunity selectForContractSend(Id opportunityId) {
+    @TestVisible
+    private static Opportunity selectForContractSend(Id opportunityId) {
         return [
             SELECT Id, Name, Parent_Account_Name__c, Salesperson_Email__c, Sales_tag__c, Application_Type__c,
                 Email__c, Co_Applicant_Email__c, Co_Applicant_Full_Name__c, Docusign_Template__c
             FROM Opportunity
-            WHERE Id = : opportunityId
+            WHERE Id = :opportunityId
             LIMIT 1
         ];
     }
-    public  Map<Id, Opportunity> selectOpportunityMap(Set<Id> oppIds) {
+    public Map<Id, Opportunity> selectOpportunityMap(Set<Id> oppIds) {
         Map<Id, Opportunity> oppMap = new Map<Id, Opportunity>([
             SELECT Id, Shared_Solar_System__c, Shared_Solar_System__r.Name
             FROM Opportunity
@@ -134,15 +145,14 @@ public without sharing class OpportunitiesSelector {
 
     public List<Opportunity> selectByIdWithCommissionPayment(Set<Id> opportunityIds) {
         return [
-            SELECT Id, StageName, Product_Line__c,  Name, AccountId, Account.Account_Number__c, Shared_Solar_System__r.Unique_ID__c,
+            SELECT Id, StageName, Product_Line__c, Name, AccountId, Account.Account_Number__c, Shared_Solar_System__r.Unique_ID__c,
                 Shared_Solar_System__r.Name, CS_Capacity_Allocated__c, Commission_Structure__r.Cents_kW_DC_Up_Front__c,
                 Product__c, Commission_Structure__c, Partner_tag_lookup__c, Partner_tag_lookup__r.Id,
                 Partner_tag_lookup__r.Account__c, Partner_tag_lookup__r.Name, Partner_tag_lookup__r.Account__r.Name,
                 Partner_tag_lookup__r.Account__r.RecordType.Name, Partner_Account__c, Partner_Account__r.Name,
-                Partner_Account__r.RecordType.Name,
-                (SELECT Id, Status__c FROM Commission_Payments__r WHERE Commission_Type__c = 'Contract Execution')
+                Partner_Account__r.RecordType.Name, (SELECT Id, Status__c FROM Commission_Payments__r WHERE Commission_Type__c = 'Contract Execution')
             FROM Opportunity
-            WHERE Id IN : opportunityIds
+            WHERE Id IN :opportunityIds
         ];
     }
     public List<Opportunity> getOppsFromSSS(Set<Id> sssIds) {
@@ -151,7 +161,7 @@ public without sharing class OpportunitiesSelector {
                 Account.Parent_Account__c,
                 Shared_Solar_System__r.Id
             FROM Opportunity
-            WHERE Shared_Solar_System__r.Id IN : sssIds
+            WHERE Shared_Solar_System__r.Id IN :sssIds
         ];
     }
     public Map<Id, Opportunity> getOppsForTestMethods(Set<Id> oppIds) {
@@ -175,7 +185,7 @@ public without sharing class OpportunitiesSelector {
         ];
         Map<Id, Date> firstCustomerDateMap = new Map<Id, Date>();
         for (AggregateResult ar : oppResults) {
-            firstCustomerDateMap.put ((Id)ar.get('sssId'), (Date) ar.get('firstCompanySignedDate'));
+            firstCustomerDateMap.put ((Id) ar.get('sssId'), (Date) ar.get('firstCompanySignedDate'));
         }
         return firstCustomerDateMap;
     }
@@ -192,11 +202,11 @@ public without sharing class OpportunitiesSelector {
                 '      AND Opportunity__r.Contract_Close_Date__c <= :cutoffDate\n' +
                 '      AND Next_Schedule_Z_Status__c = \'Active Subscription\'\n' +
                 '      AND Opportunity__r.Assignment_Agreement__c = NULL\n' +
-                (anchorsOnly?
-                    '      AND Opportunity__r.Customer_Group__c = \'Anchor\'\n':
+                (anchorsOnly ?
+                    '      AND Opportunity__r.Customer_Group__c = \'Anchor\'\n' :
                     '      AND Opportunity__r.Customer_Group__c != \'Anchor\'\n') +
                 '      AND Opportunity__r.StageName = \'Complete\'\n' +
-                '      AND Opportunity__r.Partner_tag_lookup__r.Account__r.RecordType.DeveloperName ' + (clientAcquiredCustomers?'=':'!=') + '\'Client_Account\'\n' +
+                '      AND Opportunity__r.Partner_tag_lookup__r.Account__r.RecordType.DeveloperName ' + (clientAcquiredCustomers ? '=' : '!=') + '\'Client_Account\'\n' +
                 '  )';
         return Database.query(soql);
     }
@@ -209,8 +219,8 @@ public without sharing class OpportunitiesSelector {
                 Assignment_Agreement__c
             FROM Opportunity
             WHERE StageName = 'Complete'
-            AND Shared_Solar_System__c != null
-            AND ContractId = null
+            AND Shared_Solar_System__c != NULL
+            AND ContractId = NULL
         ];
     }
 
@@ -218,7 +228,7 @@ public without sharing class OpportunitiesSelector {
         return [
             SELECT Id, Name, Personal_Credit_Report2__c
             FROM Opportunity
-            WHERE Contract.Assignment_Agreement__c = : assignmentAgreementId
+            WHERE Contract.Assignment_Agreement__c = :assignmentAgreementId
         ];
     }
 
@@ -233,7 +243,7 @@ public without sharing class OpportunitiesSelector {
         ];
         Map<Id, Decimal> oppSubscriptionMap = new Map<Id, Decimal>();
         for (AggregateResult ar : oppResults) {
-            oppSubscriptionMap.put((Id) ar.get('oppId'), (Decimal) ar.get('total') );
+            oppSubscriptionMap.put((Id) ar.get('oppId'), (Decimal) ar.get('total'));
         }
         return oppSubscriptionMap;
     }
@@ -251,32 +261,32 @@ public without sharing class OpportunitiesSelector {
 
     public List<Opportunity> selectRetiredOpportunities(Set<Id> oppIds) {
         return [
-            SELECT Id, Name, AccountId, Date_Removed_from_Project__c,
-            (SELECT Id, Date_Removed_from_Project__c
-            FROM Utility_Account_Subscriptions__r)
+            SELECT Id, Name, AccountId, Date_Removed_from_Project__c, (
+                SELECT Id, Date_Removed_from_Project__c
+                FROM Utility_Account_Subscriptions__r
+            )
             FROM Opportunity
             WHERE Id IN :oppIds
-            AND Date_Removed_from_Project__c != null
+            AND Date_Removed_from_Project__c != NULL
         ];
     }
 
     public List<Opportunity> getOpportunitiesByAAsNeedingAddendumSent(Set<Id> assignmentAgreementIds) {
         return [
             SELECT Id, ContractId, Contract.Assignment_Agreement__c, Contract.Addendum_Sent_Date__c,
-            Contract.Product__r.Addendum_Template_Id__c, Shared_Solar_System__c,
-            Contract.Account.Send_Bills_Contact__r.Id, Product__c,
-            Contract.Name, Contract.Id, Contract.Parent_Contract__c, Contract.AccountId,
-            Contract.Account.Send_Bills_Contact__c, Contract.Account.Send_Bills_Contact__r.Email,
-            Shared_Solar_System__r.Name, Shared_Solar_System__r.Address__c, Shared_Solar_System__r.City__c,
-            Shared_Solar_System__r.State__c, Shared_Solar_System__r.Zip_Code__c,
-            Shared_Solar_System__r.Total_System_Size_kWh_DC__c,
-            Shared_Solar_System__r.Home_Electricity_Offset__c
+                Contract.Product__r.Addendum_Template_Id__c, Shared_Solar_System__c,
+                Contract.Account.Send_Bills_Contact__r.Id, Product__c,
+                Contract.Name, Contract.Id, Contract.Parent_Contract__c, Contract.AccountId,
+                Contract.Account.Send_Bills_Contact__c, Contract.Account.Send_Bills_Contact__r.Email,
+                Shared_Solar_System__r.Name, Shared_Solar_System__r.Address__c, Shared_Solar_System__r.City__c,
+                Shared_Solar_System__r.State__c, Shared_Solar_System__r.Zip_Code__c,
+                Shared_Solar_System__r.Total_System_Size_kWh_DC__c,
+                Shared_Solar_System__r.Home_Electricity_Offset__c
             FROM Opportunity
-            WHERE Contract.Assignment_Agreement__c IN: assignmentAgreementIds
-            AND Contract.Addendum_Sent_Date__c = null
-            AND Contract.Product__r.Addendum_Template_Id__c != null
-            AND Contract.Account.Send_Bills_Contact__c != null
+            WHERE Contract.Assignment_Agreement__c IN:assignmentAgreementIds
+            AND Contract.Addendum_Sent_Date__c = NULL
+            AND Contract.Product__r.Addendum_Template_Id__c != NULL
+            AND Contract.Account.Send_Bills_Contact__c != NULL
         ];
     }
-
 }
