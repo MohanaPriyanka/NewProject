@@ -3,10 +3,13 @@
     <actionCalls>
         <name>InvocableOpportunitySystemUpdater</name>
         <label>InvocableOpportunitySystemUpdater</label>
-        <locationX>176</locationX>
+        <locationX>182</locationX>
         <locationY>278</locationY>
         <actionName>InvocableOpportunitySystemUpdater</actionName>
         <actionType>apex</actionType>
+        <connector>
+            <targetReference>Update_Successful</targetReference>
+        </connector>
         <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
             <name>opportunityId</name>
@@ -20,8 +23,54 @@
                 <elementReference>SharedSolarSystem.recordId</elementReference>
             </value>
         </inputParameters>
+        <outputParameters>
+            <assignToReference>SystemUpdateErrorMessage</assignToReference>
+            <name>errorMessage</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>SystemUpdateWasSuccess</assignToReference>
+            <name>isSuccess</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>UpdateScreen</name>
+        <label>UpdateScreen</label>
+        <locationX>50</locationX>
+        <locationY>518</locationY>
+        <actionName>c:UpdateScreen</actionName>
+        <actionType>component</actionType>
+        <connector>
+            <targetReference>System_Update_Successful</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <apiVersion>51.0</apiVersion>
+    <decisions>
+        <name>Update_Successful</name>
+        <label>Update Successful</label>
+        <locationX>182</locationX>
+        <locationY>398</locationY>
+        <defaultConnector>
+            <targetReference>Error</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Error</defaultConnectorLabel>
+        <rules>
+            <name>Success</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>SystemUpdateWasSuccess</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>UpdateScreen</targetReference>
+            </connector>
+            <label>Success</label>
+        </rules>
+    </decisions>
     <interviewLabel>Opportunity Change SSS {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Opportunity Change SSS</label>
     <processMetadataValues>
@@ -46,17 +95,17 @@
     <screens>
         <name>Change_SSS</name>
         <label>Change SSS</label>
-        <locationX>176</locationX>
+        <locationX>182</locationX>
         <locationY>158</locationY>
-        <allowBack>true</allowBack>
+        <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
+        <allowPause>false</allowPause>
         <connector>
             <targetReference>InvocableOpportunitySystemUpdater</targetReference>
         </connector>
         <fields>
             <name>Instructions</name>
-            <fieldText>&lt;p&gt;Provide the new Shared Solar System for this opportunity. This flow will create a new UAS, and Transfer/Resize Subscription Orders to zero out the old subscription and create a new one. &lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;Provide the new Shared Solar System for this opportunity. This flow will create a new UAS, and Transfer/Resize Subscription Orders to zero out the old subscription and create a new one.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This flow will prevent a system change if any of the UASes are associated to an Allocation Schedule that isn&apos;t rejected.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;And if the Opportunity is assigned (if the Contract has an Assignment Agreement that isn&apos;t Rejected), the new system must have the same Contract Assignment Entity as the current system.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -88,8 +137,43 @@
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
-    <start>
+    <screens>
+        <name>Error</name>
+        <label>Error</label>
+        <locationX>314</locationX>
+        <locationY>518</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Change_SSS</targetReference>
+        </connector>
+        <fields>
+            <name>ErrorMessage</name>
+            <fieldText>&lt;p&gt;We ran into this error when trying to change the system:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!SystemUpdateErrorMessage}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;You can click next to try again, or close this flow and leave the Opportunity as is.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>System_Update_Successful</name>
+        <label>System Update Successful</label>
         <locationX>50</locationX>
+        <locationY>638</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Successful</name>
+            <fieldText>&lt;p&gt;The system change was successful!&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <start>
+        <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Change_SSS</targetReference>
@@ -101,6 +185,20 @@
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>SystemUpdateErrorMessage</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>SystemUpdateWasSuccess</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
 </Flow>

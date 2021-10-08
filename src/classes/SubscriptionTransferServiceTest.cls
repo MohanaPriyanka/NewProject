@@ -484,6 +484,166 @@ public with sharing class SubscriptionTransferServiceTest {
             'Since the Invocable Request\'s amount is 5896.40, we should see the resize SO have that amount');
     }
 
+    @IsTest
+    private static void oppWithUASWithActiveALSShouldNotBeTransferred() {
+        SubscriptionTransferService transferService = new SubscriptionTransferService();
+        Opportunity unassignedOpp = getMockedOpp(false, null);
+        Shared_Solar_System__c sssWithDifferentContractAssignmentEntity =
+            getMockedSSSForDifferentContractAssignmentEntity(unassignedOpp.Shared_Solar_System__r.Contract_Assignment_Entity__c);
+
+        Schedule_Z_Subscription__c activeALSS = new Schedule_Z_Subscription__c(
+            Id = Util.getFakeId(Schedule_Z_Subscription__c.SObjectType)
+        );
+        SubscriptionTransferService.alssSelector =
+            (ScheduleZSubscriptionSelector) Test.createStub(ScheduleZSubscriptionSelector.class, new MockedALSSSelector(new List<Schedule_Z_Subscription__c>{
+                activeALSS
+            }));
+        try {
+            transferService.validateNewSSSForOpp(unassignedOpp, sssWithDifferentContractAssignmentEntity);
+            System.assert(false, 'Expected to not validate this SSS change because there are active ALSSes for this opp');
+        } catch (Util.BWException bwe) {
+            System.assert(bwe.getMessage().contains(SubscriptionTransferService.OPP_ON_ACTIVE_ALS),
+                'Expected ' + SubscriptionTransferService.OPP_ON_ACTIVE_ALS + ' but got: ' + bwe.getMessage());
+        }
+    }
+
+    @IsTest
+    private static void oppWithoutAssignmentAgreementOrALSCanBeTransferred() {
+        SubscriptionTransferService transferService = new SubscriptionTransferService();
+        Opportunity unassignedOpp = getMockedOpp(false, null);
+        Shared_Solar_System__c sssWithDifferentContractAssignmentEntity =
+            getMockedSSSForDifferentContractAssignmentEntity(unassignedOpp.Shared_Solar_System__r.Contract_Assignment_Entity__c);
+
+        SubscriptionTransferService.alssSelector =
+            (ScheduleZSubscriptionSelector) Test.createStub(ScheduleZSubscriptionSelector.class, new MockedALSSSelector(new List<Schedule_Z_Subscription__c>()));
+        System.assertEquals(null, unassignedOpp.Contract.Assignment_Agreement__c, 'The mocked opp\'s contract should not have an Assignment Agreement');
+        try {
+            transferService.validateNewSSSForOpp(unassignedOpp, sssWithDifferentContractAssignmentEntity);
+        } catch (Util.BWException bwe) {
+            System.assert(false, 'Expected be able to transfer to a SSS with a different Contract Assignment Entity if not yet assigned, but got this: ' + bwe.getMessage());
+        }
+    }
+
+    @IsTest
+    private static void oppWithRejectedAssignmentAgreementCanBeTransferred() {
+        SubscriptionTransferService transferService = new SubscriptionTransferService();
+        Opportunity oppWithRejectedAA = getMockedOpp(true, 'Rejected');
+        Shared_Solar_System__c sssWithDifferentContractAssignmentEntity =
+            getMockedSSSForDifferentContractAssignmentEntity(oppWithRejectedAA.Shared_Solar_System__r.Contract_Assignment_Entity__c);
+
+        System.assertEquals('Rejected', oppWithRejectedAA.Contract.Assignment_Agreement__r.Status, 'The mocked opp\'s contract should have a rejected Assignment Agreement');
+        try {
+            transferService.validateNewSSSForOpp(oppWithRejectedAA, sssWithDifferentContractAssignmentEntity);
+        } catch (Util.BWException bwe) {
+            System.assert(false, 'Expected be able to transfer to a SSS with a different Contract Assignment Entity if the assignment was rejected, but got this: ' + bwe.getMessage());
+        }
+
+        SubscriptionTransferService.entitySelector = (EntitySelector) Test.createStub(EntitySelector.class, new MockedEntitySelector(null));
+    }
+
+    @IsTest
+    private static void oppWithAssignmentAgreementCanBeTransferredToSSSWithSameCAE() {
+        SubscriptionTransferService transferService = new SubscriptionTransferService();
+        Opportunity oppWithDraftAA = getMockedOpp(true, 'Draft');
+        Shared_Solar_System__c sssWithDifferentContractAssignmentEntity =
+            getMockedSSSForDifferentContractAssignmentEntity(oppWithDraftAA.Shared_Solar_System__r.Contract_Assignment_Entity__c);
+        System.assertNotEquals(
+            oppWithDraftAA.Shared_Solar_System__r.Contract_Assignment_Entity__c,
+            sssWithDifferentContractAssignmentEntity.Contract_Assignment_Entity__c,
+            'The Opp\'s SSS and the transfer SSS should have different Contract Assignment Entities'
+        );
+
+        // The transferService selects all of the systems for the current opp's system's CAE, and checks to see if the
+        // new SSS is in that list.
+        SubscriptionTransferService.entitySelector = (EntitySelector) Test.createStub(EntitySelector.class, new MockedEntitySelector(new List<Shared_Solar_System__c>{
+            oppWithDraftAA.Shared_Solar_System__r
+        }));
+        try {
+            transferService.validateNewSSSForOpp(oppWithDraftAA, sssWithDifferentContractAssignmentEntity);
+            System.assert(false, 'Expected to not be able to transfer an Opp with a non-rejected AA to a SSS with a different Contract Assignment Entity');
+        } catch (Util.BWException bwe) {
+            System.assert(bwe.getMessage().contains(SubscriptionTransferService.INVALID_CONTRACT_ASSIGNMENT_ENTITY),
+                'Expected ' + SubscriptionTransferService.INVALID_CONTRACT_ASSIGNMENT_ENTITY + ', but got this: ' + bwe.getMessage());
+        }
+
+        SubscriptionTransferService.entitySelector = (EntitySelector) Test.createStub(EntitySelector.class, new MockedEntitySelector(new List<Shared_Solar_System__c>{
+            oppWithDraftAA.Shared_Solar_System__r
+        }));
+        try {
+            transferService.validateNewSSSForOpp(oppWithDraftAA, oppWithDraftAA.Shared_Solar_System__r);
+        } catch (Util.BWException bwe) {
+            System.assert(false, 'Transferring to a SSS that has the same Contract Assignment Entity should not throw an exception');
+        }
+    }
+
+
+    private static Shared_Solar_System__c getMockedSSSForDifferentContractAssignmentEntity(Id contractAssignmentEntity) {
+        sfab_FabricatedSObject fabbedContractAssignmentEntity2 = new sfab_FabricatedSObject(Entity__c.class);
+        fabbedContractAssignmentEntity2.setField(Entity__c.Id, Util.incrementFakeId(contractAssignmentEntity));
+        sfab_FabricatedSObject fabbedSSS2 = new sfab_FabricatedSObject(Shared_Solar_System__c.class);
+        fabbedSSS2.setField(Shared_Solar_System__c.Id, Util.incrementFakeId(Util.getFakeId(Shared_Solar_System__c.SObjectType)));
+        fabbedSSS2.setParent('Contract_Assignment_Entity__r', fabbedContractAssignmentEntity2);
+        Shared_Solar_System__c sss = (Shared_Solar_System__c) fabbedSSS2.toSObject();
+        return sss;
+    }
+
+    private static Opportunity getMockedOpp(Boolean addAssignmentAgreement, String assignmentAgreementStatus) {
+        sfab_FabricatedSObject fabbedSSS = new sfab_FabricatedSObject(Shared_Solar_System__c.class);
+        fabbedSSS.setField(Shared_Solar_System__c.Id, Util.getFakeId(Shared_Solar_System__c.SObjectType));
+        fabbedSSS.setField(Shared_Solar_System__c.Contract_Assignment_Entity__c, Util.getFakeId(Entity__c.SObjectType));
+        sfab_FabricatedSObject fabbedOpp = new sfab_FabricatedSObject(Opportunity.class);
+        fabbedOpp.setField(Opportunity.Id, Util.getFakeId(Opportunity.SObjectType));
+        fabbedOpp.setField(Opportunity.Shared_Solar_System__c, Util.getFakeId(Shared_Solar_System__c.SObjectType));
+        fabbedOpp.setParent('Shared_Solar_System__r', fabbedSSS);
+
+        if (addAssignmentAgreement) {
+            sfab_FabricatedSObject fabbedAssignmentAgreement = new sfab_FabricatedSObject(Contract.class);
+            fabbedAssignmentAgreement.setField(Contract.Id, Util.getFakeId(Contract.SObjectType));
+            fabbedAssignmentAgreement.setField(Contract.Status, assignmentAgreementStatus);
+
+            sfab_FabricatedSObject fabbedCustomerContract = new sfab_FabricatedSObject(Contract.class);
+            fabbedCustomerContract.setField(Contract.Id, Util.getFakeId(Contract.SObjectType));
+            fabbedCustomerContract.setField(Contract.Assignment_Agreement__c, Util.getFakeId(Contract.SObjectType));
+            fabbedCustomerContract.setParent('Assignment_Agreement__r', fabbedAssignmentAgreement);
+
+            fabbedOpp.setParent('Contract', fabbedCustomerContract);
+        }
+
+        Opportunity opp = (Opportunity) fabbedOpp.toSObject();
+        return opp;
+    }
+
+    public class MockedALSSSelector extends MockProvider {
+        public List<Schedule_Z_Subscription__c> alssesToReturn;
+        public MockedALSSSelector(List<Schedule_Z_Subscription__c> alssesToReturn) {
+            this.alssesToReturn = alssesToReturn;
+        }
+        public override Object handleMethodCall(MethodCall methodCall) {
+            switch on methodCall.stubbedMethodName {
+                when 'getActiveALSSesForOpportunities' {
+                    return alssesToReturn;
+                }
+            }
+            return null;
+        }
+    }
+
+    public class MockedEntitySelector extends MockProvider {
+        public List<Shared_Solar_System__c> sharedSolarSystems;
+        public MockedEntitySelector(List<Shared_Solar_System__c> sharedSolarSystems) {
+            this.sharedSolarSystems = sharedSolarSystems;
+        }
+
+        public override Object handleMethodCall(MethodCall methodCall) {
+            switch on methodCall.stubbedMethodName {
+                when 'getSystemsForContractAssignmentEntity' {
+                    return sharedSolarSystems;
+                }
+            }
+            return null;
+        }
+    }
+
     public class MockedSSSSelector extends MockProvider {
         private Shared_Solar_System__c sss;
         public MockedSSSSelector(Shared_Solar_System__c sss) {
