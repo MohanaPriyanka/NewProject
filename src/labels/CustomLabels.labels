@@ -179,6 +179,78 @@
         <value>Next, we need to gather your co-signer&apos;s personal information:</value>
     </labels>
     <labels>
+        <fullName>Comany_Website</fullName>
+        <categories>branding, email</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Comany_Website</shortDescription>
+        <value>https://bluewavesolar.com/</value>
+    </labels>
+    <labels>
+        <fullName>Company_Color_Blue</fullName>
+        <categories>branding, email</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Company_Color_Blue_Ocean</shortDescription>
+        <value>#387CDF</value>
+    </labels>
+    <labels>
+        <fullName>Company_Email_Icon</fullName>
+        <categories>branding, email</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Company_Email_Icon</shortDescription>
+        <value>http://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/baa9d76c-73a5-4b38-bbc4-1d3c21a5d503.png</value>
+    </labels>
+    <labels>
+        <fullName>Company_Facebook</fullName>
+        <categories>branding, email</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Company_Facebook</shortDescription>
+        <value>https://www.facebook.com/BlueWaveSolar/</value>
+    </labels>
+    <labels>
+        <fullName>Company_Instagram</fullName>
+        <categories>branding, email</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Company_Instagram</shortDescription>
+        <value>https://www.instagram.com/bluewavesolar/?hl=en</value>
+    </labels>
+    <labels>
+        <fullName>Company_LinkedIn</fullName>
+        <categories>branding, email</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Company_LinkedIn</shortDescription>
+        <value>https://www.linkedin.com/company/bluewavesolar/</value>
+    </labels>
+    <labels>
+        <fullName>Company_Name</fullName>
+        <categories>branding, email</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Company Name</shortDescription>
+        <value>BlueWave</value>
+    </labels>
+    <labels>
+        <fullName>Company_Twitter</fullName>
+        <categories>branding, email</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Company_Twitter</shortDescription>
+        <value>https://twitter.com/bluewavesolar</value>
+    </labels>
+    <labels>
+        <fullName>Facebook_Email_Icon</fullName>
+        <categories>branding, email</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Facebook_Email_Icon</shortDescription>
+        <value>https://bluewavesolar--c.documentforce.com/file-asset-public/icons8facebook_new?oid=00Dj0000001q7GO</value>
+    </labels>
+    <labels>
         <fullName>ID_Alimony_Question</fullName>
         <categories>Customer Application Portal</categories>
         <language>en_US</language>
@@ -454,6 +526,14 @@
         <value>We&apos;ll need supporting documentation of a veteran pension or disability compensation for you:</value>
     </labels>
     <labels>
+        <fullName>Instagram_Email_Icon</fullName>
+        <categories>branding, email</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Instagram_Email_Icon</shortDescription>
+        <value>https://bluewavesolar--c.documentforce.com/file-asset-public/icons8instagram_new_filled?oid=00Dj0000001q7GO</value>
+    </labels>
+    <labels>
         <fullName>Joint_Length_With_Employer</fullName>
         <categories>Customer Application Portal</categories>
         <language>en_US</language>
@@ -500,6 +580,14 @@
         <protected>false</protected>
         <shortDescription>Asks how long the applicant has been with their employer.</shortDescription>
         <value>Have you been with your employer for more than one year?</value>
+    </labels>
+    <labels>
+        <fullName>LinkedIn_Email_Icon</fullName>
+        <categories>branding, email</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>LinkedIn_Email_Icon</shortDescription>
+        <value>https://bluewavesolar--c.documentforce.com/file-asset-public/icons8linkedin?oid=00Dj0000001q7GO</value>
     </labels>
     <labels>
         <fullName>Low_Fico_Disclosure</fullName>
@@ -875,6 +963,14 @@
         <protected>false</protected>
         <shortDescription>Lets Get Started</shortDescription>
         <value>Let&apos;s get started! Your installer has provided us with the information below, and they can help you if you&apos;d like to make any changes.</value>
+    </labels>
+    <labels>
+        <fullName>Twitter_Email_Icon</fullName>
+        <categories>branding, email</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Twitter_Email_Icon</shortDescription>
+        <value>https://bluewavesolar--c.documentforce.com/file-asset-public/icons8twitter_filled?oid=00Dj0000001q7GO</value>
     </labels>
     <labels>
         <fullName>Type</fullName>
