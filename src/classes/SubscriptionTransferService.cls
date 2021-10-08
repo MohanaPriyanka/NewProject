@@ -2,12 +2,18 @@
  * @description Transfers subscriptions between or within customers. They need three Subscription Orders: one to zero
  * out the old UAS, a Transfer SO to move the old capacity to the new UAS, and a Resize to handle any change in capacity
  * due to yield, system size, or decimal changes.
- * Tested By: SubscriptionTransferServiceTest
+ * Tested By: SubscriptionTransferServiceTest, ClientReportingServiceTest
  */
 public without sharing class SubscriptionTransferService {
     private static UASSelector uasSelectorInstance = new UASSelector();
     @TestVisible private static SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
     private static SubscriptionTransferCalculator calculator = new SubscriptionTransferCalculator();
+    @TestVisible private static EntitySelector entitySelector = new EntitySelector();
+    @TestVisible private static ScheduleZSubscriptionSelector alssSelector = new ScheduleZSubscriptionSelector();
+    @TestVisible private static final String OPP_ON_ACTIVE_ALS = 'This Opportunity has UASes that are on an ALS that is not rejected';
+    @TestVisible private static final String INVALID_CONTRACT_ASSIGNMENT_ENTITY =
+        'Opportunity\'s Contract has an Assignment Agreement and the requested system has a Contract Assignment Entity ' +
+            'that is different from that of the existing system. Valid systems to transfer to are:';
     @TestVisible private static fflib_SObjectUnitOfWork uowForTransferSO = new fflib_SObjectUnitOfWork(
         new List<SObjectType>{
             Opportunity.SObjectType,
@@ -33,16 +39,35 @@ public without sharing class SubscriptionTransferService {
      * - updating the opportunity's SSS
      * @param oppId oppId
      * @param newSSSId new SSS Id
+     * @return Request object with success/error information
      */
-    public void changeOpportunitySSS(Id oppId, Id newSSSId) {
+    public List<InvocableOpportunitySystemUpdater.Request> changeOpportunitySSS(Id oppId, Id newSSSId) {
         Shared_Solar_System__c sss = sssSelector.selectOne(newSSSId);
+        List<Opportunity> opportunities = OpportunitiesSelector.selectByIds(new List<Id>{
+            oppId
+        });
+        try {
+            validateNewSSSForOpp(opportunities[0], sss);
+        } catch (Exception e) {
+            InvocableOpportunitySystemUpdater.Request request = new InvocableOpportunitySystemUpdater.Request();
+            request.opportunityId = oppId;
+            request.sssId = newSSSId;
+            request.isSuccess = false;
+            request.errorMessage = e.getMessage();
+            return new List<InvocableOpportunitySystemUpdater.Request>{
+                request
+            };
+        }
+
         Opportunity opp = new Opportunity(
             Id = oppId,
             Shared_Solar_System__c = newSSSId
         );
         uowForTransferSO.registerDirty(opp);
         //Get all createable fields for Active Subscriptions - if we add more fields later, this query will still grab them
-        List<Utility_Account_Subscription__c> oldUASes = uasSelectorInstance.getUASForCloneByOpp(new Set<Id>{oppId});
+        List<Utility_Account_Subscription__c> oldUASes = uasSelectorInstance.getUASForCloneByOpp(new Set<Id>{
+            oppId
+        });
         for (Utility_Account_Subscription__c oldUAS : oldUASes) {
             Utility_Account_Subscription__c uasForNewSSS = cloneNewUAS(oldUAS, newSSSId, sss.Name);
             Decimal desiredAmount =
@@ -53,6 +78,50 @@ public without sharing class SubscriptionTransferService {
         utilityAccountSubscriptions.registerSubscriptionOrdersToZeroOutUAS('Transfer', uowForTransferSO);
         uowForTransferSO.commitWork();
         uowForResizeSO.commitWork();
+
+        InvocableOpportunitySystemUpdater.Request request = new InvocableOpportunitySystemUpdater.Request();
+        request.opportunityId = oppId;
+        request.sssId = newSSSId;
+        request.isSuccess = true;
+        return new List<InvocableOpportunitySystemUpdater.Request>{
+            request
+        };
+    }
+
+    @TestVisible
+    private void validateNewSSSForOpp(Opportunity opp, Shared_Solar_System__c sss) {
+        List<Schedule_Z_Subscription__c> activeALSSes = alssSelector.getActiveALSSesForOpportunities(new Set<Id>{
+            opp.Id
+        });
+        if (!activeALSSes.isEmpty()) {
+            throw new Util.BWException(OPP_ON_ACTIVE_ALS + ':\n' + activeALSSesToString(activeALSSes));
+        }
+        if (opp.Contract.Assignment_Agreement__c == null || opp.Contract.Assignment_Agreement__r.Status == 'Rejected') {
+            return;
+        }
+        List<Shared_Solar_System__c> sharedSolarSystems =
+            entitySelector.getSystemsForContractAssignmentEntity(opp.Shared_Solar_System__r.Contract_Assignment_Entity__c);
+        if (!CollectionUtil.getIds(sharedSolarSystems).contains(sss.Id)) {
+            throw new Util.BWException('This Opportunity cannot be transferred to ' + sss.Name +
+                ' because the ' + INVALID_CONTRACT_ASSIGNMENT_ENTITY + '\n' + validSystemsToString(sharedSolarSystems)
+            );
+        }
+    }
+
+    private String validSystemsToString(List<Shared_Solar_System__c> sharedSolarSystems) {
+        String validSystems = '';
+        for (Shared_Solar_System__c validSystem : sharedSolarSystems) {
+            validSystems += validSystem.Name + '\n';
+        }
+        return validSystems;
+    }
+
+    private String activeALSSesToString(List<Schedule_Z_Subscription__c> activeALSSes) {
+        String alsses = '';
+        for (Schedule_Z_Subscription__c activeALSS : activeALSSes) {
+            alsses += activeALSS.Utility_Account_Subscription__r.Name + ' (' + activeALSS.Schedule_Z__r.Status__c + ')\n';
+        }
+        return alsses;
     }
 
     /**
@@ -64,7 +133,9 @@ public without sharing class SubscriptionTransferService {
      */
     public void transferToUAS(Id oldUASId, Id newUASId, Decimal amountToTransfer) {
         Map<Id, Utility_Account_Subscription__c> uasMap =
-            new Map<Id, Utility_Account_Subscription__c>(UASSelector.selectByIds(new Set<Id>{newUASId, oldUASId}));
+            new Map<Id, Utility_Account_Subscription__c>(UASSelector.selectByIds(new Set<Id>{
+                newUASId, oldUASId
+            }));
         Utility_Account_Subscription__c oldUAS = uasMap.get(oldUASId);
         Utility_Account_Subscription__c newUAS = uasMap.get(newUASId);
 
@@ -78,7 +149,9 @@ public without sharing class SubscriptionTransferService {
         registerTransferAndResize(oldUAS, newUAS, sss, amountToTransfer);
 
         UtilityAccountSubscriptions utilityAccountSubscriptions =
-            new UtilityAccountSubscriptions(new List<Utility_Account_Subscription__c>{oldUAS});
+            new UtilityAccountSubscriptions(new List<Utility_Account_Subscription__c>{
+                oldUAS
+            });
         utilityAccountSubscriptions.registerSubscriptionOrdersToZeroOutUAS('Transfer', uowForTransferSO);
         uowForTransferSO.commitWork();
         uowForResizeSO.commitWork();
@@ -144,7 +217,7 @@ public without sharing class SubscriptionTransferService {
             // If the new UAS already exists, we want to include the current subscription when calculating the amount
             // to back into. But if it doesn't exist yet, it might be cloned and still have a
             // Future_Customer_Subscription_KWDC_Rollup__c value which we want to ignore
-            (newUAS.Id == null?0:newUAS.Future_Customer_Subscription_KWDC_Rollup__c)
+            (newUAS.Id == null ? 0 : newUAS.Future_Customer_Subscription_KWDC_Rollup__c)
         );
         setCostOrkWh(so, oldUAS.Subscription_Type__c, annualkWhOrCost);
         so.Comments__c = 'Transferring ' + oldUAS.Future_Customer_Subscription_KWDC_Rollup__c;

@@ -54,7 +54,7 @@
         </filters>
         <filters>
             <field>LASERCA__Result_Status_Type__c</field>
-            <operator>Contains</operator>
+            <operator>EqualTo</operator>
             <value>
                 <stringValue>Hit</stringValue>
             </value>

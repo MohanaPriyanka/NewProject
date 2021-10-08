@@ -1,8 +1,8 @@
 /**
- * Created by peteryao on 9/25/20.
+ * @description:
  * Tested by: EntitySelectorTest
  */
-
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public inherited sharing class EntitySelector {
     public List<Entity__c> getContractAssignmentEntitiesForClient(Id accountId) {
         List<AggregateResult> sharedSolarSystems = [
@@ -20,5 +20,13 @@ public inherited sharing class EntitySelector {
             ));
         }
         return entities;
+    }
+
+    public List<Shared_Solar_System__c> getSystemsForContractAssignmentEntity(Id entityId) {
+        return [
+            SELECT Id, Name
+            FROM Shared_Solar_System__c
+            WHERE Contract_Assignment_Entity__c = :entityId
+        ];
     }
 }
