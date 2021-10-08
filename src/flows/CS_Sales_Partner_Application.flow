@@ -14,6 +14,7 @@
         <faultConnector>
             <targetReference>Create_Error_Log</targetReference>
         </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>SObjectRowId</name>
             <value>
@@ -416,10 +417,10 @@
     <recordCreates>
         <name>Create_Contact</name>
         <label>Create Contact</label>
-        <locationX>1908</locationX>
+        <locationX>1964</locationX>
         <locationY>66</locationY>
         <connector>
-            <targetReference>Create_Product_Group_Assignment</targetReference>
+            <targetReference>emailalert_NotifySales</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Create_Error_Log</targetReference>
@@ -551,44 +552,6 @@
         <object>Error_Log__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
-    <recordCreates>
-        <name>Create_Product_Group_Assignment</name>
-        <label>Create Product Group Assignment</label>
-        <locationX>2063</locationX>
-        <locationY>65</locationY>
-        <connector>
-            <targetReference>emailalert_NotifySales</targetReference>
-        </connector>
-        <faultConnector>
-            <targetReference>Create_Error_Log</targetReference>
-        </faultConnector>
-        <inputAssignments>
-            <field>Account__c</field>
-            <value>
-                <elementReference>sovAccount.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Category__c</field>
-            <value>
-                <stringValue>Business Development</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Description__c</field>
-            <value>
-                <elementReference>Initiative_Description</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Name</field>
-            <value>
-                <elementReference>InitiativeName</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Product_Group_Assignment__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
     <recordUpdates>
         <name>Update_Account</name>
         <label>Update Account</label>
@@ -630,6 +593,7 @@
                     <elementReference>$Flow.ActiveStages</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -689,6 +653,7 @@
                     <elementReference>BusinessAddress.street</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -744,6 +709,7 @@
                     <elementReference>MailingAddress.street</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -777,6 +743,7 @@
                     <elementReference>$Flow.ActiveStages</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -888,6 +855,7 @@
                     <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -921,6 +889,7 @@
                     <elementReference>$Flow.ActiveStages</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -1026,6 +995,7 @@ REGEX({!txtBusiness_Phone},&quot;\\D*?(\\d\\D*?){10}&quot;)
                     <elementReference>$Flow.ActiveStages</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -1082,6 +1052,7 @@ REGEX({!txtBusiness_Phone},&quot;\\D*?(\\d\\D*?){10}&quot;)
                     <elementReference>$Flow.ActiveStages</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -1164,6 +1135,7 @@ REGEX({!txtBusiness_Phone},&quot;\\D*?(\\d\\D*?){10}&quot;)
                     <elementReference>$Flow.ActiveStages</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
