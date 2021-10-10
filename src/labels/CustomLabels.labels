@@ -243,6 +243,14 @@
         <value>https://twitter.com/bluewavesolar</value>
     </labels>
     <labels>
+        <fullName>Customer_Member_Portal_URL</fullName>
+        <categories>branding, email</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Customer_Member_Portal_URL</shortDescription>
+        <value>https://bluewavememberportal.force.com/</value>
+    </labels>
+    <labels>
         <fullName>Facebook_Email_Icon</fullName>
         <categories>branding, email</categories>
         <language>en_US</language>
