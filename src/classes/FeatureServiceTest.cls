@@ -61,9 +61,13 @@ private class FeatureServiceTest {
 
     public class MockCustomFeatureSelector extends MockProvider {
         private Boolean featureOn;
+        private System_Default__mdt systemDefault;
 
         public MockCustomFeatureSelector(Boolean featureOn) {
             this.featureOn = featureOn;
+        }
+        public MockCustomFeatureSelector(System_Default__mdt systemDefault) {
+            this.systemDefault = systemDefault;
         }
 
         public override Object handleMethodCall(MethodCall methodCall) {
@@ -73,6 +77,8 @@ private class FeatureServiceTest {
                         Feature_is_Enabled__c = featureOn
                     );
                     return feature;
+                }  when 'getSystemDefaults' {
+                    return systemDefault;
                 }
             }
             return null;
