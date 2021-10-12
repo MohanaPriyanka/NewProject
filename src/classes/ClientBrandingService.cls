@@ -4,88 +4,89 @@
  */
 
 public with sharing class ClientBrandingService implements Queueable {
-    @TestVisible
-    private AccountsSelector acctSelector = new AccountsSelector();
-    @TestVisible
-    private UASSelector uasSelector = new UASSelector();
-    @TestVisible
-    private OpportunitiesSelector oppSelector = new OpportunitiesSelector();
+    @TestVisible private AccountsSelector acctSelector = new AccountsSelector();
+    @TestVisible private UASSelector uasSelector = new UASSelector();
+    @TestVisible private OpportunitiesSelector oppSelector = new OpportunitiesSelector();
+    @TestVisible private static FeatureSelector featureSelector = new FeatureSelector();
+
 
     public Set<Id> sssIdWithChangedClientBrandKey;
 
-    public void execute(QueueableContext context){
+    public void execute(QueueableContext context) {
         Set<Id> parentAccountIds = new Set<Id>();
-        if (sssIdWithChangedClientBrandKey != null){
+        if (sssIdWithChangedClientBrandKey != null) {
             List<Opportunity> oppList = oppSelector.getOppsFromSSS(sssIdWithChangedClientBrandKey);
-            for (Opportunity opp : oppList){
+            for (Opportunity opp : oppList) {
                 parentAccountIds.add(opp.Account.Parent_Account__c);
             }
             updateClientBrandKey(parentAccountIds);
         }
     }
 
-    public void handleEvent(List<Subscription_Change_Event__e> changeEvents){
+    public void handleEvent(List<Subscription_Change_Event__e> changeEvents) {
         Set<Id> parentAccountIds = new Set<Id>();
         Set<Id> propertyAccountIds = new Set<Id>();
 
-        for (Subscription_Change_Event__e changeEvent : changeEvents){
+        for (Subscription_Change_Event__e changeEvent : changeEvents) {
             propertyAccountIds.add(changeEvent.Property_Account_Id__c);
         }
         List<Account> propertyAccounts = acctSelector.getAccountsById(propertyAccountIds);
-        for (Account prop: propertyAccounts){
+        for (Account prop : propertyAccounts) {
             parentAccountIds.add(prop.Parent_Account__c);
         }
         updateClientBrandKey(parentAccountIds);
     }
 
-    public void updateClientBrandKey (Set<Id> parentAccountIds) {
+    public void updateClientBrandKey(Set<Id> parentAccountIds) {
         List<AggregateResult> uasSummary = uasSelector.getBrandKeySummary(parentAccountIds);
         Map<Id, Account> allAccounts = getParentAccountBrandKey(getPropertyAccountBrandKey(uasSummary));
         List<Account> accountsNeedingUpdate = checkForDifferences(allAccounts);
-        if (accountsNeedingUpdate.size() > 0){
+        if (accountsNeedingUpdate.size() > 0) {
             update accountsNeedingUpdate;
         }
     }
 
-    public Map<Id, Account> getPropertyAccountBrandKey(List<AggregateResult> uasSummary){
+    public Map<Id, Account> getPropertyAccountBrandKey(List<AggregateResult> uasSummary) {
+        System_Default__mdt systemDefault = featureSelector.getSystemDefaults();
         Map<Id, Account> accountMap = new Map<Id, Account>();
 
-        for (AggregateResult aggregateResult : uasSummary)  {
-            String sssBrandKey = (String)aggregateResult.get('sssBrandKey');
-            String entityBrandKey = (String)aggregateResult.get('entityBrandKey');
-            String propertyAccountId = (String)aggregateResult.get('propertyAccount');
-            String parentAccountId = (String)aggregateResult.get('parentAccount');
+        for (AggregateResult aggregateResult : uasSummary) {
+            String sssBrandKey = (String) aggregateResult.get('sssBrandKey');
+            String entityBrandKey = (String) aggregateResult.get('entityBrandKey');
+            String propertyAccountId = (String) aggregateResult.get('propertyAccount');
+            String parentAccountId = (String) aggregateResult.get('parentAccount');
 
             Account propertyAccount = new Account(
                 Id = propertyAccountId,
                 Parent_Account__c = parentAccountId
             );
             // If blank, set to BluewaveLogo
-            if (sssBrandKey != null){
+            if (sssBrandKey != null) {
                 propertyAccount.Client_Brand_Key__c = sssBrandKey;
             } else if (entityBrandKey != null) {
                 propertyAccount.Client_Brand_Key__c = entityBrandKey;
             } else {
-                propertyAccount.Client_Brand_Key__c = 'BluewaveLogo';
+                propertyAccount.Client_Brand_Key__c = systemDefault.Default_Client_Brand_Key__c;
             }
             if (accountMap.containsKey(propertyAccount.Id)
-                && accountMap.get(propertyAccount.Id).Client_Brand_Key__c != propertyAccount.Client_Brand_Key__c){
-                propertyAccount.Client_Brand_Key__c = 'BluewaveLogo';
+                && accountMap.get(propertyAccount.Id).Client_Brand_Key__c != propertyAccount.Client_Brand_Key__c) {
+                propertyAccount.Client_Brand_Key__c = systemDefault.Default_Client_Brand_Key__c;
             }
-            accountMap.put(propertyAccount.Id,propertyAccount);
+            accountMap.put(propertyAccount.Id, propertyAccount);
         }
         return accountMap;
     }
 
-    public Map<Id, Account> getParentAccountBrandKey(Map<Id, Account> accountMap){
-        for (Account property : accountMap.values()){
+    public Map<Id, Account> getParentAccountBrandKey(Map<Id, Account> accountMap) {
+        System_Default__mdt systemDefault = featureSelector.getSystemDefaults();
+        for (Account property : accountMap.values()) {
             Account propertyAccount = accountMap.get(property.Id);
             Account parentAccount = new Account(
                 Id = property.Parent_Account__c
             );
             if (accountMap.containsKey(parentAccount.Id)
-                && accountMap.get(parentAccount.Id).Client_Brand_Key__c != propertyAccount.Client_Brand_Key__c){
-                parentAccount.Client_Brand_Key__c = 'BluewaveLogo';
+                && accountMap.get(parentAccount.Id).Client_Brand_Key__c != propertyAccount.Client_Brand_Key__c) {
+                parentAccount.Client_Brand_Key__c = systemDefault.Default_Client_Brand_Key__c;
             } else {
                 parentAccount.Client_Brand_Key__c = propertyAccount.Client_Brand_Key__c;
             }
@@ -94,15 +95,15 @@ public with sharing class ClientBrandingService implements Queueable {
         return accountMap;
     }
 
-    public List<Account> checkForDifferences(Map<Id, Account> accountMap){
+    public List<Account> checkForDifferences(Map<Id, Account> accountMap) {
         List<Account> accountsWithChangedValues = new List<Account>();
         List<Account> accountsBeforeUpdate = acctSelector.getAccountsById(accountMap.keySet());
 
-        for (Account oldValue : accountsBeforeUpdate){
-            if (oldValue.RecordType.Name == 'Client Account'){
+        for (Account oldValue : accountsBeforeUpdate) {
+            if (oldValue.RecordType.Name == 'Client Account') {
                 continue;
             }
-            if (oldValue.Client_Brand_Key__c != accountMap.get(oldValue.Id).Client_Brand_Key__c){
+            if (oldValue.Client_Brand_Key__c != accountMap.get(oldValue.Id).Client_Brand_Key__c) {
                 accountsWithChangedValues.add(accountMap.get(oldValue.Id));
             }
         }
