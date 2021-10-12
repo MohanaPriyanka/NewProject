@@ -11,8 +11,8 @@ public without sharing class UtilityAccountSubscriptionHandler {
     private Map<Id,Utility_Account_Subscription__c> oldMap;
     private List<Utility_Account_Subscription__c> newList;
     private TriggerOperation triggerType;
-    @TestVisible private UALSelector ualSelector = new UALSelector();
-    @TestVisible private SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
+    @TestVisible private static UALSelector ualSelector = new UALSelector();
+    @TestVisible private static SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
 
     public UtilityAccountSubscriptionHandler(Map<Id,Utility_Account_Subscription__c> oldMap,
         List<Utility_Account_Subscription__c> newList, TriggerOperation triggerOperation) {
@@ -43,7 +43,7 @@ public without sharing class UtilityAccountSubscriptionHandler {
         ClientReportingService.updateClientUAS(newList, oldMap);
         new SystemCapacityRollupCalculator(new UASCapacityRollupInitializer(oldMap, newList, triggerType)).performRollup();
     }
-    
+
     public void beforeDelete() {
         subscriptionManagementService.publishSubscriptionOrderChangeEventsOnDelete(null, oldMap);
         ClientReportingService.deleteClientUAS(Trigger.old);
@@ -64,7 +64,7 @@ public without sharing class UtilityAccountSubscriptionHandler {
         }
         return returnMap;
     }
-    
+
     private void assignSSSBeforeInsert() {
         Set<Id> oppIds = new Set<Id>();
         for (Utility_Account_Subscription__c uas : newList) {
@@ -79,6 +79,7 @@ public without sharing class UtilityAccountSubscriptionHandler {
         }
     }
 
+    @TestVisible
     private void verifyUALSubscriptionType() {
         Set<Id> ualIds = new Set<Id>();
         Set<Id> sssIds = new Set<Id>();
@@ -88,31 +89,20 @@ public without sharing class UtilityAccountSubscriptionHandler {
             sssIds.add(uas.Shared_Solar_System__c);
         }
 
-        Map<Id, List<Utility_Account_Subscription__c>> uasToUALMap = createUASToUALMap(ualIds);
-        Map<Id,Utility_Account_Log__c> ualMap = ualSelector.selectUALSWithActiveUASMap(ualIds);
-        Map<Id,Shared_Solar_System__c> sssMap = getSSSMap(sssIds, ualMap);
-
+        Map<Id, List<Utility_Account_Subscription__c>> uasToUALMap = createUASToUALMap(ualIds); // map of ual id to list of uas in trigger
+        Map<Id,Utility_Account_Log__c> ualMap = ualSelector.selectUALSWithActiveUASMap(ualIds); // map of ual id and ual with all exiting uas records
+        Map<Id,Shared_Solar_System__c> sssMap = getSSSMap(sssIds, ualMap); // map of all solar systems related to the uas records (new and existing)
 
         for (Utility_Account_Subscription__c uas : newList) {
 
-
             Utility_Account_Log__c ual = ualMap.get(uas.Utility_Account_Log__c);
-
             List<Utility_Account_Subscription__c> existingUASList = ual.Utility_Account_Subscriptions__r;
             List<Utility_Account_Subscription__c> newRelatedUAS = uasToUALMap.get(uas.Utility_Account_Log__c);
             List<Utility_Account_Subscription__c> combinedRelatedUASList = new List<Utility_Account_Subscription__c>();
             combinedRelatedUASList.addAll(existingUASList);
             combinedRelatedUASList.addAll(newRelatedUAS);
 
-            if (uas.Shared_Solar_System__c == null) {
-                continue;
-            }
-
-            if (existingUASList.size() == 0 && newRelatedUAS.size() == 1) {
-                continue;
-            }
-
-            if (verifyMultipleSubscriptionsAllowedByRelatedUAS(combinedRelatedUASList, sssMap)) {
+            if (uas.Shared_Solar_System__c == null || (existingUASList.size() == 0 && newRelatedUAS.size() == 1) || verifyMultipleSubscriptionsAllowedByRelatedUAS(combinedRelatedUASList, sssMap)) {
                 continue;
             }
             uas.addError('Only a single subscription per Utility Account is allowed for UAL: ' + + ual.Id);
@@ -136,11 +126,10 @@ public without sharing class UtilityAccountSubscriptionHandler {
 
     private Boolean verifyMultipleSubscriptionsAllowedByRelatedUAS(List<Utility_Account_Subscription__c> uasList, Map<Id,Shared_Solar_System__c> sssMap) {
         for (Utility_Account_Subscription__c uas : uasList) {
-
-                Shared_Solar_System__c sss = sssMap.get(uas.Shared_Solar_System__c);
-                if (sss.Product__r.Utility_Account_Subscription_Type__c == 'Single subscription per Utility Account') {
-                    return false;
-                }
+            Shared_Solar_System__c sss = sssMap.get(uas.Shared_Solar_System__c);
+            if (sss.Product__r.Utility_Account_Subscription_Type__c == 'Single subscription per Utility Account') {
+                return false;
+            }
         }
         return true;
     }
