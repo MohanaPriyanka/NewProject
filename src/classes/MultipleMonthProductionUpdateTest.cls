@@ -16,16 +16,16 @@ public class MultipleMonthProductionUpdateTest {
         insert new List<Utility__c>{eversource, nationalGrid};
 
 
-        Utility_NMC_Tariff__c eversizeNMC = new Utility_NMC_Tariff__c (Name = 'Eversource SEMA Class 2', 
-                                                                       Utility__c = 'Eversource', 
-                                                                       Class__c = 'Class 2',
-                                                                       Value_of_Net_Metering_Credit__c = 0.1848,
-                                                                       Sizing_Rate__c = TRUE);
+        Utility_NMC_Tariff__c eversizeNMC = new Utility_NMC_Tariff__c (Name = 'Eversource SEMA Class 2',
+            Utility__c = 'Eversource',
+            Class__c = 'Class 2',
+            Value_of_Net_Metering_Credit__c = 0.1848,
+            Sizing_Rate__c = TRUE);
         insert eversizeNMC;
-        
-        Load_U__c everLZU = new Load_U__c (Name = '02633', 
-                                           LZ__c = 'SEMA',
-                                           Town__c= 'Medfield');
+
+        Load_U__c everLZU = new Load_U__c (Name = '02633',
+            LZ__c = 'SEMA',
+            Town__c= 'Medfield');
 
         insert new List<Load_U__c>{everLZU};
 
@@ -47,112 +47,112 @@ public class MultipleMonthProductionUpdateTest {
             Client_Account__c = clientAccount.Id
         );
         insert entity1;
-        
-        Shared_Solar_System__c sss1 = 
+
+        Shared_Solar_System__c sss1 =
             new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',
-                                       Service_Territory__c = 'SEMA',
-                                       Open__c = true,
-                                       Reserved_Capacity_kW_DC__c = '0',
-                                       Capacity_Committed_kW_DC__c = 0,
-                                       Total_System_Size_kWh_DC__c = 1445.86,
-                                       Total_System_Size_kW_AC__c  = 996,
-                                       Credit_Score_Requirement__c = 200,
-                                       Assignment_order__c = '1',
-                                       Utility_NMC_Tariff__c = eversizeNMC.Id,
-                                       Expected_Yield_kWh_kW__c = 1300,
-                                       Assemblage_Count__c = 1,
-                                       Client_Account__c = clientAccount.Id,
-                                       BWC_Project_Entity_Manual__c = entity1.Id,
-                                       Utility__c = eversource.Id,
-                                       Maximum_Subscription_Capacity_kWDC__c = 25,
-                                       Billing_Method__c = 'kWh');
+                Service_Territory__c = 'SEMA',
+                Open__c = true,
+                Reserved_Capacity_kW_DC__c = '0',
+                Capacity_Committed_kW_DC__c = 0,
+                Total_System_Size_kWh_DC__c = 1445.86,
+                Total_System_Size_kW_AC__c  = 996,
+                Credit_Score_Requirement__c = 200,
+                Assignment_order__c = '1',
+                Utility_NMC_Tariff__c = eversizeNMC.Id,
+                Expected_Yield_kWh_kW__c = 1300,
+                Assemblage_Count__c = 1,
+                Client_Account__c = clientAccount.Id,
+                BWC_Project_Entity_Manual__c = entity1.Id,
+                Utility__c = eversource.Id,
+                Maximum_Subscription_Capacity_kWDC__c = 25,
+                Billing_Method__c = 'kWh');
         insert new List<Shared_Solar_System__c>{sss1};
 
 
-        Id parentAccountRT = 
+        Id parentAccountRT =
             Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
 
         Product2 normalCSProduct = new Product2( Name = 'BlueWave Community Solar',
-                                                  Family = 'Community Solar',
-                                                  Product_Type__c = 'Community Solar',
-                                                  State__c = 'MA',
-                                                  ProductCode = 'CS - BlueWave - 10%',
-                                                  Sizing_Method__c = 'Project Ratio',
-                                                  IsActive = True,
-                                                  Lender_of_Record__c = 'BlueWave', 
-                                                  NMC_Discount__c = 10,
-                                                  Annual_kWh_Maximum__c = 100000000,
-                                                  NM_Rate_Floor__c = 0,
-                                                  Days_In_Bill_Period__c = 30,
-                                                  Monthly_Late_Fee__c = 1);
+            Family = 'Community Solar',
+            Product_Type__c = 'Community Solar',
+            State__c = 'MA',
+            ProductCode = 'CS - BlueWave - 10%',
+            Sizing_Method__c = 'Project Ratio',
+            IsActive = True,
+            Lender_of_Record__c = 'BlueWave',
+            NMC_Discount__c = 10,
+            Annual_kWh_Maximum__c = 100000000,
+            NM_Rate_Floor__c = 0,
+            Days_In_Bill_Period__c = 30,
+            Monthly_Late_Fee__c = 1);
 
         Product2 publicCSProduct = new Product2(  Name = 'BlueWave Public Offtake CS',
-                                                  Family = 'Community Solar',
-                                                  Product_Type__c = 'Community Solar',
-                                                  State__c = 'MA',
-                                                  ProductCode = 'CS - Bluewave - Public CS - 20%',
-                                                  Sizing_Method__c = 'Project Ratio',
-                                                  IsActive = True,
-                                                  Lender_of_Record__c = 'BlueWave', 
-                                                  NMC_Discount__c = 20,
-                                                  Annual_kWh_Maximum__c = 63000,
-                                                  NM_Rate_Floor__c = 0.09,
-                                                  Days_In_Bill_Period__c = 30,
-                                                  Monthly_Late_Fee__c = 0.8333);
+            Family = 'Community Solar',
+            Product_Type__c = 'Community Solar',
+            State__c = 'MA',
+            ProductCode = 'CS - Bluewave - Public CS - 20%',
+            Sizing_Method__c = 'Project Ratio',
+            IsActive = True,
+            Lender_of_Record__c = 'BlueWave',
+            NMC_Discount__c = 20,
+            Annual_kWh_Maximum__c = 63000,
+            NM_Rate_Floor__c = 0.09,
+            Days_In_Bill_Period__c = 30,
+            Monthly_Late_Fee__c = 0.8333);
         insert new List<Product2>{normalCSProduct, publicCSProduct};
-        
+
         Account parentAccount = new Account(name = 'Jon Snow',
-                                       RecordTypeId = parentAccountRT);
+            RecordTypeId = parentAccountRT);
 
-        insert new List<Account>{parentAccount};  
+        insert new List<Account>{parentAccount};
 
-        Account propertyOne = new Account(name = 'Property A', 
-                                      Parent_Account__c = parentAccount.Id);
+        Account propertyOne = new Account(name = 'Property A',
+            Parent_Account__c = parentAccount.Id);
 
-        insert new List<Account>{propertyOne};  
+        insert new List<Account>{propertyOne};
 
-        Utility_Account_Log__c ualogOne = 
+        Utility_Account_Log__c ualogOne =
             new Utility_Account_Log__c(Name = '00088888',
-                                       Account__c = propertyOne.Id,
-                                       Annual_Cost_of_Electricity__c = 12000,
-                                       Name_on_Account__c = 'Prop A');
+                Account__c = propertyOne.Id,
+                Annual_Cost_of_Electricity__c = 12000,
+                Name_on_Account__c = 'Prop A');
 
-        Utility_Account_Log__c ualogTwo = 
+        Utility_Account_Log__c ualogTwo =
             new Utility_Account_Log__c(Name = '000999999',
-                                       Account__c = propertyOne.Id,
-                                       Annual_Cost_of_Electricity__c = 4000,
-                                       Name_on_Account__c = 'Prop B');
+                Account__c = propertyOne.Id,
+                Annual_Cost_of_Electricity__c = 4000,
+                Name_on_Account__c = 'Prop B');
 
-        insert new List<Utility_Account_Log__c>{ualogOne, ualogTwo};  
+        insert new List<Utility_Account_Log__c>{ualogOne, ualogTwo};
 
         Opportunity opportunityOne =
             new Opportunity(Name = 'Building SSS1',
-                            AccountId = propertyOne.Id,
-                            Shared_Solar_System__c = sss1.Id,
-                            NMC_Tariff__c = eversizeNMC.Id,
-                            StageName = 'Complete',
-                            Product__c = normalCSProduct.Id,
-                            CloseDate = System.today());
+                AccountId = propertyOne.Id,
+                Shared_Solar_System__c = sss1.Id,
+                NMC_Tariff__c = eversizeNMC.Id,
+                StageName = 'Complete',
+                Product__c = normalCSProduct.Id,
+                CloseDate = System.today());
 
         insert new List<Opportunity>{opportunityOne};
 
-        Utility_Account_Subscription__c uasOne = 
+        Utility_Account_Subscription__c uasOne =
             new Utility_Account_Subscription__c(Name = '00088888',
-                                                Utility_Account_Log__c = ualogOne.Id,
-                                                Opportunity__c = opportunityOne.Id,
-                                                Shared_Solar_System__c = sss1.Id,
-                                                Sizing_Method__c = eversizeNMC.Id,
-                                                Next_Schedule_Z_Status__c = 'Active Subscription',
-                                                Calculated_Annual_Cost_of_Electricity__c = 4804.8);
+                Utility_Account_Log__c = ualogOne.Id,
+                Opportunity__c = opportunityOne.Id,
+                Shared_Solar_System__c = sss1.Id,
+                Sizing_Method__c = eversizeNMC.Id,
+                Next_Schedule_Z_Status__c = 'Active Subscription',
+                Calculated_Annual_Cost_of_Electricity__c = 4804.8);
 
-        Utility_Account_Subscription__c uasTwo = 
+        Utility_Account_Subscription__c uasTwo =
             new Utility_Account_Subscription__c(Name = '000999999',
-                                                Utility_Account_Log__c = ualogTwo.Id,
-                                                Opportunity__c = opportunityOne.Id,
-                                                Shared_Solar_System__c = sss1.Id,
-                                                Sizing_Method__c = eversizeNMC.Id,
-                                                Next_Schedule_Z_Status__c = 'Active Subscription',
-                                                Calculated_Annual_Cost_of_Electricity__c = 3363.36);
+                Utility_Account_Log__c = ualogTwo.Id,
+                Opportunity__c = opportunityOne.Id,
+                Shared_Solar_System__c = sss1.Id,
+                Sizing_Method__c = eversizeNMC.Id,
+                Next_Schedule_Z_Status__c = 'Active Subscription',
+                Calculated_Annual_Cost_of_Electricity__c = 3363.36);
 
         insert new List<Utility_Account_Subscription__c>{uasOne, uasTwo};
 
@@ -387,11 +387,11 @@ public class MultipleMonthProductionUpdateTest {
 
     @isTest public static void testBillCreation() {
         List<UASB__c> uasblist =
-            [SELECT Id, Name, Date__c, System_Bill__r.Bill_Number__c, Above_NM_Rate_Floor__c,
-                Total_System_NMCs__c, NM_Rate_Floor__c, NMC_Rate__c, System_Bill__c,
-                Total_System_Production_kWh__c, Utility_Account_Subscription__c, Bill_Value__c, Schedule_Z_Subscription__c
-            FROM UASB__c
-            ORDER BY Date__c, NMC_Rate__c];
+        [SELECT Id, Name, Date__c, System_Bill__r.Bill_Number__c, Above_NM_Rate_Floor__c,
+            Total_System_NMCs__c, NM_Rate_Floor__c, NMC_Rate__c, System_Bill__c,
+            Total_System_Production_kWh__c, Utility_Account_Subscription__c, Bill_Value__c, Schedule_Z_Subscription__c
+        FROM UASB__c
+        ORDER BY Date__c, NMC_Rate__c];
 
         Date firstBillDate = Date.newInstance(2016, 1, 1);
         Date secondBillDate = Date.newInstance(2016, 2, 2);
@@ -428,15 +428,15 @@ public class MultipleMonthProductionUpdateTest {
         ];
 
         Transfer_Part__c part = [
-          SELECT Id, Production__c
-          FROM Transfer_Part__c
+            SELECT Id, Production__c
+            FROM Transfer_Part__c
             WHERE Transfer__c = : transfer.Id
             LIMIT 1
         ];
 
         Production__c production = [
-          SELECT Id, Production_kWh__c
-          FROM Production__c
+            SELECT Id, Production_kWh__c
+            FROM Production__c
             WHERE Id = :part.Production__c
         ];
 

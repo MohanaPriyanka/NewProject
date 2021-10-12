@@ -537,7 +537,7 @@ public with sharing class SubscriptionSizingTestclass {
         List<InvocableSizingMethodRecalculation.UAStoUpdateInfo> uasInfo =
             new List<InvocableSizingMethodRecalculation.UAStoUpdateInfo>();
         uasInfo.add(testInfo);
-        
+
         InvocableSizingMethodRecalculation.recalculateSubscriptionWithSizingMethod(uasInfo);
         Test.stopTest();
 
@@ -655,7 +655,7 @@ public with sharing class SubscriptionSizingTestclass {
             FROM Opportunity
             WHERE AccountId = :propertyAccount.Id
         ];
-        
+
         System.assertEquals(2, convertedOpps.size());
         Test.stopTest();
 
@@ -677,7 +677,7 @@ public with sharing class SubscriptionSizingTestclass {
                 System.assertEquals(25.0776, uas.Future_Customer_Subscription_KWDC_Rollup__c);
             }
         }
-    
+
 
         List<Subscription_Order__c> sOrders = [
             SELECT Id, Utility_NMC_Tariff__c, Size_Ratio__c, Utility_Account_Subscription__c, Utility_NMC_Tariff__r.Size_Ratio__c,
@@ -687,7 +687,7 @@ public with sharing class SubscriptionSizingTestclass {
             WHERE Utility_Account_Subscription__r.Utility_Account_Log__c = :ual.Id
         ];
 
-        
+
         System.assertEquals(2, sOrders.size());
         for (Subscription_Order__c so : sOrders) {
             System.assertEquals(so.Utility_Account_Subscription__r.Sizing_Method__c, so.Utility_NMC_Tariff__c,

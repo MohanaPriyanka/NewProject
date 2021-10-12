@@ -459,7 +459,7 @@ public with sharing class ClientBrandingServiceTest {
         }
 
         Test.startTest();
-            update opportunities;
+        update opportunities;
         Test.stopTest();
 
         List<Opportunity> updatedOpps = [
@@ -496,7 +496,7 @@ public with sharing class ClientBrandingServiceTest {
         }
 
         Test.startTest();
-            update sssList;
+        update sssList;
         Test.stopTest();
 
         List<Account> updatedPropertyAccounts = [
@@ -534,7 +534,7 @@ public with sharing class ClientBrandingServiceTest {
         update beforeAccounts;
 
         Test.startTest();
-            EventBus.publish(eventList);
+        EventBus.publish(eventList);
         Test.stopTest();
 
         List<Account> afterAccounts = [
