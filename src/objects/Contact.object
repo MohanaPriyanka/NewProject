@@ -325,6 +325,17 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Admin_User__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Whether the contact is in email list</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Does the contact need to be added to the email list?</inlineHelpText>
+        <label>Admin User</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Application_Type__c</fullName>
         <externalId>false</externalId>
         <label>Application Type</label>
