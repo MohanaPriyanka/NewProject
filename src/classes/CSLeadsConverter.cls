@@ -156,19 +156,10 @@ public without sharing class CSLeadsConverter implements Queueable {
         List<Lead> leadsToUpdate = new List<Lead>();
         for (LeadConvertDetail detail : conversions.values()) {
             Lead lead = new Lead(Id = detail.leadId);
-            if (isAutoConversionContext) {
-                // Always Update Lead here when executed by Auto Qualify & Convert (Queueable/Asynchronous Apex)
-                // This preserves the errors found during the process to aide in reporting Auto Qualify & Convert metrics
-                lead.Status = !detail.selectedSystems.isEmpty() ? 'Qualified' : lead.Status;
-                lead.Selected_SSS_For_Conversion__c = getSelectedSystemIds(detail);
-                lead.Product__c = detail.selectedProductId;
-                leadsToUpdate.add(lead);
-            } else if (!isAutoConversionContext && detail.errorsEncountered.isEmpty()) {
-                // Update Lead when executed by Synchronous Apex or by Flow, but only when no errors were encountered
-                lead.Selected_SSS_For_Conversion__c = getSelectedSystemIds(detail);
-                lead.Product__c = detail.selectedProductId;
-                leadsToUpdate.add(lead);
-            }
+            lead.Status = !detail.selectedSystems.isEmpty() ? 'Qualified' : lead.Status;
+            lead.Selected_SSS_For_Conversion__c = getSelectedSystemIds(detail);
+            lead.Product__c = detail.selectedProductId;
+            leadsToUpdate.add(lead);
         }
         updateLeads(leadsToUpdate, true);
     }
@@ -233,8 +224,7 @@ public without sharing class CSLeadsConverter implements Queueable {
     private void updateLeadsWithConversionResults() {
         List<Lead> leadsToUpdate = new List<Lead>();
         for (LeadConvertDetail detail : conversions.values()) {
-            Lead lead = new Lead();
-            lead.Id = detail.leadId;
+            Lead lead = new Lead(Id = detail.leadId);
             lead.Auto_QC_Last_Runtime__c = System.now();
             lead.Auto_QC_Failure_Reason__c = detail.errorsEncountered.size() > 1 ? CSLeadConversionValidator.MULTIPLE_ISSUES : detail.error;
             lead.Auto_QC_Failure_Details__c = String.join(new List<String>(detail.errorsEncountered), ', ');
