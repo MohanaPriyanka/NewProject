@@ -122,7 +122,6 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
                         Utility_Account_Log__c = ual.Id,
                         UAS_Number__c = uasNumberCounter,
                         calculated_annual_cost_of_electricity__c = annualElectricityCostAssigned
-                        //Subscribed_Annual_Cost_of_Electricity__c = annualElectricityCostAssigned
                     );
                     uow.registerNew(uas, Utility_Account_Subscription__c.Opportunity__c, opp);
                     populateSizingMethod(ual, uas, sssSubscription);

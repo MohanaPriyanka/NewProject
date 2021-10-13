@@ -306,7 +306,6 @@ public class UtilityAccountSubscriptionHandlerTest {
                 Opportunity__c = opps[0].Id,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
                 Calculated_Annual_Cost_of_Electricity__c = 4000);
-        //Subscribed_Annual_Cost_of_Electricity__c = 4000);
         insert uas;
 
         Utility_Account_Subscription__c uas0 = [
