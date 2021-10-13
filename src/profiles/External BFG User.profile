@@ -423,10 +423,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>InvocableLeadConvert</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>InvocableLeadQualificationTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
