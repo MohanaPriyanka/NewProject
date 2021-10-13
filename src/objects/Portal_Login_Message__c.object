@@ -141,46 +141,25 @@
         <type>Default</type>
     </actionOverrides>
     <allowInChatterGroups>false</allowInChatterGroups>
-    <compactLayoutAssignment>Interconnection_Agreement_Compact_Custom</compactLayoutAssignment>
-    <compactLayouts>
-        <fullName>Interconnection_Agreement_Compact_Custom</fullName>
-        <fields>Name</fields>
-        <fields>Agreement_Iteration__c</fields>
-        <fields>Agreement_Payment_Est__c</fields>
-        <fields>Agreement_Payment_Act__c</fields>
-        <fields>Agreement_Received_Est__c</fields>
-        <fields>Agreement_Received_Act__c</fields>
-        <fields>Executed_Agreement_Sent__c</fields>
-        <fields>Agreement_Counter_Signed_by_Utility__c</fields>
-        <label>Interconnection Agreement Compact Custom</label>
-    </compactLayouts>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
-    <enableActivities>true</enableActivities>
+    <description>Used to show messages on portals</description>
+    <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableFeeds>true</enableFeeds>
+    <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableLicensing>false</enableLicensing>
-    <enableReports>true</enableReports>
+    <enableReports>false</enableReports>
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <externalSharingModel>ControlledByParent</externalSharingModel>
+    <externalSharingModel>Private</externalSharingModel>
     <fields>
-        <fullName>Agreement_Counter_Signed_by_Utility__c</fullName>
+        <fullName>Audience__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Date on contract of counter-signature by utility</inlineHelpText>
-        <label>Agreement Counter-Signed by Utility</label>
+        <inlineHelpText>Who should see this message.</inlineHelpText>
+        <label>Audience</label>
         <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Agreement_Iteration__c</fullName>
-        <externalId>false</externalId>
-        <label>Agreement Iteration</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
@@ -188,121 +167,59 @@
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
-                    <fullName>Original</fullName>
+                    <fullName>Customer</fullName>
                     <default>false</default>
-                    <label>Original</label>
+                    <label>Customer</label>
                 </value>
                 <value>
-                    <fullName>Amendment 1</fullName>
+                    <fullName>Client</fullName>
                     <default>false</default>
-                    <label>Amendment 1</label>
+                    <label>Client</label>
                 </value>
                 <value>
-                    <fullName>Amendment 2</fullName>
+                    <fullName>Partner</fullName>
                     <default>false</default>
-                    <label>Amendment 2</label>
-                </value>
-                <value>
-                    <fullName>Amendment 3</fullName>
-                    <default>false</default>
-                    <label>Amendment 3</label>
-                </value>
-                <value>
-                    <fullName>Amendment 4</fullName>
-                    <default>false</default>
-                    <label>Amendment 4</label>
-                </value>
-                <value>
-                    <fullName>Amendment 5</fullName>
-                    <default>false</default>
-                    <label>Amendment 5</label>
+                    <label>Partner</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
     </fields>
     <fields>
-        <fullName>Agreement_Notes__c</fullName>
+        <fullName>End_Time__c</fullName>
         <externalId>false</externalId>
-        <label>Agreement Notes</label>
-        <length>131072</length>
-        <trackFeedHistory>false</trackFeedHistory>
+        <inlineHelpText>Time after which this message should no longer be shown at login</inlineHelpText>
+        <label>End Time</label>
+        <required>false</required>
         <trackTrending>false</trackTrending>
-        <type>LongTextArea</type>
-        <visibleLines>10</visibleLines>
+        <type>DateTime</type>
     </fields>
     <fields>
-        <fullName>Agreement_Payment_Act__c</fullName>
+        <fullName>Message__c</fullName>
         <externalId>false</externalId>
-        <label>Agreement Payment Act</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
+        <inlineHelpText>The message to show at login</inlineHelpText>
+        <label>Message</label>
+        <length>32768</length>
         <trackTrending>false</trackTrending>
-        <type>Currency</type>
+        <type>Html</type>
+        <visibleLines>25</visibleLines>
     </fields>
     <fields>
-        <fullName>Agreement_Payment_Est__c</fullName>
+        <fullName>Start_Time__c</fullName>
         <externalId>false</externalId>
-        <label>Agreement Payment Est</label>
-        <precision>18</precision>
+        <inlineHelpText>Logins at or after this time should see this message</inlineHelpText>
+        <label>Start Time</label>
         <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
-        <type>Currency</type>
+        <type>DateTime</type>
     </fields>
-    <fields>
-        <fullName>Agreement_Received_Act__c</fullName>
-        <externalId>false</externalId>
-        <label>Agreement Received Act</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Agreement_Received_Est__c</fullName>
-        <externalId>false</externalId>
-        <label>Agreement Received Est</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Executed_Agreement_Sent__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Date executed agreement sent to utility</inlineHelpText>
-        <label>Executed Agreement Sent</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <label>Interconnection Agreement</label>
-    <listViews>
-        <fullName>All</fullName>
-        <filterScope>Everything</filterScope>
-        <label>All</label>
-    </listViews>
+    <label>Portal Login Message</label>
     <nameField>
-        <displayFormat>ISA-{00000}</displayFormat>
-        <label>Interconnection Agreement</label>
-        <trackFeedHistory>false</trackFeedHistory>
+        <displayFormat>PLM-{0000}</displayFormat>
+        <label>Portal Login Message Name</label>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>Interconnection Agreements</pluralLabel>
-    <searchLayouts>
-        <searchResultsAdditionalFields>Agreement_Iteration__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>LAST_ACTIVITY</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Agreement_Counter_Signed_by_Utility__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Agreement_Payment_Est__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Agreement_Payment_Act__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Agreement_Received_Est__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Agreement_Received_Act__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Executed_Agreement_Sent__c</searchResultsAdditionalFields>
-    </searchLayouts>
-    <sharingModel>ControlledByParent</sharingModel>
+    <pluralLabel>Portal Login Messages</pluralLabel>
+    <searchLayouts />
+    <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

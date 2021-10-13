@@ -2093,6 +2093,10 @@ null)</formula>
                 <fullName>DSD</fullName>
                 <default>false</default>
             </values>
+            <values>
+                <fullName>Perch</fullName>
+                <default>false</default>
+            </values>
         </picklistValues>
         <picklistValues>
             <picklist>RiskCalc_Minimum__c</picklist>
@@ -2414,6 +2418,25 @@ null)</formula>
         <active>false</active>
         <label>SSS PM Relationship</label>
         <picklistValues>
+            <picklist>Client_Brand_Key__c</picklist>
+            <values>
+                <fullName>AmpBlack</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>AmpRed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BluewaveLogo</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Perch</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>RiskCalc_Minimum__c</picklist>
             <values>
                 <fullName>A1</fullName>
@@ -2644,21 +2667,6 @@ null)</formula>
             </values>
             <values>
                 <fullName>Management Only</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Client_Brand_Key__c</picklist>
-            <values>
-                <fullName>AmpBlack</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AmpRed</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>BluewaveLogo</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
