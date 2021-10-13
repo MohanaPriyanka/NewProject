@@ -1,10 +1,10 @@
 /**
  * @description Created By: peteryao on 2019-04-30
- * Description:
- * Test: LeadSelectorTest
+ * Tested by: LeadSelectorTest
  **/
 @SuppressWarnings('PMD.ApexCRUDViolation, PMD.ApexDoc')
 public without sharing class LeadSelector {
+
     public List<String> apiLeadFields = new List<String>{
         'FirstName',
         'LastName',
@@ -95,7 +95,6 @@ public without sharing class LeadSelector {
         return leads[0];
     }
 
-
     public List<Lead> selectAll(Set<Id> leadIds) {
         return [
             SELECT
@@ -160,9 +159,11 @@ public without sharing class LeadSelector {
                 Referral_Email__c,
                 Referral_Name__c,
                 Sales_Person__c,
+                Selected_SSS_For_Conversion__c,
                 State,
                 Status,
                 Street,
+                System_Assignment__c,
                 Underwriting_Criteria__c,
                 Unqualified_due_to_FICO__c,
                 Utility_relationship__r.Id,
@@ -298,13 +299,36 @@ public without sharing class LeadSelector {
         ];
     }
 
-    public Lead getLeadForLeadConversion(Id leadId) {
-        return [
-            SELECT Id,Utility_relationship__c,
-                (SELECT Id, QC_Status__c, Annual_kWh__c, Annual_Cost_of_Electricity__c, Name FROM Utility_Account_Logs__r)
+    public Map<Id, Lead> getLeadsForConversion(Set<Id> leadIds) {
+        return new Map<Id, Lead>([
+            SELECT Id,Utility_relationship__c,EmailBouncedDate,Application_Complete_Date__c,IsConverted,LastName,
+                Selected_SSS_For_Conversion__c,Status,
+                (SELECT Id, QC_Status__c, Annual_kWh__c, Annual_Cost_of_Electricity__c FROM Utility_Account_Logs__r)
             FROM Lead
-            WHERE Id =: leadId
-        ];
+            WHERE Id = :leadIds
+        ]);
+    }
+
+    public Map<Id, Lead> getLeadsForSubscriptionCreation(Set<Id> leadIds) {
+        return new Map<Id, Lead>([
+            SELECT Id, Selected_SSS_For_Conversion__c, No_Payment__c, Product__r.Parent_Product__c, (
+                SELECT Id, Name, Annual_Cost_of_Electricity__c, Annual_kWh__c, Lead__c,
+                    Lead__r.Product__r.Customer_Subscription_Type__c, Name_on_Account__c, QC_Status__c,
+                    Subsc_Annual_Cost_of_Electricity_Rollup__c, Subscribed_Annual_kWhs_Rollup__c,
+                    Utility_NMC_Tariff__c, Utility_Rate_Class__c,
+                    Utility_Rate_Class__r.Utility_NMC_Tariff__r.Size_Ratio__c
+                FROM Utility_Account_Logs__r
+                WHERE QC_Status__c != 'Unqualified'
+                ORDER BY Annual_Cost_of_Electricity__c, Annual_kWh__c DESC
+            ), (SELECT Id FROM Accounts__r WHERE RecordType.Name = 'Property'), (
+                SELECT Id, AccountId, Contract_Type__c, Customer_Signature_Date_Time__c, Product__c
+                FROM Contracts__r
+                WHERE RecordTypeId = :CustomerContractService.RECORD_TYPE_ID
+                ORDER BY CreatedDate DESC
+            )
+            FROM Lead
+            WHERE Id = :leadIds
+        ]);
     }
 
 }

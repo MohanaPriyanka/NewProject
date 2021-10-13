@@ -1,19 +1,13 @@
 /**
- * Created by mstackhouse on 12/14/2018.
- * Description: Used by the CSSubscriptionEnroller to create CS opportunities for a lead from the required input components
- *
- * Test: LeadTriggerHandlerTest (Integration), CSOpportunityFactoryTest
+ * @description: Created by mstackhouse on 12/14/2018.
+ * Used by the CSSubscriptionEnroller to create CS opportunities for a lead from the required input components
+ * Tested By: CSOpportunityFactoryTest
  */
-
-
 public without sharing class CSOpportunityFactory {
 
-    public static List<Opportunity> generateCSOpportunities(
-        Lead lead,
-        List<Shared_Solar_System__c> availableSSS,
-        CSSubscriptionEnroller.AnnualEnergyTotal annualTotals,
-        Id propertyAccountId
-    ) {
+    public static List<Opportunity> generateCSOpportunities(Lead lead, List<Shared_Solar_System__c> availableSSS,
+        CSSubscriptionEnroller.AnnualEnergyTotal annualTotals, Id propertyAccountId)
+    {
         Decimal remainingAccountCostToAllocate = annualTotals.cost;
         Decimal remainingAccountkWhToAllocate = annualTotals.kWh;
         List<Opportunity> oppListToCreate = new List<Opportunity>();
@@ -52,32 +46,6 @@ public without sharing class CSOpportunityFactory {
         return oppListToCreate;
     }
 
-
-    @TestVisible
-    private static Opportunity addPaymentInfoToOpp(Opportunity opp, String paymentMethodJSON) {
-        ZuoraAPI.PaymentMethod paymentMethod;
-        try {
-            paymentMethod = (ZuoraAPI.PaymentMethod) System.JSON.deserialize(paymentMethodJSON, ZuoraAPI.PaymentMethod.class);
-        } catch (JSONException jse) {
-            Logger.logLater('CSOpportunityFactory', 'addPaymentInfoToOpp', 'Couldn\'t parse json for opp: ' + opp.Id + '\n' +
-                paymentMethodJSON);
-            return opp;
-        }
-        if (paymentMethod.Type == 'ACH') {
-            opp.ACH_Bank_Name__c = paymentMethod.AchBankName;
-            opp.ACH_Bank_Routing_Number__c = paymentMethod.AchAbaCode;
-            opp.ACH_Account_Type__c = paymentMethod.AchAccountType;
-            opp.ACH_Account_Number__c = paymentMethod.AchAccountNumberMask;
-            opp.ACH_Name_on_Account__c = paymentMethod.AchAccountName;
-        } else if (paymentMethod.Type == 'CreditCard') {
-            opp.CC_Card_Type__c = paymentMethod.CreditCardType;
-            opp.CC_Account_Number__c = paymentMethod.CreditCardMaskNumber;
-            opp.CC_CardHolder_Name__c = paymentMethod.CreditCardHolderName;
-            opp.CC_Expiration_Month__c = String.valueOf(paymentMethod.CreditCardExpirationMonth);
-            opp.CC_Expiration_Year__c = String.valueOf(paymentMethod.CreditCardExpirationYear);
-        }
-        return opp;
-    }
     @TestVisible
     private static Opportunity setOpportunityStage(Lead lead, Opportunity opp) {
         if (lead.LeadSource == 'Switch' || lead.LeadSource == 'Third-Party') {
@@ -94,13 +62,12 @@ public without sharing class CSOpportunityFactory {
         opp.Acquired_By_Client_Closed_By_BlueWave__c = lead.Acquired_By_Client_Closed_By_BlueWave__c;
         opp.Application_Date__c = lead.Application__c;
         opp.Application_Type__c = lead.Application_Type__c;
-
         opp.BS_Sales_ID__c = lead.bs_Sales_ID__c;
         opp.Business_Title__c = lead.Business_Title__c;
         opp.Customer_Group__c = lead.Customer_Type_Formula__c;
         opp.Customer_Phone__c = lead.Phone2__c;
         opp.Customer_Referral__c = lead.Customer_Referral__c;
-        opp.Customer_type__c = lead.Customer_type__c;
+        opp.Customer_Type__c = lead.Customer_type__c;
         opp.Date_of_Application__c = lead.Date_of_Application__c;
         opp.Lead_ID__c = lead.Lead_ID__c;
         opp.LoadZone__c = lead.LoadZone__c;
@@ -108,11 +75,11 @@ public without sharing class CSOpportunityFactory {
         opp.OwnerId = lead.OwnerId;
         opp.Parcel_ZIp__c = lead.Parcel_Zip__c;
         opp.Partner_Email__c = lead.Partner_Email__c;
-        opp.Partner_tag_lookup__c = lead.Partner_lookup__c;
+        opp.Partner_tag_lookup__c = lead.Partner_Lookup__c;
         opp.Partner_Account__c = lead.Partner_Account__c;
         opp.Partner_Contact__c = lead.Partner_Contact__c;
         opp.Personal_Credit_Report2__c = lead.Personal_Credit_Report__c;
-        opp.Product_Line__c = lead.Product_Line__c;
+        opp.Product_Line__c = lead.Product_line__c;
         opp.Project_Assignment__c = lead.System_Assignment__c;
         opp.Referral_Email__c = lead.Referral_Email__c;
         opp.State_ab__c = lead.LASERCA__Home_State__c;
