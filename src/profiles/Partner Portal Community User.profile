@@ -16877,11 +16877,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account.Combined_days_Past_Due__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account.Communication_QC__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -17017,11 +17012,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account.Disable_New_Loan_Applications_in_Portal__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account.Do_not_Send_Bills__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -17143,11 +17133,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Jigsaw</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account.Jobs_per_Month_Financed__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -17477,11 +17462,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account.Primary_Solar_Loan_Provider__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account.Print_SF_Template__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -17588,11 +17568,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Scout__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account.Secondary_Loan_Provider__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -17888,11 +17863,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Zuora__UpsellOpportunity__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account.of_Jobs_per_Month_Resi__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
