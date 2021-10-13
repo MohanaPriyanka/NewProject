@@ -117,9 +117,7 @@ public without sharing class UtilityAccountSubscriptionHandler {
 
     private Boolean verifyMultipleSubscriptionsAllowedByRelatedUAS(List<Utility_Account_Subscription__c> uasList, Map<Id,Shared_Solar_System__c> sssMap) {
         for (Utility_Account_Subscription__c uas : uasList) {
-            System.debug(uas.Name);
             Shared_Solar_System__c sss = sssMap.get(uas.Shared_Solar_System__c);
-            System.debug(sss);
             if (sss.Product__r.Utility_Account_Subscription_Type__c == 'Single subscription per Utility Account') {
                 return false;
             }
