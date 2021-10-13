@@ -20,6 +20,11 @@
         <default>false</default>
         <label>DSD</label>
     </customValue>
+    <customValue>
+        <fullName>Perch</fullName>
+        <default>false</default>
+        <label>Perch</label>
+    </customValue>
     <masterLabel>Client Logo Filenames</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>

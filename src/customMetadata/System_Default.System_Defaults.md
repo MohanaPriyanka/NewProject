@@ -23,6 +23,10 @@
         <value xsi:type="xsd:string">a2Sj0000000JsHkEAK</value>
     </values>
     <values>
+        <field>Default_Client_Brand_Key__c</field>
+        <value xsi:type="xsd:string">BluewaveLogo</value>
+    </values>
+    <values>
         <field>Default_Copado_Project_ID__c</field>
         <value xsi:type="xsd:string">a5r0a000000TSsKAAW</value>
     </values>

@@ -57,6 +57,31 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Default_Client_Brand_Key__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>Used to set the default logo, for instance, in ClientBrandingService</inlineHelpText>
+        <label>Default Client Brand Key</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>BluewaveLogo</fullName>
+                    <default>true</default>
+                    <label>BluewaveLogo</label>
+                </value>
+                <value>
+                    <fullName>Perch</fullName>
+                    <default>false</default>
+                    <label>Perch</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Default_Copado_Project_ID__c</fullName>
         <externalId>false</externalId>
         <fieldManageability>DeveloperControlled</fieldManageability>
