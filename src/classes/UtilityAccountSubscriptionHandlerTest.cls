@@ -413,7 +413,7 @@ public class UtilityAccountSubscriptionHandlerTest {
 
     private static sfab_FabricatedSObject getMockUAS(Boolean singleProduct) {
         String sssId = singleProduct ? 'singleSSS' : 'multiSSS';
-        String ualId = Util.getFakeId(Utility_Account_Log__c.SObjectType);
+        String ualId = 'a1b000000000000AAA'; 
         String uasId = '1uasTestId';
 
         sfab_FabricatedSObject mockUAL = getMockUAL();
@@ -735,7 +735,7 @@ public class UtilityAccountSubscriptionHandlerTest {
                         mockUasList.add(uas);
                     }
 
-                    String ualId = Util.getFakeId(Utility_Account_Log__c.SObjectType);
+                    String ualId = 'a1b000000000000';
                     sfab_FabricatedSObject mockUal = new sfab_FabricatedSObject(Utility_Account_Log__c.class);
                     mockUal.setField(Utility_Account_Log__c.Id, ualId);
                     mockUal.setChildren('Utility_Account_Subscriptions__r', mockUasList);
