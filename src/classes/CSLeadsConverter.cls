@@ -6,7 +6,7 @@
  */
 public without sharing class CSLeadsConverter implements Queueable {
 
-    @TestVisible private static Integer QUEUEABLE_BATCH_SIZE = (Integer)
+    @TestVisible private static Integer queueableBatchSize = (Integer)
         System_Properties__c.getValues('System')?.CS_Auto_Lead_Conversion_Batch_Size__c;
     @TestVisible private static LeadSelector leadSelector = new LeadSelector();
     @TestVisible private static SharedSolarSystemsSelector systemsSelector = new SharedSolarSystemsSelector();
@@ -59,7 +59,7 @@ public without sharing class CSLeadsConverter implements Queueable {
         List<Id> leadIdsToProcess = new List<Id>(autoConvertLeads);
         try {
             Set<Id> leadsForNextBatch = new Set<Id>();
-            for (Integer i = leadIdsToProcess.size()-1; i >= QUEUEABLE_BATCH_SIZE; i--) {
+            for (Integer i = leadIdsToProcess.size()-1; i >= queueableBatchSize; i--) {
                 Id currentLeadId = leadIdsToProcess[i];
                 leadIdsToProcess.remove(i);
                 leadsForNextBatch.add(currentLeadId);
@@ -231,9 +231,6 @@ public without sharing class CSLeadsConverter implements Queueable {
      * @description Updates Leads with results of Auto-Conversions only
      */
     private void updateLeadsWithConversionResults() {
-        if (!isAutoConversionContext) {
-            return;
-        }
         List<Lead> leadsToUpdate = new List<Lead>();
         for (LeadConvertDetail detail : conversions.values()) {
             Lead lead = new Lead();
