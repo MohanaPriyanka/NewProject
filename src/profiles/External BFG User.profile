@@ -1596,11 +1596,6 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Account.Combined_days_Past_Due__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Account.Communication_QC__c</field>
         <readable>true</readable>
@@ -1718,11 +1713,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.Directions_to_Write_Paper_Check__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account.Disable_New_Loan_Applications_in_Portal__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1854,11 +1844,6 @@
         <editable>false</editable>
         <field>Account.Jigsaw</field>
         <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Account.Jobs_per_Month_Financed__c</field>
-        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -2166,11 +2151,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Account.Primary_Solar_Loan_Provider__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>false</editable>
         <field>Account.Print_SF_Template__c</field>
         <readable>true</readable>
@@ -2268,11 +2248,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.Scout__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Account.Secondary_Loan_Provider__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2489,11 +2464,6 @@
         <editable>false</editable>
         <field>Account.Zip_Code__c</field>
         <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Account.of_Jobs_per_Month_Resi__c</field>
-        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
