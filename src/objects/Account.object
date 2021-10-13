@@ -1182,20 +1182,6 @@ Days_Past_Due__c = 90)</formula>
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>Combined_days_Past_Due__c</fullName>
-        <externalId>false</externalId>
-        <formula>Loan_Number_of_Days_Delinquent__c+Days_Past_Due__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>If this is a CS Account, this shows the Days Past Due field on the Account. If this is an RL Account, it uses the</inlineHelpText>
-        <label>Combined days Past Due</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackHistory>false</trackHistory>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Communication_QC__c</fullName>
         <description>For the Partner QC Scorecard. Bad = 0 / Ok = 1 / Great = 2</description>
         <externalId>false</externalId>
@@ -1641,16 +1627,6 @@ MAX(TODAY()-Max_Overdue_Due_Date_Merge__c,0),
         <type>TextArea</type>
     </fields>
     <fields>
-        <fullName>Disable_New_Loan_Applications_in_Portal__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <inlineHelpText>Disables the Add Customer form and Send Application via Email form in the Solar Loan Portal</inlineHelpText>
-        <label>Disable New Loan Applications in Portal</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>Do_not_Send_Bills__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -1990,18 +1966,6 @@ IF(
         <fullName>Jigsaw</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-    </fields>
-    <fields>
-        <fullName>Jobs_per_Month_Financed__c</fullName>
-        <externalId>false</externalId>
-        <label># Jobs per Month Financed (Resi)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Number</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Key_Account__c</fullName>
@@ -2917,106 +2881,6 @@ IF(Days_Past_Due__c &lt;= 90, &quot;61-90 Days Late&quot;,
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Primary_Solar_Loan_Provider__c</fullName>
-        <externalId>false</externalId>
-        <label>Primary Solar Loan Provider</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Dividend</fullName>
-                    <default>false</default>
-                    <label>Dividend</label>
-                </value>
-                <value>
-                    <fullName>Enerbank</fullName>
-                    <default>false</default>
-                    <label>Enerbank</label>
-                </value>
-                <value>
-                    <fullName>Ensemble</fullName>
-                    <default>false</default>
-                    <label>Ensemble</label>
-                </value>
-                <value>
-                    <fullName>First Green Bank (FL)</fullName>
-                    <default>false</default>
-                    <label>First Green Bank (FL)</label>
-                </value>
-                <value>
-                    <fullName>Greensky</fullName>
-                    <default>false</default>
-                    <label>Greensky</label>
-                </value>
-                <value>
-                    <fullName>Home Loan Investment Bank</fullName>
-                    <default>false</default>
-                    <label>Home Loan Investment Bank</label>
-                </value>
-                <value>
-                    <fullName>LoanPal</fullName>
-                    <default>false</default>
-                    <label>LoanPal</label>
-                </value>
-                <value>
-                    <fullName>Mosaic</fullName>
-                    <default>false</default>
-                    <label>Mosaic</label>
-                </value>
-                <value>
-                    <fullName>PACE in FL (Renew, Ygrene)</fullName>
-                    <default>false</default>
-                    <label>PACE in FL (Renew, Ygrene)</label>
-                </value>
-                <value>
-                    <fullName>Salal Credit Union</fullName>
-                    <default>false</default>
-                    <label>Salal Credit Union</label>
-                </value>
-                <value>
-                    <fullName>Service Finance</fullName>
-                    <default>false</default>
-                    <label>Service Finance</label>
-                </value>
-                <value>
-                    <fullName>Sungage</fullName>
-                    <default>false</default>
-                    <label>Sungage</label>
-                </value>
-                <value>
-                    <fullName>Sunlight</fullName>
-                    <default>false</default>
-                    <label>Sunlight</label>
-                </value>
-                <value>
-                    <fullName>Sunpower</fullName>
-                    <default>false</default>
-                    <label>Sunpower</label>
-                </value>
-                <value>
-                    <fullName>VSECU</fullName>
-                    <default>false</default>
-                    <label>VSECU</label>
-                </value>
-                <value>
-                    <fullName>BlueWave</fullName>
-                    <default>false</default>
-                    <label>BlueWave</label>
-                </value>
-                <value>
-                    <fullName>Local no-fee lender (e.g. MSL bank)</fullName>
-                    <default>false</default>
-                    <label>Local no-fee lender (e.g. MSL bank)</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
         <fullName>Print_SF_Template__c</fullName>
         <externalId>false</externalId>
         <formula>if(AND (Days_Past_Due__c &gt;=15,Days_Past_Due__c &lt;=21 ), &quot;15 Days Template&quot;,
@@ -3296,106 +3160,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>Secondary_Loan_Provider__c</fullName>
-        <externalId>false</externalId>
-        <label>Secondary Loan Provider</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Dividend</fullName>
-                    <default>false</default>
-                    <label>Dividend</label>
-                </value>
-                <value>
-                    <fullName>Enerbank</fullName>
-                    <default>false</default>
-                    <label>Enerbank</label>
-                </value>
-                <value>
-                    <fullName>Ensemble</fullName>
-                    <default>false</default>
-                    <label>Ensemble</label>
-                </value>
-                <value>
-                    <fullName>First Green Bank (FL)</fullName>
-                    <default>false</default>
-                    <label>First Green Bank (FL)</label>
-                </value>
-                <value>
-                    <fullName>Greensky</fullName>
-                    <default>false</default>
-                    <label>Greensky</label>
-                </value>
-                <value>
-                    <fullName>Home Loan Investment Bank</fullName>
-                    <default>false</default>
-                    <label>Home Loan Investment Bank</label>
-                </value>
-                <value>
-                    <fullName>LoanPal</fullName>
-                    <default>false</default>
-                    <label>LoanPal</label>
-                </value>
-                <value>
-                    <fullName>Mosaic</fullName>
-                    <default>false</default>
-                    <label>Mosaic</label>
-                </value>
-                <value>
-                    <fullName>PACE in FL (Renew, Ygrene)</fullName>
-                    <default>false</default>
-                    <label>PACE in FL (Renew, Ygrene)</label>
-                </value>
-                <value>
-                    <fullName>Salal Credit Union</fullName>
-                    <default>false</default>
-                    <label>Salal Credit Union</label>
-                </value>
-                <value>
-                    <fullName>Service Finance</fullName>
-                    <default>false</default>
-                    <label>Service Finance</label>
-                </value>
-                <value>
-                    <fullName>Sungage</fullName>
-                    <default>false</default>
-                    <label>Sungage</label>
-                </value>
-                <value>
-                    <fullName>Sunlight</fullName>
-                    <default>false</default>
-                    <label>Sunlight</label>
-                </value>
-                <value>
-                    <fullName>Sunpower</fullName>
-                    <default>false</default>
-                    <label>Sunpower</label>
-                </value>
-                <value>
-                    <fullName>VSECU</fullName>
-                    <default>false</default>
-                    <label>VSECU</label>
-                </value>
-                <value>
-                    <fullName>BlueWave</fullName>
-                    <default>false</default>
-                    <label>BlueWave</label>
-                </value>
-                <value>
-                    <fullName>Local no-fee lender (e.g. MSL bank)</fullName>
-                    <default>false</default>
-                    <label>Local no-fee lender (e.g. MSL bank)</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
     </fields>
     <fields>
         <fullName>Send_Bills_Contact_ID__c</fullName>
@@ -4366,18 +4130,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <type>Text</type>
         <unique>false</unique>
     </fields>
-    <fields>
-        <fullName>of_Jobs_per_Month_Resi__c</fullName>
-        <externalId>false</externalId>
-        <label># of Jobs per Month (Resi)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
     <listViews>
         <fullName>Accounts_with_Details</fullName>
         <columns>ACCOUNT.NAME</columns>
@@ -5173,69 +4925,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Primary_Solar_Loan_Provider__c</picklist>
-            <values>
-                <fullName>Dividend</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Enerbank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ensemble</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>First Green Bank %28FL%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Greensky</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Home Loan Investment Bank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LoanPal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mosaic</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PACE in FL %28Renew%2C Ygrene%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Salal Credit Union</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Service Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sungage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunlight</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunpower</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VSECU</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Rating</picklist>
             <values>
                 <fullName>Cold</fullName>
@@ -5247,69 +4936,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Warm</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Secondary_Loan_Provider__c</picklist>
-            <values>
-                <fullName>Dividend</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Enerbank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ensemble</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>First Green Bank %28FL%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Greensky</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Home Loan Investment Bank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LoanPal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mosaic</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PACE in FL %28Renew%2C Ygrene%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Salal Credit Union</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Service Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sungage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunlight</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunpower</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VSECU</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -6009,69 +5635,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Primary_Solar_Loan_Provider__c</picklist>
-            <values>
-                <fullName>Dividend</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Enerbank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ensemble</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>First Green Bank %28FL%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Greensky</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Home Loan Investment Bank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LoanPal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mosaic</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PACE in FL %28Renew%2C Ygrene%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Salal Credit Union</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Service Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sungage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunlight</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunpower</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VSECU</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Rating</picklist>
             <values>
                 <fullName>Cold</fullName>
@@ -6083,69 +5646,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Warm</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Secondary_Loan_Provider__c</picklist>
-            <values>
-                <fullName>Dividend</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Enerbank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ensemble</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>First Green Bank %28FL%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Greensky</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Home Loan Investment Bank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LoanPal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mosaic</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PACE in FL %28Renew%2C Ygrene%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Salal Credit Union</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Service Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sungage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunlight</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunpower</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VSECU</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -6860,69 +6360,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Primary_Solar_Loan_Provider__c</picklist>
-            <values>
-                <fullName>Dividend</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Enerbank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ensemble</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>First Green Bank %28FL%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Greensky</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Home Loan Investment Bank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LoanPal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mosaic</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PACE in FL %28Renew%2C Ygrene%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Salal Credit Union</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Service Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sungage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunlight</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunpower</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VSECU</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Rating</picklist>
             <values>
                 <fullName>Cold</fullName>
@@ -6934,69 +6371,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Warm</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Secondary_Loan_Provider__c</picklist>
-            <values>
-                <fullName>Dividend</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Enerbank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ensemble</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>First Green Bank %28FL%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Greensky</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Home Loan Investment Bank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LoanPal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mosaic</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PACE in FL %28Renew%2C Ygrene%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Salal Credit Union</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Service Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sungage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunlight</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunpower</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VSECU</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -7710,69 +7084,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Primary_Solar_Loan_Provider__c</picklist>
-            <values>
-                <fullName>Dividend</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Enerbank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ensemble</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>First Green Bank %28FL%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Greensky</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Home Loan Investment Bank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LoanPal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mosaic</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PACE in FL %28Renew%2C Ygrene%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Salal Credit Union</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Service Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sungage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunlight</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunpower</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VSECU</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Rating</picklist>
             <values>
                 <fullName>Cold</fullName>
@@ -7784,69 +7095,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Warm</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Secondary_Loan_Provider__c</picklist>
-            <values>
-                <fullName>Dividend</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Enerbank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ensemble</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>First Green Bank %28FL%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Greensky</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Home Loan Investment Bank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LoanPal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mosaic</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PACE in FL %28Renew%2C Ygrene%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Salal Credit Union</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Service Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sungage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunlight</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunpower</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VSECU</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -8564,69 +7812,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Primary_Solar_Loan_Provider__c</picklist>
-            <values>
-                <fullName>Dividend</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Enerbank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ensemble</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>First Green Bank %28FL%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Greensky</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Home Loan Investment Bank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LoanPal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mosaic</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PACE in FL %28Renew%2C Ygrene%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Salal Credit Union</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Service Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sungage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunlight</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunpower</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VSECU</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Rating</picklist>
             <values>
                 <fullName>Cold</fullName>
@@ -8638,69 +7823,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Warm</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Secondary_Loan_Provider__c</picklist>
-            <values>
-                <fullName>Dividend</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Enerbank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ensemble</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>First Green Bank %28FL%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Greensky</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Home Loan Investment Bank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LoanPal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mosaic</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PACE in FL %28Renew%2C Ygrene%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Salal Credit Union</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Service Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sungage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunlight</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunpower</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VSECU</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -9490,69 +8612,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Primary_Solar_Loan_Provider__c</picklist>
-            <values>
-                <fullName>Dividend</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Enerbank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ensemble</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>First Green Bank %28FL%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Greensky</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Home Loan Investment Bank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LoanPal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mosaic</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PACE in FL %28Renew%2C Ygrene%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Salal Credit Union</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Service Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sungage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunlight</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunpower</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VSECU</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Rating</picklist>
             <values>
                 <fullName>Cold</fullName>
@@ -9564,69 +8623,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Warm</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Secondary_Loan_Provider__c</picklist>
-            <values>
-                <fullName>Dividend</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Enerbank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ensemble</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>First Green Bank %28FL%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Greensky</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Home Loan Investment Bank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LoanPal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mosaic</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PACE in FL %28Renew%2C Ygrene%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Salal Credit Union</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Service Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sungage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunlight</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunpower</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VSECU</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -10402,69 +9398,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Primary_Solar_Loan_Provider__c</picklist>
-            <values>
-                <fullName>Dividend</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Enerbank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ensemble</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>First Green Bank %28FL%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Greensky</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Home Loan Investment Bank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LoanPal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mosaic</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PACE in FL %28Renew%2C Ygrene%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Salal Credit Union</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Service Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sungage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunlight</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunpower</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VSECU</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Rating</picklist>
             <values>
                 <fullName>Cold</fullName>
@@ -10476,69 +9409,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Warm</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Secondary_Loan_Provider__c</picklist>
-            <values>
-                <fullName>Dividend</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Enerbank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ensemble</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>First Green Bank %28FL%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Greensky</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Home Loan Investment Bank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LoanPal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mosaic</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PACE in FL %28Renew%2C Ygrene%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Salal Credit Union</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Service Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sungage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunlight</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunpower</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VSECU</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -11257,69 +10127,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Primary_Solar_Loan_Provider__c</picklist>
-            <values>
-                <fullName>Dividend</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Enerbank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ensemble</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>First Green Bank %28FL%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Greensky</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Home Loan Investment Bank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LoanPal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mosaic</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PACE in FL %28Renew%2C Ygrene%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Salal Credit Union</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Service Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sungage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunlight</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunpower</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VSECU</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Rating</picklist>
             <values>
                 <fullName>Cold</fullName>
@@ -11331,69 +10138,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Warm</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Secondary_Loan_Provider__c</picklist>
-            <values>
-                <fullName>Dividend</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Enerbank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ensemble</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>First Green Bank %28FL%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Greensky</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Home Loan Investment Bank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LoanPal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mosaic</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PACE in FL %28Renew%2C Ygrene%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Salal Credit Union</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Service Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sungage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunlight</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunpower</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VSECU</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -12359,69 +11103,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Primary_Solar_Loan_Provider__c</picklist>
-            <values>
-                <fullName>Dividend</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Enerbank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ensemble</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>First Green Bank %28FL%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Greensky</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Home Loan Investment Bank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LoanPal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mosaic</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PACE in FL %28Renew%2C Ygrene%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Salal Credit Union</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Service Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sungage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunlight</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunpower</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VSECU</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Rating</picklist>
             <values>
                 <fullName>Cold</fullName>
@@ -12433,69 +11114,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Warm</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Secondary_Loan_Provider__c</picklist>
-            <values>
-                <fullName>Dividend</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Enerbank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ensemble</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>First Green Bank %28FL%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Greensky</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Home Loan Investment Bank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LoanPal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mosaic</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PACE in FL %28Renew%2C Ygrene%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Salal Credit Union</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Service Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sungage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunlight</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunpower</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VSECU</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -13272,77 +11890,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Primary_Solar_Loan_Provider__c</picklist>
-            <values>
-                <fullName>BlueWave</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Dividend</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Enerbank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ensemble</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>First Green Bank %28FL%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Greensky</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Home Loan Investment Bank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LoanPal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Local no-fee lender %28e%2Eg%2E MSL bank%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mosaic</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PACE in FL %28Renew%2C Ygrene%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Salal Credit Union</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Service Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sungage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunlight</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunpower</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VSECU</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Rating</picklist>
             <values>
                 <fullName>Cold</fullName>
@@ -13354,77 +11901,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Warm</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Secondary_Loan_Provider__c</picklist>
-            <values>
-                <fullName>BlueWave</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Dividend</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Enerbank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ensemble</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>First Green Bank %28FL%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Greensky</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Home Loan Investment Bank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LoanPal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Local no-fee lender %28e%2Eg%2E MSL bank%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mosaic</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PACE in FL %28Renew%2C Ygrene%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Salal Credit Union</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Service Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sungage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunlight</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunpower</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VSECU</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -14251,69 +12727,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Primary_Solar_Loan_Provider__c</picklist>
-            <values>
-                <fullName>Dividend</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Enerbank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ensemble</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>First Green Bank %28FL%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Greensky</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Home Loan Investment Bank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LoanPal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mosaic</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PACE in FL %28Renew%2C Ygrene%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Salal Credit Union</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Service Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sungage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunlight</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunpower</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VSECU</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Rating</picklist>
             <values>
                 <fullName>Cold</fullName>
@@ -14325,69 +12738,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Warm</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Secondary_Loan_Provider__c</picklist>
-            <values>
-                <fullName>Dividend</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Enerbank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ensemble</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>First Green Bank %28FL%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Greensky</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Home Loan Investment Bank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LoanPal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mosaic</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PACE in FL %28Renew%2C Ygrene%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Salal Credit Union</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Service Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sungage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunlight</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunpower</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VSECU</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -15106,69 +13456,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Primary_Solar_Loan_Provider__c</picklist>
-            <values>
-                <fullName>Dividend</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Enerbank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ensemble</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>First Green Bank %28FL%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Greensky</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Home Loan Investment Bank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LoanPal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mosaic</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PACE in FL %28Renew%2C Ygrene%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Salal Credit Union</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Service Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sungage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunlight</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunpower</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VSECU</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Rating</picklist>
             <values>
                 <fullName>Cold</fullName>
@@ -15180,69 +13467,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Warm</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Secondary_Loan_Provider__c</picklist>
-            <values>
-                <fullName>Dividend</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Enerbank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ensemble</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>First Green Bank %28FL%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Greensky</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Home Loan Investment Bank</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LoanPal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mosaic</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PACE in FL %28Renew%2C Ygrene%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Salal Credit Union</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Service Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sungage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunlight</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunpower</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VSECU</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
