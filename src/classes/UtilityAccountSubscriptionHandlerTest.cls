@@ -445,8 +445,8 @@ public class UtilityAccountSubscriptionHandlerTest {
         UtilityAccountSubscriptionHandler.sssSelector = (SharedSolarSystemsSelector) Test.createStub(SharedSolarSystemsSelector.class, new MockedSSSSelector());
 
         Test.startTest();
-            UtilityAccountSubscriptionHandler handler = new UtilityAccountSubscriptionHandler(null, newList, TriggerOperation.BEFORE_INSERT);
-            handler.verifyUALSubscriptionType();
+        UtilityAccountSubscriptionHandler handler = new UtilityAccountSubscriptionHandler(null, newList, TriggerOperation.BEFORE_INSERT);
+        handler.verifyUALSubscriptionType();
         Test.stopTest();
 
         for (Utility_Account_Subscription__c sub : newList) {

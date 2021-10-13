@@ -14,6 +14,7 @@ public without sharing class UtilityAccountSubscriptionHandler {
     @TestVisible private static UALSelector ualSelector = new UALSelector();
     @TestVisible private static SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
 
+
     public UtilityAccountSubscriptionHandler(Map<Id,Utility_Account_Subscription__c> oldMap,
         List<Utility_Account_Subscription__c> newList, TriggerOperation triggerOperation) {
         this.oldMap = oldMap;
@@ -28,9 +29,7 @@ public without sharing class UtilityAccountSubscriptionHandler {
 
     public void afterInsert() {
         ClientReportingService.insertClientUAS(newList);
-        if (Test.isRunningTest() && featureService.isEnabled('Subscription_Orders')) {
-            subscriptionManagementService.insertSubscriptionOrdersForTests(newList);
-        }
+        subscriptionManagementService.insertSubscriptionOrdersForTests(newList);
         new SystemCapacityRollupCalculator(new UASCapacityRollupInitializer(oldMap, newList, triggerType)).performRollup();
     }
 
@@ -39,7 +38,7 @@ public without sharing class UtilityAccountSubscriptionHandler {
     }
 
     public void afterUpdate() {
-        CSCancellationProjectRemover.handleOpportunitiesRemovedFromProject(oldMap, constructNewMap());
+        CSCancellationProjectRemover.handleOpportunitiesRemovedFromProject(oldMap, new Map<Id,Utility_Account_Subscription__c>(newList));
         ClientReportingService.updateClientUAS(newList, oldMap);
         new SystemCapacityRollupCalculator(new UASCapacityRollupInitializer(oldMap, newList, triggerType)).performRollup();
     }
@@ -57,14 +56,6 @@ public without sharing class UtilityAccountSubscriptionHandler {
         new SystemCapacityRollupCalculator(new UASCapacityRollupInitializer(oldMap, newList, triggerType)).performRollup();
     }
 
-    private Map<Id,Utility_Account_Subscription__c> constructNewMap() {
-        Map<Id,Utility_Account_Subscription__c> returnMap = new Map<Id,Utility_Account_Subscription__c>();
-        for (Utility_Account_Subscription__c uas : newList) {
-            returnMap.put(uas.Id, uas);
-        }
-        return returnMap;
-    }
-
     private void assignSSSBeforeInsert() {
         Set<Id> oppIds = new Set<Id>();
         for (Utility_Account_Subscription__c uas : newList) {
@@ -73,8 +64,8 @@ public without sharing class UtilityAccountSubscriptionHandler {
         Map<Id, Opportunity> uasToOppMap = oppSelector.selectOpportunityMap(oppIds);
         for (Utility_Account_Subscription__c uas : newList) {
             Opportunity opp = uasToOppMap.get(uas.Opportunity__c);
-            if (opp != null && uas.Shared_Solar_System__c == null) {
-                uas.Shared_Solar_System__c = opp.Shared_Solar_System__c;
+            if (uas.Shared_Solar_System__c == null) {
+                uas.Shared_Solar_System__c = opp?.Shared_Solar_System__c;
             }
         }
     }
@@ -126,7 +117,9 @@ public without sharing class UtilityAccountSubscriptionHandler {
 
     private Boolean verifyMultipleSubscriptionsAllowedByRelatedUAS(List<Utility_Account_Subscription__c> uasList, Map<Id,Shared_Solar_System__c> sssMap) {
         for (Utility_Account_Subscription__c uas : uasList) {
+            System.debug(uas.Name);
             Shared_Solar_System__c sss = sssMap.get(uas.Shared_Solar_System__c);
+            System.debug(sss);
             if (sss.Product__r.Utility_Account_Subscription_Type__c == 'Single subscription per Utility Account') {
                 return false;
             }
