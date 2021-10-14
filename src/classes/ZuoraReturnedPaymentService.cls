@@ -272,7 +272,6 @@ public with sharing class ZuoraReturnedPaymentService implements Queueable, Data
         markPaymentReturned(sfPayment.Zuora__EXT_ID__c);
         HttpResponse response =
             ZuoraAPIHelper.callJsonEndpoint('PUT', '/v1/payments/' + sfPayment.Zuora__EXT_ID__c + '/cancel', null, false);
-        System.debug(LoggingLevel.ERROR, response.getBody());
         CancelPaymentResult cancelResponse =
             (CancelPaymentResult) JSON.deserialize(response.getBody(), (CancelPaymentResult.class));
         if (!cancelResponse.success || cancelResponse.status == 'Processed') {
