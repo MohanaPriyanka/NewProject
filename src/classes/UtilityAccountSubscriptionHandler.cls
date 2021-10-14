@@ -6,7 +6,6 @@ public without sharing class UtilityAccountSubscriptionHandler {
 
     @TestVisible private static OpportunitiesSelector oppSelector = new OpportunitiesSelector();
     @TestVisible private static PartnerCommissionHandler partnerCommissionHandler = new PartnerCommissionHandler();
-    private FeatureService featureService = new FeatureService();
     private SubscriptionManagementService subscriptionManagementService = new SubscriptionManagementService();
     private Map<Id,Utility_Account_Subscription__c> oldMap;
     private List<Utility_Account_Subscription__c> newList;
@@ -70,11 +69,8 @@ public without sharing class UtilityAccountSubscriptionHandler {
         }
     }
 
-
-
     @TestVisible
     private void verifyUALSubscriptionType() {
-        System.debug('verifying sub type');
         Set<Id> ualIds = new Set<Id>();
         Set<Id> sssIds = new Set<Id>();
 
@@ -84,70 +80,25 @@ public without sharing class UtilityAccountSubscriptionHandler {
         }
 
         MultiMap ualIdToUASesMap = CollectionUtil.multiMapByField(newList, Utility_Account_Subscription__c.Utility_Account_Log__c);
-        System.debug(ualIdToUASesMap);
-        System.debug(ualIdToUASesMap.size());
-        System.debug(JSON.serializePretty(ualIdToUASesMap));
-
         Map<Id,Utility_Account_Log__c> ualMap = ualSelector.selectUALSWithActiveUASMap(ualIds); // map of ual id and ual with all exiting uas records
         Map<Id,Shared_Solar_System__c> sssMap = getSSSMap(sssIds, ualMap); // map of all solar systems related to the uas records (new and existing)
 
         for (Utility_Account_Subscription__c uas : newList) {
-            System.debug(uas.Name);
-
             Utility_Account_Log__c ual = ualMap.get(uas.Utility_Account_Log__c);
             List<Utility_Account_Subscription__c> existingUASList = ual.Utility_Account_Subscriptions__r;
-            System.debug(uas.Utility_Account_Log__c);
             List<Utility_Account_Subscription__c> newRelatedUAS = (List<Utility_Account_Subscription__c>) CollectionUtil.toTypedList(ualIdToUASesMap.getValues(uas.Utility_Account_Log__c), new List<Utility_Account_Subscription__c>());
             List<Utility_Account_Subscription__c> combinedRelatedUASList = new List<Utility_Account_Subscription__c>();
             combinedRelatedUASList.addAll(existingUASList);
             combinedRelatedUASList.addAll(newRelatedUAS);
 
-            System.debug(existingUASList);
-            System.debug('existing list size : ' + existingUASList.size());
-            System.debug(newRelatedUAS);
-            System.debug('new related list size : ' +newRelatedUAS.size());
-
             if (uas.Shared_Solar_System__c == null || (existingUASList.size() == 0 && newRelatedUAS.size() == 1) || verifyMultipleSubscriptionsAllowedByRelatedUAS(combinedRelatedUASList, sssMap)) {
-                System.debug('no problems');
                 continue;
             }
-            System.debug('adding error');
             uas.addError('Only a single subscription per Utility Account is allowed for UAL: ' + ual.Id);
         }
 
 
     }
-
-    /*@TestVisible
-    private void verifyUALSubscriptionType() {
-        Set<Id> ualIds = new Set<Id>();
-        Set<Id> sssIds = new Set<Id>();
-
-        for (Utility_Account_Subscription__c uas : newList) {
-            ualIds.add(uas.Utility_Account_Log__c);
-            sssIds.add(uas.Shared_Solar_System__c);
-        }
-
-        Map<Id, List<Utility_Account_Subscription__c>> uasToUALMap = createUASToUALMap(ualIds); // map of ual id to list of uas in trigger
-        Map<Id,Utility_Account_Log__c> ualMap = ualSelector.selectUALSWithActiveUASMap(ualIds); // map of ual id and ual with all exiting uas records
-        Map<Id,Shared_Solar_System__c> sssMap = getSSSMap(sssIds, ualMap); // map of all solar systems related to the uas records (new and existing)
-
-        for (Utility_Account_Subscription__c uas : newList) {
-
-            Utility_Account_Log__c ual = ualMap.get(uas.Utility_Account_Log__c);
-            List<Utility_Account_Subscription__c> existingUASList = ual.Utility_Account_Subscriptions__r;
-            List<Utility_Account_Subscription__c> newRelatedUAS = uasToUALMap.get(uas.Utility_Account_Log__c);
-            List<Utility_Account_Subscription__c> combinedRelatedUASList = new List<Utility_Account_Subscription__c>();
-            combinedRelatedUASList.addAll(existingUASList);
-            combinedRelatedUASList.addAll(newRelatedUAS);
-
-            if (uas.Shared_Solar_System__c == null || (existingUASList.size() == 0 && newRelatedUAS.size() == 1) || verifyMultipleSubscriptionsAllowedByRelatedUAS(combinedRelatedUASList, sssMap)) {
-                continue;
-            }
-            uas.addError('Only a single subscription per Utility Account is allowed for UAL: ' + + ual.Id);
-        }
-
-    }*/
 
     private Map<Id,Shared_Solar_System__c> getSSSMap(Set<Id> sssIds, Map<Id,Utility_Account_Log__c> ualMap) {
 
@@ -171,23 +122,6 @@ public without sharing class UtilityAccountSubscriptionHandler {
             }
         }
         return true;
-    }
-
-    private Map<Id, List<Utility_Account_Subscription__c>> createUASToUALMap(Set<Id> ualIds) {
-        Map<Id, List<Utility_Account_Subscription__c>> uasToUALMap = new Map<Id, List<Utility_Account_Subscription__c>>();
-
-        for (Id ualId : ualIds) {
-            uasToUALMap.put(ualId, new List<Utility_Account_Subscription__c>());
-        }
-
-        for (Utility_Account_Subscription__c uas : newList) {
-            List<Utility_Account_Subscription__c> uasList = uasToUALMap.get(uas.Utility_Account_Log__c);
-            uasList.add(uas);
-        }
-
-        return uasToUALMap;
-
-
     }
 
     public void assignSSSBeforeUpdate() {
