@@ -413,7 +413,7 @@ public class UtilityAccountSubscriptionHandlerTest {
 
     private static sfab_FabricatedSObject getMockUAS(Boolean singleProduct) {
         String sssId = singleProduct ? 'singleSSS' : 'multiSSS';
-        String ualId = 'a1b000000000000AAA'; 
+        String ualId = 'a1b000000000000AAA';
         String uasId = '1uasTestId';
 
         sfab_FabricatedSObject mockUAL = getMockUAL();
@@ -445,8 +445,8 @@ public class UtilityAccountSubscriptionHandlerTest {
         UtilityAccountSubscriptionHandler.sssSelector = (SharedSolarSystemsSelector) Test.createStub(SharedSolarSystemsSelector.class, new MockedSSSSelector());
 
         Test.startTest();
-        UtilityAccountSubscriptionHandler handler = new UtilityAccountSubscriptionHandler(null, newList, TriggerOperation.BEFORE_INSERT);
-        handler.verifyUALSubscriptionType();
+            UtilityAccountSubscriptionHandler handler = new UtilityAccountSubscriptionHandler(null, newList, TriggerOperation.BEFORE_INSERT);
+            handler.verifyUALSubscriptionType();
         Test.stopTest();
 
         for (Utility_Account_Subscription__c sub : newList) {
@@ -735,7 +735,7 @@ public class UtilityAccountSubscriptionHandlerTest {
                         mockUasList.add(uas);
                     }
 
-                    String ualId = 'a1b000000000000';
+                    String ualId = 'a1b000000000000AAA';
                     sfab_FabricatedSObject mockUal = new sfab_FabricatedSObject(Utility_Account_Log__c.class);
                     mockUal.setField(Utility_Account_Log__c.Id, ualId);
                     mockUal.setChildren('Utility_Account_Subscriptions__r', mockUasList);
