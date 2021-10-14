@@ -7,7 +7,7 @@ public inherited sharing class SharedSolarSystemsSelector {
 
     public Shared_Solar_System__c selectOne(Id sssId) {
         List<Shared_Solar_System__c> sssList = this.selectAll(new Set<Id>{
-            sssId
+                sssId
         });
         if (sssList.isEmpty()) {
             return null;
@@ -17,58 +17,57 @@ public inherited sharing class SharedSolarSystemsSelector {
 
     public List<Shared_Solar_System__c> selectAll(Set<Id> sssIds) {
         return [
-            SELECT Id, Name, Apex_Context__c, Maximum_Subscription_Cost__c, Billing_Method__c, Product__r.Name,
-                Product__r.Parent_Product__c, Capacity_Available_to_be_Reserved__c, CS_Services_Type__c, Client_Management_Contract__c,
-                Client_Acquisition_Contract__c, Client_Account__c, Client_Account__r.Name, Product__c,
-                Product__r.Sizing_Method__c, Product__r.Customer_Subscription_Type__c, Product__r.Ignore_Load_Zones_When_Qualifying__c,
-                Project_Capacity_Available_kW_DC__c, Estimated_COD_Date_Manual__c, Service_Territories__c, RiskCalc_Minimum__c,
-                Reserved_Capacity_kW_DC__c, Service_Territory__c, Utility__c, Utility__r.Number_of_Decimal_Places__c,
-                Expected_Yield_kWh_kW__c, Utility_NMC_Tariff__c, Utility_NMC_Tariff__r.Size_Ratio__c, NMC_Value__c,
-                Credit_Score_Requirement__c, Assignment_Order__c, Maximum_Subscription_Capacity_kWDC__c,
-                BWC_Project_Entity_Manual__c, Total_System_Size_kWh_DC__c,
-                Available_SMB_Underwriting_Method_Docs__c, Available_SMB_Underwriting_Method_FICO__c, Public__c,
-                Do_Not_Underwrite__c, Do_Not_Ask_for_Payment_Method__c,
-                (SELECT Id, Account__c, Account__r.Partner__c FROM Partner_Shared_Solar_System_Accesses__r WHERE IsActive__c = TRUE)
-            FROM Shared_Solar_System__c
-            WHERE Id IN :sssIds
+                SELECT Id, Name, Apex_Context__c, Maximum_Subscription_Cost__c, Billing_Method__c, Product__r.Name,
+                        Product__r.Parent_Product__c, Capacity_Available_to_be_Reserved__c, CS_Services_Type__c, Client_Management_Contract__c,
+                        Client_Acquisition_Contract__c, Client_Account__c, Client_Account__r.Name, Product__c,
+                        Product__r.Sizing_Method__c, Product__r.Customer_Subscription_Type__c, Product__r.Ignore_Load_Zones_When_Qualifying__c,
+                        Project_Capacity_Available_kW_DC__c, Estimated_COD_Date_Manual__c, Service_Territories__c, RiskCalc_Minimum__c,
+                        Reserved_Capacity_kW_DC__c, Service_Territory__c, Utility__c, Utility__r.Number_of_Decimal_Places__c,
+                        Expected_Yield_kWh_kW__c, Utility_NMC_Tariff__c, Utility_NMC_Tariff__r.Size_Ratio__c, NMC_Value__c,
+                        Credit_Score_Requirement__c, Assignment_Order__c, Maximum_Subscription_Capacity_kWDC__c,
+                        BWC_Project_Entity_Manual__c, Total_System_Size_kWh_DC__c,
+                        Available_SMB_Underwriting_Method_Docs__c, Available_SMB_Underwriting_Method_FICO__c, Public__c,
+                        Do_Not_Underwrite__c, Do_Not_Ask_for_Payment_Method__c, (SELECT Id, Account__c, Account__r.Partner__c FROM Partner_Shared_Solar_System_Accesses__r WHERE IsActive__c = TRUE)
+                FROM Shared_Solar_System__c
+                WHERE Id IN :sssIds
         ];
     }
 
     public Map<Id, Shared_Solar_System__c> getSSSMap(Set<Id> sssIds) {
         Map<Id, Shared_Solar_System__c> sssMap = new Map<Id, Shared_Solar_System__c>([
-            SELECT Id, Client_Account__c, Number_of_Billed_Production_Periods__c
-            FROM Shared_Solar_System__c
-            WHERE Id IN :sssIds
+                SELECT Id, Client_Account__c, Number_of_Billed_Production_Periods__c
+                FROM Shared_Solar_System__c
+                WHERE Id IN :sssIds
         ]);
         return sssMap;
     }
 
     @SuppressWarnings('PMD.ApexSOQLInjection')
     public static List<Shared_Solar_System__c> selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
-        Set<Id> utilityIds,
-        Set<String> loadZones) {
+            Set<Id> utilityIds,
+            Set<String> loadZones) {
         String loadZoneString = '';
         for (String loadZone : loadZones) {
             loadZoneString += '\'' + String.escapeSingleQuotes(loadZone) + '\',';
         }
         loadZoneString = loadZoneString.left(loadZoneString.length() - 1); // strip off extra comma
         String query = 'SELECT Id, Name, Capacity_Available_to_be_Reserved__c, Product__r.Id, Product__r.Name, ' +
-            'Product__r.Customer_Subscription_Type__c, Product__r.Collect_Rate_Class_via_Application__c, ' +
-            'Product__r.Ignore_Load_Zones_When_Qualifying__c, Product__r.Disclosure_Form_Conga_Template__c, ' +
-            'Product__r.Parent_Product__r.Id, Product__r.Parent_Product__r.Name, Product__r.Parent_Product__r.Customer_Subscription_Type__c,' +
-            'Product__r.Parent_Product__r.Collect_Rate_Class_via_Application__c, Product__r.Parent_Product__r.Ignore_Load_Zones_When_Qualifying__c,' +
-            'Product__r.Parent_Product__r.Disclosure_Form_Conga_Template__c, Public__c, ' +
-            'Available_SMB_Underwriting_Method_FICO__c, Available_SMB_Underwriting_Method_Docs__c, Estimated_COD_Date_Manual__c,' +
-            'Project_Capacity_Available_kW_DC__c, Do_Not_Ask_for_Payment_Method__c, Do_Not_Underwrite__c, Utility__c, ' +
-            'Service_Territories__c, Assignment_Order__c, RiskCalc_Minimum__c,' +
-            '(SELECT Id, Account__c, Account__r.Partner__c FROM Partner_Shared_Solar_System_Accesses__r WHERE IsActive__c = TRUE) ' +
-            'FROM Shared_Solar_System__c ' +
-            'WHERE Capacity_Available_to_be_Reserved__c > 0 ' +
-            'AND Open__c = true ' +
-            'AND Utility__c IN : utilityIds ';
+                'Product__r.Customer_Subscription_Type__c, Product__r.Collect_Rate_Class_via_Application__c, ' +
+                'Product__r.Ignore_Load_Zones_When_Qualifying__c, Product__r.Disclosure_Form_Conga_Template__c, ' +
+                'Product__r.Parent_Product__r.Id, Product__r.Parent_Product__r.Name, Product__r.Parent_Product__r.Customer_Subscription_Type__c,' +
+                'Product__r.Parent_Product__r.Collect_Rate_Class_via_Application__c, Product__r.Parent_Product__r.Ignore_Load_Zones_When_Qualifying__c,' +
+                'Product__r.Parent_Product__r.Disclosure_Form_Conga_Template__c, Public__c, ' +
+                'Available_SMB_Underwriting_Method_FICO__c, Available_SMB_Underwriting_Method_Docs__c, Estimated_COD_Date_Manual__c,' +
+                'Project_Capacity_Available_kW_DC__c, Do_Not_Ask_for_Payment_Method__c, Do_Not_Underwrite__c, Utility__c, ' +
+                'Service_Territories__c, Assignment_Order__c, RiskCalc_Minimum__c,' +
+                '(SELECT Id, Account__c, Account__r.Partner__c FROM Partner_Shared_Solar_System_Accesses__r WHERE IsActive__c = TRUE) ' +
+                'FROM Shared_Solar_System__c ' +
+                'WHERE Capacity_Available_to_be_Reserved__c > 0 ' +
+                'AND Open__c = true ' +
+                'AND Utility__c IN : utilityIds ';
         if (loadZoneString != '') {
             query +=
-                'AND Service_Territories__c INCLUDES (' + loadZoneString + ')';
+                    'AND Service_Territories__c INCLUDES (' + loadZoneString + ')';
         }
         return Database.query(query);
     }
@@ -78,16 +77,16 @@ public inherited sharing class SharedSolarSystemsSelector {
         List<Shared_Solar_System__c> sssList;
         if (transfersToIgnore != null) {
             sssList = [
-                SELECT Id, Name
-                FROM Shared_Solar_System__c
-                WHERE Id NOT IN (SELECT Shared_Solar_System__c FROM Transfer__c WHERE Id IN :transfersToIgnore)
-                AND Id IN (SELECT Shared_Solar_System__c FROM Transfer__c)
+                    SELECT Id, Name
+                    FROM Shared_Solar_System__c
+                    WHERE Id NOT IN (SELECT Shared_Solar_System__c FROM Transfer__c WHERE Id IN :transfersToIgnore)
+                    AND Id IN (SELECT Shared_Solar_System__c FROM Transfer__c)
             ];
         } else {
             sssList = [
-                SELECT Id, Name
-                FROM Shared_Solar_System__c
-                WHERE Id IN (SELECT Shared_Solar_System__c FROM Transfer__c)
+                    SELECT Id, Name
+                    FROM Shared_Solar_System__c
+                    WHERE Id IN (SELECT Shared_Solar_System__c FROM Transfer__c)
             ];
         }
         return sssList;
@@ -95,10 +94,10 @@ public inherited sharing class SharedSolarSystemsSelector {
 
     public static Shared_Solar_System__c getMyProject(String projectId) {
         Shared_Solar_System__c myProject = [
-            SELECT Id, Name, Metric_Tons_of_CO2_Offset__c, Home_Electricity_Offset__c, Waitlist__c, Subscribers__c, Project_Image__c
-            FROM Shared_Solar_System__c
-            WHERE Id = :projectId
-            LIMIT 1
+                SELECT Id, Name, Metric_Tons_of_CO2_Offset__c, Home_Electricity_Offset__c, Waitlist__c, Subscribers__c, Project_Image__c
+                FROM Shared_Solar_System__c
+                WHERE Id = :projectId
+                LIMIT 1
         ];
         return myProject;
     }
@@ -106,9 +105,9 @@ public inherited sharing class SharedSolarSystemsSelector {
     public Map<String, Shared_Solar_System__c> getSSSByUniqueId(Set<String> blueWaveIds) {
         Map<String, Shared_Solar_System__c> bwIdToSSSMap = new Map<String, Shared_Solar_System__c>();
         for (Shared_Solar_System__c sss : [
-            SELECT Id, Unique_ID__c
-            FROM Shared_Solar_System__c
-            WHERE Unique_ID__c IN :blueWaveIds
+                SELECT Id, Unique_ID__c
+                FROM Shared_Solar_System__c
+                WHERE Unique_ID__c IN :blueWaveIds
         ]) {
             bwIdToSSSMap.put(sss.Unique_ID__c, sss);
         }
@@ -117,86 +116,85 @@ public inherited sharing class SharedSolarSystemsSelector {
 
     public Map<Id, Shared_Solar_System__c> getAllSSSMap() {
         return new Map<Id, Shared_Solar_System__c>([
-            SELECT Id, Anchor_Capacity_Reserved__c, Capacity_Committed_kW_DC__c,
-                Reserved_Capacity_kW_DC__c, Total_CS_Capacity__c, Maximum_Subscription_Capacity_kWDC__c,
-                Reserved_Anchor_Capacity__c, Name, Stage__c, Pending_Demand_Capacity__c, Committed_Demand_Capacity__c,
-                CS_Services_Type__c, Client_Management_Contract__c,
-                Client_Acquisition_Contract__c,Management_Revenue_Start_Date__c, Customer_Assignment_Date__c,
-                First_Bill_Date__c, Actual_COD_Date__c, Actual_PTO_Date_MANUAL__c, Pending_Anchor_Capacity__c
-            FROM Shared_Solar_System__c
+                SELECT Id, Anchor_Capacity_Reserved__c, Capacity_Committed_kW_DC__c,
+                        Reserved_Capacity_kW_DC__c, Total_CS_Capacity__c, Maximum_Subscription_Capacity_kWDC__c,
+                        Reserved_Anchor_Capacity__c, Name, Stage__c, Pending_Demand_Capacity__c, Committed_Demand_Capacity__c,
+                        CS_Services_Type__c, Client_Management_Contract__c,
+                        Client_Acquisition_Contract__c,Management_Revenue_Start_Date__c, Customer_Assignment_Date__c,
+                        First_Bill_Date__c, Actual_COD_Date__c, Actual_PTO_Date_MANUAL__c, Pending_Anchor_Capacity__c
+                FROM Shared_Solar_System__c
         ]);
     }
 
     public List<Shared_Solar_System__c> getSharedSolarSystemsForEnrollment() {
         return [
-            SELECT Id, Name, Maximum_Subscription_Cost__c, Billing_Method__c, Product__r.Name, Product__r.Parent_Product__c,
-                Product__c, Product__r.Sizing_Method__c, Product__r.Customer_Subscription_Type__c, Product__r.Ignore_Load_Zones_When_Qualifying__c,
-                Capacity_Available_to_be_Reserved__c, Project_Capacity_Available_kW_DC__c, Estimated_COD_Date_Manual__c,
-                Service_Territories__c, RiskCalc_Minimum__c, Reserved_Capacity_kW_DC__c, Service_Territory__c, Utility__c,
-                Utility__r.Number_of_Decimal_Places__c,Expected_Yield_kWh_kW__c, Utility_NMC_Tariff__c,
-                Utility_NMC_Tariff__r.Size_Ratio__c, NMC_Value__c,Credit_Score_Requirement__c, Assignment_Order__c,
-                Maximum_Subscription_Capacity_kWDC__c,Available_SMB_Underwriting_Method_FICO__c, Available_SMB_Underwriting_Method_Docs__c,
-                Do_Not_Ask_for_Payment_Method__c, Do_Not_Underwrite__c,BWC_Project_Entity_Manual__c,
-                Total_System_Size_kWh_DC__c,Public__c, Waitlist__c,
-                (SELECT Id, Account__c, Account__r.Partner__c FROM Partner_Shared_Solar_System_Accesses__r WHERE IsActive__c = TRUE)
-            FROM Shared_Solar_System__c
-            WHERE Open__c = TRUE
-            AND Capacity_Available_to_be_Reserved__c > 0
-            ORDER BY Assignment_Order__c
+                SELECT Id, Name, Maximum_Subscription_Cost__c, Billing_Method__c, Product__r.Name, Product__r.Parent_Product__c,
+                        Product__c, Product__r.Sizing_Method__c, Product__r.Customer_Subscription_Type__c, Product__r.Ignore_Load_Zones_When_Qualifying__c,
+                        Capacity_Available_to_be_Reserved__c, Project_Capacity_Available_kW_DC__c, Estimated_COD_Date_Manual__c,
+                        Service_Territories__c, RiskCalc_Minimum__c, Reserved_Capacity_kW_DC__c, Service_Territory__c, Utility__c,
+                        Utility__r.Number_of_Decimal_Places__c,Expected_Yield_kWh_kW__c, Utility_NMC_Tariff__c,
+                        Utility_NMC_Tariff__r.Size_Ratio__c, NMC_Value__c,Credit_Score_Requirement__c, Assignment_Order__c,
+                        Maximum_Subscription_Capacity_kWDC__c,Available_SMB_Underwriting_Method_FICO__c, Available_SMB_Underwriting_Method_Docs__c,
+                        Do_Not_Ask_for_Payment_Method__c, Do_Not_Underwrite__c,BWC_Project_Entity_Manual__c,
+                        Total_System_Size_kWh_DC__c,Public__c, Waitlist__c, (SELECT Id, Account__c, Account__r.Partner__c FROM Partner_Shared_Solar_System_Accesses__r WHERE IsActive__c = TRUE)
+                FROM Shared_Solar_System__c
+                WHERE Open__c = TRUE
+                AND Capacity_Available_to_be_Reserved__c > 0
+                ORDER BY Assignment_Order__c
         ];
     }
 
     public List<Shared_Solar_System__c> selectSharedSolarSystemsForQualificationCheck(String productId, List<Id> utilityIds) {
         return [
-            SELECT Id, Name, Open__c, Capacity_Available_to_be_Reserved__c, Service_Territories__c,
-                Credit_Score_Requirement__c, Product__r.Name, Utility__r.Name, Public__c, Product__r.Ignore_Load_Zones_When_Qualifying__c,
-                Do_Not_Underwrite__c, Available_SMB_Underwriting_Method_FICO__c, Available_SMB_Underwriting_Method_Docs__c,
-                RiskCalc_Minimum__c, Do_Not_Ask_for_Payment_Method__c, Product__r.Parent_Product__c, Waitlist__c,
-                (SELECT Id, Account__c, Account__r.Partner__c, Account__r.Name FROM Partner_Shared_Solar_System_Accesses__r WHERE IsActive__c = TRUE)
-            FROM Shared_Solar_System__c
-            WHERE (Product__c = :productId OR Product__r.Parent_Product__c = :productId)
-            AND Utility__c IN :utilityIds
-            AND Stage__c = 'Acquisition'
-            ORDER BY Assignment_Order__c
+                SELECT Id, Name, Open__c, Capacity_Available_to_be_Reserved__c, Service_Territories__c,
+                        Credit_Score_Requirement__c, Product__r.Name, Utility__r.Name, Public__c, Product__r.Ignore_Load_Zones_When_Qualifying__c,
+                        Do_Not_Underwrite__c, Available_SMB_Underwriting_Method_FICO__c, Available_SMB_Underwriting_Method_Docs__c,
+                        RiskCalc_Minimum__c, Do_Not_Ask_for_Payment_Method__c, Product__r.Parent_Product__c, Waitlist__c, (SELECT Id, Account__c, Account__r.Partner__c, Account__r.Name FROM Partner_Shared_Solar_System_Accesses__r WHERE IsActive__c = TRUE)
+                FROM Shared_Solar_System__c
+                WHERE (Product__c = :productId OR Product__r.Parent_Product__c = :productId)
+                AND Utility__c IN :utilityIds
+                AND Stage__c = 'Acquisition'
+                ORDER BY Assignment_Order__c
         ];
     }
 
     public List<Shared_Solar_System__c> getActiveSystemsWithSmallOfftakeUASes() {
         return [
-            SELECT Id, (
-                SELECT Id, Opportunity__r.StageName, Opportunity__r.Account.Days_Past_Due__c, Future_Customer_Subscription_KWDC_Rollup__c,
-                    Future_Share_of_System_Rollup__c, Shared_Solar_System__r.Waitlist__c, Opportunity__r.Customer_Group__c
-                FROM Utility_Account_Subscriptions__r
-                WHERE Next_Schedule_Z_Status__c = 'Active Subscription'
-                AND (NOT Opportunity__r.Name LIKE '%test%')
-            )
-            FROM Shared_Solar_System__c
-            WHERE Stage__c IN ('Acquisition', 'Management')
+                SELECT Id, (
+                        SELECT Id, Opportunity__r.StageName, Opportunity__r.Account.Days_Past_Due__c, Future_Customer_Subscription_KWDC_Rollup__c,
+                                Future_Share_of_System_Rollup__c, Shared_Solar_System__r.Waitlist__c, Opportunity__r.Customer_Group__c
+                        FROM Utility_Account_Subscriptions__r
+                        WHERE Next_Schedule_Z_Status__c = 'Active Subscription'
+                        AND (NOT Opportunity__r.Name LIKE '%test%')
+                )
+                FROM Shared_Solar_System__c
+                WHERE Stage__c IN ('Acquisition', 'Management')
         ];
     }
 
     public List<Shared_Solar_System__c> getSSSWithActiveUASes(Set<Id> sssList) {
         return [
-            SELECT Id, Name, Reserved_Capacity_kW_DC__c, Capacity_Committed_kW_DC__c, Anchor_Capacity_Reserved__c, Reserved_Anchor_Capacity__c,
-                Stage__c, Utility__r.Average_Demand_Threshold__c,Pending_Demand_Capacity__c, Committed_Demand_Capacity__c,
-                Demand_Customer_System_Utilization__c,Pending_Anchor_Capacity__c,
-                (SELECT Id, Customer_Group__c, Opportunity__r.Customer_Sub_Group__c, Shared_Solar_System__r.Name,
-                    Future_Customer_Subscription_KWDC_Rollup__c, Customer_Subscription_KW_DC__c, Opportunity_Stage__c,
-                    Utility_Account_Log__c, Utility_Account_Log__r.Average_Demand__c, Utility_Account_Log__r.Exclude_from_Demand_Capacity__c
-                FROM Utility_Account_Subscriptions__r
-                WHERE Next_Schedule_Z_Status__c = 'Active Subscription'
-                AND (Future_Customer_Subscription_KWDC_Rollup__c != 0 OR Customer_Subscription_KW_DC__c != 0))
-            FROM Shared_Solar_System__c
-            WHERE Id IN :sssList
+                SELECT Id, Name, Reserved_Capacity_kW_DC__c, Capacity_Committed_kW_DC__c, Anchor_Capacity_Reserved__c, Reserved_Anchor_Capacity__c,
+                        Stage__c, Utility__r.Average_Demand_Threshold__c,Pending_Demand_Capacity__c, Committed_Demand_Capacity__c,
+                        Demand_Customer_System_Utilization__c,Pending_Anchor_Capacity__c, (
+                        SELECT Id, Customer_Group__c, Opportunity__r.Customer_Sub_Group__c, Shared_Solar_System__r.Name,
+                                Future_Customer_Subscription_KWDC_Rollup__c, Customer_Subscription_KW_DC__c, Opportunity_Stage__c,
+                                Utility_Account_Log__c, Utility_Account_Log__r.Average_Demand__c, Utility_Account_Log__r.Exclude_from_Demand_Capacity__c
+                        FROM Utility_Account_Subscriptions__r
+                        WHERE Next_Schedule_Z_Status__c = 'Active Subscription'
+                        AND (Future_Customer_Subscription_KWDC_Rollup__c != 0 OR Customer_Subscription_KW_DC__c != 0)
+                )
+                FROM Shared_Solar_System__c
+                WHERE Id IN :sssList
         ];
     }
 
     public Set<Id> getSSSByUAL(Set<Utility_Account_Log__c> uals) {
         Set<Id> systems = new Set<Id>();
         List<Utility_Account_Subscription__c> subscriptions = [
-            SELECT Shared_Solar_System__c
-            FROM Utility_Account_Subscription__c
-            WHERE Utility_Account_Log__c IN : uals
+                SELECT Shared_Solar_System__c
+                FROM Utility_Account_Subscription__c
+                WHERE Utility_Account_Log__c IN :uals
         ];
         for (Utility_Account_Subscription__c subscription : subscriptions) {
             systems.add(subscription.Shared_Solar_System__c);
@@ -206,33 +204,57 @@ public inherited sharing class SharedSolarSystemsSelector {
 
     public List<Shared_Solar_System__Share> getSSSSharesForUsers(List<User> users) {
         return [
-            SELECT ParentId, UserOrGroupId
-            FROM Shared_Solar_System__Share
-            WHERE UserOrGroupId IN :users
+                SELECT ParentId, UserOrGroupId
+                FROM Shared_Solar_System__Share
+                WHERE UserOrGroupId IN :users
         ];
     }
 
     public Shared_Solar_System__c getSSSForContract(Id contractId) {
         Contract givenContract = [
-            SELECT Id, Opportunity__r.Shared_Solar_System__c
-            FROM Contract
-            WHERE Id = :contractId
+                SELECT Id, Opportunity__r.Shared_Solar_System__c
+                FROM Contract
+                WHERE Id = :contractId
         ];
 
         Shared_Solar_System__c resultSSS = [
-            SELECT Id, Name, Address__c, City__c, State__c, Zip_Code__c,
-                Total_System_Size_kWh_DC__c, Home_Electricity_Offset__c
-            FROM Shared_Solar_System__c
-            WHERE Id = :givenContract.Opportunity__r.Shared_Solar_System__c
+                SELECT Id, Name, Address__c, City__c, State__c, Zip_Code__c,
+                        Total_System_Size_kWh_DC__c, Home_Electricity_Offset__c
+                FROM Shared_Solar_System__c
+                WHERE Id = :givenContract.Opportunity__r.Shared_Solar_System__c
         ];
         return resultSSS;
     }
 
     public Map<Id, Shared_Solar_System__c> getAllSSSByUtility(Set<Id> utilityIds) {
         return new Map<Id, Shared_Solar_System__c>([
-            SELECT Id
-            FROM Shared_Solar_System__c
-            WHERE Utility__c IN : utilityIds
+                SELECT Id
+                FROM Shared_Solar_System__c
+                WHERE Utility__c IN :utilityIds
         ]);
+    }
+
+    public List<Shared_Solar_System__c> getAllSSSByParentAccount(Id accountId) {
+        //Get Shared Solar Systems from related completed Community Solar opportunities using the parent account id
+        return [
+                SELECT
+                        Id,
+                        Name,
+                        Project_Information_short__c,
+                        Project_Image__c,
+                        Waitlist__c,
+                        Metric_Tons_of_CO2_Offset__c,
+                        Home_Electricity_Offset__c,
+                        Subscribers__c,
+                        Information__c
+                FROM Shared_Solar_System__c
+                WHERE Id IN (
+                        SELECT Shared_Solar_System__c
+                        FROM Opportunity
+                        WHERE Parent_Account_ID__c = :accountId
+                        AND Product_Line__c = 'Community Solar'
+                        AND StageName = 'Complete'
+                )
+        ];
     }
 }

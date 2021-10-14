@@ -1,0 +1,26 @@
+<!--
+ - Created by rebeccanachison on 10/4/21.
+ -->
+
+<!-- Customer Portal Project UAS List -->
+<template>
+    <h2 class="cpp-uas-list__header">Community Solar Subscriptions</h2>
+    <template if:true={isLoading}>
+        <div class="cpp-uas-list__loading-wrapper">
+            <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+        </div>
+    </template>
+    <template if:false={isLoading}>
+        <template if:true={solarSubscriptions}>
+            <lightning-datatable
+                    key-field="id"
+                    data={solarSubscriptions}
+                    columns={columns}
+                    hide-checkbox-column>
+            </lightning-datatable>
+        </template>
+        <template if:false={solarSubscriptions}>
+            No active subscriptions found
+        </template>
+    </template>
+</template>

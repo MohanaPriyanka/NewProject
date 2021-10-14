@@ -1,0 +1,27 @@
+<!--
+ - Created by rebeccanachison on 10/1/21.
+ -->
+
+<!-- Customer Portal Project Carousel Image -->
+<template>
+    <div
+            role="tabpanel"
+            id="carousel-image"
+            class="slds-size_1-of-1 cpp-carousel-image__container"
+            aria-hidden={ariaHidden}>
+        <div class="cpp-carousel-image__image" style={backgroundImgStyle}>
+            <span class="slds-assistive-text">{alternativeText}</span>
+        </div>
+        <div class="cpp-carousel-image__wrapper">
+            <a
+                    class="slds-carousel__panel-action slds-text-link_reset cpp-carousel-image__panel-action"
+                    tabindex={tabIndex}>
+                <div class="slds-carousel__content slds-size_1-of-1 cpp-carousel-image__content">
+                    <h2 class="slds-carousel__content-title cpp-carousel-image__header">{header}</h2>
+                    <p class="cpp-carousel-image__description">{description}</p>
+                    <slot class="slds-size_1-of-1"></slot>
+                </div>
+            </a>
+        </div>
+    </div>
+</template>
