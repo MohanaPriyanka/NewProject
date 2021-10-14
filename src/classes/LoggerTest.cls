@@ -1,10 +1,10 @@
-/*************************************************************************************
- * Created By: peteryao on 2019-02-01  
- * Description: 
- * Test: 
- *************************************************************************************/
+/**
+ * @description Created by peteryao on 2019-02-01
+ **/
+
 @IsTest
 public with sharing class LoggerTest {
+
     @IsTest static void testLogNow() {
         List<Error_Log__c> errorLogs = [SELECT Id, Class__c, Method__c, Message__c, Severity__c FROM Error_Log__c];
         System.assertEquals(0, errorLogs.size());
@@ -185,5 +185,21 @@ public with sharing class LoggerTest {
             result += prefix + ' ' + i + '. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.\n';
         }
         return result;
+    }
+
+    @IsTest
+    private static void testLogInsertFromPlatformEvent() {
+        Logger.postLog('TestClass', 'TestMethod', 'TestMessage', System.now(), Logger.ERROR);
+        Test.getEventBus().deliver();
+        Error_Log__c errorLog = [
+            SELECT Class__c, Method__c, Message__c, Severity__c, Limits_DML_Rows_Used__c
+            FROM Error_Log__c
+            ORDER BY Class__c
+        ];
+        System.assertEquals('TestClass', errorLog.Class__c, 'Unexpected class');
+        System.assertEquals('TestMethod', errorLog.Method__c, 'Unexpected method');
+        System.assertEquals('TestMessage', errorLog.Message__c, 'Unexpected error message');
+        System.assertEquals(Logger.ERROR, errorLog.Severity__c, 'Unexpected severity');
+        System.assertEquals(0, errorLog.Limits_DML_Rows_Used__c, 'No work was done in context, dml rows for log should be 0');
     }
 }
