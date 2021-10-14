@@ -129,6 +129,20 @@ private with sharing class ZuoraReturnedPaymentServiceTest {
             '/v1/payments/2c92c0fb6cb90e36016cc137e05d46dc',
             '{' +
                 '"type":"External",' +
+                '"status":"Processed",' +
+                '"paymentMethodId":"2c92c0f868a2023a0168a79e7f4f3f70",' +
+                '"id":"2c92c0fb6cb90e36016cc137e05d46dc",' +
+                '"effectiveDate":"2019-06-20",' +
+                '"amount":1668.290000000,' +
+                '"accountId":"2c92c0f96c8afb5d016c8c5b4d4c7b6e",' +
+                '"success":true' +
+                '}'
+        );
+        ZuoraAPIMock.addEndpointResult(
+            '/v1/payments/2c92c0fb6cb90e36016cc137e05d46dc/cancel',
+            '{' +
+                '"type":"External",' +
+                '"status":"Cancelled",' +
                 '"paymentMethodId":"2c92c0f868a2023a0168a79e7f4f3f70",' +
                 '"id":"2c92c0fb6cb90e36016cc137e05d46dc",' +
                 '"effectiveDate":"2019-06-20",' +
@@ -165,6 +179,68 @@ private with sharing class ZuoraReturnedPaymentServiceTest {
             'Expected a GET payment, PUT payment to mark Returned and PUT payment to cancel');
         System.assertEquals(0, debitMemoCalls,
             'Expected no debit memo calls because we should cancel payments if they are made in an open period');
+    }
+
+    @IsTest
+    private static void testPaymentReturnForPaymentAlreadySettled() {
+        Test.startTest();
+        useMocks();
+        ZuoraAPIMock.addEndpointResult(
+            '/v1/payments/2c92c0fb6cb90e36016cc137e05d46dc',
+            '{' +
+                '"type":"Electronic",' +
+                '"status":"Processed",' +
+                '"paymentMethodId":"2c92c0f868a2023a0168a79e7f4f3f70",' +
+                '"id":"2c92c0fb6cb90e36016cc137e05d46dc",' +
+                '"effectiveDate":"2019-06-20",' +
+                '"amount":1668.290000000,' +
+                '"accountId":"2c92c0f96c8afb5d016c8c5b4d4c7b6e",' +
+                '"success":true' +
+                '}'
+        );
+        ZuoraAPIMock.addEndpointResult(
+            '/v1/payments/2c92c0fb6cb90e36016cc137e05d46dc/cancel',
+            '{' +
+                '"type":"Electronic",' +
+                // This would normally be Cancelled, but since this payment settled, it's still Processed, we should
+                // create debit memos to handle the return
+                '"status":"Processed",' +
+                '"paymentMethodId":"2c92c0f868a2023a0168a79e7f4f3f70",' +
+                '"id":"2c92c0fb6cb90e36016cc137e05d46dc",' +
+                '"effectiveDate":"2019-06-20",' +
+                '"amount":1668.290000000,' +
+                '"accountId":"2c92c0f96c8afb5d016c8c5b4d4c7b6e",' +
+                '"success":true' +
+                '}'
+        );
+        ZuoraAPIMock.addEndpointResult(
+            '/v1/accounting-periods',
+            '{' +
+                '  "accountingPeriods" : [ {' +
+                '    "id" : "2c92c0f86a583eb9016a6af37fbb0355",' +
+                '    "name" : "Period1",' +
+                '    "startDate" : "2019-06-01",' +
+                '    "endDate" : "2019-06-30",' +
+                '    "status" : "Open"' +
+                '  } ],' +
+                '  "success" : true' +
+                '}');
+
+        ZuoraController.reverseReturnedPayment(Util.getFakeId(Schema.Zuora__Payment__c.SObjectType));
+        Test.stopTest();
+        Integer paymentCalls = 0;
+        Integer debitMemoCalls = 0;
+        for (ZuoraAPIHelper.EndpointCall endpointCall : ZuoraAPIHelper.endpointsCalled) {
+            if (endpointCall.endpoint.contains('payments')) {
+                paymentCalls++;
+            } else if (endpointCall.endpoint.contains('debitmemos')) {
+                debitMemoCalls++;
+            }
+        }
+        System.assertEquals(7, paymentCalls,
+            'Expected a GET payment, PUT payment to mark Returned and PUT payment to cancel, then because that fails ' +
+                'another GET payment part, two GET payment part items, and another PUT payment to return');
+        System.assertEquals(7, debitMemoCalls, 'Expected a GET debitmemo, 3 POST debitmemo, and 3 POST debitmemo/post');
     }
 
     @IsTest
