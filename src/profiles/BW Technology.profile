@@ -40017,6 +40017,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Product2.Utility_Account_Subscription_Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Product2.X25_BPS_Eligible__c</field>
         <readable>true</readable>
     </fieldPermissions>
