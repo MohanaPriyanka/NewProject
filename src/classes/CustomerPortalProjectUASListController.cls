@@ -16,9 +16,9 @@ public without sharing class CustomerPortalProjectUASListController {
 
         try {
             currentUser = [
-                    SELECT Id, AccountId
-                    FROM User
-                    WHERE Id = :UserInfo.getUserId()
+                SELECT Id, AccountId
+                FROM User
+                WHERE Id = :UserInfo.getUserId()
             ];
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());

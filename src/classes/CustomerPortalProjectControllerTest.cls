@@ -22,28 +22,28 @@ public with sharing class CustomerPortalProjectControllerTest {
 
         //relate Opportunity to user
         Contact contact = [
-                SELECT Id
-                FROM Contact
-                LIMIT 1
+            SELECT Id
+            FROM Contact
+            LIMIT 1
         ];
         Account parentAccount = [
-                SELECT Id
-                FROM Account
-                WHERE Name != 'Account A'
-                AND Type = 'Landowner'
-                LIMIT 1
+            SELECT Id
+            FROM Account
+            WHERE Name != 'Account A'
+            AND Type = 'Landowner'
+            LIMIT 1
         ];
         Opportunity opportunity = [
-                SELECT Id, AccountId
-                FROM Opportunity
-                WHERE Product_Line__c = 'Community Solar'
-                AND StageName = 'Complete'
-                LIMIT 1
+            SELECT Id, AccountId
+            FROM Opportunity
+            WHERE Product_Line__c = 'Community Solar'
+            AND StageName = 'Complete'
+            LIMIT 1
         ];
 
         Account propertyAccount = new Account(
-                Id = opportunity.AccountId,
-                Parent_Account__c = parentAccount.Id
+            Id = opportunity.AccountId,
+            Parent_Account__c = parentAccount.Id
         );
         update propertyAccount;
 
@@ -55,33 +55,33 @@ public with sharing class CustomerPortalProjectControllerTest {
 
     @IsTest public static void testGetUserSharedSolarSystemsCommunitySolarCommunityUser() {
         Contact contact = [
-                SELECT Id
-                FROM Contact
-                WHERE AccountId != NULL
-                LIMIT 1
+            SELECT Id
+            FROM Contact
+            WHERE AccountId != NULL
+            LIMIT 1
         ];
 
         //Create Community Solar Community User with unique username
         String userName = 'commsolarcommuser' + Datetime.now().getTime() + '@test.test';
         Profile profile = [
-                SELECT Id
-                FROM Profile
-                WHERE Name = 'Community Solar Community User'
+            SELECT Id
+            FROM Profile
+            WHERE Name = 'Community Solar Community User'
         ];
         User currentUser = new User(
-                Alias = 'commun',
-                Email = 'commsolarcommuser@test.test',
-                EmailEncodingKey = 'UTF-8',
-                FirstName = 'Test First',
-                LastName = 'Test Last',
-                LanguageLocaleKey = 'en_US',
-                LocaleSidKey = 'en_US',
-                ProfileId = profile.Id,
-                TimeZoneSidKey = 'America/Los_Angeles',
-                Country = 'United States',
-                UserName = userName,
-                ContactId = contact.Id,
-                IsActive = true
+            Alias = 'commun',
+            Email = 'commsolarcommuser@test.test',
+            EmailEncodingKey = 'UTF-8',
+            FirstName = 'Test First',
+            LastName = 'Test Last',
+            LanguageLocaleKey = 'en_US',
+            LocaleSidKey = 'en_US',
+            ProfileId = profile.Id,
+            TimeZoneSidKey = 'America/Los_Angeles',
+            Country = 'United States',
+            UserName = userName,
+            ContactId = contact.Id,
+            IsActive = true
         );
         Util.insertSObj(currentUser);
 
@@ -93,33 +93,33 @@ public with sharing class CustomerPortalProjectControllerTest {
 
     @IsTest public static void testGetUserSharedSolarSystemsCommunitySolarUser() {
         Contact contact = [
-                SELECT Id
-                FROM Contact
-                WHERE AccountId != NULL
-                LIMIT 1
+            SELECT Id
+            FROM Contact
+            WHERE AccountId != NULL
+            LIMIT 1
         ];
 
         //Create Community Solar User with unique username
         String userName = 'commsolaruser' + Datetime.now().getTime() + '@test.test';
         Profile profile = [
-                SELECT Id
-                FROM Profile
-                WHERE Name = 'Community Solar User'
+            SELECT Id
+            FROM Profile
+            WHERE Name = 'Community Solar User'
         ];
         User currentUser = new User(
-                Alias = 'commun',
-                Email = 'commsolaruser@test.test',
-                EmailEncodingKey = 'UTF-8',
-                FirstName = 'Test First',
-                LastName = 'Test Last',
-                LanguageLocaleKey = 'en_US',
-                LocaleSidKey = 'en_US',
-                ProfileId = profile.Id,
-                TimeZoneSidKey = 'America/Los_Angeles',
-                Country = 'United States',
-                UserName = userName,
-                ContactId = contact.Id,
-                IsActive = true
+            Alias = 'commun',
+            Email = 'commsolaruser@test.test',
+            EmailEncodingKey = 'UTF-8',
+            FirstName = 'Test First',
+            LastName = 'Test Last',
+            LanguageLocaleKey = 'en_US',
+            LocaleSidKey = 'en_US',
+            ProfileId = profile.Id,
+            TimeZoneSidKey = 'America/Los_Angeles',
+            Country = 'United States',
+            UserName = userName,
+            ContactId = contact.Id,
+            IsActive = true
         );
         Util.insertSObj(currentUser);
 
@@ -131,18 +131,18 @@ public with sharing class CustomerPortalProjectControllerTest {
 
     @IsTest public static void testGetUserSharedSolarSystemsNoSubscriptions() {
         Contact contact = [
-                SELECT Id
-                FROM Contact
-                WHERE AccountId != NULL
-                LIMIT 1
+            SELECT Id
+            FROM Contact
+            WHERE AccountId != NULL
+            LIMIT 1
         ];
 
         Opportunity opportunity = [
-                SELECT Id, StageName
-                FROM Opportunity
-                WHERE Product_Line__c = 'Community Solar'
-                AND StageName = 'Complete'
-                LIMIT 1
+            SELECT Id, StageName
+            FROM Opportunity
+            WHERE Product_Line__c = 'Community Solar'
+            AND StageName = 'Complete'
+            LIMIT 1
         ];
 
         opportunity.StageName = 'Cancelled';
@@ -151,27 +151,26 @@ public with sharing class CustomerPortalProjectControllerTest {
         //Create Community Solar Community User with unique username
         String userName = 'commsolarcommuser' + Datetime.now().getTime() + '@test.test';
         Profile profile = [
-                SELECT Id
-                FROM Profile
-                WHERE Name = 'Community Solar Community User'
+            SELECT Id
+            FROM Profile
+            WHERE Name = 'Community Solar Community User'
         ];
         User currentUser = new User(
-                Alias = 'commun',
-                Email = 'commsolarcommuser@test.test',
-                EmailEncodingKey = 'UTF-8',
-                FirstName = 'Test First',
-                LastName = 'Test Last',
-                LanguageLocaleKey = 'en_US',
-                LocaleSidKey = 'en_US',
-                ProfileId = profile.Id,
-                TimeZoneSidKey = 'America/Los_Angeles',
-                Country = 'United States',
-                UserName = userName,
-                ContactId = contact.Id,
-                IsActive = true
+            Alias = 'commun',
+            Email = 'commsolarcommuser@test.test',
+            EmailEncodingKey = 'UTF-8',
+            FirstName = 'Test First',
+            LastName = 'Test Last',
+            LanguageLocaleKey = 'en_US',
+            LocaleSidKey = 'en_US',
+            ProfileId = profile.Id,
+            TimeZoneSidKey = 'America/Los_Angeles',
+            Country = 'United States',
+            UserName = userName,
+            ContactId = contact.Id,
+            IsActive = true
         );
         Util.insertSObj(currentUser);
-
 
 
         System.runAs(currentUser) {
@@ -193,33 +192,33 @@ public with sharing class CustomerPortalProjectControllerTest {
 
     @IsTest public static void testGetUtilityAccountSubscriptionsCommunitySolarCommunityUser() {
         Contact contact = [
-                SELECT Id
-                FROM Contact
-                WHERE AccountId != NULL
-                LIMIT 1
+            SELECT Id
+            FROM Contact
+            WHERE AccountId != NULL
+            LIMIT 1
         ];
 
         //Create Community Solar Community User with unique username
         String userName = 'commsolarcommuser' + Datetime.now().getTime() + '@test.test';
         Profile profile = [
-                SELECT Id
-                FROM Profile
-                WHERE Name = 'Community Solar Community User'
+            SELECT Id
+            FROM Profile
+            WHERE Name = 'Community Solar Community User'
         ];
         User currentUser = new User(
-                Alias = 'commun',
-                Email = 'commsolarcommuser@test.test',
-                EmailEncodingKey = 'UTF-8',
-                FirstName = 'Test First',
-                LastName = 'Test Last',
-                LanguageLocaleKey = 'en_US',
-                LocaleSidKey = 'en_US',
-                ProfileId = profile.Id,
-                TimeZoneSidKey = 'America/Los_Angeles',
-                Country = 'United States',
-                UserName = userName,
-                ContactId = contact.Id,
-                IsActive = true
+            Alias = 'commun',
+            Email = 'commsolarcommuser@test.test',
+            EmailEncodingKey = 'UTF-8',
+            FirstName = 'Test First',
+            LastName = 'Test Last',
+            LanguageLocaleKey = 'en_US',
+            LocaleSidKey = 'en_US',
+            ProfileId = profile.Id,
+            TimeZoneSidKey = 'America/Los_Angeles',
+            Country = 'United States',
+            UserName = userName,
+            ContactId = contact.Id,
+            IsActive = true
         );
         Util.insertSObj(currentUser);
 
@@ -231,33 +230,33 @@ public with sharing class CustomerPortalProjectControllerTest {
 
     @IsTest public static void testGetUtilityAccountSubscriptionsCommunitySolarUser() {
         Contact contact = [
-                SELECT Id
-                FROM Contact
-                WHERE AccountId != NULL
-                LIMIT 1
+            SELECT Id
+            FROM Contact
+            WHERE AccountId != NULL
+            LIMIT 1
         ];
 
         //Create Community Solar User with unique username
         String userName = 'commsolaruser' + Datetime.now().getTime() + '@test.test';
         Profile profile = [
-                SELECT Id
-                FROM Profile
-                WHERE Name = 'Community Solar User'
+            SELECT Id
+            FROM Profile
+            WHERE Name = 'Community Solar User'
         ];
         User currentUser = new User(
-                Alias = 'commun',
-                Email = 'commsolaruser@test.test',
-                EmailEncodingKey = 'UTF-8',
-                FirstName = 'Test First',
-                LastName = 'Test Last',
-                LanguageLocaleKey = 'en_US',
-                LocaleSidKey = 'en_US',
-                ProfileId = profile.Id,
-                TimeZoneSidKey = 'America/Los_Angeles',
-                Country = 'United States',
-                UserName = userName,
-                ContactId = contact.Id,
-                IsActive = true
+            Alias = 'commun',
+            Email = 'commsolaruser@test.test',
+            EmailEncodingKey = 'UTF-8',
+            FirstName = 'Test First',
+            LastName = 'Test Last',
+            LanguageLocaleKey = 'en_US',
+            LocaleSidKey = 'en_US',
+            ProfileId = profile.Id,
+            TimeZoneSidKey = 'America/Los_Angeles',
+            Country = 'United States',
+            UserName = userName,
+            ContactId = contact.Id,
+            IsActive = true
         );
         Util.insertSObj(currentUser);
 
@@ -278,18 +277,18 @@ public with sharing class CustomerPortalProjectControllerTest {
 
     @IsTest public static void testGetUtilityAccountSubscriptionsNoSubscriptions() {
         Contact contact = [
-                SELECT Id
-                FROM Contact
-                WHERE AccountId != NULL
-                LIMIT 1
+            SELECT Id
+            FROM Contact
+            WHERE AccountId != NULL
+            LIMIT 1
         ];
 
         Opportunity opportunity = [
-                SELECT Id, StageName
-                FROM Opportunity
-                WHERE Product_Line__c = 'Community Solar'
-                AND StageName = 'Complete'
-                LIMIT 1
+            SELECT Id, StageName
+            FROM Opportunity
+            WHERE Product_Line__c = 'Community Solar'
+            AND StageName = 'Complete'
+            LIMIT 1
         ];
 
         opportunity.StageName = 'Cancelled';
@@ -298,24 +297,24 @@ public with sharing class CustomerPortalProjectControllerTest {
         //Create Community Solar Community User with unique username
         String userName = 'commsolarcommuser' + Datetime.now().getTime() + '@test.test';
         Profile profile = [
-                SELECT Id
-                FROM Profile
-                WHERE Name = 'Community Solar Community User'
+            SELECT Id
+            FROM Profile
+            WHERE Name = 'Community Solar Community User'
         ];
         User currentUser = new User(
-                Alias = 'commun',
-                Email = 'commsolarcommuser@test.test',
-                EmailEncodingKey = 'UTF-8',
-                FirstName = 'Test First',
-                LastName = 'Test Last',
-                LanguageLocaleKey = 'en_US',
-                LocaleSidKey = 'en_US',
-                ProfileId = profile.Id,
-                TimeZoneSidKey = 'America/Los_Angeles',
-                Country = 'United States',
-                UserName = userName,
-                ContactId = contact.Id,
-                IsActive = true
+            Alias = 'commun',
+            Email = 'commsolarcommuser@test.test',
+            EmailEncodingKey = 'UTF-8',
+            FirstName = 'Test First',
+            LastName = 'Test Last',
+            LanguageLocaleKey = 'en_US',
+            LocaleSidKey = 'en_US',
+            ProfileId = profile.Id,
+            TimeZoneSidKey = 'America/Los_Angeles',
+            Country = 'United States',
+            UserName = userName,
+            ContactId = contact.Id,
+            IsActive = true
         );
         Util.insertSObj(currentUser);
 

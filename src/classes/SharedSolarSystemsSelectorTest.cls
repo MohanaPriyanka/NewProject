@@ -7,92 +7,92 @@ public with sharing class SharedSolarSystemsSelectorTest {
     @TestSetup
     public static void setupTestData() {
         Utility__c eversource = new Utility__c(
-                Name = 'Eversource',
-                Number_of_Decimal_Places__c = 2
+            Name = 'Eversource',
+            Number_of_Decimal_Places__c = 2
         );
         Utility__c nationalGrid = new Utility__c(
-                Name = 'National Grid',
-                Number_of_Decimal_Places__c = 2
+            Name = 'National Grid',
+            Number_of_Decimal_Places__c = 2
         );
         Utility__c noSSS = new Utility__c(
-                Name = 'No SSS Utility',
-                Number_of_Decimal_Places__c = 2
+            Name = 'No SSS Utility',
+            Number_of_Decimal_Places__c = 2
         );
         insert new List<Utility__c>{
-                eversource, nationalGrid, noSSS
+            eversource, nationalGrid, noSSS
         };
         Shared_Solar_System__c sss1 = new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',
-                Service_Territory__c = 'SEMA',
-                Service_Territories__c = 'SEMA',
-                Open__c = true,
-                Reserved_Capacity_kW_DC__c = '10',
-                Capacity_Committed_kW_DC__c = 0,
-                Total_System_Size_kWh_DC__c = 1445.86,
-                Total_System_Size_kW_AC__c = 996,
-                Utility__c = eversource.Id,
-                Credit_Score_Requirement__c = 300,
-                Assignment_Order__c = '1',
-                Expected_Yield_kWh_kW__c = 1300,
-                Assemblage_Count__c = 1,
-                Maximum_Subscription_Capacity_kWDC__c = 25);
+            Service_Territory__c = 'SEMA',
+            Service_Territories__c = 'SEMA',
+            Open__c = true,
+            Reserved_Capacity_kW_DC__c = '10',
+            Capacity_Committed_kW_DC__c = 0,
+            Total_System_Size_kWh_DC__c = 1445.86,
+            Total_System_Size_kW_AC__c = 996,
+            Utility__c = eversource.Id,
+            Credit_Score_Requirement__c = 300,
+            Assignment_Order__c = '1',
+            Expected_Yield_kWh_kW__c = 1300,
+            Assemblage_Count__c = 1,
+            Maximum_Subscription_Capacity_kWDC__c = 25);
         Shared_Solar_System__c sss2 = new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',
-                Service_Territory__c = 'NEMA',
-                Service_Territories__c = 'NEMA',
-                Open__c = true,
-                Reserved_Capacity_kW_DC__c = '10',
-                Capacity_Committed_kW_DC__c = 0,
-                Total_System_Size_kWh_DC__c = 1445.86,
-                Total_System_Size_kW_AC__c = 996,
-                Utility__c = eversource.Id,
-                Credit_Score_Requirement__c = 300,
-                Assignment_Order__c = '1',
-                Expected_Yield_kWh_kW__c = 1300,
-                Assemblage_Count__c = 1,
-                Maximum_Subscription_Capacity_kWDC__c = 25);
+            Service_Territory__c = 'NEMA',
+            Service_Territories__c = 'NEMA',
+            Open__c = true,
+            Reserved_Capacity_kW_DC__c = '10',
+            Capacity_Committed_kW_DC__c = 0,
+            Total_System_Size_kWh_DC__c = 1445.86,
+            Total_System_Size_kW_AC__c = 996,
+            Utility__c = eversource.Id,
+            Credit_Score_Requirement__c = 300,
+            Assignment_Order__c = '1',
+            Expected_Yield_kWh_kW__c = 1300,
+            Assemblage_Count__c = 1,
+            Maximum_Subscription_Capacity_kWDC__c = 25);
         Shared_Solar_System__c sss3 = new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',
-                Service_Territory__c = 'NEMA',
-                Service_Territories__c = 'NEMA',
-                Open__c = true,
-                Reserved_Capacity_kW_DC__c = '10',
-                Capacity_Committed_kW_DC__c = 0,
-                Total_System_Size_kWh_DC__c = 1445.86,
-                Total_System_Size_kW_AC__c = 996,
-                Utility__c = eversource.Id,
-                Credit_Score_Requirement__c = 300,
-                Assignment_Order__c = '1',
-                Expected_Yield_kWh_kW__c = 1300,
-                Assemblage_Count__c = 1,
-                Maximum_Subscription_Capacity_kWDC__c = 25);
+            Service_Territory__c = 'NEMA',
+            Service_Territories__c = 'NEMA',
+            Open__c = true,
+            Reserved_Capacity_kW_DC__c = '10',
+            Capacity_Committed_kW_DC__c = 0,
+            Total_System_Size_kWh_DC__c = 1445.86,
+            Total_System_Size_kW_AC__c = 996,
+            Utility__c = eversource.Id,
+            Credit_Score_Requirement__c = 300,
+            Assignment_Order__c = '1',
+            Expected_Yield_kWh_kW__c = 1300,
+            Assemblage_Count__c = 1,
+            Maximum_Subscription_Capacity_kWDC__c = 25);
         Shared_Solar_System__c sss4 = new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',
-                Service_Territory__c = 'NEMA',
-                Service_Territories__c = 'NEMA',
-                Open__c = true,
-                Reserved_Capacity_kW_DC__c = '10',
-                Capacity_Committed_kW_DC__c = 0,
-                Total_System_Size_kWh_DC__c = 1445.86,
-                Total_System_Size_kW_AC__c = 996,
-                Utility__c = nationalGrid.Id,
-                Credit_Score_Requirement__c = 300,
-                Assignment_Order__c = '1',
-                Expected_Yield_kWh_kW__c = 1300,
-                Assemblage_Count__c = 1,
-                Maximum_Subscription_Capacity_kWDC__c = 25);
+            Service_Territory__c = 'NEMA',
+            Service_Territories__c = 'NEMA',
+            Open__c = true,
+            Reserved_Capacity_kW_DC__c = '10',
+            Capacity_Committed_kW_DC__c = 0,
+            Total_System_Size_kWh_DC__c = 1445.86,
+            Total_System_Size_kW_AC__c = 996,
+            Utility__c = nationalGrid.Id,
+            Credit_Score_Requirement__c = 300,
+            Assignment_Order__c = '1',
+            Expected_Yield_kWh_kW__c = 1300,
+            Assemblage_Count__c = 1,
+            Maximum_Subscription_Capacity_kWDC__c = 25);
         Shared_Solar_System__c sss5 = new Shared_Solar_System__c(Name = 'Closed SSS',
-                Service_Territory__c = 'NEMA',
-                Service_Territories__c = 'NEMA',
-                Open__c = false,
-                Reserved_Capacity_kW_DC__c = '10',
-                Capacity_Committed_kW_DC__c = 0,
-                Total_System_Size_kWh_DC__c = 1445.86,
-                Total_System_Size_kW_AC__c = 996,
-                Utility__c = nationalGrid.Id,
-                Credit_Score_Requirement__c = 300,
-                Assignment_Order__c = '1',
-                Expected_Yield_kWh_kW__c = 1300,
-                Assemblage_Count__c = 1,
-                Maximum_Subscription_Capacity_kWDC__c = 25);
+            Service_Territory__c = 'NEMA',
+            Service_Territories__c = 'NEMA',
+            Open__c = false,
+            Reserved_Capacity_kW_DC__c = '10',
+            Capacity_Committed_kW_DC__c = 0,
+            Total_System_Size_kWh_DC__c = 1445.86,
+            Total_System_Size_kW_AC__c = 996,
+            Utility__c = nationalGrid.Id,
+            Credit_Score_Requirement__c = 300,
+            Assignment_Order__c = '1',
+            Expected_Yield_kWh_kW__c = 1300,
+            Assemblage_Count__c = 1,
+            Maximum_Subscription_Capacity_kWDC__c = 25);
         insert new List<Shared_Solar_System__c>{
-                sss1, sss2, sss3, sss4, sss5
+            sss1, sss2, sss3, sss4, sss5
         };
     }
 
@@ -128,70 +128,70 @@ public with sharing class SharedSolarSystemsSelectorTest {
             utilityMap.put(utility.Name, utility.Id);
         }
         List<Shared_Solar_System__c> noSharedSolarSystems =
-                SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
-                        new Set<Id>{
-                                utilityMap.get('No SSS Utility')
-                        },
-                        new Set<String>{
-                                'No Load Zone'
-                        }
-                );
+            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
+                new Set<Id>{
+                    utilityMap.get('No SSS Utility')
+                },
+                new Set<String>{
+                    'No Load Zone'
+                }
+            );
         System.assertEquals(0, noSharedSolarSystems.size(), 'Method should have returned no Shared Solar Systems, as the input utility and load zone do not match any SSS records');
         noSharedSolarSystems =
-                SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
-                        new Set<Id>{
-                                utilityMap.get('Eversource')
-                        },
-                        new Set<String>{
-                                'No Load Zone'
-                        }
-                );
+            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
+                new Set<Id>{
+                    utilityMap.get('Eversource')
+                },
+                new Set<String>{
+                    'No Load Zone'
+                }
+            );
         System.assertEquals(0, noSharedSolarSystems.size(), 'Method should have returned no Shared Solar Systems, as the input load zone does not match any SSS records');
         noSharedSolarSystems =
-                SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
-                        new Set<Id>(),
-                        new Set<String>()
-                );
+            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
+                new Set<Id>(),
+                new Set<String>()
+            );
         System.assertEquals(0, noSharedSolarSystems.size(), 'Method should have returned no Shared Solar Systems, as the input utility and load zone are null');
         noSharedSolarSystems =
-                SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
-                        new Set<Id>{
-                                utilityMap.get('No SSS Utility')
-                        },
-                        new Set<String>{
-                                'SEMA'
-                        }
-                );
+            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
+                new Set<Id>{
+                    utilityMap.get('No SSS Utility')
+                },
+                new Set<String>{
+                    'SEMA'
+                }
+            );
         System.assertEquals(0, noSharedSolarSystems.size(), 'Method should have returned no Shared Solar Systems, as the input utility does not match any SSS records');
         List<Shared_Solar_System__c> eversourceSharedSolarSystems =
-                SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
-                        new Set<Id>{
-                                utilityMap.get('Eversource')
-                        },
-                        new Set<String>{
-                                'SEMA', 'NEMA'
-                        }
-                );
+            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
+                new Set<Id>{
+                    utilityMap.get('Eversource')
+                },
+                new Set<String>{
+                    'SEMA', 'NEMA'
+                }
+            );
         System.assertEquals(3, eversourceSharedSolarSystems.size(), 'Method should have returned 3 Shared Solar Systems, as 3 SSS records look up to the Eversource utility');
         List<Shared_Solar_System__c> nationalGridSharedSolarSystems =
-                SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
-                        new Set<Id>{
-                                utilityMap.get('National Grid')
-                        },
-                        new Set<String>{
-                                'SEMA', 'NEMA'
-                        }
-                );
+            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
+                new Set<Id>{
+                    utilityMap.get('National Grid')
+                },
+                new Set<String>{
+                    'SEMA', 'NEMA'
+                }
+            );
         System.assertEquals(1, nationalGridSharedSolarSystems.size(), 'Method should have returned 1 Shared Solar System, as 1 SSS record looks up to the National Grid utility');
         List<Shared_Solar_System__c> ngAndEversourceSharedSolarSystems =
-                SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
-                        new Set<Id>{
-                                utilityMap.get('National Grid'), utilityMap.get('Eversource')
-                        },
-                        new Set<String>{
-                                'SEMA', 'NEMA'
-                        }
-                );
+            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
+                new Set<Id>{
+                    utilityMap.get('National Grid'), utilityMap.get('Eversource')
+                },
+                new Set<String>{
+                    'SEMA', 'NEMA'
+                }
+            );
         System.assertEquals(4, ngAndEversourceSharedSolarSystems.size(), 'Method should have returned 4 Shared Solar Systems, as 4 SSS records look up to either the National Grid or Eversource utilities');
 
 
@@ -199,14 +199,14 @@ public with sharing class SharedSolarSystemsSelectorTest {
         nationalGridSharedSolarSystem.Open__c = false;
         update nationalGridSharedSolarSystem;
         noSharedSolarSystems =
-                SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
-                        new Set<Id>{
-                                utilityMap.get('National Grid')
-                        },
-                        new Set<String>{
-                                'SEMA', 'NEMA'
-                        }
-                );
+            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
+                new Set<Id>{
+                    utilityMap.get('National Grid')
+                },
+                new Set<String>{
+                    'SEMA', 'NEMA'
+                }
+            );
         System.assertEquals(0, noSharedSolarSystems.size(), 'Method should have returned no Shared Solar Systems, as the only SSS matching the input utility and load zones is not open');
     }
 
@@ -233,18 +233,18 @@ public with sharing class SharedSolarSystemsSelectorTest {
 
     @IsTest public static void testGetSSSByUniqueId() {
         Shared_Solar_System__c sssOne = new Shared_Solar_System__c(
-                Name = 'Test SSS'
+            Name = 'Test SSS'
         );
         insert sssOne;
         Shared_Solar_System__c sss = [
-                SELECT Id, Unique_ID__c
-                FROM Shared_Solar_System__c
-                WHERE Id = :sssOne.Id
-                LIMIT 1
+            SELECT Id, Unique_ID__c
+            FROM Shared_Solar_System__c
+            WHERE Id = :sssOne.Id
+            LIMIT 1
         ];
         SharedSolarSystemsSelector selector = new SharedSolarSystemsSelector();
         Map<String, Shared_Solar_System__c> sssMap = selector.getSSSByUniqueId(new Set<String>{
-                sss.Unique_ID__c
+            sss.Unique_ID__c
         });
         System.assertEquals(sssOne.Id, sssMap.get(sss.Unique_ID__c).Id);
     }
@@ -286,15 +286,15 @@ public with sharing class SharedSolarSystemsSelectorTest {
     @IsTest
     private static void testGetSSSForContract() {
         Shared_Solar_System__c sss1 = new Shared_Solar_System__c(
-                Name = 'test1SSS'
+            Name = 'test1SSS'
         );
         insert sss1;
 
         Opportunity opp1 = new Opportunity(
-                Shared_Solar_System__c = sss1.Id,
-                StageName = 'testOpp1stgName',
-                CloseDate = Date.today(),
-                Name = 'testOpp1'
+            Shared_Solar_System__c = sss1.Id,
+            StageName = 'testOpp1stgName',
+            CloseDate = Date.today(),
+            Name = 'testOpp1'
         );
         insert opp1;
 
@@ -302,8 +302,8 @@ public with sharing class SharedSolarSystemsSelectorTest {
         insert account1;
 
         Contract contract1 = new Contract(
-                Opportunity__c = opp1.Id,
-                AccountId = account1.Id
+            Opportunity__c = opp1.Id,
+            AccountId = account1.Id
         );
         insert contract1;
 
@@ -317,9 +317,9 @@ public with sharing class SharedSolarSystemsSelectorTest {
     @IsTest
     private static void getAllSSSByParentAccount() {
         Shared_Solar_System__c sharedSolarSystem = [
-                SELECT Id
-                FROM Shared_Solar_System__c
-                LIMIT 1
+            SELECT Id
+            FROM Shared_Solar_System__c
+            LIMIT 1
         ];
         Account parentAccount = new Account(Name = 'ParentAccount');
         insert parentAccount;
@@ -329,17 +329,17 @@ public with sharing class SharedSolarSystemsSelectorTest {
         System.assertEquals(0, sharedSolarSystems.size(), 'Method should not have found any SSS\'s');
 
         Account propertyAccount = new Account(
-                Name = 'PropertyAccount',
-                Parent_Account__c = parentAccount.Id
+            Name = 'PropertyAccount',
+            Parent_Account__c = parentAccount.Id
         );
         insert propertyAccount;
         Opportunity opportunity = new Opportunity(
-                Shared_Solar_System__c = sharedSolarSystem.Id,
-                AccountId = propertyAccount.Id,
-                Name = 'TestOpportunity',
-                StageName = 'Complete',
-                Product_Line__c = 'Community Solar',
-                CloseDate = Date.today()
+            Shared_Solar_System__c = sharedSolarSystem.Id,
+            AccountId = propertyAccount.Id,
+            Name = 'TestOpportunity',
+            StageName = 'Complete',
+            Product_Line__c = 'Community Solar',
+            CloseDate = Date.today()
         );
         insert opportunity;
 

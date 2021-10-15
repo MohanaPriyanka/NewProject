@@ -2,8 +2,8 @@
  * Created by rebeccanachison on 10/4/21.
  */
 
-import { LightningElement, wire } from 'lwc';
-import { ShowToastEvent } from "lightning/platformShowToastEvent";
+import {LightningElement, wire} from 'lwc';
+import {ShowToastEvent} from "lightning/platformShowToastEvent";
 import getUtilityAccountSubscriptions
     from '@salesforce/apex/CustomerPortalProjectUASListController.getUtilityAccountSubscriptions';
 

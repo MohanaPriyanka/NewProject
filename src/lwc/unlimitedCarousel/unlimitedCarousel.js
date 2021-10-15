@@ -13,7 +13,7 @@
 // Updated by Rebecca Nachison 09/30/2021 -- add values explicitly
 // import labelAutoPlay from '@salesforce/label/c.lightning_LightningCarousel_autoPlay';
 // import labelTabString from '@salesforce/label/c.lightning_LightningCarousel_tabString';
-import { LightningElement, api, track } from 'lwc';
+import {LightningElement, api, track} from 'lwc';
 // Updated by Rebecca Nachison 09/30/2021 -- add values explicitly
 // import { keyCodes, normalizeBoolean } from 'c/utilsPrivate';
 
@@ -60,7 +60,6 @@ const normalizeBoolean = (value) => {
 }
 
 
-
 export default class cCarousel extends LightningElement {
     get i18n() {
         return i18n;
@@ -69,6 +68,7 @@ export default class cCarousel extends LightningElement {
     @api get disableAutoScroll() {
         return this._disableAutoScroll || false;
     }
+
     set disableAutoScroll(value) {
         this._disableAutoScroll = normalizeBoolean(value);
     }
@@ -76,6 +76,7 @@ export default class cCarousel extends LightningElement {
     @api get disableAutoRefresh() {
         return this._disableAutoRefresh || false;
     }
+
     set disableAutoRefresh(value) {
         this._disableAutoRefresh = normalizeBoolean(value);
     }
@@ -341,12 +342,12 @@ export default class cCarousel extends LightningElement {
         this.selectNewItem(itemIndex);
     }
 
-    handleTouchStart({ changedTouches }) {
+    handleTouchStart({changedTouches}) {
         this.swipeXStart = (changedTouches && changedTouches[0].clientX) || 0;
     }
 
     handleTouchEnd(event) {
-        const { changedTouches } = event;
+        const {changedTouches} = event;
         const swipeXEnd = (changedTouches && changedTouches[0].clientX) || 0;
         const dx = swipeXEnd - this.swipeXStart;
         const direction =

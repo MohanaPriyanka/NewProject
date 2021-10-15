@@ -13,10 +13,10 @@
     <template if:false={isLoading}>
         <template if:true={solarSubscriptions}>
             <lightning-datatable
-                    key-field="id"
-                    data={solarSubscriptions}
-                    columns={columns}
-                    hide-checkbox-column>
+                key-field="id"
+                data={solarSubscriptions}
+                columns={columns}
+                hide-checkbox-column>
             </lightning-datatable>
         </template>
         <template if:false={solarSubscriptions}>

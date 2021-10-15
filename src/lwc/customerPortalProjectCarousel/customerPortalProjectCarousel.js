@@ -3,9 +3,10 @@
  */
 
 import {LightningElement, wire, track} from 'lwc';
-import { ShowToastEvent } from "lightning/platformShowToastEvent";
+import {ShowToastEvent} from "lightning/platformShowToastEvent";
 import fallbackImage from '@salesforce/label/c.Company_Default_Farm_Image';
-import getUserSharedSolarSystems from '@salesforce/apex/CustomerPortalProjectCarouselController.getUserSharedSolarSystems';
+import getUserSharedSolarSystems
+    from '@salesforce/apex/CustomerPortalProjectCarouselController.getUserSharedSolarSystems';
 
 export default class CustomerPortalProjectCarousel extends LightningElement {
 
@@ -16,7 +17,7 @@ export default class CustomerPortalProjectCarousel extends LightningElement {
 
     @wire(getUserSharedSolarSystems) solarProjectResults(result) {
         if (result.data) {
-            this.solarProjects = result.data.map(row=> {
+            this.solarProjects = result.data.map(row => {
                 return {...row, projectJSON: JSON.stringify(row)};
             });
             this.isLoading = false;

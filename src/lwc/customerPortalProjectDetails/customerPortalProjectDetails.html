@@ -6,37 +6,37 @@
 <template>
     <template if:true={showModal}>
         <section
-                role="dialog"
-                tabindex="-1"
-                aria-labelledby={headerId}
-                aria-modal="true"
-                aria-describedby={detailId}
-                class="slds-modal slds-fade-in-open">
+            role="dialog"
+            tabindex="-1"
+            aria-labelledby={headerId}
+            aria-modal="true"
+            aria-describedby={detailId}
+            class="slds-modal slds-fade-in-open">
             <div class="slds-modal__container">
                 <header class="slds-modal__header cpp-details__header">
                     <lightning-button-icon
-                            class="slds-modal__close cpp-details__modal-close"
-                            variant="bare"
-                            title="Close"
-                            icon-name="utility:close"
-                            icon-class="slds-button_icon-inverse slds-button__icon_large"
-                            onclick={handleCloseModal}>
+                        class="slds-modal__close cpp-details__modal-close"
+                        variant="bare"
+                        title="Close"
+                        icon-name="utility:close"
+                        icon-class="slds-button_icon-inverse slds-button__icon_large"
+                        onclick={handleCloseModal}>
 
                     </lightning-button-icon>
                     <c-customer-portal-project-header
-                            project={project}
-                            id={headerId}>
+                        project={project}
+                        id={headerId}>
                     </c-customer-portal-project-header>
                 </header>
                 <div
-                        class="slds-modal__content slds-p-around_medium"
-                        id={detailId}>
+                    class="slds-modal__content slds-p-around_medium"
+                    id={detailId}>
                     <label class="cpp-details__info-label">Shared Solar Project Name</label>
                     <p class="cpp-details__info-text">{project.Name}</p>
                     <label class="cpp-details__info-label">Information</label>
                     <lightning-formatted-rich-text
-                            class="cpp-details__info-text"
-                            value={project.Information__c}>
+                        class="cpp-details__info-text"
+                        value={project.Information__c}>
                     </lightning-formatted-rich-text>
                 </div>
                 <footer class="slds-modal__footer cpp-details__footer">

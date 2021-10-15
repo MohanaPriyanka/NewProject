@@ -10,10 +10,11 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/MIT
  */
 
-import { api, track, LightningElement } from 'lwc';
+import {api, track, LightningElement} from 'lwc';
 // Updated by Rebecca Nachison 10/01/2021 to set functions directly
 // import { assert, guid } from 'c/utilsPrivate';
-const assert = (condition, message) => {};
+const assert = (condition, message) => {
+};
 const guid = () => {
     function s4() {
         return Math.floor((1 + Math.random()) * 0x10000)
@@ -41,6 +42,7 @@ export default class cCarouselImage extends LightningElement {
     @api get src() {
         return this._src;
     }
+
     @track _src;
     set src(value) {
         this._src = value;
@@ -59,6 +61,7 @@ export default class cCarouselImage extends LightningElement {
     @api get alternativeText() {
         return this._alternativeText;
     }
+
     @track _alternativeText;
     set alternativeText(value) {
         this._alternativeText = value;
@@ -138,6 +141,7 @@ export default class cCarouselImage extends LightningElement {
         this.validateAlternativeText();
         this.validateSrc();
     }
+
     validateAlternativeText() {
         assert(
             typeof this._alternativeText === 'string' &&
@@ -145,6 +149,7 @@ export default class cCarouselImage extends LightningElement {
             `<c-carousel-image> The "alternative-text" attribute value is required.`
         );
     }
+
     validateSrc() {
         assert(
             typeof this._src === 'string' && this._src.length,

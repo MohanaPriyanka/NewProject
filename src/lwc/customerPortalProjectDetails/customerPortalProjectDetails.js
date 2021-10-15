@@ -11,7 +11,7 @@ export default class CustomerPortalProjectDetails extends LightningElement {
 
     handleCloseModal() {
         const closeEvent = new CustomEvent('closemodal', {
-            detail:{showModal:false}
+            detail: {showModal: false}
         });
         this.dispatchEvent(closeEvent);
     }
