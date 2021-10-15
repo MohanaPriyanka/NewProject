@@ -135,13 +135,13 @@ public without sharing class UASSelector {
                 Opportunity__r.AccountId propertyAccount,
                 Opportunity__r.Account.Parent_Account__c parentAccount,
                 Opportunity__r.Shared_Solar_System__r.Client_Brand_Key__c sssBrandKey,
-                Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__r.Client_Brand_Key__c entityBrandKey
+                Opportunity__r.Shared_Solar_System__r.Client_Account__r.Client_Brand_Key__c entityBrandKey
             FROM Utility_Account_Subscription__c
             WHERE Opportunity__r.Account.Parent_Account__c IN : parentAccountIds
             GROUP BY Opportunity__r.AccountId,
                 Opportunity__r.Account.Parent_Account__c,
                 Opportunity__r.Shared_Solar_System__r.Client_Brand_Key__c,
-                Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__r.Client_Brand_Key__c
+                Opportunity__r.Shared_Solar_System__r.Client_Account__r.Client_Brand_Key__c
         ];
         return uasSummary;
     }
