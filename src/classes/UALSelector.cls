@@ -124,4 +124,13 @@ public without sharing class UALSelector {
         }
         return returnMap;
     }
+
+    public Map<Id,Utility_Account_Log__c> selectUALSWithActiveUASMap(Set<Id> utilityAccountLogIds) {
+        return new Map<Id, Utility_Account_Log__c>([
+            SELECT Id, Name, (SELECT Id, Name, Shared_Solar_System__c, Shared_Solar_System__r.Product__r.Utility_Account_Subscription_Type__c
+                        FROM Utility_Account_Subscriptions__r WHERE Next_Schedule_Z_Status__c = 'Active Subscription')
+            FROM Utility_Account_Log__c
+            WHERE Id = :utilityAccountLogIds
+        ]);
+    }
 }
