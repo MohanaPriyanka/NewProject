@@ -5,8 +5,7 @@
     <deployments/>
     <enableQueue>true</enableQueue>
     <isActive>true</isActive>
-    <label>BlueWave Member Portal</label>
-    <onlineImage>Chat_Button</onlineImage>
+    <label>Unused</label>
     <optionsCustomRoutingIsEnabled>false</optionsCustomRoutingIsEnabled>
     <optionsHasChasitorIdleTimeout>false</optionsHasChasitorIdleTimeout>
     <optionsHasInviteAfterAccept>false</optionsHasInviteAfterAccept>
@@ -16,7 +15,6 @@
     <optionsIsInviteAutoRemove>false</optionsIsInviteAutoRemove>
     <perAgentQueueLength>5</perAgentQueueLength>
     <routingType>MostAvailable</routingType>
-    <site>liveagent</site>
     <skills>
         <skill>Overall</skill>
     </skills>
