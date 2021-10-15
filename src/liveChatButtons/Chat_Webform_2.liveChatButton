@@ -5,8 +5,7 @@
     <deployments/>
     <enableQueue>true</enableQueue>
     <isActive>true</isActive>
-    <label>Chat Webform 2</label>
-    <onlineImage>Chat_Button</onlineImage>
+    <label>Unused</label>
     <optionsCustomRoutingIsEnabled>false</optionsCustomRoutingIsEnabled>
     <optionsHasChasitorIdleTimeout>false</optionsHasChasitorIdleTimeout>
     <optionsHasInviteAfterAccept>false</optionsHasInviteAfterAccept>
@@ -17,7 +16,6 @@
     <overallQueueLength>5</overallQueueLength>
     <pushTimeOut>20</pushTimeOut>
     <routingType>MostAvailable</routingType>
-    <site>liveagent</site>
     <skills>
         <skill>Overall</skill>
     </skills>

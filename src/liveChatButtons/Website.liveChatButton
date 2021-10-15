@@ -5,9 +5,7 @@
     <deployments/>
     <enableQueue>true</enableQueue>
     <isActive>true</isActive>
-    <label>Website</label>
-    <offlineImage>chat_not_available_whitespace</offlineImage>
-    <onlineImage>BlueWaveLogoGrey</onlineImage>
+    <label>Unused</label>
     <optionsCustomRoutingIsEnabled>false</optionsCustomRoutingIsEnabled>
     <optionsHasChasitorIdleTimeout>false</optionsHasChasitorIdleTimeout>
     <optionsHasInviteAfterAccept>false</optionsHasInviteAfterAccept>
@@ -18,7 +16,6 @@
     <perAgentQueueLength>10</perAgentQueueLength>
     <pushTimeOut>30</pushTimeOut>
     <routingType>MostAvailable</routingType>
-    <site>liveagent</site>
     <skills>
         <skill>Overall</skill>
     </skills>

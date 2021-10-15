@@ -3,8 +3,7 @@
     <deployments/>
     <enableQueue>false</enableQueue>
     <isActive>true</isActive>
-    <label>Duke Chat 1</label>
-    <onlineImage>Chat_Button_Capt</onlineImage>
+    <label>Unused</label>
     <optionsCustomRoutingIsEnabled>false</optionsCustomRoutingIsEnabled>
     <optionsHasChasitorIdleTimeout>false</optionsHasChasitorIdleTimeout>
     <optionsHasInviteAfterAccept>false</optionsHasInviteAfterAccept>
@@ -13,7 +12,6 @@
     <optionsIsAutoAccept>false</optionsIsAutoAccept>
     <optionsIsInviteAutoRemove>false</optionsIsInviteAutoRemove>
     <routingType>Choice</routingType>
-    <site>liveagent</site>
     <skills>
         <skill>Overall</skill>
     </skills>
