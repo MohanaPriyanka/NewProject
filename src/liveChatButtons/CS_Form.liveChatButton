@@ -5,8 +5,7 @@
     <deployments/>
     <enableQueue>true</enableQueue>
     <isActive>true</isActive>
-    <label>CS Form</label>
-    <onlineImage>Chat_Button</onlineImage>
+    <label>Unused</label>
     <optionsCustomRoutingIsEnabled>false</optionsCustomRoutingIsEnabled>
     <optionsHasChasitorIdleTimeout>false</optionsHasChasitorIdleTimeout>
     <optionsHasInviteAfterAccept>false</optionsHasInviteAfterAccept>
@@ -16,7 +15,6 @@
     <optionsIsInviteAutoRemove>false</optionsIsInviteAutoRemove>
     <perAgentQueueLength>10</perAgentQueueLength>
     <routingType>Choice</routingType>
-    <site>liveagent</site>
     <skills>
         <skill>Overall</skill>
     </skills>
