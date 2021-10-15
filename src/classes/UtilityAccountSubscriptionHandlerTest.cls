@@ -4,6 +4,9 @@
 
 @IsTest
 public class UtilityAccountSubscriptionHandlerTest {
+
+    private static final String ERROR_MSG = 'Only a single subscription per Utility Account is allowed for UAL:';
+
     @TestSetup
     public static void setupData() {
         Utility__c ngrid = new Utility__c(
@@ -22,6 +25,23 @@ public class UtilityAccountSubscriptionHandlerTest {
             Sizing_Rate__c = TRUE);
         insert eversizeNMC;
 
+        Product2 normalCSProduct = new Product2(Name = 'BlueWave Community Solar',
+            Family = 'Community Solar',
+            Product_Type__c = 'Community Solar',
+            State__c = 'MA',
+            ProductCode = 'CS - BlueWave - 10%',
+            IsActive = True,
+            Lender_of_Record__c = 'BlueWave',
+            NMC_Discount__c = 10,
+            Annual_kWh_Maximum__c = 100000000,
+            NM_Rate_Floor__c = 0,
+            Days_In_Bill_Period__c = 20,
+            Customer_Subscription_Type__c = 'kWh',
+            Monthly_Late_Fee__c = 1,
+            Utility_Account_Subscription_Type__c = 'Multiple subscriptions per Utility Account');
+
+        insert new List<Product2>{normalCSProduct};
+
         Shared_Solar_System__c sss1 = new Shared_Solar_System__c(Name = 'Project A',
             Service_Territory__c = 'SEMA',
             Service_Territories__c = 'SEMA',
@@ -38,7 +58,8 @@ public class UtilityAccountSubscriptionHandlerTest {
             Assignment_Order__c = '1',
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
-            Maximum_Subscription_Capacity_kWDC__c = 25);
+            Maximum_Subscription_Capacity_kWDC__c = 25,
+            Product__c = normalCSProduct.Id);
 
         Shared_Solar_System__c sss2 = new Shared_Solar_System__c(Name = 'Project B',
             Service_Territory__c = 'SEMA',
@@ -56,7 +77,8 @@ public class UtilityAccountSubscriptionHandlerTest {
             Assignment_Order__c = '1',
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
-            Maximum_Subscription_Capacity_kWDC__c = 25);
+            Maximum_Subscription_Capacity_kWDC__c = 25,
+            Product__c = normalCSProduct.Id);
 
         insert new List<Shared_Solar_System__c>{sss1, sss2};
 
@@ -85,21 +107,6 @@ public class UtilityAccountSubscriptionHandlerTest {
 
         insert new List<Account> {partnerAccount, accountParent, propAccountA, propAccountB};
 
-        Product2 normalCSProduct = new Product2(Name = 'BlueWave Community Solar',
-            Family = 'Community Solar',
-            Product_Type__c = 'Community Solar',
-            State__c = 'MA',
-            ProductCode = 'CS - BlueWave - 10%',
-            IsActive = True,
-            Lender_of_Record__c = 'BlueWave',
-            NMC_Discount__c = 10,
-            Annual_kWh_Maximum__c = 100000000,
-            NM_Rate_Floor__c = 0,
-            Days_In_Bill_Period__c = 20,
-            Customer_Subscription_Type__c = 'kWh',
-            Monthly_Late_Fee__c = 1);
-        insert normalCSProduct;
-
         Opportunity opportunityone =
             new Opportunity(Name = 'AOpp',
                 AccountId = propAccountA.Id,
@@ -111,28 +118,9 @@ public class UtilityAccountSubscriptionHandlerTest {
                 Customer_Group__c = 'Residential',
                 Product__c = normalCSProduct.Id,
                 Product_Line__c = 'Community Solar',
-                CloseDate = System.today());
+                CloseDate = System.today()
+            );
 
-        insert opportunityone;
-
-        Utility_Account_Log__c ualog =
-            new Utility_Account_Log__c(Name = '0000234',
-                Account__c = propAccountA.Id,
-                Annual_Cost_of_Electricity__c = 10000,
-                Name_on_Account__c = 'A Testcase');
-
-        insert ualog;
-
-        Utility_Account_Subscription__c uasone = new Utility_Account_Subscription__c(
-            Name = '0000234',
-            Utility_Account_Log__c = ualog.Id,
-            Opportunity__c = opportunityone.Id,
-            Next_Schedule_Z_Status__c = 'Active Subscription',
-            Annual_kwh_subscription_future__c = 4000,
-            Calculated_Annual_Cost_of_Electricity__c = 4000,
-            Subscribed_Annual_Cost_of_Electricity__c = 4000
-        );
-        insert uasone;
 
         Opportunity opportunitytwo =
             new Opportunity(Name = 'BOpp',
@@ -145,16 +133,38 @@ public class UtilityAccountSubscriptionHandlerTest {
                 Customer_Group__c = 'Residential',
                 Product__c = normalCSProduct.Id,
                 Product_Line__c = 'Community Solar',
-                CloseDate = System.today());
-        insert opportunitytwo;
+                CloseDate = System.today()
+            );
+
+        insert new List<Opportunity>{opportunityone, opportunitytwo};
+
+        Utility_Account_Log__c ualogOne =
+            new Utility_Account_Log__c(Name = '0000234',
+                Account__c = propAccountA.Id,
+                Annual_Cost_of_Electricity__c = 10000,
+                Name_on_Account__c = 'A Testcase'
+            );
+
 
         Utility_Account_Log__c ualogTwo =
             new Utility_Account_Log__c(Name = '0000236',
                 Account__c = propAccountB.Id,
                 Annual_Cost_of_Electricity__c = 20000,
-                Name_on_Account__c = 'B Testcase');
+                Name_on_Account__c = 'B Testcase'
+            );
 
-        insert ualogTwo;
+        insert new List<Utility_Account_Log__c>{ualogOne, ualogTwo};
+
+
+        Utility_Account_Subscription__c uasOne = new Utility_Account_Subscription__c(
+            Name = '0000234',
+            Utility_Account_Log__c = ualogOne.Id,
+            Opportunity__c = opportunityone.Id,
+            Next_Schedule_Z_Status__c = 'Active Subscription',
+            Annual_kwh_subscription_future__c = 4000,
+            Calculated_Annual_Cost_of_Electricity__c = 4000,
+            Subscribed_Annual_Cost_of_Electricity__c = 4000
+        );
 
         Utility_Account_Subscription__c uasTwo =
             new Utility_Account_Subscription__c(Name = '0000236',
@@ -163,8 +173,12 @@ public class UtilityAccountSubscriptionHandlerTest {
                 Next_Schedule_Z_Status__c = 'Active Subscription',
                 Annual_kwh_subscription_future__c = 4000,
                 Calculated_Annual_Cost_of_Electricity__c = 4000,
-                Subscribed_Annual_Cost_of_Electricity__c = 4000);
-        insert uasTwo;
+                Subscribed_Annual_Cost_of_Electricity__c = 4000
+            );
+
+        insert new List<Utility_Account_Subscription__c>{uasOne, uasTwo};
+
+
     }
 
     @IsTest
@@ -373,5 +387,394 @@ public class UtilityAccountSubscriptionHandlerTest {
 
         System.assertEquals(300, anchorUAS.Annual_Subscription_Production_Summary__c,'The rollup of Anchor production should = 300');
     }
-    
+
+    /**
+     * MOCKS
+     * **/
+
+    private static sfab_FabricatedSObject getMockSSS(Boolean hasSingleSubProduct) {
+
+        String subType = hasSingleSubProduct ? 'Single subscription per Utility Account' : 'Multiple subscriptions per Utility Account';
+        sfab_FabricatedSObject mockProduct = new sfab_FabricatedSObject(Product2.class);
+        mockProduct.setField(Product2.Utility_Account_Subscription_Type__c, subType);
+
+        sfab_FabricatedSObject mockSSS = new sfab_FabricatedSObject(Shared_Solar_System__c.class);
+        mockSSS.setField(Shared_Solar_System__c.Product__c, Util.getFakeId(Product2.SObjectType));
+        mockSSS.setParent('Product__r', mockProduct);
+
+        return mockSSS;
+    }
+
+    private static sfab_FabricatedSObject getMockUAL() {
+        sfab_FabricatedSObject mockUal = new sfab_FabricatedSObject(Utility_Account_Log__c.class);
+
+        return mockUal;
+    }
+
+    private static sfab_FabricatedSObject getMockUAS(Boolean singleProduct) {
+        String sssId = singleProduct ? 'singleSSS' : 'multiSSS';
+        String ualId = 'a1b000000000000AAA';
+        String uasId = '1uasTestId';
+
+        sfab_FabricatedSObject mockUAL = getMockUAL();
+        sfab_FabricatedSObject mockSSS = getMockSSS(singleProduct);
+
+        sfab_FabricatedSObject mockUAS = new sfab_FabricatedSObject(Utility_Account_Subscription__c.class);
+        mockUAS.setField(Utility_Account_Subscription__c.Id, uasId);
+        mockUAS.setField(Utility_Account_Subscription__c.Name, uasId);
+        mockUAS.setField(Utility_Account_Subscription__c.Utility_Account_Log__c, ualId);
+        mockUAS.setParent('Utility_Account_Log__r', mockUAL);
+        mockUAS.setField(Utility_Account_Subscription__c.Shared_Solar_System__c, sssId);
+        mockUAS.setParent('Shared_Solar_System__r', mockSSS);
+
+        return mockUAS;
+    }
+
+
+
+    @IsTest
+    private static void testSingleSubUasNoSibling() {
+        List<Utility_Account_Subscription__c> newList = new List<Utility_Account_Subscription__c>();
+
+        sfab_FabricatedSObject mockUAS = getMockUAS(true);
+
+        Utility_Account_Subscription__c uas = (Utility_Account_Subscription__c) mockUAS.toSObject();
+        newList.add(uas);
+
+        UtilityAccountSubscriptionHandler.ualSelector = (UALSelector) Test.createStub(UALSelector.class, new MockUALSelector(false, false));
+        UtilityAccountSubscriptionHandler.sssSelector = (SharedSolarSystemsSelector) Test.createStub(SharedSolarSystemsSelector.class, new MockedSSSSelector());
+
+        Test.startTest();
+            UtilityAccountSubscriptionHandler handler = new UtilityAccountSubscriptionHandler(null, newList, TriggerOperation.BEFORE_INSERT);
+            handler.verifyUALSubscriptionType();
+        Test.stopTest();
+
+        for (Utility_Account_Subscription__c sub : newList) {
+            List<Database.Error> errors = sub.getErrors();
+            System.assertEquals(0, errors.size(), 'There should only be no errors associated with the subscription order since there were no existing subscriptions for the related UAL');
+        }
+
+
+    }
+
+    @IsTest
+    private static void testSingleSubUasExistingSibling() {
+        List<Utility_Account_Subscription__c> newList = new List<Utility_Account_Subscription__c>();
+
+        sfab_FabricatedSObject mockUAS = getMockUAS(true);
+
+        Utility_Account_Subscription__c uas = (Utility_Account_Subscription__c) mockUAS.toSObject();
+        newList.add(uas);
+
+        UtilityAccountSubscriptionHandler.ualSelector = (UALSelector) Test.createStub(UALSelector.class, new MockUALSelector(true, false));
+        UtilityAccountSubscriptionHandler.sssSelector = (SharedSolarSystemsSelector) Test.createStub(SharedSolarSystemsSelector.class, new MockedSSSSelector());
+
+        Test.startTest();
+        UtilityAccountSubscriptionHandler handler = new UtilityAccountSubscriptionHandler(null, newList, TriggerOperation.BEFORE_INSERT);
+        handler.verifyUALSubscriptionType();
+        Test.stopTest();
+
+        for (Utility_Account_Subscription__c sub : newList) {
+            List<Database.Error> errors = sub.getErrors();
+            System.assertEquals(1, errors.size(), 'There should only an error associated with the subscription order since the related UAL already had a child UAS and the new UAS only allowed single subs');
+            Database.Error error = errors.get(0);
+            System.assert(error.getMessage().contains(ERROR_MSG), 'Error message should match the subscription failure error msg');
+        }
+
+
+    }
+
+    @IsTest
+    private static void testSingleSubUasExistingMultiSibling() {
+        List<Utility_Account_Subscription__c> newList = new List<Utility_Account_Subscription__c>();
+
+        sfab_FabricatedSObject mockUAS = getMockUAS(true);
+
+        Utility_Account_Subscription__c uas = (Utility_Account_Subscription__c) mockUAS.toSObject();
+        newList.add(uas);
+
+        UtilityAccountSubscriptionHandler.ualSelector = (UALSelector) Test.createStub(UALSelector.class, new MockUALSelector(true, true));
+        UtilityAccountSubscriptionHandler.sssSelector = (SharedSolarSystemsSelector) Test.createStub(SharedSolarSystemsSelector.class, new MockedSSSSelector());
+
+        Test.startTest();
+        UtilityAccountSubscriptionHandler handler = new UtilityAccountSubscriptionHandler(null, newList, TriggerOperation.BEFORE_INSERT);
+        handler.verifyUALSubscriptionType();
+        Test.stopTest();
+
+        for (Utility_Account_Subscription__c sub : newList) {
+            List<Database.Error> errors = sub.getErrors();
+            System.assertEquals(1, errors.size(), 'There should an error associated with the subscription order since the new UAS only allowed single subs and there were existing UAS records on the related UAL');
+            Database.Error error = errors.get(0);
+            System.assert(error.getMessage().contains(ERROR_MSG), 'Error message should match the subscription failure error msg');
+        }
+
+
+    }
+
+    @IsTest
+    private static void testMultiSubUasNoSibling() {
+        List<Utility_Account_Subscription__c> newList = new List<Utility_Account_Subscription__c>();
+
+        sfab_FabricatedSObject mockUAS = getMockUAS(false);
+
+        Utility_Account_Subscription__c uas = (Utility_Account_Subscription__c) mockUAS.toSObject();
+        newList.add(uas);
+
+        UtilityAccountSubscriptionHandler.ualSelector = (UALSelector) Test.createStub(UALSelector.class, new MockUALSelector(false, false));
+        UtilityAccountSubscriptionHandler.sssSelector = (SharedSolarSystemsSelector) Test.createStub(SharedSolarSystemsSelector.class, new MockedSSSSelector());
+
+        Test.startTest();
+        UtilityAccountSubscriptionHandler handler = new UtilityAccountSubscriptionHandler(null, newList, TriggerOperation.BEFORE_INSERT);
+        handler.verifyUALSubscriptionType();
+        Test.stopTest();
+
+        for (Utility_Account_Subscription__c sub : newList) {
+            List<Database.Error> errors = sub.getErrors();
+            System.assertEquals(0, errors.size(), 'There should only be no errors associated with the subscription order since there were no existing subscriptions for the related UAL');
+        }
+
+
+    }
+
+    @IsTest
+    private static void testMultiSubUasExistingSingleSibling() {
+        List<Utility_Account_Subscription__c> newList = new List<Utility_Account_Subscription__c>();
+
+        sfab_FabricatedSObject mockUAS = getMockUAS(false);
+
+
+        Utility_Account_Subscription__c uas = (Utility_Account_Subscription__c) mockUAS.toSObject();
+        newList.add(uas);
+
+        UtilityAccountSubscriptionHandler.ualSelector = (UALSelector) Test.createStub(UALSelector.class, new MockUALSelector(true, false));
+        UtilityAccountSubscriptionHandler.sssSelector = (SharedSolarSystemsSelector) Test.createStub(SharedSolarSystemsSelector.class, new MockedSSSSelector());
+
+
+        Test.startTest();
+        UtilityAccountSubscriptionHandler handler = new UtilityAccountSubscriptionHandler(null, newList, TriggerOperation.BEFORE_INSERT);
+        handler.verifyUALSubscriptionType();
+        Test.stopTest();
+
+        for (Utility_Account_Subscription__c sub : newList) {
+            List<Database.Error> errors = sub.getErrors();
+            System.assertEquals(1, errors.size(), 'There should only an associated with the subscription order since the existing UAS on the related UAL only allowed single subs');
+            Database.Error error = errors.get(0);
+            System.assert(error.getMessage().contains(ERROR_MSG), 'Error message should match the subscription failure error msg');
+        }
+
+
+    }
+
+    @IsTest
+    private static void testMultiSubUasExistingMultiSibling() {
+        List<Utility_Account_Subscription__c> newList = new List<Utility_Account_Subscription__c>();
+
+        sfab_FabricatedSObject mockUAS = getMockUAS(false);
+
+        Utility_Account_Subscription__c uas = (Utility_Account_Subscription__c) mockUAS.toSObject();
+        newList.add(uas);
+
+        UtilityAccountSubscriptionHandler.ualSelector = (UALSelector) Test.createStub(UALSelector.class, new MockUALSelector(true, true));
+        UtilityAccountSubscriptionHandler.sssSelector = (SharedSolarSystemsSelector) Test.createStub(SharedSolarSystemsSelector.class, new MockedSSSSelector());
+
+
+        Test.startTest();
+        UtilityAccountSubscriptionHandler handler = new UtilityAccountSubscriptionHandler(null, newList, TriggerOperation.BEFORE_INSERT);
+        handler.verifyUALSubscriptionType();
+        Test.stopTest();
+
+        for (Utility_Account_Subscription__c sub : newList) {
+            List<Database.Error> errors = sub.getErrors();
+            System.assertEquals(0, errors.size(), 'There should only be no errors associated with the subscription order since the new UAS allows multiple subs and the existing UAS also allows multiple');
+        }
+
+
+    }
+
+    @IsTest
+    private static void testBatchSingleSubNoExistingSibling() {
+        List<Utility_Account_Subscription__c> newList = new List<Utility_Account_Subscription__c>();
+
+        sfab_FabricatedSObject mockUAS1 = getMockUAS(true);
+        sfab_FabricatedSObject mockUAS2 = getMockUAS(true);
+        mockUAS2.setField(Utility_Account_Subscription__c.Id, 'secondUASId');
+
+        Utility_Account_Subscription__c uas1 = (Utility_Account_Subscription__c) mockUAS1.toSObject();
+        Utility_Account_Subscription__c uas2 = (Utility_Account_Subscription__c) mockUAS2.toSObject();
+        newList.add(uas1);
+        newList.add(uas2);
+
+        UtilityAccountSubscriptionHandler.ualSelector = (UALSelector) Test.createStub(UALSelector.class, new MockUALSelector(false, false));
+        UtilityAccountSubscriptionHandler.sssSelector = (SharedSolarSystemsSelector) Test.createStub(SharedSolarSystemsSelector.class, new MockedSSSSelector());
+
+
+        Test.startTest();
+        UtilityAccountSubscriptionHandler handler = new UtilityAccountSubscriptionHandler(null, newList, TriggerOperation.BEFORE_INSERT);
+        handler.verifyUALSubscriptionType();
+        Test.stopTest();
+
+        for (Utility_Account_Subscription__c sub : newList) {
+            List<Database.Error> errors = sub.getErrors();
+            System.assertEquals(1, errors.size(), 'There should an error associated with the subscription order since two UAS records relating to the same UAL were being entered at the same time and they only allow a single sub');
+            Database.Error error = errors.get(0);
+            System.assert(error.getMessage().contains(ERROR_MSG), 'Error message should match the subscription failure error msg');
+        }
+
+
+    }
+
+    @IsTest
+    private static void testBatchMultiSubExistingSingleSibling() {
+        List<Utility_Account_Subscription__c> newList = new List<Utility_Account_Subscription__c>();
+
+        sfab_FabricatedSObject mockUAS1 = getMockUAS(false);
+        sfab_FabricatedSObject mockUAS2 = getMockUAS(false);
+        mockUAS2.setField(Utility_Account_Subscription__c.Id, 'secondUASId');
+
+        Utility_Account_Subscription__c uas1 = (Utility_Account_Subscription__c) mockUAS1.toSObject();
+        Utility_Account_Subscription__c uas2 = (Utility_Account_Subscription__c) mockUAS2.toSObject();
+        newList.add(uas1);
+        newList.add(uas2);
+
+        UtilityAccountSubscriptionHandler.ualSelector = (UALSelector) Test.createStub(UALSelector.class, new MockUALSelector(true, false));
+        UtilityAccountSubscriptionHandler.sssSelector = (SharedSolarSystemsSelector) Test.createStub(SharedSolarSystemsSelector.class, new MockedSSSSelector());
+
+
+        Test.startTest();
+        UtilityAccountSubscriptionHandler handler = new UtilityAccountSubscriptionHandler(null, newList, TriggerOperation.BEFORE_INSERT);
+        handler.verifyUALSubscriptionType();
+        Test.stopTest();
+
+        for (Utility_Account_Subscription__c sub : newList) {
+            List<Database.Error> errors = sub.getErrors();
+            System.assertEquals(1, errors.size(), 'There should an error associated with the subscription order since the related UAL already had a UAS with a single sub allowed');
+            Database.Error error = errors.get(0);
+            System.assert(error.getMessage().contains(ERROR_MSG), 'Error message should match the subscription failure error msg');
+        }
+
+
+    }
+
+    @IsTest
+    private static void testBatchSingleSubExistingSibling() {
+        List<Utility_Account_Subscription__c> newList = new List<Utility_Account_Subscription__c>();
+
+        sfab_FabricatedSObject mockUAS1 = getMockUAS(true);
+        sfab_FabricatedSObject mockUAS2 = getMockUAS(true);
+        mockUAS2.setField(Utility_Account_Subscription__c.Id, 'secondUASId');
+
+        Utility_Account_Subscription__c uas1 = (Utility_Account_Subscription__c) mockUAS1.toSObject();
+        Utility_Account_Subscription__c uas2 = (Utility_Account_Subscription__c) mockUAS2.toSObject();
+        newList.add(uas1);
+        newList.add(uas2);
+
+        UtilityAccountSubscriptionHandler.ualSelector = (UALSelector) Test.createStub(UALSelector.class, new MockUALSelector(true, true));
+        UtilityAccountSubscriptionHandler.sssSelector = (SharedSolarSystemsSelector) Test.createStub(SharedSolarSystemsSelector.class, new MockedSSSSelector());
+
+
+        Test.startTest();
+        UtilityAccountSubscriptionHandler handler = new UtilityAccountSubscriptionHandler(null, newList, TriggerOperation.BEFORE_INSERT);
+        handler.verifyUALSubscriptionType();
+        Test.stopTest();
+
+        for (Utility_Account_Subscription__c sub : newList) {
+            List<Database.Error> errors = sub.getErrors();
+            System.assertEquals(1, errors.size(), 'There should an error associated with the subscription order since the related UAL already had a UAS with a Single Sub allowed');
+            Database.Error error = errors.get(0);
+            System.assert(error.getMessage().contains(ERROR_MSG), 'Error message should match the subscription failure error msg');
+        }
+
+
+    }
+
+    public class MockedSSSSelector extends MockProvider {
+        public override Object handleMethodCall(MethodCall methodCall) {
+            switch on methodCall.stubbedMethodName {
+                when 'getSSSMap' {
+
+                    sfab_FabricatedSObject mockProduct1 = new sfab_FabricatedSObject(Product2.class);
+                    mockProduct1.setField(Product2.Utility_Account_Subscription_Type__c, 'Single subscription per Utility Account');
+
+                    sfab_FabricatedSObject mockProduct2 = new sfab_FabricatedSObject(Product2.class);
+                    mockProduct2.setField(Product2.Utility_Account_Subscription_Type__c, 'Multiple subscriptions per Utility Account');
+
+                    sfab_FabricatedSObject mockSSS1 = new sfab_FabricatedSObject(Shared_Solar_System__c.class);
+                    mockSSS1.setField(Shared_Solar_System__c.Id, 'singleSSS');
+                    mockSSS1.setParent('Product__r', mockProduct1);
+                    Shared_Solar_System__c sss1 = (Shared_Solar_System__c) mockSSS1.toSObject();
+
+                    sfab_FabricatedSObject mockSSS2 = new sfab_FabricatedSObject(Shared_Solar_System__c.class);
+                    mockSSS2.setField(Shared_Solar_System__c.Id, 'multiSSS');
+                    mockSSS2.setParent('Product__r', mockProduct2);
+                    Shared_Solar_System__c sss2 = (Shared_Solar_System__c) mockSSS2.toSObject();
+
+                    return new Map<Id, Shared_Solar_System__c>{
+                        sss1.Id => sss1,
+                        sss2.Id => sss2
+                    };
+                }
+            }
+            return null;
+        }
+    }
+
+    public class MockUALSelector extends MockProvider {
+        private Boolean ualHasChildSubs;
+        private Boolean multiSubAllowed;
+        public MockUALSelector(Boolean ualHasChildSubs, Boolean multiSubAllowed) {
+            this.ualHasChildSubs = ualHasChildSubs;
+            this.multiSubAllowed = multiSubAllowed;
+        }
+        public override Object handleMethodCall(MethodCall methodCall) {
+            switch on methodCall.stubbedMethodName {
+                when 'selectUALSWithActiveUASMap' {
+                    List<sfab_FabricatedSObject> mockUasList = new List<sfab_FabricatedSObject>();
+                    sfab_FabricatedSObject uas;
+                    if (ualHasChildSubs) {
+                        uas = getUASWithProduct();
+                        mockUasList.add(uas);
+                    }
+
+                    String ualId = 'a1b000000000000AAA';
+                    sfab_FabricatedSObject mockUal = new sfab_FabricatedSObject(Utility_Account_Log__c.class);
+                    mockUal.setField(Utility_Account_Log__c.Id, ualId);
+                    mockUal.setChildren('Utility_Account_Subscriptions__r', mockUasList);
+                    Utility_Account_Log__c ual = (Utility_Account_Log__c) mockUal.toSObject();
+
+                    Map<Id,Utility_Account_Log__c> ualMap = new Map<Id,Utility_Account_Log__c>();
+                    ualMap.put(ualId, ual);
+
+                    return ualMap;
+                }
+            }
+            return null;
+        }
+
+        private sfab_FabricatedSObject getUASWithProduct() {
+            String productSubType = multiSubAllowed ? 'Multiple subscriptions per Utility Account' : 'Single subscription per Utility Account';
+            String sssId = multiSubAllowed ? 'multiSSS' : 'singleSSS';
+
+            String productId = Util.getFakeId(Product2.SObjectType);
+            sfab_FabricatedSObject mockProduct = new sfab_FabricatedSObject(Product2.class);
+            mockProduct.setField(Product2.Utility_Account_Subscription_Type__c, productSubType);
+            mockProduct.setField(Product2.Id, productId);
+
+            sfab_FabricatedSObject mockSSS = new sfab_FabricatedSObject(Shared_Solar_System__c.class);
+            mockSSS.setField(Shared_Solar_System__c.Id, sssId);
+            mockSSS.setParent('Product__r', mockProduct);
+            mockSSS.setField(Shared_Solar_System__c.Product__c, productId);
+
+            String uasId = '1mockSelectorId';
+            sfab_FabricatedSObject mockUAS = new sfab_FabricatedSObject(Utility_Account_Subscription__c.class);
+            mockUAS.setField(Utility_Account_Subscription__c.Id, uasId);
+            mockUAS.setField(Utility_Account_Subscription__c.Name, uasId);
+            mockUAS.setField(Utility_Account_Subscription__c.Next_Schedule_Z_Status__c, 'Active Subscription');
+            mockUAS.setField(Utility_Account_Subscription__c.Shared_Solar_System__c, sssId);
+            mockUAS.setParent('Shared_Solar_System__r', mockSSS);
+
+            return mockUAS;
+
+        }
+    }
+
 }
