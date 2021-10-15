@@ -195,14 +195,6 @@
         <value>Next, we need to gather your co-signer&apos;s personal information:</value>
     </labels>
     <labels>
-        <fullName>Comany_Website</fullName>
-        <categories>branding, email</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Comany_Website</shortDescription>
-        <value>https://bluewavesolar.com/</value>
-    </labels>
-    <labels>
         <fullName>Company_Color_Blue</fullName>
         <categories>branding, email</categories>
         <language>en_US</language>
