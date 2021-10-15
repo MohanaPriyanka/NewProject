@@ -212,8 +212,7 @@ public with sharing class ZuoraReturnedPaymentService implements Queueable, Data
         PaymentReturnResult paymentReturnResult = new PaymentReturnResult();
         try {
             if (accountingPeriodService.isInOpenPeriod(zuoraPayment.effectiveDate)) {
-                cancelPayment(sfPayment);
-                paymentReturnResult.message = 'Payment successfully cancelled';
+                cancelOrReversePayment(sfPayment, paymentReturnResult, zuoraPayment);
             } else {
                 createDebitMemosForPayment(zuoraPayment, sfPayment, paymentReturnResult);
                 paymentReturnResult.message = paymentReturnResult.debitMemos.size() + ' debit memos created and posted successfully';
@@ -234,6 +233,23 @@ public with sharing class ZuoraReturnedPaymentService implements Queueable, Data
         return paymentReturnResult;
     }
 
+    /**
+     * @description Tries to cancel a payment, and if it doesn't cancel, creates debit memos for it
+     * @param sfPayment Payment to cancel
+     * @param paymentReturnResult The result, that will be populated with a result message
+     * @param zuoraPayment The Zuora payment, used to create debit memos if necessary
+     */
+    private void cancelOrReversePayment(Zuora__Payment__c sfPayment, PaymentReturnResult paymentReturnResult, ZuoraAPI.Payment zuoraPayment) {
+        try {
+            cancelPayment(sfPayment);
+            paymentReturnResult.message = 'Payment successfully cancelled';
+        } catch (Util.BWException bwe) {
+            Logger.logLater('ZuoraReturnedPaymentService', 'executeMarkPaymentAsReturned', 'did not cancel, creating debit memos', Logger.INFO);
+            createDebitMemosForPayment(zuoraPayment, sfPayment, paymentReturnResult);
+            paymentReturnResult.message = paymentReturnResult.debitMemos.size() + ' debit memos created and posted successfully';
+        }
+    }
+
     private void createDebitMemosForPayment(ZuoraAPI.Payment zuoraPayment, Zuora__Payment__c sfPayment, PaymentReturnResult paymentReturnResult) {
         List<ZuoraAPI.DebitMemo> debitMemos = debitMemoGenerator.convertPaymentToDebitMemos(zuoraPayment);
         if (ZuoraAPIHelper.getCalloutsRemaining() < 2 * debitMemos.size() + 1) {
@@ -245,15 +261,29 @@ public with sharing class ZuoraReturnedPaymentService implements Queueable, Data
         paymentReturnResult.debitMemos = debitMemos;
     }
 
+    /**
+     * @description Tries to cancel a payment. Per:
+     * https://knowledgecenter.zuora.com/Billing/Billing_and_Payments/Invoice_Settlement/A_Unapplied_Payments/Management_of_Unapplied_Payments/Z_Cancel_Payments
+     * Once a payment has been settled, it can no longer be cancelled. Payments are typically settled within 24 to 48 hours.
+     * Zuora does not error out if a payment cannot be cancelled, but the response has a status of Processed instead of Cancelled.
+     * @param sfPayment A Zuora Payment to cancel
+     */
     private void cancelPayment(Zuora__Payment__c sfPayment) {
         markPaymentReturned(sfPayment.Zuora__EXT_ID__c);
         HttpResponse response =
             ZuoraAPIHelper.callJsonEndpoint('PUT', '/v1/payments/' + sfPayment.Zuora__EXT_ID__c + '/cancel', null, false);
-        ZuoraAPI.GenericResponse genericResponse =
-            (ZuoraAPI.GenericResponse) JSON.deserialize(response.getBody(), (ZuoraAPI.GenericResponse.class));
-        if (!genericResponse.success) {
-            throw new Util.BWException('Did not cancel payment ' + sfPayment.Zuora__EXT_ID__c + '\n' + genericResponse.reasons);
+        CancelPaymentResult cancelResponse =
+            (CancelPaymentResult) JSON.deserialize(response.getBody(), (CancelPaymentResult.class));
+        if (!cancelResponse.success || cancelResponse.status == 'Processed') {
+            throw new Util.BWException('Did not cancel payment ' + sfPayment.Zuora__EXT_ID__c + '\n' + response.getBody());
         }
+    }
+
+    public class CancelPaymentResult {
+        public String status; // Cancelled, Processed
+        public String type; // Electronic, External
+        public Boolean success;
+        public List<ZuoraAPI.GenericResponseReason> reasons;
     }
 
     public class PaymentReturnResult {
