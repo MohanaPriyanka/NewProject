@@ -5,9 +5,8 @@
     <deployments/>
     <enableQueue>true</enableQueue>
     <isActive>true</isActive>
-    <label>Chat BS Form 2</label>
+    <label>Unused</label>
     <numberOfReroutingAttempts>2</numberOfReroutingAttempts>
-    <onlineImage>Chat_Button</onlineImage>
     <optionsCustomRoutingIsEnabled>false</optionsCustomRoutingIsEnabled>
     <optionsHasChasitorIdleTimeout>false</optionsHasChasitorIdleTimeout>
     <optionsHasInviteAfterAccept>false</optionsHasInviteAfterAccept>
@@ -18,7 +17,6 @@
     <overallQueueLength>5</overallQueueLength>
     <pushTimeOut>20</pushTimeOut>
     <routingType>MostAvailable</routingType>
-    <site>liveagent</site>
     <skills>
         <skill>Overall</skill>
     </skills>
