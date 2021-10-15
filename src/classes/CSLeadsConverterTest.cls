@@ -32,7 +32,7 @@ public without sharing class CSLeadsConverterTest {
 
         // Build data structure (as Flow does) to send Lead Conversion request into Apex
         LeadConvertDetail detail = new LeadConvertDetail();
-        detail.leadId = ual.Lead__c;
+        detail.leadId = leadToQualify.Id;
         detail.selectedProductId = ual.Lead__r.Product__c;
         detail.selectedSystemIds = new List<Id>{
             sss.Id
@@ -50,9 +50,60 @@ public without sharing class CSLeadsConverterTest {
         System.assertEquals(null, results.errorMessage, 'No error message should be present from conversion');
         System.assert(results.errorsEncountered.isEmpty(), detail.errorsEncountered);
         System.assertEquals(null, results.error, 'No error code should be present for conversion');
-        Lead leadAfterConversion = [SELECT IsConverted, Product__c FROM Lead WHERE Id = :ual.Lead__c];
+
+        Lead leadAfterConversion = new LeadSelector().getLeadsForConversion(new Set<Id>{results.leadId}).values()[0];
         System.assertEquals(true, leadAfterConversion.IsConverted, 'Lead not successfully converted from Flow invocation');
         System.assertEquals(detail.selectedProductId, leadAfterConversion.Product__c, 'Invalid product after conversion');
+    }
+
+    @IsTest
+    private static void systemTestSuccessfulSingleAutoConversion() {
+        // Setup environment
+        setupSystemTestEnvironment();
+        Utility_Account_Log__c ual = [
+            SELECT Id, Lead__r.Product__c, Lead__c, Lead__r.IsConverted, Lead__r.Utility_relationship__c,
+                Lead__r.Product__r.Name
+            FROM Utility_Account_Log__c
+            LIMIT 1
+        ];
+        System.assertEquals(false, ual.Lead__r.IsConverted, 'Lead should not be converted yet');
+
+        // Ensure Auto QC is enabled for Utility
+        Utility__c utility = new Utility__c(
+            Id = ual.Lead__r.Utility_relationship__c,
+            Auto_Qualify_Convert_Active__c = true
+        );
+        update utility;
+
+        // Ensure Lead has passed Qualification and is now in 'Qualified' status
+        Lead leadToQualify = new Lead(
+            Id = ual.Lead__c,
+            Status = 'Qualified',
+            LastName = 'Doe',
+            Application_Complete_Date__c = System.now()
+        );
+        update leadToQualify;
+
+        // Trigger auto-conversion by completion of UAL -- will trigger Queueable invocation of CSLeadsConverter
+        Test.startTest();
+            // Ensure all UALs are Complete
+            ual.QC_Status__c = 'Complete';
+            ual.Annual_kWh__c = 10000;
+            update ual;
+        Test.stopTest();
+
+        // Verify results
+        Lead leadAfterConversion = [
+            SELECT Id, Auto_QC_Last_Runtime__c, Auto_QC_Failure_Reason__c, Auto_QC_Failure_Details__c, Auto_QC_Error_Debug__c,
+                IsConverted, Selected_SSS_For_Conversion__c
+            FROM Lead
+            WHERE Id = :leadToQualify.Id
+        ];
+        System.assertEquals(true, leadAfterConversion.IsConverted, 'Lead not successfully converted from Auto Conversion');
+        System.assert(leadAfterConversion.Auto_QC_Last_Runtime__c != null, 'Auto QC date should have been set');
+        System.assert(leadAfterConversion.Auto_QC_Failure_Reason__c == null, 'Auto QC failure reason should be null');
+        System.assert(leadAfterConversion.Auto_QC_Failure_Details__c == null, 'Auto QC failure details should be null');
+        System.assert(leadAfterConversion.Auto_QC_Error_Debug__c == null, 'No error debug for Auto QC should be on Lead');
     }
 
     @IsTest
@@ -79,7 +130,7 @@ public without sharing class CSLeadsConverterTest {
         System.assertEquals(detail.errorMessage, null, 'Error encountered during validation');
 
         // Unit test getSelectedSystemIds() on CSLeadsConverter
-        String parsedSystemIdsForLeadField = leadsConverter.getSelectedSystemIds(detail);
+        String parsedSystemIdsForLeadField = leadsConverter.getSelectedSystemIds(detail.selectedSystems);
         System.assertEquals(detail.selectedSystemIds[0] + '/', parsedSystemIdsForLeadField, 'Invalid parsed system ids for lead field');
     }
 
@@ -113,7 +164,7 @@ public without sharing class CSLeadsConverterTest {
     }
 
     private static void setupSystemTestEnvironment() {
-        CSLeadsConverter.queueableBatchSize = 1;
+        CSLeadsConverter.queueableBatchSize = 2;
         insert new Product2(Name = 'CS Product');
         insert new Utility__c(
             Name = 'Utility with EIA ID',
@@ -122,11 +173,11 @@ public without sharing class CSLeadsConverterTest {
         );
         CSTestDataFactory dataFactory = new CSTestDataFactory();
         dataFactory.insertOpenUCBSystem();
-        dataFactory.insertLeadViaAPI(false, 'None', true);
+        dataFactory.insertLeadViaAPI(false, 'None', false);
     }
 
     private static void setupMockEnvironment(Boolean setUalsAsComplete) {
-        CSLeadsConverter.queueableBatchSize = 1;
+        CSLeadsConverter.queueableBatchSize = 2;
         MockLeadSelector mockLeadSelector = new MockLeadSelector();
         mockLeadSelector.setUalsAsComplete = setUalsAsComplete; // set mock provider to include Incomplete UALs
         CSLeadsConverter.leadSelector = (LeadSelector) Test.createStub(LeadSelector.class, mockLeadSelector);

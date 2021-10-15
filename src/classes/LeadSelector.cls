@@ -166,6 +166,7 @@ public without sharing class LeadSelector {
                 System_Assignment__c,
                 Underwriting_Criteria__c,
                 Unqualified_due_to_FICO__c,
+                Utility_relationship__c,
                 Utility_relationship__r.Id,
                 Utility_relationship__r.EIA_ID__c,
                 Utility_relationship__r.Name,
@@ -302,7 +303,7 @@ public without sharing class LeadSelector {
     public Map<Id, Lead> getLeadsForConversion(Set<Id> leadIds) {
         return new Map<Id, Lead>([
             SELECT Id,Utility_relationship__c,EmailBouncedDate,Application_Complete_Date__c,IsConverted,LastName,
-                Selected_SSS_For_Conversion__c,Status,
+                Selected_SSS_For_Conversion__c,Status,Product__c,
                 (SELECT Id, QC_Status__c, Annual_kWh__c, Annual_Cost_of_Electricity__c FROM Utility_Account_Logs__r)
             FROM Lead
             WHERE Id = :leadIds
