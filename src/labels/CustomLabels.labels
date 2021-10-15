@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
     <labels>
+        <fullName>AmpRed_Main_Logo</fullName>
+        <categories>branding, email</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>AmpRed Main Logo</shortDescription>
+        <value>http://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/813e9d76-8ac8-4e5b-a40c-1d6aee2cf90e.png</value>
+    </labels>
+    <labels>
         <fullName>CAP_Contract_Sent</fullName>
         <categories>Customer Application Portal</categories>
         <language>en_US</language>
@@ -155,6 +163,14 @@
         <value>Personal Details</value>
     </labels>
     <labels>
+        <fullName>Client_Portal_URL</fullName>
+        <categories>branding, email</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Client Portal URL</shortDescription>
+        <value>https://bluewavememberportal.force.com/clientportal</value>
+    </labels>
+    <labels>
         <fullName>Co_Applicant_PI_Next</fullName>
         <categories>Customer Application Portal</categories>
         <language>en_US</language>
@@ -227,6 +243,14 @@
         <value>https://www.linkedin.com/company/bluewavesolar/</value>
     </labels>
     <labels>
+        <fullName>Company_Main_Logo</fullName>
+        <categories>branding, email</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Company_Main_Logo</shortDescription>
+        <value>http://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/e9dd3d83-d085-44dd-9d93-694ab0d48935.png</value>
+    </labels>
+    <labels>
         <fullName>Company_Name</fullName>
         <categories>branding, email</categories>
         <language>en_US</language>
@@ -243,12 +267,84 @@
         <value>https://twitter.com/bluewavesolar</value>
     </labels>
     <labels>
+        <fullName>Company_Website</fullName>
+        <categories>branding</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Company_Website</shortDescription>
+        <value>https://bluewavesolar.com/</value>
+    </labels>
+    <labels>
+        <fullName>Customer_Acquisition</fullName>
+        <categories>branding, email</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Customer Acquisition</shortDescription>
+        <value>BCS Customer Acquisition, LLC</value>
+    </labels>
+    <labels>
+        <fullName>Customer_Management</fullName>
+        <categories>branding, email</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Customer Management,</shortDescription>
+        <value>BCS Customer Management, LLC</value>
+    </labels>
+    <labels>
         <fullName>Customer_Member_Portal_URL</fullName>
         <categories>branding, email</categories>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Customer_Member_Portal_URL</shortDescription>
         <value>https://bluewavememberportal.force.com/</value>
+    </labels>
+    <labels>
+        <fullName>Email_Anchor_Support</fullName>
+        <categories>branding, email</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Anchor Support Email address</shortDescription>
+        <value>anchorsupport@bluewavesolar.com</value>
+    </labels>
+    <labels>
+        <fullName>Email_Client_Services</fullName>
+        <categories>branding, email</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Client Services Email Address</shortDescription>
+        <value>clientservices@bluewavesolar.com</value>
+    </labels>
+    <labels>
+        <fullName>Email_Customer_Care</fullName>
+        <categories>branding, email</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Customer Care Email address</shortDescription>
+        <value>customercare@bluewavesolar.com</value>
+    </labels>
+    <labels>
+        <fullName>Email_FinOps</fullName>
+        <categories>branding, email</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Fin Ops Email Address</shortDescription>
+        <value>finops@bluewavesolar.com</value>
+    </labels>
+    <labels>
+        <fullName>Email_Partner_Support</fullName>
+        <categories>branding, email</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Partner Support Email  Address</shortDescription>
+        <value>partnersupport@bluewavesolar.com</value>
+    </labels>
+    <labels>
+        <fullName>Enrollment_Portal_URL</fullName>
+        <categories>branding, email</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Enrollment Portal URL</shortDescription>
+        <value>https://bluewavememberportal.force.com/apply</value>
     </labels>
     <labels>
         <fullName>Facebook_Email_Icon</fullName>
@@ -773,6 +869,14 @@
         <protected>false</protected>
         <shortDescription>Privacy Policy for BlueWave and Avidia</shortDescription>
         <value>I acknowledge BlueWave&apos;s privacy policy and Avidia&apos;s privacy policy and accept their terms</value>
+    </labels>
+    <labels>
+        <fullName>Partner_Portal_URL</fullName>
+        <categories>branding, email</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Partner Portal URL</shortDescription>
+        <value>https://bluewavememberportal.force.com/partnerportal</value>
     </labels>
     <labels>
         <fullName>SLP_Disabled</fullName>
