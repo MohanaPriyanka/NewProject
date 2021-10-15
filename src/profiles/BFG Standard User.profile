@@ -15614,7 +15614,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Contact.Admin_User__c</field>
         <readable>true</readable>
     </fieldPermissions>
