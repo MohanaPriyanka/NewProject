@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LiveChatButton xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <autoGreeting>Hi, how can I help you?</autoGreeting>
-    <chasitorIdleTimeout>300</chasitorIdleTimeout>
-    <chasitorIdleTimeoutWarning>180</chasitorIdleTimeoutWarning>
-    <customAgentName>{!User_FirstName}</customAgentName>
+<LiveChatButton xmlns="http://soap.sforce.com/2006/04/metadata">
+    <autoGreeting>Hello, how can I help you?</autoGreeting>
+    <customAgentName>BlueWave</customAgentName>
     <deployments/>
-    <enableQueue>false</enableQueue>
+    <enableQueue>true</enableQueue>
     <isActive>true</isActive>
-    <label>Customer Portal</label>
+    <label>CS Form</label>
+    <onlineImage>Chat_Button</onlineImage>
     <optionsCustomRoutingIsEnabled>false</optionsCustomRoutingIsEnabled>
-    <optionsHasChasitorIdleTimeout>true</optionsHasChasitorIdleTimeout>
+    <optionsHasChasitorIdleTimeout>false</optionsHasChasitorIdleTimeout>
     <optionsHasInviteAfterAccept>false</optionsHasInviteAfterAccept>
     <optionsHasInviteAfterReject>false</optionsHasInviteAfterReject>
     <optionsHasRerouteDeclinedRequest>false</optionsHasRerouteDeclinedRequest>
     <optionsIsAutoAccept>false</optionsIsAutoAccept>
     <optionsIsInviteAutoRemove>false</optionsIsInviteAutoRemove>
-    <routingType xsi:nil="true"/>
+    <perAgentQueueLength>10</perAgentQueueLength>
+    <routingType>Choice</routingType>
     <site>liveagent</site>
+    <skills>
+        <skill>Overall</skill>
+    </skills>
     <type>Standard</type>
     <windowLanguage>en_US</windowLanguage>
 </LiveChatButton>
