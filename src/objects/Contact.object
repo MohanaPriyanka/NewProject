@@ -329,7 +329,7 @@
         <defaultValue>false</defaultValue>
         <description>Whether the contact is in email list</description>
         <externalId>false</externalId>
-        <inlineHelpText>Does the contact need to be added to the email list?</inlineHelpText>
+        <inlineHelpText>Include contact in email communications</inlineHelpText>
         <label>Admin User</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
