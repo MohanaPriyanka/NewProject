@@ -1,0 +1,16 @@
+/**
+ * Created by rebeccanachison on 9/27/21.
+ * Copied from https://github.com/salesforce/base-components-recipes/blob/master/force-app/main/default/lwc/carousel/carousel.css
+ */
+
+
+/*
+ * Copyright (c) 2019, salesforce.com, inc.
+ * All rights reserved.
+ * SPDX-License-Identifier: MIT
+ * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/MIT
+ */
+
+slot {
+    display: flex;
+}
