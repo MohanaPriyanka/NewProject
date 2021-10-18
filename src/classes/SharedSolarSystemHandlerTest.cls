@@ -27,6 +27,10 @@ public with sharing class SharedSolarSystemHandlerTest {
         };
         Entity__c entity1 = new Entity__c(Name = 'Oxford Barrett St. P1');
         insert entity1;
+        Zuora__PaymentGateway__c paymentGateway = new Zuora__PaymentGateway__c(
+            Name = 'BCS Single Gateway'
+        );
+        insert paymentGateway;
         Utility_NMC_Tariff__c everbillNMC = new Utility_NMC_Tariff__c(Name = 'Eversource SEMA Class 2',
             Utility__c = 'Eversource',
             Class__c = 'Class 2',
@@ -44,7 +48,11 @@ public with sharing class SharedSolarSystemHandlerTest {
         );
         insert junction;
         RecordType clientRT = [SELECT Id FROM RecordType WHERE Name = 'Client Account' LIMIT 1];
-        Account clientAccount = new Account(Name = 'Test Client', RecordTypeId = clientRT.Id);
+        Account clientAccount = new Account(
+            Name = 'Test Client',
+            RecordTypeId = clientRT.Id,
+            Payment_Gateway__c = paymentGateway.Id
+        );
         insert clientAccount;
         Partner__c newPartner = new Partner__c(
             Name = 'Partner',

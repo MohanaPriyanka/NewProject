@@ -1200,6 +1200,28 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Payment_Gateway_Name__c</fullName>
+        <description>We have some systems (like Marathon) that don&apos;t use the Client&apos;s gateway, so we need to check an override first. And since usually the payment gateway is the same for all of a client&apos;s entities (and it&apos;s easy to forget to set the gateway on a new entity), we look to the Client Account for the entity.</description>
+        <externalId>false</externalId>
+        <formula>IF(NOT(ISBLANK( BWC_Project_Entity_Manual__r.Payment_Gateway__c )),
+   BWC_Project_Entity_Manual__r.Payment_Gateway__r.Name,
+   IF(NOT(ISBLANK( Client_Account__r.Payment_Gateway__c )),
+      Client_Account__r.Payment_Gateway__r.Name,
+      IF(NOT(UCB__c),
+         &apos;Error: Set Payment Gateway on Client Account&apos;,
+         NULL
+      )
+   )
+)</formula>
+        <inlineHelpText>Name on the Entity&apos;s Payment Gateway Override, otherwise the Client Account&apos;s Payment Gateway</inlineHelpText>
+        <label>Payment Gateway Name</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Pending_Anchor_Capacity__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Sum of New, Pending, or QC in Process Anchor subscriptions</inlineHelpText>
@@ -2758,6 +2780,17 @@ null)</formula>
         <label>Customer Portal Access</label>
     </sharingReasons>
     <startsWith n1:nil="true" />
+    <validationRules>
+        <fullName>Acquisition_Client_Gateway_Required</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+ISPICKVAL(Stage__c,&quot;Acquisition&quot;),
+NOT(ISBLANK(Client_Account__c)),
+ISBLANK(Client_Account__r.Payment_Gateway__c),
+NOT(UCB__c)
+)</errorConditionFormula>
+        <errorMessage>When in the Acquisition stage, a non-UCB Shared Solar System&apos;s Client Account must have a Payment Gateway set</errorMessage>
+    </validationRules>
     <validationRules>
         <fullName>Acquisition_Credit_Score_Requir_Required</fullName>
         <active>true</active>
