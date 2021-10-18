@@ -313,4 +313,37 @@ public with sharing class SharedSolarSystemsSelectorTest {
 
         System.assertEquals('test1SSS', resultSSS.Name);
     }
+
+    @IsTest
+    private static void getAllSSSByParentAccount() {
+        Shared_Solar_System__c sharedSolarSystem = [
+            SELECT Id
+            FROM Shared_Solar_System__c
+            LIMIT 1
+        ];
+        Account parentAccount = new Account(Name = 'ParentAccount');
+        insert parentAccount;
+
+        SharedSolarSystemsSelector selector = new SharedSolarSystemsSelector();
+        List<Shared_Solar_System__c> sharedSolarSystems = selector.getAllSSSByParentAccount(parentAccount.Id);
+        System.assertEquals(0, sharedSolarSystems.size(), 'Method should not have found any SSS\'s');
+
+        Account propertyAccount = new Account(
+            Name = 'PropertyAccount',
+            Parent_Account__c = parentAccount.Id
+        );
+        insert propertyAccount;
+        Opportunity opportunity = new Opportunity(
+            Shared_Solar_System__c = sharedSolarSystem.Id,
+            AccountId = propertyAccount.Id,
+            Name = 'TestOpportunity',
+            StageName = 'Complete',
+            Product_Line__c = 'Community Solar',
+            CloseDate = Date.today()
+        );
+        insert opportunity;
+
+        sharedSolarSystems = selector.getAllSSSByParentAccount(parentAccount.Id);
+        System.assertEquals(1, sharedSolarSystems.size(), 'Method should have found 1 SSS');
+    }
 }
