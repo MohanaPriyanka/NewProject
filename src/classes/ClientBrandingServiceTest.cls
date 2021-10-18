@@ -5,7 +5,7 @@
 @IsTest
 public with sharing class ClientBrandingServiceTest {
     @TestSetup
-    public static void testSetup() {
+    private static void testSetup() {
         useMocks();
         // Because we rely on Aggregate Results, this test is difficult to mock:
         Utility__c eversource = new Utility__c(
@@ -53,7 +53,7 @@ public with sharing class ClientBrandingServiceTest {
             Utility__c = 'Eversource',
             Class__c = 'Class 2',
             Value_of_Net_Metering_Credit__c = 0.1848,
-            Current_Billing_Rate__c = TRUE);
+            Current_Billing_Rate__c = true);
         insert everbillNMC;
 
         Product2 normalCSProduct = new Product2(
@@ -62,7 +62,7 @@ public with sharing class ClientBrandingServiceTest {
             Product_Type__c = 'Community Solar',
             State__c = 'MA',
             ProductCode = 'CS - BlueWave - 10%',
-            IsActive = True,
+            IsActive = true,
             Lender_of_Record__c = 'BlueWave',
             NMC_Discount__c = 10,
             Annual_kWh_Maximum__c = 100000000,
@@ -114,7 +114,7 @@ public with sharing class ClientBrandingServiceTest {
                 Expected_Yield_kWh_kW__c = 1300,
                 Assemblage_Count__c = 1,
                 Product__c = normalCSProduct.Id,
-                BWC_Project_Entity_Manual__c = entity1.Id,
+                BWC_Project_Entity_Manual__c = null, // Leaving the entity null to make sure we use the system's client
                 Maximum_Subscription_Capacity_kWDC__c = 25,
                 Utility__c = eversource.Id);
 
@@ -337,7 +337,7 @@ public with sharing class ClientBrandingServiceTest {
         List<Account> propertyAccounts = [
             SELECT Id, Name, Parent_Account__c
             FROM Account
-            WHERE Parent_Account__c != null
+            WHERE Parent_Account__c != NULL
             ORDER BY Name
         ];
         for (Account acct : propertyAccounts) {
@@ -440,7 +440,7 @@ public with sharing class ClientBrandingServiceTest {
     @IsTest
     private static void testOpportunityTrigger() {
         Shared_Solar_System__c sss1 = [
-            SELECT Id, Client_Brand_Key__c, BWC_Project_Entity_Manual__r.Client_Account__r.Client_Brand_Key__c
+            SELECT Id, Client_Brand_Key__c, Client_Account__r.Client_Brand_Key__c
             FROM Shared_Solar_System__c
             WHERE Name = 'Project A Oak Road'
             LIMIT 1
@@ -449,7 +449,7 @@ public with sharing class ClientBrandingServiceTest {
         Util.disableTrigger('Disable_SharedSolarSystemTrigger__c');
         sss1.Client_Brand_Key__c = null;
         update sss1;
-        System.assertEquals('AmpRed', sss1.BWC_Project_Entity_Manual__r.Client_Account__r.Client_Brand_Key__c);
+        System.assertEquals('AmpRed', sss1.Client_Account__r.Client_Brand_Key__c);
 
         Shared_Solar_System__c sss2 = [
             SELECT Id, Client_Brand_Key__c, BWC_Project_Entity_Manual__r.Client_Account__r.Client_Brand_Key__c
@@ -498,7 +498,7 @@ public with sharing class ClientBrandingServiceTest {
         List<Account> oldPropertyAccounts = [
             SELECT Id, Name, Parent_Account__c, Client_Brand_Key__c
             FROM Account
-            WHERE Parent_Account__c != null
+            WHERE Parent_Account__c != NULL
             ORDER BY Name
         ];
         System.assertEquals('BluewaveLogo', oldPropertyAccounts[0].Client_Brand_Key__c);
@@ -520,7 +520,7 @@ public with sharing class ClientBrandingServiceTest {
         List<Account> updatedPropertyAccounts = [
             SELECT Id, Name, Parent_Account__c, Client_Brand_Key__c
             FROM Account
-            WHERE Parent_Account__c != null
+            WHERE Parent_Account__c != NULL
             ORDER BY Name
         ];
         System.assertEquals('AmpRed', updatedPropertyAccounts[0].Client_Brand_Key__c);
