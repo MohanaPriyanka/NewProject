@@ -119,11 +119,11 @@ public without sharing class CSLeadConversionValidator {
             return true;
         }
         for (Utility_Account_Log__c ual : detail.utilityAccountLogs) {
-            Boolean pendingQC = ual.QC_Status__c == 'Pending Utility Data' || ual.QC_Status__c == 'Pending BW Review';
-            Boolean notUnqualified = ual.QC_Status__c != 'Unqualified';
+            Boolean qcStatusInvalid = ual.QC_Status__c != 'Complete';
             Boolean kwhSubscriptionMissingData = subscriptionType == 'kWh' && ual.Annual_kWh__c == null;
             Boolean costSubscriptionMissingData = subscriptionType == 'Electricity Cost ($)' && ual.Annual_Cost_of_Electricity__c == null;
-            if (notUnqualified && (pendingQC || kwhSubscriptionMissingData || costSubscriptionMissingData)) {
+            Boolean missingRateClass = ual.Utility_Rate_Class__c == null;
+            if (qcStatusInvalid || kwhSubscriptionMissingData || costSubscriptionMissingData || missingRateClass) {
                 return true;
             }
         }
