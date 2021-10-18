@@ -17,7 +17,7 @@ public with sharing class UASSelectorTest {
         Test.loadData(Entity__c.SObjectType, 'TestCSEntity');
         Test.loadData(Shared_Solar_System__c.SObjectType, 'TestCSSharedSolarSystem');
         Test.loadData(Utility_Account_Log__c.SObjectType, 'TestCSUtilityAccountLog');
-        Test.loadData(Partner__c.SObjectType,'TestRLPartner');
+        Test.loadData(Partner__c.SObjectType, 'TestRLPartner');
         Test.loadData(Opportunity.SObjectType, 'TestCSOpportunity');
         Util.enableAllTriggers();
         Test.loadData(Utility_Account_Subscription__c.SObjectType, 'TestCSUtilityAccountSubscription');
@@ -51,14 +51,14 @@ public with sharing class UASSelectorTest {
             FROM Utility_Account_Subscription__c
             LIMIT 3
         ];
-        for (Utility_Account_Subscription__c uas : uasList){
+        for (Utility_Account_Subscription__c uas : uasList) {
             idList.add(uas.Id);
         }
-        System.assertEquals(3,UASSelector.selectByIdsAsMap(idList).values().size());
+        System.assertEquals(3, UASSelector.selectByIdsAsMap(idList).values().size());
     }
     @IsTest public static void testGetBrandKeySummary() {
         // Test setup: link properties to a parent account:
-        Map<Id,Opportunity> oppsToUpdate = new Map<Id,Opportunity>();
+        Map<Id, Opportunity> oppsToUpdate = new Map<Id, Opportunity>();
         Account parentAccount = new Account(
             Name = 'Parent'
         );
@@ -72,7 +72,7 @@ public with sharing class UASSelectorTest {
             SELECT Id, Opportunity__r.Id
             FROM Utility_Account_Subscription__c
         ];
-        for (Utility_Account_Subscription__c uas : uases){
+        for (Utility_Account_Subscription__c uas : uases) {
             Opportunity opp = new Opportunity(
                 Id = uas.Opportunity__r.Id,
                 AccountId = propertyAccount.Id
@@ -81,23 +81,25 @@ public with sharing class UASSelectorTest {
         }
         update oppsToUpdate.values();
         UASSelector selector = new UASSelector();
-        System.assert(selector.getBrandKeySummary(new Set<Id>{parentAccount.Id}).size() > 0, 'Expected UAL Summary');
+        System.assert(selector.getBrandKeySummary(new Set<Id>{
+            parentAccount.Id
+        }).size() > 0, 'Expected UAL Summary');
     }
-    @IsTest public static void testSelectActiveUASBySSS(){
+    @IsTest public static void testSelectActiveUASBySSS() {
         Set<Id> sssIdList = new Set<Id>();
         List<Utility_Account_Subscription__c> uasList = [
             SELECT Opportunity__r.Shared_Solar_System__c
             FROM Utility_Account_Subscription__c
         ];
         System.assert(uasList.size() > 0);
-        for (Utility_Account_Subscription__c uas : uasList){
+        for (Utility_Account_Subscription__c uas : uasList) {
             sssIdList.add(uas.Opportunity__r.Shared_Solar_System__c);
         }
         UASSelector selector = new UASSelector();
-        System.assertEquals(uasList.size(),selector.selectActiveUASBySSS(sssIdList).size());
+        System.assertEquals(uasList.size(), selector.selectActiveUASBySSS(sssIdList).size());
     }
 
-    @IsTest public static void testGetUASesForAssignmentAgreement(){
+    @IsTest public static void testGetUASesForAssignmentAgreement() {
         Account clientAccount = new Account(Name = 'Client');
         insert clientAccount;
         Id rtAssign = Schema.SObjectType.Contract.getRecordTypeInfosByName().get('Assignment Agreement').getRecordTypeId();
@@ -118,7 +120,7 @@ public with sharing class UASSelectorTest {
             SELECT ContractId
             FROM Opportunity
         ];
-        for (Opportunity opp : opportunityList){
+        for (Opportunity opp : opportunityList) {
             opp.ContractId = customerContract.Id;
         }
         update opportunityList;
@@ -127,18 +129,48 @@ public with sharing class UASSelectorTest {
         System.assert(selector.getUASesForAssignmentAgreement(assignmentAgreement.Id).size() > 0);
     }
 
-    @IsTest public static void testGetUASSummaryByOpportunity(){
+    @IsTest public static void testGetUASSummaryByOpportunity() {
         List<Opportunity> oppList = [
             SELECT Id
             FROM Opportunity
         ];
         Set<Id> oppIds = new Set<Id>();
-        for (Opportunity opp : oppList){
+        for (Opportunity opp : oppList) {
             oppIds.add(opp.Id);
         }
         UASSelector selector = new UASSelector();
-        Map<Id,Decimal> summaryMap = selector.getUASSummaryByOpportunity(oppIds);
+        Map<Id, Decimal> summaryMap = selector.getUASSummaryByOpportunity(oppIds);
         System.assert(summaryMap.values().size() > 0);
+    }
+
+    @IsTest public static void testGetActiveUASByParentAccount() {
+        Opportunity opportunity = [
+            SELECT Id, AccountId
+            FROM Opportunity
+            WHERE Product_Line__c = 'Community Solar'
+            AND StageName = 'Complete'
+            LIMIT 1
+        ];
+        Account parentAccount = [
+            SELECT Id
+            FROM Account
+            WHERE Id != :opportunity.AccountId
+            AND Type = 'Landowner'
+            LIMIT 1
+        ];
+
+        UASSelector selector = new UASSelector();
+        List<Utility_Account_Subscription__c> utilityAccountSubscriptions = selector.getActiveUASByParentAccount(parentAccount.Id);
+        System.assertEquals(0, utilityAccountSubscriptions.size(), 'Method should not return any results');
+
+        Account propertyAccount = new Account(
+            Id = opportunity.AccountId,
+            Parent_Account__c = parentAccount.Id
+        );
+        update propertyAccount;
+
+        utilityAccountSubscriptions = selector.getActiveUASByParentAccount(parentAccount.Id);
+        System.assertEquals(1, utilityAccountSubscriptions.size(), 'Method should have found 1 UAS with a lookup to TestAccountAOppOne');
     }
 
     private static void useMocks() {

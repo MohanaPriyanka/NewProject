@@ -27,8 +27,7 @@ public inherited sharing class SharedSolarSystemsSelector {
                 Credit_Score_Requirement__c, Assignment_Order__c, Maximum_Subscription_Capacity_kWDC__c,
                 BWC_Project_Entity_Manual__c, Total_System_Size_kWh_DC__c,
                 Available_SMB_Underwriting_Method_Docs__c, Available_SMB_Underwriting_Method_FICO__c, Public__c,
-                Do_Not_Underwrite__c, Do_Not_Ask_for_Payment_Method__c,
-                (SELECT Id, Account__c, Account__r.Partner__c FROM Partner_Shared_Solar_System_Accesses__r WHERE IsActive__c = TRUE)
+                Do_Not_Underwrite__c, Do_Not_Ask_for_Payment_Method__c, (SELECT Id, Account__c, Account__r.Partner__c FROM Partner_Shared_Solar_System_Accesses__r WHERE IsActive__c = TRUE)
             FROM Shared_Solar_System__c
             WHERE Id IN :sssIds
         ];
@@ -137,8 +136,7 @@ public inherited sharing class SharedSolarSystemsSelector {
                 Utility_NMC_Tariff__r.Size_Ratio__c, NMC_Value__c,Credit_Score_Requirement__c, Assignment_Order__c,
                 Maximum_Subscription_Capacity_kWDC__c,Available_SMB_Underwriting_Method_FICO__c, Available_SMB_Underwriting_Method_Docs__c,
                 Do_Not_Ask_for_Payment_Method__c, Do_Not_Underwrite__c,BWC_Project_Entity_Manual__c,
-                Total_System_Size_kWh_DC__c,Public__c, Waitlist__c,
-                (SELECT Id, Account__c, Account__r.Partner__c FROM Partner_Shared_Solar_System_Accesses__r WHERE IsActive__c = TRUE)
+                Total_System_Size_kWh_DC__c,Public__c, Waitlist__c, (SELECT Id, Account__c, Account__r.Partner__c FROM Partner_Shared_Solar_System_Accesses__r WHERE IsActive__c = TRUE)
             FROM Shared_Solar_System__c
             WHERE Open__c = TRUE
             AND Capacity_Available_to_be_Reserved__c > 0
@@ -151,8 +149,7 @@ public inherited sharing class SharedSolarSystemsSelector {
             SELECT Id, Name, Open__c, Capacity_Available_to_be_Reserved__c, Service_Territories__c,
                 Credit_Score_Requirement__c, Product__r.Name, Utility__r.Name, Public__c, Product__r.Ignore_Load_Zones_When_Qualifying__c,
                 Do_Not_Underwrite__c, Available_SMB_Underwriting_Method_FICO__c, Available_SMB_Underwriting_Method_Docs__c,
-                RiskCalc_Minimum__c, Do_Not_Ask_for_Payment_Method__c, Product__r.Parent_Product__c, Waitlist__c,
-                (SELECT Id, Account__c, Account__r.Partner__c, Account__r.Name FROM Partner_Shared_Solar_System_Accesses__r WHERE IsActive__c = TRUE)
+                RiskCalc_Minimum__c, Do_Not_Ask_for_Payment_Method__c, Product__r.Parent_Product__c, Waitlist__c, (SELECT Id, Account__c, Account__r.Partner__c, Account__r.Name FROM Partner_Shared_Solar_System_Accesses__r WHERE IsActive__c = TRUE)
             FROM Shared_Solar_System__c
             WHERE (Product__c = :productId OR Product__r.Parent_Product__c = :productId)
             AND Utility__c IN :utilityIds
@@ -179,13 +176,14 @@ public inherited sharing class SharedSolarSystemsSelector {
         return [
             SELECT Id, Name, Reserved_Capacity_kW_DC__c, Capacity_Committed_kW_DC__c, Anchor_Capacity_Reserved__c, Reserved_Anchor_Capacity__c,
                 Stage__c, Utility__r.Average_Demand_Threshold__c,Pending_Demand_Capacity__c, Committed_Demand_Capacity__c,
-                Demand_Customer_System_Utilization__c,Pending_Anchor_Capacity__c,
-                (SELECT Id, Customer_Group__c, Opportunity__r.Customer_Sub_Group__c, Shared_Solar_System__r.Name,
+                Demand_Customer_System_Utilization__c,Pending_Anchor_Capacity__c, (
+                SELECT Id, Customer_Group__c, Opportunity__r.Customer_Sub_Group__c, Shared_Solar_System__r.Name,
                     Future_Customer_Subscription_KWDC_Rollup__c, Customer_Subscription_KW_DC__c, Opportunity_Stage__c,
                     Utility_Account_Log__c, Utility_Account_Log__r.Average_Demand__c, Utility_Account_Log__r.Exclude_from_Demand_Capacity__c
                 FROM Utility_Account_Subscriptions__r
                 WHERE Next_Schedule_Z_Status__c = 'Active Subscription'
-                AND (Future_Customer_Subscription_KWDC_Rollup__c != 0 OR Customer_Subscription_KW_DC__c != 0))
+                AND (Future_Customer_Subscription_KWDC_Rollup__c != 0 OR Customer_Subscription_KW_DC__c != 0)
+            )
             FROM Shared_Solar_System__c
             WHERE Id IN :sssList
         ];
@@ -234,5 +232,29 @@ public inherited sharing class SharedSolarSystemsSelector {
             FROM Shared_Solar_System__c
             WHERE Utility__c IN : utilityIds
         ]);
+    }
+
+    public List<Shared_Solar_System__c> getAllSSSByParentAccount(Id accountId) {
+        //Get Shared Solar Systems from related completed Community Solar opportunities using the parent account id
+        return [
+            SELECT
+                Id,
+                Name,
+                Project_Information_short__c,
+                Project_Image__c,
+                Waitlist__c,
+                Metric_Tons_of_CO2_Offset__c,
+                Home_Electricity_Offset__c,
+                Subscribers__c,
+                Information__c
+            FROM Shared_Solar_System__c
+            WHERE Id IN (
+                SELECT Shared_Solar_System__c
+                FROM Opportunity
+                WHERE Parent_Account_ID__c = :accountId
+                AND Product_Line__c = 'Community Solar'
+                AND StageName = 'Complete'
+            )
+        ];
     }
 }
