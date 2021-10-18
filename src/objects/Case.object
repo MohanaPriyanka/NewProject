@@ -4270,18 +4270,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <picklistValues>
             <picklist>Category__c</picklist>
             <values>
-                <fullName>Billing</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Billing Payment</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Cancellation</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Commission Payments</fullName>
                 <default>false</default>
             </values>
@@ -4294,14 +4282,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
                 <default>false</default>
             </values>
             <values>
-                <fullName>Feedback%2FFeature Request</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Partner Onboarding</fullName>
                 <default>false</default>
             </values>
@@ -4310,31 +4290,11 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
                 <default>false</default>
             </values>
             <values>
-                <fullName>Portal Issue</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Product Question</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Project Availability</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>SREC</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Sales Materials</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Subscription Adjustment</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Subscription Change</fullName>
                 <default>false</default>
             </values>
         </picklistValues>

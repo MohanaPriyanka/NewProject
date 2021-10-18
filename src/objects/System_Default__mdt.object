@@ -57,12 +57,48 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Default_Client_Brand_Key__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>Used to set the default logo, for instance, in ClientBrandingService</inlineHelpText>
+        <label>Default Client Brand Key</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>BluewaveLogo</fullName>
+                    <default>true</default>
+                    <label>BluewaveLogo</label>
+                </value>
+                <value>
+                    <fullName>Perch</fullName>
+                    <default>false</default>
+                    <label>Perch</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Default_Copado_Project_ID__c</fullName>
         <externalId>false</externalId>
         <fieldManageability>DeveloperControlled</fieldManageability>
         <inlineHelpText>Default ID for Copado Project. Used when creating a new User Story</inlineHelpText>
         <label>Default Copado Project ID</label>
         <length>18</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Test_Credit_Login_Account_Username__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>Account used to pull credit from LaserCA for testcases or in sandboxes</inlineHelpText>
+        <label>Test Credit Login Account Username</label>
+        <length>50</length>
         <required>false</required>
         <type>Text</type>
         <unique>false</unique>

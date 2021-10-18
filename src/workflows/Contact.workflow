@@ -1,18 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <alerts>
-        <fullName>Internal_RL_Co_Applicant_Added</fullName>
-        <ccEmails>solarloans@bluewavesolar.com</ccEmails>
-        <description>Internal - RL - Co Applicant Added</description>
-        <protected>false</protected>
-        <recipients>
-            <recipient>vcoloma@bluewavesolar.com</recipient>
-            <type>user</type>
-        </recipients>
-        <senderAddress>noreply@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
-        <template>RS_Application_Email_Notifications/New_RL_Joint_Applicant</template>
-    </alerts>
     <fieldUpdates>
         <fullName>Contact_Record_Type_Co_Applicant</fullName>
         <field>RecordTypeId</field>

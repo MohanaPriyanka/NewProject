@@ -1,8 +1,0 @@
-Dear BWOC, 
-
-A new {!Lead.Product_line__c} lead, {!Lead.Name}, from {!Lead.Partner_Name__c} has been created for your review.
-
-{!Lead.Status}
-{!Lead.Partner_Name__c}
-{!Lead.Loan_Amount__c}
-{!Lead.LZU__c}

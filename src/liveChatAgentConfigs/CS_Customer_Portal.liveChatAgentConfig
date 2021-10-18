@@ -3,7 +3,7 @@
     <assignments>
         <profiles>
             <profile>admin</profile>
-            <profile>BFG Standard User</profile>
+            <profile>bfg standard user</profile>
         </profiles>
     </assignments>
     <autoGreeting>{!LiveAgent_VisitorName}, Thanks for reaching out to BlueWave Support! My name is {!User_FirstName}, how can I help you?</autoGreeting>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LiveChatButton xmlns="http://soap.sforce.com/2006/04/metadata">
+<LiveChatButton xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <autoGreeting>Hi, how can I help you?</autoGreeting>
     <chasitorIdleTimeout>300</chasitorIdleTimeout>
     <chasitorIdleTimeoutWarning>180</chasitorIdleTimeoutWarning>
@@ -15,11 +15,8 @@
     <optionsHasRerouteDeclinedRequest>false</optionsHasRerouteDeclinedRequest>
     <optionsIsAutoAccept>false</optionsIsAutoAccept>
     <optionsIsInviteAutoRemove>false</optionsIsInviteAutoRemove>
-    <routingType>MostAvailable</routingType>
+    <routingType xsi:nil="true"/>
     <site>liveagent</site>
-    <skills>
-        <skill>CS_Customer_Service</skill>
-    </skills>
     <type>Standard</type>
     <windowLanguage>en_US</windowLanguage>
 </LiveChatButton>

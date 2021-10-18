@@ -1,3 +1,0 @@
-Alert - A new Joint Applicat has been added: 
-Joint Applicant Name: {!Contact.Name}
-Main Applicant Name: {!Contact.Lead__c}

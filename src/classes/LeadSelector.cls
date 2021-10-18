@@ -124,6 +124,8 @@ public without sharing class LeadSelector {
                 FirstName,
                 Generate_Docs_for_Review__c,
                 LASER_Credit_Score__c,
+                LASERCA__Applicant_Id__c,
+                LASERCA__Birthdate__c,
                 LASERCA__Home_Address__c,
                 LASERCA__Home_City__c,
                 LASERCA__Home_State__c,
@@ -293,6 +295,15 @@ public without sharing class LeadSelector {
             FROM Lead
             WHERE EmailBouncedDate != NULL
             AND EmailBouncedDate >= YESTERDAY
+        ];
+    }
+
+    public Lead getLeadForLeadConversion(Id leadId) {
+        return [
+            SELECT Id,Utility_relationship__c,
+                (SELECT Id, QC_Status__c, Annual_kWh__c, Annual_Cost_of_Electricity__c, Name FROM Utility_Account_Logs__r)
+            FROM Lead
+            WHERE Id =: leadId
         ];
     }
 

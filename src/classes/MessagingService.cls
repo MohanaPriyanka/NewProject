@@ -30,7 +30,9 @@ public without sharing class MessagingService {
         ee.orgWideEmail = orgWideEmail;
         ee.subjectLine = subjectLine;
         ee.addressList = addressList;
-        ee.replacementTexts = new List<ReplacementText>{new ReplacementText(templateField, replaceText)};
+        ee.replacementTexts = new List<ReplacementText>{
+            new ReplacementText(templateField, replaceText)
+        };
         ee.sobjectId = null;
         Messaging.SendEmailResult[] result = sendEmailTemplate(ee);
         for (Messaging.SendEmailResult rr : result) {
@@ -53,22 +55,22 @@ public without sharing class MessagingService {
         return createAndSendEmail(templateHtml, ee.orgWideEmail, ee.subjectLine, ee.addressList, ee.sobjectId);
     }
 
-    public static String getHtmlWithReplacements (String templateName, Map<String, String> keyToValueMap) {
+    public static String getHtmlWithReplacements(String templateName, Map<String, String> keyToValueMap) {
         String htmlValue = getHtml(templateName).HtmlValue;
         for (String key : keyToValueMap.keySet()) {
-            htmlValue = htmlValue.replace(key, keyToValueMap.get(key)==null?'':keyToValueMap.get(key));
+            htmlValue = htmlValue.replace(key, keyToValueMap.get(key) == null ? '' : keyToValueMap.get(key));
         }
         return htmlValue;
     }
 
     @SuppressWarnings('PMD.ApexCRUDViolation')
-    public static EmailTemplate getHtml (String templateName) {
+    public static EmailTemplate getHtml(String templateName) {
         if (emailTemplateMap.get(templateName) == null) {
             List<EmailTemplate> templates = [
                 SELECT Id, HtmlValue, Body, Subject
                 FROM EmailTemplate
                 WHERE (DeveloperName = :templateName OR Name = :templateName)
-                AND (IsActive = TRUE OR IsActive = : onlyUseActiveTemplates)
+                AND (IsActive = TRUE OR IsActive = :onlyUseActiveTemplates)
                 LIMIT 1
             ];
             if (templates.isEmpty()) {
@@ -85,17 +87,20 @@ public without sharing class MessagingService {
         }
     }
 
-    public static Messaging.SendEmailResult[] createAndSendEmail (String htmlBody, String orgWideEmail, String subjectLine, List<String> addressList) {
+    public static Messaging.SendEmailResult[] createAndSendEmail(String htmlBody, String orgWideEmail, String subjectLine, List<String> addressList) {
         return createAndSendEmail(htmlBody, orgWideEmail, subjectLine, addressList, null);
     }
-    public static Messaging.SendEmailResult[] createAndSendEmail (String htmlBody, String orgWideEmail, String subjectLine, List<String> addressList, Id sobjectId) {
+    @SuppressWarnings('PMD.ApexCRUDViolation')
+    public static Messaging.SendEmailResult[] createAndSendEmail(String htmlBody, String orgWideEmail, String subjectLine, List<String> addressList, Id sobjectId) {
         Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
-        for (OrgWideEmailAddress senderEmail : [SELECT Id, Address 
-                                                FROM OrgWideEmailAddress
-                                                WHERE Address = : orgWideEmail 
-                                                LIMIT 1]) {
-          mail.setOrgWideEmailAddressId(senderEmail.Id); 
-        }  
+        for (OrgWideEmailAddress senderEmail : [
+            SELECT Id, Address
+            FROM OrgWideEmailAddress
+            WHERE Address = :orgWideEmail
+            LIMIT 1
+        ]) {
+            mail.setOrgWideEmailAddressId(senderEmail.Id);
+        }
         mail.setSubject(subjectLine);
         mail.setHtmlBody(htmlBody);
         mail.setToAddresses(addressList);
@@ -103,7 +108,9 @@ public without sharing class MessagingService {
             mail.setTargetObjectId(sobjectId);
             mail.setSaveAsActivity(true);
         }
-        return sendEmail(new List<Messaging.SingleEmailMessage>{mail}); 
+        return sendEmail(new List<Messaging.SingleEmailMessage>{
+            mail
+        });
     }
 
     public static Messaging.SendEmailResult[] sendEmail(Messaging.Email[] emails) {
@@ -116,7 +123,8 @@ public without sharing class MessagingService {
         try {
             sendEmailResults = Messaging.sendEmail(emails, false);
         } catch (EmailException ee) {
-            Logger.logNow('MessagingService', 'sendEmail', ee.getMessage());}
+            Logger.logNow('MessagingService', 'sendEmail', ee.getMessage());
+        }
         return sendEmailResults;
     }
 
@@ -128,9 +136,20 @@ public without sharing class MessagingService {
     public static void logErrors(List<Messaging.SendEmailResult> sendEmailResults, String prefix) {
         for (Messaging.SendEmailResult rr : sendEmailResults) {
             if (!rr.isSuccess()) {
-                for (Messaging.SendEmailError error : rr.getErrors()) {
-                    Logger.logLater('MessagingService', 'logErrors', prefix + ': ' + error.getMessage(), Logger.ERROR);
-                }
+                logErrorsIgnoringBounces(rr, prefix);
+            }
+        }
+    }
+
+    /**
+     * @description We want to ignore bounces since they are handled by BouncedEmailCaseCreationScheduler
+     * @param sendEmailResult SendEmailResult
+     * @param prefix The class or method that is checking SendEmailResults
+     */
+    private static void logErrorsIgnoringBounces(Messaging.SendEmailResult sendEmailResult, String prefix) {
+        for (Messaging.SendEmailError error : sendEmailResult.getErrors()) {
+            if (error.getMessage() != null && !error.getMessage().contains('email address has bounced')) {
+                Logger.logLater('MessagingService', 'logErrors', prefix + ': ' + error.getMessage(), Logger.ERROR);
             }
         }
     }

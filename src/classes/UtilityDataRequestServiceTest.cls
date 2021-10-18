@@ -60,7 +60,6 @@ private class UtilityDataRequestServiceTest {
         Utility_Account_Log__c testUAL1 = new Utility_Account_Log__c(
             Lead__c = resiLead.Id,
             Utility_lookup__c = testUtility.Id,
-            Username__c = 'testUAL1',
             Name_on_Account__c = 'Tom',
             Service_Address__c = '66 Mass Ave',
             Service_City__c = 'Boston',
@@ -70,7 +69,6 @@ private class UtilityDataRequestServiceTest {
         Utility_Account_Log__c testUAL2 = new Utility_Account_Log__c(
             Utility_lookup__c = testUtility.Id,
             Lead__c = resiLead.Id,
-            Username__c = 'testUAL2',
             Name_on_Account__c = 'Tim',
             Service_Address__c = '32 Quincy St, apt 20',
             Service_City__c = 'Cambridge',
@@ -80,7 +78,6 @@ private class UtilityDataRequestServiceTest {
         Utility_Account_Log__c testUAL3 = new Utility_Account_Log__c(
             Utility_lookup__c = testUtility.Id,
             Lead__c = nonResiLead.Id,
-            Username__c = 'testUAL3',
             Name_on_Account__c = 'Jim',
             Service_Address__c = '249 Pearl St.',
             Service_City__c = 'Somerville',
@@ -90,7 +87,6 @@ private class UtilityDataRequestServiceTest {
         Utility_Account_Log__c testUAL4 = new Utility_Account_Log__c(
             Utility_lookup__c = testUtility.Id,
             Lead__c = resiLead.Id,
-            Username__c = 'testUAL4',
             Name_on_Account__c = 'Bill',
             Service_Address__c = '459  Broadway',
             Service_City__c = 'Everett',
@@ -100,7 +96,6 @@ private class UtilityDataRequestServiceTest {
         Utility_Account_Log__c testUAL5 = new Utility_Account_Log__c(
             Utility_lookup__c = testUtility.Id,
             Lead__c = resiLead.Id,
-            Username__c = 'testUAL5',
             Name_on_Account__c = 'Bob',
             Service_Address__c = '1 brighton ave, 20',
             Service_City__c = 'Allston',
@@ -110,7 +105,6 @@ private class UtilityDataRequestServiceTest {
         Utility_Account_Log__c testUAL6 = new Utility_Account_Log__c(
             Utility_lookup__c = testUtility.Id,
             Lead__c = resiLead.Id,
-            Username__c = 'testUAL6',
             Name_on_Account__c = 'Kris',
             Service_Address__c = '32 Quincy St, apt 20',
             Service_City__c = 'Cambridge',
@@ -120,7 +114,6 @@ private class UtilityDataRequestServiceTest {
         Utility_Account_Log__c testUAL7 = new Utility_Account_Log__c(
             Utility_lookup__c = testUtility.Id,
             Lead__c = resiLead.Id,
-            Username__c = 'testUAL7',
             Name_on_Account__c = 'Kristin',
             Service_Address__c = '30 Bow St',
             Service_City__c = 'Boston',
@@ -585,7 +578,6 @@ private class UtilityDataRequestServiceTest {
         Utility_Account_Log__c ual = new Utility_Account_Log__c(
             Service_State__c = 'Georgia',
             Lead__c = lead.Id,
-            Username__c = 'testUAL1',
             Utility_lookup__c = utilityId,
             Premise_Number__c = '129585012851'
         );

@@ -385,6 +385,18 @@ public with sharing class ClientReportingServiceTest {
             WHERE Id != :opp.Shared_Solar_System__c
             LIMIT 1
         ];
+        // A validation prevents the system from changing because it has a UAS on a non-rejected ALS. We'll reject the
+        // ALS so that we can change the opp.
+        List<Schedule_Z__c> allocationSchedules = [
+            SELECT Id
+            FROM Schedule_Z__c
+            WHERE Date_Rejected_by_Utility__c = NULL
+        ];
+        for (Schedule_Z__c allocationSchedule : allocationSchedules) {
+            allocationSchedule.Date_Rejected_by_Utility__c = System.today();
+        }
+        update allocationSchedules;
+        // Now we can transfer the opportunity
         SubscriptionTransferService subscriptionTransferService = new SubscriptionTransferService();
         subscriptionTransferService.changeOpportunitySSS(opp.Id, sss2.Id);
         Test.stopTest();
@@ -463,6 +475,32 @@ public with sharing class ClientReportingServiceTest {
         });
         System.assertEquals(0, clientALSSDelete.size());
         Test.stopTest();
+    }
+
+    @IsTest
+    public static void testPreventSystemTransferIfOppIsOnActiveALS() {
+        List<Schedule_Z_Subscription__c> scheduleZSubscriptions = [
+            SELECT Id, Utility_Account_Subscription__r.Opportunity__c,
+                Utility_Account_Subscription__r.Shared_Solar_System__c, Schedule_Z__r.Date_Rejected_by_Utility__c
+            FROM Schedule_Z_Subscription__c
+            WHERE Schedule_Z__c != NULL
+            AND Schedule_Z__r.Date_Rejected_by_Utility__c = NULL
+        ];
+
+        //Test update of Opp's SSS
+        Shared_Solar_System__c sss2 = [
+            SELECT Id, Name
+            FROM Shared_Solar_System__c
+            WHERE Id != :scheduleZSubscriptions[0].Utility_Account_Subscription__r.Shared_Solar_System__c
+            LIMIT 1
+        ];
+
+        SubscriptionTransferService transferService = new SubscriptionTransferService();
+        List<InvocableOpportunitySystemUpdater.Request> requests =
+            transferService.changeOpportunitySSS(scheduleZSubscriptions[0].Utility_Account_Subscription__r.Opportunity__c, sss2.Id);
+        System.assert(!requests[0].isSuccess, 'subscriptionTransferService.changeOpportunitySSS should not succeed since the Opp has a UAS that is on an ALS');
+        System.assert(requests[0].errorMessage.contains(SubscriptionTransferService.OPP_ON_ACTIVE_ALS),
+            'Expected "' + SubscriptionTransferService.OPP_ON_ACTIVE_ALS + '" but got: ' + requests[0].errorMessage);
     }
 
     private static void useMocks() {

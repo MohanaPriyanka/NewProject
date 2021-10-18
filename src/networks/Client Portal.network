@@ -24,7 +24,7 @@
     <enableTopicAssignmentRules>true</enableTopicAssignmentRules>
     <enableTopicSuggestions>false</enableTopicSuggestions>
     <enableUpDownVote>false</enableUpDownVote>
-    <forgotPasswordTemplate>Emails_to_Delete/CommunityForgotPasswordEmailTemplate</forgotPasswordTemplate>
+    <forgotPasswordTemplate>BFG_Internal_Alerts/CommunityForgotPasswordEmailTemplate</forgotPasswordTemplate>
     <gatherCustomerSentimentData>false</gatherCustomerSentimentData>
     <networkMemberGroups>
         <permissionSet>Manage_External_Users</permissionSet>
@@ -32,7 +32,7 @@
         <profile>admin</profile>
         <profile>cs client partner login</profile>
         <profile>cs client partner login_gsrp</profile>
-        <profile>CS Client Partner User</profile>
+        <profile>cs client partner user</profile>
     </networkMemberGroups>
     <networkPageOverrides>
         <changePasswordPageOverrideSetting>Standard</changePasswordPageOverrideSetting>
