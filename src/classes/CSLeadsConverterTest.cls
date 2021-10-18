@@ -125,6 +125,7 @@ public without sharing class CSLeadsConverterTest {
         leadsConverter.retrieveDependencies();
         leadsConverter.validateInputs();
         leadsConverter.constructConversionData();
+        system.debug(detail);
         System.assert(detail.errorsEncountered.isEmpty(), 'Error encountered during validation');
         System.assertEquals(detail.error, null, 'Error encountered during validation');
         System.assertEquals(detail.errorMessage, null, 'Error encountered during validation');
@@ -204,6 +205,7 @@ public without sharing class CSLeadsConverterTest {
             mockUal.setField(Utility_Account_Log__c.Id, Util.getFakeId(Utility_Account_Log__c.SObjectType));
             mockUal.setField(Utility_Account_Log__c.QC_Status__c, setUalsAsComplete ? 'Complete' : 'Pending Utility Data');
             mockUal.setField(Utility_Account_Log__c.Annual_kWh__c, 10000);
+            mockUal.setField(Utility_Account_Log__c.Utility_Rate_Class__c, Util.getFakeId(Rate_Class__c.SObjectType));
 
             sfab_FabricatedSObject mockLead = new sfab_FabricatedSObject(Lead.class);
             mockLead.setField(Lead.Id, Util.getFakeId(Lead.SObjectType));
