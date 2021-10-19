@@ -253,6 +253,7 @@ public with sharing class ScheduleZSubscriptionSelector {
             FROM Schedule_Z_Subscription__c
             WHERE Utility_Account_Subscription__r.Opportunity__c IN :opportunityIds
             AND Schedule_Z__r.Date_Rejected_by_Utility__c = NULL
+            AND Schedule_Z_Status__c != 'Rejected Internal'
         ];
     }
 }

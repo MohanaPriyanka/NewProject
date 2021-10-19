@@ -217,7 +217,7 @@
     </fields>
     <fields>
         <fullName>Shared_Solar_System__c</fullName>
-        <deleteConstraint>Restrict</deleteConstraint>
+        <deleteConstraint>SetNull</deleteConstraint>
         <description>The SSS record that the order is for.</description>
         <externalId>false</externalId>
         <inlineHelpText>This is the Shared Solar System that will be updated once the order is approved.</inlineHelpText>
@@ -225,7 +225,7 @@
         <referenceTo>Shared_Solar_System__c</referenceTo>
         <relationshipLabel>Shared Solar System Orders</relationshipLabel>
         <relationshipName>Shared_Solar_System_Orders</relationshipName>
-        <required>true</required>
+        <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
