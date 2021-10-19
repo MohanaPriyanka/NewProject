@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Assign_SOs_to_Assignment_Agreement</name>
         <label>Assign SOs to Assignment Agreement</label>
-        <locationX>182</locationX>
-        <locationY>2942</locationY>
+        <locationX>50</locationX>
+        <locationY>3062</locationY>
         <actionName>CustomerAssignmentService</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -27,8 +27,8 @@
     <actionCalls>
         <name>Generate_Addendums</name>
         <label>Generate Addendums</label>
-        <locationX>182</locationX>
-        <locationY>2822</locationY>
+        <locationX>50</locationX>
+        <locationY>2942</locationY>
         <actionName>InvocableAddendumGenerator</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -108,8 +108,8 @@
     <assignments>
         <name>Add_Contract_To_Update_List</name>
         <label>Add Contract To Update List</label>
-        <locationX>270</locationX>
-        <locationY>2486</locationY>
+        <locationX>138</locationX>
+        <locationY>2606</locationY>
         <assignmentItems>
             <assignToReference>ContractsToUpdate</assignToReference>
             <operator>Add</operator>
@@ -140,8 +140,8 @@
     <assignments>
         <name>Set_Assignment_Agreement_contract</name>
         <label>Set Assignment Agreement</label>
-        <locationX>270</locationX>
-        <locationY>2366</locationY>
+        <locationX>138</locationX>
+        <locationY>2486</locationY>
         <assignmentItems>
             <assignToReference>ContractLoopVar2.Assignment_Agreement__c</assignToReference>
             <operator>Assign</operator>
@@ -156,8 +156,8 @@
     <assignments>
         <name>Set_Contract_To_Insert_Fields</name>
         <label>Set Contract To Insert Fields</label>
-        <locationX>182</locationX>
-        <locationY>2006</locationY>
+        <locationX>50</locationX>
+        <locationY>2126</locationY>
         <assignmentItems>
             <assignToReference>ContractToInsert.AccountId</assignToReference>
             <operator>Assign</operator>
@@ -292,6 +292,31 @@
         </value>
     </choices>
     <decisions>
+        <name>Any_contracts_to_assign</name>
+        <label>Any contracts to assign?</label>
+        <locationX>182</locationX>
+        <locationY>1886</locationY>
+        <defaultConnector>
+            <targetReference>No_contracts_to_assign</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No contracts to assign</defaultConnectorLabel>
+        <rules>
+            <name>Found_contracts_to_assign</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ContractRecordCount</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>AssignmentAgreementRecordType</targetReference>
+            </connector>
+            <label>Found contracts to assign</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Set_Acquisition_Type_for_Contract</name>
         <label>Set Acquisition Type for Contract</label>
         <locationX>182</locationX>
@@ -361,8 +386,8 @@
     <loops>
         <name>Loop_Through_Contracts_Two</name>
         <label>Loop Through Contracts</label>
-        <locationX>182</locationX>
-        <locationY>2246</locationY>
+        <locationX>50</locationX>
+        <locationY>2366</locationY>
         <assignNextValueToReference>ContractLoopVar2</assignNextValueToReference>
         <collectionReference>ContractsToAssign</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -395,8 +420,8 @@
     <recordCreates>
         <name>Create_Contract</name>
         <label>Create Contract</label>
-        <locationX>182</locationX>
-        <locationY>2126</locationY>
+        <locationX>50</locationX>
+        <locationY>2246</locationY>
         <connector>
             <targetReference>Loop_Through_Contracts_Two</targetReference>
         </connector>
@@ -405,8 +430,8 @@
     <recordLookups>
         <name>AssignmentAgreementRecordType</name>
         <label>AssignmentAgreementRecordType</label>
-        <locationX>182</locationX>
-        <locationY>1886</locationY>
+        <locationX>50</locationX>
+        <locationY>2006</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Set_Contract_To_Insert_Fields</targetReference>
@@ -426,8 +451,8 @@
     <recordUpdates>
         <name>Update_Contracts_Small</name>
         <label>Update Contracts</label>
-        <locationX>182</locationX>
-        <locationY>2702</locationY>
+        <locationX>50</locationX>
+        <locationY>2822</locationY>
         <connector>
             <targetReference>Generate_Addendums</targetReference>
         </connector>
@@ -441,7 +466,7 @@
         <locationY>614</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
+        <allowPause>false</allowPause>
         <connector>
             <targetReference>InvocableEntitySelector</targetReference>
         </connector>
@@ -481,9 +506,9 @@
         <locationY>1766</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
+        <allowPause>false</allowPause>
         <connector>
-            <targetReference>AssignmentAgreementRecordType</targetReference>
+            <targetReference>Any_contracts_to_assign</targetReference>
         </connector>
         <fields>
             <name>debugContractsScreen</name>
@@ -498,9 +523,9 @@
         <label>Cutoff Date</label>
         <locationX>182</locationX>
         <locationY>158</locationY>
-        <allowBack>true</allowBack>
+        <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
+        <allowPause>false</allowPause>
         <connector>
             <targetReference>Set_Acquisition_Type_for_Contract</targetReference>
         </connector>
@@ -552,14 +577,33 @@
     <screens>
         <name>Done_Screen</name>
         <label>Done Screen</label>
-        <locationX>182</locationX>
-        <locationY>3062</locationY>
-        <allowBack>true</allowBack>
+        <locationX>50</locationX>
+        <locationY>3182</locationY>
+        <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
+        <allowPause>false</allowPause>
         <fields>
             <name>DoneMessage</name>
             <fieldText>&lt;p&gt;Done! You created a client assignment agreement: {!ContractToInsert.Id}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>No_contracts_to_assign</name>
+        <label>No contracts to assign</label>
+        <locationX>314</locationX>
+        <locationY>2006</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Cutoff_DateHeader</targetReference>
+        </connector>
+        <fields>
+            <name>NoContractsStartOver</name>
+            <fieldText>&lt;p&gt;You want to continue, but we found no contracts to assign.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Click Next to start the flow over, maybe you need to choose a different effective date, client or assignment entity&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -572,7 +616,7 @@
         <locationY>854</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
+        <allowPause>false</allowPause>
         <connector>
             <targetReference>Get_Contract_Assignment_Entity_Ids</targetReference>
         </connector>
