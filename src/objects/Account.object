@@ -3788,17 +3788,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <type>Summary</type>
     </fields>
     <fields>
-        <fullName>Total_Assets__c</fullName>
-        <externalId>false</externalId>
-        <label>Total Assets</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Total_Billed__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Sum of due this month, or all discounted Net Metering Credits allocated, not including late fees or adjustments</inlineHelpText>
