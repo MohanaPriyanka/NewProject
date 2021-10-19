@@ -875,6 +875,107 @@
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>Auto_QC_Error_Debug__c</fullName>
+        <description>Debugging information for Auto Lead Qualification &amp; Conversion process</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Debugging information, if relevant, for Auto Lead Qualification &amp; Conversion process</inlineHelpText>
+        <label>Auto QC Error Debug</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Auto_QC_Failure_Details__c</fullName>
+        <description>Failures encountered during Auto Lead Qualification &amp; Conversion when more than one is encountered. See CSLeadsConverter / CSLeadConversionValidator.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Failures encountered during Auto Lead Qualification &amp; Conversion when more than one is encountered</inlineHelpText>
+        <label>Auto QC Failure Details</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Auto_QC_Failure_Reason__c</fullName>
+        <description>Failure encountered during Auto Lead Qualification &amp; Conversion. See CSLeadsConverter / CSLeadConversionValidator.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Failure encountered during Auto Lead Qualification &amp; Conversion</inlineHelpText>
+        <label>Auto QC Failure Reason</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Conversion Failure</fullName>
+                    <default>false</default>
+                    <label>Conversion Failure</label>
+                </value>
+                <value>
+                    <fullName>Lead Already Converted</fullName>
+                    <default>false</default>
+                    <label>Lead Already Converted</label>
+                </value>
+                <value>
+                    <fullName>Testcase Lead</fullName>
+                    <default>false</default>
+                    <label>Testcase Lead</label>
+                </value>
+                <value>
+                    <fullName>Application Incomplete</fullName>
+                    <default>false</default>
+                    <label>Application Incomplete</label>
+                </value>
+                <value>
+                    <fullName>Invalid Email</fullName>
+                    <default>false</default>
+                    <label>Invalid Email</label>
+                </value>
+                <value>
+                    <fullName>Incomplete UALs</fullName>
+                    <default>false</default>
+                    <label>Incomplete UALs</label>
+                </value>
+                <value>
+                    <fullName>No Qualified Systems Found</fullName>
+                    <default>false</default>
+                    <label>No Qualified Systems Found</label>
+                </value>
+                <value>
+                    <fullName>System Product Mismatch</fullName>
+                    <default>false</default>
+                    <label>System Product Mismatch</label>
+                </value>
+                <value>
+                    <fullName>Auto QC Turned Off</fullName>
+                    <default>false</default>
+                    <label>Auto QC Turned Off</label>
+                </value>
+                <value>
+                    <fullName>Multiple Issues</fullName>
+                    <default>false</default>
+                    <label>Multiple Issues</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Auto_QC_Last_Runtime__c</fullName>
+        <description>Last runtime of Auto Qualification &amp; Conversion process</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Last runtime of Auto Qualification &amp; Conversion process</inlineHelpText>
+        <label>Auto QC Last Runtime</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>DateTime</type>
+    </fields>
+    <fields>
         <fullName>Automatic_Product_Assignment__c</fullName>
         <defaultValue>true</defaultValue>
         <externalId>false</externalId>
