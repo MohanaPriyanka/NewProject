@@ -82,6 +82,16 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Auto_Qualify_Convert_Active__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>See CSLeadsConverter.cls</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates if Leads should undergo automatic Qualification &amp; Conversion when all Utility Account Logs for that Lead have been marked QC Status as &apos;Complete&apos;</inlineHelpText>
+        <label>Auto Qualify &amp; Convert Active</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Average_Demand_Threshold__c</fullName>
         <defaultValue>25.00</defaultValue>
         <description>Average Demand (kW DC) at which a subscription is considered a &quot;Demand Subscription&quot; (used to identify Demand capacity limits on Projects)</description>

@@ -4,33 +4,25 @@
  * Tested by: CSLeadsConverterTest
  */
 public without sharing class LeadConvertDetail {
-    @InvocableVariable(
-        Description='Lead Id to process Lead Conversion for'
-        Required=true)
+    @InvocableVariable(Description='Lead Id to process Lead Conversion for' Required=true)
     public Id leadId;
 
-    @InvocableVariable(
-        Description='Lead Id to process Lead Conversion for'
-        Required=true)
+    @InvocableVariable(Description='Lead Id to process Lead Conversion for' Required=true)
     public Id selectedProductId;
 
-    @InvocableVariable(
-        Description='Lead Id to process Lead Conversion for'
-        Required=true)
-    public List<Id> selectedSystemIds;
+    @InvocableVariable(Description='Lead Id to process Lead Conversion for' Required=true)
+    public List<Id> selectedSystemIds = new List<Id>();
 
-    @InvocableVariable(
-        Description='Error code, if encountered, from Lead Conversion attempt'
-        Required=false)
+    @InvocableVariable(Description='Error code, if encountered, from Lead Conversion attempt' Required=false)
     public String error;
 
-    @InvocableVariable(
-        Description='Error message, if encountered, from Lead Conversion attempt'
-        Required=false)
+    @InvocableVariable(Description='Error message, if encountered, from Lead Conversion attempt' Required=false)
     public String errorMessage;
 
-    public Set<String> errorsEncountered = new Set<String>();
-    public Utility__c utility;
+    public Boolean autoConversion = false;
+    public Lead lead;
     public List<Shared_Solar_System__c> selectedSystems = new List<Shared_Solar_System__c>();
     public List<Utility_Account_Log__c> utilityAccountLogs = new List<Utility_Account_Log__c>();
+    public Set<String> errorsEncountered = new Set<String>();
+    public Utility__c utility;
 }

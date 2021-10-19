@@ -1,11 +1,10 @@
-/*************************************************************************************
- * Created By: peteryao on 1/20/19  
- * Description: Can extend fflib_SObjectSelector
- * Test: AccountsSelectorTest
- *************************************************************************************/
-// These should run as system for backend processing
+/**
+ * @description Created By: peteryao on 1/20/19
+ * Tested by: AccountsSelectorTest
+ **/
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class AccountsSelector {
+
     public static List<Account> selectCS67DaysPastDueWithAnchorOpps() {
         return [
             SELECT Id, Name, Days_Past_Due__c, Cancellation_Request_Date__c, Cancellation_Reason__c, Cancellation_Comments__c,
@@ -236,5 +235,13 @@ public without sharing class AccountsSelector {
             WHERE Date_Removed_from_Project__c != null
             AND Id IN :acctIds
         ];
+    }
+
+    public Map<Id, Account> selectParentAccountWithContacts(Set<Id> parentAccountIds) {
+        return new Map<Id, Account>([
+            SELECT Id, (SELECT Id FROM Contacts)
+            FROM Account
+            WHERE Id = :parentAccountIds
+        ]);
     }
 }
