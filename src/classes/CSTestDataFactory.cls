@@ -129,6 +129,13 @@ public with sharing class CSTestDataFactory {
         );
         openUCBSystem.BWC_Project_Entity_Manual__c = getEntity(openUCBSystem.Client_Account__c);
         insert openUCBSystem;
+
+        Partner_Shared_Solar_System_Eligibility__c psssa = new Partner_Shared_Solar_System_Eligibility__c(
+            Shared_Solar_System__c = openUCBSystem.Id,
+            Start_Date__c = System.today().addDays(-1),
+            Account__c = partnerAccountId
+        );
+        insert psssa;
     }
 
     public void setRateClassToSuppressDisclosureForm() {
@@ -147,10 +154,17 @@ public with sharing class CSTestDataFactory {
     }
 
     private void insertBaseDependencies() {
-        // Insert partner and partner
+        // Insert partner and partner account
         Partner__c partner = new Partner__c(Name='default test');
         insert partner;
         partnerId = partner.Id;
+        Account partnerAccount = new Account(
+            Name = 'Partner Account',
+            Partner__c = partnerId,
+            RecordTypeId = [SELECT Id FROM RecordType WHERE SobjectType = 'Account' AND Name = 'Partner Account'].Id
+        );
+        insert partnerAccount;
+        partnerAccountId = partnerAccount.Id;
 
         // Update partner with default sales rep
         BSST__c salesRep = new BSST__c(Name = 'default rep', Partner__c = partner.Id);

@@ -1,9 +1,9 @@
 /**
- * @description  Created by mstackhouse on 12/17/2018.
+ * @description Created by mstackhouse on 12/17/2018.
  * Test: UtilityAccountLogTriggerHandlerTest, CSCancellationServiceTest
  */
 public without sharing class UtilityAccountLogTriggerHandler {
-    
+
     private Map<Id, Utility_Account_Log__c> oldMap;
     private List<Utility_Account_Log__c> newList;
 
@@ -11,11 +11,11 @@ public without sharing class UtilityAccountLogTriggerHandler {
         this.oldMap = oldMap;
         this.newList = newList;
     }
-    
+
     public void beforeInsert() {
         setCleanedUtilityAccountNumberBeforeSave();
     }
-    
+
     public void beforeUpdate() {
         setCleanedUtilityAccountNumberBeforeSave();
     }
@@ -36,6 +36,7 @@ public without sharing class UtilityAccountLogTriggerHandler {
             updateRateClassOnContract(leadIdSet);
         }
         new SystemCapacityRollupCalculator(new UALCapacityRollupInitializer(oldMap, newList)).performRollup();
+        enqueueRecordsForAutoLeadConversion();
     }
 
     @SuppressWarnings('PMD.ApexCRUDViolation')
@@ -115,5 +116,18 @@ public without sharing class UtilityAccountLogTriggerHandler {
             return dirtyString.substring(dirtyString.indexOfAnyBut(stringToStrip));
         }
         return '';
+    }
+
+    private void enqueueRecordsForAutoLeadConversion() {
+        List<Utility_Account_Log__c> completedUALs = (List<Utility_Account_Log__c>)
+            new SObjectFilter(oldMap, newList, Utility_Account_Log__c.QC_Status__c, SObjectFilter.ANY_VALUE, 'Complete')
+                .get(SObjectFilter.SOBJECT_LIST);
+        Set<Id> leadsToAutoQualifyConvert = new Set<Id>();
+        for (Utility_Account_Log__c ual : completedUALs) {
+            leadsToAutoQualifyConvert.add(ual.Lead__c);
+        }
+        if (!completedUALs.isEmpty()) {
+            System.enqueueJob(new CSLeadsConverter(leadsToAutoQualifyConvert));
+        }
     }
 }

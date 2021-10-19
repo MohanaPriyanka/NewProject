@@ -255,6 +255,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>CSLeadsConverter</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CSLeadsConverterTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>CSLeadsRESTControllerV2</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -292,6 +300,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>CSSubscriptionEnroller</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CSTestDataFactory</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -12138,6 +12150,26 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Application__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Auto_QC_Error_Debug__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Auto_QC_Failure_Details__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Auto_QC_Failure_Reason__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Auto_QC_Last_Runtime__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -33483,6 +33515,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Utility__c.Auto_QC_Minimum_kWH__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility__c.Auto_Qualify_Convert_Active__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

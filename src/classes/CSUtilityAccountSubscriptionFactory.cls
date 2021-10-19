@@ -1,16 +1,17 @@
 /**
- * Created by mstackhouse on 12/17/2018.
- * Description:
- * Test: CSUtilityAccountSubscriptionFactoryTest
+ * @description: Created by mstackhouse on 12/17/2018.
+ * Tested by: CSUtilityAccountSubscriptionFactoryTest
  */
-
-
 public with sharing class CSUtilityAccountSubscriptionFactory {
+
+    @TestVisible
+    private static Map<Id, SSSSubscription> sssSubscriptionMap = new Map<Id, SSSSubscription>();
 
     public class UASOrder {
         public Utility_Account_Subscription__c uas;
         public Subscription_Order__c sOrder;
     }
+
     public class SSSSubscription {
         public Shared_Solar_System__c sss;
         public String sizingMethod;
@@ -24,18 +25,9 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
         }
     }
 
-    @TestVisible
-    private static FeatureService featureService = new FeatureService();
-    @TestVisible
-    private static Map<Id, SSSSubscription> sssSubscriptionMap = new Map<Id, SSSSubscription>();
-
-
-    public static void generateSubscriptions(
-        List<Utility_Account_Log__c> uals,
-        List<Shared_Solar_System__c> sharedSolarSystems,
-        List<Opportunity> opportunities,
-        fflib_SObjectUnitOfWork uow
-    ) {
+    public static void generateSubscriptions(List<Utility_Account_Log__c> uals, List<Shared_Solar_System__c> sharedSolarSystems,
+        List<Opportunity> opportunities, fflib_SObjectUnitOfWork uow)
+    {
         for (Shared_Solar_System__c sss : sharedSolarSystems) {
             sssSubscriptionMap.put(sss.Id, new SSSSubscription(sss));
         }
@@ -49,12 +41,7 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
         }
     }
 
-
-    public static void createUASbyCapacity(
-        Utility_Account_Log__c ual,
-        List<Opportunity> opportunities,
-        fflib_SObjectUnitOfWork uow
-    ) {
+    public static void createUASbyCapacity(Utility_Account_Log__c ual, List<Opportunity> opportunities, fflib_SObjectUnitOfWork uow) {
         Integer uasNumberCounter = 1;
         Decimal remainingUALCapacityToAllocate;
         remainingUALCapacityToAllocate = ual.Annual_kWh__c;
@@ -74,7 +61,7 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
                     //Deduct the assigned value from the sss remaining subscription cost and then put it back into the map
                     sssRemainingSubscriptionCapacity -= annualElectricityCapacityAssigned;
                     if (sssSubscription.sizingMethod == 'Rate Class Ratio') {
-                        sssSubscription.maximumkWh = sssRemainingSubscriptionCapacity * sizeratio;
+                        sssSubscription.maximumkWh = sssRemainingSubscriptionCapacity * sizeRatio;
                     }
                     sssSubscription.maximumkWh = sssRemainingSubscriptionCapacity;
                     remainingUALCapacityToAllocate -= annualElectricityCapacityAssigned;
@@ -95,12 +82,7 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
         }
     }
 
-
-    public static void createUASbyCost(
-        Utility_Account_Log__c ual,
-        List<Opportunity> opportunities,
-        fflib_SObjectUnitOfWork uow
-    ) {
+    public static void createUASbyCost(Utility_Account_Log__c ual, List<Opportunity> opportunities, fflib_SObjectUnitOfWork uow) {
         Integer uasNumberCounter = 1;
         Decimal remainingUALCostToAllocate = ual.Annual_Cost_of_Electricity__c;
 
@@ -132,7 +114,6 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
         }
     }
 
-
     private static void createSOByCapacity(Utility_Account_Subscription__c uas, Decimal annualElectricityCapacityAssigned, fflib_SObjectUnitOfWork uow) {
         Subscription_Order__c so = new Subscription_Order__c(
             Type__c = 'Initial',
@@ -140,22 +121,17 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
             Effective_Date__c = System.now(),
             Approval_Status__c = 'Approved'
         );
-
         uow.registerNew(so, Subscription_Order__c.Utility_Account_Subscription__c, uas);
-
     }
 
     private static void createSOByCost(Utility_Account_Subscription__c uas, Decimal annualElectricityCostAssigned, fflib_SObjectUnitOfWork uow) {
-
         Subscription_Order__c so = new Subscription_Order__c(
             Type__c = 'Initial',
             New_Annual_Cost__c = annualElectricityCostAssigned,
             Effective_Date__c = System.now(),
             Approval_Status__c = 'Approved'
         );
-
         uow.registerNew(so, Subscription_Order__c.Utility_Account_Subscription__c, uas);
-
     }
 
     private static void populateSizingMethod(Utility_Account_Log__c ual, Utility_Account_Subscription__c uas, SSSSubscription sssSubscription) {
