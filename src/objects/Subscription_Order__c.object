@@ -328,7 +328,7 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
     </fields>
     <fields>
         <fullName>Client_Account__c</fullName>
-        <deleteConstraint>Restrict</deleteConstraint>
+        <deleteConstraint>SetNull</deleteConstraint>
         <description>This is the Client Account that was on the related Shared Solar System at the time the Subscription Order was created.</description>
         <externalId>false</externalId>
         <inlineHelpText>This is the Client Account that was on the related Shared Solar System at the time the Subscription Order was created.</inlineHelpText>
@@ -337,6 +337,7 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
         <relationshipLabel>Subscription Orders</relationshipLabel>
         <relationshipName>Subscription_Orders</relationshipName>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
