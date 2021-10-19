@@ -68,6 +68,9 @@ public without sharing class CSLeadsConverter implements Queueable {
                 + autoConvertLeads + '\n\n' + e.getMessage() + ' ' + e.getStackTraceString();
             Logger.postLog('CSLeadsConverter', 'execute (queueable)', message, System.now(), Logger.ERROR);
         }
+        if (!leadsForNextBatch.isEmpty() && !Test.isRunningTest()) {
+            System.enqueueJob(new CSLeadsConverter(leadsForNextBatch));
+        }
     }
 
     /**
@@ -82,17 +85,14 @@ public without sharing class CSLeadsConverter implements Queueable {
     }
 
     private void parseBatch() {
-        List<Id> leadIdsToProcess = new List<Id>(autoConvertLeads);
         if (batchSize == null) {
-            throw new Util.BWException('Batch Size null. Please set the value in the System_Properties__c custom setting record');
+            throw new Util.BWException('Batch size set to null. Please set the value in System_Properties__c custom setting');
         }
+        List<Id> leadIdsToProcess = new List<Id>(autoConvertLeads);
         for (Integer i = leadIdsToProcess.size()-1; i >= batchSize; i--) {
             Id currentLeadId = leadIdsToProcess[i];
             leadIdsToProcess.remove(i);
             leadsForNextBatch.add(currentLeadId);
-        }
-        if (!leadsForNextBatch.isEmpty() && !Test.isRunningTest()) {
-            System.enqueueJob(new CSLeadsConverter(leadsForNextBatch));
         }
         autoConvertLeads = new Set<Id>(leadIdsToProcess);
     }
