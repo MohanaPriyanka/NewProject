@@ -5,6 +5,13 @@
   "label" : "Home",
   "regions" : [ {
     "components" : [ {
+      "componentAttributes" : { },
+      "componentName" : "c:launchSsfButtonCmp",
+      "id" : "f81761b5-3e21-43cd-863c-1d5167159a5a",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    }, {
       "componentAttributes" : {
         "tabsetConfig" : {
           "UUID" : "68f4c5f7-f2ad-4d95-98a1-e27a7b850be9",

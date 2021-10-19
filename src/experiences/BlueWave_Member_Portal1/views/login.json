@@ -31,10 +31,19 @@
       "type" : "component"
     }, {
       "componentAttributes" : {
-        "richTextValue" : "<p><a href=\"/ForgotPassword\" rel=\"noopener noreferrer\" target=\"_self\"><u>﻿Click here to set up your account or reset your password.</u></a></p>"
+        "richTextValue" : "<div style=\"text-align: center;\"><a href=\"./ForgotPassword\">Click here to reset your password.</a></div>"
       },
-      "componentName" : "forceCommunity:richTextInline",
-      "id" : "1abc17c9-8245-413d-9ba7-7513afd96695",
+      "componentName" : "forceCommunity:htmlBlock",
+      "id" : "813de190-04ff-47f8-b725-c819767ee6c3",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    }, {
+      "componentAttributes" : {
+        "richTextValue" : "<div style=\"text-align: center;\"><a href=\"./SelfRegister\">Click here to register a new account.</a></div>"
+      },
+      "componentName" : "forceCommunity:htmlBlock",
+      "id" : "e4e189f0-e72c-43cc-b525-e6a71cac038b",
       "renderPriority" : "NEUTRAL",
       "renditionMap" : { },
       "type" : "component"
