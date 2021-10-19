@@ -1,0 +1,13 @@
+{
+  "componentVariants" : [ {
+    "id" : "b62a0c59-3ed0-4e81-b6a4-3bc2ebf32eff",
+    "propertyOverrides" : {
+      "activeBrandingSetId" : "c97536ff-e32a-46d3-a4d2-3b5bca3c0f86"
+    },
+    "targetId" : "7a59c2eb-3620-40f9-97a1-c4c9cd90f9e4",
+    "type" : "componentVariant"
+  } ],
+  "developerName" : "Jepson_Perch_Branding",
+  "id" : "b03189a1-c455-447d-8099-9d53829a093c",
+  "type" : "experienceVariation"
+}

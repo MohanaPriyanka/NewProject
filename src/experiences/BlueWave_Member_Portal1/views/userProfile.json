@@ -10,6 +10,8 @@
         "maxTopics" : 5,
         "showFullPhotoAsCircle" : true,
         "showKnowledgeableAbout" : false,
+        "showPhoto" : false,
+        "showStats" : false,
         "userId" : "{!recordId}"
       },
       "componentName" : "forceCommunity:userProfileBody",
