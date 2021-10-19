@@ -165,7 +165,7 @@ public without sharing class CSLeadsConverterTest {
     }
 
     private static void setupSystemTestEnvironment() {
-        CSLeadsConverter.queueableBatchSize = 2;
+        CSLeadsConverter.batchSize = 2;
         insert new Product2(Name = 'CS Product');
         insert new Utility__c(
             Name = 'Utility with EIA ID',
@@ -178,7 +178,7 @@ public without sharing class CSLeadsConverterTest {
     }
 
     private static void setupMockEnvironment(Boolean setUalsAsComplete) {
-        CSLeadsConverter.queueableBatchSize = 2;
+        CSLeadsConverter.batchSize = 2;
         MockLeadSelector mockLeadSelector = new MockLeadSelector();
         mockLeadSelector.setUalsAsComplete = setUalsAsComplete; // set mock provider to include Incomplete UALs
         CSLeadsConverter.leadSelector = (LeadSelector) Test.createStub(LeadSelector.class, mockLeadSelector);
