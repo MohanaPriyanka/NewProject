@@ -1,7 +1,7 @@
 {
   "cmsSettings" : { },
   "currentThemeId" : "7a59c2eb-3620-40f9-97a1-c4c9cd90f9e4",
-  "headMarkup" : "<link rel=\"shortcut icon\" href=\"https://bluewavesolar--c.visualforce.com/resource/1598991106000/BluewaveFavicon?" />",
+  "headMarkup" : "<link rel=\"shortcut icon\" href=\"https://bluewavesolar--c.visualforce.com/resource/1598991106000/BluewaveFavicon\" />",
   "id" : "c846375f-b289-4bf1-b4fd-ed059e2c4b55",
   "isRelaxedCSPLevel" : false,
   "label" : "main",
