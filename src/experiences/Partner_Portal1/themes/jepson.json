@@ -295,7 +295,7 @@
           "headerHeight" : 16,
           "linkActiveBorderColor" : "",
           "linkColor" : "rgb(255, 255, 255)",
-          "linkHoverColor" : "rgba(0, 0, 0, 0.7)",
+          "linkHoverColor" : "rgb(56, 125, 222)",
           "linkTextShadowColor" : "rgba(255, 255, 255, 0)",
           "logoWidth" : 185,
           "searchStyle" : "collapsed",
@@ -391,7 +391,7 @@
               "menuAlignment" : "left"
             },
             "componentName" : "forceCommunity:multiLevelNavigation",
-            "id" : "cd0c1702-cbcb-4071-bb41-b99d12c9cb4a",
+            "id" : "bbbaf58c-235b-42e9-a9ea-5b6d2ffa7e46",
             "renditionMap" : { },
             "type" : "component"
           } ],

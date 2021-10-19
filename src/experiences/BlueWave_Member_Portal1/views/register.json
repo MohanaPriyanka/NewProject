@@ -15,38 +15,41 @@
       "type" : "component"
     }, {
       "componentAttributes" : {
-        "richTextValue" : "<div style=\"text-align: center;\">Join the community to receive personalized information and customer support.</div>"
+        "richTextValue" : "<p style=\"text-align: center;\"><span style=\"font-size: 18px;\">ACCOUNT SETUP</span></p>"
       },
-      "componentName" : "forceCommunity:richText",
-      "id" : "8a314736-7693-4ffe-97b4-44f553c031e5",
+      "componentName" : "forceCommunity:richTextInline",
+      "id" : "22aaab30-9bda-4cfc-a55c-613877fc2cd2",
       "renderPriority" : "NEUTRAL",
       "renditionMap" : { },
       "type" : "component"
     }, {
       "componentAttributes" : {
-        "confirmPasswordLabel" : "Confirm Password",
-        "emailLabel" : "Email",
-        "extraFieldsFieldSet" : "",
-        "firstnameLabel" : "First Name",
-        "includePasswordField" : false,
-        "lastnameLabel" : "Last Name",
-        "passwordLabel" : "Create Password",
-        "regConfirmUrl" : "./CheckPasswordResetEmail",
-        "startUrl" : "./",
-        "submitButtonLabel" : "Sign Up"
+        "flowArguments" : "",
+        "flowLayout" : "oneColumn",
+        "flowName" : "Create_Account_Setup_Case"
       },
-      "componentName" : "salesforceIdentity:selfRegister2",
-      "id" : "ad8aaa54-e384-4c4a-af51-3a51ebe63194",
+      "componentName" : "forceCommunity:flowCommunity",
+      "id" : "b9dc556e-0671-408f-a280-7326f53a641b",
       "renderPriority" : "NEUTRAL",
       "renditionMap" : { },
       "type" : "component"
     }, {
       "componentAttributes" : {
-        "headerText" : "",
-        "showHeader" : false
+        "richTextValue" : "<p>test</p>"
       },
-      "componentName" : "salesforceIdentity:socialLogin2",
-      "id" : "cbc6c26e-4d2d-4a8d-8e64-7164dab38dbb",
+      "componentName" : "forceCommunity:richTextInline",
+      "id" : "97ab9333-f5c4-42ee-a80c-9c5f643f7c64",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    }, {
+      "componentAttributes" : {
+        "flowArguments" : "",
+        "flowLayout" : "oneColumn",
+        "flowName" : "Test_Flow_for_Community"
+      },
+      "componentName" : "forceCommunity:flowCommunity",
+      "id" : "09c0685e-d685-4ad9-a4c4-12adf4e24bbc",
       "renderPriority" : "NEUTRAL",
       "renditionMap" : { },
       "type" : "component"
@@ -54,8 +57,8 @@
       "componentAttributes" : {
         "richTextValue" : "<div style=\"text-align: center;\"><a href=\"./\">Already have an account?</a></div>"
       },
-      "componentName" : "forceCommunity:richText",
-      "id" : "3b4949bf-38a3-4b75-ab9b-2d8a6077a2f9",
+      "componentName" : "forceCommunity:htmlBlock",
+      "id" : "a10a3127-f350-43c0-8542-f1b7a0b53599",
       "renderPriority" : "NEUTRAL",
       "renditionMap" : { },
       "type" : "component"

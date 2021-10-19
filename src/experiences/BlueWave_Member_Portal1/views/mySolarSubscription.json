@@ -5,11 +5,9 @@
   "label" : "My Solar Subscription",
   "regions" : [ {
     "components" : [ {
-      "componentAttributes" : {
-        "config" : "{\"dataProviderDefinition\":{\"componentName\":\"forceCommunity:managedContentCollectionDataProvider\",\"attributes\":{\"dataProviderType\":\"NamedCollection\",\"dataProviderInfo\":{\"apiName\":\"Customer_Community_Shared_Solar_Systems_All\"}}},\"collectionLayoutDefinition\":{\"componentName\":\"forceCommunity:dynamicCollectionCarousel\",\"attributes\":{\"limitItems\":20,\"showProgressIndicator\":true,\"contentIndicatorSpacing\":\"none\",\"showProgressArrows\":true,\"transitionType\":\"slide\",\"transitionSpeed\":600}},\"schemaVersion\":\"V2.0\",\"itemLayoutDefinition\":{\"componentName\":\"forceCommunity:bannerLayout\",\"attributes\":{\"showTitle\":true,\"showCaption\":true,\"showButton\":true,\"showFlag\":false,\"showEyebrow\":true,\"showMetadata1\":false,\"showMetadata2\":false,\"showDateTime\":false,\"title\":\"{!CurrentItem.Name}\",\"subTitle\":\"{!CurrentItem.Project_Information_short__c}\",\"imageUrl\":\"{!CurrentItem.Project_Image__c}\",\"imageAltText\":\"{!CurrentItem.Project_Information_short__c}\",\"videoUrl\":\"\",\"flagText\":\"\",\"eyebrowText\":\"\",\"metadata1Text\":\"\",\"metadata2Text\":\"\",\"datetime\":\"\",\"useAspectRatio\":false,\"bannerAspectRatio\":\"16:9\",\"bannerHeight\":450,\"contentWidth\":80,\"textAlignment\":\"center center\",\"overlayBackgroundColor\":\"rgba(0, 0, 0, 0.4)\",\"backgroundSize\":\"cover\",\"backgroundPosition\":\"center center\",\"hideTextElementsForVideo\":false,\"flagBackgroundColor\":\"#ff0000\",\"flagTextColor\":\"#ffffff\",\"flagAlignment\":\"top left\",\"flagRotation\":0,\"flagSpacing\":\"medium\",\"flagBorderColor\":\"#ffffff\",\"flagBorderStyles\":\"{\\\"borderTopLeftRadius\\\":{\\\"value\\\":\\\"0\\\"},\\\"borderTopRightRadius\\\":{\\\"value\\\":\\\"0\\\"},\\\"borderBottomRightRadius\\\":{\\\"value\\\":\\\"0\\\"},\\\"borderBottomLeftRadius\\\":{\\\"value\\\":\\\"0\\\"}}\",\"flagTextDecoration\":\"\",\"titleHeadingTag\":\"p\",\"titleTextDecoration\":\"\",\"bannerTitleTextColor\":\"#ffffff\",\"titleFontSize\":\"large\",\"showTitleHighlight\":false,\"titleHighlightColor\":\"\",\"bannerSubTitleTextColor\":\"#ffffff\",\"subTitleFontSize\":\"regular\",\"eyebrowTextColor\":\"#ffffff\",\"eyebrowFontSize\":\"regular\",\"eyebrowTextDecoration\":\"\",\"showEyebrowHighlight\":false,\"eyebrowHighlightColor\":\"\",\"metadataTextColor\":\"#ffffff\",\"metadataFontSize\":\"regular\",\"metadataTextDecoration\":\"\",\"showMetadata1Highlight\":false,\"metadata1HighlightColor\":\"\",\"showMetadata2Highlight\":false,\"metadata2HighlightColor\":\"\",\"callToActionLabel\":\"View Project Details\",\"callToActionButtonBorderStyles\":\"\",\"callToActionButtonBackgroundColor\":\"\",\"callToActionButtonBackgroundColorHover\":\"\",\"callToActionButtonTextColor\":\"\",\"callToActionButtonTextColorHover\":\"\",\"callToActionButtonBorderColor\":\"\",\"callToActionButtonBorderColorHover\":\"\",\"defaultLinksOverrides\":\"{}\",\"additionalLinks\":\"{}\",\"dateFormat\":\"none\",\"displayDayOfWeek\":false,\"timeFormat\":\"none\",\"timeZoneOptions\":\"none\",\"timeZoneDisplay\":\"short\",\"datetimeTextColor\":\"#ffffff\",\"datetimeFontSize\":\"regular\",\"datetimeTextDecoration\":\"\",\"componentHoverEffect\":\"none\"}}}"
-      },
-      "componentName" : "forceCommunity:dynamicCollection",
-      "id" : "e44f3f60-948b-42f0-a0a3-e4f110af71bc",
+      "componentAttributes" : { },
+      "componentName" : "c:customerPortalProjectCarousel",
+      "id" : "d220b816-018e-45d1-81dd-a993398efc3c",
       "renderPriority" : "NEUTRAL",
       "renditionMap" : { },
       "type" : "component"
@@ -23,24 +21,9 @@
     "type" : "region"
   }, {
     "components" : [ {
-      "componentAttributes" : {
-        "enableInlineEdit" : false,
-        "filterName" : "00B0a00000552yIEAQ",
-        "layout" : "STANDARD",
-        "pageSize" : 100,
-        "scope" : "Utility_Account_Subscription__c",
-        "showActionBar" : false,
-        "showChartsPanel" : false,
-        "showDisplay" : "grid",
-        "showFilterPanel" : false,
-        "showImageIcon" : false,
-        "showManualRefreshButton" : false,
-        "showObjectName" : false,
-        "showPinnedList" : false,
-        "showSearchBar" : false
-      },
-      "componentName" : "forceCommunity:objectHome",
-      "id" : "2b11262a-4027-4cd8-ae7e-93551d6e831f",
+      "componentAttributes" : { },
+      "componentName" : "c:customerPortalProjectUASList",
+      "id" : "b7e70d75-2466-4387-bd41-9cd90ea5c6f4",
       "renderPriority" : "NEUTRAL",
       "renditionMap" : { },
       "type" : "component"
