@@ -1,28 +1,25 @@
 /**
- * Created by mstackhouse on 12/12/2018.
- * Description: Moving Logic for CS Subscriptions out of LeadTriggerHandler.
+ * @description Created by mstackhouse on 12/12/2018.
  * Dependencies: Leads, SharedSolarSystems
  *
  * Outputs: Opportunities for leads, Utility Account Subscriptions for leads
- * Test: LeadTriggerHandlerTest, LeadServiceTestclass
+ * Tested by: CSOpportunityFactoryTest, LeadServiceTestclass
  */
-
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class CSSubscriptionEnroller {
-    @TestVisible private static FeatureService featureService = new FeatureService();
+
     @TestVisible private static SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
-    private List<Lead> leads;
-    private Map<Id, Lead> leadIdToLeadWithChildren;
     @TestVisible private SharedSolarSystems sssList;
+    private List<Lead> leads;
+    private Map<Id, Lead> leadsWithChildren;
     private Map<Id, Product2> productsMap;
-    private Map<Id, List<Shared_Solar_System__c>> leadIdToAvailableSSS;
+    private Map<Id, List<Shared_Solar_System__c>> availableSystemsByLeadId;
     private Map<Id, List<Opportunity>> leadOppsMap;
-    private Map<Id, Account> accountIdToAccountWithContacts;
+    private Map<Id, Account> accountsWithContacts;
     private List<CSUtilityAccountSubscriptionFactory.UASOrder> uasOrders;
 
-
     private fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
-        new List<Schema.SObjectType> {
+        new List<Schema.SObjectType>{
             Utility_Account_Log__c.SObjectType,
             Contract.SObjectType,
             Opportunity.SObjectType,
@@ -32,7 +29,6 @@ public without sharing class CSSubscriptionEnroller {
         }
     );
 
-
     public CSSubscriptionEnroller(List<Lead> leads) {
         this.leads = leads;
 
@@ -40,52 +36,19 @@ public without sharing class CSSubscriptionEnroller {
         Set<Id> parentAccountIds = new Set<Id>();
         for (Lead lead : leads) {
             leadIds.add(lead.Id);
-            if(lead.ConvertedAccountId != null) {
+            if (lead.ConvertedAccountId != null) {
                 parentAccountIds.add(lead.ConvertedAccountId);
             }
         }
-        
-        leadIdToLeadWithChildren = new Map<Id, Lead>([
-            SELECT Id, Selected_SSS_For_Conversion__c, No_Payment__c, Product__r.Parent_Product__c,
-                (SELECT Id, Name, Annual_Cost_of_Electricity__c, Annual_kWh__c, Lead__c, 
-                    Lead__r.Product__r.Customer_Subscription_Type__c, Name_on_Account__c, QC_Status__c,
-                    Subsc_Annual_Cost_of_Electricity_Rollup__c, Subscribed_Annual_kWhs_Rollup__c, 
-                    Utility_NMC_Tariff__c, Utility_Rate_Class__c,
-                    Utility_Rate_Class__r.Utility_NMC_Tariff__r.Size_Ratio__c
-                FROM Utility_Account_Logs__r
-                WHERE QC_Status__c !='Unqualified'
-                ORDER BY Annual_Cost_of_Electricity__c, Annual_kWh__c DESC),
-                (SELECT Id FROM Accounts__r WHERE RecordType.Name = 'Property'),
-                (SELECT Id, AccountId, Contract_Type__c, Customer_Signature_Date_Time__c, Product__c
-                FROM Contracts__r WHERE RecordTypeId = :CustomerContractService.RECORD_TYPE_ID
-                ORDER BY CreatedDate DESC)
-            FROM Lead
-            WHERE Id = :leadIds
-        ]);
 
+        leadsWithChildren = new LeadSelector().getLeadsForSubscriptionCreation(leadIds);
         sssList = new SharedSolarSystems(sssSelector.getSharedSolarSystemsForEnrollment());
-
-        productsMap = new Map<Id, Product2>([
-            SELECT Id, Program__c, Sizing_Method__c, Customer_Subscription_Type__c,
-                (SELECT Id, Name, Size_Ratio__c, Utility_NMC_Tariff__r.Customer_Type__c,
-                    Utility_NMC_Tariff__r.Minimum_kWh__c, Utility_NMC_Tariff__r.Maximum_kWh__c,
-                    Utility_NMC_Tariff__r.Utility_Relationship__c, Utility_NMC_Tariff__c
-                FROM Product_Tariffs__r)
-            FROM Product2
-            WHERE Product_Type__c = 'Community Solar'
-        ]);
-
-        accountIdToAccountWithContacts = new Map<Id, Account>([
-            SELECT Id, (SELECT Id FROM Contacts)
-            FROM Account WHERE Id = :parentAccountIds
-        ]);
-
-
+        productsMap = new ProductSelector().selectProductsForSubscriptionCreation();
+        accountsWithContacts = new AccountsSelector().selectParentAccountWithContacts(parentAccountIds);
         leadOppsMap = new Map<Id, List<Opportunity>>();
-        leadIdToAvailableSSS = new Map<Id, List<Shared_Solar_System__c>>();
+        availableSystemsByLeadId = new Map<Id, List<Shared_Solar_System__c>>();
         uasOrders = new List<CSUtilityAccountSubscriptionFactory.UASOrder>();
     }
-
 
     public void enroll() {
         for (Lead lead : leads) {
@@ -98,29 +61,27 @@ public without sharing class CSSubscriptionEnroller {
                 }
             }
         }
-        
         try {
             uow.commitWork();
         } catch (Exception ex) {
             Logger.logLater(
-                'CSSubscriptionEnroller', 
-                'enroll', 
+                'CSSubscriptionEnroller',
+                'enroll',
                 ex.getMessage() + '\n' + ex.getStackTraceString()
             );
         }
         Logger.flushLogs();
     }
 
-
     private AnnualEnergyTotal getAnnualTotals(Lead lead) {
         Decimal totalAnnualCostOfElectricity = 0;
         Decimal totalAnnualkWhElectricity = 0;
-        for (Utility_Account_Log__c ual : leadIdToLeadWithChildren.get(lead.Id).Utility_Account_Logs__r) {
+        for (Utility_Account_Log__c ual : leadsWithChildren.get(lead.Id).Utility_Account_Logs__r) {
             if (ual.QC_Status__c == 'Pending BW Review' || ual.QC_Status__c == 'Pending Utility Data') {
                 throw new Util.BWException('Utility Account Logs are in QC Pending. Please review the UALs and set the status to Complete before converting.');
             }
             if ((ual.Annual_Cost_of_Electricity__c == null && productsMap.get(lead.Product__c).Customer_Subscription_Type__c == 'Electricity Cost ($)')
-                || ( ual.Annual_kWh__c == null && productsMap.get(lead.Product__c).Customer_Subscription_Type__c == 'kWh' )) {
+                || (ual.Annual_kWh__c == null && productsMap.get(lead.Product__c).Customer_Subscription_Type__c == 'kWh')) {
                 throw new Util.BWException('No Annual Usage populated on UALs. Please enter usage before converting');
             }
 
@@ -144,20 +105,19 @@ public without sharing class CSSubscriptionEnroller {
         return new AnnualEnergyTotal(totalAnnualCostOfElectricity, totalAnnualkWhElectricity);
     }
 
-
     private void createOpportunityAndContactRoles(Lead lead, AnnualEnergyTotal annualTotals) {
-        Id propertyAccountId = leadIdToLeadWithChildren.get(lead.Id).Accounts__r[0].Id;
+        Id propertyAccountId = leadsWithChildren.get(lead.Id).Accounts__r[0].Id;
         List<Shared_Solar_System__c> availableSSS = sssList.getQualifiedForLead(lead);
-        leadIdToAvailableSSS.put(lead.Id, availableSSS);
-        
+        availableSystemsByLeadId.put(lead.Id, availableSSS);
+
         //Need to pass the property Account here (not converted Account)
         List<Opportunity> oppListToCreate = CSOpportunityFactory.generateCSOpportunities(lead, availableSSS, annualTotals, propertyAccountId);
         leadOppsMap.put(lead.Id, oppListToCreate);
-        for(Opportunity opp : oppListToCreate) {
-            List<Contract> leadContracts = leadIdToLeadWithChildren.get(lead.Id).Contracts__r;
-            if(!leadContracts.isEmpty()) {
+        for (Opportunity opp : oppListToCreate) {
+            List<Contract> leadContracts = leadsWithChildren.get(lead.Id).Contracts__r;
+            if (!leadContracts.isEmpty()) {
                 Contract parentContract = leadContracts[0];
-                if(parentContract.Contract_Type__c == 'Generic') {
+                if (parentContract.Contract_Type__c == 'Generic') {
                     Contract oppContract = CustomerContractService.createForOpportunity(opp, parentContract);
                     uow.registerNew(oppContract);
                     uow.registerNew(opp, Opportunity.ContractId, oppContract);
@@ -168,10 +128,10 @@ public without sharing class CSSubscriptionEnroller {
                 uow.registerNew(opp);
             }
         }
-        
-        if(accountIdToAccountWithContacts.containsKey(lead.ConvertedAccountId)) {
-            for(Contact contact : accountIdToAccountWithContacts.get(lead.ConvertedAccountId).Contacts) {
-                for(Opportunity opp : oppListToCreate) {
+
+        if (accountsWithContacts.containsKey(lead.ConvertedAccountId)) {
+            for (Contact contact : accountsWithContacts.get(lead.ConvertedAccountId).Contacts) {
+                for (Opportunity opp : oppListToCreate) {
                     uow.registerNew(
                         new OpportunityContactRole(
                             ContactId = contact.Id,
@@ -186,24 +146,22 @@ public without sharing class CSSubscriptionEnroller {
         }
     }
 
-
     private void createUAS(Lead lead) {
-        List<Shared_Solar_System__c> sharedSolarSystems = leadIdToAvailableSSS.get(lead.Id);
+        List<Shared_Solar_System__c> sharedSolarSystems = availableSystemsByLeadId.get(lead.Id);
         List<Opportunity> opportunities = leadOppsMap.get(lead.Id);
-        List<Utility_Account_Log__c> uals = leadIdToLeadWithChildren.get(lead.Id).Utility_Account_Logs__r;
+        List<Utility_Account_Log__c> uals = leadsWithChildren.get(lead.Id).Utility_Account_Logs__r;
 
         // if UALs aren't sorted by the field matching their subscription type and both annual kwh and annual cost are populated,
         //  UASes aren't assigned appropriately
-        if(lead.Product__r.Customer_Subscription_Type__c == 'kWh') {
+        if (lead.Product__r.Customer_Subscription_Type__c == 'kWh') {
             CollectionUtil.sort(uals, Comparators.sobjectFieldValueComparator(Utility_Account_Log__c.Annual_kWh__c).ascending(false).nullsFirst(false));
         } else {
             CollectionUtil.sort(uals, Comparators.sobjectFieldValueComparator(Utility_Account_Log__c.Annual_Cost_of_Electricity__c).ascending(false).nullsFirst(false));
         }
-        
+
         CSUtilityAccountSubscriptionFactory.generateSubscriptions(uals, sharedSolarSystems, opportunities, uow);
     }
 
-    
     public class AnnualEnergyTotal {
         public Decimal cost;
         public Decimal kWh;

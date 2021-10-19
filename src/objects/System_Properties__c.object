@@ -3,6 +3,19 @@
     <customSettingsType>List</customSettingsType>
     <enableFeeds>false</enableFeeds>
     <fields>
+        <fullName>CS_Auto_Lead_Conversion_Batch_Size__c</fullName>
+        <description>See CSLeadsConverter, CSLeadConversionValidator</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Batch size for queueables in the &quot;Auto Lead Qualification &amp; Conversion&quot; process for Community Solar leads. Toggle this if limits are reached for existing batches. For reference, Lead conversion triggers UAS creation and a slew of other code, which if unoptimized, can result in batch failures if the batch size is too large.</inlineHelpText>
+        <label>CS Auto Lead Conversion Batch Size</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Copado_API_Key__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>API Key for the user that Copado webhooks can use (e.g. to deploy a promotion).</inlineHelpText>
