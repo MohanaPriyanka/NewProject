@@ -6,7 +6,7 @@
  */
 public without sharing class CSLeadsConverter implements Queueable {
 
-    @TestVisible private static Integer queueableBatchSize = (Integer)
+    @TestVisible private static Integer batchSize = (Integer)
         System_Properties__c.getValues('System')?.CS_Auto_Lead_Conversion_Batch_Size__c;
     @TestVisible private static LeadSelector leadSelector = new LeadSelector();
     @TestVisible private static SharedSolarSystemsSelector systemsSelector = new SharedSolarSystemsSelector();
@@ -15,6 +15,7 @@ public without sharing class CSLeadsConverter implements Queueable {
     private Map<Id, LeadConvertDetail> conversions = new Map<Id, LeadConvertDetail>();
     private List<Database.LeadConvert> conversionsReady;
     private Set<Id> autoConvertLeads = new Set<Id>();
+    private Set<Id> leadsForNextBatch = new Set<Id>();
     private Map<Id, Shared_Solar_System__c> systemsForEnrollment;
 
     /**
@@ -54,17 +55,18 @@ public without sharing class CSLeadsConverter implements Queueable {
      * @param ctx Queueable context
      */
     public void execute(QueueableContext ctx) {
-        parseBatch();
+        Savepoint sp = Database.setSavepoint();
         try {
+            parseBatch();
             List<LeadConvertDetail> details = constructConversionDetails();
             mapConversions(details);
             convert();
             updateLeadsWithConversionResults();
         } catch (Exception e) {
+            Database.rollback(sp);
             String message = 'Error encountered while running CSLeadsConverter in Queueable context. Leads impacted: '
                 + autoConvertLeads + '\n\n' + e.getMessage() + ' ' + e.getStackTraceString();
             Logger.postLog('CSLeadsConverter', 'execute (queueable)', message, System.now(), Logger.ERROR);
-            throw new Util.BWException(message);
         }
     }
 
@@ -80,9 +82,11 @@ public without sharing class CSLeadsConverter implements Queueable {
     }
 
     private void parseBatch() {
-        Set<Id> leadsForNextBatch = new Set<Id>();
         List<Id> leadIdsToProcess = new List<Id>(autoConvertLeads);
-        for (Integer i = leadIdsToProcess.size()-1; i >= queueableBatchSize; i--) {
+        if (batchSize == null) {
+            throw new Util.BWException('Batch Size null. Please set the value in the System_Properties__c custom setting record');
+        }
+        for (Integer i = leadIdsToProcess.size()-1; i >= batchSize; i--) {
             Id currentLeadId = leadIdsToProcess[i];
             leadIdsToProcess.remove(i);
             leadsForNextBatch.add(currentLeadId);
