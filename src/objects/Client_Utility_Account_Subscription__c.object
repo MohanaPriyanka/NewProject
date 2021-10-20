@@ -485,13 +485,13 @@ IF( INCLUDES(Utility_Account_Subscription__r.Shared_Solar_System__r.Service_Terr
     </fields>
     <fields>
         <fullName>Shared_Solar_System__c</fullName>
-        <deleteConstraint>Restrict</deleteConstraint>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>Shared Solar System</label>
         <referenceTo>Shared_Solar_System__c</referenceTo>
         <relationshipLabel>Client Utility Account Subscriptions</relationshipLabel>
         <relationshipName>Client_Utility_Account_Subscriptions</relationshipName>
-        <required>true</required>
+        <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
