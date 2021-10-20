@@ -45,7 +45,7 @@ public without sharing class MapPCRtoLeadHandler {
 
         Map<Id, Lead> leadMap =
             new Map<Id, Lead>([
-                SELECT Id, Product_line__c, Personal_Credit_Report__c
+                SELECT Id, Personal_Credit_Report__c
                 FROM Lead
                 WHERE Id IN :leadIds
             ]);
@@ -54,7 +54,6 @@ public without sharing class MapPCRtoLeadHandler {
             Lead lead = leadMap.get(pcr.LASERCA__Lead__c);
 
             if (lead != null &&
-                lead.Product_line__c == 'Community Solar' &&
                 lead.Personal_Credit_Report__c != pcr.Id) {
                 lead.Personal_Credit_Report__c = pcr.Id;
                 leadUpdateMap.put(lead.Id, lead);
