@@ -1,6 +1,6 @@
 /*************************************************************************************
  * Description: 
- * Tested By: CSAPControllerTest
+ * Tested By: LeadServiceTestclass, ZuoraAccountServiceTest, CSQualificationTestclass
  *************************************************************************************/
 
 public without sharing class MapPCRtoLeadHandler {
@@ -61,8 +61,7 @@ public without sharing class MapPCRtoLeadHandler {
 
         }
 
-        if (leadUpdateMap.size() > 0) {
-            update leadUpdateMap.values();
-        }
+        update leadUpdateMap.values();
+
     }
 }
