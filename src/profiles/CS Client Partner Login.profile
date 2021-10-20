@@ -23195,11 +23195,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Lead.Average_Debt_to_Income_Before__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Lead.Average_FICO__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -23211,11 +23206,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Avidia_Executive__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Lead.Avidia_Review_Status__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -23501,16 +23491,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Continue_Loan_Application_Link__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Lead.Credit_Approval_Based_on_Criteria__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Lead.Credit_Approval_Status__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -24441,11 +24421,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.PreApproval_Email_Sent__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Lead.Pre_Qualification_Status__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -33620,11 +33595,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Opportunity.Avidia_Review_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Opportunity.BCS_Commission_Paid_P2__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -33955,11 +33925,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Opportunity.Credit_Approval_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Opportunity.Credit_Score__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -34056,11 +34021,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Days_Since_Application_Receipt__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Debt_to_Income_Approval__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>

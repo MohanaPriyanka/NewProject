@@ -946,19 +946,6 @@ false
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>Avidia_Review_Status__c</fullName>
-        <description>Formula field. For Avidia List view.</description>
-        <externalId>false</externalId>
-        <formula>TEXT(Personal_Credit_Report2__r.Avidia_Review_Status__c)</formula>
-        <inlineHelpText>Formula field from PCR. For Avidia List view.</inlineHelpText>
-        <label>Avidia Review Status</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>BCS_Commission_Paid_P2__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -1938,22 +1925,6 @@ TEXT(DAY(Commencement_Date__c))
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Credit_Approval_Status__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF( Personal_Credit_Report2__c == null, null, 
-IF( ISPICKVAL(Personal_Credit_Report2__r.Solar_Loan_Approval_Status__c, &quot;Approved&quot;) , &quot;Approved&quot;, 
-IF( ISPICKVAL(Personal_Credit_Report2__r.Solar_Loan_Approval_Status__c, &quot;Declined&quot;), &quot;Declined&quot;, &quot;Unchecked&quot;) 
-))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Credit Approval Status</label>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Credit_Score__c</fullName>
         <externalId>false</externalId>
         <formula>Personal_Credit_Report2__r.LASERCA__Credit_Score_TransUnion__c</formula>
@@ -2350,19 +2321,6 @@ IF( ISPICKVAL(Personal_Credit_Report2__r.Solar_Loan_Approval_Status__c, &quot;De
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Debt_to_Income_Approval__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(   Personal_Credit_Report2__c   == null, null, Personal_Credit_Report2__r.Debt_to_Income_Approval__c)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Debt to Income Approval Status</label>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
@@ -8201,7 +8159,6 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <columns>Date_of_Application__c</columns>
         <columns>OPPORTUNITY.NAME</columns>
         <columns>Loan_Amount_Financed__c</columns>
-        <columns>Avidia_Review_Status__c</columns>
         <columns>Lead_Status__c</columns>
         <columns>OPPORTUNITY.STAGE_NAME</columns>
         <columns>Community_Solar_State__c</columns>
@@ -8239,7 +8196,6 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <fullName>DOER_Opportunities_with_Credit_Pulled</fullName>
         <columns>OPPORTUNITY.NAME</columns>
         <columns>Application_Date__c</columns>
-        <columns>Avidia_Review_Status__c</columns>
         <columns>Lead_Status__c</columns>
         <columns>OPPORTUNITY.CREATED_DATE</columns>
         <columns>Monthly_Mortgage_Tax_and_Insurance__c</columns>
@@ -8428,7 +8384,6 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <booleanFilter>1 AND  2 AND 3 AND 4 AND 5</booleanFilter>
         <columns>OPPORTUNITY.NAME</columns>
         <columns>CORE.USERS.FULL_NAME</columns>
-        <columns>Avidia_Review_Status__c</columns>
         <columns>Personal_Credit_Report2__c</columns>
         <columns>ACH_Name_on_Account__c</columns>
         <columns>OPPORTUNITY.CREATED_DATE</columns>
@@ -8494,7 +8449,6 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <booleanFilter>1 AND 2 AND 3 AND 4 AND 5  AND 6</booleanFilter>
         <columns>OPPORTUNITY.NAME</columns>
         <columns>Application_Date__c</columns>
-        <columns>Avidia_Review_Status__c</columns>
         <columns>Lead_Status__c</columns>
         <columns>OPPORTUNITY.CREATED_DATE</columns>
         <columns>Monthly_Mortgage_Tax_and_Insurance__c</columns>
@@ -8593,7 +8547,6 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <columns>Product__c</columns>
         <columns>OPPORTUNITY.STAGE_NAME</columns>
         <columns>Lead_Status__c</columns>
-        <columns>Avidia_Review_Status__c</columns>
         <columns>State__c</columns>
         <columns>Partner_tag_lookup__c</columns>
         <columns>Comments__c</columns>
