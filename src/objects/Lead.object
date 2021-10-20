@@ -998,62 +998,6 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Average_Debt_to_Income_After__c</fullName>
-        <description>Previously
-IF(Personal_Credit_Report_Co_Applicant__c == null, null, 
-((Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c + 
-Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c + 
-Personal_Credit_Report__r.LASERCA__Lead__r.Monthly_Payment__c) / ((Annual_Income_Currency__c + Co_Applicant_Income__c)/12)))</description>
-        <externalId>false</externalId>
-        <formula>IF( NOT(ISBLANK(Personal_Credit_Report__r.Adjusted_DTI__c)),
-    Personal_Credit_Report__r.Adjusted_DTI__c,
-    IF (NOT(ISBLANK( Personal_Credit_Report_Co_Applicant__c )),
-        (( Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c +
-           Personal_Credit_Report_Co_Applicant__r.Adjusted_Monthly_Personal_Debt__c +
-           Monthly_Payment__c ) / 
-         ( BLANKVALUE(Personal_Credit_Report__r.Adjusted_Income__c/12, BLANKVALUE(Annual_Income_Currency__c/12,0)) +
-           BLANKVALUE(Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c/12, BLANKVALUE(CoApplicant_Contact__r.Income__c/12,0) ))),
-        (( Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c +
-           Monthly_Payment__c ) / 
-         ( BLANKVALUE(Personal_Credit_Report__r.Adjusted_Income__c/12, BLANKVALUE(Annual_Income_Currency__c/12,0)) ))))</formula>
-        <inlineHelpText>Calculated DTI after for individual and joint applications taking income adjustments into consideration.</inlineHelpText>
-        <label>Combined DTI After</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>4</scale>
-        <securityClassification>Restricted</securityClassification>
-        <trackHistory>false</trackHistory>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Average_Debt_to_Income_Before__c</fullName>
-        <description>Previously: 
-IF(Personal_Credit_Report_Co_Applicant__c == null, null, 
-((Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c + 
-Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c) / 
-((Annual_Income_Currency__c + Co_Applicant_Income__c)/12)))</description>
-        <externalId>false</externalId>
-        <formula>IF( NOT(ISBLANK(Personal_Credit_Report__r.Adjusted_DTI__c)),
-    Personal_Credit_Report__r.Adjusted_DTI__c,
-    IF (NOT(ISBLANK( Personal_Credit_Report_Co_Applicant__c )),
-        (( Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c +
-           Personal_Credit_Report_Co_Applicant__r.Adjusted_Monthly_Personal_Debt__c ) / 
-         ( BLANKVALUE(Personal_Credit_Report__r.Adjusted_Income__c/12, BLANKVALUE(Annual_Income_Currency__c/12,0)) +
-           BLANKVALUE(Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c/12, BLANKVALUE(CoApplicant_Contact__r.Income__c/12,0) ))),
-        (( Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c ) / 
-         ( BLANKVALUE(Personal_Credit_Report__r.Adjusted_Income__c/12, BLANKVALUE(Annual_Income_Currency__c/12,0)) ))))</formula>
-        <inlineHelpText>Calculated DTI before for individual and joint applications taking income adjustments into consideration.</inlineHelpText>
-        <label>Combined DTI Before</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>4</scale>
-        <securityClassification>Restricted</securityClassification>
-        <trackHistory>false</trackHistory>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Average_FICO__c</fullName>
         <businessStatus>Active</businessStatus>
         <externalId>false</externalId>
@@ -1087,17 +1031,6 @@ Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c)
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Avidia_Review_Status__c</fullName>
-        <externalId>false</externalId>
-        <formula>text( Personal_Credit_Report__r.Avidia_Review_Status__c )</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Avidia Review Status</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Avidia_Service_Provider__c</fullName>
@@ -1962,40 +1895,6 @@ IF(ISBLANK(Customer_Signed_Date__c),&quot;&amp;qmode=SalesforceFile&quot;,
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Url</type>
-    </fields>
-    <fields>
-        <fullName>Credit_Approval_Based_on_Criteria__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(Personal_Credit_Report__c == null, null,
-
-IF(Personal_Credit_Report__r.Solar_Loan_Approval__c == &quot;Approved&quot;, &quot;Approved&quot;,
-
-IF(Personal_Credit_Report__r.Solar_Loan_Approval__c == &quot;Pending Review&quot;,&quot;Pending Review&quot;, &quot;Declined&quot;)))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Credit Approval Based on Criteria</label>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Credit_Approval_Status__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(Personal_Credit_Report__c == null, null,
-
-IF(ISPICKVAL(Personal_Credit_Report__r.Solar_Loan_Approval_Status__c, &quot;Approved&quot;) , &quot;Approved&quot;,
-
-IF(ISPICKVAL(Personal_Credit_Report__r.Solar_Loan_Approval_Status__c, &quot;Pending Review&quot;),&quot;Pending Review&quot;, 
-
-IF(ISPICKVAL(Personal_Credit_Report__r.Solar_Loan_Approval_Status__c, &quot;Declined&quot;),&quot;Declined&quot;, &quot;&quot;))))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Credit Approval Status (RL)</label>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Credit_Check_Acknowledged__c</fullName>
@@ -3753,30 +3652,6 @@ IF(DOER_Solar_Loan__c=TRUE, 0.0399, 0.0599), VALUE(TEXT(Interest_Rate_Picklist__
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>Maximum_Loan__c</fullName>
-        <externalId>false</externalId>
-        <formula>(1/(((Loan_Rate__c / 12) / (1 - (1 + (Loan_Rate__c/12)) ^ (-1 *  Number_of_Periods__c )))/  Maximum_Monthly_Disbursement2__c ))</formula>
-        <label>Maximum Loan</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Maximum_Monthly_Disbursement2__c</fullName>
-        <externalId>false</externalId>
-        <formula>if(Personal_Credit_Report__r.Maximum_Disbursement_Monthly__c &gt; 0, Personal_Credit_Report__r.Maximum_Disbursement_Monthly__c, 0)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Formula that calculates the maximum loan payment this applicant could take assuming their reported income and credit report debt, and still be under the DOER Credit and DTI thresholds</inlineHelpText>
-        <label>Maximum Monthly Payment</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Maximum_monthly_Disbursement__c</fullName>
         <externalId>false</externalId>
         <label>Maximum Monthly Payment</label>
@@ -4577,20 +4452,6 @@ MobilePhone
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Pre_Qualification_Status__c</fullName>
-        <description>On 4/7/17, Personal_Credit_Report__r.Solar_Loan_Pre_Qualification_Status__c was marked for deletion</description>
-        <externalId>false</externalId>
-        <formula>IF(Personal_Credit_Report__c=null,&quot;Credit not Checked&quot;,
-IF( ISPICKVAL(Personal_Credit_Report__r.Solar_Loan_Pre_Qualification_Status__c, &quot;Pre-Qualified&quot;),&quot;Pre-Qualified&quot;,
-IF(ISPICKVAL(Personal_Credit_Report__r.Solar_Loan_Pre_Qualification_Status__c, &quot;Unable to Pre-Qualify&quot;),&quot;Unable to Pre-Qualify&quot;,
-&quot;Pending Review&quot;)))</formula>
-        <label>XXXPre-Qualification Status</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Preliminary_Partner__c</fullName>
@@ -7434,7 +7295,6 @@ SEMA = 13 -14</inlineHelpText>
         <columns>FULL_NAME</columns>
         <columns>Product_line__c</columns>
         <columns>LZU__c</columns>
-        <columns>Credit_Approval_Status__c</columns>
         <columns>LEAD.STATUS</columns>
         <columns>LEAD.CREATED_DATE</columns>
         <filterScope>Everything</filterScope>
@@ -7636,7 +7496,6 @@ SEMA = 13 -14</inlineHelpText>
         <columns>LEAD.STATE_CODE</columns>
         <columns>LEAD.STATUS</columns>
         <columns>LEAD.UNREAD</columns>
-        <columns>Credit_Approval_Status__c</columns>
         <columns>Self_Reported_Partner__c</columns>
         <columns>Comments__c</columns>
         <filterScope>Everything</filterScope>
@@ -7711,14 +7570,12 @@ SEMA = 13 -14</inlineHelpText>
         <columns>FULL_NAME</columns>
         <columns>DOER_Solar_Loan__c</columns>
         <columns>LEAD.CREATED_DATE</columns>
-        <columns>Avidia_Review_Status__c</columns>
         <columns>Date_of_Credit_Report__c</columns>
         <columns>Application_Source_Phase_2__c</columns>
         <columns>Monthly_Mortgage_Tax_and_Insurance__c</columns>
         <columns>LEAD.STATE_CODE</columns>
         <columns>LEAD.EMAIL</columns>
         <columns>LEAD.STATUS</columns>
-        <columns>Pre_Qualification_Status__c</columns>
         <columns>Personal_Credit_Report__c</columns>
         <filterScope>Everything</filterScope>
         <filters>
@@ -7792,7 +7649,6 @@ SEMA = 13 -14</inlineHelpText>
         <columns>LEAD.STATE_CODE</columns>
         <columns>LEAD.EMAIL</columns>
         <columns>LEAD.STATUS</columns>
-        <columns>Pre_Qualification_Status__c</columns>
         <columns>Personal_Credit_Report__c</columns>
         <filterScope>Everything</filterScope>
         <filters>
@@ -7897,7 +7753,6 @@ SEMA = 13 -14</inlineHelpText>
         <columns>DOER_Solar_Loan__c</columns>
         <columns>LEAD.STATUS</columns>
         <columns>LEAD.CREATED_DATE</columns>
-        <columns>Avidia_Review_Status__c</columns>
         <columns>Comments__c</columns>
         <filterScope>Everything</filterScope>
         <filters>
@@ -8038,7 +7893,6 @@ SEMA = 13 -14</inlineHelpText>
         <columns>LEAD.STATE_CODE</columns>
         <columns>LEAD.EMAIL</columns>
         <columns>LEAD.STATUS</columns>
-        <columns>Pre_Qualification_Status__c</columns>
         <columns>Personal_Credit_Report__c</columns>
         <filterScope>Everything</filterScope>
         <filters>

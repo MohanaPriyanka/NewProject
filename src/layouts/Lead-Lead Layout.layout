@@ -162,10 +162,6 @@
         <label>BFG - Residential Loan Information</label>
         <layoutColumns>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Credit_Approval_Status__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Annual_Income_Currency__c</field>
             </layoutItems>
