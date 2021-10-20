@@ -242,11 +242,23 @@ public without sharing class UASSelector {
                 Utility_Account_Log__r.Name_on_Account__c
             FROM Utility_Account_Subscription__c
             WHERE Next_Schedule_Z_Status__c = 'Active Subscription'
-            AND Id IN
-            (SELECT Utility_Account_Subscription__c
+            AND Id IN (
+                SELECT Utility_Account_Subscription__c
             FROM Schedule_Z_Subscription__c
             WHERE Schedule_Z__c =: allocationScheduleId
-            AND Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c != 'Anchor')
+                AND Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c != 'Anchor'
+            )
+        ];
+    }
+
+    public List<Utility_Account_Subscription__c> getActiveUASByParentAccount(Id accountId) {
+        return [
+            SELECT Id, Utility_Account_Log_Name__c, Status__c, Service_Address_From_Log__c
+            FROM Utility_Account_Subscription__c
+            WHERE Opportunity__r.Parent_Account_ID__c = :accountId
+            AND Opportunity__r.Product_Line__c = 'Community Solar'
+            AND Opportunity__r.StageName = 'Complete'
+            AND Next_Schedule_Z_Status__c = 'Active Subscription'
         ];
     }
 }

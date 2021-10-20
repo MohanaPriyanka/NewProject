@@ -1,0 +1,46 @@
+/**
+ * Created by rebeccanachison on 10/1/21.
+ */
+
+.cpp-carousel-image__container {
+    position: relative;
+}
+
+.cpp-carousel-image__image {
+    height: 450px;
+    width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.cpp-carousel-image__wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, .3);
+    color: #fff;
+}
+
+.cpp-carousel-image__panel-action {
+    border: 0;
+}
+
+.cpp-carousel-image__content {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    height: auto;
+}
+
+.cpp-carousel-image__header {
+    font-size: 1.75rem;
+}
+
+.cpp-carousel-image__description {
+    font-size: 0.8125rem;
+    margin: 1rem 0;
+}
