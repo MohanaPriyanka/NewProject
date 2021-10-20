@@ -3753,30 +3753,6 @@ IF(DOER_Solar_Loan__c=TRUE, 0.0399, 0.0599), VALUE(TEXT(Interest_Rate_Picklist__
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>Maximum_Loan__c</fullName>
-        <externalId>false</externalId>
-        <formula>(1/(((Loan_Rate__c / 12) / (1 - (1 + (Loan_Rate__c/12)) ^ (-1 *  Number_of_Periods__c )))/  Maximum_Monthly_Disbursement2__c ))</formula>
-        <label>Maximum Loan</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Maximum_Monthly_Disbursement2__c</fullName>
-        <externalId>false</externalId>
-        <formula>if(Personal_Credit_Report__r.Maximum_Disbursement_Monthly__c &gt; 0, Personal_Credit_Report__r.Maximum_Disbursement_Monthly__c, 0)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Formula that calculates the maximum loan payment this applicant could take assuming their reported income and credit report debt, and still be under the DOER Credit and DTI thresholds</inlineHelpText>
-        <label>Maximum Monthly Payment</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Maximum_monthly_Disbursement__c</fullName>
         <externalId>false</externalId>
         <label>Maximum Monthly Payment</label>

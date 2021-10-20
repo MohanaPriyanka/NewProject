@@ -490,20 +490,6 @@ text(year(addmonths(Commencement_Datee__c, (Product__r.First_Adjustment__c-1))))
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>FICO_Co_Applicant__c</fullName>
-        <externalId>false</externalId>
-        <formula>Opportunity__r.FICO_Co_Applicant__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>FICO (Co-Applicant)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>FICO__c</fullName>
         <externalId>false</externalId>
         <formula>Opportunity__r.FICO__c</formula>
@@ -1215,21 +1201,6 @@ TEXT(YEAR(Commencement_Datee__c ) + FLOOR((MONTH(Commencement_Datee__c ) + Produ
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Max_FICO__c</fullName>
-        <description>Max of Co-Applicant and Applicant FICO scores</description>
-        <externalId>false</externalId>
-        <formula>Opportunity__r.Max_FICO__c</formula>
-        <inlineHelpText>Max of Co-Applicant and Applicant FICO scores</inlineHelpText>
-        <label>Max FICO</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>MonthLT__c</fullName>

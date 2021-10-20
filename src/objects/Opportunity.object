@@ -2880,20 +2880,6 @@ text(year(addmonths(Commencement_Date__c, (Product__r.First_Adjustment__c-1))))<
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>FICO_Co_Applicant__c</fullName>
-        <externalId>false</externalId>
-        <formula>Personal_Credit_Report_Co_Applicant__r.Credit_Score_Integer_2__c</formula>
-        <label>FICO (Co-Applicant)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <securityClassification>Restricted</securityClassification>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>FICO__c</fullName>
         <externalId>false</externalId>
         <formula>Value(Personal_Credit_Report2__r.LASERCA__Credit_Score_TransUnion__c)</formula>
@@ -4148,27 +4134,6 @@ MIN(DAY(Commencement_Date__c),
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Max_FICO__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(
-
-AND(NOT(ISBLANK(Personal_Credit_Report2__c)), NOT(ISBLANK(Personal_Credit_Report_Co_Applicant__c))),
-
-
-MAX(Personal_Credit_Report2__r.Credit_Score_Integer_2__c, Personal_Credit_Report_Co_Applicant__r.Credit_Score_Integer_2__c), Personal_Credit_Report2__r.Credit_Score_Integer_2__c)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Max of Co-Applicant and Applicant FICO</inlineHelpText>
-        <label>Max FICO</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <securityClassification>Restricted</securityClassification>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Maximum_Loan__c</fullName>
