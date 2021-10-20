@@ -97,7 +97,7 @@ public without sharing class UASSelector {
         ];
     }
     public Map<Id, Utility_Account_Subscription__c> getUASMap(Set<Id> uasIds) {
-        Map<Id, Utility_Account_Subscription__c> uasMap = new Map<Id, Utility_Account_Subscription__c>( [
+        Map<Id, Utility_Account_Subscription__c> uasMap = new Map<Id, Utility_Account_Subscription__c>([
             SELECT Id,
                 Annual_Cost_Future_Rollup__c,
                 Annual_kWh_Subscription_Future_Rollup__c,
@@ -118,14 +118,14 @@ public without sharing class UASSelector {
             WHERE Id IN :uasIds
         ]);
         return uasMap;
-	}
-    public static Map<Id, Utility_Account_Subscription__c> selectByIdsAsMap(Set<Id> uasIds){
+    }
+    public static Map<Id, Utility_Account_Subscription__c> selectByIdsAsMap(Set<Id> uasIds) {
         Map<Id, Utility_Account_Subscription__c> uasWithClientMap = new Map<Id, Utility_Account_Subscription__c>([
             SELECT Id,
                 Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c,
                 Externally_Serviced__c
             FROM Utility_Account_Subscription__c
-            WHERE Id IN : uasIds
+            WHERE Id IN :uasIds
         ]);
         return uasWithClientMap;
     }
@@ -135,13 +135,13 @@ public without sharing class UASSelector {
                 Opportunity__r.AccountId propertyAccount,
                 Opportunity__r.Account.Parent_Account__c parentAccount,
                 Opportunity__r.Shared_Solar_System__r.Client_Brand_Key__c sssBrandKey,
-                Opportunity__r.Shared_Solar_System__r.Client_Account__r.Client_Brand_Key__c entityBrandKey
+                Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__r.Client_Brand_Key__c entityBrandKey
             FROM Utility_Account_Subscription__c
-            WHERE Opportunity__r.Account.Parent_Account__c IN : parentAccountIds
+            WHERE Opportunity__r.Account.Parent_Account__c IN :parentAccountIds
             GROUP BY Opportunity__r.AccountId,
                 Opportunity__r.Account.Parent_Account__c,
                 Opportunity__r.Shared_Solar_System__r.Client_Brand_Key__c,
-                Opportunity__r.Shared_Solar_System__r.Client_Account__r.Client_Brand_Key__c
+                Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__r.Client_Brand_Key__c
         ];
         return uasSummary;
     }
@@ -164,7 +164,7 @@ public without sharing class UASSelector {
                 Shared_Solar_System__c,
                 SSS_Id__c
             FROM Utility_Account_Subscription__c
-            WHERE (Opportunity__r.Shared_Solar_System__c IN : sssIdList OR Shared_Solar_System__c IN :sssIdList)
+            WHERE (Opportunity__r.Shared_Solar_System__c IN :sssIdList OR Shared_Solar_System__c IN :sssIdList)
             AND Next_Schedule_Z_Status__c = 'Active Subscription'
             AND (Future_Customer_Subscription_KWDC_Rollup__c != 0 OR Customer_Subscription_KW_DC__c != 0)
         ];
@@ -187,21 +187,21 @@ public without sharing class UASSelector {
         return Database.query(soql);
     }
 
-    public Map<Id,Decimal> getUASSummaryByOpportunity(Set<Id> oppIds) {
-        Map<Id,Decimal> oppToUASSummaryMap = new Map<Id,Decimal>();
+    public Map<Id, Decimal> getUASSummaryByOpportunity(Set<Id> oppIds) {
+        Map<Id, Decimal> oppToUASSummaryMap = new Map<Id, Decimal>();
 
         List<AggregateResult> uasSummary = [
             SELECT COUNT(Id) numberOfRecords,
                 Opportunity__c opportunityId,
                 SUM(Future_Customer_Subscription_KWDC_Rollup__c) kWTotal
             FROM Utility_Account_Subscription__c
-            WHERE Opportunity__c IN : oppIds
+            WHERE Opportunity__c IN :oppIds
             AND Next_Schedule_Z_Status__c = 'Active Subscription'
             GROUP BY Opportunity__c
         ];
-        for (AggregateResult uasAgg : uasSummary){
-            Id opportunityId = (Id)uasAgg.get('opportunityId');
-            oppToUASSummaryMap.put(opportunityId,(Decimal)uasAgg.get('kWTotal'));
+        for (AggregateResult uasAgg : uasSummary) {
+            Id opportunityId = (Id) uasAgg.get('opportunityId');
+            oppToUASSummaryMap.put(opportunityId, (Decimal) uasAgg.get('kWTotal'));
         }
         return oppToUASSummaryMap;
     }
@@ -220,7 +220,7 @@ public without sharing class UASSelector {
                 Opportunity__r.Personal_Credit_Report2__c,
                 Utility_Account_Log__r.Name
             FROM Utility_Account_Subscription__c
-            WHERE Opportunity__r.Contract.Assignment_Agreement__c = : assignmentAgreementId
+            WHERE Opportunity__r.Contract.Assignment_Agreement__c = :assignmentAgreementId
             AND Next_Schedule_Z_Status__c = 'Active Subscription'
         ];
     }
@@ -242,11 +242,23 @@ public without sharing class UASSelector {
                 Utility_Account_Log__r.Name_on_Account__c
             FROM Utility_Account_Subscription__c
             WHERE Next_Schedule_Z_Status__c = 'Active Subscription'
-            AND Id IN
-            (SELECT Utility_Account_Subscription__c
-            FROM Schedule_Z_Subscription__c
-            WHERE Schedule_Z__c =: allocationScheduleId
-            AND Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c != 'Anchor')
+            AND Id IN (
+                SELECT Utility_Account_Subscription__c
+                FROM Schedule_Z_Subscription__c
+                WHERE Schedule_Z__c = :allocationScheduleId
+                AND Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c != 'Anchor'
+            )
+        ];
+    }
+
+    public List<Utility_Account_Subscription__c> getActiveUASByParentAccount(Id accountId) {
+        return [
+            SELECT Id, Utility_Account_Log_Name__c, Status__c, Service_Address_From_Log__c, Shared_Solar_System__r.Name
+            FROM Utility_Account_Subscription__c
+            WHERE Opportunity__r.Parent_Account_ID__c = :accountId
+            AND Opportunity__r.Product_Line__c = 'Community Solar'
+            AND Opportunity__r.StageName = 'Complete'
+            AND Next_Schedule_Z_Status__c = 'Active Subscription'
         ];
     }
 }
