@@ -255,17 +255,14 @@ public with sharing class SharedSolarSystemHandlerTest {
                 Opportunity__c = opportunityone.Id,
                 Sizing_Method__c = everbillNMC.Id,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
-                Annual_kwh_subscription_future__c = 4000,
-                calculated_annual_cost_of_electricity__c = 4000,
-                Subscribed_Annual_Cost_of_Electricity__c = 4000);
+                calculated_annual_cost_of_electricity__c = 4000);
         Utility_Account_Subscription__c uasTwo =
             new Utility_Account_Subscription__c(Name = '0000236',
                 Utility_Account_Log__c = ualog2.Id,
                 Opportunity__c = opportunitytwo.Id,
                 Shared_Solar_System__c = sss2.Id,
                 Sizing_Method__c = everbillNMC.Id,
-                Next_Schedule_Z_Status__c = 'Active Subscription',
-                Annual_kwh_subscription_future__c = 8000
+                Next_Schedule_Z_Status__c = 'Active Subscription'
             );
         Utility_Account_Subscription__c uasThree =
             new Utility_Account_Subscription__c(Name = '0000238',
@@ -273,8 +270,7 @@ public with sharing class SharedSolarSystemHandlerTest {
                 Opportunity__c = opportunitythree.Id,
                 Shared_Solar_System__c = sss2.Id,
                 Sizing_Method__c = everbillNMC.Id,
-                Next_Schedule_Z_Status__c = 'Active Subscription',
-                Annual_kwh_subscription_future__c = 300
+                Next_Schedule_Z_Status__c = 'Active Subscription'
             );
         Utility_Account_Subscription__c uasFour =
             new Utility_Account_Subscription__c(Name = '0000239',
@@ -282,12 +278,17 @@ public with sharing class SharedSolarSystemHandlerTest {
                 Opportunity__c = opportunityFour.Id,
                 Shared_Solar_System__c = sss2.Id,
                 Sizing_Method__c = everbillNMC.Id,
-                Next_Schedule_Z_Status__c = 'Active Subscription',
-                Annual_kwh_subscription_future__c = 30000
+                Next_Schedule_Z_Status__c = 'Active Subscription'
             );
         insert new List<Utility_Account_Subscription__c>{
             uasOne, uasTwo, uasThree, uasFour
         };
+        TestSOCreator.registerByCapacity(uasOne, 4000);
+        TestSOCreator.registerByCapacity(uasTwo, 8000);
+        TestSOCreator.registerByCapacity(uasThree, 300);
+        TestSOCreator.registerByCapacity(uasFour, 30000);
+        TestSOCreator.commitWork();
+
         Schedule_Z__c scheduleZ1 = new Schedule_Z__c(
             Name = '18-0515 Oxford Barrett St. P1',
             Shared_Solar_System__c = sss1.Id,
@@ -391,39 +392,36 @@ public with sharing class SharedSolarSystemHandlerTest {
                 Opportunity__c = opportunityone.Id,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
                 Sizing_Method__c = sss2.Utility_NMC_Tariff__c,
-                Annual_kwh_subscription_future__c = 4200,
-                calculated_annual_cost_of_electricity__c = 4200,
-                Subscribed_Annual_Cost_of_Electricity__c = 4200);
+                calculated_annual_cost_of_electricity__c = 4200);
         Utility_Account_Subscription__c uasTwo =
             new Utility_Account_Subscription__c(Name = '1100236',
                 Utility_Account_Log__c = ualog2.Id,
                 Opportunity__c = opportunitytwo.Id,
                 Sizing_Method__c = sss2.Utility_NMC_Tariff__c,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
-                Annual_kwh_subscription_future__c = 8200,
-                calculated_annual_cost_of_electricity__c = 8200,
-                Subscribed_Annual_Cost_of_Electricity__c = 8200);
+                calculated_annual_cost_of_electricity__c = 8200);
         Utility_Account_Subscription__c uasThree =
             new Utility_Account_Subscription__c(Name = '1100238',
                 Utility_Account_Log__c = ualog3.Id,
                 Opportunity__c = opportunitythree.Id,
                 Sizing_Method__c = sss2.Utility_NMC_Tariff__c,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
-                Annual_kwh_subscription_future__c = 320,
-                calculated_annual_cost_of_electricity__c = 320,
-                Subscribed_Annual_Cost_of_Electricity__c = 320);
+                calculated_annual_cost_of_electricity__c = 320);
         Utility_Account_Subscription__c uasFour =
             new Utility_Account_Subscription__c(Name = '1100239',
                 Utility_Account_Log__c = ualog3.Id,
                 Opportunity__c = opportunityFour.Id,
                 Sizing_Method__c = sss2.Utility_NMC_Tariff__c,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
-                Annual_kwh_subscription_future__c = 32000,
-                calculated_annual_cost_of_electricity__c = 32000,
-                Subscribed_Annual_Cost_of_Electricity__c = 32000);
+                calculated_annual_cost_of_electricity__c = 32000);
         insert new List<Utility_Account_Subscription__c>{
             uasOne, uasTwo, uasThree, uasFour
         };
+        TestSOCreator.registerByCapacity(uasOne, 4200);
+        TestSOCreator.registerByCapacity(uasTwo, 8200);
+        TestSOCreator.registerByCapacity(uasThree, 320);
+        TestSOCreator.registerByCapacity(uasFour, 32000);
+        TestSOCreator.commitWork();
     }
     
     private static void createContractTestRecords() {
@@ -690,9 +688,7 @@ public with sharing class SharedSolarSystemHandlerTest {
             SELECT Utility_Account_Log__c,
                 Opportunity__c,
                 Next_Schedule_Z_Status__c,
-                Annual_kwh_subscription_future__c,
                 calculated_annual_cost_of_electricity__c,
-                Subscribed_Annual_Cost_of_Electricity__c,
                 Customer_Subscription_KW_DC__c,
                 Opportunity__r.Shared_Solar_System__c
             FROM Utility_Account_Subscription__c
