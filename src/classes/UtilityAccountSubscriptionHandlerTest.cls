@@ -118,38 +118,9 @@ public class UtilityAccountSubscriptionHandlerTest {
                 Customer_Group__c = 'Residential',
                 Product__c = normalCSProduct.Id,
                 Product_Line__c = 'Community Solar',
-
-                CloseDate = System.today());
-
-        insert opportunityone;
-
-        Utility_Account_Log__c ualog =
-            new Utility_Account_Log__c(Name = '0000234',
-                Account__c = propAccountA.Id,
-                Annual_Cost_of_Electricity__c = 10000,
-                Name_on_Account__c = 'A Testcase');
-
-        insert ualog;
-
-        Utility_Account_Subscription__c uasone = new Utility_Account_Subscription__c(
-            Name = '0000234',
-            Utility_Account_Log__c = ualog.Id,
-            Opportunity__c = opportunityone.Id,
-            Next_Schedule_Z_Status__c = 'Active Subscription',
-            Calculated_Annual_Cost_of_Electricity__c = 4000
-
+                CloseDate = System.today()
             );
-          
-          insert uasone;
 
-
-        Utility_Account_Subscription__c uas01 = [
-            SELECT Id, Subscription_Comment_c__c, Subscription_Type__c, Opportunity__c
-            FROM Utility_Account_Subscription__c
-            WHERE Id = :uasone.Id
-        ];
-
-        SubscriptionManagementService.UASWrapper uasw1 = new SubscriptionManagementService.UASWrapper(uas01, 4000, 4000);
 
         Opportunity opportunitytwo =
             new Opportunity(Name = 'BOpp',
@@ -184,28 +155,28 @@ public class UtilityAccountSubscriptionHandlerTest {
 
         insert new List<Utility_Account_Log__c>{ualogOne, ualogTwo};
 
+
+        Utility_Account_Subscription__c uasOne = new Utility_Account_Subscription__c(
+            Name = '0000234',
+            Utility_Account_Log__c = ualogOne.Id,
+            Opportunity__c = opportunityone.Id,
+            Next_Schedule_Z_Status__c = 'Active Subscription',
+            Annual_kwh_subscription_future__c = 4000,
+            Calculated_Annual_Cost_of_Electricity__c = 4000,
+            Subscribed_Annual_Cost_of_Electricity__c = 4000
+        );
+
         Utility_Account_Subscription__c uasTwo =
             new Utility_Account_Subscription__c(Name = '0000236',
                 Utility_Account_Log__c = ualogTwo.Id,
                 Opportunity__c = opportunitytwo.Id,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
+                Annual_kwh_subscription_future__c = 4000,
+                Calculated_Annual_Cost_of_Electricity__c = 4000,
+                Subscribed_Annual_Cost_of_Electricity__c = 4000
+            );
 
-                Calculated_Annual_Cost_of_Electricity__c = 4000);
-        insert uasTwo;
-
-        Utility_Account_Subscription__c uas02 = [
-            SELECT Id, Subscription_Comment_c__c, Subscription_Type__c, Opportunity__c
-            FROM Utility_Account_Subscription__c
-            WHERE Id = :uastwo.Id
-        ];
-
-        SubscriptionManagementService.UASWrapper uasw2 = new SubscriptionManagementService.UASWrapper(uas02, 4000, 4000);
-
-        List<SubscriptionManagementService.UASWrapper> uaswList = new List<SubscriptionManagementService.UASWrapper> {
-            uasw1, uasw2
-        };
-
-        new SubscriptionManagementService().insertSubscriptionOrdersWithWrapper(uaswList);
+        insert new List<Utility_Account_Subscription__c>{uasOne, uasTwo};
 
 
     }
@@ -231,17 +202,10 @@ public class UtilityAccountSubscriptionHandlerTest {
                 Utility_Account_Log__c = ual.Id,
                 Opportunity__c = opp.Id,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
-                Calculated_Annual_Cost_of_Electricity__c = 4000);
-
+                Annual_kwh_subscription_future__c = 4000,
+                Calculated_Annual_Cost_of_Electricity__c = 4000,
+                Subscribed_Annual_Cost_of_Electricity__c = 4000);
         insert uasone;
-
-        Utility_Account_Subscription__c uas01 = [
-            SELECT Id, Subscription_Comment_c__c, Subscription_Type__c, Opportunity__c
-            FROM Utility_Account_Subscription__c
-            WHERE Id = :uasone.Id
-        ];
-
-        new SubscriptionManagementService().insertSubscriptionOrderForSingleUAS(uas01, 4000, 4000);
 
         Utility_Account_Subscription__c checkUAS = [
             SELECT Id, Shared_Solar_System__c
@@ -273,16 +237,10 @@ public class UtilityAccountSubscriptionHandlerTest {
             new Utility_Account_Subscription__c(Name = '0000234',
                 Utility_Account_Log__c = ual.Id,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
-                Calculated_Annual_Cost_of_Electricity__c = 4000);
+                Annual_kwh_subscription_future__c = 4000,
+                Calculated_Annual_Cost_of_Electricity__c = 4000,
+                Subscribed_Annual_Cost_of_Electricity__c = 4000);
         insert uasone;
-
-        Utility_Account_Subscription__c uas01 = [
-            SELECT Id, Subscription_Comment_c__c, Subscription_Type__c, Opportunity__c
-            FROM Utility_Account_Subscription__c
-            WHERE Id = :uasone.Id
-        ];
-
-        new SubscriptionManagementService().insertSubscriptionOrderForSingleUAS(uas01, 4000, 4000);
 
         Utility_Account_Subscription__c nullUAS = [
             SELECT Id, Shared_Solar_System__c
@@ -329,16 +287,10 @@ public class UtilityAccountSubscriptionHandlerTest {
                 Utility_Account_Log__c = ual.Id,
                 Opportunity__c = opps[0].Id,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
-                Calculated_Annual_Cost_of_Electricity__c = 4000);
+                Annual_kwh_subscription_future__c = 4000,
+                Calculated_Annual_Cost_of_Electricity__c = 4000,
+                Subscribed_Annual_Cost_of_Electricity__c = 4000);
         insert uas;
-
-        Utility_Account_Subscription__c uas0 = [
-            SELECT Id, Subscription_Comment_c__c, Subscription_Type__c, Opportunity__c
-            FROM Utility_Account_Subscription__c
-            WHERE Id = :uas.Id
-        ];
-
-        new SubscriptionManagementService().insertSubscriptionOrderForSingleUAS(uas0, 4000, 4000);
 
         uas = [
             SELECT Id, Shared_Solar_System__c
