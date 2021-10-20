@@ -1,0 +1,68 @@
+<!--
+ - Created by rebeccanachison on 9/27/21.
+ -->
+
+<!-- Customer Portal Project Carousel -->
+<template>
+    <template if:true={isLoading}>
+        <div class="cpp-carousel__loading-wrapper">
+            <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+        </div>
+    </template>
+    <template if:false={isLoading}>
+        <c-customer-portal-project-details
+            project={selectedProject}
+            show-modal={showModal}
+            onclosemodal={onCloseModal}>
+        </c-customer-portal-project-details>
+        <div class="slds-grid">
+            <div class="slds-col slds-size_1-of-1">
+                <template if:true={solarProjects}>
+                    <c-unlimited-carousel
+                        class="slds-grid slds-container_fluid slds-size_1-of-1">
+                        <template for:each={solarProjects} for:item="solarProject">
+                            <div
+                                key={solarProject.Id}
+                                class="slds-col slds-size_1-of-1">
+                                <c-customer-portal-project-details
+                                    project={solarProject}
+                                    class="slds-grid_align-center">
+                                </c-customer-portal-project-details>
+                                <c-customer-portal-project-carousel-image
+                                    class="slds-scrollable_none slds-size_1-of-1"
+                                    src={solarProject.Project_Image__c}
+                                    header={solarProject.Name}
+                                    description={solarProject.Project_Information_short__c}
+                                    alternative-text={solarProject.Name}>
+                                    <lightning-button
+                                        variant="brand"
+                                        label="View Project Details"
+                                        title="View Project Details"
+                                        data-current={solarProject.projectJSON}
+                                        onclick={handleOpenModal}
+                                        class="slds-m-left_x-small">
+                                    </lightning-button>
+                                </c-customer-portal-project-carousel-image>
+                            </div>
+                        </template>
+                    </c-unlimited-carousel>
+                </template>
+                <template if:false={solarProjects}>
+                    <c-unlimited-carousel
+                        class="slds-grid slds-container_fluid slds-size_1-of-1"
+                        disable-auto-scroll="true">
+                        <div class="slds-col slds-size_1-of-1">
+                            <c-customer-portal-project-carousel-image
+                                class="slds-scrollable_none slds-size_1-of-1"
+                                src={label.fallbackImage}
+                                header="Sign Up"
+                                description="We weren't able to find any subscriptions for you. Start a subscription to view your projects."
+                                alternative-text="Solar Farm">
+                            </c-customer-portal-project-carousel-image>
+                        </div>
+                    </c-unlimited-carousel>
+                </template>
+            </div>
+        </div>
+    </template>
+</template>
