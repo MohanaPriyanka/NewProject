@@ -23568,11 +23568,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Loan__c.Number_of_Days_Outstanding__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Loan__c.Number_of_Days_Past_Due__c</field>
         <readable>false</readable>
     </fieldPermissions>

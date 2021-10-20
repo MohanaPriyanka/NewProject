@@ -240,10 +240,6 @@
         <label>Payment Timing Information</label>
         <layoutColumns>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Number_of_Days_Outstanding__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Number_of_Days_Past_Due__c</field>
             </layoutItems>
