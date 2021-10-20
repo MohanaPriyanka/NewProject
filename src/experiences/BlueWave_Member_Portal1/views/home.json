@@ -31,6 +31,17 @@
       "type" : "component"
     }, {
       "componentAttributes" : {
+        "flowArguments" : "",
+        "flowLayout" : "oneColumn",
+        "flowName" : "Test_Flow_for_Community"
+      },
+      "componentName" : "forceCommunity:flowCommunity",
+      "id" : "48c3c55c-8d2d-498b-a0ab-3506beabc904",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    }, {
+      "componentAttributes" : {
         "richTextValue" : "<p style=\"text-align: center;\"><a href=\"https://bluewavesolar.com/bw-resources/a-6-minute-guide-to-community-solar-billing\" target=\"_blank\" style=\"font-size: 10px;\">﻿</a><a href=\"https://bluewavesolar.com/bw-resources/a-6-minute-guide-to-community-solar-billing\" target=\"_blank\" style=\"font-size: 16px;\">Want to learn more about how community solar billing works? Click Here!</a></p>"
       },
       "componentName" : "forceCommunity:richTextInline",
@@ -71,7 +82,7 @@
       "type" : "component"
     }, {
       "componentAttributes" : {
-        "richTextValue" : "<div class=\"sfdcCbVideoContainer\"><iframe class=\"sfdcCbVideo\" allowfullscreen=\"true\" width=\"100%\" title=\"Video from https://player.vimeo.com/video/417286945\" src=\"https://player.vimeo.com/video/417286945\"></iframe></div><p> </p>"
+        "richTextValue" : "<div class=\"sfdcCbVideoContainer\"><iframe class=\"sfdcCbVideo\" allowfullscreen=\"true\" width=\"100%\" title=\"Video from https://player.vimeo.com/video/417286945\" src=\"https://player.vimeo.com/video/417286945\"></iframe></div><p>&nbsp;</p>"
       },
       "componentName" : "forceCommunity:richTextInline",
       "id" : "ce394e75-3beb-4e85-b88e-5a25a33f96d1",

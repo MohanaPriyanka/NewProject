@@ -203,6 +203,14 @@
         <value>#387CDF</value>
     </labels>
     <labels>
+        <fullName>Company_Default_Farm_Image</fullName>
+        <categories>branding</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Company Default Farm Image</shortDescription>
+        <value>https://bluewavesolar--c.documentforce.com/sfc/dist/version/renditionDownload?rendition=ORIGINAL_Png&amp;versionId=0680a000009usLo&amp;operationContext=DELIVERY&amp;contentId=05T0a00000ZP055&amp;page=0&amp;d=/a/0a0000005bV7/S2le4FGiYoQLrAfw6XlDnHzVw.Quny8V_GQZf.462TY&amp;oid=00Dj0000001q7GO&amp;dpt=null&amp;viewId=</value>
+    </labels>
+    <labels>
         <fullName>Company_Email_Icon</fullName>
         <categories>branding, email</categories>
         <language>en_US</language>
@@ -249,6 +257,22 @@
         <protected>false</protected>
         <shortDescription>Company Name</shortDescription>
         <value>BlueWave</value>
+    </labels>
+    <labels>
+        <fullName>Company_Name_Customer_Acquisition</fullName>
+        <categories>branding</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Company Name Customer Acquisition</shortDescription>
+        <value>BCS Customer Acquisition, LLC</value>
+    </labels>
+    <labels>
+        <fullName>Company_Name_Customer_Management</fullName>
+        <categories>branding</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Company Name Customer Management</shortDescription>
+        <value>BCS Customer Management, LLC</value>
     </labels>
     <labels>
         <fullName>Company_Twitter</fullName>

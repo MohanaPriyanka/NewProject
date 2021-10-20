@@ -1,0 +1,47 @@
+<!--
+ - Created by rebeccanachison on 9/30/21.
+ Adapted from ProjectHeader aura component
+ -->
+
+<!-- Customer Portal Project Header -->
+<template>
+    <div class="slds-grid slds-container_center slds-grid_align-center cpp-header__container">
+        <template if:true={project.Waitlist__c}>
+            <div class="slds-col slds-size_1-of-1 slds-align_absolute-center">
+                <h2 class="slds-align_absolute-center">More info coming soon!</h2>
+            </div>
+        </template>
+        <template if:false={project.Waitlist__c}>
+            <div class="cpp-header__col slds-col slds-small-size_4-of-12">
+                <div class="cpp-header__col-wrapper">
+                    <img src={treesIcon}
+                         class="cpp-header__icon slds-align_absolute-center slds-p-bottom__small slds-m-top__x-small"/>
+                    <p class="cpp-header__count slds-align_absolute-center">{project.Metric_Tons_of_CO2_Offset__c}</p>
+                    <p class="cpp-header__detail slds-align_absolute-center">metric tons of CO2 offset per year</p>
+                </div>
+            </div>
+            <div class="cpp-header__col slds-col slds-small-size_4-of-12">
+                <div class="cpp-header__col-wrapper">
+                    <img src={houseIcon}
+                         class="cpp-header__icon slds-align_absolute-center slds-p-bottom__small slds-m-top__x-small"/>
+                    <p class="cpp-header__count slds-align_absolute-center">{project.Home_Electricity_Offset__c}</p>
+                    <p class="cpp-header__detail slds-align_absolute-center">single-family homes powered in a year</p>
+                </div>
+            </div>
+            <div class="cpp-header__col slds-col slds-small-size_4-of-12">
+                <div class="cpp-header__col-wrapper">
+                    <img src={subscriberIcon}
+                         class="cpp-header__icon slds-align_absolute-center slds-p-bottom__small slds-m-top__x-small"/>
+                    <template if:true={hasSubscribers}>
+                        <p class="cpp-header__count slds-align_absolute-center">{project.Subscribers__c}</p>
+                        <p class="cpp-header__detail slds-align_absolute-center">local community solar subscribers</p>
+                    </template>
+                    <template if:false={hasSubscribers}>
+                        <p class="cpp-header__count slds-align_absolute-center">You</p>
+                        <p class="cpp-header__detail slds-align_absolute-center">and your neighbors are subscribed</p>
+                    </template>
+                </div>
+            </div>
+        </template>
+    </div>
+</template>

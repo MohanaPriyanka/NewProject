@@ -1,0 +1,20 @@
+/**
+ * Created by rebeccanachison on 10/4/21.
+ */
+
+.cpp-details__header, .cpp-details__footer {
+    padding: 0;
+    border: 0;
+}
+
+.cpp-details__info-label {
+    font-weight: 600;
+    font-size: 1.1rem;
+    display: block;
+    padding-bottom: 10px;
+}
+
+.cpp-details__info-text {
+    font-size: 1em;
+    padding-bottom: 16px;
+}

@@ -277,8 +277,9 @@ public with sharing class ClientBrandingServiceTest {
             Opportunity__c = opportunity1.Id,
             Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
-            calculated_annual_cost_of_electricity__c = 1400,
-            Subscribed_Annual_Cost_of_Electricity__c = 1400
+
+            Calculated_Annual_Cost_of_Electricity__c = 1400
+
         );
         Utility_Account_Subscription__c uas2 = new Utility_Account_Subscription__c(
             Name = '0000235',
@@ -286,8 +287,9 @@ public with sharing class ClientBrandingServiceTest {
             Opportunity__c = opportunity2.Id,
             Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
-            calculated_annual_cost_of_electricity__c = 1400,
-            Subscribed_Annual_Cost_of_Electricity__c = 1400
+
+            Calculated_Annual_Cost_of_Electricity__c = 1400
+
         );
         Utility_Account_Subscription__c uas3 = new Utility_Account_Subscription__c(
             Name = '0000235',
@@ -295,8 +297,9 @@ public with sharing class ClientBrandingServiceTest {
             Opportunity__c = opportunity3.Id,
             Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
-            calculated_annual_cost_of_electricity__c = 1400,
-            Subscribed_Annual_Cost_of_Electricity__c = 1400
+
+            Calculated_Annual_Cost_of_Electricity__c = 1400
+
         );
         Utility_Account_Subscription__c uas4 = new Utility_Account_Subscription__c(
             Name = '0000236',
@@ -304,8 +307,9 @@ public with sharing class ClientBrandingServiceTest {
             Opportunity__c = opportunity4.Id,
             Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
-            calculated_annual_cost_of_electricity__c = 1400,
-            Subscribed_Annual_Cost_of_Electricity__c = 1400
+
+            Calculated_Annual_Cost_of_Electricity__c = 1400
+
         );
         Utility_Account_Subscription__c uas5 = new Utility_Account_Subscription__c(
             Name = '0000236',
@@ -313,8 +317,9 @@ public with sharing class ClientBrandingServiceTest {
             Opportunity__c = opportunity5.Id,
             Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
-            calculated_annual_cost_of_electricity__c = 1400,
-            Subscribed_Annual_Cost_of_Electricity__c = 1400
+
+            Calculated_Annual_Cost_of_Electricity__c = 1400
+
         );
         Utility_Account_Subscription__c uas6 = new Utility_Account_Subscription__c(
             Name = '0000243',
@@ -322,8 +327,9 @@ public with sharing class ClientBrandingServiceTest {
             Opportunity__c = opportunity6.Id,
             Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
-            calculated_annual_cost_of_electricity__c = 1400,
-            Subscribed_Annual_Cost_of_Electricity__c = 1400
+
+            Calculated_Annual_Cost_of_Electricity__c = 1400
+
         );
 
         insert new List<Utility_Account_Subscription__c>{

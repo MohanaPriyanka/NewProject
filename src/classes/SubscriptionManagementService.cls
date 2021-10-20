@@ -84,12 +84,12 @@ public without sharing class SubscriptionManagementService {
 
     @TestVisible
     private List<Subscription_Order__c> stampApprovedValues(List<Subscription_Order__c> soList) {
-        for (Subscription_Order__c so : soList ) {
+        for (Subscription_Order__c so : soList) {
             so.Effective_Date__c = System.now();
             if (so.System_Change_Percent_Share_of_System__c == null) {
-                throw new Util.BWException('A Subscription Order is unable to be created due to the UAS missing required data. Please ensure UAS ' + so.Utility_Account_Subscription__r.Id +' has: ' + '\n' +
-                    '1. An Opportunity' +'\n' +
-                    '2. A Shared Solar System' +'\n' +
+                throw new Util.BWException('A Subscription Order is unable to be created due to the UAS missing required data. Please ensure UAS ' + so.Utility_Account_Subscription__r.Id + ' has: ' + '\n' +
+                    '1. An Opportunity' + '\n' +
+                    '2. A Shared Solar System' + '\n' +
                     '3. A Sizing Method ' + '\n' +
                     'After populating the correct fields above, try again. If you still experience an error, contact BizApps');
             }
@@ -113,10 +113,12 @@ public without sharing class SubscriptionManagementService {
         List<Shared_Solar_System__c> sssToUpdate = new List<Shared_Solar_System__c>();
         List<Subscription_Order__c> soListToInsert = new List<Subscription_Order__c>();
         List<Shared_Solar_System_Order__c> approvedSSSOs = checkSSSOApproval(sssoList, oldMap);
-        for(Shared_Solar_System_Order__c ssso : approvedSSSOs) {
+        for (Shared_Solar_System_Order__c ssso : approvedSSSOs) {
             Shared_Solar_System__c sss = updateSSSFromSSSO(ssso);
             sssToUpdate.add(sss);
-            List<Utility_Account_Subscription__c> uasList = uasSelector.selectActiveUASBySSS(new Set<Id>{ssso.Shared_Solar_System__c});
+            List<Utility_Account_Subscription__c> uasList = uasSelector.selectActiveUASBySSS(new Set<Id>{
+                ssso.Shared_Solar_System__c
+            });
             List<Subscription_Order__c> soList = createSystemChangeSubscriptionOrders(uasList, ssso, null);
             soListToInsert.addAll(soList);
         }
@@ -165,17 +167,18 @@ public without sharing class SubscriptionManagementService {
 
 
     /**
-        * @description In order to get the related Opportunity from the deleted Subscription Orders and UASes, we have to query
-        * for the related UAS (as the relationships for the deleted record have already been removed). Method publishes
-        * platform event for Opportunity to reevaluate subscription totals
-        *
-        * @param subscriptionOrders deleted subscription orders from SOTrigger
-        * @param deletedUASMap deleted UASes from UASTrigger
-    */
+     * @description In order to get the related Opportunity from the deleted Subscription Orders and UASes, we have to query
+     * for the related UAS (as the relationships for the deleted record have already been removed). Method publishes
+     * platform event for Opportunity to reevaluate subscription totals
+     * @param subscriptionOrders deleted subscription orders from SOTrigger
+     * @param deletedUASMap deleted UASes from UASTrigger
+     */
     public void publishSubscriptionOrderChangeEventsOnDelete(List<Subscription_Order__c> subscriptionOrders, Map<Id, Utility_Account_Subscription__c> deletedUASMap) {
         Map<Id, Utility_Account_Subscription__c> uasMap = new Map<Id, Utility_Account_Subscription__c>();
         if (deletedUASMap == null) {
-            uasMap = uasSelector.getUASMap(new Set<Id>{subscriptionOrders[0].Utility_Account_Subscription__c});
+            uasMap = uasSelector.getUASMap(new Set<Id>{
+                subscriptionOrders[0].Utility_Account_Subscription__c
+            });
         } else {
             uasMap = deletedUASMap;
         }
@@ -184,7 +187,7 @@ public without sharing class SubscriptionManagementService {
         for (Utility_Account_Subscription__c uas : uasMap.values()) {
             oppIds.add(uas.Opportunity__c);
         }
-        
+
         List<Subscription_Order_Change_Event__e> changeEvents = new List<Subscription_Order_Change_Event__e>();
         for (Id oppId : oppIds) {
             Subscription_Order_Change_Event__e event = new Subscription_Order_Change_Event__e(
@@ -198,7 +201,6 @@ public without sharing class SubscriptionManagementService {
     /**
      * @description Method called to publish a platform event when a subscription order is approved (ie inserted because
      * all subscription orders are inserted as approved). Platform event is passed the Opportunity Id.
-     *
      * @param subscriptionOrders Set of Opportunity Ids from Subscription Orders that have been approved
      */
     public void publishSubscriptionOrderChangeEvents(List<Subscription_Order__c> subscriptionOrders) {
@@ -215,7 +217,6 @@ public without sharing class SubscriptionManagementService {
     /**
      * @description The Subscription Order Change Event is a platform event that is published to asynchronously summarize
      * an Opportunity's total active subscriptions
-     *
      * @param changeEvents Subscription Order Change Events with Opportunity Ids to evaluate
      */
     public void handleSubscriptionOrderChangeEvents(List<Subscription_Order_Change_Event__e> changeEvents) {
@@ -225,7 +226,7 @@ public without sharing class SubscriptionManagementService {
         Map<Id, Decimal> oppSubscriptionMap = oppSelector.getAggregateOpportunitySubscriptions(oppIds);
         List<Opportunity> oppsToUpdate = new List<Opportunity>();
         for (Id oppId : oppIds) {
-            Decimal sumSubscriptions = (oppSubscriptionMap.get(oppId) == null ? 0 : oppSubscriptionMap.get(oppId) );
+            Decimal sumSubscriptions = (oppSubscriptionMap.get(oppId) == null ? 0 : oppSubscriptionMap.get(oppId));
             Opportunity opp = new Opportunity(
                 Id = oppId,
                 Total_Subscribed_kW_DC__c = sumSubscriptions
@@ -236,9 +237,66 @@ public without sharing class SubscriptionManagementService {
         update oppsToUpdate;
     }
 
-    /*****************************************************************************************************
-     * TEST ONLY METHOD TO CREATE SUBSCRIPTION ORDERS EVERY TIME A UAS IS INSERTED IN A TEST SETUP METHOD
-     *****************************************************************************************************/
+    public class UASWrapper {
+
+        Utility_Account_Subscription__c uas;
+        Decimal annualKwh;
+        Decimal annualCost;
+
+        public UASWrapper(Utility_Account_Subscription__c uas, Decimal annualKwh, Decimal annualCost) {
+            this.uas = uas;
+            this.annualKwh = annualKwh;
+            this.annualCost = annualCost;
+        }
+    }
+
+
+    public void insertSubscriptionOrderForSingleUAS(
+        Utility_Account_Subscription__c uas, Decimal annualKwh, Decimal annualCost) {
+        insertSubscriptionOrdersWithWrapper(
+            new List<UASWrapper>{
+                new SubscriptionManagementService.UASWrapper(uas, 1400, 1400)
+            });
+    }
+
+    public void insertSubscriptionOrdersWithWrapper(List<UASWrapper> uaswList) {
+        List<Subscription_Order__c> soList = new List<Subscription_Order__c>();
+        //Do not want to create subscription orders for the leads that have undergone Conversion (automatically get SOs)
+
+        List<Utility_Account_Subscription__c> uasList = new List<Utility_Account_Subscription__c>();
+        for (UASWrapper uasw : uaswList) {
+            uasList.add(uasw.uas);
+        }
+        Set<Object> opportunityKeys = CollectionUtil.multiMapByField(uasList, Utility_Account_Subscription__c.Opportunity__c).keySet();
+        Set<Id> oppIds = CollectionUtil.toIds(opportunityKeys);
+        Map<Id, Opportunity> oppToSOMap = oppSelector.getOppsForTestMethods(oppIds);
+        for (UASWrapper uasw : uaswList) {
+            //Do not want to create "Initial" subscription orders for uases inserted as a result of SSS change on Opp
+            if (oppToSOMap.get(uasw.uas.Opportunity__c) != null && uasw.uas.Subscription_Comment_c__c == null) {
+                Subscription_Order__c so = new Subscription_Order__c(
+                    Utility_Account_Subscription__c = uasw.uas.Id,
+                    Type__c = 'Initial',
+                    Effective_Date__c = System.now()
+                );
+                //System.debug(uasw.uas.Opportunity__c);
+                //System.debug(uasw.uas.Opportunity__r.Product__c);
+                switch on uasw.uas.Subscription_Type__c {
+                    when 'kWh' {
+                        so.New_Annual_kWh__c = uasw.annualKwh;
+                        so.Previous_Annual_kwh__c = 0;
+                    } when 'Electricity Cost ($)' {
+                        so.New_Annual_Cost__c = uasw.annualCost;
+                    }
+                }
+                soList.add(so);
+            }
+        }
+        insert soList;
+    }
+    /**
+     * @description TEST ONLY METHOD TO CREATE SUBSCRIPTION ORDERS EVERY TIME A UAS IS INSERTED IN A TEST SETUP METHOD
+     * @param uasList
+     **/
     public void insertSubscriptionOrdersForTests(List<Utility_Account_Subscription__c> uasList) {
         List<Subscription_Order__c> soList = new List<Subscription_Order__c>();
         //Do not want to create subscription orders for the leads that have undergone Conversion (automatically get SOs)
@@ -247,7 +305,8 @@ public without sharing class SubscriptionManagementService {
         Map<Id, Opportunity> oppToSOMap = oppSelector.getOppsForTestMethods(oppIds);
         for (Utility_Account_Subscription__c uas : uasList) {
             //Do not want to create "Initial" subscription orders for uases inserted as a result of SSS change on Opp
-            if (oppToSOMap.get(uas.Opportunity__c) != null && uas.Subscription_Comment_c__c == null) {
+            if (oppToSOMap.get(uas.Opportunity__c) != null && uas.Subscription_Comment_c__c == null &&
+                (uas.Annual_kwh_subscription_future__c != null || uas.Subscribed_Annual_Cost_of_Electricity__c != null)) {
                 Subscription_Order__c so = new Subscription_Order__c(
                     Utility_Account_Subscription__c = uas.Id,
                     Type__c = 'Initial',
