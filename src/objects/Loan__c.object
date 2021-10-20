@@ -883,23 +883,6 @@ TEXT(YEAR(Commencement_Datee__c ) + FLOOR((MONTH(Commencement_Datee__c ) + Produ
         <type>Percent</type>
     </fields>
     <fields>
-        <fullName>Last_Due_Date_Paid__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Formula that shows the latest &quot;Date of Payment&quot; from related Loan Payment records that have a Payment greater than 0</inlineHelpText>
-        <label>Last Due Date Paid</label>
-        <summarizedField>Loan_Payment__c.Payment_1__c</summarizedField>
-        <summaryFilterItems>
-            <field>Loan_Payment__c.Payment__c</field>
-            <operation>greaterThan</operation>
-            <value>0</value>
-        </summaryFilterItems>
-        <summaryForeignKey>Loan_Payment__c.Loan__c</summaryForeignKey>
-        <summaryOperation>max</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
-    </fields>
-    <fields>
         <fullName>Late_Category__c</fullName>
         <externalId>false</externalId>
         <label>Late Category</label>

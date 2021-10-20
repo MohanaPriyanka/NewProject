@@ -379,19 +379,6 @@
         <trackHistory>false</trackHistory>
     </fields>
     <fields>
-        <fullName>Capital_Raising__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Bank Relationship</label>
-        <referenceTo>Solar_Loan_Syndication__c</referenceTo>
-        <relationshipLabel>Contacts</relationshipLabel>
-        <relationshipName>Contacts</relationshipName>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>ClickToDial__Click_to_Call_Mobile__c</fullName>
         <deprecated>false</deprecated>
         <description>You must dial + then the country code and number you wish to call. Example: +12125551313.

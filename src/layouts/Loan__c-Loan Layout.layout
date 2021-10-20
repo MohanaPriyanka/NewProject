@@ -241,10 +241,6 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>Last_Due_Date_Paid__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
                 <field>Number_of_Days_Outstanding__c</field>
             </layoutItems>
             <layoutItems>

@@ -347,10 +347,6 @@
                 <field>First_Payment_Due_Date__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Last_Due_Date_Paid__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Number_of_Days_Past_Due__c</field>
             </layoutItems>

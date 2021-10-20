@@ -19714,11 +19714,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Contact.Capital_Raising__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Contact.ClickToDial__Click_to_Call_Mobile__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -26910,11 +26905,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Interest_Ratee__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Loan__c.Last_Due_Date_Paid__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
