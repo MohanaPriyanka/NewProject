@@ -287,16 +287,6 @@
     <description>Gives visibility to general PCR fields used in Community Solar, namely FICO on PCR, Lead and Opportunity</description>
     <fieldPermissions>
         <editable>false</editable>
-        <field>LASERCA__Personal_Credit_Report__c.Approval_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>LASERCA__Personal_Credit_Report__c.Credit_Score_Integer_2__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.Credit_Score_Integer__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -318,31 +308,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Name__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>LASERCA__Personal_Credit_Report__c.Last_Name_from_Lead__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>LASERCA__Personal_Credit_Report__c.Lead_from_Contact__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>LASERCA__Personal_Credit_Report__c.Opportunity__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>LASERCA__Personal_Credit_Report__c.PCR_Lead_ID__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>LASERCA__Personal_Credit_Report__c.Product_Line__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
