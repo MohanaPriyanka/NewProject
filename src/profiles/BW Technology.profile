@@ -25237,11 +25237,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Lead.Average_Debt_to_Income_After__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Lead.Average_FICO__c</field>
         <readable>true</readable>
     </fieldPermissions>

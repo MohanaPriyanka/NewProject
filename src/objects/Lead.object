@@ -998,35 +998,6 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Average_Debt_to_Income_After__c</fullName>
-        <description>Previously
-IF(Personal_Credit_Report_Co_Applicant__c == null, null, 
-((Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c + 
-Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c + 
-Personal_Credit_Report__r.LASERCA__Lead__r.Monthly_Payment__c) / ((Annual_Income_Currency__c + Co_Applicant_Income__c)/12)))</description>
-        <externalId>false</externalId>
-        <formula>IF( NOT(ISBLANK(Personal_Credit_Report__r.Adjusted_DTI__c)),
-    Personal_Credit_Report__r.Adjusted_DTI__c,
-    IF (NOT(ISBLANK( Personal_Credit_Report_Co_Applicant__c )),
-        (( Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c +
-           Personal_Credit_Report_Co_Applicant__r.Adjusted_Monthly_Personal_Debt__c +
-           Monthly_Payment__c ) / 
-         ( BLANKVALUE(Personal_Credit_Report__r.Adjusted_Income__c/12, BLANKVALUE(Annual_Income_Currency__c/12,0)) +
-           BLANKVALUE(Personal_Credit_Report_Co_Applicant__r.Adjusted_Income__c/12, BLANKVALUE(CoApplicant_Contact__r.Income__c/12,0) ))),
-        (( Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c +
-           Monthly_Payment__c ) / 
-         ( BLANKVALUE(Personal_Credit_Report__r.Adjusted_Income__c/12, BLANKVALUE(Annual_Income_Currency__c/12,0)) ))))</formula>
-        <inlineHelpText>Calculated DTI after for individual and joint applications taking income adjustments into consideration.</inlineHelpText>
-        <label>Combined DTI After</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>4</scale>
-        <securityClassification>Restricted</securityClassification>
-        <trackHistory>false</trackHistory>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Average_FICO__c</fullName>
         <businessStatus>Active</businessStatus>
         <externalId>false</externalId>
