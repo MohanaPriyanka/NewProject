@@ -28,7 +28,6 @@ public without sharing class UtilityAccountSubscriptionHandler {
 
     public void afterInsert() {
         ClientReportingService.insertClientUAS(newList);
-        subscriptionManagementService.insertSubscriptionOrdersForTests(newList);
         new SystemCapacityRollupCalculator(new UASCapacityRollupInitializer(oldMap, newList, triggerType)).performRollup();
     }
 

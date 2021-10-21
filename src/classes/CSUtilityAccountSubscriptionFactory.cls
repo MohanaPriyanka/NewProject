@@ -70,8 +70,7 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
                         Name_on_Account__c = ual.Name_on_Account__c,
                         Opportunity__c = opp.Id,
                         Utility_Account_Log__c = ual.Id,
-                        UAS_Number__c = uasNumberCounter,
-                        Annual_kwh_subscription_future__c = annualElectricityCapacityAssigned
+                        UAS_Number__c = uasNumberCounter
                     );
                     uow.registerNew(uas, Utility_Account_Subscription__c.Opportunity__c, opp);
                     populateSizingMethod(ual, uas, sssSubscription);
@@ -103,8 +102,7 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
                         Annual_Cost_of_Electricity__c = ual.Annual_Cost_of_Electricity__c,
                         Utility_Account_Log__c = ual.Id,
                         UAS_Number__c = uasNumberCounter,
-                        calculated_annual_cost_of_electricity__c = annualElectricityCostAssigned,
-                        Subscribed_Annual_Cost_of_Electricity__c = annualElectricityCostAssigned
+                        calculated_annual_cost_of_electricity__c = annualElectricityCostAssigned
                     );
                     uow.registerNew(uas, Utility_Account_Subscription__c.Opportunity__c, opp);
                     populateSizingMethod(ual, uas, sssSubscription);
@@ -114,7 +112,7 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
             }
         }
     }
-
+    @TestVisible
     private static void createSOByCapacity(Utility_Account_Subscription__c uas, Decimal annualElectricityCapacityAssigned, fflib_SObjectUnitOfWork uow) {
         Subscription_Order__c so = new Subscription_Order__c(
             Type__c = 'Initial',
@@ -125,6 +123,7 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
         uow.registerNew(so, Subscription_Order__c.Utility_Account_Subscription__c, uas);
     }
 
+    @TestVisible
     private static void createSOByCost(Utility_Account_Subscription__c uas, Decimal annualElectricityCostAssigned, fflib_SObjectUnitOfWork uow) {
         Subscription_Order__c so = new Subscription_Order__c(
             Type__c = 'Initial',

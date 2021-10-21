@@ -915,8 +915,6 @@ public without sharing class CSRecordLoader implements Queueable {
             Sizing_Method__c = opportunity1.NMC_Tariff__c,
             Next_Schedule_Z_Status__c = 'Active Subscription',
             calculated_annual_cost_of_electricity__c = 1400,
-            Subscribed_Annual_Cost_of_Electricity__c = 1400,
-            Annual_kwh_subscription_future__c  = subscription*1300,
             CreatedDate = csDataDate
         );
         uow.registerNew(uas1);

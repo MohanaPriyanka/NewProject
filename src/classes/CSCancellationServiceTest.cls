@@ -647,8 +647,7 @@ public with sharing class CSCancellationServiceTest {
     @IsTest static void testOppCancellationOnBillingCompletionWithActiveUAS() {
         List<Utility_Account_Subscription__c> uases = [
             SELECT Id, Name, Utility_Account_Log__c, Opportunity__c, Next_Schedule_Z_Status__c,
-                Annual_kwh_subscription_future__c, calculated_annual_cost_of_electricity__c, Subscribed_Annual_Cost_of_Electricity__c,
-                Sizing_Method__c
+                calculated_annual_cost_of_electricity__c, Sizing_Method__c
             FROM Utility_Account_Subscription__c
             WHERE Name = '0000234'
         ];
@@ -805,7 +804,7 @@ public with sharing class CSCancellationServiceTest {
         Util.disableTrigger('Disable_Client_Objects_Trigger__c');
         List<Utility_Account_Subscription__c> uases = [
             SELECT Id, Name, Utility_Account_Log__c, Opportunity__c, Next_Schedule_Z_Status__c,
-                Annual_kwh_subscription_future__c, calculated_annual_cost_of_electricity__c, Subscribed_Annual_Cost_of_Electricity__c
+                calculated_annual_cost_of_electricity__c
             FROM Utility_Account_Subscription__c
         ];
         List<Utility_Account_Subscription__c> newUASes = uases.deepClone();
@@ -1008,9 +1007,7 @@ public with sharing class CSCancellationServiceTest {
                 Opportunity__c = opportunityFour.Id,
                 Sizing_Method__c = sss1.Utility_NMC_Tariff__c,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
-                Annual_kwh_subscription_future__c = 4000,
-                calculated_annual_cost_of_electricity__c = 4000,
-                Subscribed_Annual_Cost_of_Electricity__c = 4000);
+                calculated_annual_cost_of_electricity__c = 4000);
         insert uasFour;
 
         Schedule_Z_Subscription__c newSubscription = new Schedule_Z_Subscription__c(
@@ -1675,8 +1672,7 @@ public with sharing class CSCancellationServiceTest {
 
         Utility_Account_Subscription__c uas = [
             SELECT Id, Name, Utility_Account_Log__c, Opportunity__c, Next_Schedule_Z_Status__c,
-                Annual_kwh_subscription_future__c, calculated_annual_cost_of_electricity__c, Subscribed_Annual_Cost_of_Electricity__c,
-                Sizing_Method__c
+                calculated_annual_cost_of_electricity__c, Sizing_Method__c
             FROM Utility_Account_Subscription__c
             WHERE Opportunity__c = :opportunity.Id
             LIMIT 1
@@ -1684,6 +1680,7 @@ public with sharing class CSCancellationServiceTest {
         Utility_Account_Subscription__c newUAS = uas.clone(false);
         newUAS.Opportunity__c = newOpp.Id;
         insert newUAS;
+        TestSOCreator.createByCost(newUAS, 4000);
 
         Map<Account, Map<String, String>> accountCancellationTextMap =
             CSCancellationService.accountToCancellationParagraphs(UASSelector.selectUASesByAccounts(new Set<Id>{
@@ -1719,8 +1716,7 @@ public with sharing class CSCancellationServiceTest {
 
         Utility_Account_Subscription__c uas = [
             SELECT Id, Name, Utility_Account_Log__c, Opportunity__c, Next_Schedule_Z_Status__c,
-                Annual_kwh_subscription_future__c, calculated_annual_cost_of_electricity__c, Subscribed_Annual_Cost_of_Electricity__c,
-                Sizing_Method__c
+                calculated_annual_cost_of_electricity__c, Sizing_Method__c
             FROM Utility_Account_Subscription__c
             WHERE Opportunity__c = :opportunity.Id
             LIMIT 1

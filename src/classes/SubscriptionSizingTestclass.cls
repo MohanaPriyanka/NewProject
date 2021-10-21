@@ -280,8 +280,7 @@ public with sharing class SubscriptionSizingTestclass {
             Utility_Account_Log__c = ualA.Id,
             Opportunity__c = opportunityA.Id,
             Sizing_Method__c = kwhSizingMethodR1.Id,
-            Next_Schedule_Z_Status__c = 'Active Subscription',
-            Annual_kwh_subscription_future__c = 7587
+            Next_Schedule_Z_Status__c = 'Active Subscription'
         );
 
         Utility_Account_Subscription__c uasB = new Utility_Account_Subscription__c(
@@ -289,8 +288,7 @@ public with sharing class SubscriptionSizingTestclass {
             Utility_Account_Log__c = ualB.Id,
             Opportunity__c =  opportunityB.Id,
             Sizing_Method__c = kwhSizingMethodR1.Id,
-            Next_Schedule_Z_Status__c = 'Active Subscription',
-            Annual_kwh_subscription_future__c = 14345
+            Next_Schedule_Z_Status__c = 'Active Subscription'
         );
 
         Utility_Account_Subscription__c uasB2 = new Utility_Account_Subscription__c(
@@ -298,8 +296,7 @@ public with sharing class SubscriptionSizingTestclass {
             Utility_Account_Log__c = ualB.Id,
             Opportunity__c =  opportunityB.Id,
             Sizing_Method__c = kwhSizingMethodR1.Id,
-            Next_Schedule_Z_Status__c = 'Active Subscription',
-            Annual_kwh_subscription_future__c = 5000
+            Next_Schedule_Z_Status__c = 'Active Subscription'
         );
 
         Utility_Account_Subscription__c uasC = new Utility_Account_Subscription__c(
@@ -307,8 +304,7 @@ public with sharing class SubscriptionSizingTestclass {
             Utility_Account_Log__c = ualC.Id,
             Opportunity__c = opportunityC.Id,
             Sizing_Method__c = costSizingMethod.Id,
-            Next_Schedule_Z_Status__c = 'Active Subscription',
-            Subscribed_Annual_Cost_of_Electricity__c = 5889
+            Next_Schedule_Z_Status__c = 'Active Subscription'
         );
 
         Utility_Account_Subscription__c uasD = new Utility_Account_Subscription__c(
@@ -316,11 +312,18 @@ public with sharing class SubscriptionSizingTestclass {
             Utility_Account_Log__c = ualD.Id,
             Opportunity__c = opportunityD.Id,
             Sizing_Method__c = costSizingMethod.Id,
-            Next_Schedule_Z_Status__c = 'Active Subscription',
-            Subscribed_Annual_Cost_of_Electricity__c = 720.75
+            Next_Schedule_Z_Status__c = 'Active Subscription'
         );
 
-        insert new List<Utility_Account_Subscription__c> {uasA, uasB, uasB2, uasC, uasD};
+        List<Utility_Account_Subscription__c> uasList = new List<Utility_Account_Subscription__c> {uasA, uasB, uasB2, uasC, uasD};
+
+        insert uasList;
+        TestSOCreator.registerByCapacity(uasA, 7587);
+        TestSOCreator.registerByCapacity(uasB, 14345);
+        TestSOCreator.registerByCapacity(uasB2, 5000);
+        TestSOCreator.registerByCost(uasC, 5889);
+        TestSOCreator.registerByCost(uasD, 720.75);
+        TestSOCreator.commitWork();
     }
 
     @IsTest
@@ -515,7 +518,7 @@ public with sharing class SubscriptionSizingTestclass {
         List<InvocableSizingMethodRecalculation.UAStoUpdateInfo> uasInfo =
             new List<InvocableSizingMethodRecalculation.UAStoUpdateInfo>();
         uasInfo.add(testInfo);
-        
+
         InvocableSizingMethodRecalculation.recalculateSubscriptionWithSizingMethod(uasInfo);
         Test.stopTest();
 
@@ -633,7 +636,7 @@ public with sharing class SubscriptionSizingTestclass {
             FROM Opportunity
             WHERE AccountId = :propertyAccount.Id
         ];
-        
+
         System.assertEquals(2, convertedOpps.size());
         Test.stopTest();
 
@@ -655,7 +658,7 @@ public with sharing class SubscriptionSizingTestclass {
                 System.assertEquals(25.0776, uas.Future_Customer_Subscription_KWDC_Rollup__c);
             }
         }
-    
+
 
         List<Subscription_Order__c> sOrders = [
             SELECT Id, Utility_NMC_Tariff__c, Size_Ratio__c, Utility_Account_Subscription__c, Utility_NMC_Tariff__r.Size_Ratio__c,
@@ -665,7 +668,7 @@ public with sharing class SubscriptionSizingTestclass {
             WHERE Utility_Account_Subscription__r.Utility_Account_Log__c = :ual.Id
         ];
 
-        
+
         System.assertEquals(2, sOrders.size());
         for (Subscription_Order__c so : sOrders) {
             System.assertEquals(so.Utility_Account_Subscription__r.Sizing_Method__c, so.Utility_NMC_Tariff__c,

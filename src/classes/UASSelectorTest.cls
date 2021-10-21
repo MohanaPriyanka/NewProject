@@ -21,6 +21,7 @@ public with sharing class UASSelectorTest {
         Test.loadData(Opportunity.SObjectType, 'TestCSOpportunity');
         Util.enableAllTriggers();
         Test.loadData(Utility_Account_Subscription__c.SObjectType, 'TestCSUtilityAccountSubscription');
+        Test.loadData(Subscription_Order__c.SObjectType, 'TestCSSubscriptionOrder');
     }
     @IsTest public static void testSelectByAccounts() {
         Set<Id> accountIds = (new Map<Id, Account>([SELECT Id FROM Account])).keySet();
