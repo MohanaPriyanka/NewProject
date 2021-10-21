@@ -141,32 +141,27 @@ public with sharing class SubscriptionTransferServiceTest {
                 Utility_Account_Log__c = ualog1.Id,
                 Opportunity__c = opportunityOne.Id,
                 Sizing_Method__c = everbillNMC.Id,
-                Next_Schedule_Z_Status__c = 'Active Subscription',
-                Annual_kwh_subscription_future__c = 4000,
-                calculated_annual_cost_of_electricity__c = 4000,
-                Subscribed_Annual_Cost_of_Electricity__c = 4000);
+                Next_Schedule_Z_Status__c = 'Active Subscription');
         // Future_Customer_Subscription_KWDC_Rollup__c = 2.747134
         Utility_Account_Subscription__c uasTwo =
             new Utility_Account_Subscription__c(Name = '0000236',
                 Utility_Account_Log__c = ualog2.Id,
                 Opportunity__c = opportunityOne.Id,
                 Sizing_Method__c = everbillNMC.Id,
-                Next_Schedule_Z_Status__c = 'Active Subscription',
-                Annual_kwh_subscription_future__c = 8000,
-                calculated_annual_cost_of_electricity__c = 8000,
-                Subscribed_Annual_Cost_of_Electricity__c = 8000);
+                Next_Schedule_Z_Status__c = 'Active Subscription');
         Utility_Account_Subscription__c uasThree =
             new Utility_Account_Subscription__c(Name = '0000238',
                 Utility_Account_Log__c = ualog3.Id,
                 Opportunity__c = opportunityThree.Id,
                 Sizing_Method__c = everbillNMC.Id,
-                Next_Schedule_Z_Status__c = 'Active Subscription',
-                Annual_kwh_subscription_future__c = 0,
-                calculated_annual_cost_of_electricity__c = 0,
-                Subscribed_Annual_Cost_of_Electricity__c = 0);
+                Next_Schedule_Z_Status__c = 'Active Subscription');
         insert new List<Utility_Account_Subscription__c>{
             uasOne, uasTwo, uasThree
         };
+        TestSOCreator.registerByCapacity(uasOne, 4000);
+        TestSOCreator.registerByCapacity(uasTwo, 8000);
+        TestSOCreator.registerByCapacity(uasThree, 0);
+        TestSOCreator.commitWork();
     }
 
     @IsTest

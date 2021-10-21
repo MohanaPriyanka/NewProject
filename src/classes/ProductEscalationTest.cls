@@ -61,6 +61,7 @@ public class ProductEscalationTest {
             Lender_of_Record__c = 'BlueWave',
             Solar_Electricity_Rate__c = 0.14,
             Annual_kWh_Maximum__c = 100000000,
+            Customer_Subscription_Type__c = 'Electricity Cost ($)',
             NM_Rate_Floor__c = 0,
             Pricing_Structure__c = 'Use Solar Electric Rate',
             Monthly_Late_Fee__c = 1);
@@ -275,8 +276,7 @@ public class ProductEscalationTest {
             Opportunity__c = opportunity1.Id,
             Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
-            Calculated_Annual_Cost_of_Electricity__c = 2402.4,
-            Subscribed_Annual_Cost_of_Electricity__c = 2402.4
+            Calculated_Annual_Cost_of_Electricity__c = 2402.4
         );
         Utility_Account_Subscription__c uas2 = new Utility_Account_Subscription__c(
             Name = '0000235',
@@ -284,8 +284,7 @@ public class ProductEscalationTest {
             Opportunity__c = opportunity2.Id,
             Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
-            Calculated_Annual_Cost_of_Electricity__c = 2402.4,
-            Subscribed_Annual_Cost_of_Electricity__c = 2402.4
+            Calculated_Annual_Cost_of_Electricity__c = 2402.4
         );
         Utility_Account_Subscription__c uas3 = new Utility_Account_Subscription__c(
             Name = '0000235',
@@ -293,8 +292,7 @@ public class ProductEscalationTest {
             Opportunity__c = opportunity3.Id,
             Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
-            Calculated_Annual_Cost_of_Electricity__c = 2402.4,
-            Subscribed_Annual_Cost_of_Electricity__c = 2402.4
+            Calculated_Annual_Cost_of_Electricity__c = 2402.4
         );
         Utility_Account_Subscription__c uas4 = new Utility_Account_Subscription__c(
             Name = '0000236',
@@ -302,8 +300,7 @@ public class ProductEscalationTest {
             Opportunity__c = opportunity4.Id,
             Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
-            Calculated_Annual_Cost_of_Electricity__c = 2402.4,
-            Subscribed_Annual_Cost_of_Electricity__c = 2402.4
+            Calculated_Annual_Cost_of_Electricity__c = 2402.4
         );
         Utility_Account_Subscription__c uas5 = new Utility_Account_Subscription__c(
             Name = '0000236',
@@ -311,8 +308,7 @@ public class ProductEscalationTest {
             Opportunity__c = opportunity5.Id,
             Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
-            Calculated_Annual_Cost_of_Electricity__c = 2402.4,
-            Subscribed_Annual_Cost_of_Electricity__c = 2402.4
+            Calculated_Annual_Cost_of_Electricity__c = 2402.4
         );
         Utility_Account_Subscription__c uas6 = new Utility_Account_Subscription__c(
             Name = '0000243',
@@ -320,13 +316,19 @@ public class ProductEscalationTest {
             Opportunity__c = opportunity6.Id,
             Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
-            Calculated_Annual_Cost_of_Electricity__c = 2402.4,
-            Subscribed_Annual_Cost_of_Electricity__c = 2402.4
+            Calculated_Annual_Cost_of_Electricity__c = 2402.4
         );
 
-        insert new List<Utility_Account_Subscription__c>{
+        List<Utility_Account_Subscription__c> listUAS = new List<Utility_Account_Subscription__c>{
             uas1, uas2, uas3, uas4, uas5, uas6
         };
+
+        insert listUAS;
+
+        for (Utility_Account_Subscription__c uas : listUAS) {
+            TestSOCreator.registerByCost(uas, 2402.4);
+        }
+        TestSOCreator.commitWork();
 
         Schedule_Z__c schZOne = new Schedule_Z__c(
             Name = '18-0515 Project A Oak Rd',

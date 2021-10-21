@@ -47,6 +47,7 @@ public class BillGenerationAndDeliveryServiceTest {
             NMC_Discount__c = 10,
             Annual_kWh_Maximum__c = 100000000,
             NM_Rate_Floor__c = 0,
+            Customer_Subscription_Type__c = 'Electricity Cost ($)',
             Monthly_Late_Fee__c = 1);
         insert new List<Product2>{
             normalCSProduct
@@ -360,100 +361,119 @@ public class BillGenerationAndDeliveryServiceTest {
             opportunity6, opportunity7, opportunity8, opportunity9, opportunity10
         };
 
+
         Utility_Account_Subscription__c uas1 = new Utility_Account_Subscription__c(
             Name = '0000234',
             Utility_Account_Log__c = ualog1.Id,
             Opportunity__c = opportunity1.Id,
             Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
-            Calculated_Annual_Cost_of_Electricity__c = 1400,
-            Subscribed_Annual_Cost_of_Electricity__c = 1400
+            Calculated_Annual_Cost_of_Electricity__c = 1400
         );
+
+
         Utility_Account_Subscription__c uas2 = new Utility_Account_Subscription__c(
             Name = '0000235',
             Utility_Account_Log__c = ualog2.Id,
             Opportunity__c = opportunity2.Id,
             Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
-            Calculated_Annual_Cost_of_Electricity__c = 1400,
-            Subscribed_Annual_Cost_of_Electricity__c = 1400
+            Calculated_Annual_Cost_of_Electricity__c = 1400
         );
+
+
         Utility_Account_Subscription__c uas3 = new Utility_Account_Subscription__c(
             Name = '0000236',
             Utility_Account_Log__c = ualog3.Id,
             Opportunity__c = opportunity3.Id,
             Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
-            Calculated_Annual_Cost_of_Electricity__c = 1400,
-            Subscribed_Annual_Cost_of_Electricity__c = 1400
+            Calculated_Annual_Cost_of_Electricity__c = 1400
         );
+
+
         Utility_Account_Subscription__c uas4 = new Utility_Account_Subscription__c(
             Name = '0000237',
             Utility_Account_Log__c = ualog4.Id,
             Opportunity__c = opportunity4.Id,
             Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
-            Calculated_Annual_Cost_of_Electricity__c = 1400,
-            Subscribed_Annual_Cost_of_Electricity__c = 1400
+            Calculated_Annual_Cost_of_Electricity__c = 1400
         );
+
+
         Utility_Account_Subscription__c uas5 = new Utility_Account_Subscription__c(
             Name = '0000238',
             Utility_Account_Log__c = ualog5.Id,
             Opportunity__c = opportunity5.Id,
             Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
-            Calculated_Annual_Cost_of_Electricity__c = 1400,
-            Subscribed_Annual_Cost_of_Electricity__c = 1400
+            Calculated_Annual_Cost_of_Electricity__c = 1400
         );
+
+
         Utility_Account_Subscription__c uas6 = new Utility_Account_Subscription__c(
             Name = '00002341',
             Utility_Account_Log__c = ualog1.Id,
             Opportunity__c = opportunity6.Id,
             Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
-            Calculated_Annual_Cost_of_Electricity__c = 1400,
-            Subscribed_Annual_Cost_of_Electricity__c = 1400
+            Calculated_Annual_Cost_of_Electricity__c = 1400
         );
+
+
         Utility_Account_Subscription__c uas7 = new Utility_Account_Subscription__c(
             Name = '00002351',
             Utility_Account_Log__c = ualog2.Id,
             Opportunity__c = opportunity7.Id,
             Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
-            Calculated_Annual_Cost_of_Electricity__c = 1400,
-            Subscribed_Annual_Cost_of_Electricity__c = 1400
+            Calculated_Annual_Cost_of_Electricity__c = 1400
         );
+
         Utility_Account_Subscription__c uas8 = new Utility_Account_Subscription__c(
             Name = '00002361',
             Utility_Account_Log__c = ualog3.Id,
             Opportunity__c = opportunity8.Id,
             Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
-            Calculated_Annual_Cost_of_Electricity__c = 1400,
-            Subscribed_Annual_Cost_of_Electricity__c = 1400
+            Calculated_Annual_Cost_of_Electricity__c = 1400
         );
+
         Utility_Account_Subscription__c uas9 = new Utility_Account_Subscription__c(
             Name = '0000242',
             Utility_Account_Log__c = ualog9.Id,
             Opportunity__c = opportunity9.Id,
             Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
-            Calculated_Annual_Cost_of_Electricity__c = 1400,
-            Subscribed_Annual_Cost_of_Electricity__c = 1400
+            Calculated_Annual_Cost_of_Electricity__c = 1400
         );
+
         Utility_Account_Subscription__c uas10 = new Utility_Account_Subscription__c(
             Name = '0000243',
             Utility_Account_Log__c = ualog10.Id,
             Opportunity__c = opportunity10.Id,
             Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
-            Calculated_Annual_Cost_of_Electricity__c = 1400,
-            Subscribed_Annual_Cost_of_Electricity__c = 1400
+            Calculated_Annual_Cost_of_Electricity__c = 1400
         );
 
-        insert new List<Utility_Account_Subscription__c>{
+        List<Utility_Account_Subscription__c> uasList = new List<Utility_Account_Subscription__c>{
             uas1, uas2, uas3, uas4, uas5, uas6, uas7, uas8, uas9, uas10
         };
+        insert uasList;
+
+        TestSOCreator.registerByCost(uas1, 1400);
+        TestSOCreator.registerByCost(uas2, 1400);
+        TestSOCreator.registerByCost(uas3, 1400);
+        TestSOCreator.registerByCost(uas4, 1400);
+        TestSOCreator.registerByCost(uas5, 1400);
+        TestSOCreator.registerByCost(uas6, 1400);
+        TestSOCreator.registerByCost(uas7, 1400);
+        TestSOCreator.registerByCost(uas8, 1400);
+        TestSOCreator.registerByCost(uas9, 1400);
+        TestSOCreator.registerByCost(uas10, 1400);
+        TestSOCreator.commitWork();
 
         Date thisMonth = Date.today();
         Date lastMonth = thisMonth.addMonths(-1);

@@ -8,7 +8,7 @@ public with sharing class ClientReportObjectSelector {
     @SuppressWarnings('PMD.ApexCRUDViolation')
     public static List<Client_Utility_Account_Subscription__c> getClientUASesByUASIds(Set<Id> uasIds) {
         return [
-            SELECT Id, Customer__c, Annual_Cost_of_Electricity_Future__c, Annual_kWh_Subscription_Future__c,
+            SELECT Id, Customer__c, Annual_Cost_of_Electricity_Future__c,
                 Utility_Account_Subscription__c, Utility_Account_Subscription__r.Next_Schedule_Z_Status__c,
                 Utility_Account_Subscription__r.Shared_Solar_System__c,
                 Utility_Account_Subscription__r.Shared_Solar_System__r.Name, Shared_Solar_System__c,
