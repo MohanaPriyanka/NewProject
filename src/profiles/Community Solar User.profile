@@ -33408,11 +33408,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>MCEC_Report_Data__c.Date_Contract_Signature_Disbursed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>MCEC_Report_Data__c.Date_Interconnection_Disbursed__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -33579,11 +33574,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Reason_for_Decline_2__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MCEC_Report_Data__c.Repayment_Period_MCEC__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -43062,11 +43052,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Product2.Loan_Capital_Pool__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>false</editable>
         <field>Product2.Loan_Date_Structure__c</field>
         <readable>false</readable>
@@ -44449,11 +44434,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Residential_Equipment__c.Auto_Reporting_to_PTS__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Residential_Equipment__c.Autopay__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>

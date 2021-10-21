@@ -75,17 +75,6 @@
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>Autopay__c</fullName>
-        <description>This is a formula that pulls from the loan. This information is dataloaded in with information from Lease Dimensions.</description>
-        <externalId>false</externalId>
-        <formula>Loan__r.Auto_Deduction_Payments__c</formula>
-        <inlineHelpText>This is a formula that pulls from the loan. This information is dataloaded in with information from Lease Dimensions.</inlineHelpText>
-        <label>Autopay</label>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>Billing_City__c</fullName>
         <externalId>false</externalId>
         <formula>Loan__r.Opportunity__r.City__c</formula>
@@ -1466,7 +1455,7 @@ null)</formula>
             </values>
         </picklistValues>
     </recordTypes>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>Read</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

@@ -289,19 +289,6 @@ if(isblank(Income_based_Loan_Support_Opportunity__c )=true, Income_based_Loan_Su
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>Date_Contract_Signature_Disbursed__c</fullName>
-        <description>This is a formula field that pulls from a field of the same name on the loan, which gets it&apos;s data from the Contract Signature Disbursal record.</description>
-        <externalId>false</externalId>
-        <formula>Loan__r.Date_Contract_Signature_Disbursed__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>This is a formula field that pulls from a field of the same name on the loan, which gets it&apos;s data from the Contract Signature Disbursal record.</inlineHelpText>
-        <label>Date Contract Signature Disbursed</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
         <fullName>Date_Interconnection_Disbursed__c</fullName>
         <description>Formula field that gets info from the disbursal record via the loan lookup field.</description>
         <externalId>false</externalId>
@@ -765,21 +752,6 @@ if(isblank( Opportunity_Partner__c )=true, Lead_Partner__c ,Opportunity_Partner_
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Repayment_Period_MCEC__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(
-AND(Loan__r.Total_Funds_Disbursed__c &gt;0, Loan__r.Total_Funds_Not_Yet_Disbursed__c =0),&quot;In Payment - Full Term Period&quot;,
-IF(
-AND(Loan__r.Total_Funds_Disbursed__c &gt;0, Loan__r.Total_Funds_Not_Yet_Disbursed__c !=0),&quot;In Payment - Interest Only Period&quot;,&quot;Null&quot;))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Repayment Period MCEC</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Security_Type_Lead__c</fullName>
         <externalId>false</externalId>
         <formula>Lead__r.Security_Type__c</formula>
@@ -959,7 +931,7 @@ if(isblank(  MCEC_Status_Opportunity__c  )=true,  MCEC_Status_Lead__c ,MCEC_Stat
         <type>Text</type>
     </nameField>
     <pluralLabel>Loan Pipeline Report Data</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>
