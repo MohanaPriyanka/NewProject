@@ -25773,11 +25773,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Energy_Usage_Update__c.Residential_Equipment__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Energy_Usage_Update__c.Revenue_Minus_10_Discount__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -30999,16 +30994,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.MA_Household_Median_Income__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Lead.MCEC_Reporting_Object__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Lead.MCEC_Status_Last_Modified__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -42134,11 +42119,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Partner__c.Total_Funds_Disbursed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Partner__c.Total_Funds_Not_Disbursed__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>

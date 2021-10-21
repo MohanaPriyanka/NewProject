@@ -836,22 +836,6 @@
         <type>Summary</type>
     </fields>
     <fields>
-        <fullName>Total_Funds_Not_Disbursed__c</fullName>
-        <externalId>false</externalId>
-        <label>Total Funds Not Disbursed</label>
-        <summarizedField>Disbursal__c.Amount__c</summarizedField>
-        <summaryFilterItems>
-            <field>Disbursal__c.Status__c</field>
-            <operation>notEqual</operation>
-            <value>Disbursed</value>
-        </summaryFilterItems>
-        <summaryForeignKey>Disbursal__c.Partner__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
-    </fields>
-    <fields>
         <fullName>Total_Leads__c</fullName>
         <externalId>false</externalId>
         <label>Total Leads</label>
