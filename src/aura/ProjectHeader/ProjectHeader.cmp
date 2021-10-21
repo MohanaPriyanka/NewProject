@@ -2,5 +2,5 @@
  - Created by SarahRenfro on 7/25/2019.
  -->
 
-<aura:component>
+<aura:component description="ProjectHeader" implements="forceCommunity:availableForAllPageTypes,force:hasRecordId">
 </aura:component>

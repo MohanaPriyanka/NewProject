@@ -2,5 +2,5 @@
  - Created by SarahRenfro on 7/25/2019.
  -->
 
-<aura:component>
+<aura:component description="ProjectFooter" implements="forceCommunity:availableForAllPageTypes">
 </aura:component>
