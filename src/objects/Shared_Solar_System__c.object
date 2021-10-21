@@ -1207,10 +1207,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
    BWC_Project_Entity_Manual__r.Payment_Gateway__r.Name,
    IF(NOT(ISBLANK( Client_Account__r.Payment_Gateway__c )),
       Client_Account__r.Payment_Gateway__r.Name,
-      IF(NOT(UCB__c),
-         &apos;Error: Set Payment Gateway on Client Account&apos;,
-         NULL
-      )
+      NULL
    )
 )</formula>
         <inlineHelpText>Name on the Entity&apos;s Payment Gateway Override, otherwise the Client Account&apos;s Payment Gateway</inlineHelpText>
