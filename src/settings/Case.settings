@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CaseSettings xmlns="http://soap.sforce.com/2006/04/metadata">
-    <caseAssignNotificationTemplate>Emails_to_Delete/SUPPORTNewassignmentnotificationSAMPLE</caseAssignNotificationTemplate>
+    <caseAssignNotificationTemplate>BFG_Internal_Alerts/SUPPORTNewassignmentnotificationSAMPLE</caseAssignNotificationTemplate>
     <caseAutoProcUser>false</caseAutoProcUser>
-    <caseCloseNotificationTemplate>Emails_to_Delete/SUPPORTCaseResponsewithSolutionSAMPLE</caseCloseNotificationTemplate>
-    <caseCreateNotificationTemplate>Emails_to_Delete/SUPPORTWebtoCaseemailresponseSAMPLE</caseCreateNotificationTemplate>
+    <caseCloseNotificationTemplate>BFG_Internal_Alerts/SUPPORTCaseResponsewithSolutionSAMPLE</caseCloseNotificationTemplate>
+    <caseCreateNotificationTemplate>BFG_Internal_Alerts/SUPPORTWebtoCaseemailresponseSAMPLE</caseCreateNotificationTemplate>
     <caseFeedItemSettings>
         <characterLimit>400</characterLimit>
         <displayFormat>Default</displayFormat>
@@ -80,6 +80,62 @@
         <routingAddresses>
             <addressType>EmailToCase</addressType>
             <caseOrigin>Email</caseOrigin>
+            <caseOwner>Anchor_Support</caseOwner>
+            <caseOwnerType>Queue</caseOwnerType>
+            <casePriority>Medium</casePriority>
+            <createTask>true</createTask>
+            <emailAddress>anchorsupport@perchenergy.com</emailAddress>
+            <emailServicesAddress>anchorsupport@x-10yykco8g2yywjrnct5yzvgs43fx0iel791hfk9t53cqfr8hrb.7j-4xv8eam.cs203.case.sandbox.salesforce.com</emailServicesAddress>
+            <isVerified>false</isVerified>
+            <routingName>Perch Anchor Support</routingName>
+            <saveEmailHeaders>true</saveEmailHeaders>
+            <taskStatus>New</taskStatus>
+        </routingAddresses>
+        <routingAddresses>
+            <addressType>EmailToCase</addressType>
+            <caseOrigin>Email</caseOrigin>
+            <caseOwner>Product_Support</caseOwner>
+            <caseOwnerType>Queue</caseOwnerType>
+            <casePriority>Medium</casePriority>
+            <createTask>true</createTask>
+            <emailAddress>cssupport@perchenergy.com</emailAddress>
+            <emailServicesAddress>cssupport@z-1ed5z8lryxouh2j6e9vc8ku15w2t2mql5cz9pv3yah3enopec9.7j-4xv8eam.cs203.case.sandbox.salesforce.com</emailServicesAddress>
+            <isVerified>false</isVerified>
+            <routingName>Perch BizApps Support</routingName>
+            <saveEmailHeaders>true</saveEmailHeaders>
+            <taskStatus>New</taskStatus>
+        </routingAddresses>
+        <routingAddresses>
+            <addressType>EmailToCase</addressType>
+            <caseOrigin>Email</caseOrigin>
+            <caseOwner>Customer_Care</caseOwner>
+            <caseOwnerType>Queue</caseOwnerType>
+            <casePriority>Medium</casePriority>
+            <createTask>true</createTask>
+            <emailAddress>customercare@perchenergy.com</emailAddress>
+            <emailServicesAddress>customercare@5-35nh9mlgqqk35k0pygs2dnb9x0pdy5ytqohwpyt2vhlgt2w95x.7j-4xv8eam.cs203.case.sandbox.salesforce.com</emailServicesAddress>
+            <isVerified>false</isVerified>
+            <routingName>Perch Customer Care</routingName>
+            <saveEmailHeaders>true</saveEmailHeaders>
+            <taskStatus>New</taskStatus>
+        </routingAddresses>
+        <routingAddresses>
+            <addressType>EmailToCase</addressType>
+            <caseOrigin>Email</caseOrigin>
+            <caseOwner>Partner_Support</caseOwner>
+            <caseOwnerType>Queue</caseOwnerType>
+            <casePriority>Medium</casePriority>
+            <createTask>true</createTask>
+            <emailAddress>partnersupport@perchenergy.com</emailAddress>
+            <emailServicesAddress>partnersupport@5-2mn4exxja69hvfmu0gqsfu1dkongsx5gknx2jv8b4n1i50exnn.7j-4xv8eam.cs203.case.sandbox.salesforce.com</emailServicesAddress>
+            <isVerified>false</isVerified>
+            <routingName>Perch Partner Support</routingName>
+            <saveEmailHeaders>true</saveEmailHeaders>
+            <taskStatus>New</taskStatus>
+        </routingAddresses>
+        <routingAddresses>
+            <addressType>EmailToCase</addressType>
+            <caseOrigin>Email</caseOrigin>
             <caseOwner>Product_Support</caseOwner>
             <caseOwnerType>Queue</caseOwnerType>
             <casePriority>Medium</casePriority>
@@ -99,6 +155,12 @@
     <enableEscalateQfiToCaseInternal>false</enableEscalateQfiToCaseInternal>
     <enableEscalateQfiToCaseNetworks>false</enableEscalateQfiToCaseNetworks>
     <enableExtNetworksCaseFeedEnabled>false</enableExtNetworksCaseFeedEnabled>
+    <enableMultiLangSolnSrchCSS>false</enableMultiLangSolnSrchCSS>
+    <enableMultiLangSolnSrchPKB>false</enableMultiLangSolnSrchPKB>
+    <enableMultiLangSolution>false</enableMultiLangSolution>
+    <enableSolutionCategory>false</enableSolutionCategory>
+    <enableSolutionInlineCategory>true</enableSolutionInlineCategory>
+    <enableSolutionShortSummary>true</enableSolutionShortSummary>
     <enableSuggestedArticlesApplication>true</enableSuggestedArticlesApplication>
     <enableSuggestedArticlesCustomerPortal>false</enableSuggestedArticlesCustomerPortal>
     <enableSuggestedArticlesPartnerPortal>false</enableSuggestedArticlesPartnerPortal>
