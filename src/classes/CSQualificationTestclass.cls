@@ -200,18 +200,14 @@ public class CSQualificationTestclass {
 
         Lead checkLead = [
             SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c,
-
                 Moody_s_Risk_Calc__c, Unqualified_due_to_FICO__c
-
             FROM Lead
             WHERE Id = :lead.Id
         ];
         System.assertEquals('Unqualified', checkLead.Status, 'Lead status should be unqualified');
         System.assertNotEquals(null, checkLead.Personal_Credit_Report__c, 'Lead should have an attached personal credit report');
         System.assertEquals('700', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score__c, 'Credit score on lead personal credit report should be 700');
-
         System.assertEquals(false, checkLead.Unqualified_due_to_FICO__c, 'Lead should not be unqualified due to FICO');
-
     }
 
     @IsTest
@@ -240,9 +236,7 @@ public class CSQualificationTestclass {
 
         Lead checkLead = [
             SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c,
-
                 Moody_s_Risk_Calc__c, Unqualified_due_to_FICO__c
-
             FROM Lead
             WHERE Id = :lead.Id
         ];
@@ -295,10 +289,8 @@ public class CSQualificationTestclass {
         Test.stopTest();
 
         Lead checkLead = [
-
             SELECT Id, Status, Personal_Credit_Report__c, Personal_Credit_Report__r.LASERCA__Credit_Score__c, Moody_s_Risk_Calc__c,
                 Unqualified_due_to_FICO__c
-
             FROM Lead
             WHERE Id = :lead.Id
         ];

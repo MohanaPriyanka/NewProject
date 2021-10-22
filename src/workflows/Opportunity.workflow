@@ -307,6 +307,20 @@ IF(MOD(YEAR(Commencement_Date__c) + FLOOR((MONTH(Commencement_Date__c) + 1)/12),
         <language>en_US</language>
         <protected>false</protected>
     </flowActions>
+    <rules>
+        <fullName>Interest Only Start Date</fullName>
+        <actions>
+            <name>Interest_Only_Start_Date_Opp</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Opportunity.Interest_Only_Period__c</field>
+            <operation>greaterThan</operation>
+            <value>0</value>
+        </criteriaItems>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
     <tasks>
         <fullName>EMAIL_LOG_60_Disbursal_for_Non_MA_States</fullName>
         <assignedTo>api@bluewavesolar.com</assignedTo>
