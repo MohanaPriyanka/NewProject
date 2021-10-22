@@ -675,36 +675,6 @@
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Loan_Partner_Sequence__c</fullName>
-        <description>SLPCustomerPageHandler</description>
-        <externalId>false</externalId>
-        <label>Loan Partner Sequence</label>
-        <precision>5</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Loan_Sale__c</fullName>
-        <defaultValue>false</defaultValue>
-        <description>Loan Sale</description>
-        <externalId>false</externalId>
-        <label>Loan Sale</label>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Loan__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Loan</label>
-        <referenceTo>Loan__c</referenceTo>
-        <relationshipLabel>Activities</relationshipLabel>
-        <relationshipName>Tasks</relationshipName>
-        <required>false</required>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>MPM4_BASE__Project_Task_ID__c</fullName>
         <deprecated>false</deprecated>
         <externalId>true</externalId>

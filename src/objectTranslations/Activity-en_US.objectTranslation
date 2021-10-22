@@ -1,1116 +1,1098 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
     <fields>
-        <label><!-- Actual Complete Date --></label>
+        <label></label>
         <name>Actual_Complete_Date__c</name>
     </fields>
     <fields>
-        <label><!-- Anticpated Complete Date --></label>
+        <label></label>
         <name>Anticipated_Complete_Date__c</name>
     </fields>
     <fields>
-        <label><!-- Application Status --></label>
+        <label></label>
         <name>Application_Status__c</name>
     </fields>
     <fields>
-        <label><!-- Assignee if Different --></label>
+        <label></label>
         <name>Assignee_if_Different__c</name>
         <picklistValues>
             <masterLabel>Alex Schulte</masterLabel>
-            <translation><!-- Alex Schulte --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Allison Rand</masterLabel>
-            <translation><!-- Allison Rand --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Aly Garvin</masterLabel>
-            <translation><!-- Aly Garvin --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Chris Gosline</masterLabel>
-            <translation><!-- Chris Gosline --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Dean Smithyman</masterLabel>
-            <translation><!-- Dean Smithyman --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Jennifer Matchett</masterLabel>
-            <translation><!-- Jennifer Matchett --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Jordan Pentaleri</masterLabel>
-            <translation><!-- Jordan Pentaleri --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Lee-Anne Roodt</masterLabel>
-            <translation><!-- Lee-Anne Roodt --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Lucy Alexander</masterLabel>
-            <translation><!-- Lucy Alexander --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Olivia Love</masterLabel>
-            <translation><!-- Olivia Love --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Reg Schonborn</masterLabel>
-            <translation><!-- Reg Schonborn --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Trevor Lennox</masterLabel>
-            <translation><!-- Trevor Lennox --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Vanessa Coloma</masterLabel>
-            <translation><!-- Vanessa Coloma --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Wells Howe</masterLabel>
-            <translation><!-- Wells Howe --></translation>
+            <translation></translation>
         </picklistValues>
     </fields>
     <fields>
-        <label><!-- Barrett Billing Blitz --></label>
+        <label></label>
         <name>Barrett_Billing_Blitz__c</name>
     </fields>
     <fields>
-        <label><!-- Call Duration in Minutes --></label>
+        <label></label>
         <name>Call_Duration_in_Minutes__c</name>
     </fields>
     <fields>
-        <label><!-- Cancellation --></label>
+        <label></label>
         <name>Cancellation__c</name>
     </fields>
     <fields>
-        <label><!-- Case --></label>
+        <label></label>
         <name>Case__c</name>
-        <relationshipLabel><!-- Activities --></relationshipLabel>
+        <relationshipLabel></relationshipLabel>
     </fields>
     <fields>
-        <label><!-- Category --></label>
+        <label></label>
         <name>Category__c</name>
         <picklistValues>
             <masterLabel>Accounting - ERP System Implementation</masterLabel>
-            <translation><!-- Accounting - ERP System Implementation --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Accounting - Executive Request</masterLabel>
-            <translation><!-- Accounting - Executive Request --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Accounting - Financial Tracking &amp; Reporting</masterLabel>
-            <translation><!-- Accounting - Financial Tracking &amp; Reporting --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Accounting - HR Policy</masterLabel>
-            <translation><!-- Accounting - HR Policy --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Accounting - IT Support</masterLabel>
-            <translation><!-- Accounting - IT Support --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Accounting - Legacy Clean-up</masterLabel>
-            <translation><!-- Accounting - Legacy Clean-up --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Business Development - Community Solar</masterLabel>
-            <translation><!-- Business Development - Community Solar --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Business Development - Executive Request</masterLabel>
-            <translation><!-- Business Development - Executive Request --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Business Development - Large offtake &amp; anchor</masterLabel>
-            <translation><!-- Business Development - Large offtake &amp; anchor --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Business Development - Residential Loan</masterLabel>
-            <translation><!-- Business Development - Residential Loan --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Executive - Business Development</masterLabel>
-            <translation><!-- Executive - Business Development --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Executive - Corporate Finance &amp; Accounting</masterLabel>
-            <translation><!-- Executive - Corporate Finance &amp; Accounting --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Executive - Development</masterLabel>
-            <translation><!-- Executive - Development --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Executive - External Affairs</masterLabel>
-            <translation><!-- Executive - External Affairs --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Executive - General Executive</masterLabel>
-            <translation><!-- Executive - General Executive --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Executive - Operations</masterLabel>
-            <translation><!-- Executive - Operations --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Executive - Project &amp; Platform Finance</masterLabel>
-            <translation><!-- Executive - Project &amp; Platform Finance --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>External Affairs - B-Corp</masterLabel>
-            <translation><!-- External Affairs - B-Corp --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>External Affairs - Community Service</masterLabel>
-            <translation><!-- External Affairs - Community Service --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>External Affairs - Conferences/Events</masterLabel>
-            <translation><!-- External Affairs - Conferences/Events --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>External Affairs - Executive Request</masterLabel>
-            <translation><!-- External Affairs - Executive Request --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>External Affairs - Government / Regulatory Affairs</masterLabel>
-            <translation><!-- External Affairs - Government / Regulatory Affairs --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>External Affairs - Newsletters</masterLabel>
-            <translation><!-- External Affairs - Newsletters --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>External Affairs - Press Releases</masterLabel>
-            <translation><!-- External Affairs - Press Releases --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>External Affairs - Social Media</masterLabel>
-            <translation><!-- External Affairs - Social Media --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>External Affairs - Team Support</masterLabel>
-            <translation><!-- External Affairs - Team Support --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Marketing</masterLabel>
-            <translation><!-- Marketing --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Operations</masterLabel>
-            <translation><!-- Operations --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Operations - Business Operations</masterLabel>
-            <translation><!-- Operations - Business Operations --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Operations - Executive Request</masterLabel>
-            <translation><!-- Operations - Executive Request --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Operations - Product Engineering</masterLabel>
-            <translation><!-- Operations - Product Engineering --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Operations - Product Marketing</masterLabel>
-            <translation><!-- Operations - Product Marketing --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Other</masterLabel>
-            <translation><!-- Other --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Partnership Relations</masterLabel>
-            <translation><!-- Partnership Relations --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Product Team</masterLabel>
-            <translation><!-- Product Team --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Project Finance - 1603 Compliance / Loan Support</masterLabel>
-            <translation><!-- Project Finance - 1603 Compliance / Loan Support --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Project Finance - BlueWave Capital Raising</masterLabel>
-            <translation><!-- Project Finance - BlueWave Capital Raising --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Project Finance - BlueWave Solar Loan Sales Process</masterLabel>
-            <translation><!-- Project Finance - BlueWave Solar Loan Sales Process --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Project Finance - Corporate Finance</masterLabel>
-            <translation><!-- Project Finance - Corporate Finance --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Project Finance - Debt Capital Markets / Structured Transactions</masterLabel>
-            <translation><!-- Project Finance - Debt Capital Markets / Structured Transactions --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Project Finance - Equity Capital Markets / Strategic Partnerships</masterLabel>
-            <translation><!-- Project Finance - Equity Capital Markets / Strategic Partnerships --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Project Finance - Executive Request</masterLabel>
-            <translation><!-- Project Finance - Executive Request --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Project Finance - Offtake Sales</masterLabel>
-            <translation><!-- Project Finance - Offtake Sales --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Project Finance - Platform Finance</masterLabel>
-            <translation><!-- Project Finance - Platform Finance --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Project Finance - Strategic Capital Raise</masterLabel>
-            <translation><!-- Project Finance - Strategic Capital Raise --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Project Management - Asset Management</masterLabel>
-            <translation><!-- Project Management - Asset Management --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Project Management - Construction</masterLabel>
-            <translation><!-- Project Management - Construction --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Project Management - Executive Request</masterLabel>
-            <translation><!-- Project Management - Executive Request --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Project Management - Interconnection</masterLabel>
-            <translation><!-- Project Management - Interconnection --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Project Management - Project Development</masterLabel>
-            <translation><!-- Project Management - Project Development --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Project Management - Site Acquisition</masterLabel>
-            <translation><!-- Project Management - Site Acquisition --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Project Management - Site Acquisition - Engagement</masterLabel>
-            <translation><!-- Project Management - Site Acquisition - Engagement --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Sales Operations - Executive Request</masterLabel>
-            <translation><!-- Sales Operations - Executive Request --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Sales Operations - Innovation</masterLabel>
-            <translation><!-- Sales Operations - Innovation --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Sales Operations - Partner Support</masterLabel>
-            <translation><!-- Sales Operations - Partner Support --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Sales Operations - Project Management</masterLabel>
-            <translation><!-- Sales Operations - Project Management --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Sales Operations - Quality Control</masterLabel>
-            <translation><!-- Sales Operations - Quality Control --></translation>
+            <translation></translation>
         </picklistValues>
     </fields>
     <fields>
-        <label><!-- Click-to-Call Phone --></label>
+        <label></label>
         <name>ClickToDial__ClickToCallPhone__c</name>
     </fields>
     <fields>
-        <label><!-- Cost --></label>
+        <label></label>
         <name>Cost__c</name>
     </fields>
     <fields>
-        <help><!-- Select this checkbox to be able to create a new customer care case linked to this task --></help>
-        <label><!-- Customer Care Case --></label>
+        <help></help>
+        <label></label>
         <name>Customer_Care_Case__c</name>
     </fields>
     <fields>
-        <help><!-- Unique ID for most recently created Customer Case. Populated by Trigger/Handler --></help>
-        <label><!-- Customer Case Unique ID --></label>
+        <help></help>
+        <label></label>
         <name>Customer_Case_Unique_ID__c</name>
     </fields>
     <fields>
-        <label><!-- Customer Reached --></label>
+        <label></label>
         <name>Customer_Reached__c</name>
     </fields>
     <fields>
-        <label><!-- Disbursal --></label>
+        <label></label>
         <name>Disbursal__c</name>
     </fields>
     <fields>
-        <label><!-- Do Not Fire Triggers --></label>
+        <label></label>
         <name>Do_Not_Fire_Triggers__c</name>
     </fields>
     <fields>
-        <label><!-- Due Date --></label>
+        <label></label>
         <name>Due_Date_HIDDEN__c</name>
     </fields>
     <fields>
-        <help><!-- Only select this option if it is an Engagement Task that is related to an Account --></help>
-        <label><!-- Engagement Task --></label>
+        <help></help>
+        <label></label>
         <name>Engagement_Task__c</name>
     </fields>
     <fields>
-        <label><!-- Time Spent on Task --></label>
+        <label></label>
         <name>Estimated_Completion_Time__c</name>
     </fields>
     <fields>
-        <label><!-- Is Regeneration --></label>
+        <label></label>
         <name>Is_Regeneration__c</name>
     </fields>
     <fields>
-        <label><!-- Late Payment Call --></label>
+        <label></label>
         <name>Late_Payment_Call__c</name>
     </fields>
     <fields>
-        <label><!-- Lead --></label>
+        <label></label>
         <name>Lead_Lookup__c</name>
-        <relationshipLabel><!-- Activities --></relationshipLabel>
+        <relationshipLabel></relationshipLabel>
     </fields>
     <fields>
-        <label><!-- Loan Partner Sequence --></label>
-        <name>Loan_Partner_Sequence__c</name>
-    </fields>
-    <fields>
-        <label><!-- Loan Sale --></label>
-        <name>Loan_Sale__c</name>
-    </fields>
-    <fields>
-        <label><!-- Loan --></label>
-        <name>Loan__c</name>
-        <relationshipLabel><!-- Activities --></relationshipLabel>
-    </fields>
-    <fields>
-        <label><!-- Project Task ID --></label>
+        <label></label>
         <name>MPM4_BASE__Project_Task_ID__c</name>
     </fields>
     <fields>
-        <label><!-- New Customer Outreach --></label>
+        <label></label>
         <name>New_Customer_Outreach__c</name>
     </fields>
     <fields>
-        <label><!-- Opportunity --></label>
+        <label></label>
         <name>Opportunity_Lookup__c</name>
-        <relationshipLabel><!-- Activities --></relationshipLabel>
+        <relationshipLabel></relationshipLabel>
     </fields>
     <fields>
-        <label><!-- Partner Call --></label>
+        <label></label>
         <name>Partner_Call__c</name>
     </fields>
     <fields>
-        <label><!-- Count --></label>
+        <label></label>
         <name>Power_of_One__c</name>
     </fields>
     <fields>
-        <label><!-- Product Inquiry --></label>
+        <label></label>
         <name>Product_Inquiry__c</name>
     </fields>
     <fields>
-        <label><!-- Product Line --></label>
+        <label></label>
         <name>Product_Line__c</name>
         <picklistValues>
             <masterLabel>Both</masterLabel>
-            <translation><!-- Both --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Community Solar</masterLabel>
-            <translation><!-- Community Solar --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Large Offtake</masterLabel>
-            <translation><!-- Large Offtake --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Other</masterLabel>
-            <translation><!-- Other --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Solar Loan</masterLabel>
-            <translation><!-- Solar Loan --></translation>
+            <translation></translation>
         </picklistValues>
     </fields>
     <fields>
-        <label><!-- Queue Duration --></label>
+        <label></label>
         <name>Queue_Duration__c</name>
     </fields>
     <fields>
-        <label><!-- Related Utility Account Log --></label>
+        <label></label>
         <name>Related_Utility_Account_Log__c</name>
-        <relationshipLabel><!-- Activities --></relationshipLabel>
+        <relationshipLabel></relationshipLabel>
     </fields>
     <fields>
-        <label><!-- Requested By: --></label>
+        <label></label>
         <name>Requested_By__c</name>
     </fields>
     <fields>
-        <label><!-- Start Date --></label>
+        <label></label>
         <name>Start_Date__c</name>
     </fields>
     <fields>
-        <help><!-- Select all of the topics that best describe the reason for the interaction and the topics covered. --></help>
-        <label><!-- Topic --></label>
+        <help></help>
+        <label></label>
         <name>Task_Category__c</name>
         <picklistValues>
             <masterLabel>Billing</masterLabel>
-            <translation><!-- Billing --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Cancellation</masterLabel>
-            <translation><!-- Cancellation --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Fairhaven and Clara Barton Call-a-thon</masterLabel>
-            <translation><!-- Fairhaven and Clara Barton Call-a-thon --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Fairhaven and Clara Barton Fiasco</masterLabel>
-            <translation><!-- Fairhaven and Clara Barton Fiasco --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>General CS</masterLabel>
-            <translation><!-- General CS --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>How much will I save</masterLabel>
-            <translation><!-- How much will I save --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>How to Pay Bill</masterLabel>
-            <translation><!-- How to Pay Bill --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Payment Plan</masterLabel>
-            <translation><!-- Payment Plan --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Portal Log In</masterLabel>
-            <translation><!-- Portal Log In --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Subscription Size Change</masterLabel>
-            <translation><!-- Subscription Size Change --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>When will I see credits on my account</masterLabel>
-            <translation><!-- When will I see credits on my account --></translation>
+            <translation></translation>
         </picklistValues>
     </fields>
     <fields>
-        <label><!-- Task Performed --></label>
+        <label></label>
         <name>Task_Performed__c</name>
         <picklistValues>
             <masterLabel>00. Payment Schedule</masterLabel>
-            <translation><!-- 00. Payment Schedule --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>01. Pre-Application Report</masterLabel>
-            <translation><!-- 01. Pre-Application Report --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>02. Diligence Report</masterLabel>
-            <translation><!-- 02. Diligence Report --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>03. Interconnection Application Packet (Original/Revised)</masterLabel>
-            <translation><!-- 03. Interconnection Application Packet (Original/Revised) --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>04. Technical Pre-Study (Screening/Preliminary/Feasibility)</masterLabel>
-            <translation><!-- 04. Technical Pre-Study (Screening/Preliminary/Feasibility) --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>05. Legal Form</masterLabel>
-            <translation><!-- 05. Legal Form --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>06. Technical Study (ASO, SIS, ESS, Restudy)</masterLabel>
-            <translation><!-- 06. Technical Study (ASO, SIS, ESS, Restudy) --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>07. 20-50BD Technical Study Review</masterLabel>
-            <translation><!-- 07. 20-50BD Technical Study Review --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>08. ISA &amp; Amendment</masterLabel>
-            <translation><!-- 08. ISA &amp; Amendment --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>09. Federal &amp; State Incentive</masterLabel>
-            <translation><!-- 09. Federal &amp; State Incentive --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>10. Utility Design and Easement</masterLabel>
-            <translation><!-- 10. Utility Design and Easement --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>11. Wireless Test</masterLabel>
-            <translation><!-- 11. Wireless Test --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>12. Utility Construction</masterLabel>
-            <translation><!-- 12. Utility Construction --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>13. Telecommunication</masterLabel>
-            <translation><!-- 13. Telecommunication --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>14. Witness Test</masterLabel>
-            <translation><!-- 14. Witness Test --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>15. Consent to Assignment</masterLabel>
-            <translation><!-- 15. Consent to Assignment --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>16. Transfer of Ownership</masterLabel>
-            <translation><!-- 16. Transfer of Ownership --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>25% ISA Payment</masterLabel>
-            <translation><!-- 25% ISA Payment --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>75% ISA Payment</masterLabel>
-            <translation><!-- 75% ISA Payment --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Acquisition</masterLabel>
-            <translation><!-- Acquisition --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Admin (Salesforce, organization, planning, management)</masterLabel>
-            <translation><!-- Admin (Salesforce, organization, planning, management) --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Asset Management</masterLabel>
-            <translation><!-- Asset Management --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Blast Letter</masterLabel>
-            <translation><!-- Blast Letter --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Budget/Cashflow review</masterLabel>
-            <translation><!-- Budget/Cashflow review --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Budgets</masterLabel>
-            <translation><!-- Budgets --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Community Service</masterLabel>
-            <translation><!-- Community Service --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Community Solar</masterLabel>
-            <translation><!-- Community Solar --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Compliance</masterLabel>
-            <translation><!-- Compliance --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Construction Administration</masterLabel>
-            <translation><!-- Construction Administration --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Construction Budget</masterLabel>
-            <translation><!-- Construction Budget --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Contract Review</masterLabel>
-            <translation><!-- Contract Review --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Corporate Finance</masterLabel>
-            <translation><!-- Corporate Finance --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Draft</masterLabel>
-            <translation><!-- Draft --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Due Diligence</masterLabel>
-            <translation><!-- Due Diligence --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>EPC Construction</masterLabel>
-            <translation><!-- EPC Construction --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>ESS Application</masterLabel>
-            <translation><!-- ESS Application --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Engagement</masterLabel>
-            <translation><!-- Engagement --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Event</masterLabel>
-            <translation><!-- Event --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Exec Committee</masterLabel>
-            <translation><!-- Exec Committee --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>FERC</masterLabel>
-            <translation><!-- FERC --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Finance</masterLabel>
-            <translation><!-- Finance --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Finance Committee</masterLabel>
-            <translation><!-- Finance Committee --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Financial Modeling</masterLabel>
-            <translation><!-- Financial Modeling --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>HR</masterLabel>
-            <translation><!-- HR --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>ISA</masterLabel>
-            <translation><!-- ISA --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>ISO NE</masterLabel>
-            <translation><!-- ISO NE --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>IX Applications</masterLabel>
-            <translation><!-- IX Applications --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>IX Meetings</masterLabel>
-            <translation><!-- IX Meetings --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Impact Study</masterLabel>
-            <translation><!-- Impact Study --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Incentives</masterLabel>
-            <translation><!-- Incentives --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Interconnection</masterLabel>
-            <translation><!-- Interconnection --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Interconnection - Application Stage</masterLabel>
-            <translation><!-- Interconnection - Application Stage --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Interconnection - Net Metering</masterLabel>
-            <translation><!-- Interconnection - Net Metering --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Interconnection - Utility Construction</masterLabel>
-            <translation><!-- Interconnection - Utility Construction --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Interview</masterLabel>
-            <translation><!-- Interview --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Investor Relations</masterLabel>
-            <translation><!-- Investor Relations --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Lobbying</masterLabel>
-            <translation><!-- Lobbying --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Mailer</masterLabel>
-            <translation><!-- Mailer --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>MassACA</masterLabel>
-            <translation><!-- MassACA --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Meeting</masterLabel>
-            <translation><!-- Meeting --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Metering</masterLabel>
-            <translation><!-- Metering --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Modeling</masterLabel>
-            <translation><!-- Modeling --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Net-Metering</masterLabel>
-            <translation><!-- Net-Metering --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Off-site meetings</masterLabel>
-            <translation><!-- Off-site meetings --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Ongoing Tasks</masterLabel>
-            <translation><!-- Ongoing Tasks --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Other</masterLabel>
-            <translation><!-- Other --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>PV + ESS Applications</masterLabel>
-            <translation><!-- PV + ESS Applications --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Partnerships</masterLabel>
-            <translation><!-- Partnerships --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Payment/Deadline</masterLabel>
-            <translation><!-- Payment/Deadline --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Permitting</masterLabel>
-            <translation><!-- Permitting --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Physical Plant</masterLabel>
-            <translation><!-- Physical Plant --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Platform Development</masterLabel>
-            <translation><!-- Platform Development --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Policy Development</masterLabel>
-            <translation><!-- Policy Development --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Press Release</masterLabel>
-            <translation><!-- Press Release --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Project Considerations (Risk Summary &amp; IC)</masterLabel>
-            <translation><!-- Project Considerations (Risk Summary &amp; IC) --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Project Finance</masterLabel>
-            <translation><!-- Project Finance --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Project Management Summary</masterLabel>
-            <translation><!-- Project Management Summary --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Project Partners</masterLabel>
-            <translation><!-- Project Partners --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>RFP</masterLabel>
-            <translation><!-- RFP --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Real Estate</masterLabel>
-            <translation><!-- Real Estate --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Revenue and OpEx</masterLabel>
-            <translation><!-- Revenue and OpEx --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Review</masterLabel>
-            <translation><!-- Review --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>SIS (Detailed)</masterLabel>
-            <translation><!-- SIS (Detailed) --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>SIS (Impact)</masterLabel>
-            <translation><!-- SIS (Impact) --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>SIS Payment</masterLabel>
-            <translation><!-- SIS Payment --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>SMART</masterLabel>
-            <translation><!-- SMART --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>SREC (and other Incentive Programs)</masterLabel>
-            <translation><!-- SREC (and other Incentive Programs) --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>SRECS</masterLabel>
-            <translation><!-- SRECS --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Sales</masterLabel>
-            <translation><!-- Sales --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Sent to Scout</masterLabel>
-            <translation><!-- Sent to Scout --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Site Origination</masterLabel>
-            <translation><!-- Site Origination --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Site Visit</masterLabel>
-            <translation><!-- Site Visit --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Social Media</masterLabel>
-            <translation><!-- Social Media --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Stage 1 Pre-Development - DD Stage and Site Acq</masterLabel>
-            <translation><!-- Stage 1 Pre-Development - DD Stage and Site Acq --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Stage 1 Pre-Development - Interconnection Strategy &amp; App</masterLabel>
-            <translation><!-- Stage 1 Pre-Development - Interconnection Strategy &amp; App --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Stage 2 Development - Design</masterLabel>
-            <translation><!-- Stage 2 Development - Design --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Stage 2 Development - Permitting</masterLabel>
-            <translation><!-- Stage 2 Development - Permitting --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Stage 2 Development - Real Estate</masterLabel>
-            <translation><!-- Stage 2 Development - Real Estate --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Stage 2 Development - Tax Agreement &amp; Ch. 61/A/B</masterLabel>
-            <translation><!-- Stage 2 Development - Tax Agreement &amp; Ch. 61/A/B --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Stage 3 - Pre-Construction</masterLabel>
-            <translation><!-- Stage 3 - Pre-Construction --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Stage 4 - Construction</masterLabel>
-            <translation><!-- Stage 4 - Construction --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Structure/Strategy</masterLabel>
-            <translation><!-- Structure/Strategy --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Study Payments</masterLabel>
-            <translation><!-- Study Payments --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>System Operations</masterLabel>
-            <translation><!-- System Operations --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Telecom Construction</masterLabel>
-            <translation><!-- Telecom Construction --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Telecom Payments</masterLabel>
-            <translation><!-- Telecom Payments --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Third Party Interests (Scouts &amp; Offtake)</masterLabel>
-            <translation><!-- Third Party Interests (Scouts &amp; Offtake) --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Utility Construction</masterLabel>
-            <translation><!-- Utility Construction --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Utility Design</masterLabel>
-            <translation><!-- Utility Design --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Utility Studies</masterLabel>
-            <translation><!-- Utility Studies --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Wireless Test</masterLabel>
-            <translation><!-- Wireless Test --></translation>
+            <translation></translation>
         </picklistValues>
     </fields>
     <fields>
-        <help><!-- 1 - Basic - e.g. Unconnected Field
-2 - Moderate - e.g. Formula Field
-3 - Advanced non-Apex - e.g. Workflow
-5 - Basic Apex Edit, Complex Workflow/Formula
-8 - New Apex
-13 - New Apex With Test Class --></help>
-        <label><!-- Task Size --></label>
+        <help></help>
+        <label></label>
         <name>Task_Size__c</name>
         <picklistValues>
             <masterLabel>1</masterLabel>
-            <translation><!-- 1 --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>13</masterLabel>
-            <translation><!-- 13 --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>2</masterLabel>
-            <translation><!-- 2 --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>3</masterLabel>
-            <translation><!-- 3 --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>5</masterLabel>
-            <translation><!-- 5 --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>8</masterLabel>
-            <translation><!-- 8 --></translation>
+            <translation></translation>
         </picklistValues>
     </fields>
     <fields>
-        <label><!-- Task Subject --></label>
+        <label></label>
         <name>Task_Subject__c</name>
         <picklistValues>
             <masterLabel>Adjust subscription, &gt;25kW</masterLabel>
-            <translation><!-- Adjust subscription, &gt;25kW --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Change account # on contract</masterLabel>
-            <translation><!-- Change account # on contract --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Change load zone</masterLabel>
-            <translation><!-- Change load zone --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Change to commercial</masterLabel>
-            <translation><!-- Change to commercial --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Check Comments About Sizing section</masterLabel>
-            <translation><!-- Check Comments About Sizing section --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Check contract, handwritten</masterLabel>
-            <translation><!-- Check contract, handwritten --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Credit report did not match customer&apos;s name, attach credit check for right customer</masterLabel>
-            <translation><!-- Credit report did not match customer&apos;s name, attach credit check for right customer --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Credit report is missing, Upload correct credit report</masterLabel>
-            <translation><!-- Credit report is missing, Upload correct credit report --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Custom&apos;s credit was denied , change stage to unqualified</masterLabel>
-            <translation><!-- Custom&apos;s credit was denied , change stage to unqualified --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Customer email missing</masterLabel>
-            <translation><!-- Customer email missing --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Load zone missing on utility bill</masterLabel>
-            <translation><!-- Load zone missing on utility bill --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Other</masterLabel>
-            <translation><!-- Other --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Subscription adjustment needed</masterLabel>
-            <translation><!-- Subscription adjustment needed --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Too few years at location</masterLabel>
-            <translation><!-- Too few years at location --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Too few years in business</masterLabel>
-            <translation><!-- Too few years in business --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Upload Green Button Data</masterLabel>
-            <translation><!-- Upload Green Button Data --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Upload complete contract</masterLabel>
-            <translation><!-- Upload complete contract --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Upload complete utility bill to utility Account Log</masterLabel>
-            <translation><!-- Upload complete utility bill to utility Account Log --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Upload utility bill without overdue payments</masterLabel>
-            <translation><!-- Upload utility bill without overdue payments --></translation>
+            <translation></translation>
         </picklistValues>
     </fields>
     <fields>
-        <label><!-- Technical Assistance --></label>
+        <label></label>
         <name>Technical_Assisstance__c</name>
     </fields>
     <fields>
-        <label><!-- Billing --></label>
+        <label></label>
         <name>Topic_Billing__c</name>
     </fields>
     <fields>
-        <help><!-- Field created 3/27/17 by Nick Speyer to accomodate Product Roadmap Reporting --></help>
-        <label><!-- Tracking --></label>
+        <help></help>
+        <label></label>
         <name>Tracking__c</name>
         <picklistValues>
             <masterLabel>Adjusted Schedule</masterLabel>
-            <translation><!-- Adjusted Schedule --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Behind Schedule</masterLabel>
-            <translation><!-- Behind Schedule --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>On Time</masterLabel>
-            <translation><!-- On Time --></translation>
+            <translation></translation>
         </picklistValues>
     </fields>
     <fields>
-        <label><!-- Unique ID --></label>
+        <label></label>
         <name>Unique_ID__c</name>
     </fields>
     <fields>
-        <label><!-- Actual Cost --></label>
+        <label></label>
         <name>inspire1__Actual_Cost__c</name>
     </fields>
     <fields>
-        <help><!-- Actual number of hours used to complete the task based on time entries. --></help>
-        <label><!-- Actual Effort --></label>
+        <help></help>
+        <label></label>
         <name>inspire1__Actual_Effort__c</name>
     </fields>
     <fields>
-        <label><!-- AssignedTo ID --></label>
+        <label></label>
         <name>inspire1__AssignedTo__c</name>
     </fields>
     <fields>
-        <label><!-- Budgeted Cost --></label>
+        <label></label>
         <name>inspire1__Budgeted_Cost__c</name>
     </fields>
     <fields>
@@ -1118,196 +1100,196 @@
         <name>inspire1__Custom_Start_Date__c</name>
     </fields>
     <fields>
-        <label><!-- % Complete --></label>
+        <label></label>
         <name>inspire1__Done__c</name>
         <picklistValues>
             <masterLabel>0</masterLabel>
-            <translation><!-- 0 --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>10</masterLabel>
-            <translation><!-- 10 --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>100</masterLabel>
-            <translation><!-- 100 --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>20</masterLabel>
-            <translation><!-- 20 --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>30</masterLabel>
-            <translation><!-- 30 --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>40</masterLabel>
-            <translation><!-- 40 --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>50</masterLabel>
-            <translation><!-- 50 --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>60</masterLabel>
-            <translation><!-- 60 --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>70</masterLabel>
-            <translation><!-- 70 --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>80</masterLabel>
-            <translation><!-- 80 --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>90</masterLabel>
-            <translation><!-- 90 --></translation>
+            <translation></translation>
         </picklistValues>
     </fields>
     <fields>
-        <label><!-- Hourly Rate --></label>
+        <label></label>
         <name>inspire1__Hourly_Rate__c</name>
     </fields>
     <fields>
-        <label><!-- Inspire Task --></label>
+        <label></label>
         <name>inspire1__Inspire_Task__c</name>
-        <relationshipLabel><!-- Salesforce Tasks --></relationshipLabel>
+        <relationshipLabel></relationshipLabel>
     </fields>
     <fields>
-        <label><!-- Parent Task --></label>
+        <label></label>
         <name>inspire1__Parent_Task__c</name>
     </fields>
     <fields>
-        <help><!-- Defines the percent the resources has been allocated to the project task. --></help>
-        <label><!-- % Allocation --></label>
+        <help></help>
+        <label></label>
         <name>inspire1__Percent_Allocation__c</name>
     </fields>
     <fields>
-        <help><!-- Estimated number of hours to complete the task. --></help>
-        <label><!-- Planned Effort --></label>
+        <help></help>
+        <label></label>
         <name>inspire1__Planned_Effort__c</name>
     </fields>
     <fields>
-        <label><!-- Project Deleted --></label>
+        <label></label>
         <name>inspire1__Project_Deleted__c</name>
     </fields>
     <fields>
-        <label><!-- Project Name --></label>
+        <label></label>
         <name>inspire1__Project_Name__c</name>
     </fields>
     <fields>
-        <help><!-- Identifies if all Predecessors have been met and task is ready to be started. --></help>
-        <label><!-- Ready to Start --></label>
+        <help></help>
+        <label></label>
         <name>inspire1__Ready_to_Start__c</name>
     </fields>
     <fields>
-        <label><!-- Resource Name --></label>
+        <label></label>
         <name>inspire1__Resource_Name2__c</name>
     </fields>
     <fields>
-        <label><!-- Resource Type --></label>
+        <label></label>
         <name>inspire1__Resource_Type__c</name>
     </fields>
     <fields>
-        <label><!-- Schedule As --></label>
+        <label></label>
         <name>inspire1__Schedule_As__c</name>
         <picklistValues>
             <masterLabel>Future Project</masterLabel>
-            <translation><!-- Future Project --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Vacation</masterLabel>
-            <translation><!-- Vacation --></translation>
+            <translation></translation>
         </picklistValues>
     </fields>
     <fields>
-        <help><!-- Reference to Inspire Planner custom setting which defines if email notification should be sent to Contact for new task assignment. --></help>
-        <label><!-- _sysContactTaskEmail --></label>
+        <help></help>
+        <label></label>
         <name>inspire1__sysContactTaskEmail__c</name>
     </fields>
     <fields>
-        <label><!-- Task Effort --></label>
+        <label></label>
         <name>inspire1__sysFutureProjectEffort__c</name>
     </fields>
     <fields>
-        <label><!-- _sysTemplateTask --></label>
+        <label></label>
         <name>inspire1__sysTemplateTask__c</name>
     </fields>
     <fields>
-        <label><!-- Call Duration (Minutes) --></label>
+        <label></label>
         <name>truly_callDurationMinutes__c</name>
     </fields>
     <fields>
-        <label><!-- Call Duration --></label>
+        <label></label>
         <name>truly_callDuration__c</name>
     </fields>
     <fields>
-        <label><!-- Caller Number --></label>
+        <label></label>
         <name>truly_callerNumber__c</name>
     </fields>
     <fields>
-        <label><!-- Caller --></label>
+        <label></label>
         <name>truly_caller__c</name>
     </fields>
     <fields>
-        <label><!-- Custom Call Disposition --></label>
+        <label></label>
         <name>truly_customCallDisposition__c</name>
     </fields>
     <fields>
-        <label><!-- Day of Week --></label>
+        <label></label>
         <name>truly_dayOfWeek__c</name>
     </fields>
     <fields>
-        <label><!-- Direction --></label>
+        <label></label>
         <name>truly_direction__c</name>
     </fields>
     <fields>
-        <label><!-- Hour of Day --></label>
+        <label></label>
         <name>truly_hourOfDay__c</name>
     </fields>
     <fields>
-        <label><!-- Truly Id --></label>
+        <label></label>
         <name>truly_id__c</name>
     </fields>
     <fields>
-        <label><!-- Missed --></label>
+        <label></label>
         <name>truly_missed__c</name>
     </fields>
     <fields>
-        <label><!-- Queue Drop Off --></label>
+        <label></label>
         <name>truly_queueDropOff__c</name>
     </fields>
     <fields>
-        <label><!-- Queued --></label>
+        <label></label>
         <name>truly_queued__c</name>
     </fields>
     <fields>
-        <label><!-- Recipient Number --></label>
+        <label></label>
         <name>truly_recipientNumber__c</name>
     </fields>
     <fields>
-        <label><!-- Recipient --></label>
+        <label></label>
         <name>truly_recipient__c</name>
     </fields>
     <fields>
-        <label><!-- Recording --></label>
+        <label></label>
         <name>truly_recording__c</name>
     </fields>
     <fields>
-        <label><!-- Start Time --></label>
+        <label></label>
         <name>truly_startTime__c</name>
     </fields>
     <fields>
-        <label><!-- Target --></label>
+        <label></label>
         <name>truly_target__c</name>
     </fields>
     <fields>
-        <label><!-- Time in Queue --></label>
+        <label></label>
         <name>truly_timeInQueue__c</name>
     </fields>
     <fields>
-        <label><!-- Time To Pickup --></label>
+        <label></label>
         <name>truly_timeToPickup__c</name>
     </fields>
 </CustomObjectTranslation>
