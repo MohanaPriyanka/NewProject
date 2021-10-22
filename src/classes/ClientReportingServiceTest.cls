@@ -413,11 +413,9 @@ public with sharing class ClientReportingServiceTest {
             System.assertEquals(cuas.Utility_Account_Subscription__r.Shared_Solar_System__r.Name, cuas.Shared_Solar_System__r.Name);
             if (cuas.Utility_Account_Subscription__r.Next_Schedule_Z_Status__c == 'Active Subscription') {
                 System.assertEquals(sss2.Id, cuas.Shared_Solar_System__c);
-                //System.assertEquals(500, clientUASUpdate[0].Annual_Cost_of_Electricity_Future__c);
             } else {
                 //When Subscription Order Feature flag is ON, original UAS is marked as "Inactive" and zeroed out
                 System.assertNotEquals(sss2.Id, cuas.Shared_Solar_System__c);
-                //System.assertEquals(0, cuas.Annual_Cost_of_Electricity_Future__c);
             }
         }
         //Test deletion of parent UAS
