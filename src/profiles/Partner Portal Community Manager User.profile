@@ -42133,23 +42133,8 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Partner__c.Total_Commissions_from_Loans__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Partner__c.Total_Funds_Disbursed__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Partner__c.Total_Leads__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Partner__c.Total_Loans_Made__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -42160,11 +42145,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Partner__c.Total_Opportunities__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Partner__c.Total_Principal_Loaned__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
