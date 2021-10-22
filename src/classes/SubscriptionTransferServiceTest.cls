@@ -33,6 +33,40 @@ public with sharing class SubscriptionTransferServiceTest {
             everbillNMC, eversizeNMC
         };
 
+        Product2 normalCSProduct = new Product2(Name = 'BlueWave Community Solar',
+            Family = 'Community Solar',
+            Product_Type__c = 'Community Solar',
+            Customer_Subscription_Type__c = 'kWh',
+            State__c = 'MA',
+            ProductCode = 'CS - BlueWave - 10%',
+            IsActive = true,
+            Lender_of_Record__c = 'BlueWave',
+            NMC_Discount__c = 10,
+            Annual_kWh_Maximum__c = 100000000,
+            NM_Rate_Floor__c = 0,
+            Days_in_Bill_Period__c = 20,
+            Monthly_Late_Fee__c = 1,
+            Cancellation_Paragraph_Two__c = 'Your cancellation will take up to 6 months',
+            Cancellation_Paragraph_Three__c = 'There is a termination fee');
+
+        Product2 singleSubCSProduct = new Product2(Name = 'Single Subscription Product',
+            Family = 'Community Solar',
+            Product_Type__c = 'Community Solar',
+            Customer_Subscription_Type__c = 'kWh',
+            State__c = 'MA',
+            ProductCode = 'CS - BlueWave - 10%',
+            IsActive = true,
+            Lender_of_Record__c = 'BlueWave',
+            NMC_Discount__c = 10,
+            Annual_kWh_Maximum__c = 100000000,
+            NM_Rate_Floor__c = 0,
+            Days_in_Bill_Period__c = 20,
+            Monthly_Late_Fee__c = 1,
+            Cancellation_Paragraph_Two__c = 'Your cancellation will take up to 6 months',
+            Cancellation_Paragraph_Three__c = 'There is a termination fee',
+            Utility_Account_Subscription_Type__c = 'Single subscription per Utility Account');
+        insert new List<Product2>{normalCSProduct, singleSubCSProduct};
+
         Shared_Solar_System__c sss1 =
             new Shared_Solar_System__c(Name = 'SSS1',
                 Service_Territory__c = 'SEMA',
@@ -49,7 +83,8 @@ public with sharing class SubscriptionTransferServiceTest {
                 Expected_Yield_kWh_kW__c = 1300,
                 Assemblage_Count__c = 1,
                 Maximum_Subscription_Capacity_kWDC__c = 25,
-                Billing_Method__c = 'NMC');
+                Billing_Method__c = 'NMC',
+                Product__c = normalCSProduct.Id);
         Shared_Solar_System__c sss2 =
             new Shared_Solar_System__c(Name = 'SSS2',
                 Service_Territory__c = 'SEMA',
@@ -66,8 +101,45 @@ public with sharing class SubscriptionTransferServiceTest {
                 Expected_Yield_kWh_kW__c = 1300,
                 Assemblage_Count__c = 1,
                 Maximum_Subscription_Capacity_kWDC__c = 25,
-                Billing_Method__c = 'NMC');
-        insert new List<Shared_Solar_System__c>{sss1, sss2};
+                Billing_Method__c = 'NMC',
+                Product__c = normalCSProduct.Id);
+        Shared_Solar_System__c sss3 =
+            new Shared_Solar_System__c(Name = 'SSS3',
+                Service_Territory__c = 'SEMA',
+                Service_Territories__c = 'SEMA',
+                Open__c = true,
+                Reserved_Capacity_kW_DC__c = '0',
+                Capacity_Committed_kW_DC__c = 0,
+                Total_System_Size_kWh_DC__c = 1225.86,
+                Total_System_Size_kW_AC__c = 800,
+                Utility__c = eversource.Id,
+                Credit_Score_Requirement__c = 200,
+                Assignment_Order__c = '1',
+                Utility_NMC_Tariff__c = eversizeNMC.Id,
+                Expected_Yield_kWh_kW__c = 1300,
+                Assemblage_Count__c = 1,
+                Maximum_Subscription_Capacity_kWDC__c = 25,
+                Billing_Method__c = 'NMC',
+                Product__c = singleSubCSProduct.Id);
+        Shared_Solar_System__c sss4 =
+            new Shared_Solar_System__c(Name = 'SSS4',
+                Service_Territory__c = 'SEMA',
+                Service_Territories__c = 'SEMA',
+                Open__c = true,
+                Reserved_Capacity_kW_DC__c = '0',
+                Capacity_Committed_kW_DC__c = 0,
+                Total_System_Size_kWh_DC__c = 1225.86,
+                Total_System_Size_kW_AC__c = 800,
+                Utility__c = eversource.Id,
+                Credit_Score_Requirement__c = 200,
+                Assignment_Order__c = '1',
+                Utility_NMC_Tariff__c = eversizeNMC.Id,
+                Expected_Yield_kWh_kW__c = 1300,
+                Assemblage_Count__c = 1,
+                Maximum_Subscription_Capacity_kWDC__c = 25,
+                Billing_Method__c = 'NMC',
+                Product__c = singleSubCSProduct.Id);
+        insert new List<Shared_Solar_System__c>{sss1, sss2, sss3, sss4};
 
         Account accountParent1 = new Account(Name = 'Parent Account 1');
         insert accountParent1;
@@ -95,26 +167,14 @@ public with sharing class SubscriptionTransferServiceTest {
             Account__c = propAcct1.Id,
             Annual_Cost_of_Electricity__c = 10000,
             Name_on_Account__c = 'Name three');
+        Utility_Account_Log__c ualog4 = new Utility_Account_Log__c(
+            Name = '0000240',
+            Account__c = propAcct1.Id,
+            Annual_Cost_of_Electricity__c = 10000,
+            Name_on_Account__c = 'Name four');
         insert new List<Utility_Account_Log__c>{
-            ualog1, ualog2, ualog3
+            ualog1, ualog2, ualog3, ualog4
         };
-
-        Product2 normalCSProduct = new Product2(Name = 'BlueWave Community Solar',
-            Family = 'Community Solar',
-            Product_Type__c = 'Community Solar',
-            Customer_Subscription_Type__c = 'kWh',
-            State__c = 'MA',
-            ProductCode = 'CS - BlueWave - 10%',
-            IsActive = true,
-            Lender_of_Record__c = 'BlueWave',
-            NMC_Discount__c = 10,
-            Annual_kWh_Maximum__c = 100000000,
-            NM_Rate_Floor__c = 0,
-            Days_in_Bill_Period__c = 20,
-            Monthly_Late_Fee__c = 1,
-            Cancellation_Paragraph_Two__c = 'Your cancellation will take up to 6 months',
-            Cancellation_Paragraph_Three__c = 'There is a termination fee');
-        insert normalCSProduct;
 
         Opportunity opportunityOne =
             new Opportunity(Name = 'Jordan Jordan 0000234',
@@ -125,7 +185,7 @@ public with sharing class SubscriptionTransferServiceTest {
                 NMC_Tariff__c = everbillNMC.Id,
                 Product_Line__c = 'Community Solar',
                 CloseDate = System.today());
-        Opportunity opportunityThree =
+        Opportunity opportunityTwo =
             new Opportunity(Name = 'Jordan Jordan 0000238',
                 AccountId = propAcct1.Id,
                 Shared_Solar_System__c = sss1.Id,
@@ -134,7 +194,16 @@ public with sharing class SubscriptionTransferServiceTest {
                 NMC_Tariff__c = everbillNMC.Id,
                 Product_Line__c = 'Community Solar',
                 CloseDate = System.today());
-        insert new List<Opportunity>{opportunityOne, opportunityThree};
+        Opportunity opportunityThree =
+            new Opportunity(Name = 'Jordan Jordan 0000240',
+                AccountId = propAcct1.Id,
+                Shared_Solar_System__c = sss3.Id,
+                StageName = 'Complete',
+                Product__c = singleSubCSProduct.Id,
+                NMC_Tariff__c = everbillNMC.Id,
+                Product_Line__c = 'Community Solar',
+                CloseDate = System.today());
+        insert new List<Opportunity>{opportunityOne, opportunityTwo, opportunityThree};
 
         Utility_Account_Subscription__c uasOne =
             new Utility_Account_Subscription__c(Name = '0000234',
@@ -152,15 +221,22 @@ public with sharing class SubscriptionTransferServiceTest {
         Utility_Account_Subscription__c uasThree =
             new Utility_Account_Subscription__c(Name = '0000238',
                 Utility_Account_Log__c = ualog3.Id,
+                Opportunity__c = opportunityTwo.Id,
+                Sizing_Method__c = everbillNMC.Id,
+                Next_Schedule_Z_Status__c = 'Active Subscription');
+        Utility_Account_Subscription__c uasFour =
+            new Utility_Account_Subscription__c(Name = '0000240',
+                Utility_Account_Log__c = ualog4.Id,
                 Opportunity__c = opportunityThree.Id,
                 Sizing_Method__c = everbillNMC.Id,
                 Next_Schedule_Z_Status__c = 'Active Subscription');
         insert new List<Utility_Account_Subscription__c>{
-            uasOne, uasTwo, uasThree
+            uasOne, uasTwo, uasThree, uasFour
         };
         TestSOCreator.registerByCapacity(uasOne, 4000);
         TestSOCreator.registerByCapacity(uasTwo, 8000);
         TestSOCreator.registerByCapacity(uasThree, 0);
+        TestSOCreator.registerByCapacity(uasFour, 0);
         TestSOCreator.commitWork();
     }
 
@@ -213,7 +289,7 @@ public with sharing class SubscriptionTransferServiceTest {
                 );
             } else {
                 System.assertEquals(sssMap.get('SSS2').Id, uas.Shared_Solar_System__c,
-                    'Active subscriptions should be for SSS1'
+                    'Active subscriptions should be for SSS2'
                 );
             }
         }
@@ -262,6 +338,62 @@ public with sharing class SubscriptionTransferServiceTest {
         );
         System.assertEquals(4000, resizeSubscriptionOrders[0].New_Annual_kWh__c,
             'Expected a resize SO to get back to the original UASes Annual kWh amount');
+    }
+
+    @IsTest
+    static void testChangeOpportunitySingleSubSSS() {
+        Opportunity opp = [
+            SELECT Id, Shared_Solar_System__c,
+            (SELECT Id, Shared_Solar_System__c FROM Utility_Account_Subscriptions__r)
+            FROM Opportunity
+            WHERE Name = 'Jordan Jordan 0000240'
+        ];
+        List<Shared_Solar_System__c> sharedSolarSystems = [
+            SELECT Id, Name
+            FROM Shared_Solar_System__c
+        ];
+        Map<Object, SObject> sssMap = CollectionUtil.mapByField(sharedSolarSystems, Shared_Solar_System__c.Name);
+        System.assertEquals(sssMap.get('SSS3').Id, opp.Shared_Solar_System__c,
+            'The opportunity should start with SSS3 and get moved to SSS4'
+        );
+        System.assertEquals(1, opp.Utility_Account_Subscriptions__r.size(),
+            'The opportunity should start with one active subscription'
+        );
+
+        Test.startTest();
+        InvocableOpportunitySystemUpdater.Request request = new InvocableOpportunitySystemUpdater.Request();
+        request.opportunityId = opp.Id;
+        request.sssId = sssMap.get('SSS4').Id;
+        InvocableOpportunitySystemUpdater.changeSystem(new List<InvocableOpportunitySystemUpdater.Request>{request});
+        Test.stopTest();
+
+        opp = [
+            SELECT Id, Shared_Solar_System__c,
+            (SELECT Id, Shared_Solar_System__c, Next_Schedule_Z_Status__c, Annual_kWh_Subscription_Future_Rollup__c FROM Utility_Account_Subscriptions__r)
+            FROM Opportunity
+            WHERE Name = 'Jordan Jordan 0000240'
+        ];
+        System.assertEquals(sssMap.get('SSS4').Id, opp.Shared_Solar_System__c,
+            'changeOpportunitySSS should have changed the SSS on the opp'
+        );
+        System.assertEquals(2, opp.Utility_Account_Subscriptions__r.size(),
+            'There should be the 1 old, inactive subscription on SSS3, and 1 new subscription on SSS4'
+        );
+        for (Utility_Account_Subscription__c uas : opp.Utility_Account_Subscriptions__r) {
+            if (uas.Next_Schedule_Z_Status__c == 'Inactive Subscription') {
+                System.assertEquals(sssMap.get('SSS3').Id, uas.Shared_Solar_System__c,
+                    'Inactive subscription should be for SSS3'
+                );
+                System.assertEquals(0, uas.Annual_kWh_Subscription_Future_Rollup__c,
+                    'Inactive subscription should roll up to 0 Annual kWh'
+                );
+            } else {
+                System.assertEquals(sssMap.get('SSS4').Id, uas.Shared_Solar_System__c,
+                    'Active subscription should be for SSS4'
+                );
+            }
+        }
+
     }
 
     @IsTest
@@ -361,6 +493,13 @@ public with sharing class SubscriptionTransferServiceTest {
             new FFLibHelperTest.MockDML()
         );
 
+        SubscriptionTransferService.uowForUpdateOldUASRecords = new fflib_SObjectUnitOfWork(
+            new List<SObjectType>{
+                Utility_Account_Subscription__c.SObjectType
+            },
+            new FFLibHelperTest.MockDML()
+        );
+
         SubscriptionTransferService.uowForResizeSO = new fflib_SObjectUnitOfWork(
             new List<SObjectType>{
                 Subscription_Order__c.SObjectType
@@ -446,6 +585,13 @@ public with sharing class SubscriptionTransferServiceTest {
                 Subscription_Transfer__c.SObjectType,
                 Utility_Account_Subscription__c.SObjectType,
                 Subscription_Order__c.SObjectType
+            },
+            new FFLibHelperTest.MockDML()
+        );
+
+        SubscriptionTransferService.uowForUpdateOldUASRecords = new fflib_SObjectUnitOfWork(
+            new List<SObjectType>{
+                Utility_Account_Subscription__c.SObjectType
             },
             new FFLibHelperTest.MockDML()
         );
