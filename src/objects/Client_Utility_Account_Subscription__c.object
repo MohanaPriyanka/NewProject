@@ -42,20 +42,6 @@ null))</formula>
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Annual_Cost_of_Electricity_Future__c</fullName>
-        <externalId>false</externalId>
-        <formula>Utility_Account_Subscription__r.Annual_Cost_Future_Rollup__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Annual Cost of Electricity (Future)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>6</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Annual_Subscription_Production_Summary__c</fullName>
         <externalId>false</externalId>
         <formula>Utility_Account_Subscription__r.Annual_Subscription_Production_Summary__c</formula>
