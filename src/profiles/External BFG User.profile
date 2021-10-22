@@ -28886,11 +28886,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Utility_Account_Subscription__c.Annual_kwh_subscription_future__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Auto_Unround__c</field>
         <readable>false</readable>
@@ -29049,11 +29044,6 @@
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Status__c</field>
         <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Utility_Account_Subscription__c.Subscribed_Annual_Cost_of_Electricity__c</field>
-        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
