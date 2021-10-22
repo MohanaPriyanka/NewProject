@@ -6097,11 +6097,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Client_Utility_Account_Subscription__c.Annual_kWh_Subscription_Future__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Client_Utility_Account_Subscription__c.Customer_Billing_Address__c</field>
         <readable>true</readable>
     </fieldPermissions>

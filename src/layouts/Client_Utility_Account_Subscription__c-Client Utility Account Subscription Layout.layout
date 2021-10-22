@@ -158,10 +158,6 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>Annual_kWh_Subscription_Future__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
                 <field>Annual_Subscription_Production_Summary__c</field>
             </layoutItems>
             <layoutItems>
