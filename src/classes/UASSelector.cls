@@ -118,7 +118,7 @@ public without sharing class UASSelector {
             WHERE Id IN :uasIds
         ]);
         return uasMap;
-	}
+    }
     public static Map<Id, Utility_Account_Subscription__c> selectByIdsAsMap(Set<Id> uasIds){
         Map<Id, Utility_Account_Subscription__c> uasWithClientMap = new Map<Id, Utility_Account_Subscription__c>([
             SELECT Id,
@@ -244,8 +244,8 @@ public without sharing class UASSelector {
             WHERE Next_Schedule_Z_Status__c = 'Active Subscription'
             AND Id IN (
                 SELECT Utility_Account_Subscription__c
-            FROM Schedule_Z_Subscription__c
-            WHERE Schedule_Z__c =: allocationScheduleId
+                FROM Schedule_Z_Subscription__c
+                WHERE Schedule_Z__c =: allocationScheduleId
                 AND Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c != 'Anchor'
             )
         ];
@@ -253,7 +253,7 @@ public without sharing class UASSelector {
 
     public List<Utility_Account_Subscription__c> getActiveUASByParentAccount(Id accountId) {
         return [
-            SELECT Id, Utility_Account_Log_Name__c, Status__c, Service_Address_From_Log__c
+            SELECT Id, Utility_Account_Log_Name__c, Status__c, Service_Address_From_Log__c, Shared_Solar_System__r.Name
             FROM Utility_Account_Subscription__c
             WHERE Opportunity__r.Parent_Account_ID__c = :accountId
             AND Opportunity__r.Product_Line__c = 'Community Solar'

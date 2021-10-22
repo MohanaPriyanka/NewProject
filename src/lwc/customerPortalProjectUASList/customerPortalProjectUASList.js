@@ -9,6 +9,12 @@ import getUtilityAccountSubscriptions
 
 const COLUMNS = [
     {
+        label: 'Shared Solar Project',
+        fieldName: 'sharedSolarSystemName',
+        type: 'text',
+        hideDefaultActions: true
+    },
+    {
         label: 'Utility Account Number',
         fieldName: 'Utility_Account_Log_Name__c',
         type: 'text',
@@ -31,12 +37,14 @@ const COLUMNS = [
 export default class CustomerPortalProjectUASList extends LightningElement {
 
     error;
-    solarSubscriptions;
+    utilityAccountSubscriptions;
     isLoading = true;
 
-    @wire(getUtilityAccountSubscriptions) solarSubscriptionResults(result) {
+    @wire(getUtilityAccountSubscriptions) utilityAccountSubscriptionResults(result) {
         if (result.data) {
-            this.solarSubscriptions = result.data;
+            this.utilityAccountSubscriptions = result.data.map(row => {
+                return {...row, sharedSolarSystemName: row.Shared_Solar_System__r.Name};
+            });
             this.isLoading = false;
         } else if (result.error) {
             this.error = result.error;

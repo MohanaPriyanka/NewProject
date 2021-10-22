@@ -11,15 +11,15 @@
         </div>
     </template>
     <template if:false={isLoading}>
-        <template if:true={solarSubscriptions}>
+        <template if:true={utilityAccountSubscriptions}>
             <lightning-datatable
                 key-field="id"
-                data={solarSubscriptions}
+                data={utilityAccountSubscriptions}
                 columns={columns}
                 hide-checkbox-column>
             </lightning-datatable>
         </template>
-        <template if:false={solarSubscriptions}>
+        <template if:false={utilityAccountSubscriptions}>
             No active subscriptions found
         </template>
     </template>
