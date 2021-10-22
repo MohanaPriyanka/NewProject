@@ -20,6 +20,7 @@ public with sharing class ClientReportingServiceTest {
         Test.loadData(Partner__c.SObjectType, 'TestRLPartner');
         Test.loadData(Opportunity.SObjectType, 'TestCSOpportunity');
         Test.loadData(Utility_Account_Subscription__c.SObjectType, 'TestCSUtilityAccountSubscription');
+        Test.loadData(Subscription_Order__c.SObjectType, 'TestCSSubscriptionOrder');
         Test.stopTest();
         Test.loadData(Schedule_Z__c.SObjectType, 'TestCSScheduleZ');
         Test.loadData(Schedule_Z_Subscription__c.SObjectType, 'TestCSScheduleZSubscription');
@@ -354,9 +355,9 @@ public with sharing class ClientReportingServiceTest {
             Next_Schedule_Z_Status__c = 'Active Subscription',
             Sizing_Method__c = opp.NMC_Tariff__c,
             Opportunity__c = opp.Id,
-            Subscribed_Annual_Cost_of_Electricity__c = 300,
             calculated_annual_cost_of_electricity__c = 300);
         insert uas;
+        TestSOCreator.createByCost(uas, 300);
         Test.startTest();
         List<Client_Utility_Account_Subscription__c> clientUAS = ClientReportObjectSelector.getClientUASesByUASIds(new Set<Id>{
             uas.Id
@@ -437,9 +438,7 @@ public with sharing class ClientReportingServiceTest {
             Name = '123456',
             Utility_Account_Log__c = ual.Id,
             Opportunity__c = opp.Id,
-            Sizing_Method__c = opp.NMC_Tariff__c,
-            Subscribed_Annual_Cost_of_Electricity__c = 300,
-            Annual_kwh_subscription_future__c = 7000
+            Sizing_Method__c = opp.NMC_Tariff__c
         );
         insert uas;
         List<Client_Utility_Account_Subscription__c> clientUAS = ClientReportObjectSelector.getClientUASesByUASIds(new Set<Id>{

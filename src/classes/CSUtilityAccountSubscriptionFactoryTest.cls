@@ -506,9 +506,6 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
         Utility_Account_Subscription__c single = (Utility_Account_Subscription__c) generatedUASes[0];
         System.assertEquals(sharedSolarSystems[0].Utility_NMC_Tariff__c, single.Sizing_Method__c,
             'UAS should be assigned the Sizing Method from the SSS it is assigned to because the UAL does not have a Rate Class.');
-
-        System.assertEquals(15000, single.Annual_kwh_subscription_future__c);
-
     }
     @IsTest
     public static void testSizingMethodRateClassRatioSingleSubscription() {
@@ -566,9 +563,6 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
         System.assertEquals(1, uasSingle.size());
         System.assertEquals(sizeRatio.Id, single.Sizing_Method__c,
             'UAS should be assigned the Sizing Method from the UALs Rate Class');
-
-        System.assertEquals(15000, single.Annual_kwh_subscription_future__c);
-
     }
     @IsTest
     public static void testSizingMethodRateClassRatioMultipleSubscriptions() {
@@ -629,12 +623,6 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             'UAS should be assigned the Sizing Method from the UALs Rate Class');
         System.assertEquals(sizeRatio.Id, uasMultiple1.Sizing_Method__c,
             'UAS should be assigned the Sizing Method from the UALs Rate Class');
-        // kwh SSS with Rate Class Ratio --> maximum kWh = (max kW DC * yield)/UAL's Rate ClassSize Ratio)
-        // =(25 * 1316)/1.5 = 21933.33
-
-        System.assertEquals(21933.33, uasMultiple0.Annual_kwh_subscription_future__c);
-        System.assertEquals(1066.67, uasMultiple1.Annual_kwh_subscription_future__c);
-
     }
     @IsTest
     public static void testSizingMethodRateClassMultipleUALs() {
@@ -785,14 +773,8 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
         Utility_Account_Subscription__c uasMultiple1 = (Utility_Account_Subscription__c) uasMultiple[1];
         System.assertEquals(sharedSolarSystems[0].Utility_NMC_Tariff__c, uasMultiple0.Sizing_Method__c,
             'UAS should be assigned the Sizing Method from the SSS');
-        // kwh SSS with Project Ratio --> maximum kWh = (max kW DC * yield)/Size Ratio) --> (25 * 1316)/1.2 = 27416.67
-        System.assertEquals(27416.67, uasMultiple0.Annual_kwh_subscription_future__c,
-            'First UAS should be maxed out by SSS Maximum kWh after Sizing Ratio has been applied');
         System.assertEquals(sharedSolarSystems[1].Utility_NMC_Tariff__c, uasMultiple1.Sizing_Method__c,
             'Second UAS should be remaining annual kWh');
-
-        System.assertEquals(2583.33, uasMultiple1.Annual_kwh_subscription_future__c);
-
     }
     @IsTest
     public static void testCalculateMaximumkWhRateClassRatio() {

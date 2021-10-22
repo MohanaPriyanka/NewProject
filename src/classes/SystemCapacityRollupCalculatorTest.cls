@@ -177,13 +177,13 @@ public without sharing class SystemCapacityRollupCalculatorTest {
         System.assertEquals(29.4624, sss.Committed_Demand_Capacity__c, 'Invalid committed demand capacity');
 
         Utility_Account_Subscription__c existingUAS = [
-            SELECT Utility_Account_Log__c, Opportunity__c, Shared_Solar_System__c, Sizing_Method__c, Next_Schedule_Z_Status__c,
-                Annual_kwh_subscription_future__c
+            SELECT Utility_Account_Log__c, Opportunity__c, Shared_Solar_System__c, Sizing_Method__c, Next_Schedule_Z_Status__c
             FROM Utility_Account_Subscription__c
             WHERE Name = '0000236'
         ];
         Utility_Account_Subscription__c newUAS = existingUAS.clone();
         insert newUAS;
+        TestSOCreator.createByCapacity(newUAS, 8000);
 
         Shared_Solar_System__c sssAfterInsert = [
             SELECT Id, Pending_Demand_Capacity__c, Committed_Demand_Capacity__c
@@ -212,8 +212,7 @@ public without sharing class SystemCapacityRollupCalculatorTest {
         System.assertEquals(29.4624, sss.Committed_Demand_Capacity__c, 'Invalid committed demand capacity');
 
         Utility_Account_Subscription__c existingUAS = [
-            SELECT Utility_Account_Log__c, Opportunity__c, Shared_Solar_System__c, Sizing_Method__c, Next_Schedule_Z_Status__c,
-                Annual_kwh_subscription_future__c
+            SELECT Utility_Account_Log__c, Opportunity__c, Shared_Solar_System__c, Sizing_Method__c, Next_Schedule_Z_Status__c
             FROM Utility_Account_Subscription__c
             WHERE Name = '0000236'
         ];
@@ -267,8 +266,7 @@ public without sharing class SystemCapacityRollupCalculatorTest {
         System.assertEquals(29.4624, sss.Committed_Demand_Capacity__c, 'Invalid committed demand capacity');
 
         Utility_Account_Subscription__c existingUAS = [
-            SELECT Utility_Account_Log__c, Opportunity__c, Shared_Solar_System__c, Sizing_Method__c, Next_Schedule_Z_Status__c,
-                Annual_kwh_subscription_future__c
+            SELECT Utility_Account_Log__c, Opportunity__c, Shared_Solar_System__c, Sizing_Method__c, Next_Schedule_Z_Status__c
             FROM Utility_Account_Subscription__c
             WHERE Name = '0000236'
         ];

@@ -61,6 +61,7 @@ public class TestBillCreationForCancelledCustomers {
             Lender_of_Record__c = 'BlueWave',
             NMC_Discount__c = 10,
             Annual_kWh_Maximum__c = 100000000,
+            Customer_Subscription_Type__c = 'Electricity Cost ($)',
             NM_Rate_Floor__c = 0,
             Monthly_Late_Fee__c = 1);
         insert new List<Product2>{
@@ -274,8 +275,7 @@ public class TestBillCreationForCancelledCustomers {
             Opportunity__c = opportunity1.Id,
             Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
-            Calculated_Annual_Cost_of_Electricity__c = 6006,
-            Subscribed_Annual_Cost_of_Electricity__c = 6006
+            Calculated_Annual_Cost_of_Electricity__c = 6006
         );
         Utility_Account_Subscription__c uas2 = new Utility_Account_Subscription__c(
             Name = '0000235',
@@ -283,8 +283,7 @@ public class TestBillCreationForCancelledCustomers {
             Opportunity__c = opportunity2.Id,
             Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
-            Calculated_Annual_Cost_of_Electricity__c = 2402.4,
-            Subscribed_Annual_Cost_of_Electricity__c = 2402.4
+            Calculated_Annual_Cost_of_Electricity__c = 2402.4
         );
         Utility_Account_Subscription__c uas3 = new Utility_Account_Subscription__c(
             Name = '0000235',
@@ -292,8 +291,7 @@ public class TestBillCreationForCancelledCustomers {
             Opportunity__c = opportunity3.Id,
             Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
-            Calculated_Annual_Cost_of_Electricity__c = 2642.64,
-            Subscribed_Annual_Cost_of_Electricity__c = 2642.64
+            Calculated_Annual_Cost_of_Electricity__c = 2642.64
         );
         Utility_Account_Subscription__c uas4 = new Utility_Account_Subscription__c(
             Name = '0000236',
@@ -301,8 +299,7 @@ public class TestBillCreationForCancelledCustomers {
             Opportunity__c = opportunity4.Id,
             Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
-            Calculated_Annual_Cost_of_Electricity__c = 1201.2,
-            Subscribed_Annual_Cost_of_Electricity__c = 1201.2
+            Calculated_Annual_Cost_of_Electricity__c = 1201.2
         );
         Utility_Account_Subscription__c uas5 = new Utility_Account_Subscription__c(
             Name = '0000236',
@@ -310,8 +307,7 @@ public class TestBillCreationForCancelledCustomers {
             Opportunity__c = opportunity5.Id,
             Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
-            Calculated_Annual_Cost_of_Electricity__c = 4804.8,
-            Subscribed_Annual_Cost_of_Electricity__c = 4804.8
+            Calculated_Annual_Cost_of_Electricity__c = 4804.8
         );
         Utility_Account_Subscription__c uas6 = new Utility_Account_Subscription__c(
             Name = '0000243',
@@ -319,13 +315,21 @@ public class TestBillCreationForCancelledCustomers {
             Opportunity__c = opportunity6.Id,
             Sizing_Method__c = everbillNMC.Id,
             Next_Schedule_Z_Status__c = 'Active Subscription',
-            Calculated_Annual_Cost_of_Electricity__c = 5525.53,
-            Subscribed_Annual_Cost_of_Electricity__c = 5525.53
+            calculated_annual_cost_of_electricity__c = 5525.53
         );
 
-        insert new List<Utility_Account_Subscription__c>{
+        List<Utility_Account_Subscription__c> uasList = new List<Utility_Account_Subscription__c> {
             uas1, uas2, uas3, uas4, uas5, uas6
         };
+
+        insert uasList;
+        TestSOCreator.registerByCost(uas1, 6000);
+        TestSOCreator.registerByCost(uas2, 2402.4);
+        TestSOCreator.registerByCost(uas3, 2642.64);
+        TestSOCreator.registerByCost(uas4, 1201.2);
+        TestSOCreator.registerByCost(uas5, 4804.8);
+        TestSOCreator.registerByCost(uas6, 5525.53);
+        TestSOCreator.commitWork();
 
         Schedule_Z__c schZOne = new Schedule_Z__c(
             Name = '18-0515 Project A Oak Rd',
@@ -471,8 +475,9 @@ public class TestBillCreationForCancelledCustomers {
             FROM UASB__c
         ];
 
-        setBillsToPublished();
         Test.stopTest();
+        setBillsToPublished();
+
     }
 
     public static void setBillsToPublished() {
