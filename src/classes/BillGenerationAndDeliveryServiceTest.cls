@@ -475,6 +475,28 @@ public class BillGenerationAndDeliveryServiceTest {
         TestSOCreator.registerByCost(uas10, 1400);
         TestSOCreator.commitWork();
 
+        insert uasList;
+
+        List<Id> idList = new List<Id>();
+
+        for (Utility_Account_Subscription__c uas : uasList) {
+            idList.add(uas.Id);
+        }
+
+        uasList = [
+            SELECT Id, Subscription_Comment_c__c, Subscription_Type__c, Opportunity__c
+            FROM Utility_Account_Subscription__c
+            WHERE Id in :idList
+        ];
+
+        List<SubscriptionManagementService.UASWrapper> uaswList = new List<SubscriptionManagementService.UASWrapper>();
+
+        for (Utility_Account_Subscription__c uas : uasList) {
+            uaswList.add(new SubscriptionManagementService.UASWrapper(uas, null, 1400));
+        }
+
+        new SubscriptionManagementService().insertSubscriptionOrdersWithWrapper(uaswList);
+
         Date thisMonth = Date.today();
         Date lastMonth = thisMonth.addMonths(-1);
         Date nextMonth = thisMonth.addMonths(1);
