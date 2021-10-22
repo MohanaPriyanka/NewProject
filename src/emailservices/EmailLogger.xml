@@ -4,7 +4,7 @@
     <attachmentOption>All</attachmentOption>
     <authenticationFailureAction>Discard</authenticationFailureAction>
     <authorizationFailureAction>Discard</authorizationFailureAction>
-    <errorRoutingAddress>product@bluewavesolar.com</errorRoutingAddress>
+    <errorRoutingAddress>cssupport@perchenergy.com</errorRoutingAddress>
     <functionInactiveAction>Discard</functionInactiveAction>
     <functionName>EmailLogger</functionName>
     <isActive>true</isActive>
