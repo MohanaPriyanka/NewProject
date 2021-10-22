@@ -1,6 +1,6 @@
 /*************************************************************************************
- * Created By: peteryao on 1/20/19  
- * Description: 
+ * Created By: peteryao on 1/20/19
+ * Description:
  * Tested By: UASSelectorTest
  *************************************************************************************/
 @SuppressWarnings('PMD.ApexCRUDViolation')
@@ -118,7 +118,7 @@ public without sharing class UASSelector {
             WHERE Id IN :uasIds
         ]);
         return uasMap;
-	}
+    }
     public static Map<Id, Utility_Account_Subscription__c> selectByIdsAsMap(Set<Id> uasIds){
         Map<Id, Utility_Account_Subscription__c> uasWithClientMap = new Map<Id, Utility_Account_Subscription__c>([
             SELECT Id,
@@ -135,9 +135,10 @@ public without sharing class UASSelector {
                 Opportunity__r.AccountId propertyAccount,
                 Opportunity__r.Account.Parent_Account__c parentAccount,
                 Opportunity__r.Shared_Solar_System__r.Client_Brand_Key__c sssBrandKey,
-                Opportunity__r.Shared_Solar_System__r.Client_Account__r.Client_Brand_Key__c entityBrandKey
+                Opportunity__r.Shared_Solar_System__r.Client_Account__r.Client_Brand_Key__c clientBrandKey
             FROM Utility_Account_Subscription__c
             WHERE Opportunity__r.Account.Parent_Account__c IN : parentAccountIds
+            AND Opportunity__r.StageName = 'Complete'
             GROUP BY Opportunity__r.AccountId,
                 Opportunity__r.Account.Parent_Account__c,
                 Opportunity__r.Shared_Solar_System__r.Client_Brand_Key__c,
