@@ -20,7 +20,6 @@ public with sharing class ClientReportingServiceTest {
         Test.loadData(Partner__c.SObjectType, 'TestRLPartner');
         Test.loadData(Opportunity.SObjectType, 'TestCSOpportunity');
         Test.loadData(Utility_Account_Subscription__c.SObjectType, 'TestCSUtilityAccountSubscription');
-        Test.loadData(Subscription_Order__c.SObjectType, 'TestCSSubscriptionOrder');
         Test.stopTest();
         Test.loadData(Schedule_Z__c.SObjectType, 'TestCSScheduleZ');
         Test.loadData(Schedule_Z_Subscription__c.SObjectType, 'TestCSScheduleZSubscription');
@@ -357,13 +356,11 @@ public with sharing class ClientReportingServiceTest {
             Opportunity__c = opp.Id,
             calculated_annual_cost_of_electricity__c = 300);
         insert uas;
-        TestSOCreator.createByCost(uas, 300);
         Test.startTest();
         List<Client_Utility_Account_Subscription__c> clientUAS = ClientReportObjectSelector.getClientUASesByUASIds(new Set<Id>{
             uas.Id
         });
         System.assertEquals(opp.Name, clientUAS[0].Customer__c);
-        System.assertEquals(300, clientUAS[0].Annual_Cost_of_Electricity_Future__c);
         System.assertEquals(opp.Shared_Solar_System__c, clientUAS[0].Shared_Solar_System__c);
 
         //Test an update to parent UAS
@@ -378,7 +375,6 @@ public with sharing class ClientReportingServiceTest {
         List<Client_Utility_Account_Subscription__c> clientUASUpdate = ClientReportObjectSelector.getClientUASesByUASIds(new Set<Id>{
             uas.Id
         });
-        System.assertEquals(500, clientUASUpdate[0].Annual_Cost_of_Electricity_Future__c);
         //Test update of Opp's SSS
         Shared_Solar_System__c sss2 = [
             SELECT Id, Name
@@ -415,11 +411,9 @@ public with sharing class ClientReportingServiceTest {
             System.assertEquals(cuas.Utility_Account_Subscription__r.Shared_Solar_System__r.Name, cuas.Shared_Solar_System__r.Name);
             if (cuas.Utility_Account_Subscription__r.Next_Schedule_Z_Status__c == 'Active Subscription') {
                 System.assertEquals(sss2.Id, cuas.Shared_Solar_System__c);
-                System.assertEquals(500, clientUASUpdate[0].Annual_Cost_of_Electricity_Future__c);
             } else {
                 //When Subscription Order Feature flag is ON, original UAS is marked as "Inactive" and zeroed out
                 System.assertNotEquals(sss2.Id, cuas.Shared_Solar_System__c);
-                System.assertEquals(0, cuas.Annual_Cost_of_Electricity_Future__c);
             }
         }
         //Test deletion of parent UAS
