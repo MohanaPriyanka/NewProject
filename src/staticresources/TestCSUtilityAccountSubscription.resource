@@ -2,7 +2,7 @@ Id,Name,RecordTypeId,calculated_annual_cost_of_electricity__c,Opportunity__c,Siz
 TestUASAccountAOppOne,0000234,012j00000004TNgAAM,4000,TestAccountAOppOne,TestUtilityNMCEversource,TestSolarSystem-BarrettP1,TestUAL-AccountA,25,TRUE,Active Subscription,,
 TestUASAccountAOppTwo,000-0235,012j00000004TNgAAM,6000,TestAccountAOppTwo,TestUtilityNMCEversource,TestSolarSystem-BarrettP2,TestUAL-AccountA,20,TRUE,Active Subscription,,
 TestUASAccountBOpp,000-0236,012j00000004TNgAAM,1800,TestAccountBOpp,TestUtilityNMCEversource,TestSolarSystem-BarrettP2,TestUAL-AccountB,20,TRUE,Active Subscription,,
-UASADonut,0000234,012j00000004TNgAAM,1400,ADonutOpp,TestUtilityNMCEversource,TestSolarSystem-BarrettP1TestUAL-ADonut,25,TRUE,Active Subscription,,
+UASADonut,0000234,012j00000004TNgAAM,1400,ADonutOpp,TestUtilityNMCEversource,TestSolarSystem-BarrettP1,TestUAL-ADonut,25,TRUE,Active Subscription,,
 UASBDonut,0000235,012j00000004TNgAAM,1400,ADonutOpp,TestUtilityNMCEversource,TestSolarSystem-BarrettP1,TestUAL-BDonut,10,TRUE,Active Subscription,,
 UASCDonut,0000236,012j00000004TNgAAM,1400,ADonutOpp,TestUtilityNMCEversource,TestSolarSystem-BarrettP1,TestUAL-CDonut,20,TRUE,Active Subscription,,
 UASDDonut,0000237,012j00000004TNgAAM,1400,ADonutOpp,TestUtilityNMCEversource,TestSolarSystem-BarrettP1,TestUAL-DDonut,19,TRUE,Active Subscription,,
