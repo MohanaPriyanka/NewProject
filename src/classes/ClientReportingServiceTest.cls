@@ -20,7 +20,6 @@ public with sharing class ClientReportingServiceTest {
         Test.loadData(Partner__c.SObjectType, 'TestRLPartner');
         Test.loadData(Opportunity.SObjectType, 'TestCSOpportunity');
         Test.loadData(Utility_Account_Subscription__c.SObjectType, 'TestCSUtilityAccountSubscription');
-        Test.loadData(Subscription_Order__c.SObjectType, 'TestCSSubscriptionOrder');
         Test.stopTest();
         Test.loadData(Schedule_Z__c.SObjectType, 'TestCSScheduleZ');
         Test.loadData(Schedule_Z_Subscription__c.SObjectType, 'TestCSScheduleZSubscription');
@@ -357,7 +356,6 @@ public with sharing class ClientReportingServiceTest {
             Opportunity__c = opp.Id,
             calculated_annual_cost_of_electricity__c = 300);
         insert uas;
-        TestSOCreator.createByCost(uas, 300);
         Test.startTest();
         List<Client_Utility_Account_Subscription__c> clientUAS = ClientReportObjectSelector.getClientUASesByUASIds(new Set<Id>{
             uas.Id
