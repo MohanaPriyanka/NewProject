@@ -46,13 +46,14 @@ public with sharing class ClientBrandingService implements Queueable {
         }
     }
 
-    public Map<Id, Account> getPropertyAccountBrandKey(List<AggregateResult> uasSummary) {
+    @TestVisible
+    private Map<Id, Account> getPropertyAccountBrandKey(List<AggregateResult> uasSummary) {
         System_Default__mdt systemDefault = featureSelector.getSystemDefaults();
         Map<Id, Account> accountMap = new Map<Id, Account>();
 
         for (AggregateResult aggregateResult : uasSummary) {
             String sssBrandKey = (String) aggregateResult.get('sssBrandKey');
-            String entityBrandKey = (String) aggregateResult.get('entityBrandKey');
+            String clientBrandKey = (String) aggregateResult.get('clientBrandKey');
             String propertyAccountId = (String) aggregateResult.get('propertyAccount');
             String parentAccountId = (String) aggregateResult.get('parentAccount');
 
@@ -63,8 +64,8 @@ public with sharing class ClientBrandingService implements Queueable {
             // If blank, set to BluewaveLogo
             if (sssBrandKey != null) {
                 propertyAccount.Client_Brand_Key__c = sssBrandKey;
-            } else if (entityBrandKey != null) {
-                propertyAccount.Client_Brand_Key__c = entityBrandKey;
+            } else if (clientBrandKey != null) {
+                propertyAccount.Client_Brand_Key__c = clientBrandKey;
             } else {
                 propertyAccount.Client_Brand_Key__c = systemDefault.Default_Client_Brand_Key__c;
             }

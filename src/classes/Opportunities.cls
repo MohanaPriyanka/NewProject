@@ -1,13 +1,13 @@
 /*************************************************************************************
  * Created By: peteryao on 1/14/19  
  * Description: Could be extend the fflib_SObjectDomain class
- * Test: CSOpportunitiesTest, CSCancellationServiceTest
+ * Test: OpportunitiesTest, CSCancellationServiceTest
  *************************************************************************************/
 
 public inherited sharing class Opportunities {
     public List<Opportunity> records;
     public static List<String> closedOpportunityStages = new List<String>{'Cancelled', 'Expired', 'DUPLICATE', 'Dead', 'Complete'};
-    private static List<String> lostOpportunityStages = new List<String>{'Cancelled', 'Expired', 'DUPLICATE', 'Dead'};
+    public static List<String> lostOpportunityStages = new List<String>{'Cancelled', 'Expired', 'DUPLICATE', 'Dead'};
     private static Integer systemBillGenerationGracePeriod;
     static {
         List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();

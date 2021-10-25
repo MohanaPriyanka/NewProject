@@ -68,7 +68,9 @@ public without sharing class OpportunityTriggerHandler {
                 createSubscriptionChangeEvent(oldOpp.AccountId, subscriptionEventMap);
             } else if (newOpp.Shared_Solar_System__c != oldOpp.Shared_Solar_System__c) {
                 createSubscriptionChangeEvent(newOpp.AccountId, subscriptionEventMap);
-            } else if (Opportunities.closedOpportunityStages.contains(newOpp.StageName) && !Opportunities.closedOpportunityStages.contains(oldOpp.StageName)) {
+            } else if ((Opportunities.closedOpportunityStages.contains(newOpp.StageName) && !Opportunities.closedOpportunityStages.contains(oldOpp.StageName)) ||
+                // We want to reevaluate the client brand key if an opportunity was won and changes to lost (which are both closed stages)
+                (Opportunities.lostOpportunityStages.contains(newOpp.StageName) && !Opportunities.lostOpportunityStages.contains(oldOpp.StageName))) {
                 createSubscriptionChangeEvent(newOpp.AccountId, subscriptionEventMap);
             }
         }
