@@ -178,11 +178,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Utility_Account_Subscription__c.Annual_kwh_subscription_future__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Utility_Account_Subscription__c.Customer_Subscription_KW_DC__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -199,11 +194,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Shared_Solar_System__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Utility_Account_Subscription__c.Subscribed_Annual_Cost_of_Electricity__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
