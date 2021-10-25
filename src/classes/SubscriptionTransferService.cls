@@ -30,6 +30,13 @@ public without sharing class SubscriptionTransferService {
         }
     );
 
+    // Updating the old uas records to inactive needs to happen before inserting the new uas records
+    @TestVisible private static fflib_SObjectUnitOfWork uowForUpdateOldUASRecords = new fflib_SObjectUnitOfWork(
+        new List<SObjectType>{
+            Utility_Account_Subscription__c.SObjectType
+        }
+    );
+
     /**
      * @description Changes the SSS on the opportunity by:
      * - zeroing out the existing UASes
@@ -58,7 +65,6 @@ public without sharing class SubscriptionTransferService {
                 request
             };
         }
-
         Opportunity opp = new Opportunity(
             Id = oppId,
             Shared_Solar_System__c = newSSSId
@@ -76,6 +82,7 @@ public without sharing class SubscriptionTransferService {
         }
         UtilityAccountSubscriptions utilityAccountSubscriptions = new UtilityAccountSubscriptions(oldUASes);
         utilityAccountSubscriptions.registerSubscriptionOrdersToZeroOutUAS('Transfer', uowForTransferSO);
+        uowForUpdateOldUASRecords.commitWork();
         uowForTransferSO.commitWork();
         uowForResizeSO.commitWork();
 
@@ -153,6 +160,7 @@ public without sharing class SubscriptionTransferService {
                 oldUAS
             });
         utilityAccountSubscriptions.registerSubscriptionOrdersToZeroOutUAS('Transfer', uowForTransferSO);
+        uowForUpdateOldUASRecords.commitWork();
         uowForTransferSO.commitWork();
         uowForResizeSO.commitWork();
     }
@@ -167,7 +175,6 @@ public without sharing class SubscriptionTransferService {
         } else {
             uowForTransferSO.registerDirty(newUAS, Utility_Account_Subscription__c.Transferred_From__c, transfer);
         }
-
         Subscription_Order__c transferSO = getNewTransferSO(oldUAS, newUAS, sss);
         uowForTransferSO.registerNew(transferSO, Subscription_Order__c.Utility_Account_Subscription__c, newUAS);
 
@@ -177,9 +184,8 @@ public without sharing class SubscriptionTransferService {
             desiredAnnualkWhOrCost
         );
         uowForResizeSO.registerNew(resizeSO, Subscription_Order__c.Utility_Account_Subscription__c, newUAS);
-
         oldUAS.Next_Schedule_Z_Status__c = 'Inactive Subscription';
-        uowForTransferSO.registerDirty(oldUAS);
+        uowForUpdateOldUASRecords.registerDirty(oldUAS);
     }
 
     private Subscription_Transfer__c getNewSubscriptionTransferRecord(Utility_Account_Subscription__c oldUAS) {
