@@ -1301,19 +1301,6 @@ IF (Loan_Term__c = 162, &quot;fifteenth&quot;, &quot;&quot;) )</formula>
         <type>Percent</type>
     </fields>
     <fields>
-        <fullName>Loan_Capital_Pool__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Loan Capital Pool</label>
-        <referenceTo>Loan_Data__c</referenceTo>
-        <relationshipLabel>Products</relationshipLabel>
-        <relationshipName>Products</relationshipName>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>Loan_Date_Structure__c</fullName>
         <externalId>false</externalId>
         <label>Loan Date Structure</label>

@@ -808,50 +808,6 @@
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Total_Commissions_from_Loans__c</fullName>
-        <externalId>false</externalId>
-        <label>Total Commissions from Loans</label>
-        <summarizedField>BSST__c.Commission__c</summarizedField>
-        <summaryForeignKey>BSST__c.Partner__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
-    </fields>
-    <fields>
-        <fullName>Total_Funds_Disbursed__c</fullName>
-        <description>Sum of funds disbursed to Loan Partner</description>
-        <externalId>false</externalId>
-        <label>Total Funds Disbursed</label>
-        <summarizedField>Disbursal__c.Amount__c</summarizedField>
-        <summaryFilterItems>
-            <field>Disbursal__c.Status__c</field>
-            <operation>equals</operation>
-            <value>Disbursed</value>
-        </summaryFilterItems>
-        <summaryForeignKey>Disbursal__c.Partner__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
-    </fields>
-    <fields>
-        <fullName>Total_Funds_Not_Disbursed__c</fullName>
-        <externalId>false</externalId>
-        <label>Total Funds Not Disbursed</label>
-        <summarizedField>Disbursal__c.Amount__c</summarizedField>
-        <summaryFilterItems>
-            <field>Disbursal__c.Status__c</field>
-            <operation>notEqual</operation>
-            <value>Disbursed</value>
-        </summaryFilterItems>
-        <summaryForeignKey>Disbursal__c.Partner__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
-    </fields>
-    <fields>
         <fullName>Total_Leads__c</fullName>
         <externalId>false</externalId>
         <label>Total Leads</label>
@@ -862,17 +818,6 @@
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Total_Loans_Made__c</fullName>
-        <externalId>false</externalId>
-        <label>Total Loans Made</label>
-        <summarizedField>BSST__c.Total_Loans__c</summarizedField>
-        <summaryForeignKey>BSST__c.Partner__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
     </fields>
     <fields>
         <fullName>Total_Opportunities2__c</fullName>
@@ -897,17 +842,6 @@
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Total_Principal_Loaned__c</fullName>
-        <externalId>false</externalId>
-        <label>Total Principal Loaned</label>
-        <summarizedField>BSST__c.Total_Principal_Loaned__c</summarizedField>
-        <summaryForeignKey>BSST__c.Partner__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
     </fields>
     <fields>
         <fullName>Total_Reserved_Capacity_kW__c</fullName>

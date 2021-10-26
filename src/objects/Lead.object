@@ -3591,29 +3591,6 @@ IF(DOER_Solar_Loan__c=TRUE, 0.0399, 0.0599), VALUE(TEXT(Interest_Rate_Picklist__
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>MCEC_Reporting_Object__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>MCEC Reporting Object</label>
-        <referenceTo>MCEC_Report_Data__c</referenceTo>
-        <relationshipLabel>Leads</relationshipLabel>
-        <relationshipName>Leads</relationshipName>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>MCEC_Status_Last_Modified__c</fullName>
-        <description>Date field.  Updated via workflow to show the last time the MCEC status was changed.</description>
-        <externalId>false</externalId>
-        <label>MCEC Status Last Modified</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Date</type>
-    </fields>
-    <fields>
         <fullName>Manual_Campaign_ID__c</fullName>
         <externalId>false</externalId>
         <label>Manual Campaign Id</label>

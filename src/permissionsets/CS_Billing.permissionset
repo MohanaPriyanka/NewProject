@@ -775,11 +775,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Energy_Usage_Update__c.Residential_Equipment__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>false</editable>
         <field>Energy_Usage_Update__c.Revenue_Minus_10_Discount__c</field>
         <readable>true</readable>
