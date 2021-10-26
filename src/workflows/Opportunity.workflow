@@ -2,7 +2,7 @@
 <Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
     <alerts>
         <fullName>CS_Partner_Contract_Complete</fullName>
-        <description>CS Partner - Contract Complete</description>
+        <description>CS Partner - Contract Complete - sent via flow</description>
         <protected>false</protected>
         <recipients>
             <field>Partner_Email__c</field>

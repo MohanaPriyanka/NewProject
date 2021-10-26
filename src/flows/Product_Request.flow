@@ -1725,7 +1725,7 @@ You&apos;ll be able to attach files in the next screen.</fieldText>
         <allowPause>false</allowPause>
         <fields>
             <name>outNoTeam</name>
-            <fieldText>This team has not been setup in the request tool. Please contact productsupport@bluewavesolar.com for assistance.</fieldText>
+            <fieldText>&lt;p&gt;This team has not been setup in the request tool. Please contact Biz Apps for assistance.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>

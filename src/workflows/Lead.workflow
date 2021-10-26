@@ -7,8 +7,7 @@
         <recipients>
             <type>owner</type>
         </recipients>
-        <senderAddress>noreply@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
+        <senderType>CurrentUser</senderType>
         <template>CS_Application_Email_Notifications/Lead_Assignment_Notification</template>
     </alerts>
     <fieldUpdates>

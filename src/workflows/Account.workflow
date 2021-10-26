@@ -8,8 +8,7 @@
             <recipient>Partner_Application_QC_Team</recipient>
             <type>group</type>
         </recipients>
-        <senderAddress>productsupport@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
+        <senderType>CurrentUser</senderType>
         <template>BFG_Internal_Alerts/Partner_App_Submitted_Alert_Internal</template>
     </alerts>
     <fieldUpdates>

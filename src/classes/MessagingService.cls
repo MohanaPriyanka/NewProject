@@ -10,13 +10,19 @@ public without sharing class MessagingService {
     @TestVisible private static Map<String, EmailTemplate> emailTemplateMap = new Map<String, EmailTemplate>();
     @TestVisible private static Messaging.Email[] emailsSent;
     @TestVisible private static Boolean onlyUseActiveTemplates = true;
+    @TestVisible private static FeatureSelector featureSelector = new FeatureSelector();
 
     public static OrgWideEmailAddress getCustomerCareEmail() {
         if (customerCareEmail == null) {
+            String brand = featureSelector.getSystemDefaults().Default_Client_Brand_Key__c;
+            String customerCareBrandedAddress = 'customercare@bluewavesolar.com';
+            if (brand == 'Perch') {
+                customerCareBrandedAddress = 'customercare@perchenergy.com';
+            }
             customerCareEmail = [
                 SELECT Id, Address
                 FROM OrgWideEmailAddress
-                WHERE Address = 'customercare@bluewavesolar.com'
+                WHERE Address = :customerCareBrandedAddress
                 LIMIT 1
             ];
         }
