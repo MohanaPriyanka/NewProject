@@ -630,20 +630,6 @@ if( month( Date__c ) == 12, &quot;December&quot;, null))))))))))))</formula>
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Residential_Equipment__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Residential Equipment</label>
-        <referenceTo>Residential_Equipment__c</referenceTo>
-        <relationshipLabel>Production Updates</relationshipLabel>
-        <relationshipName>Production_Updates</relationshipName>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>Revenue_Minus_10_Discount__c</fullName>
         <externalId>false</externalId>
         <formula>Schedule_Z_Allocations__c *0.90</formula>
