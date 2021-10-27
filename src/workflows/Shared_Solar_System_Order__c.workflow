@@ -7,8 +7,7 @@
         <recipients>
             <type>owner</type>
         </recipients>
-        <senderAddress>noreply@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
+        <senderType>CurrentUser</senderType>
         <template>Product_Team/Final_Approval_SSSO</template>
     </alerts>
     <alerts>
@@ -18,8 +17,7 @@
         <recipients>
             <type>owner</type>
         </recipients>
-        <senderAddress>noreply@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
+        <senderType>CurrentUser</senderType>
         <template>Product_Team/Final_Rejection_SSSO</template>
     </alerts>
     <fieldUpdates>

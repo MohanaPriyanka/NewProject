@@ -7,8 +7,13 @@
 public with sharing class MessagingServiceTest {
     @IsTest
     public static void testGetCustomerCareEmail() {
+        System_Default__mdt systemDefaultWithPerchBrandKey = new System_Default__mdt(
+            Default_Client_Brand_Key__c = 'Perch'
+        );
+        MessagingService.featureSelector =
+            (FeatureSelector) Test.createStub(FeatureSelector.class, new FeatureServiceTest.MockCustomFeatureSelector(systemDefaultWithPerchBrandKey));
         OrgWideEmailAddress customerCare = MessagingService.getCustomerCareEmail();
-        System.assertEquals('customercare@bluewavesolar.com', customerCare.Address, 'Method should have selected customercare');
+        System.assertEquals('customercare@perchenergy.com', customerCare.Address, 'Method should have selected customercare');
     }
 
     @IsTest

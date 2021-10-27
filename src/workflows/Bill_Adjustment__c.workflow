@@ -7,8 +7,7 @@
         <recipients>
             <type>creator</type>
         </recipients>
-        <senderAddress>noreply@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
+        <senderType>CurrentUser</senderType>
         <template>BFG_Internal_Alerts/Adjustment_Approval_Approved</template>
     </alerts>
     <alerts>
@@ -18,8 +17,7 @@
         <recipients>
             <type>creator</type>
         </recipients>
-        <senderAddress>noreply@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
+        <senderType>CurrentUser</senderType>
         <template>BFG_Internal_Alerts/Adjustment_Approval_Rejected</template>
     </alerts>
     <fieldUpdates>
