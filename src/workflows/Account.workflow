@@ -39,15 +39,6 @@
         <operation>Formula</operation>
         <protected>false</protected>
     </fieldUpdates>
-    <fieldUpdates>
-        <fullName>Invoiced_Amount</fullName>
-        <field>Cancellation_Fees_Invoiced__c</field>
-        <formula>1250* Number_of_Contracts_to_Cancel__c</formula>
-        <name>Invoiced Amount</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>Formula</operation>
-        <protected>false</protected>
-    </fieldUpdates>
     <rules>
         <fullName>Account - Partner Name Update - Sharing</fullName>
         <actions>
