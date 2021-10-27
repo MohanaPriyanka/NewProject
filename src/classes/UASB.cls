@@ -79,7 +79,7 @@ public virtual class UASB {
         uasb.Shared_Solar_System__c = szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__c;
         uasb.Externally_Serviced__c = szs.Utility_Account_Subscription__r.Externally_Serviced__c;
         uasb.PreGen_Name_on_Account__c = getCustomerName();
-        uasb.PreGen_Utility_Acct__c = getPremiseNumber();
+        uasb.PreGen_Utility_Acct__c = getUtilityAccountNumberForComparison();
     }
 
     /**
@@ -107,7 +107,7 @@ public virtual class UASB {
         return customerName;
     }
 
-    private String getPremiseNumber() {
+    private String getUtilityAccountNumberForComparison() {
         String utilityAccountNumber = szs.Utility_Account_Subscription__r.Utility_Account_Log__r.Name;
         String premiseNumber = szs.Utility_Account_Subscription__r.Utility_Account_Log__r.Premise_Number__c;
         Boolean usePremiseNumber = transfer.Shared_Solar_System__r.Utility__r.Use_Premise_Number_In_Transfer_QC__c;
@@ -139,17 +139,15 @@ public virtual class UASB {
     private Decimal getNMCDiscount() {
         if (nmcDiscountOverride != null) {
             return nmcDiscountOverride;
-        } else {
-            return szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.NMC_Discount__c;
         }
+        return szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.NMC_Discount__c;
     }
 
     private Decimal getSolarElectricityRate() {
         if (solarElectricityRateOverride != null) {
             return solarElectricityRateOverride;
-        } else {
-            return szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.Solar_Electricity_Rate__c;
         }
+        return szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.Solar_Electricity_Rate__c;
     }
 
     private void setEscalatorOverrides(Map<Id, List<Product_Escalator__c>> productEscalatorMap) {
