@@ -42,8 +42,6 @@ public with sharing class ZuoraAccountServiceTest {
         Account accountRecord = new Account(
             Name = 'BlueWave Customer Care',
             State_Market__c = 'MA',
-            Enable_CS_Application_in_Portal__c = true,
-            Community_Solar_Application_Type__c = 'CSAP',
             RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Partner_Account').getRecordTypeId()
         );
         insert accountRecord;
@@ -51,8 +49,6 @@ public with sharing class ZuoraAccountServiceTest {
         Account accountRecord2 = new Account(
             Name = 'Mass Renewables',
             State_Market__c = 'MA',
-            Enable_CS_Application_in_Portal__c = true,
-            Community_Solar_Application_Type__c = 'CSAP',
             RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Partner_Account').getRecordTypeId()
         );
         insert accountRecord2;
