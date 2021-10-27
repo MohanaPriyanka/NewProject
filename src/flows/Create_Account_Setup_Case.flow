@@ -36,8 +36,8 @@
     <assignments>
         <name>Assign_Subject_Variable_with_Customer_Input</name>
         <label>Assign Subject Variable with Customer Input</label>
-        <locationX>564</locationX>
-        <locationY>686</locationY>
+        <locationX>562</locationX>
+        <locationY>687</locationY>
         <assignmentItems>
             <assignToReference>varCaseSubject</assignToReference>
             <operator>Assign</operator>
@@ -73,13 +73,6 @@
             <operator>Assign</operator>
             <value>
                 <elementReference>errorMessage</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>sov_Error_Log.User__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>$User.Username</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -355,7 +348,7 @@
         <fields>
             <name>BlueWave_Account_Number</name>
             <dataType>String</dataType>
-            <fieldText>BlueWave Account Number</fieldText>
+            <fieldText>Account Number (e.g. BW-0001234)</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>false</isRequired>
         </fields>
@@ -387,11 +380,11 @@
         </fields>
         <fields>
             <name>Error_Msg_Display</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;There are was error while processing your request. Please contact BlueWave Customer Care at 844.786.4100 or customercare@bluewavesolar.com.&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;There are was error while processing your request. Please contact {!$Label.Company_Name} Customer Care at {!$Label.phone_customercare} or {!$Label.email_customercare}.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>Finish_Screen</name>

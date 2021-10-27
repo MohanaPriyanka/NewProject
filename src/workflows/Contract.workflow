@@ -11,8 +11,7 @@
             <field>Submitted_By__c</field>
             <type>userLookup</type>
         </recipients>
-        <senderAddress>productsupport@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
+        <senderType>CurrentUser</senderType>
         <template>Product_Team/Contract_Approvals_Final_Approval</template>
     </alerts>
     <alerts>
@@ -26,8 +25,7 @@
             <field>Submitted_By__c</field>
             <type>userLookup</type>
         </recipients>
-        <senderAddress>productsupport@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
+        <senderType>CurrentUser</senderType>
         <template>Product_Team/Contract_Approvals_Final_Rejection</template>
     </alerts>
     <fieldUpdates>

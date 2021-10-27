@@ -269,7 +269,7 @@ public without sharing class PaymentCaseCreator implements Schedulable, ZuoraDat
         mail.setHtmlBody(errorMessage);
         mail.setPlainTextBody(errorMessage);
         mail.setToAddresses(new List<String>{
-            'product@bluewavesolar.com'
+            'cssupport@perchenergy.com'
         });
         return mail;
     }

@@ -399,6 +399,46 @@
         <value>https://bluewavesolar--c.documentforce.com/file-asset-public/icons8twitter_filled?oid=00Dj0000001q7GO</value>
     </labels>
     <labels>
+        <fullName>email_anchorsupport</fullName>
+        <categories>branding, email</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Anchor Support Email address</shortDescription>
+        <value>anchorsupport@bluewavesolar.com</value>
+    </labels>
+    <labels>
+        <fullName>email_clientservices</fullName>
+        <categories>branding, email</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Client Services Email address</shortDescription>
+        <value>clientservices@bluewavesolar.com</value>
+    </labels>
+    <labels>
+        <fullName>email_customercare</fullName>
+        <categories>branding, email</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Customer Care Email address</shortDescription>
+        <value>customercare@bluewavesolar.com</value>
+    </labels>
+    <labels>
+        <fullName>email_fin_ops</fullName>
+        <categories>branding, email</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>FinOps Email address</shortDescription>
+        <value>finops@bluewavesolar.com</value>
+    </labels>
+    <labels>
+        <fullName>email_partnersupport</fullName>
+        <categories>branding, email</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Partner Support Email Address</shortDescription>
+        <value>partnersupport@bluewavesolar.com</value>
+    </labels>
+    <labels>
         <fullName>fbc_AccessLevel</fullName>
         <categories>labels</categories>
         <language>en_US</language>
@@ -893,6 +933,22 @@
         <protected>false</protected>
         <shortDescription>Users</shortDescription>
         <value>Users</value>
+    </labels>
+    <labels>
+        <fullName>phone_customercare</fullName>
+        <categories>branding</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Customer Care Phone</shortDescription>
+        <value>(844) 786-4100</value>
+    </labels>
+    <labels>
+        <fullName>phone_partnersupport</fullName>
+        <categories>branding</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Partner Support Phone</shortDescription>
+        <value>(888) 817-2703</value>
     </labels>
     <labels>
         <fullName>sremailNoSearchResultsMessage</fullName>
