@@ -53,27 +53,6 @@
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
     <rules>
-        <fullName>Cancellation Date Email Sent</fullName>
-        <actions>
-            <name>Date_Email_Sent</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <actions>
-            <name>Invoiced_Amount</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <active>false</active>
-        <criteriaItems>
-            <field>Account.Cancellation_Notice_Type__c</field>
-            <operation>notEqual</operation>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Account.Number_of_Contracts_to_Cancel__c</field>
-            <operation>notEqual</operation>
-        </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
         <fullName>RL - Account Record Type</fullName>
         <actions>
             <name>Account_Record_Type_Residential_Loan</name>
