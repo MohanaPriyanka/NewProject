@@ -9,8 +9,6 @@ public class CSQualificationTestclass {
         Account partnerAccount = new Account(
             Name = 'Mass Renewables',
             State_Market__c = 'MA',
-            Enable_CS_Application_in_Portal__c = true,
-            Community_Solar_Application_Type__c = 'CSAP',
             RecordTypeId = partnerAccountRTID
         );
         insert partnerAccount;
