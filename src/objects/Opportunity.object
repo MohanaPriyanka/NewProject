@@ -849,18 +849,6 @@ null, Annual_Electricity_Cost__c/NMC_Value__c)</formula>
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Apt_Suite__c</fullName>
-        <externalId>false</externalId>
-        <formula>Account.Apt_Suite__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Billing Apt/Suite</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Assessors_Parcel_Number__c</fullName>
         <externalId>false</externalId>
         <label>Assessor&apos;s Parcel Number</label>
@@ -1170,18 +1158,6 @@ false
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>CS_Apt_Suite__c</fullName>
-        <externalId>false</externalId>
-        <formula>Account.Apt_Suite__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Service Apt/Suite</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>CS_Capacity_Allocated__c</fullName>
@@ -1739,19 +1715,6 @@ TEXT(DAY(Commencement_Date__c))
         <length>25</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Concatenated_Billing_Address__c</fullName>
-        <externalId>false</externalId>
-        <formula>Street_Address__c  &amp; &quot; &quot; &amp;   Apt_Suite__c &amp; &quot;, &quot; &amp; City__c  &amp;&quot;, &quot; &amp; State__c  &amp; &quot;, &quot; &amp;  Zip_Code__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Concatenated Billing Address</label>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>

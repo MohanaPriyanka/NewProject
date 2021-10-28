@@ -111,9 +111,7 @@ public without sharing class CSRecordLoader implements Queueable {
             Name='Solar Test Partner',
             Partner__c = partner.Id,
             RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Partner_Account').getRecordTypeId(),
-            State_Market__c = states,
-            Enable_CS_Application_in_Portal__c = true,
-            Community_Solar_Application_Type__c = 'CSAP'
+            State_Market__c = states
         );
         insert partnerAccount;
         partner.Account__c = partnerAccount.Id;

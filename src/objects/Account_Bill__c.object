@@ -528,16 +528,6 @@ IF( Balance_Net_Late_Payments__c &gt; 1, (TODAY() - Due_Date_SB__c), 0))</formul
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Do_not_Send_Bills_From_Account__c</fullName>
-        <externalId>false</externalId>
-        <formula>Parent_Account__r.Do_not_Send_Bills__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Do not Send Bills (From Account)</label>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>Due_Date_SB__c</fullName>
         <externalId>false</externalId>
         <label>Due Date</label>
@@ -1141,36 +1131,6 @@ New Charges...</inlineHelpText>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Send_Bill_Conga_Calc__c</fullName>
-        <description>##Conga created btn:00bj0000001NyL6</description>
-        <externalId>false</externalId>
-        <formula>&quot;&amp;solmgr=1&quot; + 
-&quot;&amp;id=&quot; + Id + 
-&quot;&amp;queryid=[Sbs]a27j0000000bSg9&quot; + 
-&quot;&amp;queryid=[Lbs]a270a000000NFEW&quot; +
-&quot;&amp;templateid=&quot; + Bill_Template__r.Id + if(ISBLANK(Additional_Bill_Insert__r.Id),&apos;&apos;,&apos;,&apos; + Additional_Bill_Insert__r.Id) +
-&quot;&amp;defaultpdf=1&quot; + 
-&quot;&amp;ofn=&quot; + SUBSTITUTE(Name,&quot;&amp;&quot;,&quot;{~}&quot;) + &quot; Community Solar Bill&quot; + 
-&quot;&amp;sc0=1&quot; + 
-&quot;&amp;sc1=SalesforceFile&quot; + 
-&quot;&amp;ac0=1&quot; + 
-&quot;&amp;ac1=Bill Generated [&quot; + TEXT(Parent_Account__r.BillingStateCode) + &quot;]&quot; +
-&quot;&amp;UF0=1&quot; + 
-&quot;&amp;MFTS0=Ready_for_Email_Send__c&quot; + 
-&quot;&amp;MFTSValue0=&quot; + IF(Parent_Account__r.Do_not_Send_Bills__c=true,&quot;false&quot;,&quot;true&quot;) + 
-&quot;&amp;MFTS1=Ready_for_Paper_Bill_Queue__c&quot; + 
-&quot;&amp;MFTSValue1=&quot; + IF(OR(ISPICKVAL(Parent_Account__r.Bill_Delivery_Preference__c,&quot;Email Only&quot;),Parent_Account__r.Do_not_Send_Bills__c=true),&quot;false&quot;,&quot;true&quot;) + 
-&quot;&amp;MFTS2=Bill_PDF_Page_Count__c&quot; + 
-&quot;&amp;MFTSValue2=PDF_PAGE_COUNT&quot; + 
-&quot;&amp;qmode=SalesforceFile&quot;</formula>
-        <label>Send Bill Conga Calc</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Send_Bills_Contact_ID__c</fullName>
