@@ -571,17 +571,6 @@ IMAGE(&quot;/resource/1553274837000/Crown_Icon&quot;, &quot;crown&quot;),
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Apt_Suite__c</fullName>
-        <externalId>false</externalId>
-        <label>Service Apt/Suite</label>
-        <length>15</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Assignment_Agreement_Template__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -867,37 +856,6 @@ IMAGE(&quot;/resource/1553274837000/Crown_Icon&quot;, &quot;crown&quot;),
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Cancellation_Notice_Type__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>This Marks the Date Sent field</inlineHelpText>
-        <label>Step 2: Cancellation Notice Type</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Email WITH Fee</fullName>
-                    <default>false</default>
-                    <label>Email WITH Fee</label>
-                </value>
-                <value>
-                    <fullName>Email WITHOUT Fee</fullName>
-                    <default>false</default>
-                    <label>Email WITHOUT Fee</label>
-                </value>
-                <value>
-                    <fullName>Email WITH NO Fee</fullName>
-                    <default>false</default>
-                    <label>Email WITH NO Fee</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
     </fields>
     <fields>
         <fullName>Cancellation_Reason_External__c</fullName>
@@ -1194,28 +1152,6 @@ Days_Past_Due__c = 90)</formula>
         <trackHistory>false</trackHistory>
         <type>Number</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Community_Solar_Application_Type__c</fullName>
-        <description>This designates which Community Solar Application to send customers from the partner&apos;s portal</description>
-        <externalId>false</externalId>
-        <inlineHelpText>This designates which Community Solar Application to send customers from the partner&apos;s portal</inlineHelpText>
-        <label>Community Solar Application Type</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>CSAP</fullName>
-                    <default>false</default>
-                    <label>CSAP</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
     </fields>
     <fields>
         <fullName>Company_Bio__c</fullName>
@@ -1627,15 +1563,6 @@ MAX(TODAY()-Max_Overdue_Due_Date_Merge__c,0),
         <type>TextArea</type>
     </fields>
     <fields>
-        <fullName>Do_not_Send_Bills__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Do not Send Bills</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>Electrical_License__c</fullName>
         <defaultValue>0</defaultValue>
         <description>For the Partner QC Scorecard. No= 0 / Yes = 1</description>
@@ -1922,15 +1849,6 @@ IF(
         <visibleLines>4</visibleLines>
     </fields>
     <fields>
-        <fullName>Installer_Checklist__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Installer Checklist</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>IsCustomerPortal</fullName>
     </fields>
     <fields>
@@ -2201,36 +2119,6 @@ IF(
         </valueSet>
     </fields>
     <fields>
-        <fullName>Load_Zone__c</fullName>
-        <externalId>false</externalId>
-        <label>Load Zone</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>MultiselectPicklist</type>
-        <valueSet>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>NEMA</fullName>
-                    <default>false</default>
-                    <label>NEMA</label>
-                </value>
-                <value>
-                    <fullName>SEMA</fullName>
-                    <default>false</default>
-                    <label>SEMA</label>
-                </value>
-                <value>
-                    <fullName>WCMA</fullName>
-                    <default>false</default>
-                    <label>WCMA</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-        <visibleLines>4</visibleLines>
-    </fields>
-    <fields>
         <fullName>Loan_Number_of_Days_Delinquent__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Populates from Loan. Do not update manually.</inlineHelpText>
@@ -2371,15 +2259,6 @@ TODAY()- BLANKVALUE(Postcard_2__c,DATE(1900,1,1))
         <type>Date</type>
     </fields>
     <fields>
-        <fullName>NDA__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>NDA</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>Name</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
@@ -2417,33 +2296,9 @@ TODAY()- BLANKVALUE(Postcard_2__c,DATE(1900,1,1))
         <type>Summary</type>
     </fields>
     <fields>
-        <fullName>Number_of_Contracts_to_Cancel__c</fullName>
-        <externalId>false</externalId>
-        <label>Step 1: Number of Contracts to Cancel</label>
-        <precision>1</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Number_of_Customers__c</fullName>
         <externalId>false</externalId>
         <label>Number of Customers</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Number_of_Sales_Reps__c</fullName>
-        <externalId>false</externalId>
-        <label>Number of Sales Reps (approx.)</label>
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
@@ -2486,41 +2341,10 @@ TODAY()- BLANKVALUE(Postcard_2__c,DATE(1900,1,1))
         <type>Date</type>
     </fields>
     <fields>
-        <fullName>Often_Pays_with_Paper_Checks__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Often Pays with Paper Checks</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>One_Strike_Rule_Partner__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
         <label>One Strike Rule Partner</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Opt_In_For_Paper_Billing__c</fullName>
-        <defaultValue>false</defaultValue>
-        <description>4/10/19: Replaced with Bill_Delivery_Preference__c</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Check if Customer would like to receive paper bills</inlineHelpText>
-        <label>XXX Opt In For Paper Billing</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Opt_Out_of_Paper_Billing__c</fullName>
-        <defaultValue>false</defaultValue>
-        <description>4/10/19: Replaced with Bill_Delivery_Preference__c</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Excluded from Bills being sent each month via PrintSF</inlineHelpText>
-        <label>XXX Opt Out of Paper Billing</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
@@ -2572,19 +2396,6 @@ TODAY()- BLANKVALUE(Postcard_2__c,DATE(1900,1,1))
                 </value>
             </valueSetDefinition>
         </valueSet>
-    </fields>
-    <fields>
-        <fullName>Outstanding_TPF_Amount__c</fullName>
-        <description>Netsuite TPF Total Open Amount is manually entered into this SF field to reflect TPF amounts outstanding for this partner</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Netsuite TPF Total Open Amount is manually entered into this SF field to reflect TPF amounts outstanding for this partner</inlineHelpText>
-        <label>Outstanding TPF Amount</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Override_Delinquency_Removal__c</fullName>
@@ -2709,15 +2520,6 @@ IMAGE(&quot;/servlet/servlet.FileDownload?file=&quot; &amp; Partner__r.Logo__c, 
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Partner_QC_Complete__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Partner QC Complete?</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
-        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Partner_Tier_Numeric__c</fullName>
@@ -2896,24 +2698,6 @@ IF(Days_Past_Due__c &lt;= 90, &quot;61-90 Days Late&quot;,
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Print_SF_Template__c</fullName>
-        <externalId>false</externalId>
-        <formula>if(AND (Days_Past_Due__c &gt;=15,Days_Past_Due__c &lt;=21 ), &quot;15 Days Template&quot;,
-if(AND (Days_Past_Due__c &gt;=31,Days_Past_Due__c &lt;=37 ), &quot;30 Days Template&quot;, 
-if(AND (Days_Past_Due__c &gt;=45,Days_Past_Due__c &lt;=51 ), &quot;45 Days Template&quot;, 
-if(AND (Days_Past_Due__c &gt;=60,Days_Past_Due__c &lt;=66 ), &quot;60 Days Template&quot;, 
-if(AND (Days_Past_Due__c &gt;=67,Days_Past_Due__c &lt;=73 ), &quot;67 Days Template&quot;, 
-if(AND (Days_Past_Due__c &gt;=74,Days_Past_Due__c &lt;=80 ), &quot;74 Days Template&quot;, 
-if(AND (Days_Past_Due__c &gt;=81,Days_Past_Due__c &lt;=89 ), &quot;81 Days Template&quot;, 
-if(Days_Past_Due__c &gt;=90, &quot;90 Days Template&quot;, 
-&quot; &quot;))))))))</formula>
-        <label>Print SF Template</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Product_Line_Formula__c</fullName>
         <externalId>false</externalId>
         <formula>IF (AND (RecordType.Name = &quot;Partner Account&quot;,  INCLUDES(Partner__r.Products__c, &quot;Residential Loan&quot;),   INCLUDES(Partner__r.Products__c, &quot;Community Solar&quot;)), &quot;Residential Loan / Community Solar&quot;, 
@@ -2946,40 +2730,9 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Projected_Revenue__c</fullName>
-        <description>Next Year</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Next Year</inlineHelpText>
-        <label>Projected Revenue</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Proof__c</fullName>
-        <externalId>false</externalId>
-        <label>Proof of Insurance (Expiration Date)</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Date</type>
-    </fields>
-    <fields>
         <fullName>Proof_of_Experience__c</fullName>
         <externalId>false</externalId>
         <label>Proof of Experience (Review Date)</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Proof_of_License_Expiration_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>Proof of License (Expiration Date)</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -2997,18 +2750,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Proposal_Software__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Manually input the software used by Partner.</inlineHelpText>
-        <label>Proposal Software</label>
-        <length>255</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
@@ -3063,34 +2804,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Resi_Install_Volume_Next_Year__c</fullName>
-        <description>kW/Year</description>
-        <externalId>false</externalId>
-        <inlineHelpText>kW/Year</inlineHelpText>
-        <label>Resi Install Volume Next Year</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Resi_Install_Volume__c</fullName>
-        <description>kW/Year</description>
-        <externalId>false</externalId>
-        <inlineHelpText>kW/Year</inlineHelpText>
-        <label>Resi Install Volume</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Roll_Up_Balance_Net_Late_Payments__c</fullName>
         <externalId>false</externalId>
         <label>Roll-Up: Balance Net Late Payments</label>
@@ -3099,15 +2812,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <summaryOperation>sum</summaryOperation>
         <trackHistory>false</trackHistory>
         <type>Summary</type>
-    </fields>
-    <fields>
-        <fullName>Sales_Proposal__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Sales Proposal</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Sales_Representative__c</fullName>
@@ -3198,27 +2902,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>Send_Cancellation_Email_Link__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(AND(NOT(ISNULL( Step_3_Address_Check_to_Project_Co__c )), NOT(ISNULL(Number_of_Contracts_to_Cancel__c)), NOT(ISPICKVAL(Cancellation_Notice_Type__c, &quot;&quot;))), 
-
-&quot;REMEMBER TO ATTACH CONTRACT(S)!!________ https://na54.salesforce.com/_ui/core/email/author/EmailAuthor?p2_lkid=&quot;+ 
-Send_Bills_Contact_ID__c 
-+&quot;&amp;p26=customercare@bluewavesolar.com&quot; 
-+&quot;&amp;p3_lkid=&quot;+ 
-Id 
-+&quot;&amp;template_id=&quot;+ 
-IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot;00Xj0000000Fsir&quot; ,&quot;00X0a000000FyQp&quot; ) 
-
-,&quot;Please Fill out Required Fields&quot;)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Step 4: Send Cancellation Email Link</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Send_Checks_Address__c</fullName>
@@ -3567,17 +3250,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
                 </value>
             </valueSetDefinition>
         </valueSet>
-    </fields>
-    <fields>
-        <fullName>Step_3_Address_Check_to_Project_Co__c</fullName>
-        <externalId>false</externalId>
-        <label>Step 3 : Address Check to Project Co</label>
-        <length>45</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Street_Address__c</fullName>
@@ -3970,55 +3642,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Utility__c</fullName>
-        <externalId>false</externalId>
-        <label>Utility</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>MultiselectPicklist</type>
-        <valueSet>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Eversource</fullName>
-                    <default>false</default>
-                    <label>Eversource</label>
-                </value>
-                <value>
-                    <fullName>National Grid</fullName>
-                    <default>false</default>
-                    <label>National Grid</label>
-                </value>
-                <value>
-                    <fullName>WMECO</fullName>
-                    <default>false</default>
-                    <label>WMECO</label>
-                </value>
-                <value>
-                    <fullName>Municipal</fullName>
-                    <default>false</default>
-                    <label>Municipal</label>
-                </value>
-                <value>
-                    <fullName>Other</fullName>
-                    <default>false</default>
-                    <label>Other</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-        <visibleLines>4</visibleLines>
-    </fields>
-    <fields>
-        <fullName>Valid_Entity__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Valid Entity</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>Vertically_Integrated__c</fullName>
         <externalId>false</externalId>
         <label>Vertically Integrated</label>
@@ -4141,8 +3764,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <columns>ACCOUNT.ADDRESS1_STATE_CODE</columns>
         <columns>ACCOUNT.TYPE</columns>
         <columns>ACCOUNT.PHONE1</columns>
-        <columns>Load_Zone__c</columns>
-        <columns>Utility__c</columns>
         <columns>Scout__c</columns>
         <columns>ACCOUNT.LAST_UPDATE</columns>
         <columns>ACCOUNT.CREATED_DATE</columns>
@@ -4549,21 +4170,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Cancellation_Notice_Type__c</picklist>
-            <values>
-                <fullName>Email WITH Fee</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Email WITH NO Fee</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Email WITHOUT Fee</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Cancellation_Reason__c</picklist>
             <values>
                 <fullName>Business Sold%2FOut of Business</fullName>
@@ -4615,13 +4221,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             <values>
                 <fullName>BluewaveLogo</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Community_Solar_Application_Type__c</picklist>
-            <values>
-                <fullName>CSAP</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -4853,21 +4452,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Load_Zone__c</picklist>
-            <values>
-                <fullName>NEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WCMA</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -5259,21 +4843,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Cancellation_Notice_Type__c</picklist>
-            <values>
-                <fullName>Email WITH Fee</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Email WITH NO Fee</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Email WITHOUT Fee</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Cancellation_Reason__c</picklist>
             <values>
                 <fullName>Business Sold%2FOut of Business</fullName>
@@ -5325,13 +4894,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             <values>
                 <fullName>BluewaveLogo</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Community_Solar_Application_Type__c</picklist>
-            <values>
-                <fullName>CSAP</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -5563,21 +5125,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Load_Zone__c</picklist>
-            <values>
-                <fullName>NEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WCMA</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -5984,21 +5531,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Cancellation_Notice_Type__c</picklist>
-            <values>
-                <fullName>Email WITH Fee</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Email WITH NO Fee</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Email WITHOUT Fee</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Cancellation_Reason__c</picklist>
             <values>
                 <fullName>Business Sold%2FOut of Business</fullName>
@@ -6050,13 +5582,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             <values>
                 <fullName>BluewaveLogo</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Community_Solar_Application_Type__c</picklist>
-            <values>
-                <fullName>CSAP</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -6288,21 +5813,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Load_Zone__c</picklist>
-            <values>
-                <fullName>NEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WCMA</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -6708,21 +6218,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Cancellation_Notice_Type__c</picklist>
-            <values>
-                <fullName>Email WITH Fee</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Email WITH NO Fee</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Email WITHOUT Fee</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Cancellation_Reason__c</picklist>
             <values>
                 <fullName>Business Sold%2FOut of Business</fullName>
@@ -6774,13 +6269,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             <values>
                 <fullName>BluewaveLogo</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Community_Solar_Application_Type__c</picklist>
-            <values>
-                <fullName>CSAP</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -7012,21 +6500,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Load_Zone__c</picklist>
-            <values>
-                <fullName>NEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WCMA</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -7436,21 +6909,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Cancellation_Notice_Type__c</picklist>
-            <values>
-                <fullName>Email WITH Fee</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Email WITH NO Fee</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Email WITHOUT Fee</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Cancellation_Reason__c</picklist>
             <values>
                 <fullName>Business Sold%2FOut of Business</fullName>
@@ -7502,13 +6960,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             <values>
                 <fullName>BluewaveLogo</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Community_Solar_Application_Type__c</picklist>
-            <values>
-                <fullName>CSAP</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -7740,21 +7191,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Load_Zone__c</picklist>
-            <values>
-                <fullName>NEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WCMA</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -8214,21 +7650,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Cancellation_Notice_Type__c</picklist>
-            <values>
-                <fullName>Email WITH Fee</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Email WITH NO Fee</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Email WITHOUT Fee</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Cancellation_Reason__c</picklist>
             <values>
                 <fullName>Business Sold%2FOut of Business</fullName>
@@ -8268,13 +7689,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Unhappy with BW Service</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Community_Solar_Application_Type__c</picklist>
-            <values>
-                <fullName>CSAP</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -8529,21 +7943,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Load_Zone__c</picklist>
-            <values>
-                <fullName>NEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WCMA</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -9022,21 +8421,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Cancellation_Notice_Type__c</picklist>
-            <values>
-                <fullName>Email WITH Fee</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Email WITH NO Fee</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Email WITHOUT Fee</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Cancellation_Reason__c</picklist>
             <values>
                 <fullName>Business Sold%2FOut of Business</fullName>
@@ -9088,13 +8472,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             <values>
                 <fullName>BluewaveLogo</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Community_Solar_Application_Type__c</picklist>
-            <values>
-                <fullName>CSAP</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -9326,21 +8703,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Load_Zone__c</picklist>
-            <values>
-                <fullName>NEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WCMA</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -9751,21 +9113,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Cancellation_Notice_Type__c</picklist>
-            <values>
-                <fullName>Email WITH Fee</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Email WITH NO Fee</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Email WITHOUT Fee</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Cancellation_Reason__c</picklist>
             <values>
                 <fullName>Business Sold%2FOut of Business</fullName>
@@ -9817,13 +9164,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             <values>
                 <fullName>BluewaveLogo</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Community_Solar_Application_Type__c</picklist>
-            <values>
-                <fullName>CSAP</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -10055,21 +9395,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Load_Zone__c</picklist>
-            <values>
-                <fullName>NEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WCMA</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -10738,21 +10063,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Cancellation_Notice_Type__c</picklist>
-            <values>
-                <fullName>Email WITH Fee</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Email WITH NO Fee</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Email WITHOUT Fee</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Cancellation_Reason__c</picklist>
             <values>
                 <fullName>Business Sold%2FOut of Business</fullName>
@@ -10792,13 +10102,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Unhappy with BW Service</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Community_Solar_Application_Type__c</picklist>
-            <values>
-                <fullName>CSAP</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -11031,21 +10334,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Load_Zone__c</picklist>
-            <values>
-                <fullName>NEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WCMA</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -11481,21 +10769,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Cancellation_Notice_Type__c</picklist>
-            <values>
-                <fullName>Email WITH Fee</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Email WITH NO Fee</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Email WITHOUT Fee</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Cancellation_Reason__c</picklist>
             <values>
                 <fullName>Business Sold%2FOut of Business</fullName>
@@ -11547,13 +10820,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             <values>
                 <fullName>BluewaveLogo</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Community_Solar_Application_Type__c</picklist>
-            <values>
-                <fullName>CSAP</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -11807,21 +11073,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Load_Zone__c</picklist>
-            <values>
-                <fullName>NEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WCMA</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -12338,21 +11589,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Cancellation_Notice_Type__c</picklist>
-            <values>
-                <fullName>Email WITH Fee</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Email WITH NO Fee</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Email WITHOUT Fee</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Cancellation_Reason__c</picklist>
             <values>
                 <fullName>Business Sold%2FOut of Business</fullName>
@@ -12416,13 +11652,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Unhappy with BW Service</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Community_Solar_Application_Type__c</picklist>
-            <values>
-                <fullName>CSAP</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -12655,21 +11884,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Load_Zone__c</picklist>
-            <values>
-                <fullName>NEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WCMA</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -13080,21 +12294,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Cancellation_Notice_Type__c</picklist>
-            <values>
-                <fullName>Email WITH Fee</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Email WITH NO Fee</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Email WITHOUT Fee</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Cancellation_Reason__c</picklist>
             <values>
                 <fullName>Business Sold%2FOut of Business</fullName>
@@ -13146,13 +12345,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             <values>
                 <fullName>BluewaveLogo</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Community_Solar_Application_Type__c</picklist>
-            <values>
-                <fullName>CSAP</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -13384,21 +12576,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Load_Zone__c</picklist>
-            <values>
-                <fullName>NEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WCMA</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -13748,6 +12925,7 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <lookupPhoneDialogsAdditionalFields>CORE.USERS.ALIAS</lookupPhoneDialogsAdditionalFields>
         <lookupPhoneDialogsAdditionalFields>ACCOUNT.TYPE</lookupPhoneDialogsAdditionalFields>
         <lookupPhoneDialogsAdditionalFields>ACCOUNT.PHONE1</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Business_Phone__c</lookupPhoneDialogsAdditionalFields>
         <searchFilterFields>ACCOUNT.NAME</searchFilterFields>
         <searchFilterFields>Account_Number__c</searchFilterFields>
         <searchResultsAdditionalFields>ACCOUNT.NAME</searchResultsAdditionalFields>

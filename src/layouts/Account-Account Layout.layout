@@ -104,10 +104,6 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Apt_Suite__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>Assignment_Agreement_Template__c</field>
             </layoutItems>
         </layoutColumns>

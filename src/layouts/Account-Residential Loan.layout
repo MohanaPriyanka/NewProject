@@ -89,10 +89,6 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Apt_Suite__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>City__c</field>
             </layoutItems>
             <layoutItems>

@@ -16,7 +16,7 @@ Please remember that there is a cancellation fee of $1,250 per each Community So
 
 Your Termination Fee
 
-You have {!Account.Number_of_Contracts_to_Cancel__c} Community Solar Shares. Your total Termination Fee is {!Account.Cancellation_Fees_Invoiced__c}.
+Your total Termination Fee is {!Account.Cancellation_Fees_Invoiced__c}.
 
 Attached please find
 
@@ -32,7 +32,7 @@ If you have any questions, please call us at 844.786.4100
 
 Paper Check Payment Instructions
 
-If you would like to pay your termination fee by paper check, please address to {!Account.Step_3_Address_Check_to_Project_Co__c} and mail to:
+If you would like to pay your termination fee by paper check, please mail to:
 
 BlueWave
 111 Huntington Ave, Suite 650

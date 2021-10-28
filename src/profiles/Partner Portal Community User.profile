@@ -16732,11 +16732,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account.Apt_Suite__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account.Autopay_Date_Last_Enrolled__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -16812,11 +16807,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account.Cancellation_Notice_Type__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account.Cancellation_Reason_External__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -16878,11 +16868,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Communication_QC__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account.Community_Solar_Application_Type__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -17012,11 +16997,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account.Do_not_Send_Bills__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account.Electrical_License__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -17122,11 +17102,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account.Installer_Checklist__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account.Is_this_a_Scouting_Account__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -17222,11 +17197,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account.Load_Zone__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account.Loan_Number_of_Days_Delinquent__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -17272,11 +17242,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account.NDA__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account.NumberOfEmployees</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -17292,17 +17257,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account.Number_of_Contracts_to_Cancel__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account.Number_of_Customers__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account.Number_of_Sales_Reps__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -17317,22 +17272,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account.Often_Pays_with_Paper_Checks__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account.One_Strike_Rule_Partner__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account.Opt_In_For_Paper_Billing__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account.Opt_Out_of_Paper_Billing__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -17348,11 +17288,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Outstanding_Legal_Actions__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account.Outstanding_TPF_Amount__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -17407,11 +17342,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account.Partner_QC_Complete__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account.Partner_Tier_Numeric__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -17462,11 +17392,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account.Print_SF_Template__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account.Product_Line_Formula__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -17477,32 +17402,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account.Projected_Revenue__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account.Proof__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account.Proof_of_Experience__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account.Proof_of_License_Expiration_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account.Proposal_QC__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account.Proposal_Software__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -17527,22 +17432,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account.Resi_Install_Volume_Next_Year__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account.Resi_Install_Volume__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account.Roll_Up_Balance_Net_Late_Payments__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account.Sales_Proposal__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -17579,11 +17469,6 @@
         <editable>false</editable>
         <field>Account.Send_Bills_Contact__c</field>
         <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account.Send_Cancellation_Email_Link__c</field>
-        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -17628,11 +17513,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account.Step_3_Address_Check_to_Project_Co__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -17763,16 +17643,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Utility_Opp__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account.Utility__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account.Valid_Entity__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -18052,11 +17922,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account_Bill__c.Do_not_Send_Bills_From_Account__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account_Bill__c.Due_Date_SB__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -18293,11 +18158,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account_Bill__c.Second_Additional_Bill_Line_Value__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account_Bill__c.Send_Bill_Conga_Calc__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -20028,11 +19888,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Case.Account_Number__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Case.Adjusted_Time_to_Close__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -34802,11 +34657,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Opportunity.Apt_Suite__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Opportunity.Assessors_Parcel_Number__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -34904,11 +34754,6 @@
         <editable>false</editable>
         <field>Opportunity.CS_Application_Approval_Email_Sent__c</field>
         <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.CS_Apt_Suite__c</field>
-        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -35098,11 +34943,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Company__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Concatenated_Billing_Address__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

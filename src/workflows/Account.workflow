@@ -39,15 +39,6 @@
         <operation>Formula</operation>
         <protected>false</protected>
     </fieldUpdates>
-    <fieldUpdates>
-        <fullName>Invoiced_Amount</fullName>
-        <field>Cancellation_Fees_Invoiced__c</field>
-        <formula>1250* Number_of_Contracts_to_Cancel__c</formula>
-        <name>Invoiced Amount</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>Formula</operation>
-        <protected>false</protected>
-    </fieldUpdates>
     <rules>
         <fullName>Account - Partner Name Update - Sharing</fullName>
         <actions>
@@ -57,27 +48,6 @@
         <active>true</active>
         <criteriaItems>
             <field>Account.Partner_Name__c</field>
-            <operation>notEqual</operation>
-        </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
-        <fullName>Cancellation Date Email Sent</fullName>
-        <actions>
-            <name>Date_Email_Sent</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <actions>
-            <name>Invoiced_Amount</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <active>false</active>
-        <criteriaItems>
-            <field>Account.Cancellation_Notice_Type__c</field>
-            <operation>notEqual</operation>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Account.Number_of_Contracts_to_Cancel__c</field>
             <operation>notEqual</operation>
         </criteriaItems>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
