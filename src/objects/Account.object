@@ -1132,16 +1132,17 @@ Specify the global country code setting or record level country code to automati
     <fields>
         <fullName>Collection_Call_Today__c</fullName>
         <externalId>false</externalId>
-        <formula>OR(
-Days_Past_Due__c = 10, 
-Days_Past_Due__c = 15, 
-Days_Past_Due__c = 30,
-Days_Past_Due__c = 45,
-Days_Past_Due__c = 60,
-Days_Past_Due__c = 74,
-Days_Past_Due__c = 81,
-Days_Past_Due__c = 88,
-Days_Past_Due__c = 90)</formula>
+        <formula>AND(ISPICKVAL(Suppress_Collections__c, &quot;&quot;),
+    OR(Days_Past_Due__c = 10, 
+       Days_Past_Due__c = 15, 
+       Days_Past_Due__c = 30,
+       Days_Past_Due__c = 45,
+       Days_Past_Due__c = 60,
+       Days_Past_Due__c = 74,
+       Days_Past_Due__c = 81,
+       Days_Past_Due__c = 88,
+       Days_Past_Due__c = 90)
+    )</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Collection Call Today</label>
         <trackHistory>false</trackHistory>
@@ -1164,18 +1165,19 @@ Days_Past_Due__c = 90)</formula>
     <fields>
         <fullName>Collection_Email_To_Fire_Today__c</fullName>
         <externalId>false</externalId>
-        <formula>OR(
-(Max_Overdue_Due_Date_Merge__c - 3 = Today()),
-Days_Past_Due__c = 7, 
-Days_Past_Due__c = 15, 
-Days_Past_Due__c = 30,
-Days_Past_Due__c = 45,
-Days_Past_Due__c = 60,
-Days_Past_Due__c = 67,
-Days_Past_Due__c = 74,
-Days_Past_Due__c = 81,
-Days_Past_Due__c = 88,
-Days_Past_Due__c = 90)</formula>
+        <formula>AND(ISPICKVAL(Suppress_Collections__c, &quot;&quot;),
+    OR(Max_Overdue_Due_Date_Merge__c - 3 = Today(),
+       Days_Past_Due__c = 7, 
+       Days_Past_Due__c = 15, 
+       Days_Past_Due__c = 30,
+       Days_Past_Due__c = 45,
+       Days_Past_Due__c = 60,
+       Days_Past_Due__c = 67,
+       Days_Past_Due__c = 74,
+       Days_Past_Due__c = 81,
+       Days_Past_Due__c = 88,
+       Days_Past_Due__c = 90)
+    )</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Collection Email To Fire Today</label>
         <trackHistory>false</trackHistory>
@@ -3624,6 +3626,32 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Suppress_Collections__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>If populated, suppresses collection cases, emails and letters. A blank value means collections automation will happen as normal. If suppressed until no longer past due, the morning Days Past Due automation will blank this picklist out when this account is no longer past due.</inlineHelpText>
+        <label>Suppress Collections</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Suppress collections until no longer past due</fullName>
+                    <default>false</default>
+                    <label>Suppress collections until no longer past due</label>
+                </value>
+                <value>
+                    <fullName>Suppress collections forever</fullName>
+                    <default>false</default>
+                    <label>Suppress collections forever</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
     </fields>
     <fields>
         <fullName>System_Capacity__c</fullName>
@@ -12230,6 +12258,17 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <fullName>Property</fullName>
         <active>true</active>
         <label>Property</label>
+        <picklistValues>
+            <picklist>Suppress_Collections__c</picklist>
+            <values>
+                <fullName>Suppress collections forever</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Suppress collections until no longer past due</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Client_Brand_Key__c</picklist>
             <values>

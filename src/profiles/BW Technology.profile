@@ -15474,6 +15474,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.Suppress_Collections__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.System_Capacity__c</field>
         <readable>true</readable>
     </fieldPermissions>

@@ -32,40 +32,8 @@ public class ZuoraDataQueryAsyncService implements Queueable, Database.AllowsCal
         dataQuery.Zuora_Id__c = zuoraQueryResult.data.id;
         dataQuery.Status__c = zuoraQueryResult.data.queryStatus;
 
-        // If job is complete, save data to record
-        // If job failed, save errors to record
-        // If not complete, update status then re-queue job:
-        if (zuoraQueryResult.data.queryStatus == 'completed') {
-            try {
-                handleCompletedQuery(dataQuery);
-            } catch (ZuoraDataQueryService.RetriableException re) {
-                retryAfterException = true;
-                Logger.logNow('ZuoraDataQueryAsyncService', 'checkZuoraQueryStatus', 'Exception caught, but retrying: ' + re.getMessage() + '\n' + re.getStackTraceString(), Logger.WARN);
-            } catch (Exception e) {
-                String errorMessage = String.valueOf(zuoraQueryResult) + '\n' + e.getMessage() + '\n' + e.getStackTraceString();
-                Logger.logNow('ZuoraDataQueryAsyncService', 'checkZuoraQueryStatus', errorMessage);
-            }
-        } else if (zuoraQueryResult.data.queryStatus == 'failed' && attemptedQuery.numberOfRetries > 0){
-            // Because we sometimes see system issues in Zuora (due to the volume of requests at certain times)
-            // we want to schedule a retry a few hours after the initial request:
-            attemptedQuery.numberOfRetries -= 1;
-            ZuoraDataQueryService newQueryJob = new ZuoraDataQueryService();
-            newQueryJob.scheduledQuery = attemptedQuery;
-            Datetime dt = Datetime.now().addMinutes(minutesToRetry);
-            String cronExpress = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
-            System.schedule('DataQuery: ' + dataQuery.Zuora_Id__c,cronExpress,newQueryJob);
-            Logger.logNow(
-                'ZuoraDataQueryAsyncService',
-                'scheduledRetry',
-                'Retrying this Query in ' + String.valueOf(minutesToRetry) + ' minutes: ' + String.valueOf(attemptedQuery) + String.valueOf(zuoraQueryResult),
-                'WARN'
-            );
-            dataQuery.Data_From_Zuora__c = 'Will Retry: ' + String.valueOf(zuoraQueryResult);
-        } else if (zuoraQueryResult.data.queryStatus == 'failed'){
-            dataQuery.Data_From_Zuora__c = 'Will not retry, hit error: ' + String.valueOf(zuoraQueryResult);
-        }
-        update dataQuery;
-        if (zuoraQueryResult.data.queryStatus == 'in_progress' || zuoraQueryResult.data.queryStatus == 'accepted' || retryAfterException) {
+        retryAfterException = handleQueryResult(dataQuery, minutesToRetry);
+        if ((queryIncomplete()) || retryAfterException) {
             attemptedQuery.recordId = dataQuery.Id;
             if (!Test.isRunningTest()) {
                 queueCheckDataQueryStatus(zuoraQueryResult, attemptedQuery);
@@ -73,7 +41,47 @@ public class ZuoraDataQueryAsyncService implements Queueable, Database.AllowsCal
         }
     }
 
-    public static void queueCheckDataQueryStatus( ZuoraDataQueryService.DataQueryResult zuoraQueryResult,
+    private Boolean queryIncomplete() {
+        return zuoraQueryResult.data.queryStatus == 'in_progress' || zuoraQueryResult.data.queryStatus == 'accepted';
+    }
+
+    private Boolean handleQueryResult(Zuora_Data_Query__c dataQuery, Integer minutesToRetry) {
+        Boolean retryAfterException = false;
+        if (zuoraQueryResult.data.queryStatus == 'completed') {
+            try {
+                handleCompletedQuery(dataQuery);
+                Logger.logLater('ZuoraDataQueryAsyncService', 'checkZuoraQueryStatus', 'Limit check for ' + dataQuery.Id, Logger.FINE);
+            } catch (ZuoraDataQueryService.RetriableException re) {
+                retryAfterException = true;
+                Logger.logNow('ZuoraDataQueryAsyncService', 'checkZuoraQueryStatus', 'Exception caught, but retrying: ' + re.getMessage() + '\n' + re.getStackTraceString(), Logger.WARN);
+            } catch (Exception e) {
+                String errorMessage = String.valueOf(zuoraQueryResult) + '\n' + e.getMessage() + '\n' + e.getStackTraceString();
+                Logger.logNow('ZuoraDataQueryAsyncService', 'checkZuoraQueryStatus', errorMessage);
+            }
+        } else if (zuoraQueryResult.data.queryStatus == 'failed' && attemptedQuery.numberOfRetries > 0) {
+            // Because we sometimes see system issues in Zuora (due to the volume of requests at certain times)
+            // we want to schedule a retry a few hours after the initial request:
+            attemptedQuery.numberOfRetries -= 1;
+            ZuoraDataQueryService newQueryJob = new ZuoraDataQueryService();
+            newQueryJob.scheduledQuery = attemptedQuery;
+            Datetime dt = Datetime.now().addMinutes(minutesToRetry);
+            String cronExpress = '0 ' + dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
+            System.schedule('DataQuery: ' + dataQuery.Zuora_Id__c, cronExpress, newQueryJob);
+            Logger.logNow(
+                'ZuoraDataQueryAsyncService',
+                'scheduledRetry',
+                'Retrying this Query in ' + String.valueOf(minutesToRetry) + ' minutes: ' + String.valueOf(attemptedQuery) + String.valueOf(zuoraQueryResult),
+                'WARN'
+            );
+            dataQuery.Data_From_Zuora__c = 'Will Retry: ' + String.valueOf(zuoraQueryResult);
+        } else if (zuoraQueryResult.data.queryStatus == 'failed') {
+            dataQuery.Data_From_Zuora__c = 'Will not retry, hit error: ' + String.valueOf(zuoraQueryResult);
+        }
+        update dataQuery;
+        return retryAfterException;
+    }
+
+    public static void queueCheckDataQueryStatus(ZuoraDataQueryService.DataQueryResult zuoraQueryResult,
                                                   ZuoraDataQueryService.DataQueryRequest queryToExecute){
         ZuoraDataQueryAsyncService checkStatus = new ZuoraDataQueryAsyncService();
         checkStatus.attemptedQuery = queryToExecute;
