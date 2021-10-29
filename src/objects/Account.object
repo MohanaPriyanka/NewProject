@@ -13369,7 +13369,7 @@ try {
         <protected>false</protected>
         <showsLocation>false</showsLocation>
         <showsStatus>false</showsStatus>
-        <url>/flow/Partner_Product_Junction_Management?varPartner_ID={!Account.PartnerId__c}&amp;varPartnerName={!Account.Partner_Name__c}&amp;retURL=home/home.jsp</url>
+        <url>/flow/Partner_Product_Junction_Management?varPartner_ID={!Account.PartnerId__c}&amp;retURL=home/home.jsp</url>
         <width>900</width>
     </webLinks>
     <webLinks>
