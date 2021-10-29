@@ -208,10 +208,6 @@
                 <behavior>Edit</behavior>
                 <field>Parcel_ZIp__c</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Date_of_Birth__c</field>
-            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

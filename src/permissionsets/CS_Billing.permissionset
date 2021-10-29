@@ -146,11 +146,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account_Bill__c.Address_Checks_to_Name__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account_Bill__c.Adjustments__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -225,16 +220,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Account_Bill__c.Check_Text__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account_Bill__c.Checks_Address_Line__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Account_Bill__c.Comments__c</field>
         <readable>true</readable>
@@ -262,11 +247,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account_Bill__c.Days_Past_Due__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account_Bill__c.Directions_to_Write_Paper_Check__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -487,11 +467,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account_Bill__c.Send_Bills_Contact_ID__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account_Bill__c.Send_Checks_Address__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

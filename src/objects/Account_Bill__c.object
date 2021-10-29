@@ -161,18 +161,6 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Address_Checks_to_Name__c</fullName>
-        <externalId>false</externalId>
-        <formula>Parent_Account__r.Address_Checks_to_Name__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Address Checks to Name</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Adjustments__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Shows the total adjustments the customer receives, even if only some of the adjustment is applied this bill (for instance, if they get a credit for more than their current bill)</inlineHelpText>
@@ -356,30 +344,6 @@
         <type>Summary</type>
     </fields>
     <fields>
-        <fullName>Check_Text__c</fullName>
-        <externalId>false</externalId>
-        <formula>Parent_Account__r.Check_Text__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Check Text</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Checks_Address_Line__c</fullName>
-        <externalId>false</externalId>
-        <formula>SUBSTITUTE( Send_Checks_Address__c, &quot; | &quot;, &quot;, &quot;)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Checks Address Line</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Comments__c</fullName>
         <externalId>false</externalId>
         <label>Comments</label>
@@ -513,18 +477,6 @@ IF( Balance_Net_Late_Payments__c &gt; 1, (TODAY() - Due_Date_SB__c), 0))</formul
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Directions_to_Write_Paper_Check__c</fullName>
-        <externalId>false</externalId>
-        <formula>Parent_Account__r.Directions_to_Write_Paper_Check__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Directions to Write Paper Check</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
@@ -1145,18 +1097,6 @@ New Charges...</inlineHelpText>
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Send_Checks_Address__c</fullName>
-        <externalId>false</externalId>
-        <formula>Parent_Account__r.Send_Checks_Address__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Send Checks Address</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Shared_Solar_System__c</fullName>
         <externalId>false</externalId>
         <label>Shared Solar System</label>
@@ -1309,7 +1249,6 @@ New Charges...</inlineHelpText>
         <columns>Due_This_Month__c</columns>
         <columns>Total_Due_This_Month__c</columns>
         <columns>Due_Date_SB__c</columns>
-        <columns>Checks_Address_Line__c</columns>
         <columns>Balance_Net_Late_Payments__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
