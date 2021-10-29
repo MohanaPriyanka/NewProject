@@ -3,6 +3,7 @@ import { loadStyle } from 'lightning/platformResourceLoader';
 import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStyling';
 import formFactorName from '@salesforce/client/formFactor';
 import sendContinueApplicationEmail from '@salesforce/apex/SimpleSignupFormController.sendContinueApplicationEmail'
+import emailPartnerSupport from '@salesforce/label/c.SSF_Email_Partner_Support';
 
 export default class duplicateModal extends LightningElement {
     @api show;
@@ -10,6 +11,11 @@ export default class duplicateModal extends LightningElement {
 
     @track isPhone;
     @track emailSent;
+
+    label = {
+        emailPartnerSupport,
+        emailPartnerSupportLink: 'mailto:' + emailPartnerSupport
+    }
 
     connectedCallback() {
         loadStyle(this, staticResourceFolder + '/StyleLibrary.css');

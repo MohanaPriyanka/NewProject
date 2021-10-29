@@ -265,6 +265,94 @@
         <value>https://bluewavememberportal.force.com/partnerportal</value>
     </labels>
     <labels>
+        <fullName>SSF_Company_Address_1</fullName>
+        <categories>branding, ssf</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF Company Address 1</shortDescription>
+        <value>P.O. Box 170718</value>
+    </labels>
+    <labels>
+        <fullName>SSF_Company_Address_2</fullName>
+        <categories>branding, ssf</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF Company Address 2</shortDescription>
+        <value>Boston, MA 02117</value>
+    </labels>
+    <labels>
+        <fullName>SSF_Company_Logo</fullName>
+        <categories>branding, ssf</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF Company Logo Path</shortDescription>
+        <value>BluewaveLogo_White.png</value>
+    </labels>
+    <labels>
+        <fullName>SSF_Company_Name_Customer_Management</fullName>
+        <categories>branding, ssf</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF Company Name Customer Management</shortDescription>
+        <value>BCS Customer Management, LLC</value>
+    </labels>
+    <labels>
+        <fullName>SSF_Company_Privacy_Policy_Link</fullName>
+        <categories>branding, ssf</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF Company Privacy Policy Link</shortDescription>
+        <value>https://bluewavesolar.com/privacy-policy</value>
+    </labels>
+    <labels>
+        <fullName>SSF_Company_Short_Name</fullName>
+        <categories>branding, ssf</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF Company Shortname</shortDescription>
+        <value>BlueWave</value>
+    </labels>
+    <labels>
+        <fullName>SSF_Company_Website</fullName>
+        <categories>branding, ssf</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF Company Website</shortDescription>
+        <value>https://bluewavesolar.com</value>
+    </labels>
+    <labels>
+        <fullName>SSF_Customer_Member_Portal_URL</fullName>
+        <categories>branding, ssf</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF Customer Member Portal URL</shortDescription>
+        <value>https://bluewavememberportal.force.com/</value>
+    </labels>
+    <labels>
+        <fullName>SSF_Email_Customer_Care</fullName>
+        <categories>branding, ssf</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF Email Customer Care</shortDescription>
+        <value>customercare@bluewavesolar.com</value>
+    </labels>
+    <labels>
+        <fullName>SSF_Email_Partner_Support</fullName>
+        <categories>branding, ssf</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF Email Partner Support</shortDescription>
+        <value>partnersupport@bluewavesolar.com</value>
+    </labels>
+    <labels>
+        <fullName>SSF_Esign_URL</fullName>
+        <categories>branding, ssf</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF Esign URL</shortDescription>
+        <value>https://bluewavesolar.my.salesforce.com/sfc/p/j0000001q7GO/a/0a000000MkFk/pvivOEszT68vNzlruWfakqXulDdStUlPcwN5oAm70aA</value>
+    </labels>
+    <labels>
         <fullName>SSF_FAQ1_Answer</fullName>
         <language>en_US</language>
         <protected>false</protected>
@@ -347,6 +435,78 @@
         <protected>false</protected>
         <shortDescription>SSF FAQ6 - Question</shortDescription>
         <value>Who is BlueWave?</value>
+    </labels>
+    <labels>
+        <fullName>SSF_Facebook_Icon</fullName>
+        <categories>branding, ssf</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF Facebook Icon</shortDescription>
+        <value>https://bluewavesolar.com/resources/img/icons/facebook.min.svg</value>
+    </labels>
+    <labels>
+        <fullName>SSF_Facebook_Link</fullName>
+        <categories>branding, ssf</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF Facebook Link</shortDescription>
+        <value>https://www.facebook.com/BlueWaveSolar/</value>
+    </labels>
+    <labels>
+        <fullName>SSF_Inside_Sales_Phone</fullName>
+        <categories>branding, ssf</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF Inside Sales Phone</shortDescription>
+        <value>6176814119</value>
+    </labels>
+    <labels>
+        <fullName>SSF_Linkedin_Icon</fullName>
+        <categories>branding, ssf</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF Linkedin Icon</shortDescription>
+        <value>https://bluewavesolar.com/resources/img/icons/linkedin.min.svg</value>
+    </labels>
+    <labels>
+        <fullName>SSF_Linkedin_Link</fullName>
+        <categories>branding, ssf</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF Linkedin Link</shortDescription>
+        <value>https://www.linkedin.com/company/bluewavesolar/</value>
+    </labels>
+    <labels>
+        <fullName>SSF_Resource_Center_Link</fullName>
+        <categories>branding, ssf</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF Resource Center Link</shortDescription>
+        <value>https://bluewavesolar.com/bw-resources/solar-101</value>
+    </labels>
+    <labels>
+        <fullName>SSF_Support_Email</fullName>
+        <categories>branding, ssf</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF Support Email</shortDescription>
+        <value>learnmore@bluewavesolar.com</value>
+    </labels>
+    <labels>
+        <fullName>SSF_Twitter_Icon</fullName>
+        <categories>branding, ssf</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF Twitter Icon</shortDescription>
+        <value>https://bluewavesolar.com/resources/img/icons/twitter.min.svg</value>
+    </labels>
+    <labels>
+        <fullName>SSF_Twitter_Link</fullName>
+        <categories>branding, ssf</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF Twitter Link</shortDescription>
+        <value>https://twitter.com/bluewavesolar</value>
     </labels>
     <labels>
         <fullName>SSF_WaitingRoom1_Text</fullName>

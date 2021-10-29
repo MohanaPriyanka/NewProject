@@ -218,7 +218,7 @@ public without sharing class SimpleSignupFormController {
         ee.emailTemplateName = systemDefault.Continue_Application_Email_Template__c;
         ee.orgWideEmail =  MessagingService.getCustomerCareEmail().Address;
         ee.addressList = new List<String>{lead.Email, lead.Partner_Email__c};
-        ee.subjectLine = 'Continue Your Application for Bluewave Community Solar';
+        ee.subjectLine = 'Continue Your Application for ' + Label.SSF_Company_Short_Name + ' Community Solar';
         MessagingService.ReplacementText url = new MessagingService.ReplacementText('{{{Recipient.Continue_Application_Link__c}}}', lead.Continue_Application_Link__c);
         MessagingService.ReplacementText leadName = new MessagingService.ReplacementText('{{{Recipient.Name}}}', lead.Name);
         ee.replacementTexts = new List<MessagingService.ReplacementText>{url, leadName};

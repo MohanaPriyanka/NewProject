@@ -1,6 +1,8 @@
 import { LightningElement, track, api } from 'lwc';
 import { loadStyle } from 'lightning/platformResourceLoader';
 import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStyling';
+import companyPrivacyPolicyLink from '@salesforce/label/c.SSF_Company_Privacy_Policy_Link';
+import companyShortName from '@salesforce/label/c.SSF_Company_Short_Name';
 import {
     onLoad,
     onRender,
@@ -41,6 +43,10 @@ export default class SsfAgreements extends LightningElement {
     documentPollerTimeoutId;
     esignDisclosureUrl = getText(this, 'esignUrl');
     version = 'PARTNER';
+    label = {
+        companyPrivacyPolicyLink,
+        companyShortName
+    }
 
     connectedCallback() {
         loadStyle(this, staticResourceFolder + '/StyleLibrary.css')

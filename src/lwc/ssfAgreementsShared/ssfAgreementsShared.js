@@ -4,6 +4,8 @@ import getContentDocumentLinksByLead from '@salesforce/apex/SimpleSignupFormCont
 import insertLog from '@salesforce/apex/Logger.insertLog';
 import getContentDistributionLink from '@salesforce/apex/SimpleSignupFormController.getContentDistributionById';
 import { toggleLoadingSpinnerEvent, modifySpinnerMessageEvent, postReadyStateEvent } from "c/ssfShared";
+import companyShortName from '@salesforce/label/c.SSF_Company_Short_Name';
+import esignURL from '@salesforce/label/c.SSF_Esign_URL';
 
 const DOC_GEN_TIMEOUT = 60000; // milliseconds to wait for doc generation
 
@@ -374,7 +376,7 @@ const getText = (component, identifier) => {
         case 'agree3':
             return agreementLanguage3();
         case 'esignUrl':
-            return `https://bluewavesolar.my.salesforce.com/sfc/p/j0000001q7GO/a/0a000000MkFk/pvivOEszT68vNzlruWfakqXulDdStUlPcwN5oAm70aA`;
+            return esignURL;
         case 'creditCheckLabel':
             return creditCheckLabel(component);
         default:
@@ -395,7 +397,7 @@ const creditCheckLabel = (component) => {
 
 const disclosureLanguage1 = (component) => {
     return `By checking this box, entering my email address in the Email field below, and clicking the "${component.continueButtonLabel}"`+
-           ` button, I acknowledge that I have reviewed and agree to the BlueWave ` /* E-SIGN DISCLOSURE */;
+           ` button, I acknowledge that I have reviewed and agree to the ${companyShortName} ` /* E-SIGN DISCLOSURE */;
 }
 
 const disclosureLanguage2 = () => {
@@ -405,22 +407,22 @@ const disclosureLanguage2 = () => {
 
 const ficoLanguage1 = (component) => {
     return  `By checking this box, and clicking the “${component.continueButtonLabel}” button, I am providing my electronic`+
-            ` signature and signing an electronic record that is my written authorization giving BlueWave and/or its designee(s)`+
+            ` signature and signing an electronic record that is my written authorization giving ${companyShortName} and/or its designee(s)`+
             ` and/or sales partners permission to perform one or more soft pulls of one or more consumer reports showing my credit`+
             ` history (which will NOT impact my credit score) and to access my electric utility billing history. I am also giving`+
-            ` BlueWave and/or its designee(s) and/or sales partners my permission to use my credit history and my electric utility`+
+            ` ${companyShortName} and/or its designee(s) and/or sales partners my permission to use my credit history and my electric utility`+
             ` billing history to determine whether I qualify to participate in one or more community solar projects and for any`+
             ` other lawful purpose`;
 }
 const ficoLanguage2 = () => {
-    return `. I understand that BlueWave and/or its designee(s) and/or sales partners may share my consumer`+
-            ` report(s) with third parties that participate in the transaction(s) contemplated by my application (including but not`+
-            ` limited to the owner or developer of a community solar project) and/or any party that intends to use the information as`+
-            ` a potential investor, servicer or insurer in connection with a valuation of or an assessment or the risks associated`+
-            ` with any agreement I enter into with BlueWave pursuant to my application. I understand that if I ask BlueWave whether`+
-            ` it checked my credit, it will tell me, and if it did, provide the name and address of the consumer reporting agency or`+
-            ` agencies that provided the information. `;
-        }
+    return `. I understand that ${companyShortName} and/or its designee(s) and/or sales partners may share my consumer`+
+           ` report(s) with third parties that participate in the transaction(s) contemplated by my application (including but not`+
+           ` limited to the owner or developer of a community solar project) and/or any party that intends to use the information as`+
+           ` a potential investor, servicer or insurer in connection with a valuation of or an assessment or the risks associated`+
+           ` with any agreement I enter into with ${companyShortName} pursuant to my application. I understand that if I ask ${companyShortName} whether`+
+           ` it checked my credit, it will tell me, and if it did, provide the name and address of the consumer reporting agency or`+
+           ` agencies that provided the information. `;
+}
 
 const finDocsLanguage1 = () => {
     return `Customer will promptly provide to us, in connection with Customer’s application and from time to time in connection`+
@@ -453,8 +455,8 @@ const finDocsLanguage2 = () => {
 
 const utilityDataReviewLanguage = () => {
     return `By checking this box, and clicking the “Finish” button, I am providing my electronic signature and signing an electronic`+
-           ` record that is my written authorization giving BlueWave permission to access my electric utility billing history. I am`+
-           ` also giving BlueWave my permission to use my electric utility billing history to process my application and for any`+
+           ` record that is my written authorization giving ${companyShortName} permission to access my electric utility billing history. I am`+
+           ` also giving ${companyShortName} my permission to use my electric utility billing history to process my application and for any`+
            ` other lawful purpose.`;
 }
 
@@ -469,10 +471,10 @@ const agreementLanguage2 = () => {
 }
 
 const agreementLanguage3 = () => {
-    return `. I am also granting BlueWave permission to contact me via the phone number provided on this application. I also`+
+    return `. I am also granting ${companyShortName} permission to contact me via the phone number provided on this application. I also`+
            ` acknowledge that this is an application only and consummation of this transaction does not occur upon the `+
            ` placement of my electronic signature on this contract; rather consummation occurs (meaning that there is an`+
-           ` executed agreement between BlueWave and me) after BlueWave verifies my eligibility, approves the document that`+
+           ` executed agreement between ${companyShortName} and me) after ${companyShortName} verifies my eligibility, approves the document that`+
            ` I have electronically signed, and returns the contract to me with its countersignature.`;
 }
 
