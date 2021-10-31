@@ -6,103 +6,116 @@
  + * Tested By: CustomerCommunicationHandlerTest
  + *************************************************************************************/
 
-public class CustomerCommunicationHandler implements Database.Batchable<SObject>, Schedulable {
-    private Map<String, String> templateMap;
+public class CustomerCommunicationHandler implements Database.Batchable<sObject>, Schedulable { 
+    public void execute(SchedulableContext sc){
+       Database.executeBatch(this, 10);
+    }
 
-    public void execute(SchedulableContext sc) {
-        Database.executeBatch(this, 10);
+    public Map<String, String> templateMap;
+    public String errorsToLog;
+
+    public String getTemplate(String templateKey, Account acct){
+        String templateHTML;
+        if (errorsToLog == null){
+            errorsToLog = 'None';
+        } 
+        if (templateMap.containsKey(templateKey)){
+            templateHTML = templateMap.get(templateKey);
+        } else {
+            templateHTML = 'DONOTSEND';
+            errorsToLog = errorsToLog + ' / ' + acct.Id + ' - '+ templateKey;
+        }
+        return templateHTML;
     }
 
     public Database.QueryLocator start(Database.BatchableContext bc) {
         String query = 'SELECT Id, Name, Send_Bills_Contact__c, ' +
-            'Last_Bill_Send_Date__c, Do_not_Send_Bills__c, ' +
-            'Recurring_Billing__c, Days_Past_Due__c, ' +
-            'RecordTypeId, Total_Outstanding_Balance_Merge__c, ' +
-            'Total_Billed__c, Client_Brand_Key__c, ' +
-            'Collection_Call_Today__c, Collection_Email_To_Fire_Today__c, ' +
-            'Max_Overdue_Due_Date_Merge__c, ' +
-            'Collection_Email_Text__c ' +
-            'FROM Account ' +
-            'WHERE Total_Outstanding_Balance_Merge__c > 1 ' +
-            'AND Send_Bills_Contact__c != null ' +
-            'AND Do_not_Send_Bills__c = false ' +
-            'AND (Collection_Email_To_Fire_Today__c = true ' +
-            'OR Collection_Call_Today__c = true) ' +
-            'AND Recurring_Billing__c = false ';
+                        'Recurring_Billing__c, Days_Past_Due__c, ' + 
+                        'RecordTypeId, Total_Outstanding_Balance_Merge__c, ' +
+                        'Total_Billed__c, Client_Brand_Key__c, ' +
+                        'Collection_Call_Today__c, Collection_Email_To_Fire_Today__c, ' +
+                        'Max_Overdue_Due_Date_Merge__c, ' +
+                        'Collection_Email_Text__c ' +
+                        'FROM Account ' +
+                        'WHERE Total_Outstanding_Balance_Merge__c > 1 ' +
+                        'AND Send_Bills_Contact__c != null ' +
+                        'AND (Collection_Email_To_Fire_Today__c = true ' +
+                        'OR Collection_Call_Today__c = true) ' +
+                        'AND Recurring_Billing__c = false ';
         return Database.getQueryLocator(query);
     }
-
-    public void execute(Database.BatchableContext bc, List<Account> scope) {
-        List<Messaging.SingleEmailMessage> emailsToSend = new List<Messaging.SingleEmailMessage>();
+    
+    public void execute(Database.BatchableContext bc, List<Account> scope){
+        List<Messaging.SingleEmailMessage> emailsToSend =  new List<Messaging.SingleEmailMessage>();
         List<Case> caseToInsertList = new List<Case>();
         templateMap = new Map<String, String>();
 
-        for (EmailTemplate template : [
-            SELECT Id, HtmlValue, Body, DeveloperName
-            FROM EmailTemplate
-            WHERE DeveloperName LIKE 'Bill_Late%'
-        ]) {
-            templateMap.put(template.DeveloperName, template.HtmlValue);
+        for (EmailTemplate template :   [SELECT Id, HtmlValue, Body, DeveloperName
+                                        FROM EmailTemplate
+                                        WHERE DeveloperName LIKE 'Bill_Late%']) {
+            templateMap.put(template.DeveloperName, template.HtmlValue);        
         }
+        
+        OrgWideEmailAddress owa = [ SELECT Id, Address
+                                    FROM OrgWideEmailAddress
+                                    WHERE Address = 'customercare@bluewavesolar.com'
+                                    LIMIT 1];
+        for (Account act : scope){
+            String contactid = act.Send_Bills_Contact__c;
 
-        for (Account account : scope) {
-            if (account.Collection_Call_Today__c) {
-                caseToInsertList.add(createCollectionsCallCase(account));
+            if (contactid != null && act.Collection_Call_Today__c){
+                caseToInsertList = createCollectionsCallCase(caseToInsertList,act);
             }
-            if (account.Collection_Email_To_Fire_Today__c) {
-                try {
-                    emailsToSend.add(getEmailToSend(account));
-                } catch (Exception e) {
-                    Logger.logLater('CustomerCommunicationHandler', 'execute', e.getMessage() + '\n' + e.getStackTraceString());
+            if (contactid != null && act.Collection_Email_To_Fire_Today__c) {
+                Date todaysDate = system.today();
+                Date sendBillReminderDate = act.Max_Overdue_Due_Date_Merge__c - 3;
+                String htmlBody;
+                String fullName = act.Name;
+                String subject = 'Your BlueWave account is ' + act.Days_Past_Due__c + ' days past due';
+                String balance = formatMoney(act.Total_Outstanding_Balance_Merge__c);
+                String templateKey = '';
+                String customText = (act.Collection_Email_Text__c); 
+                String days = String.valueof((act.Days_Past_Due__c).setScale(0));
+
+                if (sendBillReminderDate == todaysDate){
+                    templateKey = 'Bill_Late_3DayReminder_' + act.Client_Brand_Key__c;
+                    htmlBody = getTemplate(templateKey, act);
+                    subject = 'Your Community Solar Bill Is Almost Due';
+                } else {
+                    templateKey = 'Bill_Late_' +  act.Client_Brand_Key__c;
+                    htmlBody = getTemplate(templateKey, act);
+                    subject = 'Your Community Solar Is ' + (act.Days_Past_Due__c).setScale(0) + ' Days Past Due';
                 }
+                if (fullName != null && balance != null && act.Days_Past_Due__c != null && customText != null){
+                    htmlBody = htmlBody.replace('{{{Recipient.Name}}}', fullName);
+                    htmlBody = htmlBody.replace('{{{Recipient.Total_Outstanding_Balance_Merge}}}', balance);
+                    htmlBody = htmlBody.replace('{{{Recipient.Days_Past_Due}}}', days );
+                    htmlBody = htmlBody.replace('{{{Recipient.Custom_Email_Text}}}', customText);
+                }
+                if (htmlBody != null && htmlBody != 'DONOTSEND'){
+                    Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+                    mail.setHtmlBody(htmlBody);
+                    mail.setOrgWideEmailAddressId(owa.Id);
+                    mail.setSubject(subject);
+                    mail.setTargetObjectId(contactId);
+                    emailsToSend.add(mail);
+                }
+                htmlBody = 'DONOTSEND';
             }
         }
+        MessagingService.sendEmail(emailsToSend);
 
-        MessagingService.logErrors(MessagingService.sendEmail(emailsToSend), 'CustomerCommunicationHandler');
-        insert caseToInsertList;
-
-        Logger.flushLogs();
-    }
-
-    private Messaging.SingleEmailMessage getEmailToSend(Account account) {
-        Date sendBillReminderDate = account.Max_Overdue_Due_Date_Merge__c - 3;
-        String htmlBody;
-        String subject;
-        String balance = formatMoney(account.Total_Outstanding_Balance_Merge__c);
-        String days = String.valueOf((account.Days_Past_Due__c).setScale(0));
-
-        if (sendBillReminderDate == System.today()) {
-            htmlBody = getTemplate('Bill_Late_3DayReminder_' + account.Client_Brand_Key__c, account);
-            subject = 'Your Community Solar Bill Is Almost Due';
-        } else {
-            htmlBody = getTemplate('Bill_Late_' + account.Client_Brand_Key__c, account);
-            subject = 'Your Community Solar Bill Is ' + (account.Days_Past_Due__c).setScale(0) + ' Days Past Due';
+        if (caseToInsertList != null){
+            insert caseToInsertList;
         }
-        htmlBody = replace(htmlBody, '{{{Recipient.Name}}}', account.Name);
-        htmlBody = replace(htmlBody, '{{{Recipient.Total_Outstanding_Balance_Merge}}}', balance);
-        htmlBody = replace(htmlBody, '{{{Recipient.Days_Past_Due}}}', days);
-        htmlBody = replace(htmlBody, '{{{Recipient.Custom_Email_Text}}}', account.Collection_Email_Text__c);
 
-        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
-        mail.setHtmlBody(htmlBody);
-        mail.setOrgWideEmailAddressId(MessagingService.getCustomerCareEmail().Id);
-        mail.setSubject(subject);
-        mail.setTargetObjectId(account.Send_Bills_Contact__c);
-        return mail;
-    }
-
-    @SuppressWarnings('PMD.EmptyStatementBlock')
-    public void finish(Database.BatchableContext bc) {
-    }
-
-    private String replace(String htmlBody, String stringToReplace, String replaceWith) {
-        if (replaceWith != null) {
-            return htmlBody.replace(stringToReplace, replaceWith);
+        if (errorsToLog != null && errorsToLog != 'None'){
+            Logger.logLater('CustomerCommunicationHandler', 'Missing Email Templates: acct / template', errorsToLog);
+            Logger.flushLogs();
         }
-        return htmlBody;
     }
 
-    private Case createCollectionsCallCase(Account acct) {
+    public List<Case> createCollectionsCallCase(List<Case> caseToInsertList, Account acct){
         CaseFactory caseFactory = new CaseFactory();
         Case newCase;
         newCase = caseFactory.getCase('Collections');
@@ -112,23 +125,20 @@ public class CustomerCommunicationHandler implements Database.Batchable<SObject>
         newCase.Product_Line__c = 'Community Solar';
         newCase.Category__c = 'Billing-Payment';
         newCase.Description =
-            'Remind them their payment is Past due' + ' / ' +
+                'Remind them their payment is Past due' + ' / ' +
                 'Ask if they have sent payment and if so when and note check number' + ' / ' +
                 'Note this info on the case in the chatter' + ' / ' +
                 'If there is no reply leave a voice note';
         newCase.Origin = 'Other';
         newCase.Case_Type__c = 'BlueWave';
         newCase.Disable_Followup_Email__c = true;
-        return newCase;
+        caseToInsertList.add(newCase);
+        return caseToInsertList;
     }
 
-    private String getTemplate(String templateKey, Account acct) {
-        if (templateMap.containsKey(templateKey)) {
-            return templateMap.get(templateKey);
-        }
-        throw new Util.BWException('Missing template ' + templateKey + ' for account: ' + acct.Id);
-    }
-
+    public void finish(Database.BatchableContext bc){   
+    }  
+   
     @TestVisible
     private static String formatMoney(Decimal originalDecimal) {
         String decimalAsString = '$' + originalDecimal.format();
@@ -141,5 +151,5 @@ public class CustomerCommunicationHandler implements Database.Batchable<SObject>
             }
         }
         return decimalAsString;
-    }
+    } 
 }

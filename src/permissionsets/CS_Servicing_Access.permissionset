@@ -35,11 +35,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Account.Annual_Electricity_Cost__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Account.Autopay_Date_Last_Enrolled__c</field>
         <readable>true</readable>
@@ -47,11 +42,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Cancellation_Fees_Invoiced__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account.Cancellation_Fees_Paid__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -197,11 +187,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Street_Address__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account.Subscription_Architecture__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

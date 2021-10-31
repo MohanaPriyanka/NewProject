@@ -560,17 +560,6 @@ IMAGE(&quot;/resource/1553274837000/Crown_Icon&quot;, &quot;crown&quot;),
         <trackHistory>false</trackHistory>
     </fields>
     <fields>
-        <fullName>Annual_Electricity_Cost__c</fullName>
-        <externalId>false</externalId>
-        <label>Annual Electricity Cost</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Assignment_Agreement_Template__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -604,31 +593,6 @@ IMAGE(&quot;/resource/1553274837000/Crown_Icon&quot;, &quot;crown&quot;),
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Yes</fullName>
-                    <default>false</default>
-                    <label>Yes</label>
-                </value>
-                <value>
-                    <fullName>No</fullName>
-                    <default>false</default>
-                    <label>No</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
-        <fullName>Bankruptcy_Cleared__c</fullName>
-        <externalId>false</externalId>
-        <label>Bankruptcy Cleared?</label>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Picklist</type>
-        <valueSet>
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
@@ -780,42 +744,6 @@ IMAGE(&quot;/resource/1553274837000/Crown_Icon&quot;, &quot;crown&quot;),
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>CS_Sales_Approach__c</fullName>
-        <externalId>false</externalId>
-        <label>CS Sales Approach</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>MultiselectPicklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Top up new customers</fullName>
-                    <default>false</default>
-                    <label>Top up new customers</label>
-                </value>
-                <value>
-                    <fullName>Sell to non-rooftop</fullName>
-                    <default>false</default>
-                    <label>Sell to non-rooftop</label>
-                </value>
-                <value>
-                    <fullName>Top up prior customers</fullName>
-                    <default>false</default>
-                    <label>Top up prior customers</label>
-                </value>
-                <value>
-                    <fullName>Not able to offer CS</fullName>
-                    <default>false</default>
-                    <label>Not able to offer CS</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-        <visibleLines>4</visibleLines>
-    </fields>
-    <fields>
         <fullName>Cancellation_Comments__c</fullName>
         <externalId>false</externalId>
         <label>Cancellation Comments</label>
@@ -840,17 +768,6 @@ IMAGE(&quot;/resource/1553274837000/Crown_Icon&quot;, &quot;crown&quot;),
         <externalId>false</externalId>
         <label>Cancellation Fees Invoiced</label>
         <precision>7</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Cancellation_Fees_Paid__c</fullName>
-        <externalId>false</externalId>
-        <label>Cancellation Fees Paid</label>
-        <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
         <trackFeedHistory>false</trackFeedHistory>
@@ -1327,35 +1244,6 @@ CASE(Days_Past_Due__c,
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>Credit_Bureau__c</fullName>
-        <externalId>false</externalId>
-        <label>Credit Bureau</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Picklist</type>
-        <valueSet>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Experian</fullName>
-                    <default>false</default>
-                    <label>Experian</label>
-                </value>
-                <value>
-                    <fullName>Transunion</fullName>
-                    <default>false</default>
-                    <label>Transunion</label>
-                </value>
-                <value>
-                    <fullName>Equifax</fullName>
-                    <default>false</default>
-                    <label>Equifax</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
         <fullName>Credits_Allocated_Adjustments__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Rollup of Credits Allocated from Adjustments</inlineHelpText>
@@ -1401,15 +1289,6 @@ CASE(Days_Past_Due__c,
         <unique>true</unique>
     </fields>
     <fields>
-        <fullName>Customer_Reviews_Re_Check_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>Customer Reviews (Re-Check Date)</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Date</type>
-    </fields>
-    <fields>
         <fullName>Date_Cancellation_Email_Sent__c</fullName>
         <externalId>false</externalId>
         <label>Date Cancellation Email Sent:</label>
@@ -1438,46 +1317,6 @@ CASE(Days_Past_Due__c,
         <type>Date</type>
     </fields>
     <fields>
-        <fullName>Day_of_Weekly_Sales_Meeting__c</fullName>
-        <externalId>false</externalId>
-        <label>Day of Weekly Sales Meeting</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Mon</fullName>
-                    <default>false</default>
-                    <label>Mon</label>
-                </value>
-                <value>
-                    <fullName>Tue</fullName>
-                    <default>false</default>
-                    <label>Tue</label>
-                </value>
-                <value>
-                    <fullName>Wed</fullName>
-                    <default>false</default>
-                    <label>Wed</label>
-                </value>
-                <value>
-                    <fullName>Thu</fullName>
-                    <default>false</default>
-                    <label>Thu</label>
-                </value>
-                <value>
-                    <fullName>Fri</fullName>
-                    <default>false</default>
-                    <label>Fri</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
         <fullName>Days_Past_Due__c</fullName>
         <externalId>false</externalId>
         <formula>IF(Total_Outstanding_Balance_Merge__c &gt; 1,
@@ -1485,21 +1324,6 @@ MAX(TODAY()-Max_Overdue_Due_Date_Merge__c,0),
 0)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Account Days Past Due</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackHistory>false</trackHistory>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Days_since_Last_Contact_Date__c</fullName>
-        <description>Number of Days since the last contact date (which is the LastActivityDate)</description>
-        <externalId>false</externalId>
-        <formula>TODAY()- LastActivityDate</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>This is the number of days that have passed since the Last Contact Date</inlineHelpText>
-        <label>Days since Last Contact Date</label>
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
@@ -1589,26 +1413,6 @@ MAX(TODAY()-Max_Overdue_Due_Date_Merge__c,0),
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Enable_CS_Application_in_Portal__c</fullName>
-        <defaultValue>false</defaultValue>
-        <description>This is a manual checkbox that activates CS functionality in the portal for the partner.  This is currently controlled by the Product Team.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>This is a manual checkbox that activates CS functionality in the portal for the partner.  This is currently controlled by the Product Team.</inlineHelpText>
-        <label>Enable CS Application in Portal</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Enable_Storage_Application_in_Portal__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Enable Storage Application in Portal</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>Engagement_Status__c</fullName>
         <externalId>false</externalId>
         <formula>IF(
@@ -1640,31 +1444,6 @@ IF(
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>FICO_Cleared__c</fullName>
-        <externalId>false</externalId>
-        <label>FICO Cleared?</label>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Picklist</type>
-        <valueSet>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Yes</fullName>
-                    <default>false</default>
-                    <label>Yes</label>
-                </value>
-                <value>
-                    <fullName>No</fullName>
-                    <default>false</default>
-                    <label>No</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
         <fullName>FICO__c</fullName>
         <defaultValue>0</defaultValue>
         <description>For the Partner QC Scorecard. 700-750 = 1  &gt;750 = 2.</description>
@@ -1681,38 +1460,9 @@ IF(
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>FL_Disclosure_Explanation__c</fullName>
-        <description>From Installer Application.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>From Installer Application.</inlineHelpText>
-        <label>FL Disclosure Explanation</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>TextArea</type>
-    </fields>
-    <fields>
-        <fullName>Facebook_URL__c</fullName>
-        <externalId>false</externalId>
-        <label>Facebook URL</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Url</type>
-    </fields>
-    <fields>
         <fullName>Fax</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-    </fields>
-    <fields>
-        <fullName>Finance_Option_Freedom__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Finance Option Freedom?</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>First_CS_Bill_Date__c</fullName>
@@ -1760,46 +1510,10 @@ IF(
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Incorporates_FL_Disclosure__c</fullName>
-        <description>Filled in from the Installer App. from only FL Installers, confirming they are compliant with the Distributed Energy Sales Systems Sales Act.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Filled in from the Installer App. from only FL Installers, confirming they are compliant with the Distributed Energy Sales Systems Sales Act.</inlineHelpText>
-        <label>Incorporates FL Disclosure</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Yes</fullName>
-                    <default>false</default>
-                    <label>Yes</label>
-                </value>
-                <value>
-                    <fullName>No</fullName>
-                    <default>false</default>
-                    <label>No</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
         <fullName>Industry</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Picklist</type>
-    </fields>
-    <fields>
-        <fullName>Instagram_URL__c</fullName>
-        <externalId>false</externalId>
-        <label>Instagram URL</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Url</type>
     </fields>
     <fields>
         <fullName>Install_Issues__c</fullName>
@@ -1815,38 +1529,6 @@ IF(
         <trackHistory>false</trackHistory>
         <type>Number</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Installation_Experience_by_Storage_Type__c</fullName>
-        <description>Picklist for installation experience by storage type</description>
-        <externalId>false</externalId>
-        <label>Installation Experience by Storage Type</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>MultiselectPicklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Off-Grid</fullName>
-                    <default>false</default>
-                    <label>Off-Grid</label>
-                </value>
-                <value>
-                    <fullName>Grid Connected with Stand-Alone Battery Storage</fullName>
-                    <default>false</default>
-                    <label>Grid Connected with Stand-Alone Battery Storage</label>
-                </value>
-                <value>
-                    <fullName>Grid-Connected All-in-One Battery Storage</fullName>
-                    <default>false</default>
-                    <label>Grid-Connected All-in-One Battery Storage</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-        <visibleLines>4</visibleLines>
     </fields>
     <fields>
         <fullName>IsCustomerPortal</fullName>
@@ -2085,15 +1767,6 @@ IF(
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>LinkedIn_URL__c</fullName>
-        <externalId>false</externalId>
-        <label>LinkedIn URL</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Url</type>
-    </fields>
-    <fields>
         <fullName>LiveText__Active__c</fullName>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
@@ -2117,19 +1790,6 @@ IF(
                 </value>
             </valueSetDefinition>
         </valueSet>
-    </fields>
-    <fields>
-        <fullName>Loan_Number_of_Days_Delinquent__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Populates from Loan. Do not update manually.</inlineHelpText>
-        <label>Loan Number of Days Delinquent</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Number</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Max_Account_Bill_Number__c</fullName>
@@ -2250,15 +1910,6 @@ TODAY()- BLANKVALUE(Postcard_2__c,DATE(1900,1,1))
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>NABCEP_License_Expiration_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>NABCEP License (Expiration Date)</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Date</type>
-    </fields>
-    <fields>
         <fullName>Name</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
@@ -2306,57 +1957,6 @@ TODAY()- BLANKVALUE(Postcard_2__c,DATE(1900,1,1))
         <trackHistory>false</trackHistory>
         <type>Number</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>OFAC_Check__c</fullName>
-        <externalId>false</externalId>
-        <label>OFAC Check?</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Picklist</type>
-        <valueSet>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Yes</fullName>
-                    <default>false</default>
-                    <label>Yes</label>
-                </value>
-                <value>
-                    <fullName>No</fullName>
-                    <default>false</default>
-                    <label>No</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
-        <fullName>OSHA_Card_Expiration_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>OSHA Card (Expiration Date)</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>One_Strike_Rule_Partner__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>One Strike Rule Partner</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Other_Solar_Lenders_Used__c</fullName>
-        <externalId>false</externalId>
-        <label>Other Solar Lenders Used</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>TextArea</type>
     </fields>
     <fields>
         <fullName>Outstanding_Legal_Action_Explanation__c</fullName>
@@ -2730,15 +2330,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Proof_of_Experience__c</fullName>
-        <externalId>false</externalId>
-        <label>Proof of Experience (Review Date)</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Date</type>
-    </fields>
-    <fields>
         <fullName>Proposal_QC__c</fullName>
         <description>For Partner QC Scorecard. Bad = 0 / Ok = 1 / Great = 2</description>
         <externalId>false</externalId>
@@ -2862,19 +2453,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <referenceTo>Contact</referenceTo>
         <relationshipLabel>Accounts (Scout Contact)</relationshipLabel>
         <relationshipName>Accounts1</relationshipName>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>Scout__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Scout</label>
-        <referenceTo>User</referenceTo>
-        <relationshipLabel>Accounts</relationshipLabel>
-        <relationshipName>Opportunities</relationshipName>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -3289,27 +2867,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         </valueSet>
     </fields>
     <fields>
-        <fullName>Subscription_Architecture__c</fullName>
-        <externalId>false</externalId>
-        <label>Subscription Architecture</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Url</type>
-    </fields>
-    <fields>
-        <fullName>System_Capacity__c</fullName>
-        <externalId>false</externalId>
-        <label>System Capacity</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>TPF_Paid__c</fullName>
         <defaultValue>0</defaultValue>
         <description>For the Partner QC Scorecard. No= 0 / Yes = 1</description>
@@ -3323,30 +2880,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <trackHistory>false</trackHistory>
         <type>Number</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Tax_Lien_Cleared__c</fullName>
-        <externalId>false</externalId>
-        <label>Tax Lien Cleared?</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Picklist</type>
-        <valueSet>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Yes</fullName>
-                    <default>false</default>
-                    <label>Yes</label>
-                </value>
-                <value>
-                    <fullName>No</fullName>
-                    <default>false</default>
-                    <label>No</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
     </fields>
     <fields>
         <fullName>TickerSymbol</fullName>
@@ -3569,27 +3102,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Tracking_Trigger_Value__c</fullName>
-        <externalId>false</externalId>
-        <label>Tracking Trigger Value</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Twitter_URL__c</fullName>
-        <externalId>false</externalId>
-        <label>Twitter URL</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Url</type>
-    </fields>
-    <fields>
         <fullName>Type</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -3764,7 +3276,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <columns>ACCOUNT.ADDRESS1_STATE_CODE</columns>
         <columns>ACCOUNT.TYPE</columns>
         <columns>ACCOUNT.PHONE1</columns>
-        <columns>Scout__c</columns>
         <columns>ACCOUNT.LAST_UPDATE</columns>
         <columns>ACCOUNT.CREATED_DATE</columns>
         <columns>CORE.USERS.ALIAS</columns>
@@ -4140,36 +3651,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Bankruptcy_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>CS_Sales_Approach__c</picklist>
-            <values>
-                <fullName>Not able to offer CS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sell to non-rooftop</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Top up new customers</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Top up prior customers</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Cancellation_Reason__c</picklist>
             <values>
                 <fullName>Business Sold%2FOut of Business</fullName>
@@ -4221,66 +3702,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>BluewaveLogo</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Credit_Bureau__c</picklist>
-            <values>
-                <fullName>Equifax</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Experian</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Transunion</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Day_of_Weekly_Sales_Meeting__c</picklist>
-            <values>
-                <fullName>Fri</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mon</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Thu</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Tue</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Wed</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>FICO_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Incorporates_FL_Disclosure__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -4419,21 +3840,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Installation_Experience_by_Storage_Type__c</picklist>
-            <values>
-                <fullName>Grid Connected with Stand-Alone Battery Storage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Grid-Connected All-in-One Battery Storage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Off-Grid</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Is_this_a_Scouting_Account__c</picklist>
             <values>
                 <fullName>No</fullName>
@@ -4446,17 +3852,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         </picklistValues>
         <picklistValues>
             <picklist>LiveText__Active__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>OFAC_Check__c</picklist>
             <values>
                 <fullName>No</fullName>
                 <default>false</default>
@@ -4710,17 +4105,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Tax_Lien_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Tier__c</picklist>
             <values>
                 <fullName>0</fullName>
@@ -4813,36 +4197,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Bankruptcy_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>CS_Sales_Approach__c</picklist>
-            <values>
-                <fullName>Not able to offer CS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sell to non-rooftop</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Top up new customers</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Top up prior customers</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Cancellation_Reason__c</picklist>
             <values>
                 <fullName>Business Sold%2FOut of Business</fullName>
@@ -4894,66 +4248,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>BluewaveLogo</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Credit_Bureau__c</picklist>
-            <values>
-                <fullName>Equifax</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Experian</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Transunion</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Day_of_Weekly_Sales_Meeting__c</picklist>
-            <values>
-                <fullName>Fri</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mon</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Thu</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Tue</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Wed</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>FICO_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Incorporates_FL_Disclosure__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -5092,21 +4386,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Installation_Experience_by_Storage_Type__c</picklist>
-            <values>
-                <fullName>Grid Connected with Stand-Alone Battery Storage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Grid-Connected All-in-One Battery Storage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Off-Grid</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Is_this_a_Scouting_Account__c</picklist>
             <values>
                 <fullName>No</fullName>
@@ -5119,17 +4398,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         </picklistValues>
         <picklistValues>
             <picklist>LiveText__Active__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>OFAC_Check__c</picklist>
             <values>
                 <fullName>No</fullName>
                 <default>false</default>
@@ -5376,17 +4644,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>Open</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Tax_Lien_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -5501,36 +4758,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Bankruptcy_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>CS_Sales_Approach__c</picklist>
-            <values>
-                <fullName>Not able to offer CS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sell to non-rooftop</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Top up new customers</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Top up prior customers</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Cancellation_Reason__c</picklist>
             <values>
                 <fullName>Business Sold%2FOut of Business</fullName>
@@ -5582,66 +4809,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>BluewaveLogo</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Credit_Bureau__c</picklist>
-            <values>
-                <fullName>Equifax</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Experian</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Transunion</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Day_of_Weekly_Sales_Meeting__c</picklist>
-            <values>
-                <fullName>Fri</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mon</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Thu</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Tue</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Wed</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>FICO_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Incorporates_FL_Disclosure__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -5780,21 +4947,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Installation_Experience_by_Storage_Type__c</picklist>
-            <values>
-                <fullName>Grid Connected with Stand-Alone Battery Storage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Grid-Connected All-in-One Battery Storage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Off-Grid</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Is_this_a_Scouting_Account__c</picklist>
             <values>
                 <fullName>No</fullName>
@@ -5807,17 +4959,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         </picklistValues>
         <picklistValues>
             <picklist>LiveText__Active__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>OFAC_Check__c</picklist>
             <values>
                 <fullName>No</fullName>
                 <default>false</default>
@@ -6064,17 +5205,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>Open</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Tax_Lien_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -6188,36 +5318,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Bankruptcy_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>CS_Sales_Approach__c</picklist>
-            <values>
-                <fullName>Not able to offer CS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sell to non-rooftop</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Top up new customers</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Top up prior customers</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Cancellation_Reason__c</picklist>
             <values>
                 <fullName>Business Sold%2FOut of Business</fullName>
@@ -6269,66 +5369,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>BluewaveLogo</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Credit_Bureau__c</picklist>
-            <values>
-                <fullName>Equifax</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Experian</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Transunion</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Day_of_Weekly_Sales_Meeting__c</picklist>
-            <values>
-                <fullName>Fri</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mon</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Thu</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Tue</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Wed</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>FICO_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Incorporates_FL_Disclosure__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -6467,21 +5507,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Installation_Experience_by_Storage_Type__c</picklist>
-            <values>
-                <fullName>Grid Connected with Stand-Alone Battery Storage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Grid-Connected All-in-One Battery Storage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Off-Grid</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Is_this_a_Scouting_Account__c</picklist>
             <values>
                 <fullName>No</fullName>
@@ -6494,17 +5519,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         </picklistValues>
         <picklistValues>
             <picklist>LiveText__Active__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>OFAC_Check__c</picklist>
             <values>
                 <fullName>No</fullName>
                 <default>false</default>
@@ -6751,17 +5765,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>Open</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Tax_Lien_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -6879,36 +5882,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Bankruptcy_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>CS_Sales_Approach__c</picklist>
-            <values>
-                <fullName>Not able to offer CS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sell to non-rooftop</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Top up new customers</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Top up prior customers</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Cancellation_Reason__c</picklist>
             <values>
                 <fullName>Business Sold%2FOut of Business</fullName>
@@ -6960,66 +5933,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>BluewaveLogo</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Credit_Bureau__c</picklist>
-            <values>
-                <fullName>Equifax</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Experian</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Transunion</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Day_of_Weekly_Sales_Meeting__c</picklist>
-            <values>
-                <fullName>Fri</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mon</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Thu</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Tue</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Wed</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>FICO_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Incorporates_FL_Disclosure__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -7158,21 +6071,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Installation_Experience_by_Storage_Type__c</picklist>
-            <values>
-                <fullName>Grid Connected with Stand-Alone Battery Storage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Grid-Connected All-in-One Battery Storage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Off-Grid</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Is_this_a_Scouting_Account__c</picklist>
             <values>
                 <fullName>No</fullName>
@@ -7185,17 +6083,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         </picklistValues>
         <picklistValues>
             <picklist>LiveText__Active__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>OFAC_Check__c</picklist>
             <values>
                 <fullName>No</fullName>
                 <default>false</default>
@@ -7442,17 +6329,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>Open</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Tax_Lien_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -7620,36 +6496,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Bankruptcy_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>CS_Sales_Approach__c</picklist>
-            <values>
-                <fullName>Not able to offer CS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sell to non-rooftop</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Top up new customers</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Top up prior customers</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Cancellation_Reason__c</picklist>
             <values>
                 <fullName>Business Sold%2FOut of Business</fullName>
@@ -7693,67 +6539,7 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Credit_Bureau__c</picklist>
-            <values>
-                <fullName>Equifax</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Experian</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Transunion</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Day_of_Weekly_Sales_Meeting__c</picklist>
-            <values>
-                <fullName>Fri</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mon</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Thu</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Tue</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Wed</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Declared_Bankruptcy__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>FICO_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Incorporates_FL_Disclosure__c</picklist>
             <values>
                 <fullName>No</fullName>
                 <default>false</default>
@@ -7899,21 +6685,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Installation_Experience_by_Storage_Type__c</picklist>
-            <values>
-                <fullName>Grid Connected with Stand-Alone Battery Storage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Grid-Connected All-in-One Battery Storage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Off-Grid</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Is_this_a_Scouting_Account__c</picklist>
             <values>
                 <fullName>No</fullName>
@@ -7937,17 +6708,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         </picklistValues>
         <picklistValues>
             <picklist>LiveText__Active__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>OFAC_Check__c</picklist>
             <values>
                 <fullName>No</fullName>
                 <default>false</default>
@@ -8255,17 +7015,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Tax_Lien_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Tier__c</picklist>
             <values>
                 <fullName>0</fullName>
@@ -8391,36 +7140,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Bankruptcy_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>CS_Sales_Approach__c</picklist>
-            <values>
-                <fullName>Not able to offer CS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sell to non-rooftop</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Top up new customers</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Top up prior customers</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Cancellation_Reason__c</picklist>
             <values>
                 <fullName>Business Sold%2FOut of Business</fullName>
@@ -8472,66 +7191,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>BluewaveLogo</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Credit_Bureau__c</picklist>
-            <values>
-                <fullName>Equifax</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Experian</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Transunion</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Day_of_Weekly_Sales_Meeting__c</picklist>
-            <values>
-                <fullName>Fri</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mon</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Thu</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Tue</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Wed</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>FICO_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Incorporates_FL_Disclosure__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -8670,21 +7329,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Installation_Experience_by_Storage_Type__c</picklist>
-            <values>
-                <fullName>Grid Connected with Stand-Alone Battery Storage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Grid-Connected All-in-One Battery Storage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Off-Grid</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Is_this_a_Scouting_Account__c</picklist>
             <values>
                 <fullName>No</fullName>
@@ -8697,17 +7341,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         </picklistValues>
         <picklistValues>
             <picklist>LiveText__Active__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>OFAC_Check__c</picklist>
             <values>
                 <fullName>No</fullName>
                 <default>false</default>
@@ -8954,17 +7587,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>Open</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Tax_Lien_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -9083,36 +7705,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Bankruptcy_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>CS_Sales_Approach__c</picklist>
-            <values>
-                <fullName>Not able to offer CS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sell to non-rooftop</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Top up new customers</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Top up prior customers</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Cancellation_Reason__c</picklist>
             <values>
                 <fullName>Business Sold%2FOut of Business</fullName>
@@ -9164,66 +7756,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>BluewaveLogo</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Credit_Bureau__c</picklist>
-            <values>
-                <fullName>Equifax</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Experian</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Transunion</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Day_of_Weekly_Sales_Meeting__c</picklist>
-            <values>
-                <fullName>Fri</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mon</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Thu</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Tue</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Wed</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>FICO_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Incorporates_FL_Disclosure__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -9362,21 +7894,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Installation_Experience_by_Storage_Type__c</picklist>
-            <values>
-                <fullName>Grid Connected with Stand-Alone Battery Storage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Grid-Connected All-in-One Battery Storage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Off-Grid</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Is_this_a_Scouting_Account__c</picklist>
             <values>
                 <fullName>No</fullName>
@@ -9389,17 +7906,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         </picklistValues>
         <picklistValues>
             <picklist>LiveText__Active__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>OFAC_Check__c</picklist>
             <values>
                 <fullName>No</fullName>
                 <default>false</default>
@@ -9646,17 +8152,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>Open</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Tax_Lien_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -10033,36 +8528,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Bankruptcy_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>CS_Sales_Approach__c</picklist>
-            <values>
-                <fullName>Not able to offer CS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sell to non-rooftop</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Top up new customers</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Top up prior customers</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Cancellation_Reason__c</picklist>
             <values>
                 <fullName>Business Sold%2FOut of Business</fullName>
@@ -10102,66 +8567,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
             <values>
                 <fullName>Unhappy with BW Service</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Credit_Bureau__c</picklist>
-            <values>
-                <fullName>Equifax</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Experian</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Transunion</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Day_of_Weekly_Sales_Meeting__c</picklist>
-            <values>
-                <fullName>Fri</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mon</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Thu</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Tue</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Wed</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>FICO_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Incorporates_FL_Disclosure__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -10301,21 +8706,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Installation_Experience_by_Storage_Type__c</picklist>
-            <values>
-                <fullName>Grid Connected with Stand-Alone Battery Storage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Grid-Connected All-in-One Battery Storage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Off-Grid</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Is_this_a_Scouting_Account__c</picklist>
             <values>
                 <fullName>No</fullName>
@@ -10328,17 +8718,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         </picklistValues>
         <picklistValues>
             <picklist>LiveText__Active__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>OFAC_Check__c</picklist>
             <values>
                 <fullName>No</fullName>
                 <default>false</default>
@@ -10588,17 +8967,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Tax_Lien_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Tier__c</picklist>
             <values>
                 <fullName>0</fullName>
@@ -10739,36 +9107,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Bankruptcy_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>CS_Sales_Approach__c</picklist>
-            <values>
-                <fullName>Not able to offer CS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sell to non-rooftop</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Top up new customers</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Top up prior customers</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Cancellation_Reason__c</picklist>
             <values>
                 <fullName>Business Sold%2FOut of Business</fullName>
@@ -10823,67 +9161,7 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Credit_Bureau__c</picklist>
-            <values>
-                <fullName>Equifax</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Experian</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Transunion</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Day_of_Weekly_Sales_Meeting__c</picklist>
-            <values>
-                <fullName>Fri</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mon</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Thu</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Tue</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Wed</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Declared_Bankruptcy__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>FICO_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Incorporates_FL_Disclosure__c</picklist>
             <values>
                 <fullName>No</fullName>
                 <default>false</default>
@@ -11029,21 +9307,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Installation_Experience_by_Storage_Type__c</picklist>
-            <values>
-                <fullName>Grid Connected with Stand-Alone Battery Storage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Grid-Connected All-in-One Battery Storage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Off-Grid</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Is_this_a_Scouting_Account__c</picklist>
             <values>
                 <fullName>No</fullName>
@@ -11067,17 +9330,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         </picklistValues>
         <picklistValues>
             <picklist>LiveText__Active__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>OFAC_Check__c</picklist>
             <values>
                 <fullName>No</fullName>
                 <default>false</default>
@@ -11385,17 +9637,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Tax_Lien_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Tier__c</picklist>
             <values>
                 <fullName>0</fullName>
@@ -11559,36 +9800,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Bankruptcy_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>CS_Sales_Approach__c</picklist>
-            <values>
-                <fullName>Not able to offer CS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sell to non-rooftop</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Top up new customers</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Top up prior customers</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Cancellation_Reason__c</picklist>
             <values>
                 <fullName>Business Sold%2FOut of Business</fullName>
@@ -11652,66 +9863,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
             <values>
                 <fullName>Unhappy with BW Service</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Credit_Bureau__c</picklist>
-            <values>
-                <fullName>Equifax</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Experian</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Transunion</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Day_of_Weekly_Sales_Meeting__c</picklist>
-            <values>
-                <fullName>Fri</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mon</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Thu</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Tue</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Wed</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>FICO_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Incorporates_FL_Disclosure__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -11851,21 +10002,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Installation_Experience_by_Storage_Type__c</picklist>
-            <values>
-                <fullName>Grid Connected with Stand-Alone Battery Storage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Grid-Connected All-in-One Battery Storage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Off-Grid</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Is_this_a_Scouting_Account__c</picklist>
             <values>
                 <fullName>No</fullName>
@@ -11878,17 +10014,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         </picklistValues>
         <picklistValues>
             <picklist>LiveText__Active__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>OFAC_Check__c</picklist>
             <values>
                 <fullName>No</fullName>
                 <default>false</default>
@@ -12135,17 +10260,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>Open</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Tax_Lien_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -12264,36 +10378,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Bankruptcy_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>CS_Sales_Approach__c</picklist>
-            <values>
-                <fullName>Not able to offer CS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sell to non-rooftop</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Top up new customers</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Top up prior customers</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Cancellation_Reason__c</picklist>
             <values>
                 <fullName>Business Sold%2FOut of Business</fullName>
@@ -12345,66 +10429,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>BluewaveLogo</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Credit_Bureau__c</picklist>
-            <values>
-                <fullName>Equifax</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Experian</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Transunion</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Day_of_Weekly_Sales_Meeting__c</picklist>
-            <values>
-                <fullName>Fri</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mon</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Thu</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Tue</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Wed</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>FICO_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Incorporates_FL_Disclosure__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -12543,21 +10567,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Installation_Experience_by_Storage_Type__c</picklist>
-            <values>
-                <fullName>Grid Connected with Stand-Alone Battery Storage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Grid-Connected All-in-One Battery Storage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Off-Grid</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Is_this_a_Scouting_Account__c</picklist>
             <values>
                 <fullName>No</fullName>
@@ -12570,17 +10579,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         </picklistValues>
         <picklistValues>
             <picklist>LiveText__Active__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>OFAC_Check__c</picklist>
             <values>
                 <fullName>No</fullName>
                 <default>false</default>
@@ -12827,17 +10825,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>Open</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Tax_Lien_Cleared__c</picklist>
-            <values>
-                <fullName>No</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yes</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>

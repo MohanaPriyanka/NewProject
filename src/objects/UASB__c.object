@@ -811,34 +811,6 @@ MONTH(Billing_Period_End_Date__c),
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Tracking_Trigger_Multiplier__c</fullName>
-        <externalId>false</externalId>
-        <formula>Effective_Net_Metering_Rate__c - System_Bill__r.Account_Bill__r.Parent_Account__r.Tracking_Trigger_Value__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Tracking Trigger Multiplier</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Tracking_Trigger_Value__c</fullName>
-        <externalId>false</externalId>
-        <formula>Tracking_Trigger_Multiplier__c*Subscription_Production_kWh__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Tracking Trigger Value</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Transfer_Sheet_Resolution__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>On the transfer sheet QC screen, the value that was selected for &quot;Resolution&quot;</inlineHelpText>
