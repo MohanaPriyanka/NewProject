@@ -1681,6 +1681,7 @@ public with sharing class CSCancellationServiceTest {
         Utility_Account_Subscription__c newUAS = uas.clone(false);
         newUAS.Opportunity__c = newOpp.Id;
         insert newUAS;
+
         TestSOCreator.createByCost(newUAS, 4000);
 
         Map<Account, Map<String, String>> accountCancellationTextMap =
@@ -1691,6 +1692,15 @@ public with sharing class CSCancellationServiceTest {
         System.assertEquals(1, accountCancellationTextMap.values().size());
         List<Account> accounts = new List<Account>(accountCancellationTextMap.keySet());
         System.assertEquals(opportunity.AccountId, accounts[0].Id);
+
+        System.assertEquals(
+            CSCancellationService.DEFAULT_CANCELLATION_PARAGRAPH_TWO,
+            accountCancellationTextMap.values()[0].get(CSCancellationService.CANCELLATION_PARAGRAPH_TWO_LABEL)
+        );
+        System.assertEquals(
+            CSCancellationService.DEFAULT_CANCELLATION_PARAGRAPH_THREE,
+            accountCancellationTextMap.values()[0].get(CSCancellationService.CANCELLATION_PARAGRAPH_THREE_LABEL)
+        );
     }
 
     @IsTest
