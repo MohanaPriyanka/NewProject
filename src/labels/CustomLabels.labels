@@ -145,46 +145,6 @@
         <value>https://bluewavememberportal.force.com/</value>
     </labels>
     <labels>
-        <fullName>Email_Anchor_Support</fullName>
-        <categories>branding, email</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Anchor Support Email address</shortDescription>
-        <value>anchorsupport@bluewavesolar.com</value>
-    </labels>
-    <labels>
-        <fullName>Email_Client_Services</fullName>
-        <categories>branding, email</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Client Services Email Address</shortDescription>
-        <value>clientservices@bluewavesolar.com</value>
-    </labels>
-    <labels>
-        <fullName>Email_Customer_Care</fullName>
-        <categories>branding, email</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Customer Care Email address</shortDescription>
-        <value>customercare@bluewavesolar.com</value>
-    </labels>
-    <labels>
-        <fullName>Email_FinOps</fullName>
-        <categories>branding, email</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Fin Ops Email Address</shortDescription>
-        <value>finops@bluewavesolar.com</value>
-    </labels>
-    <labels>
-        <fullName>Email_Partner_Support</fullName>
-        <categories>branding, email</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Partner Support Email  Address</shortDescription>
-        <value>partnersupport@bluewavesolar.com</value>
-    </labels>
-    <labels>
         <fullName>Enrollment_Portal_URL</fullName>
         <categories>branding, email</categories>
         <language>en_US</language>
