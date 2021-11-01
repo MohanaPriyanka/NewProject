@@ -37852,7 +37852,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Utility__c.Use_Premise_Number_In_Transfer_QC__c</field>
         <readable>true</readable>
     </fieldPermissions>

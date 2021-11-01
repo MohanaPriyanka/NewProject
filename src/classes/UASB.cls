@@ -80,6 +80,7 @@ public virtual class UASB {
         uasb.Externally_Serviced__c = szs.Utility_Account_Subscription__r.Externally_Serviced__c;
         uasb.PreGen_Name_on_Account__c = getCustomerName();
         uasb.PreGen_Utility_Acct__c = getUtilityAccountNumberForComparison();
+        uasb.Early_Removal__c = szs.Utility_Account_Subscription__r.Early_Removal__c;
     }
 
     /**
