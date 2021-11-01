@@ -1681,6 +1681,7 @@ public with sharing class CSCancellationServiceTest {
         Utility_Account_Subscription__c newUAS = uas.clone(false);
         newUAS.Opportunity__c = newOpp.Id;
         insert newUAS;
+        TestSOCreator.createByCost(newUAS, 4000);
 
         Map<Account, Map<String, String>> accountCancellationTextMap =
             CSCancellationService.accountToCancellationParagraphs(UASSelector.selectUASesByAccounts(new Set<Id>{
