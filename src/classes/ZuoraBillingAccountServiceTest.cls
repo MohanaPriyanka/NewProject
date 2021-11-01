@@ -34,7 +34,7 @@ public with sharing class ZuoraBillingAccountServiceTest {
         List<Account> originalAutopayAccounts = [
             SELECT Id, Recurring_Billing__c
             FROM Account
-            WHERE Recurring_Billing__c = true
+            WHERE Recurring_Billing__c = TRUE
         ];
         System.assertEquals(0,originalAutopayAccounts.size());
 
@@ -56,7 +56,7 @@ public with sharing class ZuoraBillingAccountServiceTest {
         List<Account> updatedAutopayAccounts = [
             SELECT Id, Recurring_Billing__c
             FROM Account
-            WHERE Recurring_Billing__c = true
+            WHERE Recurring_Billing__c = TRUE
         ];
         System.assertEquals(0,updatedAutopayAccounts.size());
     }
@@ -65,7 +65,7 @@ public with sharing class ZuoraBillingAccountServiceTest {
         List<Account> originalAutopayAccounts = [
             SELECT Id, Recurring_Billing__c
             FROM Account
-            WHERE Recurring_Billing__c = true
+            WHERE Recurring_Billing__c = TRUE
         ];
         System.assertEquals(0,originalAutopayAccounts.size());
 
@@ -83,12 +83,10 @@ public with sharing class ZuoraBillingAccountServiceTest {
         update zuoraAccounts;
         Test.stopTest();
 
-        List<Error_Log__c> errors = [SELECT Id, Message__c FROM Error_Log__c];
-
         List<Account> updatedAutopayAccounts = [
             SELECT Id, Recurring_Billing__c, Autopay_Date_Last_Enrolled__c
             FROM Account
-            WHERE Recurring_Billing__c = true
+            WHERE Recurring_Billing__c = TRUE
         ];
         System.assertEquals(5,updatedAutopayAccounts.size());
         System.assertEquals(Date.today(),updatedAutopayAccounts[0].Autopay_Date_Last_Enrolled__c);
@@ -102,21 +100,9 @@ public with sharing class ZuoraBillingAccountServiceTest {
 
         System.assertEquals(0,originalQueries.size());
 
-        List<Zuora__CustomerAccount__c> zuoraAccounts = [
-            SELECT Id, Name,
-                Zuora__Zuora_Id__c,
-                Zuora__AutoPay__c,
-                Zuora__Account__r.Id,
-                Zuora__Account__r.Recurring_Billing__c,
-                Zuora__Account__r.Total_Outstanding_Balance_Zuora__c,
-                Zuora__Account__r.Max_Overdue_Due_Date_Zuora__c
-            FROM Zuora__CustomerAccount__c
-        ];
-        Set<Id> accountIdSet = new Set<Id>{zuoraAccounts[0].Id, zuoraAccounts[1].Id, zuoraAccounts[2].Id};
-
         Test.startTest();
             ZuoraBillingAccountService service = new ZuoraBillingAccountService();
-            service.startDaysPastDueUpdate(accountIdSet);
+            service.startDaysPastDueUpdate();
         Test.stopTest();
 
         List<Zuora_Data_Query__c> queries = [
@@ -341,8 +327,7 @@ public with sharing class ZuoraBillingAccountServiceTest {
         }
     }
 
-    @IsTest
-    private static void testDaysPastDueCases() {
+    @IsTest private static void testDaysPastDueCases() {
         Util.mockDML = true;
         ZuoraBillingAccountService billingAccountService = new ZuoraBillingAccountService();
         ZuoraBillingAccountService.BalanceQueryResult queryResult = new ZuoraBillingAccountService.BalanceQueryResult();
@@ -352,9 +337,9 @@ public with sharing class ZuoraBillingAccountServiceTest {
         queryResult.InvoiceDueDate = System.today()+30;
         queryResult.AccountId = '000001';
         ZuoraBillingAccountService.zuoraAcctSelector =
-            (ZuoraAccountSelector) Test.createStub(ZuoraAccountSelector.class, new MockZuoraAccountSelector('000001', 67, '0010v00000X7SHjAAN'));
+            (ZuoraAccountSelector) Test.createStub(ZuoraAccountSelector.class, new MockZuoraAccountSelector('000001', 67, Util.getFakeId(Account.SObjectType)));
         ZuoraBillingAccountService.uow = new fflib_SObjectUnitOfWork(new List<SObjectType>{Case.SObjectType}, new FFLibHelperTest.MockDML());
-        billingAccountService.updateDaysPastDue(JSON.serialize(queryResults), null);
+        billingAccountService.updateDaysPastDue(JSON.serialize(queryResults));
         System.assertEquals(1, FFLibHelperTest.getRegisterNewListFromUnitOfWork(ZuoraBillingAccountService.uow, 'Case').size(),
             'Expected a case for a 67 days past due account that now only has outstanding items due in the future');
 
@@ -362,9 +347,9 @@ public with sharing class ZuoraBillingAccountServiceTest {
         queryResult.InvoiceDueDate = System.today();
         queryResult.AccountId = '000001';
         ZuoraBillingAccountService.zuoraAcctSelector =
-            (ZuoraAccountSelector) Test.createStub(ZuoraAccountSelector.class, new MockZuoraAccountSelector('000001', 67, '0010v00000X7SHjAAN'));
+            (ZuoraAccountSelector) Test.createStub(ZuoraAccountSelector.class, new MockZuoraAccountSelector('000001', 67, Util.getFakeId(Account.SObjectType)));
         ZuoraBillingAccountService.uow = new fflib_SObjectUnitOfWork(new List<SObjectType>{Case.SObjectType}, new FFLibHelperTest.MockDML());
-        billingAccountService.updateDaysPastDue(JSON.serialize(queryResults), null);
+        billingAccountService.updateDaysPastDue(JSON.serialize(queryResults));
         System.assertEquals(1, FFLibHelperTest.getRegisterNewListFromUnitOfWork(ZuoraBillingAccountService.uow, 'Case').size(),
             'Expected a case for a 67 days past due account that now only has outstanding items due today');
 
@@ -372,9 +357,9 @@ public with sharing class ZuoraBillingAccountServiceTest {
         queryResult.InvoiceDueDate = System.today()-1;
         queryResult.AccountId = '000001';
         ZuoraBillingAccountService.zuoraAcctSelector =
-            (ZuoraAccountSelector) Test.createStub(ZuoraAccountSelector.class, new MockZuoraAccountSelector('000001', 67, '0010v00000X7SHjAAN'));
+            (ZuoraAccountSelector) Test.createStub(ZuoraAccountSelector.class, new MockZuoraAccountSelector('000001', 67, Util.getFakeId(Account.SObjectType)));
         ZuoraBillingAccountService.uow = new fflib_SObjectUnitOfWork(new List<SObjectType>{Case.SObjectType}, new FFLibHelperTest.MockDML());
-        billingAccountService.updateDaysPastDue(JSON.serialize(queryResults), null);
+        billingAccountService.updateDaysPastDue(JSON.serialize(queryResults));
         System.assertEquals(0, FFLibHelperTest.getRegisterNewListFromUnitOfWork(ZuoraBillingAccountService.uow, 'Case').size(),
             'Did not expect a case for a 67 days past due account that still has an overdue item');
 
@@ -382,19 +367,88 @@ public with sharing class ZuoraBillingAccountServiceTest {
         queryResult.InvoiceDueDate = System.today();
         queryResult.AccountId = '000001';
         ZuoraBillingAccountService.zuoraAcctSelector =
-            (ZuoraAccountSelector) Test.createStub(ZuoraAccountSelector.class, new MockZuoraAccountSelector('000001', 91, '0010v00000X7SHjAAN'));
+            (ZuoraAccountSelector) Test.createStub(ZuoraAccountSelector.class, new MockZuoraAccountSelector('000001', 91, Util.getFakeId(Account.SObjectType)));
         ZuoraBillingAccountService.uow = new fflib_SObjectUnitOfWork(new List<SObjectType>{Case.SObjectType}, new FFLibHelperTest.MockDML());
-        billingAccountService.updateDaysPastDue(JSON.serialize(queryResults), null);
+        billingAccountService.updateDaysPastDue(JSON.serialize(queryResults));
         System.assertEquals(0, FFLibHelperTest.getRegisterNewListFromUnitOfWork(ZuoraBillingAccountService.uow, 'Case').size(),
             'Did not expect a case for a 91 days past due account that is fully paid');
 
         queryResult.AccountId = '000002';
         ZuoraBillingAccountService.zuoraAcctSelector =
-            (ZuoraAccountSelector) Test.createStub(ZuoraAccountSelector.class, new MockZuoraAccountSelector('000001', 91, '0010v00000X7SHjAAN'));
+            (ZuoraAccountSelector) Test.createStub(ZuoraAccountSelector.class, new MockZuoraAccountSelector('000001', 91, Util.getFakeId(Account.SObjectType)));
         ZuoraBillingAccountService.uow = new fflib_SObjectUnitOfWork(new List<SObjectType>{Case.SObjectType}, new FFLibHelperTest.MockDML());
-        billingAccountService.updateDaysPastDue(JSON.serialize(queryResults), null);
+        billingAccountService.updateDaysPastDue(JSON.serialize(queryResults));
         System.assertEquals(0, FFLibHelperTest.getRegisterNewListFromUnitOfWork(ZuoraBillingAccountService.uow, 'Case').size(),
             'Did not expect a case for a 91 days past due account that has no outstanding items');
+    }
+
+    @IsTest private static void testUnsetCollections() {
+        ZuoraBillingAccountService billingAccountService = new ZuoraBillingAccountService();
+        Account propertyAccount = new Account();
+
+        propertyAccount.Max_Overdue_Due_Date_Zuora__c = System.today();
+        propertyAccount.Suppress_Collections__c = ZuoraBillingAccountService.SUPPRESS_COLLECTIONS_TEMPORARILY;
+        System.assertEquals(
+            null,
+            billingAccountService.unsetSuppressCollections(propertyAccount).Suppress_Collections__c,
+            'A property with an overdue date of today is not overdue, so Suppress Collections should get unset'
+        );
+
+        propertyAccount.Max_Overdue_Due_Date_Zuora__c = null;
+        propertyAccount.Suppress_Collections__c = ZuoraBillingAccountService.SUPPRESS_COLLECTIONS_TEMPORARILY;
+        System.assertEquals(
+            null,
+            billingAccountService.unsetSuppressCollections(propertyAccount).Suppress_Collections__c,
+            'A property with no overdue date has nothing due, so Suppress Collections should get unset'
+        );
+
+        propertyAccount.Max_Overdue_Due_Date_Zuora__c = System.today() + 7;
+        propertyAccount.Suppress_Collections__c = ZuoraBillingAccountService.SUPPRESS_COLLECTIONS_TEMPORARILY;
+        System.assertEquals(
+            null,
+            billingAccountService.unsetSuppressCollections(propertyAccount).Suppress_Collections__c,
+            'A property with an overdue date of next week is not overdue, so Suppress Collections should get unset'
+        );
+
+        propertyAccount.Max_Overdue_Due_Date_Zuora__c = System.today() - 7;
+        propertyAccount.Suppress_Collections__c = ZuoraBillingAccountService.SUPPRESS_COLLECTIONS_TEMPORARILY;
+        System.assertEquals(
+            ZuoraBillingAccountService.SUPPRESS_COLLECTIONS_TEMPORARILY,
+            billingAccountService.unsetSuppressCollections(propertyAccount).Suppress_Collections__c,
+            'A property with an overdue date of last week is overdue, so Suppress Collections should stay set'
+        );
+
+        propertyAccount.Max_Overdue_Due_Date_Zuora__c = System.today();
+        propertyAccount.Suppress_Collections__c = ZuoraBillingAccountService.SUPPRESS_COLLECTIONS_PERMANENTLY;
+        System.assertEquals(
+            ZuoraBillingAccountService.SUPPRESS_COLLECTIONS_PERMANENTLY,
+            billingAccountService.unsetSuppressCollections(propertyAccount).Suppress_Collections__c,
+            'A property with an overdue date of today is not overdue, but Suppress Collections Permanently should stay set'
+        );
+
+        propertyAccount.Max_Overdue_Due_Date_Zuora__c = null;
+        propertyAccount.Suppress_Collections__c = ZuoraBillingAccountService.SUPPRESS_COLLECTIONS_PERMANENTLY;
+        System.assertEquals(
+            ZuoraBillingAccountService.SUPPRESS_COLLECTIONS_PERMANENTLY,
+            billingAccountService.unsetSuppressCollections(propertyAccount).Suppress_Collections__c,
+            'A property with no overdue date has nothing due, but Suppress Collections Permanently should stay set'
+        );
+
+        propertyAccount.Max_Overdue_Due_Date_Zuora__c = System.today() + 7;
+        propertyAccount.Suppress_Collections__c = ZuoraBillingAccountService.SUPPRESS_COLLECTIONS_PERMANENTLY;
+        System.assertEquals(
+            ZuoraBillingAccountService.SUPPRESS_COLLECTIONS_PERMANENTLY,
+            billingAccountService.unsetSuppressCollections(propertyAccount).Suppress_Collections__c,
+            'A property with an overdue date of next week is not overdue, but Suppress Collections Permanently should stay set'
+        );
+
+        propertyAccount.Max_Overdue_Due_Date_Zuora__c = System.today() - 7;
+        propertyAccount.Suppress_Collections__c = ZuoraBillingAccountService.SUPPRESS_COLLECTIONS_PERMANENTLY;
+        System.assertEquals(
+            ZuoraBillingAccountService.SUPPRESS_COLLECTIONS_PERMANENTLY,
+            billingAccountService.unsetSuppressCollections(propertyAccount).Suppress_Collections__c,
+            'A property with an overdue date of last week is overdue, so Suppress Collections Permanently should stay set'
+        );
     }
 
     private class MockZuoraAccountSelector implements StubProvider {
@@ -418,7 +472,7 @@ public with sharing class ZuoraBillingAccountServiceTest {
         }
         private Zuora__CustomerAccount__c getCustomerAccount() {
             Map<SObjectField, Object> customerAccountValues = new Map<SObjectField, Object> {
-                Zuora__CustomerAccount__c.Id => 'a710v0000009Si3AAE',
+                Zuora__CustomerAccount__c.Id => Util.getFakeId(Zuora__CustomerAccount__c.SObjectType),
                 Zuora__CustomerAccount__c.Name => 'Joshua Phillips',
                 Zuora__CustomerAccount__c.Zuora__Zuora_Id__c => zuoraId,
                 Zuora__CustomerAccount__c.Zuora__Autopay__c => false,

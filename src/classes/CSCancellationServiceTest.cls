@@ -492,8 +492,7 @@ public with sharing class CSCancellationServiceTest {
             FROM Schedule_Z_Subscription__c
             WHERE Utility_Account_Subscription__r.Next_Schedule_Z_Status__c = 'Inactive Subscription'
             AND Schedule_Z_Status__c = 'Replaced with newly Enacted Schedule Z'
-            AND (Utility_Account_Subscription__r.Utility_Account_Log__r.Account__r.Total_Outstanding_Balance_Merge__c = 0
-            OR Utility_Account_Subscription__r.Utility_Account_Log__r.Account__r.Last_Bill_Send_Date_New_Charges__c > :sixMonthsAgo)
+            AND Utility_Account_Subscription__r.Utility_Account_Log__r.Account__r.Total_Outstanding_Balance_Merge__c = 0
             AND Utility_Account_Subscription__r.Opportunity__r.StageName != 'Cancelled'
         ];
 
@@ -647,7 +646,8 @@ public with sharing class CSCancellationServiceTest {
     @IsTest static void testOppCancellationOnBillingCompletionWithActiveUAS() {
         List<Utility_Account_Subscription__c> uases = [
             SELECT Id, Name, Utility_Account_Log__c, Opportunity__c, Next_Schedule_Z_Status__c,
-                calculated_annual_cost_of_electricity__c, Sizing_Method__c
+                calculated_annual_cost_of_electricity__c,
+                Sizing_Method__c
             FROM Utility_Account_Subscription__c
             WHERE Name = '0000234'
         ];
@@ -1672,7 +1672,8 @@ public with sharing class CSCancellationServiceTest {
 
         Utility_Account_Subscription__c uas = [
             SELECT Id, Name, Utility_Account_Log__c, Opportunity__c, Next_Schedule_Z_Status__c,
-                calculated_annual_cost_of_electricity__c, Sizing_Method__c
+                calculated_annual_cost_of_electricity__c,
+                Sizing_Method__c
             FROM Utility_Account_Subscription__c
             WHERE Opportunity__c = :opportunity.Id
             LIMIT 1
@@ -1680,6 +1681,7 @@ public with sharing class CSCancellationServiceTest {
         Utility_Account_Subscription__c newUAS = uas.clone(false);
         newUAS.Opportunity__c = newOpp.Id;
         insert newUAS;
+
         TestSOCreator.createByCost(newUAS, 4000);
 
         Map<Account, Map<String, String>> accountCancellationTextMap =
@@ -1690,6 +1692,7 @@ public with sharing class CSCancellationServiceTest {
         System.assertEquals(1, accountCancellationTextMap.values().size());
         List<Account> accounts = new List<Account>(accountCancellationTextMap.keySet());
         System.assertEquals(opportunity.AccountId, accounts[0].Id);
+
         System.assertEquals(
             CSCancellationService.DEFAULT_CANCELLATION_PARAGRAPH_TWO,
             accountCancellationTextMap.values()[0].get(CSCancellationService.CANCELLATION_PARAGRAPH_TWO_LABEL)
@@ -1716,7 +1719,8 @@ public with sharing class CSCancellationServiceTest {
 
         Utility_Account_Subscription__c uas = [
             SELECT Id, Name, Utility_Account_Log__c, Opportunity__c, Next_Schedule_Z_Status__c,
-                calculated_annual_cost_of_electricity__c, Sizing_Method__c
+                calculated_annual_cost_of_electricity__c,
+                Sizing_Method__c
             FROM Utility_Account_Subscription__c
             WHERE Opportunity__c = :opportunity.Id
             LIMIT 1

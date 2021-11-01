@@ -187,7 +187,7 @@ public class CustomerCommunicationHandlerTest {
             NMC_Discount__c = 10,
             Annual_kWh_Maximum__c = 100000000,
             NM_Rate_Floor__c = 0,
-            Days_In_Bill_Period__c = 20,
+            Days_in_Bill_Period__c = 20,
             Customer_Subscription_Type__c = 'Electricity Cost ($)',
             Monthly_Late_Fee__c = 1,
             Cancellation_Paragraph_Two__c = 'Your cancellation will take up to 6 months',
@@ -250,7 +250,7 @@ public class CustomerCommunicationHandlerTest {
                 Opportunity__c = opportunityone.Id,
                 Sizing_Method__c = everbillNMC.Id,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
-                Calculated_Annual_Cost_of_Electricity__c = 4000);
+                calculated_annual_cost_of_electricity__c = 4000);
 
         Utility_Account_Subscription__c uasTwo =
             new Utility_Account_Subscription__c(Name = '0000236',
@@ -258,7 +258,7 @@ public class CustomerCommunicationHandlerTest {
                 Opportunity__c = opportunitytwo.Id,
                 Sizing_Method__c = everbillNMC.Id,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
-                Calculated_Annual_Cost_of_Electricity__c = 8000);
+                calculated_annual_cost_of_electricity__c = 8000);
 
         Utility_Account_Subscription__c uasThree =
             new Utility_Account_Subscription__c(Name = '0000238',
@@ -266,7 +266,7 @@ public class CustomerCommunicationHandlerTest {
                 Opportunity__c = opportunitythree.Id,
                 Sizing_Method__c = everbillNMC.Id,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
-                Calculated_Annual_Cost_of_Electricity__c = 300);
+                calculated_annual_cost_of_electricity__c = 300);
 
         insert new List<Utility_Account_Subscription__c>{
             uasOne, uasTwo, uasThree
@@ -304,6 +304,10 @@ public class CustomerCommunicationHandlerTest {
     }
 
     public static void setDaysPastDue(Date overdueDate, Integer numberOfAccounts) {
+        setDaysPastDue(overdueDate, numberOfAccounts, null);
+    }
+
+    public static void setDaysPastDue(Date overdueDate, Integer numberOfAccounts, String suppressCollections) {
         List<Account> accounts = [
             SELECT Id,
                 Max_Overdue_Due_Date_Zuora__c,
@@ -324,6 +328,7 @@ public class CustomerCommunicationHandlerTest {
                 acct.Max_Overdue_Due_Date_Zuora__c = System.today().addDays(15);
                 acct.Total_Outstanding_Balance_Zuora__c = 100;
             }
+            acct.Suppress_Collections__c = suppressCollections;
         }
         update accounts;
     }
@@ -365,6 +370,18 @@ public class CustomerCommunicationHandlerTest {
     }
 
     @IsTest
+    public static void testNinetyDaysLateSuppressingCollections() {
+        setDaysPastDue(System.today().addDays(-90), 3, ZuoraBillingAccountService.SUPPRESS_COLLECTIONS_TEMPORARILY);
+
+        Test.startTest();
+        CustomerCommunicationHandler m = new CustomerCommunicationHandler();
+        Database.executeBatch(m, 10);
+        Test.stopTest();
+
+        System.assertEquals(null, MessagingService.emailsSent, 'Should not have sent emails since collections are suppressed');
+    }
+
+    @IsTest
     public static void testCaseCreation() {
         // Thirty days late should create a case
         setDaysPastDue(System.today().addDays(-30), 3);
@@ -381,6 +398,25 @@ public class CustomerCommunicationHandlerTest {
         ];
 
         System.assertEquals(3, caseList.size());
+    }
+
+    @IsTest
+    public static void testCaseCreationSuppressingCollections() {
+        // Thirty days late should create a case if not suppressing collections
+        setDaysPastDue(System.today().addDays(-30), 3, ZuoraBillingAccountService.SUPPRESS_COLLECTIONS_PERMANENTLY);
+
+        Test.startTest();
+        CustomerCommunicationHandler m = new CustomerCommunicationHandler();
+        Database.executeBatch(m, 10);
+        Test.stopTest();
+
+        List<Case> caseList = [
+            SELECT Id, Subject
+            FROM Case
+            WHERE Subject LIKE '%Collections Call:%'
+        ];
+
+        System.assertEquals(0, caseList.size(), 'Expected no cases when suppressing collections');
     }
 
     @IsTest

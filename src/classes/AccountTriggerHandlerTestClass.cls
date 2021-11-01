@@ -4,14 +4,13 @@ public class AccountTriggerHandlerTestClass {
         Partner__c partner = new Partner__c(Name = 'Bluewave Inside Sales');
         insert partner;
 
-        BSST__c salesRep = new BSST__c(Name = 'BlueWave User', Partner__c = partner.Id, Custom_ID__c = 'test', Email__c = 'SalesRep@Sales.com');
+        BSST__c salesRep = new BSST__c(Name = 'BlueWave User', Partner__c = partner.Id, Email__c = 'SalesRep@Sales.com');
         insert salesRep;
 
         Id propertyRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Property').getRecordTypeId();
         Account accountRecord = new Account(Name='Test', RecordTypeId = propertyRecordTypeId);
         insert accountRecord;
 
-        accountRecord.Custom_ID__c = 'test';
         update accountRecord;
     }	
 

@@ -513,20 +513,6 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Age__c</fullName>
-        <externalId>false</externalId>
-        <formula>(today() - Date_of_Birth__c)/ 365</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Age</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Amount</fullName>
         <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -1174,50 +1160,12 @@ false
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>CS_City__c</fullName>
-        <externalId>false</externalId>
-        <formula>Account.City__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Service City</label>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>CS_Reserved_Capacity__c</fullName>
         <externalId>false</externalId>
         <label>Project Reserved Capacity (kW)</label>
         <length>10</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>CS_State__c</fullName>
-        <externalId>false</externalId>
-        <formula>Account.State__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Service State</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>CS_Street_Address__c</fullName>
-        <externalId>false</externalId>
-        <formula>Account.Street_Address__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Service Street Address</label>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -2230,18 +2178,6 @@ TEXT(DAY(Commencement_Date__c))
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Date_of_Birth__c</fullName>
-        <externalId>false</externalId>
-        <formula>Account.Date_of_Birth__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Date of Birth</label>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
     </fields>
     <fields>
         <fullName>Date_of_Expiration__c</fullName>

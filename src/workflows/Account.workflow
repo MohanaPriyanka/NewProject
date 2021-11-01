@@ -12,15 +12,6 @@
         <template>BFG_Internal_Alerts/Partner_App_Submitted_Alert_Internal</template>
     </alerts>
     <fieldUpdates>
-        <fullName>Account_Partner_Name_Update_Sharing</fullName>
-        <field>Partner_Name_Text__c</field>
-        <formula>Partner_Name__c</formula>
-        <name>Account - Partner Name Update - Sharing</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>Formula</operation>
-        <protected>false</protected>
-    </fieldUpdates>
-    <fieldUpdates>
         <fullName>Account_Record_Type_Residential_Loan</fullName>
         <field>RecordTypeId</field>
         <lookupValue>Residential_Loan</lookupValue>
@@ -39,19 +30,6 @@
         <operation>Formula</operation>
         <protected>false</protected>
     </fieldUpdates>
-    <rules>
-        <fullName>Account - Partner Name Update - Sharing</fullName>
-        <actions>
-            <name>Account_Partner_Name_Update_Sharing</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <active>true</active>
-        <criteriaItems>
-            <field>Account.Partner_Name__c</field>
-            <operation>notEqual</operation>
-        </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
     <rules>
         <fullName>RL - Account Record Type</fullName>
         <actions>

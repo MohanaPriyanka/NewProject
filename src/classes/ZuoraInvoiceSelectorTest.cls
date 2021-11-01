@@ -75,12 +75,7 @@ public with sharing class ZuoraInvoiceSelectorTest {
         List<Zuora__CustomerAccount__c> zAccounts = new List<Zuora__CustomerAccount__c>{newZuoraAccountOne, newZuoraAccountTwo};
         insert zAccounts;
 
-        String queryStringWithAccounts = ZuoraInvoiceSelector.getOutstandingBalanceByAccountQuery(zAccounts);
-        System.assert(queryStringWithAccounts.contains('222222222222222222222'));
-        System.assert(queryStringWithAccounts.contains('333333333333333333333'));
-        System.assert(queryStringWithAccounts.contains('Id ='));
-
-        String queryStringNoAccounts = ZuoraInvoiceSelector.getOutstandingBalanceByAccountQuery(null);
+        String queryStringNoAccounts = ZuoraInvoiceSelector.getOutstandingBalanceByAccountQuery();
         System.assert(!queryStringNoAccounts.contains('222222222222222222222'));
         System.assert(!queryStringNoAccounts.contains('333333333333333333333'));
         System.assert(!queryStringNoAccounts.contains('Id ='));
