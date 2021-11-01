@@ -56,35 +56,25 @@ public with sharing class ZuoraInvoiceSelector {
         ];
     }
 
-    public static String getOutstandingBalanceByAccountQuery(List<Zuora__CustomerAccount__c> billAccounts) {
+    public static String getOutstandingBalanceByAccountQuery() {
         String queryString = 'SELECT Id as AccountId, ' +
             '(SELECT SUM(m.balance) ' +
                 'FROM DebitMemo m ' +
-                'WHERE m.accountid = acct.Id AND m.balance > 0) as MemoBalance, '+
+                'WHERE m.accountid = acct.Id AND m.balance > 0 AND m.Status = \'Posted\') as MemoBalance, '+
             '(SELECT MIN(m.duedate) '+
                 'FROM DebitMemo m ' +
-                'WHERE m.accountid = acct.Id AND m.balance > 1) as MemoDueDate, ' +
+                'WHERE m.accountid = acct.Id AND m.balance > 1 AND m.Status = \'Posted\') as MemoDueDate, ' +
             '(SELECT MAX(iv.invoiceDate) ' +
                 'FROM Invoice iv ' +
-                'WHERE iv.accountid = acct.Id AND iv.amount > 0) as LastBillSendDate, ' +
+                'WHERE iv.accountid = acct.Id AND iv.amount > 0 AND iv.Status = \'Posted\') as LastBillSendDate, ' +
             '(SELECT SUM(iv.balance) ' +
                 'FROM Invoice iv ' +
-                'WHERE iv.accountid = acct.Id AND iv.balance > 0) as InvoiceBalance, ' +
+                'WHERE iv.accountid = acct.Id AND iv.balance > 0 AND iv.Status = \'Posted\') as InvoiceBalance, ' +
             '(SELECT MIN(iv.duedate) '+
                 'FROM Invoice iv ' +
-                'WHERE iv.accountid = acct.Id AND iv.balance > 1) as InvoiceDueDate ' +
+                'WHERE iv.accountid = acct.Id AND iv.balance > 1 AND iv.Status = \'Posted\') as InvoiceDueDate ' +
             'FROM Account acct ';
 
-        if (billAccounts != null){
-            for (Integer i = 0;i < billAccounts.size(); i++){
-                if (i == 0){
-                    queryString += 'WHERE (Id = \'' + billAccounts[i].Zuora__Zuora_Id__c + '\'';
-                } else {
-                    queryString += 'OR Id = \'' + billAccounts[i].Zuora__Zuora_Id__c + '\'';
-                }
-            }
-            queryString += ') ';
-        }
         return queryString;
     }
 

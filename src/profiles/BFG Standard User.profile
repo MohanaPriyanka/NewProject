@@ -3623,6 +3623,14 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ZuoraBillingAccountService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraBillingAccountServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ZuoraBillingBatchService</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3647,6 +3655,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ZuoraDataQueryAsyncService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ZuoraGatewayAssigner</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3660,6 +3672,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ZuoraInvoiceSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraInvoiceSelectorTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -10729,6 +10745,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.Subcontractor__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Suppress_Collections__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
