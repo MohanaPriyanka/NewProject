@@ -381,19 +381,6 @@
         <type>Picklist</type>
     </fields>
     <fields>
-        <fullName>Account_Access_Code__c</fullName>
-        <description>Used for external CS Sharing Rules. Do Not Delete. Do NOT Edit.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Used for external CS Sharing Rules. Do Not Delete. Do NOT Edit.</inlineHelpText>
-        <label>Account Access Code</label>
-        <length>50</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Account_Balance__c</fullName>
         <externalId>false</externalId>
         <formula>Total_Outstanding_Balance_Merge__c - Unapplied_Overpayments__c</formula>
@@ -538,17 +525,6 @@ IMAGE(&quot;/resource/1553274837000/Crown_Icon&quot;, &quot;crown&quot;),
         <length>50</length>
         <required>false</required>
         <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Address_Checks_to_Name__c</fullName>
-        <externalId>false</externalId>
-        <label>Address Checks to Name</label>
-        <length>250</length>
-        <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
@@ -914,29 +890,6 @@ CASE(TEXT(Cancellation_Reason__c),
         <fullName>ChannelProgramName</fullName>
     </fields>
     <fields>
-        <fullName>Check_Text__c</fullName>
-        <externalId>false</externalId>
-        <label>Check Text</label>
-        <length>200</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>City__c</fullName>
-        <externalId>false</externalId>
-        <label>Service City</label>
-        <length>25</length>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>ClickToDial__Click_to_Call_Phone__c</fullName>
         <deprecated>false</deprecated>
         <description>You must dial + then the country code and number you wish to call. Example: +12125551313.
@@ -1055,20 +1008,6 @@ Days_Past_Due__c = 90)</formula>
         <label>Collection Email To Fire Today</label>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Communication_QC__c</fullName>
-        <description>For the Partner QC Scorecard. Bad = 0 / Ok = 1 / Great = 2</description>
-        <externalId>false</externalId>
-        <inlineHelpText>For the Partner QC Scorecard. Bad = 0 / Ok = 1 / Great = 2</inlineHelpText>
-        <label>Communication</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Number</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Company_Bio__c</fullName>
@@ -1266,17 +1205,6 @@ CASE(Days_Past_Due__c,
         <type>Summary</type>
     </fields>
     <fields>
-        <fullName>Custom_ID__c</fullName>
-        <externalId>false</externalId>
-        <label>Partner Custom ID</label>
-        <length>25</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Customer_ID__c</fullName>
         <caseSensitive>false</caseSensitive>
         <externalId>true</externalId>
@@ -1378,15 +1306,6 @@ MAX(TODAY()-Max_Overdue_Due_Date_Merge__c,0),
         <trackHistory>false</trackHistory>
     </fields>
     <fields>
-        <fullName>Directions_to_Write_Paper_Check__c</fullName>
-        <externalId>false</externalId>
-        <label>Directions to Write Paper Check</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>TextArea</type>
-    </fields>
-    <fields>
         <fullName>Electrical_License__c</fullName>
         <defaultValue>0</defaultValue>
         <description>For the Partner QC Scorecard. No= 0 / Yes = 1</description>
@@ -1408,26 +1327,6 @@ MAX(TODAY()-Max_Overdue_Due_Date_Merge__c,0),
         <length>50</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Engagement_Status__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(
- Last_Contact_Date_Formula__c  &gt;= Most_Recent_Engagement_Attempt__c ,&quot;Engaged&quot;,
-IF(
-    AND(
-       NOT(ISBLANK(Most_Recent_Engagement_Attempt__c)=true),
-       ISBLANK(Last_Contact_Date_Formula__c)=true), &quot;Unengaged: Solicited&quot;,
-IF(
-    AND(
-        ISBLANK(Most_Recent_Engagement_Attempt__c)=true,
-        ISBLANK(Last_Contact_Date_Formula__c)=true),&quot;Unengaged: Unsolicited&quot;,&quot;&quot;)))</formula>
-        <inlineHelpText>Used for site acquisition engagement tracking. If the Last Contact date is greater than or equal to the Most Recent Engagement Attempt date, they are engaged.</inlineHelpText>
-        <label>Engagement Status</label>
-        <required>false</required>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -1601,16 +1500,6 @@ IF(
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Last_Bill_Send_Date_17__c</fullName>
-        <externalId>false</externalId>
-        <formula>Last_Bill_Send_Date__c +17</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Last Bill Send Date + 17</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <type>Date</type>
-    </fields>
-    <fields>
         <fullName>Last_Bill_Send_Date_New_Charges_Zuora__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Last Invoice Date where new charges were &gt; 0</inlineHelpText>
@@ -1621,31 +1510,6 @@ IF(
         <type>Date</type>
     </fields>
     <fields>
-        <fullName>Last_Bill_Send_Date_New_Charges__c</fullName>
-        <externalId>false</externalId>
-        <label>Last Bill Send Date (With New Charges)</label>
-        <summarizedField>Account_Bill__c.Date__c</summarizedField>
-        <summaryFilterItems>
-            <field>Account_Bill__c.Due_This_Month__c</field>
-            <operation>greaterThan</operation>
-            <value>0</value>
-        </summaryFilterItems>
-        <summaryForeignKey>Account_Bill__c.Parent_Account__c</summaryForeignKey>
-        <summaryOperation>max</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <type>Summary</type>
-    </fields>
-    <fields>
-        <fullName>Last_Bill_Send_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>Last Bill Send Date</label>
-        <summarizedField>Account_Bill__c.Date__c</summarizedField>
-        <summaryForeignKey>Account_Bill__c.Parent_Account__c</summaryForeignKey>
-        <summaryOperation>max</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <type>Summary</type>
-    </fields>
-    <fields>
         <fullName>Last_Contact_Date_Formula__c</fullName>
         <externalId>false</externalId>
         <formula>LastActivityDate</formula>
@@ -1653,30 +1517,6 @@ IF(
         <inlineHelpText>Date of most recent event from Activity History</inlineHelpText>
         <label>Last Contact Date</label>
         <required>false</required>
-        <trackHistory>false</trackHistory>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Last_Contact_Date_Last_Engagement_Date__c</fullName>
-        <externalId>false</externalId>
-        <formula>LastActivityDate -  Last_Engagement_Activity_Date__c</formula>
-        <inlineHelpText>This is the number of days between the Last Engagement Date and Last Contact Date</inlineHelpText>
-        <label>Last Contact Date - Last Engagement Date</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackHistory>false</trackHistory>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Last_Engagement_Activity_Date__c</fullName>
-        <description>Populates as the most recent Due date for an engagements activity (Engagement, Blast letter, mailer, send to scout)</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Populates as the most recent Due Date for an engagements activity (Engagement, Blast letter, mailer, send to scout)</inlineHelpText>
-        <label>Last Engagement Activity Date</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Date</type>
     </fields>
@@ -1792,21 +1632,6 @@ IF(
         </valueSet>
     </fields>
     <fields>
-        <fullName>Max_Account_Bill_Number__c</fullName>
-        <externalId>false</externalId>
-        <label>Max Account Bill Number</label>
-        <summarizedField>Account_Bill__c.Bill_Number__c</summarizedField>
-        <summaryFilterItems>
-            <field>Account_Bill__c.Published__c</field>
-            <operation>equals</operation>
-            <value>True</value>
-        </summaryFilterItems>
-        <summaryForeignKey>Account_Bill__c.Parent_Account__c</summaryForeignKey>
-        <summaryOperation>max</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <type>Summary</type>
-    </fields>
-    <fields>
         <fullName>Max_Overdue_Due_Date_Merge__c</fullName>
         <externalId>false</externalId>
         <formula>IF($CustomMetadata.Zuora_Setting__mdt.Production.Zuora_Is_Live__c, Max_Overdue_Due_Date_Zuora__c, Max_Overdue_Due_Date__c)</formula>
@@ -1869,30 +1694,6 @@ IF(
             <restricted>true</restricted>
             <valueSetName>Moody_s_Ratings</valueSetName>
         </valueSet>
-    </fields>
-    <fields>
-        <fullName>Most_Recent_Engagement_Attempt__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(
-    AND(
-        ISBLANK(Letter_1__c),
-        ISBLANK(Postcard_1__c),
-        ISBLANK(Postcard_2__c)
-        
-    ),
-    NULL,
-    
-TODAY()-MIN(
-TODAY()- BLANKVALUE(Letter_1__c,DATE(1900,1,1)),
-TODAY()- BLANKVALUE(Postcard_1__c,DATE(1900,1,1)),
-TODAY()- BLANKVALUE(Postcard_2__c,DATE(1900,1,1))
-))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Used by Site Acquisition, most recent engagement attempt via letter or postcard</inlineHelpText>
-        <label>Most Recent Engagement Attempt</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <type>Date</type>
     </fields>
     <fields>
         <fullName>NABCEP_Cert__c</fullName>
@@ -2100,96 +1901,6 @@ IMAGE(&quot;/servlet/servlet.FileDownload?file=&quot; &amp; Partner__r.Logo__c, 
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Partner_Name_Text__c</fullName>
-        <externalId>false</externalId>
-        <label>Partner Name (Text)</label>
-        <length>50</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Partner_Name__c</fullName>
-        <externalId>false</externalId>
-        <formula>Partner__r.Name</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Partner Name</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Partner_Tier_Numeric__c</fullName>
-        <description>This fields transforms the Partner Tier picklist numbers into numeric values so that it can more easily be used. Incorporates Tiers 1-5.</description>
-        <externalId>false</externalId>
-        <formula>CASE(TEXT( Partner_Tier__c ),
-&quot;1&quot;,1,
-&quot;2&quot;,2,
-&quot;3&quot;,3,
-&quot;4&quot;,4,
-&quot;5&quot;,5,
-0)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>This fields transforms the Partner Tier picklist numbers into numeric values so that it can more easily be used. Incorporates Tiers 1-5.</inlineHelpText>
-        <label>Partner Tier (Numeric)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackHistory>false</trackHistory>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Partner_Tier__c</fullName>
-        <description>Categorizes Partners (1-4)</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Categorizes Partners (1-4)</inlineHelpText>
-        <label>Partner Tier</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>1</fullName>
-                    <default>false</default>
-                    <label>1</label>
-                </value>
-                <value>
-                    <fullName>2</fullName>
-                    <default>false</default>
-                    <label>2</label>
-                </value>
-                <value>
-                    <fullName>3</fullName>
-                    <default>false</default>
-                    <label>3</label>
-                </value>
-                <value>
-                    <fullName>4</fullName>
-                    <default>false</default>
-                    <label>4</label>
-                </value>
-                <value>
-                    <fullName>5</fullName>
-                    <default>false</default>
-                    <label>5</label>
-                </value>
-                <value>
-                    <fullName>DS</fullName>
-                    <default>false</default>
-                    <label>DS</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
         <fullName>Partner__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -2201,17 +1912,6 @@ IMAGE(&quot;/servlet/servlet.FileDownload?file=&quot; &amp; Partner__r.Logo__c, 
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>Partner_from_Parent_Account__c</fullName>
-        <externalId>false</externalId>
-        <formula>Parent_Account__r.Partner_Name__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Partner from CS Parent Account</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Past_Due_Status__c</fullName>
@@ -2249,40 +1949,6 @@ IF(Days_Past_Due__c &lt;= 90, &quot;61-90 Days Late&quot;,
         <fullName>Phone</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-    </fields>
-    <fields>
-        <fullName>Portal_Proficiency__c</fullName>
-        <description>For the Partner QC Scorecard. Bad = 0 / Ok = 1 / Great = 2</description>
-        <externalId>false</externalId>
-        <inlineHelpText>For the Partner QC Scorecard. Bad = 0 / Ok = 1 / Great = 2</inlineHelpText>
-        <label>Portal Proficiency</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Postcard_1__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Date first postcard sent</inlineHelpText>
-        <label>Postcard 1</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Postcard_2__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Date second postcard sent</inlineHelpText>
-        <label>Postcard 2</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Date</type>
     </fields>
     <fields>
         <fullName>Power_of_One__c</fullName>
@@ -2330,42 +1996,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Proposal_QC__c</fullName>
-        <description>For Partner QC Scorecard. Bad = 0 / Ok = 1 / Great = 2</description>
-        <externalId>false</externalId>
-        <inlineHelpText>For Partner QC Scorecard. Bad = 0 / Ok = 1 / Great = 2</inlineHelpText>
-        <label>Proposal</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>QC_Total__c</fullName>
-        <description>For Partner QC Scorecard</description>
-        <externalId>false</externalId>
-        <formula>Portal_Proficiency__c + Communication_QC__c + Proposal_QC__c + Relationship_QC__c + 	+Conversion_Rate__c
-+Electrical_License__c
-+FICO__c
-+GC_CS_License__c
-+Install_Issues__c
-+NABCEP_Cert__c
-+Paperwork__c
-+TPF_Paid__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>For Partner QC Scorecard</inlineHelpText>
-        <label>QC Total</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Rating</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -2382,19 +2012,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>Relationship_QC__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>For the Partner QC Scorecard. Bad = 0 / Ok = 1 / Great = 2</inlineHelpText>
-        <label>Relationship</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Roll_Up_Balance_Net_Late_Payments__c</fullName>
         <externalId>false</externalId>
         <label>Roll-Up: Balance Net Late Payments</label>
@@ -2403,19 +2020,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <summaryOperation>sum</summaryOperation>
         <trackHistory>false</trackHistory>
         <type>Summary</type>
-    </fields>
-    <fields>
-        <fullName>Sales_Representative__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Sales Representative</label>
-        <referenceTo>BSST__c</referenceTo>
-        <relationshipLabel>Accounts</relationshipLabel>
-        <relationshipName>Accounts</relationshipName>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Savings_Adjustments__c</fullName>
@@ -2482,19 +2086,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Send_Checks_Address__c</fullName>
-        <description>If the customer is subscribed across projects owned by 2 different companies, default send check option is to BlueWave headquarters.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>if the customer is subscribed across projects owned by 2 different companies, default send check option is to BlueWave headquarters.</inlineHelpText>
-        <label>Send Checks Address</label>
-        <length>250</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>ShippingAddress</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -2513,17 +2104,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <fullName>Site</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-    </fields>
-    <fields>
-        <fullName>Social_Security_Number__c</fullName>
-        <externalId>false</externalId>
-        <label>Social Security Number</label>
-        <length>15</length>
-        <maskChar>asterisk</maskChar>
-        <maskType>ssn</maskType>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <type>EncryptedText</type>
     </fields>
     <fields>
         <fullName>State_Market__c</fullName>
@@ -2793,17 +2373,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <visibleLines>6</visibleLines>
     </fields>
     <fields>
-        <fullName>State__c</fullName>
-        <externalId>false</externalId>
-        <label>Service State</label>
-        <length>25</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Status__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Account is Closed if all Opportunities are Cancelled, Duplicate, Expired or Dead</inlineHelpText>
@@ -2828,18 +2397,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
                 </value>
             </valueSetDefinition>
         </valueSet>
-    </fields>
-    <fields>
-        <fullName>Street_Address__c</fullName>
-        <externalId>false</externalId>
-        <label>Service Street Address</label>
-        <length>40</length>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Subcontractor__c</fullName>
@@ -2885,77 +2442,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <fullName>TickerSymbol</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-    </fields>
-    <fields>
-        <fullName>Tier__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>0 - lowest priority, 10 - highest priority</inlineHelpText>
-        <label>Tier</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>0</fullName>
-                    <default>false</default>
-                    <label>0</label>
-                </value>
-                <value>
-                    <fullName>1</fullName>
-                    <default>false</default>
-                    <label>1</label>
-                </value>
-                <value>
-                    <fullName>2</fullName>
-                    <default>false</default>
-                    <label>2</label>
-                </value>
-                <value>
-                    <fullName>3</fullName>
-                    <default>false</default>
-                    <label>3</label>
-                </value>
-                <value>
-                    <fullName>4</fullName>
-                    <default>false</default>
-                    <label>4</label>
-                </value>
-                <value>
-                    <fullName>5</fullName>
-                    <default>false</default>
-                    <label>5</label>
-                </value>
-                <value>
-                    <fullName>6</fullName>
-                    <default>false</default>
-                    <label>6</label>
-                </value>
-                <value>
-                    <fullName>7</fullName>
-                    <default>false</default>
-                    <label>7</label>
-                </value>
-                <value>
-                    <fullName>8</fullName>
-                    <default>false</default>
-                    <label>8</label>
-                </value>
-                <value>
-                    <fullName>9</fullName>
-                    <default>false</default>
-                    <label>9</label>
-                </value>
-                <value>
-                    <fullName>10</fullName>
-                    <default>false</default>
-                    <label>10</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
     </fields>
     <fields>
         <fullName>Time_since_last_Event__c</fullName>
@@ -3345,7 +2831,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <columns>ACCOUNT.RECORDTYPE</columns>
         <columns>CORE.USERS.ALIAS</columns>
         <columns>Total_Payments__c</columns>
-        <columns>Partner_Tier__c</columns>
         <filterScope>Mine</filterScope>
         <filters>
             <field>State__c</field>
@@ -3383,12 +2868,9 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <booleanFilter>1</booleanFilter>
         <columns>ACCOUNT.NAME</columns>
         <columns>State_Market__c</columns>
-        <columns>Partner_Tier__c</columns>
-        <columns>State__c</columns>
         <columns>ACCOUNT.SITE</columns>
         <columns>ACCOUNT.PHONE1</columns>
         <columns>CORE.USERS.ALIAS</columns>
-        <columns>Tier__c</columns>
         <columns>Partner__c</columns>
         <columns>ACCOUNT.IS_PARNTER</columns>
         <filterScope>Everything</filterScope>
@@ -3447,13 +2929,8 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <fullName>MyAccounts</fullName>
         <columns>ACCOUNT.NAME</columns>
         <columns>State_Market__c</columns>
-        <columns>Partner_Tier__c</columns>
-        <columns>Tier__c</columns>
-        <columns>Partner_Name__c</columns>
         <columns>ACCOUNT.IS_PARNTER</columns>
         <columns>Partner__c</columns>
-        <columns>Partner_Name_Text__c</columns>
-        <columns>Custom_ID__c</columns>
         <columns>ACCOUNT.LAST_ACTIVITY</columns>
         <columns>ACCOUNT.PHONE1</columns>
         <columns>ACCOUNT.ADDRESS2_STREET</columns>
@@ -3470,13 +2947,7 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
     </listViews>
     <listViews>
         <fullName>Partner_QC_View</fullName>
-        <columns>QC_Total__c</columns>
-        <columns>Partner_Tier__c</columns>
         <columns>ACCOUNT.NAME</columns>
-        <columns>Relationship_QC__c</columns>
-        <columns>Communication_QC__c</columns>
-        <columns>Portal_Proficiency__c</columns>
-        <columns>Proposal_QC__c</columns>
         <columns>GC_CS_License__c</columns>
         <columns>Electrical_License__c</columns>
         <columns>NABCEP_Cert__c</columns>
@@ -3881,33 +3352,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Partner_Tier__c</picklist>
-            <values>
-                <fullName>1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>3</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>4</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>5</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>DS</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Rating</picklist>
             <values>
                 <fullName>Cold</fullName>
@@ -4102,53 +3546,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>Open</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Tier__c</picklist>
-            <values>
-                <fullName>0</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>10</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>3</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>4</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>5</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>6</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>7</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>8</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>9</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
     </recordTypes>
@@ -4427,33 +3824,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Partner_Tier__c</picklist>
-            <values>
-                <fullName>1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>3</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>4</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>5</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>DS</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Rating</picklist>
             <values>
                 <fullName>Cold</fullName>
@@ -4644,53 +4014,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>Open</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Tier__c</picklist>
-            <values>
-                <fullName>0</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>10</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>3</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>4</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>5</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>6</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>7</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>8</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>9</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -4988,33 +4311,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Partner_Tier__c</picklist>
-            <values>
-                <fullName>1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>3</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>4</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>5</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>DS</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Rating</picklist>
             <values>
                 <fullName>Cold</fullName>
@@ -5205,53 +4501,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>Open</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Tier__c</picklist>
-            <values>
-                <fullName>0</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>10</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>3</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>4</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>5</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>6</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>7</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>8</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>9</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -5548,33 +4797,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Partner_Tier__c</picklist>
-            <values>
-                <fullName>1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>3</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>4</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>5</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>DS</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Rating</picklist>
             <values>
                 <fullName>Cold</fullName>
@@ -5765,53 +4987,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>Open</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Tier__c</picklist>
-            <values>
-                <fullName>0</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>10</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>3</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>4</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>5</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>6</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>7</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>8</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>9</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -6112,33 +5287,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Partner_Tier__c</picklist>
-            <values>
-                <fullName>1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>3</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>4</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>5</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>DS</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Rating</picklist>
             <values>
                 <fullName>Cold</fullName>
@@ -6329,53 +5477,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>Open</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Tier__c</picklist>
-            <values>
-                <fullName>0</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>10</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>3</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>4</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>5</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>6</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>7</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>8</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>9</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -6748,33 +5849,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Partner_Tier__c</picklist>
-            <values>
-                <fullName>1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>3</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>4</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>5</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>DS</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Rating</picklist>
             <values>
                 <fullName>Cold</fullName>
@@ -7011,53 +6085,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
             <values>
                 <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Tier__c</picklist>
-            <values>
-                <fullName>0</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>10</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>3</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>4</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>5</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>6</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>7</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>8</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>9</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -7370,33 +6397,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Partner_Tier__c</picklist>
-            <values>
-                <fullName>1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>3</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>4</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>5</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>DS</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Rating</picklist>
             <values>
                 <fullName>Cold</fullName>
@@ -7587,53 +6587,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>Open</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Tier__c</picklist>
-            <values>
-                <fullName>0</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>10</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>3</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>4</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>5</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>6</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>7</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>8</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>9</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -7935,33 +6888,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Partner_Tier__c</picklist>
-            <values>
-                <fullName>1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>3</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>4</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>5</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>DS</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Rating</picklist>
             <values>
                 <fullName>Cold</fullName>
@@ -8152,53 +7078,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>Open</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Tier__c</picklist>
-            <values>
-                <fullName>0</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>10</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>3</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>4</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>5</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>6</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>7</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>8</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>9</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -8747,33 +7626,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Partner_Tier__c</picklist>
-            <values>
-                <fullName>1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>3</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>4</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>5</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>DS</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Rating</picklist>
             <values>
                 <fullName>Cold</fullName>
@@ -8964,53 +7816,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>Open</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Tier__c</picklist>
-            <values>
-                <fullName>0</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>10</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>3</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>4</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>5</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>6</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>7</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>8</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>9</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -9370,33 +8175,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Partner_Tier__c</picklist>
-            <values>
-                <fullName>1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>3</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>4</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>5</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>DS</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Rating</picklist>
             <values>
                 <fullName>Cold</fullName>
@@ -9633,53 +8411,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
             <values>
                 <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Tier__c</picklist>
-            <values>
-                <fullName>0</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>10</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>3</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>4</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>5</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>6</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>7</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>8</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>9</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -10043,33 +8774,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Partner_Tier__c</picklist>
-            <values>
-                <fullName>1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>3</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>4</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>5</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>DS</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Rating</picklist>
             <values>
                 <fullName>Cold</fullName>
@@ -10260,53 +8964,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>Open</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Tier__c</picklist>
-            <values>
-                <fullName>0</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>10</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>3</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>4</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>5</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>6</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>7</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>8</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>9</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -10608,33 +9265,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Partner_Tier__c</picklist>
-            <values>
-                <fullName>1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>3</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>4</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>5</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>DS</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Rating</picklist>
             <values>
                 <fullName>Cold</fullName>
@@ -10825,53 +9455,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>Open</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Tier__c</picklist>
-            <values>
-                <fullName>0</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>10</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>3</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>4</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>5</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>6</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>7</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>8</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>9</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -11356,7 +9939,7 @@ try {
         <protected>false</protected>
         <showsLocation>false</showsLocation>
         <showsStatus>false</showsStatus>
-        <url>/flow/Partner_Product_Junction_Management?varPartner_ID={!Account.PartnerId__c}&amp;varPartnerName={!Account.Partner_Name__c}&amp;retURL=home/home.jsp</url>
+        <url>/flow/Partner_Product_Junction_Management?varPartner_ID={!Account.PartnerId__c}&amp;retURL=home/home.jsp</url>
         <width>900</width>
     </webLinks>
     <webLinks>

@@ -170,14 +170,6 @@
                 <behavior>Edit</behavior>
                 <field>Client_Brand_Key__c</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Directions_to_Write_Paper_Check__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Send_Checks_Address__c</field>
-            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

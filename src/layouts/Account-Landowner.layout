@@ -61,10 +61,6 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Tier__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>AnnualRevenue</field>
             </layoutItems>
         </layoutColumns>
@@ -99,27 +95,11 @@
                 <behavior>Edit</behavior>
                 <field>Letter_1__c</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Postcard_1__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Postcard_2__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Most_Recent_Engagement_Attempt__c</field>
-            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Last_Contact_Date_Formula__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Engagement_Status__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>

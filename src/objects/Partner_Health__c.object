@@ -251,52 +251,6 @@ Partner_Account__r.FICO__c</formula>
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Overall_Health_Score__c</fullName>
-        <externalId>false</externalId>
-        <formula>if (Approval_Rate__c &gt; 0.70, 2, 
-if (Approval_Rate__c &gt;= 0.50, 1, 0)) +
-
-if (Conversion_Rate__c &gt; 0.85, 3, 
-if (Conversion_Rate__c &gt;= 0.75, 2, 
-if (Conversion_Rate__c &gt;= 0.65, 1, 0))) +
-
-if (Total_Leads__c != 0,
-    if (Unfinished_Leads_Ready_for_Credit_Check__c / Total_Leads__c &lt; 0.05, 2,
-    if (Unfinished_Leads_Ready_for_Credit_Check__c / Total_Leads__c &lt; 0.1, 1, 0)),
-    0) +
-
-if (Decline_Rate__c &lt; 0.10, 2, 
-if (Decline_Rate__c &lt;= 0.20, 1, 0)) +
-
-if (Average_DTI__c &lt; 0.30, 2, 
-if (Average_DTI__c &lt;= 0.50, 1, 0)) +
-
-if (Average_Max_FICO__c &gt; 750, 2, 
-if (Average_Max_FICO__c &gt;= 700, 1, 0)) +
-
-if (AND(Average_Construction_Period__c &gt; 0, Average_Construction_Period__c &lt; 60), 3, 0) +
-
-if (Perc_Installation_over_100_Days__c &gt; 0.50, -2, 
-if (Perc_Installation_over_100_Days__c &gt;= 0.30, -1, 0)) +
-
-if (Perc_of_Delinquent_Loans__c &gt; 0.30, -2, 
-if (Perc_of_Delinquent_Loans__c &gt;= 0.11, -1, 0)) +
-
-Objective_QC__c +
-
-Subjective_QC__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Based on Approval rate, Conversion Rate, Unfinished Rate, Decline Rate, Average DTI, Average FICO, Average Construction Period, Installs over 100 days, and Delinquent Loans.</inlineHelpText>
-        <label>Overall Health Score</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Partner_Account__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -361,24 +315,6 @@ Subjective_QC__c</formula>
         <externalId>false</externalId>
         <inlineHelpText>Number of Leads with Status of Qualified</inlineHelpText>
         <label>Qualified Leads</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Subjective_QC__c</fullName>
-        <externalId>false</externalId>
-        <formula>Partner_Account__r.Communication_QC__c +
-Partner_Account__r.Portal_Proficiency__c +
-Partner_Account__r.Proposal_QC__c +
-Partner_Account__r.Relationship_QC__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Subjective measures from the Partner&apos;s Account (Communication, Portal Proficiency, Proposal, Relationship)</inlineHelpText>
-        <label>Subjective QC</label>
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
@@ -459,7 +395,7 @@ Partner_Account__r.Relationship_QC__c</formula>
         <type>Text</type>
     </nameField>
     <pluralLabel>Partner Health</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>
