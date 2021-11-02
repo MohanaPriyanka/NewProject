@@ -314,6 +314,7 @@
     </labels>
     <labels>
         <fullName>SSF_FAQ1_Answer</fullName>
+        <categories>branding, ssf</categories>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF FAQ1 - Answer</shortDescription>
@@ -321,6 +322,7 @@
     </labels>
     <labels>
         <fullName>SSF_FAQ1_Question</fullName>
+        <categories>branding, ssf</categories>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF FAQ1 - Question</shortDescription>
@@ -328,6 +330,7 @@
     </labels>
     <labels>
         <fullName>SSF_FAQ2_Answer</fullName>
+        <categories>branding, ssf</categories>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF FAQ2 - Answer</shortDescription>
@@ -335,6 +338,7 @@
     </labels>
     <labels>
         <fullName>SSF_FAQ2_Question</fullName>
+        <categories>branding, ssf</categories>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF FAQ2 - Question</shortDescription>
@@ -342,6 +346,7 @@
     </labels>
     <labels>
         <fullName>SSF_FAQ3_Answer</fullName>
+        <categories>branding, ssf</categories>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF FAQ3 - Answer</shortDescription>
@@ -349,6 +354,7 @@
     </labels>
     <labels>
         <fullName>SSF_FAQ3_Question</fullName>
+        <categories>branding, ssf</categories>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF FAQ3 - Question</shortDescription>
@@ -356,6 +362,7 @@
     </labels>
     <labels>
         <fullName>SSF_FAQ4_Answer</fullName>
+        <categories>branding, ssf</categories>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF FAQ4 - Answer</shortDescription>
@@ -363,6 +370,7 @@
     </labels>
     <labels>
         <fullName>SSF_FAQ4_Question</fullName>
+        <categories>branding, ssf</categories>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF FAQ4 - Question</shortDescription>
@@ -370,6 +378,7 @@
     </labels>
     <labels>
         <fullName>SSF_FAQ5_Answer</fullName>
+        <categories>branding, ssf</categories>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF FAQ5 - Answer</shortDescription>
@@ -377,6 +386,7 @@
     </labels>
     <labels>
         <fullName>SSF_FAQ5_Question</fullName>
+        <categories>branding, ssf</categories>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF FAQ5 - Question</shortDescription>
@@ -384,6 +394,7 @@
     </labels>
     <labels>
         <fullName>SSF_FAQ6_Answer</fullName>
+        <categories>branding, ssf</categories>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF FAQ6 - Answer</shortDescription>
@@ -391,6 +402,7 @@
     </labels>
     <labels>
         <fullName>SSF_FAQ6_Question</fullName>
+        <categories>branding, ssf</categories>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF FAQ6 - Question</shortDescription>
@@ -470,6 +482,7 @@
     </labels>
     <labels>
         <fullName>SSF_WaitingRoom1_Text</fullName>
+        <categories>branding, ssf</categories>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF_WaitingRoom1_Text</shortDescription>
@@ -477,6 +490,7 @@
     </labels>
     <labels>
         <fullName>SSF_WaitingRoom1_Url</fullName>
+        <categories>branding, ssf</categories>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF_WaitingRoom1_Url</shortDescription>
@@ -484,6 +498,7 @@
     </labels>
     <labels>
         <fullName>SSF_WaitingRoom2_Text</fullName>
+        <categories>branding, ssf</categories>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF_WaitingRoom2_Text</shortDescription>
@@ -491,6 +506,7 @@
     </labels>
     <labels>
         <fullName>SSF_WaitingRoom2_Url</fullName>
+        <categories>branding, ssf</categories>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF_WaitingRoom2_Url</shortDescription>
@@ -498,6 +514,7 @@
     </labels>
     <labels>
         <fullName>SSF_WaitingRoom3_Text</fullName>
+        <categories>branding, ssf</categories>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF_WaitingRoom3_Text</shortDescription>
@@ -505,6 +522,7 @@
     </labels>
     <labels>
         <fullName>SSF_WaitingRoom3_Url</fullName>
+        <categories>branding, ssf</categories>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF_WaitingRoom3_Url</shortDescription>
