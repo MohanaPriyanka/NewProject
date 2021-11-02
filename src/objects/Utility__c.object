@@ -294,6 +294,16 @@
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Use_Premise_Number_In_Transfer_QC__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>From W-022040, modifies the Transfer Sheet QC process to match accounts by Premise Number instead of Utility Account Number</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Check this if the Transfer Sheet QC screen should match entries in the Transfer Sheet by the Premise (PoD Id) number instead of the Utility Account Number</inlineHelpText>
+        <label>Use Premise Number In Transfer QC</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Utility_DUNS_Number__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Used in the EDI integration as unique identifier for utilities</inlineHelpText>

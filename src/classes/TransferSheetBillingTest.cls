@@ -3,96 +3,63 @@
 @IsTest
 public class TransferSheetBillingTest {
 
-    // Like a test setup method, but don't actually insert records
-    private static Transfer__c getTestTransfer() {
-        Date todaysDate = Date.today();
-        Date oneMonthAgo = todaysDate.addMonths(-1);
-
-        Shared_Solar_System__c sssOne = new Shared_Solar_System__c(
-            Id = 'a1J19000001MFvAEAW',
-            Name = 'Project A Oak Road'
-        );
-        Schedule_Z__c allocationSchedule = new Schedule_Z__c(
-            Id = 'a3z190000009UUvAAM',
-            Shared_Solar_System__r = sssOne
-        );
-        Bill_Period__c billPeriod = new Bill_Period__c(
-            Id = 'a8x19000000DXkGAAW',
-            Bill_Date__c = todaysDate
-        );
-        Transfer__c transfer = new Transfer__c(
-            Allocation_Schedule__c = 'a3z190000009UUvAAM',
-            Allocation_Schedule__r = allocationSchedule,
-            Shared_Solar_System__c = 'a1J19000001MFvAEAW',
-            Date_of_Transfer__c = oneMonthAgo,
-            Bill_Period__r = billPeriod,
-            Bill_Period__c = 'a8x19000000DXkGAAW',
-            Transfer_Type__c = 'Main',
-            Attempted_kWh_Transfer__c = 73072.00,
-            Attempted_Transfer__c =  12033.73,
-            Transfer_Amount__c =  12033.73,
-            Default_Credit_Value__c = 0.1848
-        );
-        return transfer;
-    }
-
     @IsTest
     public static void testGetScheduleZSubscriptionMock() {
         useMocks();
-        Transfer__c transfer = getTestTransfer();
+        Transfer__c transfer = getMockTestTransfer(false);
         BillGenerationService billGenService = new BillGenerationService(transfer, BillGenerationService.BillType.BOTH);
 
         // (Mocked) 6 Allocation Schedule Subscriptions to Generate Bills For:
         List<Schedule_Z_Subscription__c> szsList = billGenService.getScheduleZSubscriptionList();
-        System.assertEquals(6,szsList.size());
+        System.assertEquals(6, szsList.size());
 
         // Should match Percent_Share__c on SZS in Mock:
-        System.assertEquals(1.7982,szsList[0].Percent_Share__c);
-        System.assertEquals(0.8300,szsList[1].Percent_Share__c);
-        System.assertEquals(1.1758,szsList[2].Percent_Share__c);
-        System.assertEquals(1.1758,szsList[3].Percent_Share__c);
-        System.assertEquals(0.4841,szsList[4].Percent_Share__c);
+        System.assertEquals(1.7982, szsList[0].Percent_Share__c);
+        System.assertEquals(0.8300, szsList[1].Percent_Share__c);
+        System.assertEquals(1.1758, szsList[2].Percent_Share__c);
+        System.assertEquals(1.1758, szsList[3].Percent_Share__c);
+        System.assertEquals(0.4841, szsList[4].Percent_Share__c);
     }
 
     @IsTest
     public static void testUASBsWithDifferentProducts() {
         useMocks();
-        Transfer__c transfer = getTestTransfer();
+        Transfer__c transfer = getMockTestTransfer(false);
         BillGenerationService billGenService = new BillGenerationService(transfer, BillGenerationService.BillType.BOTH);
         List<UASB__c> uasbs = billGenService.calculateUASBsFromTransfer();
 
-        System.assertEquals(6,uasbs.size());
+        System.assertEquals(6, uasbs.size());
 
         // Discounts are set by Product linked to a SZS:
-        System.assertEquals(12,uasbs[0].NMC_Discount__c);
-        System.assertEquals(25,uasbs[4].NMC_Discount__c);
+        System.assertEquals(12, uasbs[0].NMC_Discount__c);
+        System.assertEquals(25, uasbs[4].NMC_Discount__c);
 
         // Even though 2 SZS have the same size, because they are either using the NMC or kWH
         // billing method, they have different credits allocated:
         System.assert(uasbs[2].Size_off_NMCs__c);
-        System.assertEquals(1.1758,uasbs[2].Share_of_System__c);
-        System.assertEquals(859,uasbs[2].Subscription_Production_kWh_Static__c);
-        System.assertEquals(141.49,uasbs[2].Credits_Allocated__c);
+        System.assertEquals(1.1758, uasbs[2].Share_of_System__c);
+        System.assertEquals(859, uasbs[2].Subscription_Production_kWh_Static__c);
+        System.assertEquals(141.49, uasbs[2].Credits_Allocated__c);
 
         System.assert(!uasbs[3].Size_off_NMCs__c);
-        System.assertEquals(1.1758,uasbs[3].Share_of_System__c);
-        System.assertEquals(859.18,uasbs[3].Subscription_Production_kWh_Static__c);
-        System.assertEquals(158.77,uasbs[3].Credits_Allocated__c);
+        System.assertEquals(1.1758, uasbs[3].Share_of_System__c);
+        System.assertEquals(859.18, uasbs[3].Subscription_Production_kWh_Static__c);
+        System.assertEquals(158.77, uasbs[3].Credits_Allocated__c);
     }
 
     @IsTest
     private static void testUASBsWithDifferentUtilityRounding() {
         useMocks();
-        Transfer__c transfer = getTestTransfer();
+        Transfer__c transfer = getMockTestTransfer(false);
         List<UASB__c> beforeUASBs;
 
         BillGenerationService.testQuiddityOverride = System.Quiddity.AURA;
         BillGenerationService service = new BillGenerationService(transfer, BillGenerationService.BillType.ONTIME);
         List<Schedule_Z_Subscription__c> szsList = service.getScheduleZSubscriptionList();
-        System.assert(!szsList.isEmpty(),'SZS list should contain records');
+        System.assert(!szsList.isEmpty(), 'SZS list should contain records');
 
         beforeUASBs = service.calculateUASBesFromSZSes(null);
-        System.assertEquals(5,beforeUASBs.size());
+        System.assertEquals(5, beforeUASBs.size());
         System.assertEquals(859, beforeUASBs[2].Subscription_Production_kWh_Static__c, 'Rounding to 0 decimals for Utility');
         System.assertEquals(859.18, beforeUASBs[3].Subscription_Production_kWh_Static__c, 'Rounding to 2 decimal places for Utility');
     }
@@ -100,11 +67,11 @@ public class TransferSheetBillingTest {
     @IsTest
     public static void testProductEscalators() {
         useMocks();
-        Transfer__c transfer = getTestTransfer();
+        Transfer__c transfer = getMockTestTransfer(false);
         BillGenerationService.testQuiddityOverride = System.Quiddity.AURA;
         BillGenerationService billGenService = new BillGenerationService(transfer, BillGenerationService.BillType.BOTH);
         List<Schedule_Z_Subscription__c> szsList = billGenService.getScheduleZSubscriptionList();
-        Map<Id,List<Product_Escalator__c>> productEscalatorMap = billGenService.productEscalatorMap;
+        Map<Id, List<Product_Escalator__c>> productEscalatorMap = billGenService.productEscalatorMap;
         System.assert(productEscalatorMap.size() >= 1);
 
         String mapKeyScheduleId = szsList[1].Utility_Account_Subscription__r.Opportunity__r.Product_Escalation_Schedule__c;
@@ -118,44 +85,44 @@ public class TransferSheetBillingTest {
         Product_Escalator__c escThree = uasb.getActiveEscalator(productEscalatorMap, 4, mapKeyScheduleId);
         Test.stopTest();
 
-        System.assertEquals(0.13,escOne.New_Solar_Electricity_Rate__c);
-        System.assertEquals(0.18,escTwo.New_Solar_Electricity_Rate__c);
-        System.assertEquals(0.18,escThree.New_Solar_Electricity_Rate__c);
+        System.assertEquals(0.13, escOne.New_Solar_Electricity_Rate__c);
+        System.assertEquals(0.18, escTwo.New_Solar_Electricity_Rate__c);
+        System.assertEquals(0.18, escThree.New_Solar_Electricity_Rate__c);
 
         // Mock sets count of transfer = 2, so should use 0.18 rate
-        System.assertEquals(2,szsList[1].Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Number_of_Billed_Production_Periods__c);
+        System.assertEquals(2, szsList[1].Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Number_of_Billed_Production_Periods__c);
         List<UASB__c> uasbs = billGenService.calculateUASBsFromTransfer();
-        System.assertEquals(0.18,uasbs[1].Solar_Electricity_Rate__c);
+        System.assertEquals(0.18, uasbs[1].Solar_Electricity_Rate__c);
     }
 
     @IsTest
-    public static void testDifferentTransferAmount(){
+    public static void testDifferentTransferAmount() {
         useMocks();
-        Transfer__c transfer = getTestTransfer();
-        transfer.Attempted_Transfer__c =  120000.25;
+        Transfer__c transfer = getMockTestTransfer(false);
+        transfer.Attempted_Transfer__c = 120000.25;
         transfer.Attempted_kWh_Transfer__c = 50000.00;
 
         BillGenerationService.testQuiddityOverride = System.Quiddity.AURA;
         BillGenerationService billGenService = new BillGenerationService(transfer, BillGenerationService.BillType.BOTH);
         List<UASB__c> firstBillGroup = billGenService.calculateUASBsFromTransfer();
 
-        System.assertEquals(242.05,firstBillGroup[4].Subscription_Production_kWh_Static__c);
-        System.assertEquals(580.92,firstBillGroup[4].Credits_Allocated__c);
+        System.assertEquals(242.05, firstBillGroup[4].Subscription_Production_kWh_Static__c);
+        System.assertEquals(580.92, firstBillGroup[4].Credits_Allocated__c);
 
         // Credit value is doubled, kWH is the same:
-        transfer.Attempted_Transfer__c =  240000.50;
+        transfer.Attempted_Transfer__c = 240000.50;
         transfer.Attempted_kWh_Transfer__c = 50000.00;
 
         List<UASB__c> secondBillGroup = billGenService.calculateUASBsFromTransfer();
 
-        System.assertEquals(242.05,secondBillGroup[4].Subscription_Production_kWh_Static__c);
-        System.assertEquals(1161.84,secondBillGroup[4].Credits_Allocated__c);
+        System.assertEquals(242.05, secondBillGroup[4].Subscription_Production_kWh_Static__c);
+        System.assertEquals(1161.84, secondBillGroup[4].Credits_Allocated__c);
     }
 
     @IsTest
-    public static void testCancelledCustomer(){
+    public static void testCancelledCustomer() {
         useMocks();
-        Transfer__c transfer = getTestTransfer();
+        Transfer__c transfer = getMockTestTransfer(false);
         BillGenerationService.testQuiddityOverride = System.Quiddity.AURA;
 
         BillGenerationService billGenService1 = new BillGenerationService(transfer, BillGenerationService.BillType.ONTIME);
@@ -164,24 +131,24 @@ public class TransferSheetBillingTest {
         BillGenerationService billGenService2 = new BillGenerationService(transfer, BillGenerationService.BillType.OVERDUE);
         List<UASB__c> overdueUASB = billGenService2.calculateUASBsFromTransfer();
 
-        System.assertEquals(5,onTimeUASB.size());
-        System.assertEquals(1,overdueUASB.size());
+        System.assertEquals(5, onTimeUASB.size());
+        System.assertEquals(1, overdueUASB.size());
 
         // Normal Bills:
-        System.assertEquals(859,onTimeUASB[2].Subscription_Production_kWh_Static__c);
-        System.assertEquals(141.49,onTimeUASB[2].Credits_Allocated__c);
-        System.assertEquals(859.18,onTimeUASB[3].Subscription_Production_kWh_Static__c);
-        System.assertEquals(158.77,onTimeUASB[3].Credits_Allocated__c);
+        System.assertEquals(859, onTimeUASB[2].Subscription_Production_kWh_Static__c);
+        System.assertEquals(141.49, onTimeUASB[2].Credits_Allocated__c);
+        System.assertEquals(859.18, onTimeUASB[3].Subscription_Production_kWh_Static__c);
+        System.assertEquals(158.77, onTimeUASB[3].Credits_Allocated__c);
 
         // Cancelled:
-        System.assertEquals(0,overdueUASB[0].Subscription_Production_kWh_Static__c);
-        System.assertEquals(0,overdueUASB[0].Credits_Allocated__c);
+        System.assertEquals(0, overdueUASB[0].Subscription_Production_kWh_Static__c);
+        System.assertEquals(0, overdueUASB[0].Credits_Allocated__c);
     }
 
     @IsTest
-    public static void testStopCreditTransfer(){
+    public static void testStopCreditTransfer() {
         useMocks();
-        Transfer__c transfer = getTestTransfer();
+        Transfer__c transfer = getMockTestTransfer(false);
         List<UASB__c> beforeUASBs;
         List<UASB__c> afterUASBs;
 
@@ -190,35 +157,35 @@ public class TransferSheetBillingTest {
         List<Schedule_Z_Subscription__c> szsList = billGenService.getScheduleZSubscriptionList();
 
         beforeUASBs = billGenService.calculateUASBesFromSZSes(null);
-        System.assertEquals(5,beforeUASBs.size());
-        for (UASB__c uasb : beforeUASBs){
-            System.assertNotEquals(0,uasb.Credits_Allocated__c);
+        System.assertEquals(5, beforeUASBs.size());
+        for (UASB__c uasb : beforeUASBs) {
+            System.assertNotEquals(0, uasb.Credits_Allocated__c);
         }
 
         Test.startTest();
-            // Override szs list selector for mock test
-            for (Schedule_Z_Subscription__c szs : szsList){
-                szs.Stop_Credit_Transfer__c = true;
-            }
+        // Override szs list selector for mock test
+        for (Schedule_Z_Subscription__c szs : szsList) {
+            szs.Stop_Credit_Transfer__c = true;
+        }
         Test.stopTest();
 
         afterUASBs = billGenService.calculateUASBesFromSZSes(szsList);
-        System.assertEquals(5,afterUASBs.size());
-        for (UASB__c uasb : afterUASBs){
-            System.assertEquals(0,uasb.Credits_Allocated__c);
+        System.assertEquals(5, afterUASBs.size());
+        for (UASB__c uasb : afterUASBs) {
+            System.assertEquals(0, uasb.Credits_Allocated__c);
         }
     }
 
     @IsTest
-    private static void testConvertTransferSheetToUASB(){
+    private static void testConvertTransferSheetToUASB() {
         // Wrong Column Headers:
         String transferSheetWrongColumnHeaders = 'UtilityNumber,Credits,Production,XXX\n 123456789,12,2300,12\n';
         Map<Integer, List<String>> dataMap = Util.readCSV(transferSheetWrongColumnHeaders);
         Boolean errorThrown = false;
-        TransferSheetService.initializeClass(getTestTransfer());
+        TransferSheetService.initializeClass(getMockTestTransfer(false));
         try {
             TransferSheetService.convertTransferCsvToUASBs(dataMap);
-        } catch (AuraHandledException excep){
+        } catch (AuraHandledException excep) {
             errorThrown = true;
             System.assert(excep.getMessage().contains('Expected column 4 named CreditValue, found XXX'));
         }
@@ -236,10 +203,10 @@ public class TransferSheetBillingTest {
         Map<Integer, List<String>> rowNumberToDataMap = Util.readCSV(transferSheetData);
 
         List<String> dataStringList = rowNumberToDataMap.get(2);
-        System.assertEquals(4,dataStringList.size());
-        System.assertEquals('123-678',dataStringList[0]);
+        System.assertEquals(4, dataStringList.size());
+        System.assertEquals('123-678', dataStringList[0]);
 
-        Map<String,UASB__c> utilNumberToUASB = TransferSheetService.convertTransferCsvToUASBs(rowNumberToDataMap);
+        Map<String, UASB__c> utilNumberToUASB = TransferSheetService.convertTransferCsvToUASBs(rowNumberToDataMap);
 
         UASB__c uasbOne = utilNumberToUASB.get('123456789');
         UASB__c uasbTwo = utilNumberToUASB.get('123678');
@@ -247,38 +214,38 @@ public class TransferSheetBillingTest {
         UASB__c uasbFour = utilNumberToUASB.get('223232');
         UASB__c uasbFive = utilNumberToUASB.get('2323224');
 
-        System.assertEquals(12,uasbOne.Credits_Allocated__c);
-        System.assertEquals(23.45,uasbTwo.Credits_Allocated__c);
-        System.assertEquals(14.12,uasbThree.Credits_Allocated__c);
-        System.assertEquals(15,uasbFour.Credits_Allocated__c);
-        System.assertEquals(16,uasbFive.Credits_Allocated__c);
+        System.assertEquals(12, uasbOne.Credits_Allocated__c);
+        System.assertEquals(23.45, uasbTwo.Credits_Allocated__c);
+        System.assertEquals(14.12, uasbThree.Credits_Allocated__c);
+        System.assertEquals(15, uasbFour.Credits_Allocated__c);
+        System.assertEquals(16, uasbFive.Credits_Allocated__c);
 
-        System.assertEquals(2300,uasbOne.Subscription_Production_kWh_Static__c);
-        System.assertEquals(2500,uasbTwo.Subscription_Production_kWh_Static__c);
-        System.assertEquals(null,uasbThree.Subscription_Production_kWh_Static__c);
-        System.assertEquals(null,uasbFour.Subscription_Production_kWh_Static__c);
-        System.assertEquals(null,uasbFive.Subscription_Production_kWh_Static__c);
+        System.assertEquals(2300, uasbOne.Subscription_Production_kWh_Static__c);
+        System.assertEquals(2500, uasbTwo.Subscription_Production_kWh_Static__c);
+        System.assertEquals(null, uasbThree.Subscription_Production_kWh_Static__c);
+        System.assertEquals(null, uasbFour.Subscription_Production_kWh_Static__c);
+        System.assertEquals(null, uasbFive.Subscription_Production_kWh_Static__c);
 
-        System.assertEquals(null,uasbOne.NMC_Rate__c);
-        System.assertEquals(null,uasbTwo.NMC_Rate__c);
-        System.assertEquals(0.1355,uasbThree.NMC_Rate__c);
-        System.assertEquals(0.1447,uasbFour.NMC_Rate__c);
-        System.assertEquals(0.1355,uasbFive.NMC_Rate__c);
+        System.assertEquals(null, uasbOne.NMC_Rate__c);
+        System.assertEquals(null, uasbTwo.NMC_Rate__c);
+        System.assertEquals(0.1355, uasbThree.NMC_Rate__c);
+        System.assertEquals(0.1447, uasbFour.NMC_Rate__c);
+        System.assertEquals(0.1355, uasbFive.NMC_Rate__c);
     }
 
     @IsTest
-    private static List<TransferSheetService.UASBWithStatus> setupTestSFBillsToTransferMA(){
+    private static List<TransferSheetService.UASBWithStatus> setupTestSFBillsToTransferMA() {
         useMocks();
         TestFactory.setCSBillSettings();
         // MA: Transfer Sheet does NOT have Production (kWH) and NMC Rate ($/kWh)
 
         // First, Get SF Generated Bills:
-        Transfer__c transfer = getTestTransfer();
+        Transfer__c transfer = getMockTestTransfer(true);
         BillGenerationService billGenService = new BillGenerationService(
             transfer, BillGenerationService.BillType.ONTIME
         );
         List<UASB__c> sfUASBs = billGenService.calculateUASBsFromTransfer();
-        System.assertEquals(5,sfUASBs.size());
+        System.assertEquals(5, sfUASBs.size());
 
         // Second, Get Transfer Sheet Bills:
         String transferSheetData = 'UtilityNumber,Credits,Production,CreditValue\n' +
@@ -290,19 +257,19 @@ public class TransferSheetBillingTest {
             '23232 24,99.88,,\n';
         Map<Integer, List<String>> rowNumberToDataMap = Util.readCSV(transferSheetData);
         TransferSheetService.initializeClass(transfer);
-        Map<String,UASB__c> transferUASBs = TransferSheetService.convertTransferCsvToUASBs(rowNumberToDataMap);
+        Map<String, UASB__c> transferUASBs = TransferSheetService.convertTransferCsvToUASBs(rowNumberToDataMap);
         // CSV has 6 rows, but 5 unique utility account numbers:
-        System.assertEquals(5,transferUASBs.values().size());
+        System.assertEquals(5, transferUASBs.values().size());
 
         // Third, Compare SF to Transfer:
         List<TransferSheetService.UASBWithStatus> matchList;
         matchList = TransferSheetService.compareSFBillsToTransferSheet(sfUASBs, transferUASBs);
-        System.assertEquals(6,matchList.size());
+        System.assertEquals(6, matchList.size());
         return matchList;
     }
 
     @IsTest
-    private static void testCompareSFBillsToTransferMA(){
+    private static void testCompareSFBillsToTransferMA() {
         List<TransferSheetService.UASBWithStatus> matchList = setupTestSFBillsToTransferMA();
         Integer countOfLineItemsWithoutSZS = 0;
         /*
@@ -337,20 +304,20 @@ public class TransferSheetBillingTest {
                 }
             }
         }
-        System.assertEquals(1,countOfLineItemsWithoutSZS);
+        System.assertEquals(1, countOfLineItemsWithoutSZS);
     }
 
     @IsTest
-    private static void testCompareSFBillsToTransferMN(){
+    private static void testCompareSFBillsToTransferMN() {
         useMocks();
 
         // MN: Transfer Sheet has Production (kWH) and NMC Rate ($/kWh)
 
         // First, Get SF Generated Bills:
-        Transfer__c transfer = getTestTransfer();
+        Transfer__c transfer = getMockTestTransfer(true);
         BillGenerationService billGenService = new BillGenerationService(transfer, BillGenerationService.BillType.ONTIME);
         List<UASB__c> sfUASBs = billGenService.calculateUASBsFromTransfer();
-        System.assertEquals(5,sfUASBs.size());
+        System.assertEquals(5, sfUASBs.size());
 
         // Second, Get Transfer Sheet Bills:
         String transferSheetData = 'UtilityNumber,Credits,Production,CreditValue\n' +
@@ -362,14 +329,14 @@ public class TransferSheetBillingTest {
             '23232 24,99.88,606.50,0.1324\n';
         Map<Integer, List<String>> rowNumberToDataMap = Util.readCSV(transferSheetData);
         TransferSheetService.initializeClass(transfer);
-        Map<String,UASB__c> transferUASBs = TransferSheetService.convertTransferCsvToUASBs(rowNumberToDataMap);
+        Map<String, UASB__c> transferUASBs = TransferSheetService.convertTransferCsvToUASBs(rowNumberToDataMap);
         // CSV has 6 rows, but 5 unique utility account numbers:
-        System.assertEquals(5,transferUASBs.values().size());
+        System.assertEquals(5, transferUASBs.values().size());
 
         // Third, Compare SF to Transfer:
         List<TransferSheetService.UASBWithStatus> matchList;
         matchList = TransferSheetService.compareSFBillsToTransferSheet(sfUASBs, transferUASBs);
-        System.assertEquals(6,matchList.size());
+        System.assertEquals(6, matchList.size());
 
         Integer countOfLineItemsWithoutSZS = 0;
 
@@ -399,18 +366,18 @@ public class TransferSheetBillingTest {
                 }
             }
         }
-        System.assertEquals(1,countOfLineItemsWithoutSZS);
+        System.assertEquals(1, countOfLineItemsWithoutSZS);
     }
 
     @IsTest
-    private static void testCompareSFBillsToTransferWithZerosAndNulls(){
+    private static void testCompareSFBillsToTransferWithZerosAndNulls() {
         useMocks();
 
         // First, Get SF Generated Bills:
-        Transfer__c transfer = getTestTransfer();
+        Transfer__c transfer = getMockTestTransfer(false);
         BillGenerationService billGenService = new BillGenerationService(transfer, BillGenerationService.BillType.ONTIME);
         List<UASB__c> sfUASBs = billGenService.calculateUASBsFromTransfer();
-        System.assertEquals(5,sfUASBs.size());
+        System.assertEquals(5, sfUASBs.size());
 
         // Second, Get Transfer Sheet Bills:
         String transferSheetData = 'UtilityNumber,Credits,Production,CreditValue\n' +
@@ -419,12 +386,12 @@ public class TransferSheetBillingTest {
             '223232,0,859,0.1848\n';
         Map<Integer, List<String>> rowNumberToDataMap = Util.readCSV(transferSheetData);
         TransferSheetService.initializeClass(transfer);
-        Map<String,UASB__c> transferUASBs = TransferSheetService.convertTransferCsvToUASBs(rowNumberToDataMap);
+        Map<String, UASB__c> transferUASBs = TransferSheetService.convertTransferCsvToUASBs(rowNumberToDataMap);
 
         // Third, Compare SF to Transfer:
         List<TransferSheetService.UASBWithStatus> matchList;
         matchList = TransferSheetService.compareSFBillsToTransferSheet(sfUASBs, transferUASBs);
-        for (TransferSheetService.UASBWithStatus lineItem : matchList){
+        for (TransferSheetService.UASBWithStatus lineItem : matchList) {
             String utilityNumber = lineItem.sfUASB?.PreGen_Utility_Acct__c;
             if (utilityNumber == '223232') {
                 System.assertEquals('CREDIT_MISMATCH', lineItem.status,
@@ -439,18 +406,18 @@ public class TransferSheetBillingTest {
     }
 
     @IsTest
-    private static void testResolveLWC(){
+    private static void testResolveLWC() {
         TransferSheetService.initializeClass(mockTransferServiceInitObjectNonUCB());
         String apexDataAsJSON = mockGetApexDataFromLWC();
         List<String> overrideValues = mockGetResolutionDataFromLWC();
         List<TransferSheetService.UASBWithStatus> uasbWithStatusList;
         uasbWithStatusList = (List<TransferSheetService.UASBWithStatus>) System.JSON.deserialize(apexDataAsJSON, List<TransferSheetService.UASBWithStatus>.class);
-        Map<Id,String> resolutionMap = TransferSheetService.readDataFromLWC(overrideValues);
+        Map<Id, String> resolutionMap = TransferSheetService.readDataFromLWC(overrideValues);
 
         // 4 UASBs being Resolved:
-        System.assertEquals(4,uasbWithStatusList.size());
-        for (TransferSheetService.UASBWithStatus uasbStatus : uasbWithStatusList){
-            if (uasbStatus.status == 'CREDIT_MISMATCH'){
+        System.assertEquals(4, uasbWithStatusList.size());
+        for (TransferSheetService.UASBWithStatus uasbStatus : uasbWithStatusList) {
+            if (uasbStatus.status == 'CREDIT_MISMATCH') {
                 System.assert(!uasbStatus.overdue);
                 uasbStatus.overdue = true;
             }
@@ -459,36 +426,36 @@ public class TransferSheetBillingTest {
         List<UASB__c> firstUASBList = TransferSheetService.resolveUASBs(uasbWithStatusList, resolutionMap);
 
         // Only 2 Inserted because 1 is MISSING_BILL, and 1 is MISSING_TRANSFER with UseUtility Resolution:
-        System.assertEquals(2,firstUASBList.size());
+        System.assertEquals(2, firstUASBList.size());
 
         // Update MISSING_TRANSFER resolution to UseSalesforce, and a bill should be made:
-        System.assertEquals('UseUtility',resolutionMap.get('a54540000001oN4AAI'));
-        resolutionMap.put('a54540000001oN4AAI','UseSalesforce');
+        System.assertEquals('UseUtility', resolutionMap.get('a54540000001oN4AAI'));
+        resolutionMap.put('a54540000001oN4AAI', 'UseSalesforce');
 
         List<UASB__c> secondUASBList = TransferSheetService.resolveUASBs(uasbWithStatusList, resolutionMap);
-        System.assertEquals(3,secondUASBList.size());
-        System.assertNotEquals(null,secondUASBList[0].Transfer_Sheet_Resolution__c);
-        System.assertNotEquals(null,secondUASBList[1].Transfer_Sheet_Resolution__c);
-        System.assertNotEquals(null,secondUASBList[2].Transfer_Sheet_Resolution__c);
+        System.assertEquals(3, secondUASBList.size());
+        System.assertNotEquals(null, secondUASBList[0].Transfer_Sheet_Resolution__c);
+        System.assertNotEquals(null, secondUASBList[1].Transfer_Sheet_Resolution__c);
+        System.assertNotEquals(null, secondUASBList[2].Transfer_Sheet_Resolution__c);
     }
 
     @IsTest
-    private static void testResolveCreditMismatchUseUtility(){
+    private static void testResolveCreditMismatchUseUtility() {
         TransferSheetService.initializeClass(mockTransferServiceInitObjectNonUCB());
         String apexDataAsJSON = mockGetApexDataFromLWC();
         List<String> overrideValues = mockGetResolutionDataFromLWC();
         List<TransferSheetService.UASBWithStatus> uasbWithStatusList;
         uasbWithStatusList = (List<TransferSheetService.UASBWithStatus>) System.JSON.deserialize(apexDataAsJSON, List<TransferSheetService.UASBWithStatus>.class);
-        Map<Id,String> resolutionMap = TransferSheetService.readDataFromLWC(overrideValues);
+        Map<Id, String> resolutionMap = TransferSheetService.readDataFromLWC(overrideValues);
 
         Id creditMismatchRecord = 'a54540000001oN2AAI';
         Boolean confirmRecordExists = false;
-        for (TransferSheetService.UASBWithStatus uasbStatus : uasbWithStatusList){
-            if (uasbStatus.status == 'CREDIT_MISMATCH'){
-                System.assertEquals(149.22,uasbStatus.sfUASB.Credits_Allocated__c);
-                System.assertEquals(251.33,uasbStatus.utilUASB.Credits_Allocated__c);
-                System.assertEquals(1015.18,uasbStatus.sfUASB.Subscription_Production_kWh_Static__c);
-                System.assertEquals(null,uasbStatus.utilUASB.Subscription_Production_kWh_Static__c);
+        for (TransferSheetService.UASBWithStatus uasbStatus : uasbWithStatusList) {
+            if (uasbStatus.status == 'CREDIT_MISMATCH') {
+                System.assertEquals(149.22, uasbStatus.sfUASB.Credits_Allocated__c);
+                System.assertEquals(251.33, uasbStatus.utilUASB.Credits_Allocated__c);
+                System.assertEquals(1015.18, uasbStatus.sfUASB.Subscription_Production_kWh_Static__c);
+                System.assertEquals(null, uasbStatus.utilUASB.Subscription_Production_kWh_Static__c);
                 confirmRecordExists = true;
             }
         }
@@ -499,10 +466,10 @@ public class TransferSheetBillingTest {
 
         // CREDIT_MISMATCH with UseUtility Resolution. If any field is blank on the transfer (ie, Production kWh here)
         // do not override SF values:
-        for (UASB__c uasb : firstUASBList){
-            if (uasb.Schedule_Z_Subscription__c == creditMismatchRecord){
-                System.assertEquals(251.33,uasb.Credits_Allocated__c);
-                System.assertEquals(1015.18,uasb.Subscription_Production_kWh_Static__c);
+        for (UASB__c uasb : firstUASBList) {
+            if (uasb.Schedule_Z_Subscription__c == creditMismatchRecord) {
+                System.assertEquals(251.33, uasb.Credits_Allocated__c);
+                System.assertEquals(1015.18, uasb.Subscription_Production_kWh_Static__c);
                 confirmRecordExists = true;
             }
         }
@@ -511,21 +478,21 @@ public class TransferSheetBillingTest {
     }
 
     @IsTest
-    private static void testResolveCreditMismatchUseSF(){
+    private static void testResolveCreditMismatchUseSF() {
         TransferSheetService.initializeClass(mockTransferServiceInitObjectNonUCB());
         String apexDataAsJSON = mockGetApexDataFromLWC();
         List<String> overrideValues = mockGetResolutionDataFromLWC();
         List<TransferSheetService.UASBWithStatus> uasbWithStatusList;
         uasbWithStatusList = (List<TransferSheetService.UASBWithStatus>) System.JSON.deserialize(apexDataAsJSON, List<TransferSheetService.UASBWithStatus>.class);
-        Map<Id,String> resolutionMap = TransferSheetService.readDataFromLWC(overrideValues);
+        Map<Id, String> resolutionMap = TransferSheetService.readDataFromLWC(overrideValues);
 
         Boolean confirmRecordExists = false;
-        for (TransferSheetService.UASBWithStatus uasbStatus : uasbWithStatusList){
-            if (uasbStatus.status == 'CREDIT_MISMATCH'){
-                System.assertEquals(149.22,uasbStatus.sfUASB.Credits_Allocated__c);
-                System.assertEquals(251.33,uasbStatus.utilUASB.Credits_Allocated__c);
-                System.assertEquals(1015.18,uasbStatus.sfUASB.Subscription_Production_kWh_Static__c);
-                System.assertEquals(null,uasbStatus.utilUASB.Subscription_Production_kWh_Static__c);
+        for (TransferSheetService.UASBWithStatus uasbStatus : uasbWithStatusList) {
+            if (uasbStatus.status == 'CREDIT_MISMATCH') {
+                System.assertEquals(149.22, uasbStatus.sfUASB.Credits_Allocated__c);
+                System.assertEquals(251.33, uasbStatus.utilUASB.Credits_Allocated__c);
+                System.assertEquals(1015.18, uasbStatus.sfUASB.Subscription_Production_kWh_Static__c);
+                System.assertEquals(null, uasbStatus.utilUASB.Subscription_Production_kWh_Static__c);
                 confirmRecordExists = true;
             }
         }
@@ -533,15 +500,15 @@ public class TransferSheetBillingTest {
         confirmRecordExists = false;
 
         Id creditMismatchRecord = 'a54540000001oN2AAI';
-        resolutionMap.put(creditMismatchRecord,'UseSalesforce');
-        System.assertEquals('UseSalesforce',resolutionMap.get(creditMismatchRecord));
+        resolutionMap.put(creditMismatchRecord, 'UseSalesforce');
+        System.assertEquals('UseSalesforce', resolutionMap.get(creditMismatchRecord));
 
         List<UASB__c> firstUASBList = TransferSheetService.resolveUASBs(uasbWithStatusList, resolutionMap);
 
-        for (UASB__c uasb : firstUASBList){
-            if (uasb.Schedule_Z_Subscription__c == creditMismatchRecord){
-                System.assertEquals(149.22,uasb.Credits_Allocated__c);
-                System.assertEquals(1015.18,uasb.Subscription_Production_kWh_Static__c);
+        for (UASB__c uasb : firstUASBList) {
+            if (uasb.Schedule_Z_Subscription__c == creditMismatchRecord) {
+                System.assertEquals(149.22, uasb.Credits_Allocated__c);
+                System.assertEquals(1015.18, uasb.Subscription_Production_kWh_Static__c);
                 confirmRecordExists = true;
             }
         }
@@ -549,37 +516,37 @@ public class TransferSheetBillingTest {
     }
 
     @IsTest
-    private static void testResolveLWCWithOverdue(){
+    private static void testResolveLWCWithOverdue() {
         TransferSheetService.initializeClass(mockTransferServiceInitObjectNonUCB());
         String apexDataAsJSON = mockGetApexDataFromLWC();
         List<String> overrideValues = mockGetResolutionDataFromLWC();
         List<TransferSheetService.UASBWithStatus> uasbWithStatusList;
         uasbWithStatusList = (List<TransferSheetService.UASBWithStatus>) System.JSON.deserialize(apexDataAsJSON, List<TransferSheetService.UASBWithStatus>.class);
-        Map<Id,String> resolutionMap = TransferSheetService.readDataFromLWC(overrideValues);
+        Map<Id, String> resolutionMap = TransferSheetService.readDataFromLWC(overrideValues);
 
         // 4 UASBs being Resolved:
-        System.assertEquals(4,uasbWithStatusList.size());
+        System.assertEquals(4, uasbWithStatusList.size());
 
         List<UASB__c> firstUASBList = TransferSheetService.resolveUASBs(uasbWithStatusList, resolutionMap);
 
         // Only 2 Inserted because 1 is MISSING_BILL, and 1 is MISSING_TRANSFER with UseUtility Resolution:
-        System.assertEquals(2,firstUASBList.size());
+        System.assertEquals(2, firstUASBList.size());
 
         // Update MISSING_TRANSFER bill to be Overdue = true, and a $0 bill will be made
         // even though it has a "UseUtility" resolution (ie, no bill)
-        for (TransferSheetService.UASBWithStatus uasbStatus : uasbWithStatusList){
-            if (uasbStatus.status == 'MISSING_TRANSFER'){
+        for (TransferSheetService.UASBWithStatus uasbStatus : uasbWithStatusList) {
+            if (uasbStatus.status == 'MISSING_TRANSFER') {
                 System.assert(!uasbStatus.overdue);
                 uasbStatus.overdue = true;
             }
         }
 
         List<UASB__c> secondUASBList = TransferSheetService.resolveUASBs(uasbWithStatusList, resolutionMap);
-        System.assertEquals(3,secondUASBList.size());
+        System.assertEquals(3, secondUASBList.size());
     }
 
     @IsTest
-    private static void testPostUASBInsertProcessing(){
+    private static void testPostUASBInsertProcessing() {
         Util.disableTrigger('Disable_TransferTrigger__c');
         Shared_Solar_System__c sss1 = new Shared_Solar_System__c(
             Name = 'Test Project',
@@ -621,7 +588,7 @@ public class TransferSheetBillingTest {
         Transfer__c transfer = [
             SELECT Id, Bills_Generated__c, Bill_Period__c
             FROM Transfer__c
-            WHERE Id = : transferOne.Id
+            WHERE Id = :transferOne.Id
             LIMIT 1
         ];
         System.assert(transfer.Bills_Generated__c);
@@ -629,17 +596,17 @@ public class TransferSheetBillingTest {
         Bill_Period__c bp = [
             SELECT Id, Bill_Status__c
             FROM Bill_Period__c
-            WHERE Id = : transferOne.Bill_Period__c
+            WHERE Id = :transferOne.Bill_Period__c
             LIMIT 1
         ];
-        System.assertEquals('Generated',bp.Bill_Status__c);
+        System.assertEquals('Generated', bp.Bill_Status__c);
 
         List<ContentDocumentLink> filesUploaded = [
             SELECT Id
             FROM ContentDocumentLink
-            WHERE LinkedEntityId = : transferOne.Id
+            WHERE LinkedEntityId = :transferOne.Id
         ];
-        System.assertEquals(1,filesUploaded.size());
+        System.assertEquals(1, filesUploaded.size());
     }
 
     @IsTest
@@ -647,10 +614,10 @@ public class TransferSheetBillingTest {
         TransferSheetService.transferSelector = (TransferSelector) Test.createStub(TransferSelector.class, new MockTransferSelector());
         System.assertEquals(1, TransferSheetService.transferSelector.getUnbilledTransfersBySSS(null).size(),
             'Mock should return one unbilled transfer');
-        System.assertEquals(Date.newInstance(2020,02,06), TransferSheetService.transferSelector.getUnbilledTransfersBySSS(null)[0].Date_of_Transfer__c,
+        System.assertEquals(Date.newInstance(2020, 02, 06), TransferSheetService.transferSelector.getUnbilledTransfersBySSS(null)[0].Date_of_Transfer__c,
             'Mocked unbilled transfer should have a date of 2/6/2020');
         Transfer__c transferBeingQCed = new Transfer__c(
-            Date_of_Transfer__c = Date.newInstance(2020,3,1)
+            Date_of_Transfer__c = Date.newInstance(2020, 3, 1)
         );
         try {
             TransferSheetService.preventBillingTransferOutOfOrder(transferBeingQCed);
@@ -658,14 +625,14 @@ public class TransferSheetBillingTest {
         } catch (Exception e) {
             System.assert(e.getMessage().contains('There is another transfer'), 'Error should indicate another transfer');
         }
-        transferBeingQCed.Date_of_Transfer__c = Date.newInstance(2020,02,06);
+        transferBeingQCed.Date_of_Transfer__c = Date.newInstance(2020, 02, 06);
         try {
             TransferSheetService.preventBillingTransferOutOfOrder(transferBeingQCed);
             System.assert(true, 'Should not have prevented this transfer since it has the same date as the other unbilled transfer (maybe itself)');
         } catch (Exception e) {
             System.assert(false, 'Should not have prevented this transfer since it has the same date as the other unbilled transfer (maybe itself): ' + e.getMessage() + '\n' + e.getStackTraceString());
         }
-        transferBeingQCed.Date_of_Transfer__c = Date.newInstance(2020,01,06);
+        transferBeingQCed.Date_of_Transfer__c = Date.newInstance(2020, 01, 06);
         try {
             TransferSheetService.preventBillingTransferOutOfOrder(transferBeingQCed);
             System.assert(true, 'Should not have prevented this transfer since it has an earlier date as the other unbilled transfer');
@@ -705,15 +672,15 @@ public class TransferSheetBillingTest {
             uasbs[0].sfUASB.Calculated_Credits__c,
             'Incorrect calculated credits'
         );
-        System.assertEquals(Date.valueOf('2021-03-09'),uasbs[0].sfUASB.Satellite_Bill_Date__c, 'Incorrect Satellite Bill Date');
-        System.assertEquals(Date.valueOf('2021-03-09'),uasbs[0].utilUASB.Satellite_Bill_Date__c, 'Incorrect Satellite Bill Date');
+        System.assertEquals(Date.valueOf('2021-03-09'), uasbs[0].sfUASB.Satellite_Bill_Date__c, 'Incorrect Satellite Bill Date');
+        System.assertEquals(Date.valueOf('2021-03-09'), uasbs[0].utilUASB.Satellite_Bill_Date__c, 'Incorrect Satellite Bill Date');
 
         Decimal expectedNetMemberCredits = uasbs[0].sfUASB.Calculated_Credits__c * .12; // .12 comes from Mock SZS impl
         Decimal expectedEndingBankedCredits = expectedTotalAvailCredits - uasbs[0].sfUASB.Calculated_Credits__c;
         Decimal expectedDiscountedBill = uasbs[0].sfUASB.Satellite_Charges__c - uasbs[0].sfUASB.Net_Member_Credits__c;
         Decimal expectedCDGSubFee = uasbs[0].sfUASB.Calculated_Credits__c - uasbs[0].sfUASB.Net_Member_Credits__c;
-        Decimal expectedAdminFee = (0.01 * uasbs[0].sfUASB.CDG_Subscription_Fee__c).setScale(2,new UASB().DEFAULT_ROUND);
-        Decimal expectedCDGSponsorPayment =  expectedCDGSubFee - expectedAdminFee;
+        Decimal expectedAdminFee = (0.01 * uasbs[0].sfUASB.CDG_Subscription_Fee__c).setScale(2, new UASB().DEFAULT_ROUND);
+        Decimal expectedCDGSponsorPayment = expectedCDGSubFee - expectedAdminFee;
 
         System.assertEquals(expectedNetMemberCredits, uasbs[0].sfUASB.Net_Member_Credits__c, 'Incorrect Net Member Credits');
         System.assertEquals(expectedDiscountedBill, uasbs[0].sfUASB.Discounted_Utility_Bill__c, 'Incorrect Ending Banked Credits');
@@ -739,11 +706,46 @@ public class TransferSheetBillingTest {
         TransferSheetService.docSelector = (ContentDocumentSelector) Test.createStub(ContentDocumentSelector.class, new MockUCBContentDocumentSelector());
     }
 
+    private static Transfer__c getMockTestTransfer(Boolean usePremiseNumber) {
+        sfab_FabricatedSObject utility = new sfab_FabricatedSObject(Utility__c.class);
+        utility.setField(Utility__c.Id, Util.getFakeId(Utility__c.SObjectType));
+        utility.setField(Utility__c.Use_Premise_Number_In_Transfer_QC__c, usePremiseNumber);
+
+        sfab_FabricatedSObject sss = new sfab_FabricatedSObject(Shared_Solar_System__c.class);
+        sss.setField(Shared_Solar_System__c.Id, 'a1J19000001MFvAEAW');
+        sss.setField(Shared_Solar_System__c.Name, 'Project A Oak Road');
+        sss.setParent('Utility__r', utility);
+
+        sfab_FabricatedSObject alss = new sfab_FabricatedSObject(Schedule_Z__c.class);
+        alss.setField(Schedule_Z__c.Id, 'a3z190000009UUvAAM');
+        alss.setParent('Shared_Solar_System__r', sss);
+
+        sfab_FabricatedSObject billPeriod = new sfab_FabricatedSObject(Bill_Period__c.class);
+        billPeriod.setField(Bill_Period__c.Id, 'a8x19000000DXkGAAW');
+        billPeriod.setField(Bill_Period__c.Bill_Date__c, Date.today());
+
+        sfab_FabricatedSObject transfer = new sfab_FabricatedSObject(Transfer__c.class);
+        transfer.setField(Transfer__c.Id, Util.getFakeId(Transfer__c.SObjectType));
+        transfer.setField(Transfer__c.Allocation_Schedule__c, 'a3z190000009UUvAAM');
+        transfer.setParent('Allocation_Schedule__r', alss);
+        transfer.setField(Transfer__c.Date_of_Transfer__c, Date.today().addMonths(-1));
+        transfer.setField(Transfer__c.Bill_Period__c, 'a8x19000000DXkGAAW');
+        transfer.setParent('Bill_Period__r', billPeriod);
+        transfer.setField(Transfer__c.Transfer_Type__c, 'Main');
+        transfer.setField(Transfer__c.Attempted_kWh_Transfer__c, 73072.00);
+        transfer.setField(Transfer__c.Attempted_Transfer__c, 12033.73);
+        transfer.setField(Transfer__c.Transfer_Amount__c, 12033.73);
+        transfer.setField(Transfer__c.Default_Credit_Value__c, 0.1848);
+        transfer.setParent('Shared_Solar_System__r', sss);
+
+        return (Transfer__c) transfer.toSObject();
+    }
+
     public class MockUASBSelector extends MockProvider {
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
                 when 'getLatestUcbUasbBySzs' {
-                    Map<String,UASB__c> priorUASBMapMock = new Map<String,UASB__c> {
+                    Map<String, UASB__c> priorUASBMapMock = new Map<String, UASB__c>{
                         'szsOne_ID' => new UASB__c(Ending_Banked_Credits__c = 100.00)
                     };
                     return priorUASBMapMock;
@@ -842,7 +844,7 @@ public class TransferSheetBillingTest {
                 '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Number_of_Billed_Production_Periods__c" : 2, "Billing_Method__c" : "NMC"}, ' +
                 '"Account" : {"Name" : "Account One", "Account_Number__c" : "BW-00001"},' +
                 '"AccountId" : "0015400000SajzCBBB"}}}';
-            String onTimeSZS = '[' + szsOne + ',' + szsTwo + ',' + szsThree + ',' + szsFour + ',' + szsFive +  ']';
+            String onTimeSZS = '[' + szsOne + ',' + szsTwo + ',' + szsThree + ',' + szsFour + ',' + szsFive + ']';
             String cancelledSZS = '[' + szsSix + ']';
             switch on methodCall.stubbedMethodName {
                 when 'getOnTimeListForBillingOffTransfer' {
@@ -919,8 +921,12 @@ public class TransferSheetBillingTest {
                 New_Solar_Electricity_Rate__c = 0.23
             );
 
-            escalatorMap.put('a6o19000000CsuGAAS', new List<Product_Escalator__c>{firstPeriod, secondPeriod, thirdPeriod});
-            escalatorMap.put('a6o19000000CsuGBBS', new List<Product_Escalator__c>{schedTwo});
+            escalatorMap.put('a6o19000000CsuGAAS', new List<Product_Escalator__c>{
+                firstPeriod, secondPeriod, thirdPeriod
+            });
+            escalatorMap.put('a6o19000000CsuGBBS', new List<Product_Escalator__c>{
+                schedTwo
+            });
 
             switch on methodCall.stubbedMethodName {
                 when 'getProductEscalations' {
@@ -933,7 +939,7 @@ public class TransferSheetBillingTest {
 
     public class MockAccountSelector extends MockProvider {
         public override Object handleMethodCall(MethodCall methodCall) {
-            Map<Id,Account> accountMap = new Map<Id,Account>();
+            Map<Id, Account> accountMap = new Map<Id, Account>();
             Date todayDate = System.today();
             Account accountOne = new Account(
                 Id = '0015400000SajzCAAA',
@@ -945,8 +951,8 @@ public class TransferSheetBillingTest {
                 Last_Bill_Send_Date_New_Charges_Zuora__c = null,
                 Total_Outstanding_Balance_Zuora__c = 0
             );
-            accountMap.put(accountOne.Id,accountOne);
-            accountMap.put(accountTwo.Id,accountTwo);
+            accountMap.put(accountOne.Id, accountOne);
+            accountMap.put(accountTwo.Id, accountTwo);
 
             switch on methodCall.stubbedMethodName {
                 when 'selectById' {
@@ -1006,10 +1012,10 @@ public class TransferSheetBillingTest {
                 '   },' +
                 '  "Shared_Solar_System__c": "a1J0v000000t6CcEAI",' +
                 '  "Bills_Generated__c": false' +
-            '}';
+                '}';
             switch on methodCall.stubbedMethodName {
                 when 'getTransferById' {
-                    return (Transfer__c) JSON.deserialize(ucbTransferRecord,Transfer__c.class);
+                    return (Transfer__c) JSON.deserialize(ucbTransferRecord, Transfer__c.class);
                 }
                 when 'getUnbilledTransfersBySSS' {
                     return new List<Transfer__c>();
@@ -1020,7 +1026,7 @@ public class TransferSheetBillingTest {
     }
 
     public class MockUCBContentDocumentSelector extends MockProvider {
-        public String transferSheetCsvHeaders = String.join(new List<String>(TransferSheetService.UCB_UASB_FIELDS.keySet()),',');
+        public String transferSheetCsvHeaders = String.join(new List<String>(TransferSheetService.UCB_UASB_FIELDS.keySet()), ',');
         public Integer ucbColCount = TransferSheetService.UCB_UASB_FIELDS.size();
         public List<String> csvRow1 = new List<String>{
             '001519510481', // Utility Account Number
@@ -1057,7 +1063,7 @@ public class TransferSheetBillingTest {
             '2021-03-09' // Satellite Bill Date
         };
         public String transferCsv =
-            transferSheetCsvHeaders + '\n' + String.join(csvRow1,',') + '\n' + String.join(csvRow2,',') + '\n';
+            transferSheetCsvHeaders + '\n' + String.join(csvRow1, ',') + '\n' + String.join(csvRow2, ',') + '\n';
 
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
@@ -1073,7 +1079,8 @@ public class TransferSheetBillingTest {
                     insert contentVersion;
                     ContentDocument document = [
                         SELECT Id, LatestPublishedVersion.Title, LatestPublishedVersion.VersionData, ContentSize
-                        FROM ContentDocument LIMIT 1
+                        FROM ContentDocument
+                        LIMIT 1
                     ];
                     return document;
                 }
@@ -1081,7 +1088,7 @@ public class TransferSheetBillingTest {
             return null;
         }
     }
-    
+
     private static String mockGetApexDataFromLWC() {
         String apexData = '[';
         apexData += '{"Overdue":false,' +
@@ -1128,10 +1135,10 @@ public class TransferSheetBillingTest {
             '"Subscription_Production_kWh_Static__c":1015.18,"Schedule_Z_Subscription__c":"a54540000001oN2AAI","Size_off_NMCs__c":true},' +
             '"Status":"CREDIT_MISMATCH",' +
             '"UtilUASB":{' +
-                '"PreGen_Utility_Acct__c":"0000234",' +
-                '"Credits_Allocated__c":251.33,' +
-                '"Subscription_Production_kWh_Static__c":null,' +
-                '"NMC_Rate__c":0.1848}' +
+            '"PreGen_Utility_Acct__c":"0000234",' +
+            '"Credits_Allocated__c":251.33,' +
+            '"Subscription_Production_kWh_Static__c":null,' +
+            '"NMC_Rate__c":0.1848}' +
             '}';
         apexData += ']';
         return apexData;
@@ -1146,7 +1153,9 @@ public class TransferSheetBillingTest {
             '"isMatch":true,"Resolution":"UseUtility"}';
         String lineFour = '{"Uniqueid":"missingBill04","trcreditvalue":0.1848,' +
             '"isMatch":true,"Resolution":"UseSalesforce"}';
-        return new List<String>{lineOne, lineTwo, lineThree, lineFour};
+        return new List<String>{
+            lineOne, lineTwo, lineThree, lineFour
+        };
     }
 
     private static Transfer__c mockTransferServiceInitObjectNonUCB() {
