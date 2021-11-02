@@ -300,6 +300,11 @@
         <field>Utility__c.Transfer_Mismatch_Tolerance__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility__c.Use_Premise_Number_In_Transfer_QC__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Production and Transfer Admin</label>
     <objectPermissions>
