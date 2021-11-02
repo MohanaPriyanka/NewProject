@@ -304,14 +304,6 @@ src/package.xml
 *LASERCA__*
 !src/objects/LASERCA__*
 
-# LiveText
-*LiveText__*
-!src/objects/LiveText__*
-
-# Milestones PM
-*MPM4_BASE__*
-!src/objects/MPM4_BASE__*
-
 # Docusign
 *dsfs__*
 !src/objects/dsfs__*
@@ -324,17 +316,9 @@ src/package.xml
 !src/objects/agf__*
 !src/layouts/agf__*
 
-# Metadata search
-*MetaDataSearch__*
-!src/objects/MetaDataSearch__*
-
 # Exact Target
 *et4ae5__*
 !src/objects/et4ae5__*
-
-# Trailhead tracker
-*trailheadapp__*
-!src/objects/trailheadapp__*
 
 # Zuora
 *zqu__*
@@ -349,18 +333,8 @@ src/package.xml
 *flowmagic__*
 !src/objects/flowmagic__*
 
-*HubSpot_Inc__*
-!src/objects/HubSpot_Inc__*
-
-*printsf__*
-!src/objects/printsf__*
-
 *standard__*
 !src/objects/standard__*
-
-#Inspire Planner
-*inspire1__*
-!src/objects/inspire1__*
 
 #If we want to promote certain metadata changes for installed pacakges, we can't ignore them.
 !src/layouts/*
@@ -373,6 +347,7 @@ src/package.xml
 !src/duplicateRules/*
 !src/matchingRules/*
 !src/flows/*
+!src/remoteSiteSettings/*
 
 
 #profiles and permission sets are complex Files. If your Org's 
