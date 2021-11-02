@@ -3,6 +3,8 @@ import { NavigationMixin } from 'lightning/navigation';
 import { loadStyle } from 'lightning/platformResourceLoader';
 import formFactorName from '@salesforce/client/formFactor';
 import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStyling';
+import companyShortName from '@salesforce/label/c.SSF_Company_Short_Name';
+import companyPrivacyPolicyLink from '@salesforce/label/c.SSF_Company_Privacy_Policy_Link';
 import { postReadyStateEvent } from 'c/ssfShared';
 import {
     onLoad,
@@ -56,6 +58,10 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     utilityAccountCount = 0;
     resumedApp = false;
     finDocFileTypes = getFinDocFileTypes();
+    label = {
+        companyPrivacyPolicyLink,
+        companyShortName,
+    }
 
     connectedCallback() {
         loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
@@ -237,5 +243,9 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
 
     get businessTitleFieldLabel() {
         return getText(this, 'businessTitleLabel');
+    }
+
+    get billingInfoFieldLevelHelp() {
+        return `This is the address your ${this.label.companyShortName} bill will be sent to.`;
     }
 }
