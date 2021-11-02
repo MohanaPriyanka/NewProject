@@ -1,6 +1,6 @@
 /**
  * Created by PeterYao on 3/12/2019.
- * Tested By: ScheduleZSubscriptionSelector, BillGenerationServiceTest, ScheduleZTriggerHandlerTest
+ * Tested By: ScheduleZSubscriptionSelectorTest, BillGenerationServiceTest, ScheduleZTriggerHandlerTest
  */
 
 @SuppressWarnings('PMD.ApexCRUDViolation')
