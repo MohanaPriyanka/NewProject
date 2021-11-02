@@ -221,7 +221,7 @@
                           name="billingStreet"
                           class="slds-var-m-bottom_small"
                           label="Billing Street"
-                          field-level-help="This is the address your BlueWave bill will be sent to."
+                          field-level-help={billingInfoFieldLevelHelp}
                           onchange={propertyAccountOnChange}
                           value={propertyAccount.billingStreet}
                           required>
@@ -496,7 +496,7 @@
 
             <!-- FOOTER -->
             <p class="slds-var-m-around_small">
-                We take privacy and security seriously. Check out our <b><a target="_blank" rel="noopener noreferrer" style="color:blue" href="https://bluewavesolar.com/privacy-policy">Privacy Policy</a></b> for more details. By clicking continue, you understand and agree that someone from BlueWave may contact you using the email and phone number provided.
+                We take privacy and security seriously. Check out our <b><a target="_blank" rel="noopener noreferrer" style="color:blue" href={label.companyPrivacyPolicyLink}>Privacy Policy</a></b> for more details. By clicking continue, you understand and agree that someone from {label.companyShortName} may contact you using the email and phone number provided.
             </p>
             <div class="slds-size_1-of-1">
                 <button class="btn slds-var-m-around_small slds-float_right" onclick={submit}>Next</button>

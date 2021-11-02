@@ -167,8 +167,8 @@ public with sharing class SimpleSignupFormControllerTest {
     @IsTest
     private static void testChangeOwnerOfUpload() {
         User user2 = new User(
-            Username = 'testUserBlueWave@bluewavesolar.com',
-            Email = 'testUserBlueWave@bluewavesolar.com',
+            Username = 'testUserPerch@perchenergy.com',
+            Email = 'testUserPerch@perchenergy.com',
             LastName = 'McTest',
             Alias = 'test',
             ProfileId = UserInfo.getProfileId(),
