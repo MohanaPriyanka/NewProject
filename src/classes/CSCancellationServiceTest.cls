@@ -646,8 +646,7 @@ public with sharing class CSCancellationServiceTest {
     @IsTest static void testOppCancellationOnBillingCompletionWithActiveUAS() {
         List<Utility_Account_Subscription__c> uases = [
             SELECT Id, Name, Utility_Account_Log__c, Opportunity__c, Next_Schedule_Z_Status__c,
-                calculated_annual_cost_of_electricity__c,
-                Sizing_Method__c
+                calculated_annual_cost_of_electricity__c, Sizing_Method__c
             FROM Utility_Account_Subscription__c
             WHERE Name = '0000234'
         ];
@@ -1672,8 +1671,7 @@ public with sharing class CSCancellationServiceTest {
 
         Utility_Account_Subscription__c uas = [
             SELECT Id, Name, Utility_Account_Log__c, Opportunity__c, Next_Schedule_Z_Status__c,
-                calculated_annual_cost_of_electricity__c,
-                Sizing_Method__c
+                calculated_annual_cost_of_electricity__c, Sizing_Method__c
             FROM Utility_Account_Subscription__c
             WHERE Opportunity__c = :opportunity.Id
             LIMIT 1
@@ -1681,7 +1679,6 @@ public with sharing class CSCancellationServiceTest {
         Utility_Account_Subscription__c newUAS = uas.clone(false);
         newUAS.Opportunity__c = newOpp.Id;
         insert newUAS;
-
         TestSOCreator.createByCost(newUAS, 4000);
 
         Map<Account, Map<String, String>> accountCancellationTextMap =
@@ -1692,7 +1689,6 @@ public with sharing class CSCancellationServiceTest {
         System.assertEquals(1, accountCancellationTextMap.values().size());
         List<Account> accounts = new List<Account>(accountCancellationTextMap.keySet());
         System.assertEquals(opportunity.AccountId, accounts[0].Id);
-
         System.assertEquals(
             CSCancellationService.DEFAULT_CANCELLATION_PARAGRAPH_TWO,
             accountCancellationTextMap.values()[0].get(CSCancellationService.CANCELLATION_PARAGRAPH_TWO_LABEL)
@@ -1719,8 +1715,7 @@ public with sharing class CSCancellationServiceTest {
 
         Utility_Account_Subscription__c uas = [
             SELECT Id, Name, Utility_Account_Log__c, Opportunity__c, Next_Schedule_Z_Status__c,
-                calculated_annual_cost_of_electricity__c,
-                Sizing_Method__c
+                calculated_annual_cost_of_electricity__c, Sizing_Method__c
             FROM Utility_Account_Subscription__c
             WHERE Opportunity__c = :opportunity.Id
             LIMIT 1
