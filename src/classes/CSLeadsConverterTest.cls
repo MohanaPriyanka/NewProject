@@ -51,7 +51,9 @@ public without sharing class CSLeadsConverterTest {
         System.assert(results.errorsEncountered.isEmpty(), detail.errorsEncountered);
         System.assertEquals(null, results.error, 'No error code should be present for conversion');
 
-        Lead leadAfterConversion = new LeadSelector().getLeadsForConversion(new Set<Id>{results.leadId}).values()[0];
+        Lead leadAfterConversion = new LeadSelector().getLeadsForConversion(new Set<Id>{
+            results.leadId
+        }).values()[0];
         System.assertEquals(true, leadAfterConversion.IsConverted, 'Lead not successfully converted from Flow invocation');
         System.assertEquals(detail.selectedProductId, leadAfterConversion.Product__c, 'Invalid product after conversion');
     }
@@ -86,10 +88,10 @@ public without sharing class CSLeadsConverterTest {
 
         // Trigger auto-conversion by completion of UAL -- will trigger Queueable invocation of CSLeadsConverter
         Test.startTest();
-            // Ensure all UALs are Complete
-            ual.QC_Status__c = 'Complete';
-            ual.Annual_kWh__c = 10000;
-            update ual;
+        // Ensure all UALs are Complete
+        ual.QC_Status__c = 'Complete';
+        ual.Annual_kWh__c = 10000;
+        update ual;
         Test.stopTest();
 
         // Verify results
@@ -125,7 +127,6 @@ public without sharing class CSLeadsConverterTest {
         leadsConverter.retrieveDependencies();
         leadsConverter.validateInputs();
         leadsConverter.constructConversionData();
-        system.debug(detail);
         System.assert(detail.errorsEncountered.isEmpty(), 'Error encountered during validation');
         System.assertEquals(detail.error, null, 'Error encountered during validation');
         System.assertEquals(detail.errorMessage, null, 'Error encountered during validation');
@@ -164,13 +165,37 @@ public without sharing class CSLeadsConverterTest {
         System.assertEquals(detail.errorMessage, null, 'No extra error message should be present');
     }
 
+    @IsTest
+    private static void unitTestValidatorHelper() {
+        // Setup test
+        setupSystemTestEnvironment();
+        LeadConvertDetail detail = new LeadConvertDetail();
+        List<Shared_Solar_System__c> systems = new SharedSolarSystemsSelector().getSharedSolarSystemsForEnrollment();
+        Utility_Account_Log__c ual1 = new Utility_Account_Log__c(Average_Demand__c = 25.22);
+        Utility_Account_Log__c ual2 = new Utility_Account_Log__c(Average_Demand__c = 26.2);
+        detail.utilityAccountLogs.add(ual1);
+        detail.utilityAccountLogs.add(ual2);
+        detail.selectedSystemIds.add(systems[0].Id);
+        detail.selectedSystems.add(systems[0]);
+        detail.utility = new Utility__c(Average_Demand_Threshold__c = 25);
+
+        // Test CSLeadConversionValidatorHelper.determineNumberOfDemandUals()
+        detail.determineNumberOfDemandUals();
+        System.assertEquals(2, detail.numberOfDemandUals, 'Should be 2 demand UALs in this LeadConvertDetail package');
+
+        // Test CSLeadConversionValidatorHelper.noDemandCapacityAvailable()
+        Boolean noDemandCapacityAvailable = detail.noDemandCapacityAvailable();
+        System.assertEquals(true, noDemandCapacityAvailable, 'No demand capacity available, should indicate TRUE');
+    }
+
     private static void setupSystemTestEnvironment() {
         CSLeadsConverter.batchSize = 2;
         insert new Product2(Name = 'CS Product');
         insert new Utility__c(
             Name = 'Utility with EIA ID',
             EIA_ID__c = '1234',
-            Utility_Data_Collection_Mechanism__c = 'File Upload'
+            Utility_Data_Collection_Mechanism__c = 'File Upload',
+            Average_Demand_Threshold__c = 25
         );
         CSTestDataFactory dataFactory = new CSTestDataFactory();
         dataFactory.insertOpenUCBSystem();

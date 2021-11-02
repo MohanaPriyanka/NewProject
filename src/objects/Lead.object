@@ -961,6 +961,16 @@
                     <default>false</default>
                     <label>Multiple Issues</label>
                 </value>
+                <value>
+                    <fullName>Mixed Demand UALs</fullName>
+                    <default>false</default>
+                    <label>Mixed Demand UALs</label>
+                </value>
+                <value>
+                    <fullName>No Demand Capacity Available</fullName>
+                    <default>false</default>
+                    <label>No Demand Capacity Available</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
     </fields>
