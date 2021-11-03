@@ -34,6 +34,9 @@
   <aura:attribute name="responseMessage" type="String"/>
   <aura:attribute name="sfAccountId" type="String"/>
   <aura:attribute name="outstandingItemsByDate" type="Object"/>
+  <aura:attribute name="companyName" type="String" default="{!$Label.c.Company_Name}"/>
+  <aura:attribute name="customerCareEmail" type="String" default="{!$Label.c.email_customercare}"/>
+
   <aura:handler name="change" value="{!v.outstandingItemsByDate}" action="{!c.checkAllRequiredFields}"/>
 
   <aura:if isTrue="{!$Browser.isPhone}">
@@ -112,15 +115,15 @@
                           <div class="slds-p-top_medium slds-p-bottom_medium">
                             <fieldset class="slds-box slds-theme--default slds-p-top_medium slds-container--medium slds-p-top_medium">
                               <div class="slds-text-body_small slds-text-color_default">
-                                I hereby authorize BlueWave or its servicer(s) to initiate debit entries (ACH) on my bank account
+                                I hereby authorize {!v.companyName} or its servicer(s) to initiate debit entries (ACH) on my bank account
                                 or automatically charge the credit card I designate in this form. I understand that any debit entry
                                 from my account that is returned unpaid may be collected in the same manner as an unpaid paper check.
                                 I understand that the monthly payment amount debited from my bank account may vary from month to
                                 month based on variable generation from my Shared Solar System.
                                 My authorization for debit entries to my designated bank account shall remain in full force
-                                and effect until BlueWave or its servicer(s) has received written notification from me at
+                                and effect until {!v.companyName} or its servicer(s) has received written notification from me at
                                 least thirty (30) days in advance of my intent to change or cancel this Authorization for
-                                pre-arranged payments. I hereby release BlueWave or its servicer(s) from any and all claims
+                                pre-arranged payments. I hereby release {!v.companyName} or its servicer(s) from any and all claims
                                 resulting from this authorization.
                               </div>
                               <div class="slds-p-top_medium">
@@ -346,10 +349,10 @@
 
               <aura:if isTrue="{!v.makePaymentOrManageAutopay}">
                 <div class="slds-text-body_small slds-text-color_error slds-p-top_medium">
-                  Do not reload page after submission or re-submit payment unless instructed to do so. If you are unsure whether the payment was accepted, please contact BlueWave customer care.
+                  Do not reload page after submission or re-submit payment unless instructed to do so. If you are unsure whether the payment was accepted, please contact {!v.companyName} customer care.
                 </div>
                 <div class="slds-text-body_small slds-text-color_default slds-p-top_medium">
-                  By clicking the button, you agree to allow BlueWave to split the total payment value into multiple transactions. If your account is subscribed to more than one solar project each subscription will be billed separately but never more than the total payment shown above. If you would like a detailed list of transactions, please see the paper bill that was emailed to you or reach out to BlueWave at customercare@bluewavesolar.com.
+                  By clicking the button, you agree to allow {!v.companyName} to split the total payment value into multiple transactions. If your account is subscribed to more than one solar project each subscription will be billed separately but never more than the total payment shown above. If you would like a detailed list of transactions, please see the paper bill that was emailed to you or reach out to {!v.companyName} at {!v.customerCareEmail}.
                 </div>
               </aura:if>
             </aura:set>
@@ -436,15 +439,15 @@
                                 <fieldset class="slds-box slds-theme--default slds-p-top_medium slds-container--medium slds-p-top_medium">
                                   <div class="slds-p-left_small slds-p-right_small">
                                     <div class="slds-text-body_small slds-text-color_default">
-                                      I hereby authorize BlueWave or its servicer(s) to initiate debit entries (ACH) on my bank account
+                                      I hereby authorize {!v.companyName} or its servicer(s) to initiate debit entries (ACH) on my bank account
                                       or automatically charge the credit card I designate in this form. I understand that any debit entry
                                       from my account that is returned unpaid may be collected in the same manner as an unpaid paper check.
                                       I understand that the monthly payment amount debited from my bank account may vary from month to
                                       month based on variable generation from my Shared Solar System.
                                       My authorization for debit entries to my designated bank account shall remain in full force
-                                      and effect until BlueWave or its servicer(s) has received written notification from me at
+                                      and effect until {!v.companyName} or its servicer(s) has received written notification from me at
                                       least thirty (30) days in advance of my intent to change or cancel this Authorization for
-                                      pre-arranged payments. I hereby release BlueWave or its servicer(s) from any and all claims
+                                      pre-arranged payments. I hereby release {!v.companyName} or its servicer(s) from any and all claims
                                       resulting from this authorization.
                                     </div>
                                     <div class="slds-p-top_medium">
@@ -668,10 +671,10 @@
                   </aura:if>
                   <aura:if isTrue="{!v.makePaymentOrManageAutopay}">
                     <div class="slds-text-body_small slds-text-color_error slds-p-top_medium">
-                      Do not reload page after submission or re-submit payment unless instructed to do so. If you are unsure whether the payment was accepted, please contact BlueWave customer care.
+                      Do not reload page after submission or re-submit payment unless instructed to do so. If you are unsure whether the payment was accepted, please contact {!v.companyName} customer care.
                     </div>
                     <div class="slds-text-body_small slds-text-color_default slds-p-top_medium">
-                      By clicking the button, you agree to allow BlueWave to split the total payment value into multiple transactions. If your account is subscribed to more than one solar project each subscription will be billed separately but never more than the total payment shown above. If you would like a detailed list of transactions, please see the paper bill that was emailed to you or reach out to BlueWave at customercare@bluewavesolar.com.
+                      By clicking the button, you agree to allow {!v.companyName} to split the total payment value into multiple transactions. If your account is subscribed to more than one solar project each subscription will be billed separately but never more than the total payment shown above. If you would like a detailed list of transactions, please see the paper bill that was emailed to you or reach out to {!v.companyName} at {!v.customerCareEmail}.
                     </div>
                   </aura:if>
                 </aura:set>

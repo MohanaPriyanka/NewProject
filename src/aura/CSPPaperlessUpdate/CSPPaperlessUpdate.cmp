@@ -6,19 +6,18 @@
         <div class="slds-col slds-size_1-of-6"/>
         <div class="slds-col slds-size_4-of-6">
           <aura:if isTrue="{!v.paperlessBill}">
-            <div class="slds-align--absolute-left"><b>Thanks for signing up for Paperless Billing!</b></div>
-            <div class="slds-align--absolute-left">Your community solar statement will be sent via email monthly and will be accessible here in your portal.</div>
+            <div class="slds-align_absolute-left"><b>Thanks for signing up for Paperless Billing!</b></div>
+            <div class="slds-align_absolute-left">Your community solar statement will be sent via email monthly and will be accessible here in your portal.</div>
             <aura:set attribute="else">
-              <div class="slds-align--absolute-left"><b>Do you want to sign up for paperless billing?</b></div>
-              <div class="slds-align--absolute-left">Your community solar statement will be sent </div>
-              <div class="slds-align--absolute-left slds-p-bottom--medium">via email monthly and will be accessible here in your portal</div>
-              <lightning:button class="slds-align--absolute-center slds-p-left_large slds-p-right_large slds-button--brand"
+              <div class="slds-align_absolute-left"><b>Do you want to sign up for paperless billing?</b></div>
+              <div class="slds-align_absolute-left">Your community solar statement will be sent </div>
+              <div class="slds-align_absolute-left slds-p-bottom_medium">via email monthly and will be accessible here in your portal</div>
+              <lightning:button variant="brand" class="slds-align_absolute-center slds-p-left_large slds-p-right_large"
                                 onclick="{!c.goPaperless}" >
                 <div class="slds-text-body_regular">Go Paperless!</div>
               </lightning:button>
             </aura:set>
           </aura:if>
         </div>
-        <div class="slds-col slds-size_1-of-6"/>
       </div>
 </aura:component>

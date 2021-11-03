@@ -1,17 +1,16 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" access="global">
-  <div class="slds-p-top_x-large slds-align--absolute-center">
-    <ul class="slds-accordion slds-size_5-of-12">
-      <li class="slds-accordion__list-item"/>
-      <li class="slds-accordion__list-item"/>
+  <aura:attribute name="customerCareEmailAddress" type="String" default="{!$Label.c.email_customercare}"/>
+
+  <div class="slds-p-top_x-large slds-align_absolute-center">
+    <ul class="slds-size_5-of-12">
+      <hr/>
     </ul>
   </div>
-  <footer class="slds-p-around--large slds-text-body_small slds-text-color_weak">
-    <div class="slds-grid slds-grid--align-center">
-      <p class="slds-col">
-        <a href="mailto:customercare@bluewavesolar.com">
-          <ui:outputText class="slds-text-color_weak" value="customercare@bluewavesolar.com"/>
+  <footer class="slds-p-bottom_large slds-text-body_small">
+    <div class="slds-align_absolute-center">
+        <a href="{!'mailto:' + v.customerCareEmailAddress}">
+          <lightning:formattedText class="slds-text-color_weak" value="{!v.customerCareEmailAddress}"/>
         </a>
-      </p>
     </div>
   </footer>
 </aura:component>
