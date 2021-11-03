@@ -16,11 +16,13 @@ public without sharing class CSLeadConversionValidator {
     @TestVisible private static final String NO_QUALIFIED_SYSTEMS = 'No Qualified Systems Found';
     @TestVisible private static final String PRODUCT_MISMATCH = 'System Product Mismatch';
     @TestVisible private static final String AUTO_QC_DISABLED = 'Auto QC Turned Off';
+    @TestVisible private static final String NO_DEMAND_CAPACITY_AVAILABLE = 'No Demand Capacity Available';
 
     private LeadConvertDetail detail;
 
     public CSLeadConversionValidator(LeadConvertDetail detail) {
         this.detail = detail;
+        detail.determineNumberOfDemandUals();
     }
 
     public void validate() {
@@ -32,19 +34,19 @@ public without sharing class CSLeadConversionValidator {
 
     @TestVisible
     private void validateLead() {
-        if (isAlreadyConvertedLead()) {
+        if (detail.isAlreadyConvertedLead()) {
             detail.error = ALREADY_CONVERTED;
             detail.errorsEncountered.add(ALREADY_CONVERTED);
         }
-        if (isTestcaseLead()) {
+        if (detail.isTestcaseLead()) {
             detail.error = TESTCASE_LEAD;
             detail.errorsEncountered.add(TESTCASE_LEAD);
         }
-        if (isApplicationIncomplete()) {
+        if (detail.isApplicationIncomplete()) {
             detail.error = APPLICATION_INCOMPLETE;
             detail.errorsEncountered.add(APPLICATION_INCOMPLETE);
         }
-        if (isEmailBounced()) {
+        if (detail.isEmailBounced()) {
             detail.error = EMAIL_BOUNCED;
             detail.errorsEncountered.add(EMAIL_BOUNCED);
         }
@@ -52,7 +54,7 @@ public without sharing class CSLeadConversionValidator {
 
     @TestVisible
     private void validateUtility() {
-        if (isAutoConversionButAutoQCDisabled()) {
+        if (detail.isAutoConversionButAutoQCDisabled()) {
             detail.error = AUTO_QC_DISABLED;
             detail.errorsEncountered.add(AUTO_QC_DISABLED);
         }
@@ -60,11 +62,11 @@ public without sharing class CSLeadConversionValidator {
 
     @TestVisible
     private void validateSelectedSystemsForConversion() {
-        if (noQualifiedSystemsFound()) {
+        if (detail.noQualifiedSystemsFound()) {
             detail.error = NO_QUALIFIED_SYSTEMS;
             detail.errorsEncountered.add(NO_QUALIFIED_SYSTEMS);
         }
-        if (isSystemProductMismatch()) {
+        if (detail.isSystemProductMismatch()) {
             detail.error = PRODUCT_MISMATCH;
             detail.errorsEncountered.add(PRODUCT_MISMATCH);
         }
@@ -72,61 +74,13 @@ public without sharing class CSLeadConversionValidator {
 
     @TestVisible
     private void validateUtilityAccountLogs() {
-        if (ualsNotReadyForConversion()) {
+        if (detail.ualsNotReadyForConversion()) {
             detail.error = INCOMPLETE_UALS;
             detail.errorsEncountered.add(INCOMPLETE_UALS);
         }
-    }
-
-    private Boolean isTestcaseLead() {
-        return detail.lead.LastName.toLowerCase() == 'testcase';
-    }
-    
-    private Boolean isAlreadyConvertedLead() {
-        return detail.lead.IsConverted;
-    }
-    
-    private Boolean isApplicationIncomplete() {
-        return detail.lead.Application_Complete_Date__c == null;
-    }
-
-    private Boolean isEmailBounced() {
-        return detail.lead.EmailBouncedDate != null;
-    }
-
-    private Boolean isAutoConversionButAutoQCDisabled() {
-        return detail.autoConversion && !detail.utility.Auto_Qualify_Convert_Active__c;
-    }
-
-    private Boolean noQualifiedSystemsFound() {
-        return detail.selectedSystems.isEmpty() || detail.selectedSystemIds.isEmpty();
-    }
-
-    private Boolean isSystemProductMismatch() {
-        for (Shared_Solar_System__c sss : detail.selectedSystems) {
-            if (sss.Product__c != detail.selectedProductId) {
-                return true;
-            }
+        if (detail.noDemandCapacityAvailable()) {
+            detail.error = NO_DEMAND_CAPACITY_AVAILABLE;
+            detail.errorsEncountered.add(NO_DEMAND_CAPACITY_AVAILABLE);
         }
-        return false;
-    }
-
-    private Boolean ualsNotReadyForConversion() {
-        String subscriptionType = !detail.selectedSystems.isEmpty()
-            ? detail.selectedSystems[0].Product__r?.Customer_Subscription_Type__c
-            : null;
-        if (detail.utilityAccountLogs.isEmpty()) {
-            return true;
-        }
-        for (Utility_Account_Log__c ual : detail.utilityAccountLogs) {
-            Boolean qcStatusInvalid = ual.QC_Status__c != 'Complete';
-            Boolean kwhSubscriptionMissingData = subscriptionType == 'kWh' && ual.Annual_kWh__c == null;
-            Boolean costSubscriptionMissingData = subscriptionType == 'Electricity Cost ($)' && ual.Annual_Cost_of_Electricity__c == null;
-            Boolean missingRateClass = ual.Utility_Rate_Class__c == null;
-            if (qcStatusInvalid || kwhSubscriptionMissingData || costSubscriptionMissingData || missingRateClass) {
-                return true;
-            }
-        }
-        return false;
     }
 }

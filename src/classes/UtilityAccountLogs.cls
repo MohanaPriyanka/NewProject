@@ -161,11 +161,14 @@ public without sharing class UtilityAccountLogs {
         rejectReason = appendRejectReason(data.isBelowMinKwh, rejectReason, 'Below Min kWh');
         rejectReason = appendRejectReason(data.missingSizingData, rejectReason, 'Missing Sizing Data');
 
-        if (rejectReason != null) { // A reason to auto-reject the UAL was found
+        if (rejectReason != null && data.ual.QC_Status__c != 'Unqualified') { // A reason to auto-reject the UAL was found
             data.ual.QC_Status__c = 'Pending BW Review';
             rejectReason = Datetime.now().format() + ' | ' + rejectReason;
             data.ual.Auto_QC_Reject_Reason__c = data.ual.Auto_QC_Reject_Reason__c == null ? rejectReason :
                 data.ual.Auto_QC_Reject_Reason__c + '\n' + rejectReason;
+        } else if (data.ual.QC_Status__c == 'Unqualified') { // Manually marked Unqualified, don't modify status
+            rejectReason = Datetime.now().format() + ' | ' + 'UAL Marked Unqualified';
+            data.ual.Auto_QC_Reject_Reason__c = rejectReason;
         } else {
             data.ual.QC_Status__c = 'Complete';
         }

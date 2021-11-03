@@ -679,6 +679,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>CSLeadConversionValidator</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>CSLeadsConverter</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -38291,6 +38295,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Shared_Solar_System__c.Available_Demand_Capacity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Available_SMB_Underwriting_Method_Docs__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -38662,6 +38671,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Shared_Solar_System__c.Reserved_Capacity_kW_DC__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Reserved_Demand_Capacity_Pct__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Shared_Solar_System__c.Reserved_Demand_Capacity__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

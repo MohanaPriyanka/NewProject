@@ -415,6 +415,22 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Available_Demand_Capacity__c</fullName>
+        <description>W-023397</description>
+        <externalId>false</externalId>
+        <formula>Reserved_Demand_Capacity__c - Committed_Demand_Capacity__c - Pending_Demand_Capacity__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Demand Capacity not yet committed; Result of Reserved Demand Capacity - Committed Demand Capacity - Pending Demand Capacity</inlineHelpText>
+        <label>Available Demand Capacity</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Available_SMB_Underwriting_Method_Docs__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -1457,6 +1473,36 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Reserved_Demand_Capacity_Pct__c</fullName>
+        <description>W-023397</description>
+        <externalId>false</externalId>
+        <formula>Reserved_Demand_Capacity__c / Total_System_Size_kWh_DC__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Reserved Demand Capacity / Total System Size, used for information only. Typically this should not exceed 40%. Change the Reserved Demand Capacity value or the Total System Size to change this percentage.</inlineHelpText>
+        <label>Reserved Demand Capacity %</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Reserved_Demand_Capacity__c</fullName>
+        <description>W-023397</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Manual input of Reserved Demand Capacity (as specified by the Average Demand Threshold on the Utility). Typically this should not exceed 40% of the total system size for NY projects, for example.</inlineHelpText>
+        <label>Reserved Demand Capacity</label>
+        <precision>16</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
         <unique>false</unique>
     </fields>
     <fields>

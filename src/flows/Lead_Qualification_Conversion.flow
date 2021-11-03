@@ -3,7 +3,7 @@
     <actionCalls>
         <name>Get_Qualifying_Systems</name>
         <label>Get Qualifying Systems</label>
-        <locationX>2096</locationX>
+        <locationX>2294</locationX>
         <locationY>878</locationY>
         <actionName>InvocableQualifiedSSSSelector</actionName>
         <actionType>apex</actionType>
@@ -11,6 +11,7 @@
             <targetReference>Set_Number_of_Qualifying_Systems</targetReference>
         </connector>
         <faultConnector>
+            <isGoTo>true</isGoTo>
             <targetReference>Assign_Error_Log_0_0</targetReference>
         </faultConnector>
         <flowTransactionModel>Automatic</flowTransactionModel>
@@ -28,7 +29,7 @@
     <actionCalls>
         <name>leadQualificationCheck</name>
         <label>Run Lead Qualification</label>
-        <locationX>2096</locationX>
+        <locationX>2294</locationX>
         <locationY>1238</locationY>
         <actionName>InvocableLeadQualification</actionName>
         <actionType>apex</actionType>
@@ -36,6 +37,7 @@
             <targetReference>Lead_After_Qualification</targetReference>
         </connector>
         <faultConnector>
+            <isGoTo>true</isGoTo>
             <targetReference>Assign_Error_Log_0_0</targetReference>
         </faultConnector>
         <flowTransactionModel>Automatic</flowTransactionModel>
@@ -49,7 +51,7 @@
     <actionCalls>
         <name>Run_Lead_Conversion</name>
         <label>Run Lead Conversion</label>
-        <locationX>1238</locationX>
+        <locationX>1370</locationX>
         <locationY>2054</locationY>
         <actionName>CSLeadsConverter</actionName>
         <actionType>apex</actionType>
@@ -102,7 +104,7 @@
     <actionCalls>
         <name>Update_Screen_GetLead_0</name>
         <label>Update Screen</label>
-        <locationX>1898</locationX>
+        <locationX>2162</locationX>
         <locationY>2294</locationY>
         <actionName>c:UpdateScreen</actionName>
         <actionType>component</actionType>
@@ -121,7 +123,7 @@
     <actionCalls>
         <name>updateScreenUnqualified</name>
         <label>Update Screen</label>
-        <locationX>2690</locationX>
+        <locationX>2954</locationX>
         <locationY>1718</locationY>
         <actionName>c:UpdateScreen</actionName>
         <actionType>component</actionType>
@@ -155,7 +157,7 @@
         <description>Adds selected system into Id collection for use with LeadConvertDetail/CSLeadsConverter</description>
         <name>Add_Selected_System_Id_to_List</name>
         <label>Add Selected System Id to List</label>
-        <locationX>1326</locationX>
+        <locationX>1458</locationX>
         <locationY>1838</locationY>
         <assignmentItems>
             <assignToReference>selectedSystemIds</assignToReference>
@@ -208,8 +210,8 @@
     <assignments>
         <name>Assign_Error_Log_0_0</name>
         <label>Assign Error Log</label>
-        <locationX>3746</locationX>
-        <locationY>758</locationY>
+        <locationX>2690</locationX>
+        <locationY>2174</locationY>
         <assignmentItems>
             <assignToReference>sov_ErrorLog.Severity__c</assignToReference>
             <operator>Assign</operator>
@@ -239,13 +241,14 @@
             </value>
         </assignmentItems>
         <connector>
+            <isGoTo>true</isGoTo>
             <targetReference>Add_Error_Log_to_List_0</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>assignLeadFields</name>
         <label>Assign Lead Fields</label>
-        <locationX>2096</locationX>
+        <locationX>2294</locationX>
         <locationY>518</locationY>
         <assignmentItems>
             <assignToReference>getLead.Moody_s_Risk_Calc__c</assignToReference>
@@ -286,7 +289,7 @@
     <assignments>
         <name>Set_Number_of_Qualifying_Systems</name>
         <label>Set Number of Qualifying Systems</label>
-        <locationX>2096</locationX>
+        <locationX>2294</locationX>
         <locationY>998</locationY>
         <assignmentItems>
             <assignToReference>numberOfQualifyingSystemsForLead</assignToReference>
@@ -358,7 +361,7 @@
     <decisions>
         <name>Check_Qualification</name>
         <label>Check Lead Status</label>
-        <locationX>2096</locationX>
+        <locationX>2294</locationX>
         <locationY>1478</locationY>
         <defaultConnector>
             <targetReference>showLeadStatusInvalid</targetReference>
@@ -398,7 +401,7 @@
     <decisions>
         <name>Determine_Results</name>
         <label>Determine Results</label>
-        <locationX>1238</locationX>
+        <locationX>1370</locationX>
         <locationY>2174</locationY>
         <defaultConnector>
             <targetReference>scrError_0_0</targetReference>
@@ -495,6 +498,21 @@
             <label>System Product Mismatch</label>
         </rules>
         <rules>
+            <name>No_Demand_Capacity_Available</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Run_Lead_Conversion.error</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>No Demand Capacity Available</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Utility</targetReference>
+            </connector>
+            <label>No Demand Capacity Available</label>
+        </rules>
+        <rules>
             <name>Successful_Conversion</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
@@ -515,7 +533,7 @@
         <description>If Lead is already converted, no need to try again</description>
         <name>IsConverted</name>
         <label>Is Lead Converted?</label>
-        <locationX>1073</locationX>
+        <locationX>1172</locationX>
         <locationY>278</locationY>
         <defaultConnector>
             <targetReference>updateLeadFields</targetReference>
@@ -570,7 +588,7 @@
     <loops>
         <name>Loop_Thru_Selected_Systems</name>
         <label>Loop Thru Selected Systems</label>
-        <locationX>1238</locationX>
+        <locationX>1370</locationX>
         <locationY>1718</locationY>
         <collectionReference>selectedSSSList</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -603,7 +621,7 @@
     <recordLookups>
         <name>Get_Lead</name>
         <label>Get Updated Lead</label>
-        <locationX>2096</locationX>
+        <locationX>2294</locationX>
         <locationY>758</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -648,9 +666,64 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <name>Get_UALs_For_No_Demand</name>
+        <label>Get UALs For No Demand</label>
+        <locationX>1898</locationX>
+        <locationY>2414</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>scrNoDemandCapacity</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Lead__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Average_Demand__c</field>
+            <operator>GreaterThanOrEqualTo</operator>
+            <value>
+                <elementReference>Get_Utility.Average_Demand_Threshold__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Utility_Account_Log__c</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>QC_Status__c</queriedFields>
+        <queriedFields>Annual_kWh__c</queriedFields>
+        <queriedFields>Annual_Cost_of_Electricity__c</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <queriedFields>Average_Demand__c</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Utility</name>
+        <label>Get Utility</label>
+        <locationX>1898</locationX>
+        <locationY>2294</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_UALs_For_No_Demand</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>currentUtility</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Utility__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>getLead</name>
         <label>Get Lead</label>
-        <locationX>1073</locationX>
+        <locationX>1172</locationX>
         <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -671,7 +744,7 @@
     <recordLookups>
         <name>Lead_After_Qualification</name>
         <label>Get Updated Lead</label>
-        <locationX>2096</locationX>
+        <locationX>2294</locationX>
         <locationY>1358</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -692,12 +765,13 @@
     <recordUpdates>
         <name>updateLeadRecord</name>
         <label>Update Lead</label>
-        <locationX>2096</locationX>
+        <locationX>2294</locationX>
         <locationY>638</locationY>
         <connector>
             <targetReference>Get_Lead</targetReference>
         </connector>
         <faultConnector>
+            <isGoTo>true</isGoTo>
             <targetReference>Assign_Error_Log_0_0</targetReference>
         </faultConnector>
         <inputReference>getLead</inputReference>
@@ -738,7 +812,7 @@
     <screens>
         <name>Qualification_Preview</name>
         <label>Qualification Preview</label>
-        <locationX>2096</locationX>
+        <locationX>2294</locationX>
         <locationY>1118</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -829,7 +903,7 @@
         <allowPause>false</allowPause>
         <fields>
             <name>txtResolveUALs_0_0</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 20px; color: rgb(255, 0, 0);&quot;&gt;INCOMPLETE UTILITY ACCOUNT LOGS&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(255, 0, 0);&quot;&gt;The Utility Account Logs for this lead are not ready for conversion.&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;Please confirm all Utility Account Logs (UALs) meet the following criteria:&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;Annual Usage is populated&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;QC Status is set to &apos;Complete&apos;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;Rate Class is populated&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 20px; color: rgb(255, 0, 0);&quot;&gt;INCOMPLETE UTILITY ACCOUNT LOGS&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(255, 0, 0);&quot;&gt;The Utility Account Logs for this lead are not ready for conversion.&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;A lead needs to have at least one Utility Account Log (UAL) with a QC Status of &apos;Complete&apos; in order to proceed with conversion.&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;Please also confirm that &apos;Complete&apos; UALs for this Lead meet the following criteria:&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;- Annual Usage is populated&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;- Rate Class is populated&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -929,7 +1003,7 @@
     <screens>
         <name>scrError_0_0</name>
         <label>Error Screen</label>
-        <locationX>2162</locationX>
+        <locationX>2426</locationX>
         <locationY>2294</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -945,7 +1019,7 @@
     <screens>
         <name>scrFinish_0</name>
         <label>Finish</label>
-        <locationX>1898</locationX>
+        <locationX>2162</locationX>
         <locationY>2414</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -954,6 +1028,52 @@
             <name>txttest_0</name>
             <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(10, 205, 79); font-size: 20px; background-color: rgb(255, 255, 255);&quot;&gt;SUCCESS&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;The Lead has been successfully converted!&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;You may now close this window.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>scrNoDemandCapacity</name>
+        <label>No Demand Capacity</label>
+        <locationX>1898</locationX>
+        <locationY>2534</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>false</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>txtNoDemandCapacity</name>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 20px; color: rgb(255, 0, 0);&quot;&gt;NO DEMAND CAPACITY AVAILABLE&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(255, 0, 0);&quot;&gt;One or more Utility Account Logs for this Lead has an Average Demand high enough to indicate a Demand subscription with the Utility, and none of the selected Systems have any available Demand Capacity.&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Please go back and make changes to the selections of Systems, and/or check Exclude From Demand Capacity on the affected UALs if permitted. Also, verify that the selected Systems have Reserved Demand Capacity set.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>UALs</name>
+            <dataTypeMappings>
+                <typeName>T</typeName>
+                <typeValue>Utility_Account_Log__c</typeValue>
+            </dataTypeMappings>
+            <extensionName>c:datatableV2</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>tableData</name>
+                <value>
+                    <elementReference>Get_UALs_For_No_Demand</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>hideCheckboxColumn</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnFields</name>
+                <value>
+                    <stringValue>Name, Average_Demand__c, QC_Status__c, Annual_kWh__c, Annual_Cost_of_Electricity__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -977,7 +1097,7 @@
     <screens>
         <name>scrQualifiedLead</name>
         <label>Qualified - Select Systems</label>
-        <locationX>1238</locationX>
+        <locationX>1370</locationX>
         <locationY>1598</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -1061,7 +1181,7 @@
     <screens>
         <name>showLeadStatus</name>
         <label>Unqualified</label>
-        <locationX>2690</locationX>
+        <locationX>2954</locationX>
         <locationY>1598</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -1112,7 +1232,7 @@
     <screens>
         <name>showLeadStatusInvalid</name>
         <label>Bad Lead Status</label>
-        <locationX>2954</locationX>
+        <locationX>3218</locationX>
         <locationY>1598</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -1144,7 +1264,7 @@
     <screens>
         <name>updateLeadFields</name>
         <label>Current Lead Info Screen</label>
-        <locationX>2096</locationX>
+        <locationX>2294</locationX>
         <locationY>398</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -1307,7 +1427,7 @@
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>947</locationX>
+        <locationX>1046</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>getLead</targetReference>
