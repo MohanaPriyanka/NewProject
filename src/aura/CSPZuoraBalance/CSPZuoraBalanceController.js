@@ -26,7 +26,8 @@
                     helper.getOutstandingItems(component, helper, zuoraAcct.account.Id);
                 }
             } else {
-                component.set("v.errorMessage", 'An error has occurred. BlueWave has been notified. Please check back later');
+                var errorMsg = 'An error has occurred. ' + $A.get("$Label.c.Company_Name") + ' has been notified. Please check back later';
+                component.set("v.errorMessage", errorMsg);
                 component.set("v.showError", true);
             }
         });
