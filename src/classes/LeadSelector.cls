@@ -304,8 +304,10 @@ public without sharing class LeadSelector {
         return new Map<Id, Lead>([
             SELECT Id,Utility_relationship__c,EmailBouncedDate,Application_Complete_Date__c,IsConverted,LastName,
                 Selected_SSS_For_Conversion__c,Status,Product__c,
-                (SELECT Id, QC_Status__c, Annual_kWh__c, Annual_Cost_of_Electricity__c, Utility_Rate_Class__c
-                 FROM Utility_Account_Logs__r)
+                (SELECT Id, QC_Status__c, Annual_kWh__c, Annual_Cost_of_Electricity__c, Utility_Rate_Class__c,
+                    Average_Demand__c
+                 FROM Utility_Account_Logs__r
+                 WHERE QC_Status__c != 'Unqualified')
             FROM Lead
             WHERE Id = :leadIds
         ]);

@@ -135,7 +135,7 @@ public inherited sharing class SharedSolarSystemsSelector {
                 Utility__r.Number_of_Decimal_Places__c,Expected_Yield_kWh_kW__c, Utility_NMC_Tariff__c,
                 Utility_NMC_Tariff__r.Size_Ratio__c, NMC_Value__c,Credit_Score_Requirement__c, Assignment_Order__c,
                 Maximum_Subscription_Capacity_kWDC__c,Available_SMB_Underwriting_Method_FICO__c, Available_SMB_Underwriting_Method_Docs__c,
-                Do_Not_Ask_for_Payment_Method__c, Do_Not_Underwrite__c,BWC_Project_Entity_Manual__c,
+                Do_Not_Ask_for_Payment_Method__c, Do_Not_Underwrite__c,BWC_Project_Entity_Manual__c,Available_Demand_Capacity__c,
                 Total_System_Size_kWh_DC__c,Public__c, Waitlist__c, (SELECT Id, Account__c, Account__r.Partner__c FROM Partner_Shared_Solar_System_Accesses__r WHERE IsActive__c = TRUE)
             FROM Shared_Solar_System__c
             WHERE Open__c = TRUE
