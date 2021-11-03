@@ -166,7 +166,7 @@ public without sharing class CSLeadsConverterTest {
     }
 
     @IsTest
-    private static void unitTestValidatorHelper() {
+    private static void unitTestValidationMethods() {
         // Setup test
         setupSystemTestEnvironment();
         LeadConvertDetail detail = new LeadConvertDetail();
@@ -179,13 +179,25 @@ public without sharing class CSLeadsConverterTest {
         detail.selectedSystems.add(systems[0]);
         detail.utility = new Utility__c(Average_Demand_Threshold__c = 25);
 
-        // Test CSLeadConversionValidatorHelper.determineNumberOfDemandUals()
+        // Test LeadConvertDetail.determineNumberOfDemandUals()
         detail.determineNumberOfDemandUals();
         System.assertEquals(2, detail.numberOfDemandUals, 'Should be 2 demand UALs in this LeadConvertDetail package');
 
-        // Test CSLeadConversionValidatorHelper.noDemandCapacityAvailable()
+        // Test LeadConvertDetail.noDemandCapacityAvailable()
         Boolean noDemandCapacityAvailable = detail.noDemandCapacityAvailable();
         System.assertEquals(true, noDemandCapacityAvailable, 'No demand capacity available, should indicate TRUE');
+
+        // Test CSLeadConversionValidator.validateLead()
+        detail.lead = new Lead(
+            LastName = 'Testcase',
+            Application_Complete_Date__c = null
+        );
+        CSLeadConversionValidator validator = new CSLeadConversionValidator(detail);
+        validator.validateLead();
+        System.assert(detail.errorsEncountered.contains(CSLeadConversionValidator.TESTCASE_LEAD),
+            'System should recognize test lead');
+        System.assert(detail.errorsEncountered.contains(CSLeadConversionValidator.APPLICATION_INCOMPLETE),
+            'System should recognize incomplete lead');
     }
 
     private static void setupSystemTestEnvironment() {
