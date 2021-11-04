@@ -644,7 +644,7 @@ const handleAccountNumberInputMask = (cmp, event, type) => {
     const format = `${type}Format`;
     const prefix = `${type}Prefix`;
     const length = `${type}Length`;
-    if (!cmp.zipCheckResponse.utilities || !cmp.zipCheckResponse.utilities.length || !cmp.zipCheckResponse.utilities[0][regexGroups] || !cmp.zipCheckResponse.utilities[0][format] || !cmp.zipCheckResponse.utilities[0][length]) {
+    if (!cmp.zipCheckResponse.utilities || !cmp.zipCheckResponse.utilities.length) {
         return;
     }
     let utility = cmp.zipCheckResponse.utilities[0];
