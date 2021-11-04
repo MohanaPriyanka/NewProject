@@ -219,6 +219,51 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>POD_Id_Format__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>The PoD Id format. Places groups of numbers in the desired format and uses regex capture groups as placeholders. Ex: for PoD Ids formatted XXX-XXX-XX the POD Id Format value is $1-$2-$3.</inlineHelpText>
+        <label>POD Id Format</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>POD_Id_Length__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Length of POD Ids. Ex: if POD Ids are written XXXX-XX-XX the length is 8. Prefixes are included in length. Ex: R01-XXXX-XXXX is length 11.</inlineHelpText>
+        <label>POD Id Length</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>POD_Id_Prefix__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Used for automatically adding the POD Id prefix on forms.</inlineHelpText>
+        <label>POD Id Prefix</label>
+        <length>10</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>POD_Id_Regex_Groups__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Regex for breaking utility account numbers into capture groups for formatting. Ex: to format a POD Id as XX-XXXX-XXXX-XXXX-X use the regex (\d{0,2})(\d{0,4})(\d{0,4})(\d{0,4})(\d?). Delimiters are captured in the POD Id Regex Delimiter field.</inlineHelpText>
+        <label>POD Id Regex Groups</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Service_Territory__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Select the Territory(s) to which the data below will represent.</inlineHelpText>
@@ -302,6 +347,51 @@
         <label>Use Premise Number In Transfer QC</label>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Utility_Account_Number_Format__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>The utility account number format. Places groups of numbers in the desired format and uses regex capture groups as placeholders. Ex: for UANs formatted XXX-XXX-XX the UAN Format value is $1-$2-$3.</inlineHelpText>
+        <label>UAN Format</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Utility_Account_Number_Length__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Length of utility account numbers. Ex: if UANs are written XXXX-XX-XX the length is 8. Prefixes are included in length. Ex: R01-XXXX-XXXX is length 11.</inlineHelpText>
+        <label>UAN Length</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Utility_Account_Number_Prefix__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Used for automatically adding the utility account number prefix on forms.</inlineHelpText>
+        <label>UAN Prefix</label>
+        <length>10</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Utility_Account_Number_Regex_Groups__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Regex for breaking utility account numbers into capture groups for formatting. Ex: to format a utility account number as XX-XXXX-XXXX-XXXX-X use the regex (\d{0,2})(\d{0,4})(\d{0,4})(\d{0,4})(\d?). Delimiters are captured in the UAN Regex Delimiter field.</inlineHelpText>
+        <label>UAN Regex Groups</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Utility_DUNS_Number__c</fullName>
