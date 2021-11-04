@@ -79,10 +79,15 @@ public without sharing class LeadConvertDetail {
 
     /**
      * @description Determines if one or more selected systems does not match with the selected product
+     *      Also accounts for Parent Product matches as is the case for the MA boilerplate/hybrid Product
      * @return Boolean
      */
     public Boolean isSystemProductMismatch() {
         for (Shared_Solar_System__c sss : selectedSystems) {
+            Id parentProductId = sss.Product__r.Parent_Product__c;
+            if (parentProductId == selectedProductId) {
+                continue;
+            }
             if (sss.Product__c != selectedProductId) {
                 return true;
             }
