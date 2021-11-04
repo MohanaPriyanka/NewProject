@@ -221,7 +221,7 @@
     <fields>
         <fullName>POD_Id_Format__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>The PoD Id format. Places groups of numbers in the desired format and uses regex capture groups as placeholders. Ex: for PoD Ids formatted XXX-XXX-XX the POD Id Format value is $1-$2-$3.</inlineHelpText>
+        <inlineHelpText>The PoD Id format. Places groups of numbers in the desired format and uses regex capture groups as placeholders. Include prefix if applicable. Ex: for PoD Ids formatted XXX-XXX-XX the POD Id Format value is $1-$2-$3., for PoD Ids with the prefix R01 and formatted R01-XXX-XXX the POD Id Format value is R01-$1-$2.</inlineHelpText>
         <label>POD Id Format</label>
         <length>255</length>
         <required>false</required>
@@ -351,7 +351,7 @@
     <fields>
         <fullName>Utility_Account_Number_Format__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>The utility account number format. Places groups of numbers in the desired format and uses regex capture groups as placeholders. Ex: for UANs formatted XXX-XXX-XX the UAN Format value is $1-$2-$3.</inlineHelpText>
+        <inlineHelpText>The utility account number format. Places groups of numbers in the desired format and uses regex capture groups as placeholders. Include prefix if applicable. Ex: for UANs formatted XXX-XXX-XX the UAN Format value is $1-$2-$3. for UANs with prefix R01 and formatted R01-XXX-XXX the UAN Format value is R01-$1-$2.</inlineHelpText>
         <label>UAN Format</label>
         <length>255</length>
         <required>false</required>

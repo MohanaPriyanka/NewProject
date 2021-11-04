@@ -284,7 +284,6 @@ const handleValidateAccountNumber = (cmp, event) => {
     const selectorName = isUtilityAccountNumber ? 'ual-number' : 'pod-id';
     const inputElement = cmp.template.querySelector(`[data-${selectorName}-index="${index}"]`);
     const numCleaned = cmp.propertyAccount.utilityAccountLogs[index][eventField].replaceAll(/[^a-zA-Z0-9]/g,'');
-    // const prefixCleaned = cmp[`${type}Prefix`].length ?
 
     // Set or clear error state on field if input is too short
     if (cmp[`${type}Length`] && numCleaned.length !== cmp[`${type}Length`]) {
