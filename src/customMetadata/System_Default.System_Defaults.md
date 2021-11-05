@@ -4,11 +4,11 @@
     <protected>false</protected>
     <values>
         <field>Application_Complete_Email_Template__c</field>
-        <value xsi:type="xsd:string">SSF_Partner_Application_Complete_1604092449238</value>
+        <value xsi:type="xsd:string">SSF_Partner_Application_Complete</value>
     </values>
     <values>
         <field>Continue_Application_Email_Template__c</field>
-        <value xsi:type="xsd:string">SSF_Partner_Continue_Application_1605625058741</value>
+        <value xsi:type="xsd:string">SSF_Partner_Continue_Application</value>
     </values>
     <values>
         <field>Credit_Login_Account_Username__c</field>

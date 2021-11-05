@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
     <labels>
+        <fullName>AMP_Powered_By_Example</fullName>
+        <categories>branding</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>AMP_Powered_By_Example</shortDescription>
+        <value>http://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/9686bd1b-fa7f-4a04-987f-bee7c8786242.png</value>
+    </labels>
+    <labels>
+        <fullName>AMP_Powered_By_Faq</fullName>
+        <categories>branding</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>AMP_Powered_By_Faq</shortDescription>
+        <value>http://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/f206939f-82a4-411a-a690-f4c678be0c5c.pdf</value>
+    </labels>
+    <labels>
+        <fullName>AmpBlack_Main_Logo</fullName>
+        <categories>branding</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>AmpBlack_Main_Logo</shortDescription>
+        <value>https://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/15520f0c-3d20-435b-87b4-0956621c6bc0.png</value>
+    </labels>
+    <labels>
         <fullName>AmpRed_Main_Logo</fullName>
         <categories>branding, email</categories>
         <language>en_US</language>
@@ -23,6 +47,30 @@
         <protected>false</protected>
         <shortDescription>Next</shortDescription>
         <value>Next, we need to gather your co-signer&apos;s personal information:</value>
+    </labels>
+    <labels>
+        <fullName>Community_Solar_Hands_Banner</fullName>
+        <categories>branding</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_Solar_Hands_Banner</shortDescription>
+        <value>http://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/90e6d33b-ec0a-4f35-9490-6c14bf6e6a7f.png</value>
+    </labels>
+    <labels>
+        <fullName>Community_Solar_Jumping_Banner</fullName>
+        <categories>branding</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_Solar_Jumping_Banner</shortDescription>
+        <value>http://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/abfbc03b-45a8-4694-b2ff-f5e82621d223.png</value>
+    </labels>
+    <labels>
+        <fullName>Company_Client_Portal_Banner</fullName>
+        <categories>branding</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Company_Client_Portal_Banner</shortDescription>
+        <value>http://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/8bd52e8e-5d75-48e9-b708-aedc7ff24a96.png</value>
     </labels>
     <labels>
         <fullName>Company_Color_Blue</fullName>
@@ -81,6 +129,38 @@
         <value>http://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/e9dd3d83-d085-44dd-9d93-694ab0d48935.png</value>
     </labels>
     <labels>
+        <fullName>Company_Main_Logo_600</fullName>
+        <categories>branding</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Company_Main_Logo_600</shortDescription>
+        <value>https://bluewavesolar--c.documentforce.com/file-asset-public/BlueLogo_600</value>
+    </labels>
+    <labels>
+        <fullName>Company_Main_Logo_Big</fullName>
+        <categories>branding</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Company_Main_Logo_Big</shortDescription>
+        <value>http://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/4f7382e4-e980-4d15-b4c5-0dcd1fe4a92e.jpg</value>
+    </labels>
+    <labels>
+        <fullName>Company_Main_Logo_Medium</fullName>
+        <categories>branding</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Company_Main_Logo_Medium</shortDescription>
+        <value>http://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/b1d5c208-021b-49bb-87a4-15975de32046.png</value>
+    </labels>
+    <labels>
+        <fullName>Company_Main_Logo_White</fullName>
+        <categories>branding</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Company_Main_Logo_White</shortDescription>
+        <value>http://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/cf410c88-0655-4601-99ba-0a22989404f0.png</value>
+    </labels>
+    <labels>
         <fullName>Company_Name</fullName>
         <categories>branding, email</categories>
         <language>en_US</language>
@@ -103,6 +183,22 @@
         <protected>false</protected>
         <shortDescription>Company Name Customer Management</shortDescription>
         <value>BCS Customer Management, LLC</value>
+    </labels>
+    <labels>
+        <fullName>Company_Old_Logo</fullName>
+        <categories>branding</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Company_Old_Logo</shortDescription>
+        <value>http://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/bcab316e-966f-4e7c-b4ff-54cb5f2061ae.png</value>
+    </labels>
+    <labels>
+        <fullName>Company_Temp_Website</fullName>
+        <categories>Branding</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Company Temp Website</shortDescription>
+        <value>bluewavecommunitysolar.com</value>
     </labels>
     <labels>
         <fullName>Company_Twitter</fullName>
@@ -169,6 +265,22 @@
         <value>https://bluewavesolar--c.documentforce.com/file-asset-public/icons8instagram_new_filled?oid=00Dj0000001q7GO</value>
     </labels>
     <labels>
+        <fullName>Internal_Classic_Salesforce_URL</fullName>
+        <categories>branding</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Internal_Classic_Salesforce_URL</shortDescription>
+        <value>https://bluewavesolar.my.salesforce.com/</value>
+    </labels>
+    <labels>
+        <fullName>Internal_Lightning_Salesforce_URL</fullName>
+        <categories>branding</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Internal_Lightning_Salesforce_URL</shortDescription>
+        <value>https://bluewavesolar.lightning.force.com/</value>
+    </labels>
+    <labels>
         <fullName>LA_Chat_ExtendedHeader_ChatStateHeaderGreeting_04I540000008OIA_1979875</fullName>
         <categories>Snap-ins</categories>
         <language>en_US</language>
@@ -209,12 +321,28 @@
         <value>Have you been with your employer for more than one year?</value>
     </labels>
     <labels>
+        <fullName>LinkedIn_Black_Email_Icon</fullName>
+        <categories>branding</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>LinkedIn_Black_Email_Icon</shortDescription>
+        <value>https://bluewavesolar--c.documentforce.com/file-asset-public/AMPPoweredByBW_BlackLinkedIn</value>
+    </labels>
+    <labels>
         <fullName>LinkedIn_Email_Icon</fullName>
         <categories>branding, email</categories>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>LinkedIn_Email_Icon</shortDescription>
         <value>https://bluewavesolar--c.documentforce.com/file-asset-public/icons8linkedin?oid=00Dj0000001q7GO</value>
+    </labels>
+    <labels>
+        <fullName>Other_Charges_MN_Example</fullName>
+        <categories>branding</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Other_Charges_MN_Example</shortDescription>
+        <value>http://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/30f0bf0c-395c-4d83-933f-aa3f14454472.png</value>
     </labels>
     <labels>
         <fullName>Partner_Portal_URL</fullName>
@@ -527,6 +655,30 @@
         <protected>false</protected>
         <shortDescription>SSF_WaitingRoom3_Url</shortDescription>
         <value>https://www.bluewavesolar.com</value>
+    </labels>
+    <labels>
+        <fullName>Solar_Credits_MN_Example</fullName>
+        <categories>branding</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Solar_Credits_MN_Example</shortDescription>
+        <value>http://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/31455307-fcc9-489b-b429-66275f45ee41.png</value>
+    </labels>
+    <labels>
+        <fullName>Summary_of_Current_Charges_Example</fullName>
+        <categories>branding</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Summary_of_Current_Charges_Example</shortDescription>
+        <value>http://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/0248cd5f-5217-46a4-8d67-90b82bc10c1a.png</value>
+    </labels>
+    <labels>
+        <fullName>Twitter_Black_Email_Icon</fullName>
+        <categories>branding</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Twitter_Black_Email_Icon</shortDescription>
+        <value>https://bluewavesolar--c.documentforce.com/file-asset-public/AMP_MN_Footer_Twitter</value>
     </labels>
     <labels>
         <fullName>Twitter_Email_Icon</fullName>
@@ -1073,6 +1225,14 @@
         <value>Users</value>
     </labels>
     <labels>
+        <fullName>phone_clientservices</fullName>
+        <categories>branding</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>phone_clientservices</shortDescription>
+        <value>617.681.4406</value>
+    </labels>
+    <labels>
         <fullName>phone_customercare</fullName>
         <categories>branding</categories>
         <language>en_US</language>
@@ -1081,12 +1241,28 @@
         <value>(844) 786-4100</value>
     </labels>
     <labels>
+        <fullName>phone_insidesales</fullName>
+        <categories>branding</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>phone_insidesales</shortDescription>
+        <value>617-681-4119</value>
+    </labels>
+    <labels>
         <fullName>phone_partnersupport</fullName>
         <categories>branding</categories>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Partner Support Phone</shortDescription>
         <value>(888) 817-2703</value>
+    </labels>
+    <labels>
+        <fullName>phone_partnersupport2</fullName>
+        <categories>branding</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>phone_partnersupport2</shortDescription>
+        <value>888.997.2432</value>
     </labels>
     <labels>
         <fullName>sremailNoSearchResultsMessage</fullName>
