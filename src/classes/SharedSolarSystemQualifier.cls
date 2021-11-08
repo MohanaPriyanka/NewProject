@@ -16,8 +16,8 @@ public without sharing class SharedSolarSystemQualifier {
     private static final String UNQUALIFIED = 'Unqualified';
 
     /**
-     * @description
-     * @param capacityCheck Sets whether the incoming qualification check
+     * @description Instructs this class to run qualification logic based on if this is for a new or existing lead
+     * @param capacityCheck Sets whether the incoming qualification check comes from a capacity check, not a real lead check
      */
     public static void setCapacityCheck(Boolean capacityCheck) {
         capacityCheckInstance = capacityCheck;
@@ -224,7 +224,7 @@ public without sharing class SharedSolarSystemQualifier {
      * @return Boolean
      */
     public static Boolean loadZoneInServiceTerritory(String loadZone, Shared_Solar_System__c sss) {
-        if (sss.Product__r.Ignore_Load_Zones_When_Qualifying__c || capacityCheckInstance || ignoreLoadZones) {
+        if (ignoreLoadZones || sss.Product__r.Ignore_Load_Zones_When_Qualifying__c || capacityCheckInstance) {
             return true;
         }
         return sss.Service_Territories__c != null && sss.Service_Territories__c.contains(loadZone);
