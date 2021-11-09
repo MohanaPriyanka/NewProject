@@ -205,7 +205,7 @@ public without sharing class CSQualificationService {
         ee.addressList = new List<String>{
             lead.Email
         };
-        ee.subjectLine = 'Your BlueWave Community Solar Application Has Been Denied';
+        ee.subjectLine = 'Your {!$Label.Company_Name} Community Solar Application Has Been Denied';
         ee.sobjectId = lead.Id;
         MessagingService.ReplacementText leadName = new MessagingService.ReplacementText('{!Lead.FirstName}', lead.Name);
         MessagingService.ReplacementText creditDate = new MessagingService.ReplacementText('{!Lead.Date_of_Credit_Report__c}', lead.Date_of_Credit_Report__c.format());
