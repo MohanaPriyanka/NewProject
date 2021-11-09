@@ -244,6 +244,7 @@ public with sharing class SimpleSignupFormControllerTest {
           
     @IsTest
     private static void testDuplicateUALs() {
+        // Test Setup
         Lead matchingLead = new Lead(
             FirstName = 'Successful',
             LastName = 'Match',
@@ -288,14 +289,63 @@ public with sharing class SimpleSignupFormControllerTest {
             Lead__c = unqualifiedLead.Id
         );
         insert new List<Utility_Account_Log__c>{ual, ual2, ual3};
+
+        // Run Tests
         String result = SimpleSignupFormController.findDuplicateUALs('1234');
         System.assertEquals(String.valueOf(matchingLead.Id), result, 'Returns lead Id for duplicate');
+
         String resultNoMatch = SimpleSignupFormController.findDuplicateUALs('5678');
         System.assertEquals('No Duplicate Found', resultNoMatch, 'No duplicate UAL found');
+
         String resultQualified = SimpleSignupFormController.findDuplicateUALs('1111');
         System.assertEquals('Application in Review', resultQualified, 'Duplicate Application Under Review should have been found');
+
         String resultUnqualified = SimpleSignupFormController.findDuplicateUALs('2222');
         System.assertEquals('No Duplicate Found', resultUnqualified, 'Application should not be stopped for Duplicate UALs attached to Unqualified Leads');
+
+        // Handle MA SMART/SREC situation where multiple subscriptions can exist for a single UAL
+        // ... generate a subscription for the UAL and ensure the product allows multiple subscriptions
+        Shared_Solar_System__c testSSS1 = new Shared_Solar_System__c(
+            Name = 'testSSS1',
+            Address__c = 'test address',
+            City__c = 'Atlanta',
+            State__c = 'GA',
+            Zip_Code__c = '54321',
+            Total_System_Size_kWh_DC__c = 1.1
+        );
+        insert testSSS1;
+        Utility_NMC_Tariff__c testSizingMethod1 = new Utility_NMC_Tariff__c(
+            Name = 'testSizingMethod1'
+        );
+        insert testSizingMethod1;
+        Product2 product = new Product2(
+            Name = 'CS Product with Multiple Subs',
+            Utility_Account_Subscription_Type__c = 'Multiple subscriptions per Utility Account'
+        );
+        insert product;
+        matchingLead.Product__c = product.Id;
+        update matchingLead;
+        Opportunity testOpp1 = new Opportunity(
+            zqu__DeliveryInstallationStatus__c ='Completed',
+            Status_of_Financials__c = 'Approved',
+            Product__c = product.Id,
+            ContractId = [SELECT Id FROM Contract LIMIT 1].Id,
+            AccountId = [SELECT Id FROM Account LIMIT 1].Id,
+            Name = 'testOpp1Name',
+            StageName = 'testOpp1StageName',
+            CloseDate = Date.today(),
+            Lead__c = matchingLead.Id
+        );
+        Utility_Account_Subscription__c existingSubscription = new Utility_Account_Subscription__c(
+            Utility_Account_Log__c = ual.Id,
+            Opportunity__c = testOpp1.Id,
+            Shared_Solar_System__c = testSSS1.Id,
+            Sizing_Method__c = testSizingMethod1.Id
+        );
+        insert existingSubscription;
+        
+        String resultMultipleSubscriptionsAllowed = SimpleSignupFormController.findDuplicateUALs('1234');
+        System.assertEquals('No Duplicate Found', resultMultipleSubscriptionsAllowed, 'No duplicate UAL found');
     }
 
     @IsTest
