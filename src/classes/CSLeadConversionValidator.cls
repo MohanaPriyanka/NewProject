@@ -17,6 +17,7 @@ public without sharing class CSLeadConversionValidator {
     @TestVisible private static final String PRODUCT_MISMATCH = 'System Product Mismatch';
     @TestVisible private static final String AUTO_QC_DISABLED = 'Auto QC Turned Off';
     @TestVisible private static final String NO_DEMAND_CAPACITY_AVAILABLE = 'No Demand Capacity Available';
+    @TestVisible private static final String UNRESOLVED_SPLIT_LOADZONE = 'Unresolved Split Load Zone';
 
     private LeadConvertDetail detail;
 
@@ -49,6 +50,10 @@ public without sharing class CSLeadConversionValidator {
         if (detail.isEmailBounced()) {
             detail.error = EMAIL_BOUNCED;
             detail.errorsEncountered.add(EMAIL_BOUNCED);
+        }
+        if (detail.hasUnresolvedSplitLoadZone()) {
+            detail.error = UNRESOLVED_SPLIT_LOADZONE;
+            detail.errorsEncountered.add(UNRESOLVED_SPLIT_LOADZONE);
         }
     }
 
