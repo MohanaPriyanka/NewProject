@@ -1,0 +1,93 @@
+{
+  "appPageId" : "41c3239d-0aff-458c-8a72-49e9ba067b44",
+  "componentName" : "siteforce:sldsTwoCol48Layout",
+  "id" : "46fcfa6b-e517-4a22-87a0-215f23d9197a",
+  "label" : "Home",
+  "regions" : [ {
+    "components" : [ {
+      "componentAttributes" : {
+        "richTextValue" : "<h2>&nbsp;</h2>\n<h1 style=\"text-align: center;\"><strong>Hello, {!CurrentUser.firstName}! </strong></h1>\n<p style=\"text-align: center;\">&nbsp;</p>"
+      },
+      "componentName" : "forceCommunity:htmlBlock",
+      "id" : "47854760-01e2-45da-b969-d6350dcee2d7",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "03c0d9ef-c352-4e5a-b88a-05d99b0f0b76",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "id" : "87104143-4aba-44f7-be61-5b7470e97383",
+    "regionName" : "featured",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "flowArguments" : "[{\"label\":\"varAccountId\",\"dataType\":\"String\",\"supportsRecordId\":false,\"value\":\"{!CurrentUser.accountId}\"}]",
+        "flowLayout" : "oneColumn",
+        "flowName" : "Screen_Flow_Disp_Billing_Acct_Details_in_Cust_Portal"
+      },
+      "componentName" : "forceCommunity:flowCommunity",
+      "id" : "eba0c0a4-3d52-486d-b18c-45aac8c0c6e9",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    }, {
+      "componentAttributes" : {
+        "richTextValue" : "<p style=\"text-align: center;\"><a href=\"https://bluewavesolar.com/bw-resources/a-6-minute-guide-to-community-solar-billing\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"font-size: 16px; background-color: rgb(255, 255, 255);\">W</a><a href=\"https://bluewavesolar.com/bw-resources/a-6-minute-guide-to-community-solar-billing\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"font-size: 16px; background-color: rgb(255, 255, 255);\">ant to learn more about how community solar billing works? Click Here!</a></p>"
+      },
+      "componentName" : "forceCommunity:richTextInline",
+      "id" : "4ca83ba1-470c-4598-b042-42a34855182c",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "6abc82cf-a919-488d-a731-ff28c48f8ee9",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "richTextValue" : "<div class=\"sfdcCbVideoContainer\"><iframe class=\"sfdcCbVideo\" allowfullscreen=\"true\" width=\"100%\" title=\"Video from https://player.vimeo.com/video/417286945\" src=\"https://player.vimeo.com/video/417286945\"></iframe></div><p> </p>"
+      },
+      "componentName" : "forceCommunity:richTextInline",
+      "id" : "5774ca59-95d5-45f0-a214-67ae6f1dab9f",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    }, {
+      "componentAttributes" : { },
+      "componentName" : "c:CSPPaperlessUpdate",
+      "id" : "4bbba009-3d1c-4c4e-a171-f032b95368c6",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "69afc921-8a5d-49d7-bbc6-07e339ef1433",
+    "regionName" : "sidebar",
+    "type" : "region"
+  }, {
+    "id" : "10ab6df5-e8ea-4cde-beed-fe7f5b06e4e5",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "Home"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "606ae425-b93d-4b4d-b6ea-956cd31ac241",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "af4a5f88-6195-4a5f-8b09-4843e68d15a0",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Home",
+  "type" : "view",
+  "viewType" : "home"
+}

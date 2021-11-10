@@ -1,0 +1,13 @@
+{
+  "componentVariants" : [ {
+    "id" : "e3ec6dc6-8c9a-499a-86be-efd36d213a7b",
+    "propertyOverrides" : {
+      "activeBrandingSetId" : "8b5792e5-cbbf-4439-b7ad-2b12156b5178"
+    },
+    "targetId" : "fb6d4abb-d0a4-4286-943c-963ad571d0dd",
+    "type" : "componentVariant"
+  } ],
+  "developerName" : "Jepson_Amp_Branding",
+  "id" : "3732289a-bb35-4746-9570-500ffc50277c",
+  "type" : "experienceVariation"
+}
