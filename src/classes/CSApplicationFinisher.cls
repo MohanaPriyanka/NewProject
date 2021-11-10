@@ -53,6 +53,7 @@ public without sharing class CSApplicationFinisher implements Queueable, Databas
         lead.Application_Complete_Date__c = applicationCompleteDate == null ? lead.Application_Complete_Date__c : applicationCompleteDate ;
         lead.Application_Status__c = 'Application Completed';
         CSLeadsRESTControllerV2.setContinueApplicationLinks(lead, 'Application Completed');
+        SharedSolarSystemQualifier.ignoreLoadZones(); // Set to ignore load zones for qualification check (in case of split LZ)
         qualificationService.qualifyLead(lead);
         leadService.updateLead(lead);
     }

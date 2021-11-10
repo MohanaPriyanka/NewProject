@@ -101,7 +101,7 @@ public without sharing class CSLeadsConverterTest {
             FROM Lead
             WHERE Id = :leadToQualify.Id
         ];
-        System.assertEquals(true, leadAfterConversion.IsConverted, 'Lead not successfully converted from Auto Conversion');
+        System.assertEquals(true, leadAfterConversion.IsConverted, leadAfterConversion);
         System.assert(leadAfterConversion.Auto_QC_Last_Runtime__c != null, 'Auto QC date should have been set');
         System.assert(leadAfterConversion.Auto_QC_Failure_Reason__c == null, 'Auto QC failure reason should be null');
         System.assert(leadAfterConversion.Auto_QC_Failure_Details__c == null, 'Auto QC failure details should be null');
@@ -190,7 +190,8 @@ public without sharing class CSLeadsConverterTest {
         // Test CSLeadConversionValidator.validateLead()
         detail.lead = new Lead(
             LastName = 'Testcase',
-            Application_Complete_Date__c = null
+            Application_Complete_Date__c = null,
+            LoadZone__c = 'SEMA/NEMA'
         );
         CSLeadConversionValidator validator = new CSLeadConversionValidator(detail);
         validator.validateLead();
@@ -198,6 +199,8 @@ public without sharing class CSLeadsConverterTest {
             'System should recognize test lead');
         System.assert(detail.errorsEncountered.contains(CSLeadConversionValidator.APPLICATION_INCOMPLETE),
             'System should recognize incomplete lead');
+        System.assert(detail.errorsEncountered.contains(CSLeadConversionValidator.UNRESOLVED_SPLIT_LOADZONE),
+            'System should recognize unresolved split load zone');
     }
 
     private static void setupSystemTestEnvironment() {
@@ -250,6 +253,7 @@ public without sharing class CSLeadsConverterTest {
             mockLead.setField(Lead.IsConverted, false);
             mockLead.setField(Lead.LastName, 'Doe');
             mockLead.setField(Lead.Application_Complete_Date__c, System.now());
+            mockLead.setField(Lead.LoadZone__c, 'SEMA');
             mockLead.setChildren('Utility_Account_Logs__r', new List<sfab_FabricatedSObject>{
                 mockUal
             });

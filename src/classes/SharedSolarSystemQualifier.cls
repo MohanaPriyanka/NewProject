@@ -6,6 +6,7 @@ public without sharing class SharedSolarSystemQualifier {
     @TestVisible private static SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
     @TestVisible private static final Boolean LOG_FINE_RESULTS = Logger.shouldLog(Logger.FINE);
     @TestVisible private static Boolean capacityCheckInstance = false;
+    private static Boolean ignoreLoadZones = false;
     private static final List<String> ORDERED_MOODY_RISK_SCORES = new List<String>{
         'Aaa', 'Aa1', 'Aa2', 'Aa3', 'A1', 'A2', 'A3',
         'Baa1', 'Baa2', 'Baa3', 'Ba1', 'Ba2', 'Ba3', 'B1', 'B2', 'B3',
@@ -14,8 +15,20 @@ public without sharing class SharedSolarSystemQualifier {
     private static final String QUALIFIED = 'Qualified';
     private static final String UNQUALIFIED = 'Unqualified';
 
+    /**
+     * @description Instructs this class to run qualification logic based on if this is for a new or existing lead
+     * @param capacityCheck Sets whether the incoming qualification check comes from a capacity check, not a real lead check
+     */
     public static void setCapacityCheck(Boolean capacityCheck) {
         capacityCheckInstance = capacityCheck;
+    }
+
+    /**
+     * @description Ignores Load Zone comparisons when assessing qualified systems. Was implemented in W-023648 to prevent
+     *      split load-zone scenarios from automatically unqualifying leads at the completion of the application
+     */
+    public static void ignoreLoadZones() {
+        ignoreLoadZones = true;
     }
 
     /**
@@ -211,7 +224,7 @@ public without sharing class SharedSolarSystemQualifier {
      * @return Boolean
      */
     public static Boolean loadZoneInServiceTerritory(String loadZone, Shared_Solar_System__c sss) {
-        if (sss.Product__r.Ignore_Load_Zones_When_Qualifying__c || capacityCheckInstance) {
+        if (ignoreLoadZones || sss.Product__r.Ignore_Load_Zones_When_Qualifying__c || capacityCheckInstance) {
             return true;
         }
         return sss.Service_Territories__c != null && sss.Service_Territories__c.contains(loadZone);

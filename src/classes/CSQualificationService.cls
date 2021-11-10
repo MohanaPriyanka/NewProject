@@ -41,9 +41,9 @@ public without sharing class CSQualificationService {
     /**
      * @description Run from CreditReportLogTrigger on LASERCA__Credit_Report_Log__c generation to auto-qualify lead
      * @param triggerNewMap LASERCA__Credit_Report_Log__c Trigger.NEW
-     * @param triggerOldMap LASERCA__Credit_Report_Log__c Trigger.OLD
      */
-    public void checkCreditReportLog(Map<Id, LASERCA__Credit_Report_Log__c> triggerNewMap, Map<Id, LASERCA__Credit_Report_Log__c> triggerOldMap) {
+    public void checkCreditReportLog(Map<Id, LASERCA__Credit_Report_Log__c> triggerNewMap) {
+        SharedSolarSystemQualifier.ignoreLoadZones(); // Set to ignore load zones for qualification check (in case of split LZ)
         Set<Id> pcrIds = new Set<Id>();
         List<LASERCA__Credit_Report_Log__c> errorCRLs = new List<LASERCA__Credit_Report_Log__c>();
         List<String> leadIds = new List<String>();
@@ -99,8 +99,6 @@ public without sharing class CSQualificationService {
                 pcr = new LASERCA__Personal_Credit_Report__c(
                     Name = 'NO MATCH for Lead: ',
                     LASERCA__Lead__c = errorCRL.LASERCA__Lead__c,
-
-
                     LASERCA__Credit_Score__c = '9999'
                 );
                 uow.registerNew(pcr);
@@ -113,8 +111,6 @@ public without sharing class CSQualificationService {
                 pcr = new LASERCA__Personal_Credit_Report__c(
                     Id = errorCRL.LASERCA__Personal_Credit_Report__c,
                     LASERCA__Lead__c = errorCRL.LASERCA__Lead__c,
-
-
                     LASERCA__Credit_Score__c = '9999'
                 );
                 uow.registerDirty(pcr);

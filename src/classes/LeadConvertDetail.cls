@@ -46,6 +46,14 @@ public without sharing class LeadConvertDetail {
     }
 
     /**
+     * @description Determines if Lead has a Split Load Zone (usually requires manual resolution)
+     * @return Boolean
+     */
+    public Boolean hasUnresolvedSplitLoadZone() {
+        return lead.LoadZone__c.contains('/');
+    }
+
+    /**
      * @description Determines if Lead has not undergone completion by applicant
      * @return Boolean
      */
