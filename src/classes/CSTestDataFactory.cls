@@ -43,6 +43,7 @@ public with sharing class CSTestDataFactory {
         restLead.salesRepId = salesRepId;
         restLead.noPayment = collectPaymentInfo;
         restLead.underwritingCriteria = underwritingMethod;
+        restLead.loadZone = 'SEMA';
 
         RestLead.RestPropertyAccount restAccount = new RestLead.RestPropertyAccount();
         restAccount.billingStreet = 'Test billing street';
