@@ -1,0 +1,71 @@
+{
+  "appPageId" : "f343f4f2-a48d-4766-b75b-fbeab261827e",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "id" : "33172f7f-cf3d-44f6-87a7-f24b6b8a1ec2",
+  "label" : "Login",
+  "regions" : [ {
+    "components" : [ {
+      "componentAttributes" : { },
+      "componentName" : "salesforceIdentity:communityLogo2",
+      "id" : "46ea2765-f65b-4b61-bcfc-b15cf40e09e5",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    }, {
+      "componentAttributes" : {
+        "forgotPasswordLabel" : "",
+        "forgotPasswordUrl" : "",
+        "loginButtonLabel" : "Log in",
+        "passwordLabel" : "Password",
+        "selfRegisterLabel" : "",
+        "selfRegisterUrl" : "",
+        "startUrl" : "",
+        "usernameLabel" : "Email"
+      },
+      "componentName" : "salesforceIdentity:loginForm2",
+      "id" : "c2b008b5-588a-4c30-bd4f-8f8c9a5dcd76",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    }, {
+      "componentAttributes" : {
+        "richTextValue" : "<div style=\"text-align: center;\"><a href=\"./ForgotPassword\">Click here to reset your password.</a></div>"
+      },
+      "componentName" : "forceCommunity:htmlBlock",
+      "id" : "cc8efcd9-e7d3-4a1a-a00d-b1608fe49ad3",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    }, {
+      "componentAttributes" : {
+        "richTextValue" : "<div style=\"text-align: center;\"><a href=\"./SelfRegister\">Click here to register a new account.</a></div>"
+      },
+      "componentName" : "forceCommunity:htmlBlock",
+      "id" : "2f52a947-2ee3-4fd7-92be-90bb22b00094",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "71f39b8f-bcb1-4ed3-96db-a36fa2b95baa",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "Login"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "9b805b0b-ac69-450c-8db9-565e7962a441",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "c1c25853-e9b2-442d-8185-808c9bf69dbe",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Login",
+  "type" : "view",
+  "viewType" : "login-home"
+}

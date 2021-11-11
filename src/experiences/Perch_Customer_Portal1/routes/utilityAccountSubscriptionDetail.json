@@ -1,0 +1,11 @@
+{
+  "activeViewId" : "2161ad96-2003-4656-9658-1b8d3412ebae",
+  "appPageId" : "41c3239d-0aff-458c-8a72-49e9ba067b44",
+  "configurationTags" : [ ],
+  "id" : "dc318283-ce20-4048-8831-021d325e339d",
+  "label" : "Utility Account Subscription Detail",
+  "objectApiName" : "Utility_Account_Subscription__c",
+  "routeType" : "detail-a1d",
+  "type" : "route",
+  "urlPrefix" : "utility-account-subscription"
+}

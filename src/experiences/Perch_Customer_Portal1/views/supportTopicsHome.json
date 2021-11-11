@@ -1,0 +1,129 @@
+{
+  "appPageId" : "41c3239d-0aff-458c-8a72-49e9ba067b44",
+  "componentName" : "siteforce:sldsThreeCol444Layout",
+  "id" : "e8e3b0a8-bdcc-4aeb-bf1a-1e70f5995676",
+  "label" : "SupportTopicsHome",
+  "regions" : [ {
+    "components" : [ {
+      "componentAttributes" : {
+        "bannerText" : "Your go-to resource for any question under the sun",
+        "bannerTextWithKnowledge" : "Explore other <a href=\"javascript:void(0)\" class=\"headlineArticles\">articles</a> and <a href=\"javascript:void(0)\" class=\"headlineDiscussions\">discussions</a> on this topic.",
+        "bannerTextWithoutKnowledge" : "Explore other <a href=\"javascript:void(0)\" class=\"headlineDiscussions\">discussions</a> on this topic.",
+        "pageType" : "",
+        "showSubTopics" : true,
+        "title" : "Support Center",
+        "uniqueNameOrId" : ""
+      },
+      "componentName" : "forceCommunity:headline",
+      "id" : "6ecf4613-2baf-4a84-a369-5a57670c1dd1",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    }, {
+      "componentAttributes" : {
+        "maxWidth" : 100,
+        "overlayColor" : "rgba(0,0,0,0.4)",
+        "overlayHoverColor" : "",
+        "radius" : 0,
+        "showTitle" : false,
+        "textAlignment" : "center",
+        "textBgColor" : "rgba(0,0,0,0)",
+        "textBgHoverColor" : "rgba(0,0,0,0)",
+        "textColor" : "",
+        "textHoverColor" : "",
+        "textPosition" : "center center",
+        "title" : "Featured Topics"
+      },
+      "componentName" : "forceTopic:featuredTopics",
+      "id" : "784209e9-a5f6-4a47-8e44-1b775608348f",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "8864f7e5-7cf5-4a75-a50b-7820508cf771",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "numberOfArticles" : 8,
+        "showTitle" : false,
+        "title" : "Top Articles",
+        "topicList" : [ {
+          "isPublic" : true,
+          "name" : "0TO7j000000SCfZGAW"
+        } ]
+      },
+      "componentName" : "forceCommunity:topArticleList",
+      "id" : "12afbce0-bf06-42a6-acfd-0ef66a78c395",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "72304f52-c121-4124-a92a-67f1ce16b3a5",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "numberOfArticles" : 8,
+        "showTitle" : false,
+        "title" : "Top Articles",
+        "topicList" : [ {
+          "isPublic" : true,
+          "name" : "0TO7j000000SCfaGAG"
+        } ]
+      },
+      "componentName" : "forceCommunity:topArticleList",
+      "id" : "62d05cbb-f320-4d1d-b7bb-a2a2e272a6b3",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "e4385e2b-b0d9-4e99-afea-32c1c3f4c3b4",
+    "regionName" : "sidebar",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "numberOfArticles" : 8,
+        "showTitle" : false,
+        "title" : "Top Articles",
+        "topicList" : [ {
+          "isPublic" : true,
+          "name" : "0TO7j000000SCfbGAG"
+        } ]
+      },
+      "componentName" : "forceCommunity:topArticleList",
+      "id" : "bd5fbf05-a1d6-44dc-8165-ef2dd9ea27cb",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "be1e74b0-e91d-4aab-a305-f60ab5b69484",
+    "regionName" : "sidebarAlt",
+    "type" : "region"
+  }, {
+    "id" : "c09646d2-d7c6-4299-8bf7-306fe2f0c53e",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "Support Topics"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "99ed5fa7-1372-4b48-b8d1-ef9b7b7382e7",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "d4820aa0-25f9-4281-bfff-c17ee59c77d7",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "custom-support-topics-home"
+}
