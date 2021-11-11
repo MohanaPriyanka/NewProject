@@ -11,6 +11,7 @@ public without sharing class MessagingService {
     @TestVisible private static Messaging.Email[] emailsSent;
     @TestVisible private static Boolean onlyUseActiveTemplates = true;
     @TestVisible private static FeatureSelector featureSelector = new FeatureSelector();
+    private static CustomLabelResolver labelResolver = new CustomLabelResolver();
 
     public static OrgWideEmailAddress getCustomerCareEmail() {
         if (customerCareEmail == null) {
@@ -30,16 +31,7 @@ public without sharing class MessagingService {
     }
 
     @TestVisible
-    private static Boolean createAndSendDynamicTemplateEmail(String emailTemplateName, String orgWideEmail, String subjectLine, List<String> addressList, String templateField, String replaceText) {
-        EmailEnvelope ee = new EmailEnvelope();
-        ee.emailTemplateName = emailTemplateName;
-        ee.orgWideEmail = orgWideEmail;
-        ee.subjectLine = subjectLine;
-        ee.addressList = addressList;
-        ee.replacementTexts = new List<ReplacementText>{
-            new ReplacementText(templateField, replaceText)
-        };
-        ee.sobjectId = null;
+    private static Boolean createAndSendDynamicTemplateEmail(EmailEnvelope ee) {
         Messaging.SendEmailResult[] result = sendEmailTemplate(ee);
         for (Messaging.SendEmailResult rr : result) {
             if (!rr.isSuccess()) {
@@ -58,7 +50,7 @@ public without sharing class MessagingService {
             }
         }
 
-        return createAndSendEmail(templateHtml, ee.orgWideEmail, ee.subjectLine, ee.addressList, ee.sobjectId);
+        return createAndSendEmail(templateHtml, ee);
     }
 
     public static String getHtmlWithReplacements(String templateName, Map<String, String> keyToValueMap) {
@@ -94,24 +86,29 @@ public without sharing class MessagingService {
     }
 
     public static Messaging.SendEmailResult[] createAndSendEmail(String htmlBody, String orgWideEmail, String subjectLine, List<String> addressList) {
-        return createAndSendEmail(htmlBody, orgWideEmail, subjectLine, addressList, null);
+        EmailEnvelope ee = new EmailEnvelope();
+        ee.orgWideEmail = orgWideEmail;
+        ee.subjectLine = subjectLine;
+        ee.addressList = addressList;
+        ee.sobjectId = null;
+        return createAndSendEmail(htmlBody, ee);
     }
     @SuppressWarnings('PMD.ApexCRUDViolation')
-    public static Messaging.SendEmailResult[] createAndSendEmail(String htmlBody, String orgWideEmail, String subjectLine, List<String> addressList, Id sobjectId) {
+    private static Messaging.SendEmailResult[] createAndSendEmail(String htmlBody, EmailEnvelope ee) {
         Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
         for (OrgWideEmailAddress senderEmail : [
             SELECT Id, Address
             FROM OrgWideEmailAddress
-            WHERE Address = :orgWideEmail
+            WHERE Address = :ee.orgWideEmail
             LIMIT 1
         ]) {
             mail.setOrgWideEmailAddressId(senderEmail.Id);
         }
-        mail.setSubject(subjectLine);
+        mail.setSubject(ee.subjectLine);
         mail.setHtmlBody(htmlBody);
-        mail.setToAddresses(addressList);
-        if (sobjectId != null) {
-            mail.setTargetObjectId(sobjectId);
+        mail.setToAddresses(ee.addressList);
+        if (ee.sobjectId != null) {
+            mail.setTargetObjectId(ee.sobjectId);
             mail.setSaveAsActivity(true);
         }
         return sendEmail(new List<Messaging.SingleEmailMessage>{
@@ -119,19 +116,38 @@ public without sharing class MessagingService {
         });
     }
 
-    public static Messaging.SendEmailResult[] sendEmail(Messaging.Email[] emails) {
-        Messaging.SendEmailResult[] sendEmailResults;
+    public static Messaging.SendEmailResult[] sendEmail(List<Messaging.Email> emails) {
+        List<Messaging.Email> emailsWithLabelsResolved = getEmailsWithLabelsResolved(emails);
+        List<Messaging.SendEmailResult> sendEmailResults;
         if (emailsSent == null) {
-            emailsSent = emails.clone();
+            emailsSent = emailsWithLabelsResolved.clone();
         } else {
-            emailsSent.addAll(emails.clone());
+            emailsSent.addAll(emailsWithLabelsResolved.clone());
         }
         try {
-            sendEmailResults = Messaging.sendEmail(emails, false);
+            sendEmailResults = Messaging.sendEmail(emailsWithLabelsResolved, false);
         } catch (EmailException ee) {
             Logger.logNow('MessagingService', 'sendEmail', ee.getMessage());
         }
+        Logger.flushLogs();
         return sendEmailResults;
+    }
+
+    @TestVisible
+    private static List<Messaging.Email> getEmailsWithLabelsResolved(List<Messaging.Email> emails) {
+        List<Messaging.Email> emailsWithLabelsResolved = new List<Messaging.Email>();
+        for (Messaging.Email email : emails) {
+            try {
+                Messaging.SingleEmailMessage singleEmailMessage = (Messaging.SingleEmailMessage) email;
+                singleEmailMessage.setSubject(labelResolver.resolve(singleEmailMessage.getSubject()));
+                singleEmailMessage.setHtmlBody(labelResolver.resolve(singleEmailMessage.getHtmlBody()));
+                singleEmailMessage.setPlainTextBody(labelResolver.resolve(singleEmailMessage.getPlainTextBody()));
+                emailsWithLabelsResolved.add((Messaging.Email) singleEmailMessage);
+            } catch (Util.BWException bwe) {
+                Logger.logLater('MessagingService', 'getEmailsWithLabelsResolved', bwe.getMessage() + '\n' + bwe.getStackTraceString(), Logger.ERROR);
+            }
+        }
+        return emailsWithLabelsResolved;
     }
 
     /**

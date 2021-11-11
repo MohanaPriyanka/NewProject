@@ -29,15 +29,17 @@ public with sharing class MessagingServiceTest {
     public static void testSendEmail() {
         System.assertEquals(null, MessagingService.emailsSent);
         Boolean exceptionThrown = false;
+        MessagingService.EmailEnvelope ee = new MessagingService.EmailEnvelope();
+        ee.orgWideEmail = 'customercare@bluewavesolar.com';
+        ee.subjectLine = 'Subject';
+        ee.addressList = new List<String>{'a@b.com', 'c@d.com'};
+        ee.replacementTexts = new List<MessagingService.ReplacementText>{
+            new MessagingService.ReplacementText('NameField', 'Peter')
+        };
+        ee.sobjectId = null;
         try {
-            MessagingService.createAndSendDynamicTemplateEmail(
-                'MessagingServiceTest_Inactive_Template',
-                'customercare@bluewavesolar.com',
-                'Subject',
-                new List<String>{'a@b.com', 'c@d.com'},
-                'NameField',
-                'Peter'
-            );
+            ee.emailTemplateName = 'MessagingServiceTest_Inactive_Template';
+            MessagingService.createAndSendDynamicTemplateEmail(ee);
         } catch (Util.BWException bwe) {
             exceptionThrown = true;
         }
@@ -46,14 +48,8 @@ public with sharing class MessagingServiceTest {
 
         exceptionThrown = false;
         try {
-            MessagingService.createAndSendDynamicTemplateEmail(
-                'MessagingServiceTest_Missing_Template',
-                'customercare@bluewavesolar.com',
-                'Subject',
-                new List<String>{'a@b.com', 'c@d.com'},
-                'NameField',
-                'Peter'
-            );
+            ee.emailTemplateName = 'MessagingServiceTest_Missing_Template';
+            MessagingService.createAndSendDynamicTemplateEmail(ee);
         } catch (Util.BWException bwe) {
             exceptionThrown = true;
         }
@@ -62,14 +58,8 @@ public with sharing class MessagingServiceTest {
 
         exceptionThrown = false;
         try {
-            MessagingService.createAndSendDynamicTemplateEmail(
-                'MessagingServiceTest_Active_Template',
-                'customercare@bluewavesolar.com',
-                'Subject',
-                new List<String>{'a@b.com', 'c@d.com'},
-                'NameField',
-                'Peter'
-            );
+            ee.emailTemplateName = 'MessagingServiceTest_Active_Template';
+            MessagingService.createAndSendDynamicTemplateEmail(ee);
         } catch (Util.BWException bwe) {
             exceptionThrown = true;
         }
@@ -82,14 +72,8 @@ public with sharing class MessagingServiceTest {
         MessagingService.onlyUseActiveTemplates = false;
         MessagingService.emailsSent = null;
         try {
-            MessagingService.createAndSendDynamicTemplateEmail(
-                'MessagingServiceTest_Inactive_Template',
-                'customercare@bluewavesolar.com',
-                'Subject',
-                new List<String>{'a@b.com', 'c@d.com'},
-                'NameField',
-                'Peter'
-            );
+            ee.emailTemplateName = 'MessagingServiceTest_Inactive_Template';
+            MessagingService.createAndSendDynamicTemplateEmail(ee);
         } catch (Util.BWException bwe) {
             exceptionThrown = true;
         }
@@ -97,6 +81,30 @@ public with sharing class MessagingServiceTest {
             'with onlyUseActive set to false');
         // But Messaging Service should save a version of the email sent:
         System.assertEquals(1, MessagingService.emailsSent.size());
+
+        MessagingService.emailsSent = null;
+        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+        mail.setHtmlBody('Test of {!$Label.MissingLabel}');
+        mail.setToAddresses(new List<String>{'a@b.com', 'c@d.com'});
+        mail.setOrgWideEmailAddressId(MessagingService.getCustomerCareEmail().Id);
+        Messaging.SingleEmailMessage mail2 = new Messaging.SingleEmailMessage();
+        mail2.setHtmlBody('Test of {!$Label.Company_Name}');
+        mail2.setToAddresses(new List<String>{'e@f.com'});
+        mail2.setOrgWideEmailAddressId(MessagingService.getCustomerCareEmail().Id);
+
+        MessagingService.sendEmail(new List<Messaging.Email>{mail, mail2});
+        List<Error_Log__c> errorLogs = [
+            SELECT Id, Message__c
+            FROM Error_Log__c
+            WHERE Severity__c = :Logger.ERROR
+            AND Class__c = 'MessagingService'
+        ];
+        System.assertEquals(1, errorLogs.size(),
+            'Expected one error log when finding a label the CustomLabelResolver could not be resolve, but got: ' + errorLogs);
+        System.assert(errorLogs[0].Message__c.contains('Unknown label found'), errorLogs[0].Message__c);
+        System.assertEquals(1, MessagingService.emailsSent.size(), 'Expected MessagingService to send one email');
+        Messaging.SingleEmailMessage singleEmailMessage = (Messaging.SingleEmailMessage) MessagingService.emailsSent[0];
+        System.assertEquals(singleEmailMessage.getToAddresses(), mail2.getToAddresses(), 'Expected mail2 to be sent to e@f.com');
     }
 
     @IsTest
