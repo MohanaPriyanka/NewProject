@@ -1,0 +1,68 @@
+{
+  "appPageId" : "41c3239d-0aff-458c-8a72-49e9ba067b44",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "id" : "bcc20cc6-46ee-4563-b219-6586ed7ca731",
+  "label" : "Search",
+  "regions" : [ {
+    "components" : [ {
+      "componentAttributes" : {
+        "maxWidth" : 100,
+        "overlayColor" : "rgba(0,0,0,0.4)",
+        "overlayHoverColor" : "",
+        "radius" : 0,
+        "showTitle" : false,
+        "textAlignment" : "center",
+        "textBgColor" : "rgba(0,0,0,0)",
+        "textBgHoverColor" : "rgba(0,0,0,0)",
+        "textColor" : "",
+        "textHoverColor" : "",
+        "textPosition" : "center center",
+        "title" : "Featured Topics"
+      },
+      "componentName" : "forceTopic:featuredTopics",
+      "id" : "328ddddd-7ad0-4a32-8eb6-2753004f6708",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "909601b7-45d2-40ec-9933-647b5a2ca072",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "scopes" : [ {
+          "isPublic" : true,
+          "name" : "FeedPost"
+        }, {
+          "isPublic" : true,
+          "name" : "KnowledgeArticleVersion"
+        }, {
+          "isPublic" : false,
+          "name" : "Case"
+        }, {
+          "isPublic" : true,
+          "name" : "CollaborationGroup"
+        } ],
+        "searchResultFiltering" : true,
+        "searchTerm" : "{!term}",
+        "showTopResults" : true
+      },
+      "componentName" : "forceCommunity:search",
+      "id" : "69e781c4-75c7-4957-87d1-162166f085b1",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "0c804dca-17f1-4495-8d73-af9a0a46dba8",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "c584adef-6719-4e36-a60d-c6de0f78768f",
+    "regionName" : "footer",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "global-search"
+}

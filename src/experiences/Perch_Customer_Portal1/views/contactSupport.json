@@ -1,0 +1,113 @@
+{
+  "appPageId" : "41c3239d-0aff-458c-8a72-49e9ba067b44",
+  "componentName" : "siteforce:sldsTwoCol66Layout",
+  "id" : "fe31ff3e-42f5-43d6-9497-a519d53cd47c",
+  "label" : "Contact Support",
+  "regions" : [ {
+    "components" : [ {
+      "componentAttributes" : {
+        "maxWidth" : 100,
+        "overlayColor" : "rgba(0,0,0,0.4)",
+        "overlayHoverColor" : "",
+        "radius" : 0,
+        "showTitle" : false,
+        "textAlignment" : "center",
+        "textBgColor" : "rgba(0,0,0,0)",
+        "textBgHoverColor" : "rgba(0,0,0,0)",
+        "textColor" : "",
+        "textHoverColor" : "",
+        "textPosition" : "center center",
+        "title" : "Featured Topics"
+      },
+      "componentName" : "forceTopic:featuredTopics",
+      "id" : "822ed58e-5863-4865-bacc-3fc89f7a70f2",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "884ae4ad-16ec-42db-8af7-c8bdfba7a69d",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "allowAttachments" : true,
+        "attachmentLabel" : "Upload File",
+        "buttonAlignment" : "center",
+        "buttonBgColor" : "",
+        "buttonBgHoverColor" : "",
+        "buttonBorderColor" : "",
+        "buttonMaxWidth" : "",
+        "buttonRadius" : 0,
+        "buttonTextColor" : "",
+        "buttonTextHoverColor" : "",
+        "callToAction" : false,
+        "callToActionButtonText" : "",
+        "callToActionText" : "",
+        "callToActionUrl" : "",
+        "confirmationSubtext" : "You'll hear back from us soon.",
+        "confirmationText" : "Your request was submitted successfully.",
+        "guestQuickActionName" : "NewCommunityCase",
+        "headerSubtitle" : "Tell us how we can help.",
+        "headerTitle" : "Contact Customer Support",
+        "quickActionName" : "NewCommunityCase",
+        "requestSummaryText" : "Case summary"
+      },
+      "componentName" : "forceCommunity:contactSupportForm",
+      "id" : "78984f11-49b8-489e-ab01-ed493b35d18f",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "e11421e3-ced9-4f00-a3b7-de9ec8f7db68",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "askConfirmationQuestion" : true,
+        "confirmationMessageLabel" : "Got it!",
+        "deflectionSubtitle" : "Find what you need here.",
+        "deflectionTitle" : "Need Answers Fast?",
+        "firstQuestion" : "Did this content solve your issue?",
+        "maxResults" : 6,
+        "measureDeflection" : true,
+        "redirectUrl" : "",
+        "secondQuestion" : "Stop creating your case?",
+        "showArticles" : true,
+        "showDiscussions" : false,
+        "topicId" : "0TO7j000000SCfaGAG"
+      },
+      "componentName" : "forceCommunity:caseDeflection",
+      "id" : "4d7524e9-4587-4d7a-a55d-11b20b3f5c4b",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "7c0b4760-6d1f-44ef-a8fd-a0da894da2d8",
+    "regionName" : "sidebar",
+    "type" : "region"
+  }, {
+    "id" : "e62adaf0-81f6-4e15-a2e6-28f5c3b67863",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "Contact Support"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "8fad27cb-6859-4f4d-b3c6-6c804d64b24f",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "bec10343-028c-4b3f-9144-3adb2c94a3ea",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "contactsupport"
+}

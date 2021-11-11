@@ -1,0 +1,66 @@
+{
+  "appPageId" : "41c3239d-0aff-458c-8a72-49e9ba067b44",
+  "componentName" : "siteforce:sldsThreeCol363Layout",
+  "id" : "1fb77aa6-5f68-44a1-9896-543622898af1",
+  "label" : "Case Detail",
+  "regions" : [ {
+    "id" : "2b34874b-ddd9-4701-97f5-ad3e97243a79",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "recordId" : "{!recordId}"
+      },
+      "componentName" : "forceCommunity:lwcRecordDetail",
+      "id" : "268d5446-07bb-4397-aacf-cccec938095d",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    }, {
+      "componentAttributes" : {
+        "relatedListApiName" : "CombinedAttachments",
+        "relatedListComponentOverride" : "GRID",
+        "width" : "MEDIUM"
+      },
+      "componentName" : "forceCommunity:responsiveRelatedListSingle",
+      "id" : "bced22a8-b911-47b5-8dc2-51473fe36d80",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "2380e93a-f904-4646-bc33-b30e66a64991",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "15cdaa4a-f1f7-43e8-8337-952a70876128",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "{!Record._Object}: {!Record._Title}"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "f445358e-ecff-483a-bca6-1e70b9019f64",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "6d55787b-45b7-492c-a372-da7c31a7ded3",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  }, {
+    "id" : "1c40e3a1-56e0-4fd8-9f05-881313914588",
+    "regionName" : "sidebar",
+    "type" : "region"
+  }, {
+    "id" : "eefca0d2-fc73-4b1f-b7f0-b10338cfef97",
+    "regionName" : "sidebarAlt",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "detail-500"
+}

@@ -1,0 +1,68 @@
+{
+  "appPageId" : "f343f4f2-a48d-4766-b75b-fbeab261827e",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "id" : "0979681c-1812-4fe0-afc3-a3ad9a8eabf8",
+  "label" : "Register",
+  "regions" : [ {
+    "components" : [ {
+      "componentAttributes" : {
+        "bk" : "{!bk}"
+      },
+      "componentName" : "c:CSPDynamicLogo",
+      "id" : "477e1530-51af-4d26-be6e-3f42c91d75e9",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    }, {
+      "componentAttributes" : {
+        "richTextValue" : "<p style=\"text-align: center;\"><span style=\"font-size: 18px;\">ACCOUNT SETUP</span></p>"
+      },
+      "componentName" : "forceCommunity:richTextInline",
+      "id" : "6cbe2bf7-31cf-4702-98c7-f60e0cf2c49a",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    }, {
+      "componentAttributes" : {
+        "flowArguments" : "",
+        "flowLayout" : "oneColumn",
+        "flowName" : "Create_Account_Setup_Case"
+      },
+      "componentName" : "forceCommunity:flowCommunity",
+      "id" : "ce16b465-acbc-4d5b-82ed-57819d0ec906",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    }, {
+      "componentAttributes" : {
+        "richTextValue" : "<div style=\"text-align: center;\"><a href=\"./\">Already have an account?</a></div>"
+      },
+      "componentName" : "forceCommunity:htmlBlock",
+      "id" : "fbaaf14c-447b-4a55-a887-75b63a5ff8b2",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "2a0cfa25-a63e-409a-a29d-7ff08081d465",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "Register"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "17a769a6-c8c9-49c5-8b31-be152e866437",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "df72d4c7-969c-4f5a-a839-e3aa27e70e1e",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Login",
+  "type" : "view",
+  "viewType" : "self-register"
+}

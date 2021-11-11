@@ -1,0 +1,79 @@
+{
+  "appPageId" : "41c3239d-0aff-458c-8a72-49e9ba067b44",
+  "componentName" : "siteforce:sldsTwoCol84SidebarFeaturedLayout",
+  "id" : "5bf59746-64aa-4854-ad36-4f7348c74245",
+  "label" : "My Solar Subscription",
+  "regions" : [ {
+    "components" : [ {
+      "componentAttributes" : { },
+      "componentName" : "c:customerPortalProjectCarousel",
+      "id" : "b820cebd-17d6-4d7a-a4f8-9d833ebe9eb0",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "40b8bd4b-ea89-46b5-93cd-499747b6dfd9",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "buttonAlignment" : "center",
+        "buttonBgColor" : "",
+        "buttonBgHoverColor" : "",
+        "buttonBorderColor" : "",
+        "buttonMaxWidth" : 100,
+        "buttonRadius" : 0,
+        "buttonTextColor" : "",
+        "buttonTextHoverColor" : "",
+        "label" : "Contact Support"
+      },
+      "componentName" : "forceCommunity:contactSupportButton",
+      "id" : "201c9a60-ba41-4d90-b694-8a935a7f59ec",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "aa8e0f97-4822-4464-82e0-8f3e80357b8f",
+    "regionName" : "featured",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : { },
+      "componentName" : "c:customerPortalProjectUASList",
+      "id" : "60b7b529-2251-4fe7-bf59-4dc705195b8f",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "93a32efa-3afe-48e4-bf7e-c0c89cd01e05",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "3e3a282d-ab65-4ee9-9c75-558f4de3a659",
+    "regionName" : "sidebar",
+    "type" : "region"
+  }, {
+    "id" : "3f36765d-05bb-41e8-affd-987b45858f7a",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "My Solar Subscription"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "8c6d88d5-99b8-428c-a4dc-248fa4f982d5",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "5df1a0eb-d27d-47e2-9aee-a5e75f4d22bf",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "custom-my-solar-subscription"
+}
