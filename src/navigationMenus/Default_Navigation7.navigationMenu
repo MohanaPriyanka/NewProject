@@ -51,7 +51,7 @@
         <label>Logout</label>
         <position>5</position>
         <publiclyAvailable>true</publiclyAvailable>
-        <target>https://portal.perchenergy.com/CustomerPortal/secur/logout.jsp</target>
+        <target>https://portal.perchenergy.com/customerportal/secur/logout.jsp</target>
         <targetPreference>OpenExternalLinkInSameTab</targetPreference>
         <type>ExternalLink</type>
     </navigationMenuItem>
