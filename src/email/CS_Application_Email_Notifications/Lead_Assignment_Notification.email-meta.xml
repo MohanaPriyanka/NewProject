@@ -5,13 +5,6 @@
     <name>Lead Assignment Notification</name>
     <style>none</style>
     <subject>New Lead Assigned to You</subject>
-    <textOnly>A new lead has been assigned to you or a queue you belong to:  
-
-Name: {!Lead.FirstName} {!Lead.LastName} 
-
-Email: {!Lead.Email} 
-
-Link: {!Lead.Link}</textOnly>
     <type>custom</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

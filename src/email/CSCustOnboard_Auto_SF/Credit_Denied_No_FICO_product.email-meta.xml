@@ -6,16 +6,6 @@
     <name>Credit Denied - No FICO product</name>
     <style>none</style>
     <subject>Sorry, we were unable to approve your application</subject>
-    <textOnly>Dear {!Lead.FirstName},
-
-Thank you for your recent BlueWave Community Solar application - unfortunately we&apos;re unable to approve your application at this time. Please contact your sales representative to identify why your application was not accepted and next steps.
-
-Thank you for considering BlueWave, we hope to be able to serve you in the future.
-
-- All of us here at BlueWave
-
-BlueWave Customer Care
-844.786.4100 | customercare@bluewavesolar.com</textOnly>
     <type>custom</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

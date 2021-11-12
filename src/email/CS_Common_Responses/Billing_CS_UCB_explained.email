@@ -1,0 +1,27 @@
+Hi {!Contact.FirstName},
+
+Thanks for reaching out to us here at {!$Label.Company_Name}! I'm happy to help explain community solar. 
+
+How it works: 
+
+- You sign up for community solar subscription and are assigned a portion of the farm. 
+
+- The solar farm generates energy. 
+
+- The energy generated is translated into “credits” which are transferred to your utility account. 
+
+- Your utility calculates how many credits to apply to your account, reducing your monthly utility bill (you'll be allocated credits to cover your total electricity charges and any unused credits will roll over for later use)
+
+- Based on the savings rate in your CS contract, the utility applies that portion in savings directly on your bill 
+
+- The difference is paid directly by the utility to the project owner. 
+
+If the sun is shining, you are guaranteed to save money on your electric bill each month. For a more in depth look at exactly how those savings can work, please see this article: {!$Label.Customer_Member_Portal_URL}Support/s/article/How-Utility-Consolidated-Community-Solar-Billing-Works
+
+Please let me know if you have any further questions, I'm happy to help.
+
+Best,
+{!Case.OwnerFullName}
+Support Operations
+{!$Label.Company_Name} Community Solar
+{!$Label.Company_Temp_Website}

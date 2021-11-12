@@ -6,18 +6,6 @@
     <name>Task Completion Notfication</name>
     <style>none</style>
     <subject>Task Completed -  {!Task.Subject}</subject>
-    <textOnly>*|MC:SUBJECT|*
-
-
-Dear {CurrentUser},
-
-The following task has been completed.
-
-https://na16.salesforce.com/{!Activity.Id}
-Subject: {!Task.Subject}
-
-Thanks,
-{!Task.Who}</textOnly>
     <type>custom</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

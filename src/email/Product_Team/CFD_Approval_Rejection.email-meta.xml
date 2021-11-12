@@ -5,13 +5,6 @@
     <name>CFD Approval Rejection</name>
     <style>none</style>
     <subject>CFD Approval Request Rejected</subject>
-    <textOnly>Your approval request for a Contract Fee Detail record was rejected
-
-Name: {!Contract_Fee_Detail__c.Name}
-
-Contract Name: {!Contract_Fee_Detail__c.Contract__c}
-
-Fee Summary: {!Contract_Fee_Detail__c.Fee_Summary__c}</textOnly>
     <type>custom</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

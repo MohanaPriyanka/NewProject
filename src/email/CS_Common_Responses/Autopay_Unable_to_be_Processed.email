@@ -1,6 +1,6 @@
 Hi {!Contact.FirstName},
 
-Your autopay this month was not able to be processed. You can give us a call at (844)786-4100 to update your payment information, or follow the steps below to update your payment information on your customer portal:
+Your autopay this month was not able to be processed. You can give us a call at {!$Label.phone_customercare} to update your payment information, or follow the steps below to update your payment information on your customer portal:
 
 	1. Log in to your Community Solar Portal
 	2. Click on 'View Account/Make a Payment'
@@ -15,5 +15,5 @@ Please let me know if you have any questions!
 Best,
 {!Case.OwnerFullName}
 Support Operations
-BlueWave Community Solar
-bluewavecommunitysolar.com
+{!$Label.Company_Name} Community Solar
+{!$Label.Company_Temp_Website}

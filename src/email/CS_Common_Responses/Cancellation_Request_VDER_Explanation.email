@@ -4,7 +4,7 @@ We're sorry to hear you're thinking of cancelling. Before we go through with the
 
 Every month, your solar project produces a certain of electricity which gets allocated to your utility account in the form of dollar credits. We then bill you for these credits at a 10% discount. So far, you've saved ______ .
 
-While you are paying higher BlueWave bills now, your utility will store excess credits on your account, and in the winter when your subscription produces less credits, your utility will pull from this bank. New York also has a utility driven program called VDER, which could cause fluctuation in in your bills. Some background: 
+While you are paying higher {!$Label.Company_Name} bills now, your utility will store excess credits on your account, and in the winter when your subscription produces less credits, your utility will pull from this bank. New York also has a utility driven program called VDER, which could cause fluctuation in in your bills. Some background: 
 
 Understanding the New York VDER Value Stack: 
 
@@ -12,7 +12,7 @@ Community solar subscribers receive dollar credit savings directly on their util
 
 What This Means for You as a Community Solar Customer:
 
-The VDER mechanism determines the real-time value of energy as it gets created by a solar project. This means that the credits you receive on your electric bills will fluctuate over the course of the year. These fluctuations tend to align with the seasons since a solar farm’s production varies depending on the season. During the summer months, you will see an increase in the credits that are allocated to your account due to what is known as "peak production." You’ll also see the value of those credits increase. Therefore, your August, September, and October BlueWave statements will be higher than usual. Not to worry, your subscription is still sized to bring you savings on your annual electricity costs. So while your summer bills may be a bit higher, they will be lower in the winter when solar production slows and the value of your credits decreases.
+The VDER mechanism determines the real-time value of energy as it gets created by a solar project. This means that the credits you receive on your electric bills will fluctuate over the course of the year. These fluctuations tend to align with the seasons since a solar farm’s production varies depending on the season. During the summer months, you will see an increase in the credits that are allocated to your account due to what is known as "peak production." You’ll also see the value of those credits increase. Therefore, your August, September, and October {!$Label.Company_Name} statements will be higher than usual. Not to worry, your subscription is still sized to bring you savings on your annual electricity costs. So while your summer bills may be a bit higher, they will be lower in the winter when solar production slows and the value of your credits decreases.
 
 If you would still like to cancel, please reply to this email and we are happy to continue the process with you. Please be advised, it takes 1-2 months to remove you from the project. You will be charged for any credits you receive during this time.
 
@@ -21,5 +21,5 @@ Please let me know if you have any further questions, I'm happy to help.
 Best,
 {!Case.OwnerFullName}
 Support Operations
-BlueWave Community Solar
-bluewavecommunitysolar.com
+{!$Label.Company_Name} Community Solar
+{!$Label.Company_Temp_Website}

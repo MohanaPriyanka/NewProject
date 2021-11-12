@@ -5,7 +5,7 @@
     <encodingKey>ISO-8859-1</encodingKey>
     <name>Subscription Adjustment Request - Submitted</name>
     <style>none</style>
-    <subject>BlueWave: We have submitted your subscription adjustment request</subject>
+    <subject>{!$Label.Company_Name}: We have submitted your subscription adjustment request</subject>
     <type>text</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

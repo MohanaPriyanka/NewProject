@@ -6,29 +6,6 @@
     <name>Project Assignment (Hybrid MA Product)</name>
     <style>none</style>
     <subject>We found a solar farm for you</subject>
-    <textOnly>Meet your solar farm
-
-Learn more
-
-You&apos;ve been matched!
-We found a local solar farm that can support your energy needs. Read on for more details:
-
-Your solar farm
-
-You have been assigned to the %%SSSName%% located at %%SSSAddress%%, %%SSSCity%%, %%SSSState%% %%SSSZip%%. This farm will create %%SSSKwDC%% kW DC of solar per year which is enough to power %%SSSHomeOffset%% homes annually.
-
-We sized your community solar share based on your current electric usage. If your electricity use changes down the road, you can always reach out to us to request an adjustment.
-
-%%[IF ((NOT Empty(IIf(Empty([SSSEstPTO]), &quot;&quot;, DateParse(Format([SSSEstPTO], &quot;yyyy-MM-dd&quot;)))) AND DateDiff(IIf(Empty([SSSEstPTO]), &quot;&quot;, DateParse(Format([SSSEstPTO], &quot;yyyy-MM-dd&quot;))),IIf(Empty(Now()), &quot;&quot;, DateParse(Format(Now(), &quot;yyyy-MM-dd&quot;))),&quot;D&quot;) &gt; 0)) THEN]%% %%=BeginImpressionRegion(&quot;01__Rule_1__Block_if_farm_is_already_live&quot;)=%% %%=ContentBlockById(&quot;146443&quot;)=%% %%=EndImpressionRegion()=%% %%[ELSE]%% %%=BeginImpressionRegion(&quot;01__Default_Content__Block_if_solar_farm_is_under_constructi&quot;)=%% %%=ContentBlockById(&quot;146442&quot;)=%% %%=EndImpressionRegion()=%% %%[ENDIF]%%
-
-Have questions?
-
-We&apos;re happy to help. Contact a member of our Customer Care team M-F, 9am-5pm at customercare@bluewavesolar.com or 844.786.4100
-
-Get answers
-
-BlueWave Customer Service:
-customercare@bluewavesolar.com</textOnly>
     <type>custom</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

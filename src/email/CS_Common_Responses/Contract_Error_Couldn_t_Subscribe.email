@@ -1,6 +1,6 @@
 Hi {!Contact.FirstName},
 
-There was a small error with your BlueWave Community Solar Contract. We could not subscribe some of the utility accounts due to .
+There was a small error with your {!$Label.Company_Name} Community Solar Contract. We could not subscribe some of the utility accounts due to .
 
 The following accounts were not subscribed:
 
@@ -9,5 +9,5 @@ We apologize for the inconvenience, and please let me know if you have further q
 Best,
 {!Case.OwnerFullName}
 Support Operations
-BlueWave Community Solar
-bluewavecommunitysolar.com
+{!$Label.Company_Name} Community Solar
+{!$Label.Company_Temp_Website}

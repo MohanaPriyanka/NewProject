@@ -1,6 +1,6 @@
 Hi {!Contact.FirstName},
 
-Thanks for reaching out to us here at BlueWave! We have been experiencing significant mailing delays, occasionally between 1-4 weeks. We understand this is not ideal and sincerely apologize for the inconvenience.
+Thanks for reaching out to us here at {!$Label.Company_Name}! We have been experiencing significant mailing delays, occasionally between 1-4 weeks. We understand this is not ideal and sincerely apologize for the inconvenience.
 
 [insert case specific details here - invoices still due, what he have and haven't received, whatever is pertinent]
 
@@ -9,5 +9,5 @@ Please let me know if you have any further questions, I'm happy to help, and pro
 Best,
 {!Case.OwnerFullName}
 Support Operations
-BlueWave Community Solar
-bluewavecommunitysolar.com
+{!$Label.Company_Name} Community Solar
+{!$Label.Company_Temp_Website}

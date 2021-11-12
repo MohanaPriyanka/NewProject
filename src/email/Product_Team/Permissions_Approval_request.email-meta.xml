@@ -6,11 +6,6 @@
     <name>Permissions Approval Request</name>
     <style>freeForm</style>
     <subject>Permissions Approval Request: {!Contact.Name}</subject>
-    <textOnly>Your approval is requested for the following permissions provisioning case:
-
-{!Case.Subject}
-
-Description: {!Case.Description}</textOnly>
     <type>html</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

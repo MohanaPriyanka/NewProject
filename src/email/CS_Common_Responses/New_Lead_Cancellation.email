@@ -1,11 +1,11 @@
 Hi {!Contact.FirstName},
 
-Thanks for reaching out to us here at BlueWave! We have gone ahead and cancelled you, and you are no longer signed up for community solar. We apologize for any inconvenience.
+Thanks for reaching out to us here at {!$Label.Company_Name}! We have gone ahead and cancelled you, and you are no longer signed up for community solar. We apologize for any inconvenience.
 
 Please let me know if you have any further questions, I'm happy to help.
 
 Best,
 {!Case.OwnerFullName}
 Support Operations
-BlueWave Community Solar
-bluewavecommunitysolar.com
+{!$Label.Company_Name} Community Solar
+{!$Label.Company_Temp_Website}

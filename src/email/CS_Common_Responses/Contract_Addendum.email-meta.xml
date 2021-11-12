@@ -5,7 +5,7 @@
     <encodingKey>ISO-8859-1</encodingKey>
     <name>Contract Error- Contract Addendum</name>
     <style>none</style>
-    <subject>There has been an addendum to your BlueWave Community Solar contract</subject>
+    <subject>There has been an addendum to your {!$Label.Company_Name} Community Solar contract</subject>
     <type>text</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

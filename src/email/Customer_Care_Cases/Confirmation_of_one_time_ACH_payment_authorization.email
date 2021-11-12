@@ -1,7 +1,7 @@
 Dear [NAME OF INDIVIDUAL CALLER/CALLED]:
 
-This email is confirmation of the electronic payment you authorized [NAME OF PAYEE] or its servicer, including BlueWave, or any assignee or its servicer, to debit from a bank account during a recent telephone call.
+This email is confirmation of the electronic payment you authorized [NAME OF PAYEE] or its servicer, including {!$Label.Company_Name}, or any assignee or its servicer, to debit from a bank account during a recent telephone call.
 
-On [DATE], you authorized [NAME OF PAYEE], or its servicer, including BlueWave, or any assignee or its servicer, to initiate an electronic payment (called an ACH debit) from a bank account in the name of [NAME OF DEPOSITOR] at [NAME OF BANK] with account number ending in [LAST FOUR DIGITS OF ACCOUNT NUMBER], in the amount of $[AMOUNT] on or after [DATE].
+On [DATE], you authorized [NAME OF PAYEE], or its servicer, including {!$Label.Company_Name}, or any assignee or its servicer, to initiate an electronic payment (called an ACH debit) from a bank account in the name of [NAME OF DEPOSITOR] at [NAME OF BANK] with account number ending in [LAST FOUR DIGITS OF ACCOUNT NUMBER], in the amount of $[AMOUNT] on or after [DATE].
 
-You can call BlueWave at 844-786-4100 with any questions about this authorization.  We answer this telephone number during our normal business hours, which are 9 AM – 5 PM EST.
+You can call {!$Label.Company_Name} at {!$Label.phone_customercare} with any questions about this authorization.  We answer this telephone number during our normal business hours, which are 9 AM – 5 PM EST.

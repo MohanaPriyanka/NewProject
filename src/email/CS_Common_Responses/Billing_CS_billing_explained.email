@@ -1,16 +1,16 @@
 Hi {!Contact.FirstName},
 
-Thanks for reaching out to us here at BlueWave! I'm happy to help explain community solar billing. 
+Thanks for reaching out to us here at {!$Label.Company_Name}! I'm happy to help explain community solar billing. 
 
-As your subscribed farm generates electricity, your utility measures the amount of electricity produced and assigns that electricity a dollar value in the form of a “solar credit.” The value of a solar credit is determined by multiple factors including the type of solar project and the value of energy at the time that energy is produced. With your subscription, a share of these credits is applied to your monthly electricity bill, reducing what you owe your utility. While this billing mechanism brings you savings, it also means you’ll receive two bills every month—one from your utility, and one from BlueWave. Your utility bill will look the same, and you’ll receive the same electricity from the grid as before. The one difference is that you will see a new negative line item for your solar credits.
+As your subscribed farm generates electricity, your utility measures the amount of electricity produced and assigns that electricity a dollar value in the form of a “solar credit.” The value of a solar credit is determined by multiple factors including the type of solar project and the value of energy at the time that energy is produced. With your subscription, a share of these credits is applied to your monthly electricity bill, reducing what you owe your utility. While this billing mechanism brings you savings, it also means you’ll receive two bills every month—one from your utility, and one from {!$Label.Company_Name}. Your utility bill will look the same, and you’ll receive the same electricity from the grid as before. The one difference is that you will see a new negative line item for your solar credits.
 
 If you have further questions about community solar billing, please see the full article with sample bills at:
-https://bluewavesolar.com/bw-resources/a-6-minute-guide-to-community-solar-billing
+{!$Label.Company_Website}bw-resources/a-6-minute-guide-to-community-solar-billing
 
 Please let me know if you have any further questions, I'm happy to help.
 
 Best,
 {!Case.OwnerFullName}
 Support Operations
-BlueWave Community Solar
-bluewavecommunitysolar.com
+{!$Label.Company_Name} Community Solar
+{!$Label.Company_Temp_Website}

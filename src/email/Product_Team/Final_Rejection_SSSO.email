@@ -51,7 +51,7 @@
 <table width="100%" cellspacing="0" cellpadding="0">
 <tbody>
 <tr>
-<td align="center"><a href="https://bluewavesolar.com/" title="" alias="Website Link" conversion="true" data-linkto="https://"><img data-assetid="38376" src="http://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/e9dd3d83-d085-44dd-9d93-694ab0d48935.png" height="36" width="250" style="display: block; padding: 0px; text-align: center; height: 36px; width: 250px; border: 0px;" /></a></td>
+<td align="center"><a href="{!$Label.Company_Website}" title="" alias="Website Link" conversion="true" data-linkto="https://"><img data-assetid="38376" src="{!$Label.Company_Main_Logo}" height="36" width="250" style="display: block; padding: 0px; text-align: center; height: 36px; width: 250px; border: 0px;" /></a></td>
 </tr>
 </tbody>
 </table>

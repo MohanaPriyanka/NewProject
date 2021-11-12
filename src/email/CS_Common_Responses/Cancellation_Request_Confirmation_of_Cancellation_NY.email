@@ -2,16 +2,16 @@ Hi {!Contact.FirstName},
 
 Your community solar subscription cancellation request has been submitted. 
 
-Please note that this does not mean you will stop receiving BlueWave bills immediately. 
+Please note that this does not mean you will stop receiving {!$Label.Company_Name} bills immediately. 
 
-Due to New York state and utility regulations, BlueWave can only alter solar farm subscriber lists once every month. Therefore, even though your cancellation request has been submitted, it may be up to 3 months before you are removed and stop receiving credits. 
+Due to New York state and utility regulations, {!$Label.Company_Name} can only alter solar farm subscriber lists once every month. Therefore, even though your cancellation request has been submitted, it may be up to 3 months before you are removed and stop receiving credits. 
 
-Once you are taken off the solar farm by the utility, please remember you will receive bills for all credits transferred to your utility account. Because it takes about 2 months from when credits are transferred to when BlueWave sends a bill, you will likely receive 2 or 3 more BlueWave bills after you are removed from the solar farm. 
+Once you are taken off the solar farm by the utility, please remember you will receive bills for all credits transferred to your utility account. Because it takes about 2 months from when credits are transferred to when {!$Label.Company_Name} sends a bill, you will likely receive 2 or 3 more {!$Label.Company_Name} bills after you are removed from the solar farm. 
 
 If you have any questions or concerns, please let me know.
 
 Best,
 {!Case.OwnerFullName}
 Support Operations
-BlueWave Community Solar
-bluewavecommunitysolar.com
+{!$Label.Company_Name} Community Solar
+{!$Label.Company_Temp_Website}

@@ -1,6 +1,6 @@
 Hi {!Contact.FirstName},
 
-Thanks for being a part of BlueWave Community Solar!
+Thanks for being a part of {!$Label.Company_Name} Community Solar!
 
 We are following up with you because your most recent community solar paper bill was returned to us. As such, we have removed you from paper billing and changed your billing preferences to "email only".
 
@@ -9,5 +9,5 @@ Please reply to this email with an updated mailing address so we can keep our re
 Best,
 {!Case.OwnerFullName}
 Support Operations
-BlueWave Community Solar
-bluewavecommunitysolar.com
+{!$Label.Company_Name} Community Solar
+{!$Label.Company_Temp_Website}
