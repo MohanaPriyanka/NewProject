@@ -1,6 +1,6 @@
 {
   "activeBrandingSetId" : "b7d7954c-d6d9-4fee-99d5-cbe7bfcffd3b",
-  "customCSS" : ".uiTooltip {\ndisplay: none !important;\n}\n\n@font-face {\nfont-family: 'Judson-Bold';\nsrc: url('/PerchMemberPortal/s/sfsites/c/resource/PerchFonts/Fonts/Judson-Bold.ttf') format('truetype');\n}\n\n@font-face {\nfont-family: 'Manrope-Regular';\nsrc: url('/PerchMemberPortal/s/sfsites/c/resource/PerchFonts/Fonts/Manrope-Regular.ttf') format('truetype');\n}",
+  "customCSS" : ".uiTooltip {\ndisplay: none !important;\n}\n\n@font-face {\nfont-family: 'Judson-Bold';\nsrc: url('/CustomerPortal/s/sfsites/c/resource/PerchFonts/Fonts/Judson-Bold.ttf') format('truetype');\n}\n\n@font-face {\nfont-family: 'Manrope-Regular';\nsrc: url('/CustomerPortal/s/sfsites/c/resource/PerchFonts/Fonts/Manrope-Regular.ttf') format('truetype');\n}",
   "developerName" : "jepson",
   "id" : "fb6d4abb-d0a4-4286-943c-963ad571d0dd",
   "label" : "Jepson",
