@@ -27474,6 +27474,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Zuora__PaymentGateway__c.Remittance_Address__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Zuora__Payment__c.Lockbox__c</field>
         <readable>true</readable>
@@ -42411,6 +42416,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>ZipCode_Utility_Junction__c-ZipCode Utility Junction Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Zuora__PaymentGateway__c-Zuora__PaymentGateway Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>agf__ADM_Epic__c-agf__Epic Layout Feed Based</layout>

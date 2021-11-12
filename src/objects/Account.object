@@ -1044,37 +1044,26 @@ Specify the global country code setting or record level country code to automati
     </fields>
     <fields>
         <fullName>Conga_Lettersteam_Delinquency__c</fullName>
-        <description>##Conga updated btn:00b0a000001Ftwe</description>
         <externalId>false</externalId>
         <formula>&quot;&amp;solmgr=1&quot; + 
 &quot;&amp;id=&quot; + Id +
-&quot;&amp;templateid=&quot; + IF( 
-CONTAINS(TEXT((Client_Brand_Key__c)),&quot;Amp&quot;), 
-CASE(Days_Past_Due__c, 
-30,&quot;a2F0a000001ZcCu&quot;, 
-45,&quot;a2F0a000001ZcD9&quot;, 
-88,&quot;a2F0a000001ZcDY&quot;, 
-&quot;&quot;), 
-CASE(Days_Past_Due__c, 
-30,&quot;a2F0a000001ZcCz&quot;, 
-45,&quot;a2F0a000001ZcD4&quot;, 
-88,&quot;a2F0a000001ZcDT&quot;, 
-&quot;&quot;))
-+ 
-&quot;&amp;ofn=&quot; + TEXT(TODAY()) + &quot; CS Delinquency Letters&quot; + 
-&quot;&amp;APDF=1&quot; + 
-&quot;&amp;QMode=1&quot; + 
+&quot;&amp;templateid=a2F3K000000ARLTUA4&quot;+ 
+&quot;&amp;ofn=&quot; + TEXT(TODAY()) +  TEXT(Days_Past_Due__c) + &quot; Days CS Delinquency Letters&quot; + 
+&quot;&amp;APDF=1&quot; + /*Specifies whether merged PDF documents will be saved as individual PDF documents or consolidated into one document. */
+&quot;&amp;QMode=Download&quot; + /* Downloads files to content workspace */
 &quot;&amp;ContentWorkspaceId=0580a0000001Ji4&quot; + 
-&quot;&amp;DefaultPDF=1&quot; + 
-&quot;&amp;ZipPDFs=0&quot; + 
-&quot;&amp;ac0=1&quot; + 
-&quot;&amp;ac2=1&quot; + 
-&quot;&amp;ac1=Past Due Delinquency Letter Generated&quot; + 
-&quot;&amp;LG0=0&quot; + 
-&quot;&amp;LG1=Past Due Delinquency Letter Generated&quot; + 
-&quot;&amp;LG4=1&quot; +
+&quot;&amp;queryid=[Account]a275b000002bSl3AAE?pv0=&quot; + Id +
+&quot;&amp;DefaultPDF=1&quot; + /* DefaultPDF sets the default output type to Adobe Acrobat. */
+&quot;&amp;ZipPDFs=0&quot; + /* Assembles PDFs into one large file */
+&quot;&amp;ac0=1&quot; +  /*Automatic Activity Logging 1=True */
+&quot;&amp;ac2=1&quot; +  /* AC2 saves the text of a merged Word document to the body of an Activity (Task)*/
+&quot;&amp;ac1=Past Due Delinquency Letter Generated&quot; + /*AC1 provides an Activity Subject.*/
+&quot;&amp;LG0=0&quot; + /*(Save Text) determines whether to store the text of the document (post-merge) to the body of the Task.*/
+&quot;&amp;LG1=Past Due Delinquency Letter Generated&quot; + /*Activity subject*/
+&quot;&amp;LG4=1&quot; + /*Specifies whether to automatically log an activity after merging. 1=Enabled */
 &quot;&amp;lgwhoid=&quot; + Send_Bills_Contact__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Field leveraged by Conga batch to generate delinquency letters</inlineHelpText>
         <label>Conga Lettersteam Delinquency</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
@@ -1597,8 +1586,8 @@ MAX(TODAY()-Max_Overdue_Due_Date_Merge__c,0),
         <formula>IF(CONTAINS(TEXT(Client_Brand_Key__c),&quot;Amp&quot;),
    &quot;/servlet/servlet.FileDownload?file=0150a000002xuLS&quot;,
    IF(ISPICKVAL($CustomMetadata.System_Default__mdt.System_Defaults.Default_Client_Brand_Key__c, &apos;BluewaveLogo&apos;),
-      &quot;/servlet/servlet.FileDownload?file=0150a0000036Brv&quot;,
-      &quot;/servlet/servlet.FileDownload?file=PerchLogoTBD&quot;
+      &quot;/servlet/servlet.FileDownload?file=0150a0000036Brv&quot;, LEFT( $Api.Enterprise_Server_URL_100, FIND( &quot;.com&quot;, $Api.Enterprise_Server_URL_100 ) + 4)&amp;
+      &quot;sfc/servlet.shepherd/version/renditionDownload?rendition=ORIGINAL_Png&amp;versionId=0685b00000Kjxu6&amp;operationContext=CHATTER&amp;contentId=05T5b00001Bal5C&quot;
    )
 )</formula>
         <inlineHelpText>Used in Conga Templates</inlineHelpText>
