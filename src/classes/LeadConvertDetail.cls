@@ -50,7 +50,7 @@ public without sharing class LeadConvertDetail {
      * @return Boolean
      */
     public Boolean hasUnresolvedSplitLoadZone() {
-        return lead.LoadZone__c.contains('/');
+        return lead.LoadZone__c.contains('/') && !lead.Product__r.Ignore_Load_Zones_When_Qualifying__c;
     }
 
     /**
