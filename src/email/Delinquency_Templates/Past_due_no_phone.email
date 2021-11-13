@@ -12,7 +12,6 @@ Refer to the attached bill for all payment options available. You can reach us a
 Kind regards,
 Lee-Anne Roodt
 Customer Care Manager
-{!$Label.Company_Name}
+{!$Label.Company_Name} Community Solar
 o: {!$Label.phone_customercare}
 {!$Label.Company_Website}
-{!$Label.Company_Name} is proud to be a certified B Corp.

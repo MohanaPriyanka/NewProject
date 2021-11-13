@@ -5,4 +5,4 @@ Welcome to {!$Label.Company_Name}'s {!Community_Name}! To get started, go to {!C
 Username: {!Receiving_User.Username}
             
 Thanks,
-{!$Label.Company_Name}
+{!$Label.Company_Name} Community Solar

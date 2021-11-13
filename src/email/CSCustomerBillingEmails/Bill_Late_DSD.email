@@ -54,7 +54,7 @@
 												<br />
 												Please make a payment as soon as possible.&nbsp;<br />
 												&nbsp;<br />
-												To check the status of your account, make a one time payment online, or to sign up for recurring payments, please login to your {!$Label.Company_Name} Customer Portal.&nbsp;You can also access your portal at </span></span></span><a href="{!$Label.Company_Website}"><span style="font-size:11.0pt"><span style="font-family:&quot;Arial&quot;,sans-serif"><span style="font-family:Arial,Helvetica,sans-serif;">{!$Label.Customer_Member_Portal_URL}</span></span></span></a><span style="font-size:11.0pt"><span style="font-family:&quot;Arial&quot;,sans-serif"><span style="font-family:Arial,Helvetica,sans-serif;">.</span></span></span></td>
+												To check the status of your account, make a one time payment online, or to sign up for recurring payments, please login to your {!$Label.Company_Name} Customer Portal.&nbsp;You can also access your portal at </span></span></span><a href="{!$Label.Customer_Member_Portal_URL}"><span style="font-size:11.0pt"><span style="font-family:&quot;Arial&quot;,sans-serif"><span style="font-family:Arial,Helvetica,sans-serif;">{!$Label.Customer_Member_Portal_URL}</span></span></span></a><span style="font-size:11.0pt"><span style="font-family:&quot;Arial&quot;,sans-serif"><span style="font-family:Arial,Helvetica,sans-serif;">.</span></span></span></td>
 											</tr>
 										</tbody>
 									</table>

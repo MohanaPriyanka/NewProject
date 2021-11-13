@@ -34,7 +34,7 @@
 																		<br />
 																		Once approved, your customer will be emailed a fully executed sales agreement. These emails occasionally end up in the spam folder, so please notify your customer if they are having difficulty finding their contract.<br />
 																		<br />
-																		If your customer has questions about billing or their assigned solar project, please refer them to the<a href="http://{!$Label.Customer_Member_Portal_URL}s/login/">&nbsp;{!$Label.Company_Name} Customer Portal</a>&nbsp;where they can verify and edit their personal information.<br />
+																		If your customer has questions about billing or their assigned solar project, please refer them to the <a href={!$Label.Customer_Member_Portal_URL}s/login/>{!$Label.Company_Name} Customer Portal</a> where they can verify and edit their personal information.<br />
 																		&nbsp;</td>
 																	</tr>
 																
