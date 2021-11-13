@@ -151,7 +151,10 @@ public without sharing class LeadConvertDetail {
     public void determineNumberOfDemandUals() {
         Decimal demandThreshold = utility.Average_Demand_Threshold__c;
         for (Utility_Account_Log__c ual : utilityAccountLogs) {
-            if (demandThreshold != null && ual.Average_Demand__c != null && ual.Average_Demand__c >= demandThreshold) {
+            if (demandThreshold != null
+                && ual.Average_Demand__c != null
+                && ual.Average_Demand__c >= demandThreshold
+                && ual.Exclude_from_Demand_Capacity__c == false) {
                 numberOfDemandUals++;
             }
         }
