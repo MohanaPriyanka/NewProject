@@ -317,7 +317,7 @@
     </apex:outputPanel>
     <apex:outputPanel rendered="{!recipient.Client_Brand_Key__c!='AmpRed' && recipient.Client_Brand_Key__c!='AmpBlack'}">
 
-      <!-- BLUEWAVE TEMPLATE STARTS HERE -->
+      <!-- Non-Branded TEMPLATE STARTS HERE -->
 
 <html>
   <head>
@@ -770,7 +770,7 @@ line-height:1;
       </body>
     </html>
 
-      <!-- BLUEWAVE TEMPLATE ENDS HERE -->
+      <!-- Non-Branded TEMPLATE ENDS HERE -->
 
     </apex:outputPanel>
   </messaging:htmlEmailBody>
