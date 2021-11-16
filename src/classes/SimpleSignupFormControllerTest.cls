@@ -311,6 +311,11 @@ public with sharing class SimpleSignupFormControllerTest {
     @IsTest
     private static void testDupeCheckWithMultipleSubscriptionsPermitted() {
         // SCENARIO A - Lead on File
+        Product2 product = new Product2(
+            Name = 'CS Product with Multiple Subs',
+            Utility_Account_Subscription_Type__c = 'Multiple subscriptions per Utility Account'
+        );
+        insert product;
         Lead matchingLead = new Lead(
             FirstName = 'Successful',
             LastName = 'Match',
@@ -318,7 +323,8 @@ public with sharing class SimpleSignupFormControllerTest {
             Company = 'Company',
             LeadSource = 'Switch',
             Continue_Application_Link__c = 'continueURL.com',
-            Status = 'New'
+            Status = 'New',
+            Product__c = product.Id
         );
         insert matchingLead;
         Utility_Account_Log__c ual = new Utility_Account_Log__c(
@@ -335,21 +341,9 @@ public with sharing class SimpleSignupFormControllerTest {
             Total_System_Size_kWh_DC__c = 1.1
         );
         insert testSSS1;
-        Utility_NMC_Tariff__c testSizingMethod1 = new Utility_NMC_Tariff__c(
-            Name = 'testSizingMethod1'
-        );
-        insert testSizingMethod1;
-        Product2 product = new Product2(
-            Name = 'CS Product with Multiple Subs',
-            Utility_Account_Subscription_Type__c = 'Multiple subscriptions per Utility Account'
-        );
-        insert product;
-        matchingLead.Product__c = product.Id;
-        update matchingLead;
         Utility_Account_Subscription__c existingSubscription = new Utility_Account_Subscription__c(
             Utility_Account_Log__c = ual.Id,
-            Shared_Solar_System__c = testSSS1.Id,
-            Sizing_Method__c = testSizingMethod1.Id
+            Shared_Solar_System__c = testSSS1.Id
         );
         insert existingSubscription;
 
@@ -361,7 +355,7 @@ public with sharing class SimpleSignupFormControllerTest {
         System.assertEquals('No Duplicate Found', resultMultipleSubscriptionsAllowed, 'No duplicate UAL found');
 
         // SCENARIO B - No Lead on File
-        testSSS1.Product__c = product.Id;
+        testSSS1.Product__c = product.Id; // Ensure Product on SSS is set
         update testSSS1;
         Utility_Account_Log__c ual2 = new Utility_Account_Log__c(
             Name = '9876'
@@ -369,8 +363,7 @@ public with sharing class SimpleSignupFormControllerTest {
         insert ual2;
         Utility_Account_Subscription__c existingSubscription2 = new Utility_Account_Subscription__c(
             Utility_Account_Log__c = ual2.Id,
-            Shared_Solar_System__c = testSSS1.Id,
-            Sizing_Method__c = testSizingMethod1.Id
+            Shared_Solar_System__c = testSSS1.Id
         );
         insert existingSubscription2;
 
