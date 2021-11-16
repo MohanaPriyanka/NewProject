@@ -79,7 +79,7 @@ public without sharing class UALSelector {
                 Lead__r.IsConverted,
                 Lead__r.Status,
                 Lead__r.Product__r.Utility_Account_Subscription_Type__c,
-                (SELECT Id, Opportunity__r.StageName
+                (SELECT Id, Opportunity__r.StageName, Shared_Solar_System__r.Product__r.Utility_Account_Subscription_Type__c
                     FROM Utility_Account_Subscriptions__r
                     WHERE Next_Schedule_Z_Status__c = 'Active Subscription'
                 )
