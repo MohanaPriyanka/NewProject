@@ -183,8 +183,6 @@ public without sharing class SimpleSignupFormController {
     public static String handleDuplicateUALs(List<Utility_Account_Log__c> duplicateUALs) {
         for (Utility_Account_Log__c ual : duplicateUALs) {
             Boolean hasSubscription = hasExistingSubscription(ual);
-            Boolean multipleSubscriptionsAllowed = ual.Lead__r.Product__r.Utility_Account_Subscription_Type__c ==
-                'Multiple subscriptions per Utility Account';
             Boolean inReviewLeadFound = ual.Lead__r.Application_Complete_Date__c != null
                 && ual.Lead__r.Status != 'Unqualified'
                 && !ual.Lead__r.IsConverted;
@@ -192,7 +190,7 @@ public without sharing class SimpleSignupFormController {
                 && ual.Lead__r.Application_Complete_Date__c == null
                 && ual.Lead__r.Status != 'Unqualified';
 
-            if (hasSubscription && multipleSubscriptionsAllowed) {
+            if (hasSubscription && multipleSubscriptionsAllowed(ual)) {
                 continue;
             } else if (inReviewLeadFound || hasSubscription) {
                 return 'Application in Review';
@@ -283,6 +281,20 @@ public without sharing class SimpleSignupFormController {
             }
         }
         return false;
+    }
+
+    private static Boolean multipleSubscriptionsAllowed(Utility_Account_Log__c ual) {
+        String multipleSubProductType = 'Multiple subscriptions per Utility Account';
+        Boolean leadProductSupportsMultiple = ual.Lead__r.Product__r.Utility_Account_Subscription_Type__c == multipleSubProductType;
+        Boolean systemProductSupportsMultiple = false;
+        for (Utility_Account_Subscription__c uas : ual.Utility_Account_Subscriptions__r) {
+            // If any subscriptions for this customer use a product that supports multiple subscriptions,
+            // this indicates that the customer can have multiple subscriptions per utility account
+            if (uas.Shared_Solar_System__r.Product__r.Utility_Account_Subscription_Type__c == multipleSubProductType) {
+                systemProductSupportsMultiple = true;
+            }
+        }
+        return leadProductSupportsMultiple || systemProductSupportsMultiple;
     }
 
     /**

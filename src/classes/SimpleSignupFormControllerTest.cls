@@ -302,9 +302,36 @@ public with sharing class SimpleSignupFormControllerTest {
 
         String resultUnqualified = SimpleSignupFormController.findDuplicateUALs('2222');
         System.assertEquals('No Duplicate Found', resultUnqualified, 'Application should not be stopped for Duplicate UALs attached to Unqualified Leads');
+    }
 
-        // Handle MA SMART/SREC situation where multiple subscriptions can exist for a single UAL
-        // ... generate a subscription for the UAL and ensure the product allows multiple subscriptions
+    /**
+     * @description Test SMART/SREC situations where multiple subscriptions can exist for a single UAL
+     *      generate a subscription for the UAL and ensure the product allows multiple subscriptions
+     */
+    @IsTest
+    private static void testDupeCheckWithMultipleSubscriptionsPermitted() {
+        // SCENARIO A - Lead on File
+        Product2 product = new Product2(
+            Name = 'CS Product with Multiple Subs',
+            Utility_Account_Subscription_Type__c = 'Multiple subscriptions per Utility Account'
+        );
+        insert product;
+        Lead matchingLead = new Lead(
+            FirstName = 'Successful',
+            LastName = 'Match',
+            Email = 'test@email.com',
+            Company = 'Company',
+            LeadSource = 'Switch',
+            Continue_Application_Link__c = 'continueURL.com',
+            Status = 'New',
+            Product__c = product.Id
+        );
+        insert matchingLead;
+        Utility_Account_Log__c ual = new Utility_Account_Log__c(
+            Name = '1234',
+            Lead__c = matchingLead.Id
+        );
+        insert ual;
         Shared_Solar_System__c testSSS1 = new Shared_Solar_System__c(
             Name = 'testSSS1',
             Address__c = 'test address',
@@ -314,37 +341,37 @@ public with sharing class SimpleSignupFormControllerTest {
             Total_System_Size_kWh_DC__c = 1.1
         );
         insert testSSS1;
-        Utility_NMC_Tariff__c testSizingMethod1 = new Utility_NMC_Tariff__c(
-            Name = 'testSizingMethod1'
-        );
-        insert testSizingMethod1;
-        Product2 product = new Product2(
-            Name = 'CS Product with Multiple Subs',
-            Utility_Account_Subscription_Type__c = 'Multiple subscriptions per Utility Account'
-        );
-        insert product;
-        matchingLead.Product__c = product.Id;
-        update matchingLead;
-        Opportunity testOpp1 = new Opportunity(
-            zqu__DeliveryInstallationStatus__c ='Completed',
-            Status_of_Financials__c = 'Approved',
-            Product__c = product.Id,
-            ContractId = [SELECT Id FROM Contract LIMIT 1].Id,
-            AccountId = [SELECT Id FROM Account LIMIT 1].Id,
-            Name = 'testOpp1Name',
-            StageName = 'testOpp1StageName',
-            CloseDate = Date.today(),
-            Lead__c = matchingLead.Id
-        );
         Utility_Account_Subscription__c existingSubscription = new Utility_Account_Subscription__c(
             Utility_Account_Log__c = ual.Id,
-            Opportunity__c = testOpp1.Id,
-            Shared_Solar_System__c = testSSS1.Id,
-            Sizing_Method__c = testSizingMethod1.Id
+            Shared_Solar_System__c = testSSS1.Id
         );
         insert existingSubscription;
-        
+
+        // This test handles the case where we check for duplicate applications when a partner submits an app for
+        // an existing customer, such as in MA for legacy SMART/SREC subscriptions. This might happen if a new SSS comes
+        // online in MA and we have existing customers who would benefit from more savings by being subscribed to additional
+        // projects. In this scenario, we have a previous Lead/UAL/UAS on file for the customer already.
         String resultMultipleSubscriptionsAllowed = SimpleSignupFormController.findDuplicateUALs('1234');
+        System.assertEquals('No Duplicate Found', resultMultipleSubscriptionsAllowed, 'No duplicate UAL found');
+
+        // SCENARIO B - No Lead on File
+        testSSS1.Product__c = product.Id; // Ensure Product on SSS is set
+        update testSSS1;
+        Utility_Account_Log__c ual2 = new Utility_Account_Log__c(
+            Name = '9876'
+        );
+        insert ual2;
+        Utility_Account_Subscription__c existingSubscription2 = new Utility_Account_Subscription__c(
+            Utility_Account_Log__c = ual2.Id,
+            Shared_Solar_System__c = testSSS1.Id
+        );
+        insert existingSubscription2;
+
+        // This test is similar to above, except, there are specific circumstances where we have an existing UAL/UAS on
+        // file but no corresponding Lead (deals may have been dataloaded). The dupe check method checks the Product of the
+        // SSS for all UASes on the "Duplicate" UAL and if ANY of those subscriptions leverage a Product that allows
+        // multiple subscriptions, this indicates that the customer is allowed to be on multiple subscriptions per UAL.
+        resultMultipleSubscriptionsAllowed = SimpleSignupFormController.findDuplicateUALs('9876');
         System.assertEquals('No Duplicate Found', resultMultipleSubscriptionsAllowed, 'No duplicate UAL found');
     }
 
