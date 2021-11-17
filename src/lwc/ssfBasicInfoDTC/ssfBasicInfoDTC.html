@@ -327,7 +327,7 @@
                                               field-level-help="PoD ID for your utility account. This can be found on your utility bill. For NYSEG and RG&E this is 15 characters long, starting in N01 or R01."
                                               value={it.value.podId}
                                               onchange={utilityAccountOnChange}
-                                              max-length="15"
+                                              onblur={validateUtilityAccount}
                                               required>
                                             </lightning-input>
                                         </div>

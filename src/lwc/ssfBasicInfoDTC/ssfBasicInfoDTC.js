@@ -18,7 +18,9 @@ import {
     verifyPODEntry,
     getText,
     submitApplication,
-    validateContactEmail
+    validateContactEmail,
+    handleAccountNumberInputMask,
+    handleValidateAccountNumber
 } from 'c/ssfBasicInfoShared';
 
 export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
@@ -53,6 +55,10 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @track showModal;
     @track duplicateLeadId;
     @track underwriting = 'FICO'; // Defaulted to FICO
+    @track uanPrefix;
+    @track podPrefix;
+    @track uanLength;
+    @track podLength;
 
     collectPOD = false;
     utilityAccountCount = 0;
@@ -98,10 +104,12 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         let eventField = event.target.name;
         this.propertyAccount.utilityAccountLogs[event.target.dataset.rowIndex][eventField] = event.target.value;
         if (eventField === 'utilityAccountNumber' || eventField === 'utilityAccountNumberReentry') {
+            handleAccountNumberInputMask(this, event, 'uan');
             verifyUtilityAccountEntry(this, event, eventField);
         } else if (eventField === 'servicePostalCode' && event.target.value.length === 5) {
             validateServiceZipCode(this, event);
         } else if (eventField === 'podId' || eventField === 'podIdReentry') {
+            handleAccountNumberInputMask(this, event, 'podId');
             verifyPODEntry(this, event, eventField);
         }
     }
@@ -116,7 +124,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     }
 
     validateUtilityAccount(event) {
-        findDuplicateUAL(this, event);
+        handleValidateAccountNumber(this, event);
     }
 
     rateClassOnChange(event) {

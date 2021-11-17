@@ -42490,6 +42490,26 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Utility__c.POD_Id_Format__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility__c.POD_Id_Length__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility__c.POD_Id_Prefix__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility__c.POD_Id_Regex_Groups__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Utility__c.Service_Territory__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -42516,6 +42536,26 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Utility__c.Use_Premise_Number_In_Transfer_QC__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility__c.Utility_Account_Number_Format__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility__c.Utility_Account_Number_Length__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility__c.Utility_Account_Number_Prefix__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility__c.Utility_Account_Number_Regex_Groups__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
