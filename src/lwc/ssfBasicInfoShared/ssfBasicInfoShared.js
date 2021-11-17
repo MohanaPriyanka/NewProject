@@ -2,6 +2,7 @@ import {getUSStateOptionsFull} from 'c/util';
 import findDuplicateUALs from '@salesforce/apex/SimpleSignupFormController.findDuplicateUALs';
 import { toggleLoadingSpinnerEvent, modifySpinnerMessageEvent, handlePromiseError, resetReadyStateEvent } from "c/ssfShared";
 import {makeRequest} from "c/httpRequestService";
+import {accountInputMask} from 'c/inputMask';
 import {ShowToastEvent} from "lightning/platformShowToastEvent";
 
 // Perform tasks when first instancing component
@@ -59,6 +60,10 @@ const handleZipCheck = (cmp) => {
         else {
             cmp.isFileUpload = true;
         }
+        cmp.uanPrefix = selectedUtility.uanPrefix ? selectedUtility.uanPrefix : '';
+        cmp.podIdPrefix = selectedUtility.podIdPrefix ? selectedUtility.podIdPrefix : '';
+        cmp.uanLength = selectedUtility.uanLength;
+        cmp.podIdLength = selectedUtility.podIdLength;
     } else {
         cmp.isFileUpload = true;
     }
@@ -208,14 +213,21 @@ const getNewRestPropertyAccount = (component) => {
 }
 
 const getNewRestUtilityAccountLog = (component) => {
-    return {
+    let utilityAccountLog = {
         localid: component.utilityAccountCount,
         name: `Utility Account ${component.utilityAccountCount}`,
         utilityId: component.utilityId,
         doNotDelete: false,
         showUpload: component.isFileUpload,
-        utilityBills: []
+        utilityBills: [],
+        utilityAccountNumber: component.uanPrefix,
+        utilityAccountNumberReentry: component.uanPrefix
+    };
+    if (component.collectPOD) {
+        utilityAccountLog.podId = component.podIdPrefix;
+        utilityAccountLog.podIdReentry = component.podIdPrefix;
     }
+    return utilityAccountLog;
 }
 
 const validateUtilityAccountLog = (cmp, index) => {
@@ -260,6 +272,30 @@ const validateServiceZipCode = (cmp, event) => {
             fieldElement.setCustomValidity('');
             fieldElement.reportValidity();
         });
+    }
+}
+
+const handleValidateAccountNumber = (cmp, event) => {
+    const index = event.target.dataset.rowIndex;
+    const eventField = event.target.name;
+    const isUtilityAccountNumber = eventField === 'utilityAccountNumber';
+    const type = isUtilityAccountNumber ? 'uan' : 'podId';
+    const typeName = isUtilityAccountNumber ? 'Utility Account Number' : 'PoD ID value';
+    const selectorName = isUtilityAccountNumber ? 'ual-number' : 'pod-id';
+    const inputElement = cmp.template.querySelector(`[data-${selectorName}-index="${index}"]`);
+    const numCleaned = cmp.propertyAccount.utilityAccountLogs[index][eventField].replaceAll(/[^a-zA-Z0-9]/g,'');
+
+    // Set or clear error state on field if input is too short
+    if (cmp[`${type}Length`] && numCleaned.length !== cmp[`${type}Length`]) {
+        let numError = cmp[`${type}Prefix`].length ? `The ${typeName} must be ${cmp[`${type}Length`]} characters long, starting in ${cmp[`${type}Prefix`]}.` : `The ${typeName} must be ${cmp[`${type}Length`]} characters long.`;
+        inputElement.setCustomValidity(numError);
+        inputElement.reportValidity();
+    } else {
+        inputElement.setCustomValidity('');
+        inputElement.reportValidity();
+        if (isUtilityAccountNumber) {
+            findDuplicateUAL(cmp,event);
+        }
     }
 }
 
@@ -331,8 +367,8 @@ const verifyUtilityAccountEntry = (cmp, event, eventField) => {
     let ualNumReentryInputElement = cmp.template.querySelector(`[data-ual-number-reentry-index="${index}"]`);
 
     // Retrieve current stored values for input fields
-    const ualNum = cmp.propertyAccount.utilityAccountLogs[index].utilityAccountNumber.replaceAll('-','');
-    const ualNumReentry = cmp.propertyAccount.utilityAccountLogs[index].utilityAccountNumberReentry.replaceAll('-','');
+    const ualNum = cmp.propertyAccount.utilityAccountLogs[index].utilityAccountNumber.replaceAll(/[^a-zA-Z0-9]/g,'');
+    const ualNumReentry = cmp.propertyAccount.utilityAccountLogs[index].utilityAccountNumberReentry.replaceAll(/[^a-zA-Z0-9]/g,'');
 
     // Retrieve state booleans... assess if we want to run validation in real-time
     const ualNumChangeValidate = eventField === 'utilityAccountNumber' && !!ualNumReentry;
@@ -602,6 +638,20 @@ const getJobTitleFieldLabel = (cmp) => {
     }
 }
 
+const handleAccountNumberInputMask = (cmp, event, type) => {
+    const regexGroups = `${type}RegexGroups`;
+    const format = `${type}Format`;
+    const prefix = `${type}Prefix`;
+    const length = `${type}Length`;
+    if (!cmp.zipCheckResponse.utilities || !cmp.zipCheckResponse.utilities.length) {
+        return;
+    }
+    let utility = cmp.zipCheckResponse.utilities[0];
+    let maskedInput = accountInputMask(event.target.value, utility[regexGroups], utility[format], utility[prefix], utility[length]);
+    event.target.value = maskedInput;
+    cmp.propertyAccount.utilityAccountLogs[event.target.dataset.rowIndex][event.target.name] = maskedInput;
+}
+
 export {
     getFinDocFileTypes,
     getNewRestUtilityAccountLog,
@@ -616,5 +666,7 @@ export {
     findDuplicateUAL,
     getText,
     submitApplication,
-    validateContactEmail
+    validateContactEmail,
+    handleAccountNumberInputMask,
+    handleValidateAccountNumber
 }

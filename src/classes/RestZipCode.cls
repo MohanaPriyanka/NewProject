@@ -38,7 +38,19 @@ public inherited sharing class RestZipCode {
     private Set<Utility> getUtilities(Set<Utility__c> utilitySobjs) {
         Set<Utility> utilities = new Set<Utility>();
         for (Utility__c utility : utilitySobjs) {
-            utilities.add(new Utility(utility.Id, utility.Name, utility.Utility_Data_Collection_Mechanism__c));
+            utilities.add(new Utility(
+                utility.Id,
+                utility.Name,
+                utility.Utility_Data_Collection_Mechanism__c,
+                utility.Utility_Account_Number_Regex_Groups__c,
+                utility.Utility_Account_Number_Format__c,
+                utility.Utility_Account_Number_Prefix__c,
+                utility.Utility_Account_Number_Length__c,
+                utility.POD_Id_Regex_Groups__c,
+                utility.POD_Id_Format__c,
+                utility.POD_Id_Prefix__c,
+                utility.POD_Id_Length__c
+            ));
         }
         return utilities;
     }
@@ -46,7 +58,8 @@ public inherited sharing class RestZipCode {
     private Set<Product> getProducts(Set<Product2> productSobjs) {
         Set<Product> products = new Set<Product>();
         for (Product2 prod : productSobjs) {
-            products.add(new Product(prod.Id, prod.Name, prod.Disclosure_Form_Conga_Template__c));
+            products.add(new Product(prod.Id,
+                prod.Name, prod.Disclosure_Form_Conga_Template__c));
         }
         return products;
     }
@@ -63,6 +76,14 @@ public inherited sharing class RestZipCode {
         public String utilityId;
         public String name;
         public String dataCollectionMethod;
+        public String uanRegexGroups;
+        public String uanFormat;
+        public String uanPrefix;
+        public Decimal uanLength;
+        public String podIdRegexGroups;
+        public String podIdFormat;
+        public String podIdPrefix;
+        public Decimal podIdLength;
 
         public Utility(String id, String name) {
             this.utilityId = id;
@@ -70,10 +91,18 @@ public inherited sharing class RestZipCode {
             this.dataCollectionMethod = 'File Upload';
         }
 
-        public Utility(String id, String name, String dataCollectionMethod) {
+        public Utility(String id, String name, String dataCollectionMethod, String uanRegexGroups, String uanFormat, String uanPrefix, Decimal uanLength, String podIdRegexGroups, String podIdFormat, String podIdPrefix, Decimal podIdLength) {
             this.utilityId = id;
             this.name = name;
             this.dataCollectionMethod = dataCollectionMethod;
+            this.uanRegexGroups = uanRegexGroups;
+            this.uanFormat = uanFormat;
+            this.uanPrefix = uanPrefix;
+            this.uanLength = uanLength;
+            this.podIdRegexGroups = podIdRegexGroups;
+            this.podIdFormat = podIdFormat;
+            this.podIdPrefix = podIdPrefix;
+            this.podIdLength = podIdLength;
         }
     }
 
@@ -82,7 +111,7 @@ public inherited sharing class RestZipCode {
         public String name;
         public Boolean standaloneDisclosureForm;
 
-        public Product (String id, String name, String disclosureFormTemplate) {
+        public Product(String id, String name, String disclosureFormTemplate) {
             this.productId = id;
             this.name = name;
             this.standaloneDisclosureForm = (disclosureFormTemplate != null);
@@ -94,7 +123,7 @@ public inherited sharing class RestZipCode {
         public String name;
         public Boolean suppressDisclosureForm;
 
-        public RateClass (String id, String name, Boolean suppressDisclosureForm) {
+        public RateClass(String id, String name, Boolean suppressDisclosureForm) {
             this.rateClassId = id;
             this.name = name;
             this.suppressDisclosureForm = suppressDisclosureForm;
