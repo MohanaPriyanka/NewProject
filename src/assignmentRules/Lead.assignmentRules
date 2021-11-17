@@ -19,17 +19,6 @@
             </criteriaItems>
         </ruleEntry>
         <ruleEntry>
-            <assignedTo>BPD</assignedTo>
-            <assignedToType>Queue</assignedToType>
-            <booleanFilter>1</booleanFilter>
-            <criteriaItems>
-                <field>Lead.Product_Interest__c</field>
-                <operation>equals</operation>
-                <value>Developing a solar farm</value>
-            </criteriaItems>
-            <template>CS_Application_Email_Notifications/Lead_Assignment_Notification</template>
-        </ruleEntry>
-        <ruleEntry>
             <assignedTo>CSBD_Partners</assignedTo>
             <assignedToType>Queue</assignedToType>
             <criteriaItems>
@@ -46,22 +35,6 @@
                 <field>Lead.Product_Interest__c</field>
                 <operation>equals</operation>
                 <value>Community solar services</value>
-            </criteriaItems>
-            <template>CS_Application_Email_Notifications/Lead_Assignment_Notification</template>
-        </ruleEntry>
-        <ruleEntry>
-            <assignedTo>Loan_BD</assignedTo>
-            <assignedToType>Queue</assignedToType>
-            <booleanFilter>1 OR 2</booleanFilter>
-            <criteriaItems>
-                <field>Lead.Product_Interest__c</field>
-                <operation>equals</operation>
-                <value>Providing solar financing</value>
-            </criteriaItems>
-            <criteriaItems>
-                <field>Lead.Product_Interest__c</field>
-                <operation>equals</operation>
-                <value>Financing my solar system</value>
             </criteriaItems>
             <template>CS_Application_Email_Notifications/Lead_Assignment_Notification</template>
         </ruleEntry>
