@@ -433,7 +433,7 @@ IMAGE(&quot;/resource/1553274837000/Crown_Icon&quot;, &quot;crown&quot;),
     <fields>
         <fullName>Account_Number__c</fullName>
         <description>CS Account Number</description>
-        <displayFormat>BW-{0000000}</displayFormat>
+        <displayFormat>PE-{0000000}</displayFormat>
         <externalId>false</externalId>
         <label>CS Account Number</label>
         <trackHistory>false</trackHistory>
