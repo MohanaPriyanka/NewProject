@@ -140,10 +140,10 @@
     </choices>
     <choices>
         <name>c_fc5293b8_bf15_4e4f_9d09_16db4a160ed4</name>
-        <choiceText>Two separate bills, one from my utility and one from BlueWave</choiceText>
+        <choiceText>Two separate bills, one from my utility and one from Perch</choiceText>
         <dataType>String</dataType>
         <value>
-            <stringValue>Two separate bills, one from my utility and one from BlueWave</stringValue>
+            <stringValue>Two separate bills, one from my utility and one from Perch</stringValue>
         </value>
     </choices>
     <decisions>
@@ -200,7 +200,7 @@
     <processMetadataValues>
         <name>BrandingSet</name>
         <value>
-            <stringValue>dtc_sign_up_process_feedback_ad696d6d_c6a6_48a8_857f_a6bed4637219</stringValue>
+            <stringValue>sb_dtc_sign_up_process_feedback_a_c35d2070_cdb3_4bbc_a724_44b45c17f9b7</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -264,7 +264,7 @@
             <choiceReferences>c_0abc6b33_598a_4601_b88f_3f7169438cbf</choiceReferences>
             <dataType>String</dataType>
             <extensionName>survey:runtimePicklist</extensionName>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;font-family: sans-serif;&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;&lt;/span&gt;Approximately how soon after solar credits are sent to your utility account do you expect to receive a discounted bill from BlueWave for any credits generated?&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-family: sans-serif;&quot;&gt;Approximately how soon after solar credits are sent to your utility account do you expect to receive a discounted bill from Perch for any credits generated?&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>ComponentChoice</fieldType>
             <isRequired>true</isRequired>
         </fields>
@@ -282,11 +282,11 @@
             <choiceReferences>c_6e294ec9_0899_419d_8964_ba16bb79f7fd</choiceReferences>
             <dataType>String</dataType>
             <extensionName>survey:runtimePicklist</extensionName>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;font-family: sans-serif;&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;&lt;/span&gt;How does BlueWave calculate your community solar savings?&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-family: sans-serif;&quot;&gt;How does Perch calculate your community solar savings?&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>ComponentChoice</fieldType>
             <isRequired>true</isRequired>
         </fields>
-        <pausedText>Survey paused. To pick up where you left off, refresh this page or click the link in your survey invitation.</pausedText>
+        <pausedText>To pick up where you left off, refresh this page, or open the survey again.</pausedText>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
@@ -307,11 +307,11 @@
             </processMetadataValues>
             <name>q_c59866e9_1749_4e26_88cf_acd11641740f</name>
             <dataType>String</dataType>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;font-family: sans-serif;&quot;&gt;Please provide any additional comments/feedback you may have about BlueWave’s Community Solar subscription process that you would like to share with us.&amp;nbsp;&lt;/b&gt;&lt;b&gt;&lt;span class=&quot;ql-cursor&quot;&gt;&lt;/span&gt;&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-family: sans-serif;&quot;&gt;Please provide any additional comments/feedback you may have about Perch&apos;s Community Solar subscription process that you would like to share with us.&amp;nbsp;&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>false</isRequired>
         </fields>
-        <pausedText>Survey paused. To pick up where you left off, refresh this page or click the link in your survey invitation.</pausedText>
+        <pausedText>To pick up where you left off, refresh this page, or open the survey again.</pausedText>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
@@ -351,12 +351,6 @@
                     <stringValue>0</stringValue>
                 </value>
             </processMetadataValues>
-            <processMetadataValues>
-                <name>questionType</name>
-                <value>
-                    <stringValue>NPS</stringValue>
-                </value>
-            </processMetadataValues>
             <name>q_e86c13f9_1a89_47bb_8875_90caa2000308</name>
             <dataType>Number</dataType>
             <extensionName>survey:runtimeNps</extensionName>
@@ -365,7 +359,7 @@
             <isRequired>true</isRequired>
             <scale>0</scale>
         </fields>
-        <pausedText>Survey paused. To pick up where you left off, refresh this page or click the link in your survey invitation.</pausedText>
+        <pausedText>To pick up where you left off, refresh this page, or open the survey again.</pausedText>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
@@ -405,12 +399,6 @@
                     <stringValue>0</stringValue>
                 </value>
             </processMetadataValues>
-            <processMetadataValues>
-                <name>questionType</name>
-                <value>
-                    <stringValue>CSAT</stringValue>
-                </value>
-            </processMetadataValues>
             <name>q_ea818711_875f_46a5_a639_600a07bfe718</name>
             <dataType>Number</dataType>
             <extensionName>survey:cmpInputRuntimeCsat</extensionName>
@@ -420,7 +408,7 @@
             <isRequired>true</isRequired>
             <scale>0</scale>
         </fields>
-        <pausedText>Survey paused. To pick up where you left off, refresh this page or click the link in your survey invitation.</pausedText>
+        <pausedText>To pick up where you left off, refresh this page, or open the survey again.</pausedText>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
@@ -443,12 +431,6 @@
                 </value>
             </processMetadataValues>
             <processMetadataValues>
-                <name>questionType</name>
-                <value>
-                    <stringValue>StackRank</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
                 <name>rank</name>
                 <value>
                     <elementReference>q_a2b102ad_6a79_4480_9f3b_fc5ae0614b09_rank</elementReference>
@@ -468,7 +450,7 @@
             <helpText>[Please rank from most to least important]</helpText>
             <isRequired>true</isRequired>
         </fields>
-        <pausedText>Survey paused. To pick up where you left off, refresh this page or click the link in your survey invitation.</pausedText>
+        <pausedText>To pick up where you left off, refresh this page, or open the survey again.</pausedText>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
@@ -499,46 +481,56 @@
         <showHeader>true</showHeader>
     </screens>
     <startElementReference>StackRank_Assignment</startElementReference>
-    <status>Active</status>
+    <status>Draft</status>
     <textTemplates>
         <name>q_a2b102ad_6a79_4480_9f3b_fc5ae0614b09_rank0</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
         <text>Reducing my carbon footprint</text>
     </textTemplates>
     <textTemplates>
         <name>q_a2b102ad_6a79_4480_9f3b_fc5ae0614b09_rank1</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
         <text>Saving money on electricity</text>
     </textTemplates>
     <textTemplates>
         <name>q_a2b102ad_6a79_4480_9f3b_fc5ae0614b09_rank2</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
         <text>Reducing my reliance on utility generated energy</text>
     </textTemplates>
     <textTemplates>
         <name>q_a2b102ad_6a79_4480_9f3b_fc5ae0614b09_rank3</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
         <text>Supporting clean energy development</text>
     </textTemplates>
     <textTemplates>
         <name>q_a2b102ad_6a79_4480_9f3b_fc5ae0614b09_rank4</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
         <text>Supporting local job creation</text>
     </textTemplates>
     <textTemplates>
         <name>q_a2b102ad_6a79_4480_9f3b_fc5ae0614b09_rank5</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
         <text>Ease of signing up</text>
     </textTemplates>
     <textTemplates>
         <name>q_a2b102ad_6a79_4480_9f3b_fc5ae0614b09_rank6</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
         <text>No up-front costs or maintenance required</text>
     </textTemplates>
     <textTemplates>
         <name>thankYouDescriptionTextTemplate</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
         <text></text>
     </textTemplates>
     <textTemplates>
         <name>thankYouLabelTextTemplate</name>
-        <text>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-family: sans-serif;&quot;&gt;Thank you for completing the survey, your feedback is greatly appreciated!&amp;nbsp;&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-family: sans-serif;&quot;&gt;Here is what you can expect from your community solar subscription once you are assigned to a project:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-family: sans-serif;&quot;&gt;-You will receive solar credits on your utility bill based on the size of your share. BlueWave will bill you for those solar credits at a discounted rate (10% the value of credits).&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-family: sans-serif;&quot;&gt;-BlueWave will bill you for credits&lt;/span&gt;&lt;b style=&quot;font-family: sans-serif;&quot;&gt; &lt;/b&gt;&lt;span style=&quot;font-family: sans-serif;&quot;&gt;one to two months after credits appear on your utility bill.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-family: sans-serif;&quot;&gt;-You will receive a separate bill from BlueWave and your utility company.&lt;/span&gt;&lt;/p&gt;</text>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-family: sans-serif;&quot;&gt;Thank you for completing the survey, your feedback is greatly appreciated!&amp;nbsp;&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-family: sans-serif;&quot;&gt;Here is what you can expect from your community solar subscription once you are assigned to a project:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-family: sans-serif;&quot;&gt;-You will receive solar credits on your utility bill based on the size of your share. Perch will bill you for those solar credits at a discounted rate (10% the value of credits).&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-family: sans-serif;&quot;&gt;-Perch will bill you for credits&lt;/span&gt;&lt;b style=&quot;font-family: sans-serif;&quot;&gt; &lt;/b&gt;&lt;span style=&quot;font-family: sans-serif;&quot;&gt;one to two months after credits appear on your utility bill.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-family: sans-serif;&quot;&gt;-You will receive a separate bill from Perch and your utility company.&lt;/span&gt;&lt;/p&gt;</text>
     </textTemplates>
     <textTemplates>
         <name>welcome_question_lref_tt</name>
-        <text>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;img src=&quot;https://bluewavesolar--jeff--c.documentforce.com/file-asset-public/BlueLogo1?oid=00D2C000000D48C&amp;amp;v=1&quot; alt=&quot;BlueLogo&quot;&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 18px; font-family: sans-serif;&quot;&gt;Sign Up Process Feedback&lt;/b&gt;&lt;/p&gt;</text>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;img src=&quot;https://bluewavesolar--c.documentforce.com/file-asset-public/LogoPerchCSfull_color1?oid=00Dj0000001q7GO&amp;amp;v=1&quot; alt=&quot;Logo-PerchCS-full color&quot;&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-family: sans-serif; font-size: 18px;&quot;&gt;Sign Up Process Feedback&lt;/b&gt;&lt;/p&gt;</text>
     </textTemplates>
     <variables>
         <name>guestUserLang</name>

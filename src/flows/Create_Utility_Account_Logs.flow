@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
     <assignments>
         <description>For each file selected, creates a value in the Content Doc Link sObject variable</description>
         <name>asgContentDocLinktoSOV</name>
@@ -250,6 +251,7 @@
         <connector>
             <targetReference>rlQueryFilesattachedtoleads</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -272,6 +274,7 @@
         <connector>
             <targetReference>scrCreate_Utility_Account_Log</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Lead__c</field>
             <operator>EqualTo</operator>
@@ -299,6 +302,7 @@
         <connector>
             <targetReference>asgStoreContentDocuments</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -321,6 +325,7 @@
         <connector>
             <targetReference>loopContentDocuments</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>LinkedEntityId</field>
             <operator>EqualTo</operator>
@@ -542,7 +547,7 @@
         <showHeader>true</showHeader>
     </screens>
     <startElementReference>Get_Lead_Record</startElementReference>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>loopPropAcctId</name>
         <dataType>SObject</dataType>

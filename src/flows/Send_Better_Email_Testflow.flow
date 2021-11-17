@@ -403,6 +403,7 @@
             </value>
         </inputParameters>
     </actionCalls>
+    <apiVersion>49.0</apiVersion>
     <assignments>
         <name>Add_All_Attached_Files</name>
         <label>Add All Attached Files</label>
@@ -810,6 +811,7 @@
         <connector>
             <targetReference>X2_Simple_Email_with_Address_Collections_Wit_Collections</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Name</field>
             <operator>Contains</operator>
@@ -833,6 +835,7 @@
         <connector>
             <targetReference>All_CDL</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>LinkedEntityId</field>
             <operator>EqualTo</operator>
@@ -855,6 +858,7 @@
         <connector>
             <targetReference>Get_Contacts</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Name</field>
             <operator>Contains</operator>
@@ -1678,14 +1682,17 @@
     </subflows>
     <textTemplates>
         <name>HTMLTextTemplate</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
         <text>&lt;p&gt;This is some &lt;span style=&quot;color: rgb(41, 25, 215);&quot;&gt;body text &lt;/span&gt;created using the rich text editor in the &lt;b&gt;Text Template&lt;/b&gt; resource in &lt;u style=&quot;font-size: 22px;&quot;&gt;Flow&lt;/u&gt;.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Or a graphic:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This email is being sent to this set of email addresses that came from:&lt;/p&gt;&lt;ol&gt;&lt;li&gt;SendTOthisOneEmailAddress:  {!TestEmailAddress1}&lt;/li&gt;&lt;li&gt;String Collection: {!stringCollectionEmailAddresses}&lt;/li&gt;&lt;/ol&gt;</text>
     </textTemplates>
     <textTemplates>
         <name>plainTextBody</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
         <text>&lt;p&gt;This is some body text created using the rich text editor in the Text Template resource in Flow.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This email is being sent to this set of email addresses that came from a string collection:&lt;/p&gt;&lt;p&gt;{!stringCollectionEmailAddresses}&lt;/p&gt;</text>
     </textTemplates>
     <textTemplates>
         <name>plainTextVersion</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
         <text>This is the plaintext version of the message.</text>
     </textTemplates>
     <variables>

@@ -11,7 +11,6 @@
             <targetReference>Set_Number_of_Qualifying_Systems</targetReference>
         </connector>
         <faultConnector>
-            <isGoTo>true</isGoTo>
             <targetReference>Assign_Error_Log_0_0</targetReference>
         </faultConnector>
         <flowTransactionModel>Automatic</flowTransactionModel>
@@ -37,7 +36,6 @@
             <targetReference>Lead_After_Qualification</targetReference>
         </connector>
         <faultConnector>
-            <isGoTo>true</isGoTo>
             <targetReference>Assign_Error_Log_0_0</targetReference>
         </faultConnector>
         <flowTransactionModel>Automatic</flowTransactionModel>
@@ -241,7 +239,6 @@
             </value>
         </assignmentItems>
         <connector>
-            <isGoTo>true</isGoTo>
             <targetReference>Add_Error_Log_to_List_0</targetReference>
         </connector>
     </assignments>
@@ -771,7 +768,6 @@
             <targetReference>Get_Lead</targetReference>
         </connector>
         <faultConnector>
-            <isGoTo>true</isGoTo>
             <targetReference>Assign_Error_Log_0_0</targetReference>
         </faultConnector>
         <inputReference>getLead</inputReference>

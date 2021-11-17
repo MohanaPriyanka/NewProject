@@ -18,6 +18,7 @@
             <name>output</name>
         </outputParameters>
     </actionCalls>
+    <apiVersion>49.0</apiVersion>
     <interviewLabel>Calculate Utilization Fees {!$Flow.CurrentDateTime}</interviewLabel>
     <isAdditionalPermissionRequiredToRun>true</isAdditionalPermissionRequiredToRun>
     <label>Calculate Utilization Fees</label>

@@ -26,6 +26,7 @@
             <name>sObjects</name>
         </outputParameters>
     </actionCalls>
+    <apiVersion>49.0</apiVersion>
     <assignments>
         <name>Assign_Case</name>
         <label>Assign_Case</label>
@@ -99,6 +100,7 @@
         <name>rcs_ClientAccounts</name>
         <dataType>String</dataType>
         <displayField>Name</displayField>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>RecordTypeId</field>
             <operator>EqualTo</operator>
@@ -163,6 +165,7 @@
         <connector>
             <targetReference>scr_SelectClient</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -242,6 +245,7 @@
     <status>Active</status>
     <textTemplates>
         <name>text_GroupQuery</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
         <text>SELECT Id, RelatedId FROM Group WHERE RelatedId IN (SELECT Id FROM UserRole WHERE PortalAccountId=&apos;{!SOVAccount.Id}&apos;)</text>
     </textTemplates>
     <variables>
