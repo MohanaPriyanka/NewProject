@@ -284,6 +284,8 @@
 ISBLANK( Commission_Structure__c ), 
 NOT( Partner_Name__c = &apos;BlueWave Inside Sales&apos;),
 NOT( Partner_Name__c = &apos;BlueWave Test Partner&apos;),
+NOT( Partner_Name__c = &apos;Perch Inside Sales&apos;),
+NOT( Partner_Name__c = &apos;Perch Test Partner&apos;),
 NOT( Partner_Name__c = &apos;Placeholder Partner&apos;),
 NOT( $Profile.Name = &apos;System Administrator&apos;)
 )</errorConditionFormula>
