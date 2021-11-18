@@ -134,7 +134,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Company_Main_Logo_600</shortDescription>
-        <value>https://bluewavesolar--c.documentforce.com/file-asset-public/BlueLogo_600</value>
+        <value>https://bluewavesolar--c.documentforce.com/file-asset-public/BlueLogo_600?oid=00Dj0000001q7GO</value>
     </labels>
     <labels>
         <fullName>Company_Main_Logo_Big</fullName>
@@ -326,7 +326,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>LinkedIn_Black_Email_Icon</shortDescription>
-        <value>https://bluewavesolar--c.documentforce.com/file-asset-public/AMPPoweredByBW_BlackLinkedIn</value>
+        <value>https://bluewavesolar--c.documentforce.com/file-asset-public/AMPPoweredByBW_BlackLinkedIn?oid=00Dj0000001q7GO</value>
     </labels>
     <labels>
         <fullName>LinkedIn_Email_Icon</fullName>
@@ -678,7 +678,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Twitter_Black_Email_Icon</shortDescription>
-        <value>https://bluewavesolar--c.documentforce.com/file-asset-public/AMP_MN_Footer_Twitter</value>
+        <value>https://bluewavesolar--c.documentforce.com/file-asset-public/AMP_MN_Footer_Twitter?oid=00Dj0000001q7GO</value>
     </labels>
     <labels>
         <fullName>Twitter_Email_Icon</fullName>
