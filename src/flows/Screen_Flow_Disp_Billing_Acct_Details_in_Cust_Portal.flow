@@ -137,7 +137,7 @@
             <inputParameters>
                 <name>tableLabel</name>
                 <value>
-                    <stringValue>Your BlueWave Accounts</stringValue>
+                    <elementReference>accountTableHeader</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -170,6 +170,7 @@
                     <elementReference>Get_Billing_Accounts</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -199,6 +200,16 @@
         </connector>
     </start>
     <status>Active</status>
+    <variables>
+        <name>accountTableHeader</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>Your {!$Label.Company_Name} Accounts</stringValue>
+        </value>
+    </variables>
     <variables>
         <name>varAccountId</name>
         <dataType>String</dataType>

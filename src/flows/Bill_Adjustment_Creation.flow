@@ -3,13 +3,14 @@
     <actionCalls>
         <name>Submit_Bill_Adjustment_for_Approval</name>
         <label>Submit Bill Adjustment for Approval</label>
-        <locationX>213</locationX>
+        <locationX>393</locationX>
         <locationY>698</locationY>
         <actionName>submit</actionName>
         <actionType>submit</actionType>
         <connector>
             <targetReference>sFile_Attachment</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>objectId</name>
             <value>
@@ -21,7 +22,7 @@
     <assignments>
         <name>AsgConfirmation</name>
         <label>AsgConfirmation</label>
-        <locationX>409</locationX>
+        <locationX>589</locationX>
         <locationY>870</locationY>
         <assignmentItems>
             <assignToReference>$Flow.CurrentStage</assignToReference>
@@ -37,7 +38,7 @@
     <assignments>
         <name>asgSet_Stage_to_Adjustment_Type</name>
         <label>Set Stage to Adjustment Type</label>
-        <locationX>412</locationX>
+        <locationX>592</locationX>
         <locationY>128</locationY>
         <assignmentItems>
             <assignToReference>$Flow.CurrentStage</assignToReference>
@@ -53,7 +54,7 @@
     <assignments>
         <name>asgSet_Stage_to_Explanation</name>
         <label>Set Stage to Explanation</label>
-        <locationX>662</locationX>
+        <locationX>842</locationX>
         <locationY>334</locationY>
         <assignmentItems>
             <assignToReference>$Flow.CurrentStage</assignToReference>
@@ -69,7 +70,7 @@
     <decisions>
         <name>decAdjustment_Type_Production</name>
         <label>Adjustment Type = Production</label>
-        <locationX>412</locationX>
+        <locationX>592</locationX>
         <locationY>226</locationY>
         <defaultConnector>
             <targetReference>asgSet_Stage_to_Explanation</targetReference>
@@ -175,11 +176,17 @@
             <stringValue>LightningFlowBuilder</stringValue>
         </value>
     </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
     <processType>Flow</processType>
     <recordCreates>
         <name>Create_Bill_Adjustment</name>
         <label>Create Bill Adjustment</label>
-        <locationX>213</locationX>
+        <locationX>393</locationX>
         <locationY>571</locationY>
         <assignRecordIdToReference>vBillAdjustment</assignRecordIdToReference>
         <connector>
@@ -250,7 +257,7 @@
     <recordLookups>
         <name>UAS_Lookup</name>
         <label>UAS Lookup</label>
-        <locationX>213</locationX>
+        <locationX>393</locationX>
         <locationY>454</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -273,7 +280,7 @@
     <screens>
         <name>Choose_Subscription</name>
         <label>Choose Subscription</label>
-        <locationX>210</locationX>
+        <locationX>390</locationX>
         <locationY>132</locationY>
         <allowBack>true</allowBack>
         <allowFinish>false</allowFinish>
@@ -297,6 +304,7 @@
                     <elementReference>$Flow.ActiveStages</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -318,7 +326,7 @@
     <screens>
         <name>scrChoose_System</name>
         <label>Choose System</label>
-        <locationX>212</locationX>
+        <locationX>392</locationX>
         <locationY>28</locationY>
         <allowBack>true</allowBack>
         <allowFinish>false</allowFinish>
@@ -342,6 +350,7 @@
                     <elementReference>$Flow.ActiveStages</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -363,7 +372,7 @@
     <screens>
         <name>scrCredits_Allocated_Screen</name>
         <label>Credits Allocated Screen</label>
-        <locationX>884</locationX>
+        <locationX>1064</locationX>
         <locationY>224</locationY>
         <allowBack>true</allowBack>
         <allowFinish>false</allowFinish>
@@ -387,6 +396,7 @@
                     <elementReference>$Flow.ActiveStages</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -422,6 +432,7 @@
                     <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <outputParameters>
                 <assignToReference>transfer</assignToReference>
@@ -447,7 +458,7 @@
     <screens>
         <name>screEnd</name>
         <label>screEnd</label>
-        <locationX>215</locationX>
+        <locationX>395</locationX>
         <locationY>916</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -468,6 +479,7 @@
                     <elementReference>$Flow.ActiveStages</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -481,7 +493,7 @@
     <screens>
         <name>scrExplanation</name>
         <label>Explanation</label>
-        <locationX>211</locationX>
+        <locationX>391</locationX>
         <locationY>334</locationY>
         <allowBack>true</allowBack>
         <allowFinish>false</allowFinish>
@@ -505,6 +517,7 @@
                     <elementReference>$Flow.ActiveStages</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -534,7 +547,7 @@
     <screens>
         <name>scrNew_Adjustment_0</name>
         <label>New Adjustment</label>
-        <locationX>210</locationX>
+        <locationX>390</locationX>
         <locationY>227</locationY>
         <allowBack>true</allowBack>
         <allowFinish>false</allowFinish>
@@ -558,6 +571,7 @@
                     <elementReference>$Flow.ActiveStages</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -607,7 +621,7 @@
         </fields>
         <fields>
             <name>scrAdjustmentGuidance</name>
-            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt;Adjustment Types:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt;PRODUCTION:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt;A positive adjustment for production that was not accounted for in the production update due to a system bug or admin error &lt;/span&gt;&lt;b style=&quot;color: rgb(0, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt;OR&lt;/b&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt; a negative adjustment created to account for credits billed to a customer in error if the customer never received those credits or were sent back to the host account.&lt;/span&gt;&lt;b style=&quot;color: rgb(0, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt; Requires verification of utility of transfer.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt;LATE FEE – WAIVED:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt;A negative adjustment &lt;/span&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt;Though BlueWave no longer charges late fees, any late fee from a billing period prior to September 2018 can be waived by submitting a bill adjustment request.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt;CUSTOMER REFUND:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt;A &lt;/span&gt;&lt;span style=&quot;color: rgb(255, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt;positive adjustment &lt;/span&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt;Funds returned to customer from payments that have cleared the bank successfully with an approved status. &lt;/span&gt;&lt;b style=&quot;color: rgb(0, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt;Requires approval from management and a PO request to Accounting.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt;BW – INITIATED CREDIT:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt;A &lt;/span&gt;&lt;span style=&quot;color: rgb(255, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt;negative adjustment &lt;/span&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt;Credit to a customer account which reduces what the customer owes. These are monies BlueWave will have to pay the client. This type of adjustment may be the result of an internal process failure and used to resolve customer care issues or when BlueWave provides offers a customer incentive. &lt;/span&gt;&lt;b style=&quot;color: rgb(0, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt;Requires approval from management.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt;NO LONGER BILLING:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt;A &lt;/span&gt;&lt;span style=&quot;color: rgb(255, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt;negative adjustment&lt;/span&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt; Customer account balance that will not be collected and which BlueWave will not remit to project owner. &lt;/span&gt;&lt;b style=&quot;color: rgb(0, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt;Requires approval from management.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt;PROJECT PAYMENT TRANSFER:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt;Transfer of funds from one entity to another for a customer with multiple utility account subscriptions. For example, used in the case when there is an overpayment made on one system bill and a balance due on another system bill.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt;RETURNED PAYMENT:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt;A positive adjustment (or increase to the customer’s bill) for a payment posted to an account which, after being marked as approved, is later rejected by the system or cancelled by the customer. &lt;/span&gt;&lt;b style=&quot;color: rgb(0, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt;This adjustment should only be used for ACH transactions/electronic payments not paper checks.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt;CLIENT CREDIT:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt;A&lt;/span&gt;&lt;span style=&quot;color: rgb(255, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt; negative adjustment&lt;/span&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt; Credit to a customer account which reduces what the customer owes but monies which BlueWave does not have to remit to the client. &lt;/span&gt;&lt;b style=&quot;color: rgb(0, 0, 0); font-family: sans-serif; font-size: 12px;&quot;&gt;Source must be a client request.&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt;Adjustment Types:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt;PRODUCTION:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt;A positive adjustment for production that was not accounted for in the production update due to a system bug or admin error &lt;/span&gt;&lt;b style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt;OR&lt;/b&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt; a negative adjustment created to account for credits billed to a customer in error if the customer never received those credits or were sent back to the host account.&lt;/span&gt;&lt;b style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt; Requires verification of utility of transfer.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt;LATE FEE – WAIVED:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(255, 0, 0);&quot;&gt;A negative adjustment &lt;/span&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt;Though {!$Label.Company_Name} no longer charges late fees, any late fee from a billing period prior to September 2018 can be waived by submitting a bill adjustment request.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt;CUSTOMER REFUND:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt;A &lt;/span&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(255, 0, 0);&quot;&gt;positive adjustment &lt;/span&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt;Funds returned to customer from payments that have cleared the bank successfully with an approved status. &lt;/span&gt;&lt;b style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt;Requires approval from management and a PO request to Accounting.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt;BW – INITIATED CREDIT:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt;A &lt;/span&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(255, 0, 0);&quot;&gt;negative adjustment &lt;/span&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt;Credit to a customer account which reduces what the customer owes. These are monies &lt;/span&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);&quot;&gt;{!$Label.Company_Name}&lt;/span&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt; will have to pay the client. This type of adjustment may be the result of an internal process failure and used to resolve customer care issues or when &lt;/span&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);&quot;&gt;{!$Label.Company_Name}&lt;/span&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt; provides offers a customer incentive. &lt;/span&gt;&lt;b style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt;Requires approval from management.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt;NO LONGER BILLING:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt;A &lt;/span&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(255, 0, 0);&quot;&gt;negative adjustment&lt;/span&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt; Customer account balance that will not be collected and which &lt;/span&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);&quot;&gt;{!$Label.Company_Name}&lt;/span&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt; will not remit to project owner. &lt;/span&gt;&lt;b style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt;Requires approval from management.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt;PROJECT PAYMENT TRANSFER:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt;Transfer of funds from one entity to another for a customer with multiple utility account subscriptions. For example, used in the case when there is an overpayment made on one system bill and a balance due on another system bill.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt;RETURNED PAYMENT:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt;A positive adjustment (or increase to the customer’s bill) for a payment posted to an account which, after being marked as approved, is later rejected by the system or cancelled by the customer. &lt;/span&gt;&lt;b style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt;This adjustment should only be used for ACH transactions/electronic payments not paper checks.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt;CLIENT CREDIT:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt;A&lt;/span&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(255, 0, 0);&quot;&gt; negative adjustment&lt;/span&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt; Credit to a customer account which reduces what the customer owes but monies which &lt;/span&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);&quot;&gt;{!$Label.Company_Name}&lt;/span&gt;&lt;span style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt; does not have to remit to the client. &lt;/span&gt;&lt;b style=&quot;font-size: 12px; font-family: sans-serif; color: rgb(0, 0, 0);&quot;&gt;Source must be a client request.&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -616,7 +630,7 @@
     <screens>
         <name>sFile_Attachment</name>
         <label>File Attachment</label>
-        <locationX>216</locationX>
+        <locationX>396</locationX>
         <locationY>805</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -640,6 +654,7 @@
                     <elementReference>$Flow.ActiveStages</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -669,6 +684,7 @@
                     <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>

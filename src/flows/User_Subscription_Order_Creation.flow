@@ -853,7 +853,7 @@ TEXT({!var_transferredNewAnnualkWh})&amp;&apos; kWh&apos;,
         <allowPause>false</allowPause>
         <fields>
             <name>txt_Error</name>
-            <fieldText>&lt;p&gt;The Subscription Order was not able to be created because this error occurred:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-family: courier;&quot;&gt;{!$Flow.FaultMessage}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Business Application has been notified.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;The most common reason for this happening is not having permission to create Subscription Orders. If this is the case, please submit a case to productsupport@bluewavesolar.com to have those permissions assigned to you.&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;The Subscription Order was not able to be created because this error occurred:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-family: courier; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;{!$Flow.FaultMessage}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Business Application has been notified.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;The most common reason for this happening is not having permission to create Subscription Orders. If this is the case, please submit a case to {!$Label.email_partnersupport} to have those permissions assigned to you.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
