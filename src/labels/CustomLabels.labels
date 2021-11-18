@@ -542,7 +542,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF Facebook Icon</shortDescription>
-        <value>https://bluewavesolar.com/resources/img/icons/facebook.min.svg</value>
+        <value>facebook.min.svg</value>
     </labels>
     <labels>
         <fullName>SSF_Facebook_Link</fullName>
@@ -566,7 +566,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF Linkedin Icon</shortDescription>
-        <value>https://bluewavesolar.com/resources/img/icons/linkedin.min.svg</value>
+        <value>linkedin.min.svg</value>
     </labels>
     <labels>
         <fullName>SSF_Linkedin_Link</fullName>
@@ -598,7 +598,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF Twitter Icon</shortDescription>
-        <value>https://bluewavesolar.com/resources/img/icons/twitter.min.svg</value>
+        <value>twitter.min.svg</value>
     </labels>
     <labels>
         <fullName>SSF_Twitter_Link</fullName>
