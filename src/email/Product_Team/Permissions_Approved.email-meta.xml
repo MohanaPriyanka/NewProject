@@ -6,7 +6,6 @@
     <name>Permissions Approved</name>
     <style>freeForm</style>
     <subject>Your request for additional permissions has been approved</subject>
-    <textOnly>Your request for additional permissions has been rejected.</textOnly>
     <type>html</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

@@ -1563,12 +1563,12 @@ public with sharing class CSCancellationServiceTest {
             if (sem.getToAddresses().contains('jpentalerib@bluewavesolar.com'))    /*this contact has an AmpRed client brand key */ {
                 System.assert(sem.getHtmlBody().contains('Amp'), 'Cancellation emails sent to customers assigned the AmpBlack or AmpRed branding should' +
                     ' see Amp in their emails, not BlueWave');
-                System.assert(!sem.getHtmlBody().contains('BlueWave Community Solar'), 'Cancellation emails sent to customers assigned the AmpBlack' +
+                System.assert(!sem.getHtmlBody().contains(System.Label.Company_Name + ' Community Solar'), 'Cancellation emails sent to customers assigned the AmpBlack' +
                     ' or AmpRed branding should not see BlueWave Community Solar in their emails');
             } else {
                 System.assert(!sem.getHtmlBody().contains('Amp'), 'Cancellation emails sent to customers with BlueWave branding should not see Amp in their emails');
-                System.assert(sem.getHtmlBody().contains('BlueWave Community Solar'), 'Cancellation emails sent to customers assigned the BlueWave ' +
-                    ' branding should see BlueWave in their emails, not Amp');
+                System.assert(sem.getHtmlBody().contains(System.Label.Company_Name + ' Community Solar'), 'Cancellation emails sent to customers assigned the BlueWave or Perch ' +
+                    ' branding should see BlueWave or Perch in their emails, not Amp');
             }
         }
 

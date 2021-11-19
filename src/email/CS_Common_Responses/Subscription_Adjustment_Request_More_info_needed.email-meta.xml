@@ -5,7 +5,7 @@
     <encodingKey>ISO-8859-1</encodingKey>
     <name>Subscription Adjustment Request - More info needed</name>
     <style>none</style>
-    <subject>BlueWave: We need more information to process your request</subject>
+    <subject>{!$Label.Company_Name}: We need more information to process your request</subject>
     <type>text</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

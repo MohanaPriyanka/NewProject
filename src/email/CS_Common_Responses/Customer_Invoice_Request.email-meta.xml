@@ -5,7 +5,7 @@
     <encodingKey>ISO-8859-1</encodingKey>
     <name>Customer Invoice Request</name>
     <style>none</style>
-    <subject>BlueWave: Here are the invoices you requested</subject>
+    <subject>{!$Label.Company_Name}: Here are the invoices you requested</subject>
     <type>text</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

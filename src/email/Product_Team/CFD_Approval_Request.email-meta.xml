@@ -5,18 +5,6 @@
     <name>CFD Approval Request</name>
     <style>none</style>
     <subject>CFD Approval Request</subject>
-    <textOnly>Your approval is request for a Contract Fee Detail record
-
-Name: {!Contract_Fee_Detail__c.Name}
-
-
-Contract Name: {!Contract_Fee_Detail__c.Contract__c}
-
-Fee Summary: {!Contract_Fee_Detail__c.Fee_Summary__c}
-
-Submitted By:{!ApprovalRequestingUser.Name}
-
-Approval Link: {!ApprovalRequest.Internal_URL}</textOnly>
     <type>custom</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

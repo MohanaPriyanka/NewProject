@@ -7,13 +7,6 @@
     <name>Contract Approvals - Final Rejection</name>
     <style>freeForm</style>
     <subject>Contract Approval Request: Your Contract has been Rejected.</subject>
-    <textOnly>Hello,
-
-You contract has been rejected.
-
-Name: {!Contract.Name}
-Type: {!Contract.Contract_Type__c}
-Link to Box Drive: {!Contract.Link_to_Box_Drive__c}</textOnly>
     <type>html</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

@@ -235,7 +235,6 @@ public without sharing class PaymentCaseCreator implements Schedulable, ZuoraDat
     @SuppressWarnings('PMD.ExcessiveParameterList')
     private Messaging.Email sendTransactionErrorEmail(String name, String billDueDate, String errorMessage, List<String> recipientEmailAddresses, EmailTemplate template, Id contactId, Case caseToAttach) {
         String html = template.HtmlValue;
-        String plaintext = template.Body;
 
         if (friendlyGatewayResponseMap.containsKey(errorMessage)) {
             errorMessage = friendlyGatewayResponseMap.get(errorMessage);
@@ -245,15 +244,11 @@ public without sharing class PaymentCaseCreator implements Schedulable, ZuoraDat
         html = html.replace('&lt;First Name&gt;', name);
         html = html.replace('&lt;Error Message&gt;', errorMessage);
         html = html.replace('&lt;current bill due date&gt;', billDueDate);
-        plaintext = plaintext.replace('<First Name>', name);
-        plaintext = plaintext.replace('<Error Message>', errorMessage);
-        plaintext = plaintext.replace('<current bill due date>', billDueDate);
 
         Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
         mail.setOrgWideEmailAddressId(MessagingService.getCustomerCareEmail().Id);
         mail.setSubject(template.Subject);
         mail.setHtmlBody(html);
-        mail.setPlainTextBody(plaintext);
         mail.setToAddresses(recipientEmailAddresses);
         mail.setSaveAsActivity(true);
         mail.setTargetObjectId(contactId);

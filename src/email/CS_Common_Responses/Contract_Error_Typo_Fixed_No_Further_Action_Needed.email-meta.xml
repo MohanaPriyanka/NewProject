@@ -5,7 +5,7 @@
     <encodingKey>ISO-8859-1</encodingKey>
     <name>Contract Error- Typo Fixed, No Further Action Needed</name>
     <style>none</style>
-    <subject>We have corrected a small error on your BlueWave Community Solar contract</subject>
+    <subject>We have corrected a small error on your {!$Label.Company_Name} Community Solar contract</subject>
     <type>text</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

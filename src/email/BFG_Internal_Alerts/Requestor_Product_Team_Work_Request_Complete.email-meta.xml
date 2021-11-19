@@ -6,15 +6,6 @@
     <name>Requestor - Product Team Work Request Complete</name>
     <style>none</style>
     <subject>Your {!agf__ADM_Work__c.agf__Scrum_Team__c} Team Work Request is Complete</subject>
-    <textOnly>I&apos;ve just completed this Work Request that you&apos;ve made:
-
-{!agf__ADM_Work__c.agf__Subject__c}
-{!agf__ADM_Work__c.agf__Details__c}
-
-Please do not hesitate to reach out to one of us if you have any questions or if the implemented solution is not meeting your needs.
-
-Thanks,
-{!User.FirstName}</textOnly>
     <type>custom</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

@@ -5,18 +5,7 @@
     <encodingKey>ISO-8859-1</encodingKey>
     <name>Customer Care Case Open (Phone)</name>
     <style>none</style>
-    <subject>Thank You for Calling BlueWave Customer Care</subject>
-    <textOnly>Hello {!Case.Contact},
-
-Thank you for your call. Case #{!Case.CaseNumber} is being evaluated and we are assigning the most appropriate customer care representative to fix this issue. We will return your call as soon as possible.
-
-If your issue gets resolved during your conversation with a BlueWave representative, your case will be closed and you can expect a short survey to rate your experience.
-
-Thanks for being part of the BlueWave Community
-- All of us here at BlueWave
-
-BlueWave Customer Care
-844.786.4100 | customercare@bluewavesolar.com</textOnly>
+    <subject>Thank You for Calling {!$Label.Company_Name} Customer Care</subject>
     <type>custom</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

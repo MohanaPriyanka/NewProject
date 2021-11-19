@@ -5,7 +5,7 @@
     <encodingKey>ISO-8859-1</encodingKey>
     <name>Contract Error- Need Clarification</name>
     <style>none</style>
-    <subject>We need come clarification on your BlueWave Community Solar contract</subject>
+    <subject>We need come clarification on your {!$Label.Company_Name} Community Solar contract</subject>
     <type>text</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

@@ -1,13 +1,9 @@
 Hi {!Contact.FirstName},
 
-Thanks for reaching out to us here at BlueWave! Your solar project is no longer serviced by us. Please reach out to Delaware River Solar for information regarding your subscription. For more detailed information on this transition, please reference the email we sent you on December 9th, 2020.
+Thanks for reaching out to us here at {!$Label.Company_Name}! Your solar project is no longer serviced by us. Please reach out to Delaware River Solar for information regarding your subscription. For more detailed information on this transition, please reference the email we sent you on December 9th, 2020.
 
 www.delawareriversolar.com
 support@delawareriversolar.com
 (845) 414-3491
 
 Best,
-{!Case.OwnerFullName}
-Support Operations
-BlueWave Community Solar
-bluewavecommunitysolar.com

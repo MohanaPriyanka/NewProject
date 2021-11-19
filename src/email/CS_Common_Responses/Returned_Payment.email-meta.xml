@@ -5,7 +5,7 @@
     <encodingKey>ISO-8859-1</encodingKey>
     <name>Returned Payment</name>
     <style>none</style>
-    <subject>BlueWave Community Solar: Your recent payment did not go through</subject>
+    <subject>{!$Label.Company_Name} Community Solar: Your recent payment did not go through</subject>
     <type>text</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

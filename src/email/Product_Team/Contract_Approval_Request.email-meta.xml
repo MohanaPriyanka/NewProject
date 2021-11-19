@@ -7,14 +7,6 @@
     <name>Contract Approval Request</name>
     <style>freeForm</style>
     <subject>Contract Approval Request: {!Contract.Name}</subject>
-    <textOnly>Your approval is requested for this Contract:
-
-Name: {!Contract.Name}
-Type: {!Contract.Contract_Type__c}
-Link to Contract on Box Drive: {!Contract.Link_to_Box_Drive__c}
-
-Submitted on: {!Contract.Date_Submitted__c}
-Submitted by: {!Contract.Submitted_By__c}</textOnly>
     <type>html</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>
