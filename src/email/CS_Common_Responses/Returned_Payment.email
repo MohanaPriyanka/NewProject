@@ -9,7 +9,3 @@ If you are unsure why you may have received this notification, please inquire wi
 Please let me know if you have any further questions, I'm happy to help.
 
 Best,
-{!Case.OwnerFullName}
-Support Operations
-{!$Label.Company_Name} Community Solar
-{!$Label.Company_Temp_Website}

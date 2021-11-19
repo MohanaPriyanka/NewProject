@@ -13,7 +13,3 @@ Your autopay this month was not able to be processed. You can give us a call at 
 Please let me know if you have any questions!
 
 Best,
-{!Case.OwnerFullName}
-Support Operations
-{!$Label.Company_Name} Community Solar
-{!$Label.Company_Temp_Website}

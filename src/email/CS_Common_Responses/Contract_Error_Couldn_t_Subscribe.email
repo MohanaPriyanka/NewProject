@@ -7,7 +7,3 @@ The following accounts were not subscribed:
 We apologize for the inconvenience, and please let me know if you have further questions!
  
 Best,
-{!Case.OwnerFullName}
-Support Operations
-{!$Label.Company_Name} Community Solar
-{!$Label.Company_Temp_Website}

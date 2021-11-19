@@ -5,7 +5,3 @@ There was a small typo on your recent contract with {!$Label.Company_Name}, whic
 No action is needed. We just wanted to let you know of this typo for your records.
  
 Best,
-{!Case.OwnerFullName}
-Support Operations
-{!$Label.Company_Name} Community Solar
-{!$Label.Company_Temp_Website}

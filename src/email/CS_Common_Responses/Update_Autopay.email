@@ -14,7 +14,3 @@ Thank you for reaching out. To update your autopay setting, please follow the st
 If you have any questions, please let us know.
 
 Best,
-{!Case.OwnerFullName}
-Support Operations
-{!$Label.Company_Name} Community Solar
-{!$Label.Company_Temp_Website}

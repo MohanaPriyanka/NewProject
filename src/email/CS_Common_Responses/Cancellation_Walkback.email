@@ -12,7 +12,3 @@ Essentially, we send credits to your electricity bill based on what your solar f
 If you would still like to cancel, please respond to this email to confirm.
 
 Best,
-{!Case.OwnerFullName}
-Support Operations
-{!$Label.Company_Name} Community Solar
-{!$Label.Company_Temp_Website}

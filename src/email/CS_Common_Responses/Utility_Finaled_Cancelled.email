@@ -7,7 +7,3 @@ We have cancelled your community solar subscription for that account with {!$Lab
 If you have any questions, please do not hesitate to reach out.
 
 Best,
-{!Case.OwnerFullName}
-Support Operations
-{!$Label.Company_Name} Community Solar
-{!$Label.Company_Temp_Website}

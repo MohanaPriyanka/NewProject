@@ -11,7 +11,3 @@ Once you are taken off the solar farm by the utility, please remember you will r
 If you have any questions or concerns, please let me know.
 
 Best,
-{!Case.OwnerFullName}
-Support Operations
-{!$Label.Company_Name} Community Solar
-{!$Label.Company_Temp_Website}

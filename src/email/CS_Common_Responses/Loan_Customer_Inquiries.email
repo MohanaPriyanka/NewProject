@@ -5,7 +5,3 @@ Thank you for contacting {!$Label.Company_Name} regarding your solar loan. {!$La
 Please redirect any inquiries regarding the servicing of your loan to BFC Servicing at bfcservicing@beamfintech.com, or call 833-677-0582.
 
 Best,
-{!Case.OwnerFullName}
-Support Operations
-{!$Label.Company_Name} Community Solar
-{!$Label.Company_Temp_Website}
