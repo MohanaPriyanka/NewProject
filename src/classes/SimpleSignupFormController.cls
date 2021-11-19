@@ -236,11 +236,12 @@ public without sharing class SimpleSignupFormController {
         ee.sobjectId = lead.Id;
 
         try {
-            MessagingService.sendEmailTemplate(ee);
+            MessagingService.logErrors(MessagingService.sendEmailTemplate(ee), 'SimpleSignupFormController.sendContinueApplicationEmail for lead ' + leadId);
         } catch (Exception e) {
             Logger.logNow('SimpleSignupFormController', 'sendContinueApplicationEmail',
                 'Lead Id: ' + leadId + ' ' + e.getMessage() + '; ' + e.getStackTraceString());
         }
+        Logger.flushLogs();
     }
 
     @SuppressWarnings('PMD.ApexCRUDViolation')

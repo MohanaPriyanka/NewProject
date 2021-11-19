@@ -28,7 +28,7 @@
 									<table cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;word-break:break-word;">
 										<tbody>
 											<tr>
-												<td align="Center" style="padding-bottom:10px;"><img alt="BlueWave Logo" src="https://bluewavesolar--c.documentforce.com/file-asset-public/AMPPoweredByBW_black_1?oid=00Dj0000001q7GO" style="max-width:40%;width:100%;display:block;border:none;" width="240" /></td>
+												<td align="Center" style="padding-bottom:10px;"><img alt="{!$Label.Company_Name} Logo" src="{!$Label.AmpBlack_Main_Logo}" style="max-width:40%;width:100%;display:block;border:none;" width="240" /></td>
 											</tr>
 										</tbody>
 									</table>
@@ -64,7 +64,7 @@
 								<tr valign="top">
 									<td class="columnCell" style="vertical-align:top;" width="100%">
 									<div style="text-align:center;word-break:break-word;margin-bottom:15px;margin-top:15px;">
-									<div style="display:inline-block;"><a href="https://bluewavememberportal.force.com/s/login/?startURL=%2Fs%2F&inst=0a" style="display:block;mso-padding-alt:0;margin:0;text-align:center;border:0px solid #000000;font-family:Arial,sans-serif;background-color:#387CDF;padding-right:20px;color:#ffffff;padding-bottom:10px;border-radius:30px;text-decoration:none;padding-top:10px;padding-left:20px;font-size:16px;" target="_blank"><span>Log Into Your Portal Here</span></a></div>
+									<div style="display:inline-block;"><a href="{!$Label.Customer_Member_Portal_URL}s/login/?startURL=%2Fs%2F&inst=0a" style="display:block;mso-padding-alt:0;margin:0;text-align:center;border:0px solid #000000;font-family:Arial,sans-serif;background-color:#387CDF;padding-right:20px;color:#ffffff;padding-bottom:10px;border-radius:30px;text-decoration:none;padding-top:10px;padding-left:20px;font-size:16px;" target="_blank"><span>Log Into Your Portal Here</span></a></div>
 									</div>
 									</td>
 								</tr>
@@ -79,9 +79,9 @@
 										<tbody>
 											<tr>
 												<td style="font-family:Arial,Helvetica,sans-serif;padding-bottom:25px;"><br />
-												<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:gray"><span style="font-size:11.5pt"><span style="font-family:&quot;Arial&quot;,sans-serif"><span style="color:#333434">Thanks for being part of the Wave, we&#39;re happy you&#39;re here.</span></span></span></span></span></span><br />
+												<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:gray"><span style="font-size:11.5pt"><span style="font-family:&quot;Arial&quot;,sans-serif"><span style="color:#333434">Thanks for being part of {!$Label.Company_Name}, we&#39;re happy you&#39;re here.</span></span></span></span></span></span><br />
 												<br />
-												<span style="font-size:11.5pt"><span style="font-family:&quot;Arial&quot;,sans-serif"><span style="color:#333434">- All of us here at BlueWave</span></span></span></td>
+												<span style="font-size:11.5pt"><span style="font-family:&quot;Arial&quot;,sans-serif"><span style="color:#333434">- All of us here at {!$Label.Company_Name}</span></span></span></td>
 											</tr>
 										</tbody>
 									</table>
@@ -97,8 +97,8 @@
 									<table cellpadding="0" cellspacing="0" style="font-size:14px;width:100%;border-collapse:collapse;word-break:break-word;">
 										<tbody>
 											<tr>
-												<td style="font-family:Arial,Helvetica,sans-serif;"><span style="font-size:12px;">BlueWave Customer Care<br />
-												844.786.4100 | <a href="mailto:customercare@bluewavesolar.com">customercare@bluewavesolar.com</a></span></td>
+												<td style="font-family:Arial,Helvetica,sans-serif;"><span style="font-size:12px;">{!$Label.Company_Name} Customer Care<br />
+												{!$Label.phone_customercare} | <a href="mailto:{!$Label.email_customercare}">{!$Label.email_customercare}</a></span></td>
 											</tr>
 										</tbody>
 									</table>
@@ -107,7 +107,7 @@
 									<table cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;word-break:break-word;">
 										<tbody>
 											<tr>
-												<td align="Center" style="padding-top:10px;"><a href="https://twitter.com/ampcleanenergy" target="_blank"><img alt="Twitter Icon" src="https://bluewavesolar--c.documentforce.com/file-asset-public/AMP_MN_Footer_Twitter?oid=00Dj0000001q7GO" style="max-width:50%;width:100%;display:block;border:none;" width="24" /></a></td>
+												<td align="Center" style="padding-top:10px;"><a href="https://twitter.com/ampcleanenergy" target="_blank"><img alt="Twitter Icon" src="{!$Label.Twitter_Black_Email_Icon}" style="max-width:50%;width:100%;display:block;border:none;" width="24" /></a></td>
 											</tr>
 										</tbody>
 									</table>
@@ -116,7 +116,7 @@
 									<table cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;word-break:break-word;">
 										<tbody>
 											<tr>
-												<td align="Center" style="padding-top:10px;"><a href="https://www.linkedin.com/company/ampenergy/" target="_blank"><img alt="Linkedin Icon" src="https://bluewavesolar--c.documentforce.com/file-asset-public/AMPPoweredByBW_BlackLinkedIn?oid=00Dj0000001q7GO" style="max-width:50%;width:100%;display:block;border:none;" width="24" /></a></td>
+												<td align="Center" style="padding-top:10px;"><a href="https://www.linkedin.com/company/ampenergy/" target="_blank"><img alt="Linkedin Icon" src="{!$Label.LinkedIn_Black_Email_Icon}" style="max-width:50%;width:100%;display:block;border:none;" width="24" /></a></td>
 											</tr>
 										</tbody>
 									</table>

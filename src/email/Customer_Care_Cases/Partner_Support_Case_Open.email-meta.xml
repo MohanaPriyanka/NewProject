@@ -5,19 +5,7 @@
     <encodingKey>ISO-8859-1</encodingKey>
     <name>Partner Support Case Open</name>
     <style>none</style>
-    <subject>Thank you for Submitting a Case with BlueWave Partner Support</subject>
-    <textOnly>*|MC:SUBJECT|*
-
-Hello {!Case.SuppliedName},
-
-Thank you for submitting a case with BlueWave Partner Support. Case #{!Case.CaseNumber} is being evaluated and the most appropriate representative is being assigned to fix this issue. You should expect a response to your inquiry within two business days.
-Thanks for joining us to make
-‘Solar for the 100%&apos;
-not just a mission, but a reality.
-- All of us here at BlueWave
-P.S. If you have any questions, please feel free
-to contact us at partnersupport@bluewavesolar.com or
-(888) 817-2703. We’re happy to help.</textOnly>
+    <subject>Thank you for Submitting a Case with {!$Label.Company_Name} Partner Support</subject>
     <type>custom</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

@@ -5,7 +5,6 @@
     <name>UCB Disclosure Form</name>
     <style>none</style>
     <subject>Important Changes to your Community Solar Subscription</subject>
-    <textOnly>Placeholder text</textOnly>
     <type>custom</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

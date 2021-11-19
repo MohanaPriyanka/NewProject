@@ -6,12 +6,6 @@
     <name>New Product Support Case</name>
     <style>freeForm</style>
     <subject>Your case {!Case.CaseNumber} - {!Case.Subject} has been opened.    {!Case.Thread_Id}</subject>
-    <textOnly>Thank you for contacting the Product Support team. Your case, {!Case.CaseNumber} {Case.Subject} has been opened.
-
-You can respond to this email with additional details and they will be added to the case.
-
-Thanks,
-Product Team</textOnly>
     <type>html</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

@@ -1,13 +1,9 @@
 Hi {!Contact.FirstName},
 
-Thank you for reaching out to BlueWave. We sincerely apologize for this experience and are are working internally to correct this.
+Thank you for reaching out to {!$Label.Company_Name}. We sincerely apologize for this experience and are are working internally to correct this.
 
 In the meantime, please be assured that we have cancelled your community solar application are you will not be signed up for the program.
 
 Thank you for your patience and please let me know if you have any further questions.
 
 Best,
-{!Case.OwnerFullName}
-Support Operations
-BlueWave Community Solar
-bluewavecommunitysolar.com

@@ -5,7 +5,7 @@
     <encodingKey>ISO-8859-1</encodingKey>
     <name>Vision Customers</name>
     <style>none</style>
-    <subject>BlueWave Community Solar: Confirming Your Community Solar Subscription</subject>
+    <subject>{!$Label.Company_Name} Community Solar: Confirming Your Community Solar Subscription</subject>
     <type>text</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

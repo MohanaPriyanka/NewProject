@@ -1,0 +1,14 @@
+Hi {!Contact.FirstName},
+
+While we're happy to cancel you, I'd like to try to help explain community solar savings in hopes of rectifying any confusion.
+
+As your subscribed farm generates electricity, your utility measures the amount of electricity produced and assigns that electricity a dollar value in the form of a “solar credit.” With your subscription, a share of these credits is applied to your monthly electricity bill, reducing what you owe your utility. While this billing mechanism brings you savings, it also means you’ll receive two bills every month—one from your utility, and one from {!$Label.Company_Name}. Your utility bill will look the same, and you’ll receive the same electricity from the grid as before. The one difference is that you will see a new negative line item for your solar credits. We bill you for solar credits received a month or two after they appear on your utility bill, so that you have already seen the benefit before we bill you. If you're having trouble matching up credits on your bills, we are happy to help walk you through that so you can see where your savings come from.
+
+If you have further questions about community solar billing, please see the full article with sample bills at:
+{!$Label.Company_Website}bw-resources/a-6-minute-guide-to-community-solar-billing
+
+Essentially, we send credits to your electricity bill based on what your solar farm produces, and then we bill you at a discount. So far, you have saved [$$$] on your ______ account. If there is a way we can clarify our system to avoid cancellation, please let me know. If a call is preferred, I am happy to schedule that with you. Just let me know!
+
+If you would still like to cancel, please respond to this email to confirm.
+
+Best,

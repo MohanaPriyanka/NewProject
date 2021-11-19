@@ -5,16 +5,7 @@
     <encodingKey>ISO-8859-1</encodingKey>
     <name>Customer Care Case Close</name>
     <style>none</style>
-    <subject>Did BlueWave help you resolve your issue? Case: {!Case.CaseNumber}</subject>
-    <textOnly>Thanks for reaching out to BlueWave!
-
-Thanks for reaching out to BlueWave!
-
-We hope all your questions were answered today.
-You can always reach us at customercare@bluewavesolar.com.
-We&apos;re happy to help.
-
-How was your experience with BlueWave today?</textOnly>
+    <subject>Did {!$Label.Company_Name} help you resolve your issue? Case: {!Case.CaseNumber}</subject>
     <type>custom</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Contract counterexecuted with survey</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>CS_Customer_Executed_Survey</name>
+    <style>none</style>
+    <subject>Welcome to {!$Label.Company_Name}!</subject>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

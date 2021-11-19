@@ -1,7 +1,7 @@
 Dear [NAME OF INDIVIDUAL CALLER/CALLED],
 
-This email is confirmation of the recurring electronic payments you authorized [NAME OF PAYEE] or its servicer, including BlueWave, or any assignee or its servicer, to debit from a bank account during a recent telephone call.
+This email is confirmation of the recurring electronic payments you authorized [NAME OF PAYEE] or its servicer, including {!$Label.Company_Name}, or any assignee or its servicer, to debit from a bank account during a recent telephone call.
 
-On [DATE], you authorized [NAME OF PAYEE] or its servicer, including BlueWave, or any assignee or its servicer, to initiate monthly electronic payments (called ACH debits) from a bank account in the name of [NAME OF DEPOSITOR] at [NAME OF BANK] with account number ending in [LAST FOUR DIGITS OF ACCOUNT NUMBER].  The ACH debits will occur on the first day of each month (or on the next business day if the first of the month is a weekend or holiday), in an amount equal to the payment due shown on the most recent monthly billing statement for [NAME OF CUSTOMER].
+On [DATE], you authorized [NAME OF PAYEE] or its servicer, including {!$Label.Company_Name}, or any assignee or its servicer, to initiate monthly electronic payments (called ACH debits) from a bank account in the name of [NAME OF DEPOSITOR] at [NAME OF BANK] with account number ending in [LAST FOUR DIGITS OF ACCOUNT NUMBER].  The ACH debits will occur on the first day of each month (or on the next business day if the first of the month is a weekend or holiday), in an amount equal to the payment due shown on the most recent monthly billing statement for [NAME OF CUSTOMER].
 
-You can call BlueWave at 844-786-4100 with any questions or if you wish to cancel this authorization.  We answer this telephone number during our normal business hours, which are 9 AM – 5 PM EST.
+You can call {!$Label.Company_Name} at {!$Label.phone_customercare} with any questions or if you wish to cancel this authorization.  We answer this telephone number during our normal business hours, which are 9 AM – 5 PM EST.

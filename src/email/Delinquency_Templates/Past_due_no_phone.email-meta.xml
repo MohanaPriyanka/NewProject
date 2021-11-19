@@ -5,7 +5,7 @@
     <encodingKey>ISO-8859-1</encodingKey>
     <name>Past due no phone</name>
     <style>none</style>
-    <subject>Your BlueWave Community Solar Account</subject>
+    <subject>Your {!$Label.Company_Name} Community Solar Account</subject>
     <type>text</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

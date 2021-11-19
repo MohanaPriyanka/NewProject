@@ -6,19 +6,6 @@
     <name>Task Reminder Email</name>
     <style>none</style>
     <subject>Task Reminder!</subject>
-    <textOnly>*|MC:SUBJECT|*
-
-Dear {!Lead.FirstName},
-
-Thank you for submitting your Community Solar application. You should receive notice on your application status within the next two business days. Upon application approval, we will send you final documentation to complete your enrollment into our Community Solar program.
-
-
-
-Thanks for joining us to make ‘solar for the 100%&apos; not just a mission, but a reality.
-
--All of us here at BlueWave
-
-P.S. If you have any questions, please feel free to contact us at info@bluewave-capital.com or (844) 786-4100. We’re happy to help.</textOnly>
     <type>custom</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

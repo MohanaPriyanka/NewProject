@@ -5,7 +5,7 @@
     <encodingKey>ISO-8859-1</encodingKey>
     <name>Replaced service provider</name>
     <style>none</style>
-    <subject>Your BlueWave Community Solar Account is Past Due</subject>
+    <subject>Your {!$Label.Company_Name} Community Solar Account is Past Due</subject>
     <type>text</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

@@ -5,7 +5,7 @@
     <encodingKey>ISO-8859-1</encodingKey>
     <name>Billing- Autopay Unable to be Processed</name>
     <style>none</style>
-    <subject>Your BlueWave auto-pay payment was not successful</subject>
+    <subject>Your {!$Label.Company_Name} auto-pay payment was not successful</subject>
     <type>text</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

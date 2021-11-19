@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>traditional CS only - use to attempt to PREVENT CANCELLATION - use boldface to emphasize</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Cancellation Walkback</name>
+    <style>none</style>
+    <subject>Thank you for reaching out to {!$Label.Company_Name}!</subject>
+    <type>text</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

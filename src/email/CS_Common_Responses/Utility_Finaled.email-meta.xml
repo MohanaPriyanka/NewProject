@@ -5,7 +5,7 @@
     <encodingKey>ISO-8859-1</encodingKey>
     <name>Utility Finaled</name>
     <style>none</style>
-    <subject>BlueWave: We cannot subscribe a closed account</subject>
+    <subject>{!$Label.Company_Name}: We cannot subscribe a closed account</subject>
     <type>text</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

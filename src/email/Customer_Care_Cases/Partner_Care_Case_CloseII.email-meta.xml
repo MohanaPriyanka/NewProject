@@ -5,10 +5,7 @@
     <encodingKey>ISO-8859-1</encodingKey>
     <name>Partner Care Case Close</name>
     <style>none</style>
-    <subject>Did BlueWave help you resolve your issue? Case: {!Case.CaseNumber}</subject>
-    <textOnly>How was your experience with BlueWave? Take our survey.
-
-{!Case.Survey_URL__c}</textOnly>
+    <subject>Did {!$Label.Company_Name} help you resolve your issue? Case: {!Case.CaseNumber}</subject>
     <type>custom</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

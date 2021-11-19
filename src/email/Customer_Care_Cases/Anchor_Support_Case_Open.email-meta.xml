@@ -5,16 +5,7 @@
     <encodingKey>ISO-8859-1</encodingKey>
     <name>Anchor Support Case Open</name>
     <style>none</style>
-    <subject>You&apos;ve Submitted a Case with BlueWave Anchor Support</subject>
-    <textOnly>Hello {!Case.SuppliedName},
-
-Thank you for submitting a case with BlueWave Anchor Support. Case # {!Case.CaseNumber} is being evaluated and the most appropriate representative is being assigned to fix this issue. You should receive a response to your inquiry shortly.
-
-Thanks for being part of the BlueWave Community
-- All of us here at BlueWave
-
-BlueWave Anchor Support
-844.389.9780 | anchorsupport@bluewavesolar.com</textOnly>
+    <subject>You&apos;ve Submitted a Case with {!$Label.Company_Name} Anchor Support</subject>
     <type>custom</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

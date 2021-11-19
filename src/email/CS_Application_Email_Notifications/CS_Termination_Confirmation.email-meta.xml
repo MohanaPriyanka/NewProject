@@ -6,18 +6,6 @@
     <name>CS Termination Confirmation</name>
     <style>none</style>
     <subject>Account Closed Confirmation</subject>
-    <textOnly>Dear {!Contact.FirstName},
-
-This message is to confirm that your BlueWave Community Solar account is closed.  Effective immediately you will no longer receive bills or additional communications regarding this account from BlueWave.
-
-If you have any questions about the cancellation process please call 844-786-4100 or email customercare@bluewavesolar.com to speak with a member of our Customer Care Team.
-
-We&apos;re sad to see you go,
-
-- BlueWave Customer Care
-
-BlueWave Customer Care
-844.786.4100 | customercare@bluewavesolar.com</textOnly>
     <type>custom</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

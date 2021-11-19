@@ -5,7 +5,7 @@
     <encodingKey>ISO-8859-1</encodingKey>
     <name>Contract Error- Couldn&apos;t Subscribe</name>
     <style>none</style>
-    <subject>We could not subscribe all the utilities on your BlueWave Community Solar contract</subject>
+    <subject>We could not subscribe all the utilities on your {!$Label.Company_Name} Community Solar contract</subject>
     <type>text</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

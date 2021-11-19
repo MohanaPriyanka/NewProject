@@ -1,15 +1,11 @@
 Hi {!Contact.FirstName},
 
-Thanks for being part of BlueWave! We are reaching out because we received notice that your most recent payment of [$$$] on [date] was marked as returned, and payment is still due. You will receive past due notices from us until the issue is resolved. We apologize for the inconvenience.
+Thanks for being part of {!$Label.Company_Name}! We are reaching out because we received notice that your most recent payment of [$$$] on [date] was marked as returned, and payment is still due. You will receive past due notices from us until the issue is resolved. We apologize for the inconvenience.
 
-If you are aware of what the issue was, please log in to the customer portal at bluewavememberportal.force.com, modify your payment information accordingly, and make a replacement payment.
+If you are aware of what the issue was, please log in to the customer portal at {!$Label.Customer_Member_Portal_URL}, modify your payment information accordingly, and make a replacement payment.
 
-If you are unsure why you may have received this notification, please inquire with your bank and then give us a call at (844) 786-4100 so we can help you sort out the issue. As information security is a top priority, please refrain from sending any bank or credit card information via email.
+If you are unsure why you may have received this notification, please inquire with your bank and then give us a call at {!$Label.phone_customercare} so we can help you sort out the issue. As information security is a top priority, please refrain from sending any bank or credit card information via email.
 
 Please let me know if you have any further questions, I'm happy to help.
 
 Best,
-{!Case.OwnerFullName}
-Support Operations
-BlueWave Community Solar
-bluewavecommunitysolar.com

@@ -4,7 +4,7 @@
     <encodingKey>ISO-8859-1</encodingKey>
     <name>Update Autopay</name>
     <style>none</style>
-    <subject>BlueWave Community Solar: How to update your autopay</subject>
+    <subject>{!$Label.Company_Name} Community Solar: How to update your autopay</subject>
     <type>text</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

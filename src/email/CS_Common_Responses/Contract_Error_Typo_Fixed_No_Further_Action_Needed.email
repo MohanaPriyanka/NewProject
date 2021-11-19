@@ -1,11 +1,7 @@
 Hi {!Contact.FirstName},
 
-There was a small typo on your recent contract with BlueWave Solar, which we have corrected for you.
+There was a small typo on your recent contract with {!$Label.Company_Name}, which we have corrected for you.
 
 No action is needed. We just wanted to let you know of this typo for your records.
  
 Best,
-{!Case.OwnerFullName}
-Support Operations
-BlueWave Community Solar
-bluewavecommunitysolar.com

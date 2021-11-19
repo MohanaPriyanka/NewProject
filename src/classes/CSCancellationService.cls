@@ -121,7 +121,7 @@ public without sharing class CSCancellationService {
             '{!Contact.FirstName}' => account.Send_Bills_Contact__r.FirstName
         };
         if (account.Client_Brand_Key__c.contains('Amp')) {
-            replacements.put('BlueWave Community Solar', 'Amp-BlueWave');
+            replacements.put('{!$Label.Company_Name} Community Solar', 'Amp-{!$Label.Company_Name}');
         }
         accountIdToReplacementMap.put(account,replacements);
     }
