@@ -28,6 +28,7 @@
       "componentAttributes" : {
         "allowAttachments" : true,
         "attachmentLabel" : "Upload File",
+        "buttonMaxWidth" : 60,
         "callToAction" : false,
         "callToActionButtonText" : "",
         "callToActionText" : "",

@@ -6,7 +6,7 @@
   "regions" : [ {
     "components" : [ {
       "componentAttributes" : {
-        "bannerText" : "Customercare@bluewavesolar.com",
+        "bannerText" : "CustomerCare@perchenergy.com",
         "bannerTextWithKnowledge" : "",
         "bannerTextWithoutKnowledge" : "",
         "pageType" : "",
@@ -37,7 +37,7 @@
   }, {
     "components" : [ {
       "componentAttributes" : {
-        "numberOfArticles" : 3,
+        "numberOfArticles" : 5,
         "showTitle" : false,
         "title" : "Top Articles",
         "topicList" : [ {
@@ -57,12 +57,12 @@
   }, {
     "components" : [ {
       "componentAttributes" : {
-        "numberOfArticles" : 3,
+        "numberOfArticles" : 5,
         "showTitle" : false,
         "title" : "Top Articles",
         "topicList" : [ {
           "isPublic" : true,
-          "name" : "0TO0a000000DpnxGAC"
+          "name" : "0TO7j000000SSlRGAW"
         } ]
       },
       "componentName" : "forceCommunity:topArticleList",
@@ -77,12 +77,12 @@
   }, {
     "components" : [ {
       "componentAttributes" : {
-        "numberOfArticles" : 3,
+        "numberOfArticles" : 5,
         "showTitle" : false,
         "title" : "Top Articles",
         "topicList" : [ {
           "isPublic" : true,
-          "name" : "0TO0a000000DqXlGAK"
+          "name" : "0TO7j000000SSlWGAW"
         } ]
       },
       "componentName" : "forceCommunity:topArticleList",
