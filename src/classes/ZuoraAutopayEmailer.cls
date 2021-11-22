@@ -6,13 +6,19 @@
  */
 public without sharing class ZuoraAutopayEmailer implements Schedulable {
 
-    @TestVisible private static final String MC_EVENT_KEY = 'APIEvent-7e12d0f4-1f3c-f499-ad4e-a6c5477cb479';
+    @TestVisible private static MarketingAPISelector marketingAPISelector = new MarketingAPISelector();
+    @TestVisible private static String MC_EVENT_KEY;
     @TestVisible private static final String CRON_EXP = '0 0 12 26-29 * ?'; // Run every month on days 26, 27, 28, 29 at noon
     public Boolean dryRun = false;
     public Date dateOverride;
     @TestVisible private List<MarketingJourneyEnrollmentDetail> enrollments;
     @TestVisible private ZuoraAccountSelector accountSelector = new ZuoraAccountSelector();
     private Date todaysDate;
+
+    static {
+        List<MCAPI_Config__mdt> configs = marketingAPISelector.getMarketingAPIConfig();
+        MC_EVENT_KEY = configs[0].Autopay_Reminder_Journey_Id__c;
+    }
 
     public static String scheduleJob() {
         return System.schedule('Zuora Autopay Emailer (Marketing Cloud API)', CRON_EXP, new ZuoraAutopayEmailer());
