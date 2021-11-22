@@ -61,27 +61,6 @@
   }, {
     "components" : [ {
       "componentAttributes" : {
-        "title" : "Description",
-        "topicId" : "{!topicId}"
-      },
-      "componentName" : "forceCommunity:topicDescription",
-      "id" : "404f64d2-70dc-4c2e-8657-64fa676d614c",
-      "renderPriority" : "NEUTRAL",
-      "renditionMap" : { },
-      "type" : "component"
-    }, {
-      "componentAttributes" : {
-        "showTopicsMetric" : true,
-        "title" : "Related Topics",
-        "topicId" : "{!topicId}"
-      },
-      "componentName" : "forceCommunity:relatedTopics",
-      "id" : "b3954d17-8cb7-408c-ae5c-f5e88c464a68",
-      "renderPriority" : "NEUTRAL",
-      "renditionMap" : { },
-      "type" : "component"
-    }, {
-      "componentAttributes" : {
         "label" : "Contact Support"
       },
       "componentName" : "forceCommunity:contactSupportButton",

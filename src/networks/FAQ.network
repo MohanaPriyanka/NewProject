@@ -6,7 +6,7 @@
     <communityRoles/>
     <disableReputationRecordConversations>false</disableReputationRecordConversations>
     <emailSenderAddress>customercare@bluewavesolar.com</emailSenderAddress>
-    <emailSenderName>BlueWave</emailSenderName>
+    <emailSenderName>Perch</emailSenderName>
     <enableCustomVFErrorPageOverrides>false</enableCustomVFErrorPageOverrides>
     <enableDirectMessages>true</enableDirectMessages>
     <enableExperienceBundleBasedSnaOverrideEnabled>true</enableExperienceBundleBasedSnaOverrideEnabled>
@@ -25,7 +25,7 @@
     <enableTopicAssignmentRules>true</enableTopicAssignmentRules>
     <enableTopicSuggestions>false</enableTopicSuggestions>
     <enableUpDownVote>false</enableUpDownVote>
-    <forgotPasswordTemplate>Emails_to_Delete/CommunityForgotPasswordEmailTemplate</forgotPasswordTemplate>
+    <forgotPasswordTemplate>BFG_Internal_Alerts/CommunityForgotPasswordEmailTemplate</forgotPasswordTemplate>
     <gatherCustomerSentimentData>false</gatherCustomerSentimentData>
     <networkMemberGroups>
         <permissionSet>System_Administrator</permissionSet>
