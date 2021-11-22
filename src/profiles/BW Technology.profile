@@ -43585,6 +43585,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Zuora__PaymentGateway__c.Remittance_Address__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Zuora__PaymentGateway__c.Zuora__EntityID__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -61771,6 +61776,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Zuora_Setting__mdt-Zuora Setting Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Zuora__PaymentGateway__c-Zuora__PaymentGateway Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Zuora__Payment__c-Zuora__Payment Z-Force Layout v2%2E7</layout>
