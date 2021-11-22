@@ -1,49 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ManagedTopics xmlns="http://soap.sforce.com/2006/04/metadata">
     <managedTopic>
-        <fullName>FAQ.Content:Community Solar</fullName>
+        <fullName>FAQ.Content:General Community Solar</fullName>
         <managedTopicType>Content</managedTopicType>
-        <name>Community Solar</name>
+        <name>General Community Solar</name>
         <parentName></parentName>
         <position>2</position>
         <topicDescription> </topicDescription>
     </managedTopic>
     <managedTopic>
-        <fullName>FAQ.Content:Home Solar Loan</fullName>
-        <managedTopicType>Content</managedTopicType>
-        <name>Home Solar Loan</name>
-        <parentName></parentName>
-        <position>5</position>
-        <topicDescription> </topicDescription>
-    </managedTopic>
-    <managedTopic>
-        <fullName>FAQ.Content:Project Development</fullName>
-        <managedTopicType>Content</managedTopicType>
-        <name>Project Development</name>
-        <parentName></parentName>
-        <position>6</position>
-        <topicDescription> </topicDescription>
-    </managedTopic>
-    <managedTopic>
-        <fullName>FAQ.Featured:Community Solar</fullName>
+        <fullName>FAQ.Featured:General Community Solar</fullName>
         <managedTopicType>Featured</managedTopicType>
-        <name>Community Solar</name>
+        <name>General Community Solar</name>
         <parentName></parentName>
         <position>0</position>
         <topicDescription> </topicDescription>
     </managedTopic>
     <managedTopic>
-        <fullName>FAQ.Featured:Home Solar Loan</fullName>
+        <fullName>FAQ.Featured:Perch Community Solar</fullName>
         <managedTopicType>Featured</managedTopicType>
-        <name>Home Solar Loan</name>
+        <name>Perch Community Solar</name>
         <parentName></parentName>
         <position>1</position>
         <topicDescription> </topicDescription>
     </managedTopic>
     <managedTopic>
-        <fullName>FAQ.Featured:Project Development</fullName>
+        <fullName>FAQ.Featured:Utility</fullName>
         <managedTopicType>Featured</managedTopicType>
-        <name>Project Development</name>
+        <name>Utility</name>
         <parentName></parentName>
         <position>2</position>
         <topicDescription> </topicDescription>
