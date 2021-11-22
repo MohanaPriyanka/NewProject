@@ -1,75 +1,49 @@
 /**
- * Created by Lindsay Holmes (Gears CRM) on 5/15/2020.
- * Description: Service for the Contract object
- * Test: CustomerContractServiceTest
+ * @description Created by Lindsay Holmes (Gears CRM) on 5/15/2020. Service for the Contract object.
+ * Tested By: CustomerContractServiceTest, CSLeadsRESTControllerV2Test
  */
+public without sharing class CustomerContractService {
 
- public without sharing class CustomerContractService {
-    LeadSelector leadSelector = new LeadSelector();
-    CustomerContractSelector customerContractSelector = new CustomerContractSelector();
-
-    public static final Id RECORD_TYPE_ID = Schema.SObjectType.Contract.getRecordTypeInfosByDeveloperName().get('Customer_Contract').getRecordTypeId();
-
-    public Contract createContractFromLead(Id leadId, Integer numberOfContractDocs) {
-        Lead lead = leadSelector.selectOneForContractCreation(leadId);
-        if(lead == null || lead.Accounts__r == null || lead.Accounts__r.isEmpty()) {
-            throw new Util.BWException('Invalid lead; please make sure you have provided a valid lead ID and that the lead has at least one associated property account');
-        }
-
-        Contract contract = setContractFields(lead, numberOfContractDocs);
-        contract.AccountId = lead.Accounts__r[0].Id;
-        
-        Boolean success = Util.insertAndLog(new List<sObject>{contract}, 'CustomerContractService', 'createContractFromLead');
-        if(success) {
-            return customerContractSelector.selectOne(contract.Id);
-        }
-
-        return null;
-    }
-
+    public static final Id RECORD_TYPE_ID =
+        Schema.SObjectType.Contract.getRecordTypeInfosByDeveloperName().get('Customer_Contract').getRecordTypeId();
+    private CustomerContractSelector customerContractSelector = new CustomerContractSelector();
 
     public Contract setContractFields(Lead lead, Integer numberOfContractDocs) {
-        Contract contract = new Contract();
-        contract.Lead__c = lead.Id;
-        contract.Product__c = lead.Product__c;
-        contract.RecordTypeId = RECORD_TYPE_ID;
-        contract.Generate_Review_Version__c = true;
-        contract.Generate_Disclosure_Form__c = (numberOfContractDocs == 2);
-        
-        if(lead.Product__r.Generic_Terms_Conga_Template__c != null) {
+        Contract contract = new Contract(
+            Lead__c = lead.Id,
+            Product__c = lead.Product__c,
+            RecordTypeId = RECORD_TYPE_ID,
+            Generate_Review_Version__c = true,
+            Generate_Disclosure_Form__c = (numberOfContractDocs == 2)
+        );
+        if (lead.Product__r.Generic_Terms_Conga_Template__c != null) {
             contract.Contract_Type__c = 'Generic';
         } else {
             contract.Contract_Type__c = 'Project Specific';
         }
-
         return contract;
     }
 
-
     public void regenerateDocuments(Id leadId) {
         List<Contract> contracts = customerContractSelector.selectByRelatedLead(leadId);
-        for(Contract c : contracts) {
+        for (Contract c : contracts) {
             c.Generate_Review_Version__c = true;
         }
-        
         Util.updateAndLog(contracts, 'CustomerContractService', 'regenerateDocuments');
     }
 
-
     public Boolean signCustomerContracts(Id leadId) {
         List<Contract> contracts = customerContractSelector.selectByRelatedLead(leadId);
-        if(contracts == null || contracts.isEmpty()) {
+        if (contracts == null || contracts.isEmpty()) {
             throw new Util.BWException('There are no existing contracts associated with lead id ' + leadId);
         }
-        
-        for(Contract c : contracts) {
+        for (Contract c : contracts) {
             c.Customer_Signature_Date_Time__c = Datetime.now();
             c.Generate_Signed_Version__c = true;
+            c.Override_Countersign_Template_Id__c = c.Conga_Template_ID_Countersigned__c;
         }
-        
         return Util.updateAndLog(contracts, 'SimpleSignupFormController', 'signCustomerContracts');
     }
-
 
     public static Contract createForOpportunity(Opportunity opp, Contract parentContract) {
         return new Contract(
@@ -82,23 +56,22 @@
         );
     }
 
-     /**
-       * @description Ensures that the Product on the Contract and Lead are in sync. However, we do not want to change
-       * the product on the "Generic" Contract when the lead is updated to the "Project Specific" Product upon conversion
-       *
-       * @param contracts List of contracts
-       * @param leadMap Map of related Leads
-       */
-     public void updateProductForCustomerContract(List<Contract> contracts, Map<Id, Lead> leadMap) {
-         List<Contract> contractsToUpdate = new List<Contract>();
-         for(Contract c : contracts) {
-             if (c.Contract_Type__c == 'Generic' && c.Product__c == leadMap.get(c.Lead__c).Product__r.Parent_Product__c) {
-                 continue;
-             } else {
-                 c.Product__c = leadMap.get(c.Lead__c).Product__c;
-                 contractsToUpdate.add(c);
-             }
-         }
-         Util.updateAndLog(contractsToUpdate, 'LeadService', 'updateRelatedContracts');
-     }
+    /**
+     * @description Ensures that the Product on the Contract and Lead are in sync. However, we do not want to change
+     * the product on the "Generic" Contract when the lead is updated to the "Project Specific" Product upon conversion
+     * @param contracts List of contracts
+     * @param leadMap Map of related Leads
+     */
+    public void updateProductForCustomerContract(List<Contract> contracts, Map<Id, Lead> leadMap) {
+        List<Contract> contractsToUpdate = new List<Contract>();
+        for (Contract c : contracts) {
+            if (c.Contract_Type__c == 'Generic' && c.Product__c == leadMap.get(c.Lead__c).Product__r.Parent_Product__c) {
+                continue;
+            } else {
+                c.Product__c = leadMap.get(c.Lead__c).Product__c;
+                contractsToUpdate.add(c);
+            }
+        }
+        Util.updateAndLog(contractsToUpdate, 'LeadService', 'updateRelatedContracts');
+    }
 }
