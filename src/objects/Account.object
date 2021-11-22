@@ -1047,7 +1047,7 @@ Specify the global country code setting or record level country code to automati
         <externalId>false</externalId>
         <formula>&quot;&amp;solmgr=1&quot; + 
 &quot;&amp;id=&quot; + Id +
-&quot;&amp;templateid=a2F3K000000ARLTUA4&quot;+ 
+&quot;&amp;templateid=a2F5b000001WQuBEAW&quot;+
 &quot;&amp;ofn=&quot; + TEXT(TODAY()) +  TEXT(Days_Past_Due__c) + &quot; Days CS Delinquency Letters&quot; + 
 &quot;&amp;APDF=1&quot; + /*Specifies whether merged PDF documents will be saved as individual PDF documents or consolidated into one document. */
 &quot;&amp;QMode=Download&quot; + /* Downloads files to content workspace */
