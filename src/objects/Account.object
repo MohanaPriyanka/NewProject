@@ -3072,6 +3072,21 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <active>true</active>
         <label>Account (Default)</label>
         <picklistValues>
+            <picklist>Client_Brand_Key__c</picklist>
+            <values>
+                <fullName>AmpBlack</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BluewaveLogo</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Perch</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Type</picklist>
             <values>
                 <fullName>EPC Account</fullName>
@@ -3190,17 +3205,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>Unhappy with BW Service</fullName>
                 <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Client_Brand_Key__c</picklist>
-            <values>
-                <fullName>AmpBlack</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>BluewaveLogo</fullName>
-                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -3583,6 +3587,21 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <description>Only Visible to BWC Founders</description>
         <label>BWC Founders</label>
         <picklistValues>
+            <picklist>Client_Brand_Key__c</picklist>
+            <values>
+                <fullName>AmpBlack</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BluewaveLogo</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Perch</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>AccountSource</picklist>
             <values>
                 <fullName>BWC GIS</fullName>
@@ -3662,17 +3681,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>Unhappy with BW Service</fullName>
                 <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Client_Brand_Key__c</picklist>
-            <values>
-                <fullName>AmpBlack</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>BluewaveLogo</fullName>
-                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -4070,6 +4078,21 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <description>Only Visible to BWC Principals</description>
         <label>BWC Principals</label>
         <picklistValues>
+            <picklist>Client_Brand_Key__c</picklist>
+            <values>
+                <fullName>AmpBlack</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BluewaveLogo</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Perch</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>AccountSource</picklist>
             <values>
                 <fullName>BWC GIS</fullName>
@@ -4149,17 +4172,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>Unhappy with BW Service</fullName>
                 <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Client_Brand_Key__c</picklist>
-            <values>
-                <fullName>AmpBlack</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>BluewaveLogo</fullName>
-                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -4556,6 +4568,21 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <active>true</active>
         <label>BW Founders</label>
         <picklistValues>
+            <picklist>Client_Brand_Key__c</picklist>
+            <values>
+                <fullName>AmpBlack</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BluewaveLogo</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Perch</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>AccountSource</picklist>
             <values>
                 <fullName>BWC GIS</fullName>
@@ -4635,17 +4662,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>Unhappy with BW Service</fullName>
                 <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Client_Brand_Key__c</picklist>
-            <values>
-                <fullName>AmpBlack</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>BluewaveLogo</fullName>
-                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -5046,6 +5062,21 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <active>true</active>
         <label>BW Principals</label>
         <picklistValues>
+            <picklist>Client_Brand_Key__c</picklist>
+            <values>
+                <fullName>AmpBlack</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BluewaveLogo</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Perch</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>AccountSource</picklist>
             <values>
                 <fullName>BWC GIS</fullName>
@@ -5125,17 +5156,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>Unhappy with BW Service</fullName>
                 <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Client_Brand_Key__c</picklist>
-            <values>
-                <fullName>AmpBlack</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>BluewaveLogo</fullName>
-                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -6156,6 +6176,21 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <active>true</active>
         <label>Competitor Account</label>
         <picklistValues>
+            <picklist>Client_Brand_Key__c</picklist>
+            <values>
+                <fullName>AmpBlack</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BluewaveLogo</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Perch</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>AccountSource</picklist>
             <values>
                 <fullName>BWC GIS</fullName>
@@ -6235,17 +6270,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>Unhappy with BW Service</fullName>
                 <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Client_Brand_Key__c</picklist>
-            <values>
-                <fullName>AmpBlack</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>BluewaveLogo</fullName>
-                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -6647,6 +6671,21 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <description>To be used by Executive Team only</description>
         <label>Executive Team</label>
         <picklistValues>
+            <picklist>Client_Brand_Key__c</picklist>
+            <values>
+                <fullName>AmpBlack</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BluewaveLogo</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Perch</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>AccountSource</picklist>
             <values>
                 <fullName>BWC GIS</fullName>
@@ -6726,17 +6765,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>Unhappy with BW Service</fullName>
                 <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Client_Brand_Key__c</picklist>
-            <values>
-                <fullName>AmpBlack</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>BluewaveLogo</fullName>
-                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -7133,6 +7161,25 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <active>true</active>
         <description>Landowner record type used by Site Acquisition</description>
         <label>Landowner</label>
+        <picklistValues>
+            <picklist>Client_Brand_Key__c</picklist>
+            <values>
+                <fullName>AmpBlack</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>AmpRed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BluewaveLogo</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Perch</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>AccountSource</picklist>
             <values>
@@ -7875,6 +7922,21 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <active>true</active>
         <label>Partner Account</label>
         <picklistValues>
+            <picklist>Client_Brand_Key__c</picklist>
+            <values>
+                <fullName>AmpBlack</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BluewaveLogo</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Perch</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>AccountSource</picklist>
             <values>
                 <fullName>BWC GIS</fullName>
@@ -7980,17 +8042,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>Unhappy with BW Service</fullName>
                 <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Client_Brand_Key__c</picklist>
-            <values>
-                <fullName>AmpBlack</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>BluewaveLogo</fullName>
-                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -8482,17 +8533,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <active>true</active>
         <label>Property</label>
         <picklistValues>
-            <picklist>Suppress_Collections__c</picklist>
-            <values>
-                <fullName>Suppress collections forever</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Suppress collections until no longer past due</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Client_Brand_Key__c</picklist>
             <values>
                 <fullName>AmpBlack</fullName>
@@ -8512,6 +8552,17 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
             <values>
                 <fullName>Perch</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Suppress_Collections__c</picklist>
+            <values>
+                <fullName>Suppress collections forever</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Suppress collections until no longer past due</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -9035,6 +9086,21 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <description>Record Type for Residential Loan Accounts</description>
         <label>Residential Loan</label>
         <picklistValues>
+            <picklist>Client_Brand_Key__c</picklist>
+            <values>
+                <fullName>AmpBlack</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BluewaveLogo</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Perch</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>AccountSource</picklist>
             <values>
                 <fullName>BWC GIS</fullName>
@@ -9114,17 +9180,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             <values>
                 <fullName>Unhappy with BW Service</fullName>
                 <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Client_Brand_Key__c</picklist>
-            <values>
-                <fullName>AmpBlack</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>BluewaveLogo</fullName>
-                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
