@@ -9,6 +9,8 @@ import companyNameCustomerManagement from '@salesforce/label/c.Company_Name_Cust
 
 export default class CustomerPortalProjectFooter extends LightningElement {
 
+    rebranded = companyName == 'Perch' ? true : false;
+
     label = {
         companyName,
         companyNameCustomerAcquisition,

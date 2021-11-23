@@ -7,8 +7,8 @@
 <template>
     <div class="slds-align__absolute-center">
         <div class="cpp-footer__container slds-size_1-of-1 slds-grid_align-center">
-            <div class="cpp-footer__wrapper">
-                <p class="cpp-footer__text slds-p-around__x-small">
+            <div class="cpp-footer__wrapper" >
+                <p class="cpp-footer__text slds-p-around__x-small" if:false={rebranded}>
                     This marketing material is provided by {label.companyNameCustomerAcquisition} and
                     {label.companyNameCustomerManagement}, both entities in the
                     {label.companyName} family of companies. The solar farm depicted is not owned by a
@@ -21,6 +21,17 @@
                     **The output equivalent number is based on the estimated average annual kWh output value for the
                     project and average annual U.S. home energy consumption as determined by the U.S. Energy Information
                     Administration (Annual Energy Outlook 2018, https://www.eia.gov/outlooks/aeo/).
+                </p>
+                <p class="cpp-footer__text slds-p-around__x-small" if:true={rebranded}>
+                    This marketing material is provided by {label.companyName} Community Solar Acquisition, LLC and {label.companyName} Community Solar,
+                    LLC, both entities in the {label.companyName} Energy family of companies. The solar farm depicted is not owned by a
+                    {label.companyName} Energy company and is not necessarily the farm you would be joining. It is depicted for representative
+                    purposes only. *Environmental benefits of this project are based on the average annual output of the project
+                    and calculated using the EPA Greenhouse Gas Equivalencies Calculator (2018) epa.gov/energy. Neither a {label.companyName} Energy
+                    company nor you will receive renewable energy or environmental attributes from your community solar subscription.
+                    **The output equivalent number is an estimate based on the estimated average annual kWh output value for the project
+                    and average annual U.S. home energy consumption as determined by the U.S. Energy Information Administration
+                    (Annual Energy Outlook 2018, https://www.eia.gov/outlooks/aeo/).
                 </p>
             </div>
         </div>
