@@ -1583,12 +1583,21 @@ MAX(TODAY()-Max_Overdue_Due_Date_Merge__c,0),
         <fullName>Link_to_Client_Logo__c</fullName>
         <description>See W-022554</description>
         <externalId>false</externalId>
-        <formula>IF(CONTAINS(TEXT(Client_Brand_Key__c),&quot;Amp&quot;),
-   &quot;/servlet/servlet.FileDownload?file=0150a000002xuLS&quot;,
-   IF(ISPICKVAL($CustomMetadata.System_Default__mdt.System_Defaults.Default_Client_Brand_Key__c, &apos;BluewaveLogo&apos;),
-      &quot;/servlet/servlet.FileDownload?file=0150a0000036Brv&quot;, LEFT( $Api.Enterprise_Server_URL_100, FIND( &quot;.com&quot;, $Api.Enterprise_Server_URL_100 ) + 4)&amp;
-      &quot;sfc/servlet.shepherd/version/renditionDownload?rendition=ORIGINAL_Png&amp;versionId=0685b00000Kjxu6&amp;operationContext=CHATTER&amp;contentId=05T5b00001Bal5C&quot;
-   )
+        <formula>IF(ISPICKVAL($CustomMetadata.System_Default__mdt.System_Defaults.Default_Client_Brand_Key__c, &apos;BluewaveLogo&apos;),
+   IF(CONTAINS(TEXT(Client_Brand_Key__c),&quot;Amp&quot;),
+      &quot;/servlet/servlet.FileDownload?file=0150a000002xuLS&quot;,
+      &quot;/servlet/servlet.FileDownload?file=0150a0000036Brv&quot;
+   ),
+   CASE(TEXT(Client_Brand_Key__c),
+      &quot;AmpBlack&quot;,
+         LEFT( $Api.Enterprise_Server_URL_100, FIND( &quot;.com&quot;, $Api.Enterprise_Server_URL_100 ) + 4)&amp;
+         &quot;sfc/servlet.shepherd/version/renditionDownload?rendition=ORIGINAL_Png&amp;versionId=0685b00000Kjxt7&amp;operationContext=CHATTER&amp;contentId=05T5b00001BakyB&quot;,
+      &quot;AmpRed&quot;,
+         LEFT( $Api.Enterprise_Server_URL_100, FIND( &quot;.com&quot;, $Api.Enterprise_Server_URL_100 ) + 4)&amp;
+         &quot;/sfc/servlet.shepherd/version/renditionDownload?rendition=ORIGINAL_Png&amp;versionId=0685b00000Kjxu5&amp;operationContext=CHATTER&amp;contentId=05T5b00001Bal07&quot;,
+         LEFT( $Api.Enterprise_Server_URL_100, FIND( &quot;.com&quot;, $Api.Enterprise_Server_URL_100 ) + 4)&amp;
+         &quot;/sfc/servlet.shepherd/version/renditionDownload?rendition=ORIGINAL_Png&amp;versionId=0685b00000KjxvT&amp;operationContext=CHATTER&amp;contentId=05T5b00001Bal65&quot;
+      )
 )</formula>
         <inlineHelpText>Used in Conga Templates</inlineHelpText>
         <label>Link to Client Logo</label>
