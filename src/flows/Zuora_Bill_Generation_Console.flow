@@ -74,7 +74,7 @@
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
     </actionCalls>
     <actionCalls>
-        <description>Populates Annual Subscription Production Summary on Active Anchors serviced by BlueWave</description>
+        <description>Populates Annual Subscription Production Summary on Active Anchors serviced by Perch</description>
         <name>Rollup_Anchor_UASes</name>
         <label>Rollup Anchor UASes</label>
         <locationX>2588</locationX>
@@ -874,7 +874,7 @@
         </connector>
         <fields>
             <name>Update_BP_Anchor_UASes_Screen</name>
-            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 18px;&quot;&gt;﻿Update Bill Period Statuses and Rollup Anchor UASes&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;By clicking &quot;Next,&quot; the Bill Period Statuses will be set to &quot;Bill Run Complete.&quot;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;The &quot;Annual Subscription Production Summary&quot; for Anchor UASes serviced by BlueWave will also be calculated. &lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 18px;&quot;&gt;﻿Update Bill Period Statuses and Rollup Anchor UASes&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;By clicking &quot;Next,&quot; the Bill Period Statuses will be set to &quot;Bill Run Complete.&quot;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;The &quot;Annual Subscription Production Summary&quot; for Anchor UASes serviced by {!$Label.Company_Name} will also be calculated.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
     <assignments>
         <description>Counter for QC Cases in loop</description>
         <name>assgQCCaseCounter</name>
@@ -133,6 +134,7 @@
         <connector>
             <targetReference>Found_Opportunities</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -182,6 +184,7 @@
         <connector>
             <targetReference>loopQCCases</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Case_Type__c</field>
             <operator>EqualTo</operator>

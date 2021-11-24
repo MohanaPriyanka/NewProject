@@ -20,6 +20,7 @@
             </value>
         </inputParameters>
     </actionCalls>
+    <apiVersion>49.0</apiVersion>
     <description>Deletes the corresponding Zuora account, so this account can be deleted.</description>
     <interviewLabel>Prep Account for Delete {!$Flow.CurrentDateTime}</interviewLabel>
     <isAdditionalPermissionRequiredToRun>true</isAdditionalPermissionRequiredToRun>

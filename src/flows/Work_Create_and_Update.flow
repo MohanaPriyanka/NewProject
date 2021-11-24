@@ -23,6 +23,7 @@
             </value>
         </inputParameters>
     </actionCalls>
+    <apiVersion>49.0</apiVersion>
     <assignments>
         <name>myWaitAssignment_myWait_myRule_11</name>
         <label>myWaitAssignment_myWait_myRule_11</label>
@@ -1517,6 +1518,7 @@ IF(
         <connector>
             <targetReference>myWait_myRule_13</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>
@@ -1600,6 +1602,7 @@ IF(
         <connector>
             <targetReference>myDecision4</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>
@@ -1683,6 +1686,7 @@ IF(
         <connector>
             <targetReference>myDecision10</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>
@@ -1766,6 +1770,7 @@ IF(
         <connector>
             <targetReference>myWaitEvent_myWait_myRule_13_event_0_postWaitExecutionAssignment</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>

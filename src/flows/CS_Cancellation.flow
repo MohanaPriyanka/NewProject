@@ -30,6 +30,7 @@
             <name>output</name>
         </outputParameters>
     </actionCalls>
+    <apiVersion>49.0</apiVersion>
     <choices>
         <name>AccountsRemovedFromAllProjects</name>
         <choiceText>Accounts removed from all projects</choiceText>

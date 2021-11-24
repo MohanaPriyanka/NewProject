@@ -1,21 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <assignments>
-        <name>myVariable_waitStartTimeAssignment</name>
-        <label>myVariable_waitStartTimeAssignment</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignmentItems>
-            <assignToReference>myVariable_waitStartTimeVariable</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>$Flow.CurrentDateTime</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>myPreWaitDecision_myWait_myRule_5</targetReference>
-        </connector>
-    </assignments>
+    <apiVersion>49.0</apiVersion>
     <assignments>
         <name>myWaitAssignment_myWait_myRule_3</name>
         <label>myWaitAssignment_myWait_myRule_3</label>
@@ -380,7 +365,7 @@ NOT(ISBLANK({!myVariable_old.Contact.AccountId}))
 ([User].IsActive = FALSE),
 ISCHANGED( [User].IsActive),
 [User].License_Type__c = &quot;Standard&quot;,
-CONTAINS([User].Email , &quot;bluewavesolar&quot;) 
+OR(CONTAINS([User].Email , &quot;bluewavesolar&quot;),CONTAINS([User].Email , &quot;perchenergy&quot;))
 )</stringValue>
             </value>
         </processMetadataValues>
@@ -390,7 +375,7 @@ CONTAINS([User].Email , &quot;bluewavesolar&quot;)
 ({!myVariable_current.IsActive} = FALSE),
 ISCHANGED( {!myVariable_current.IsActive}),
 {!myVariable_current.License_Type__c} = &quot;Standard&quot;,
-CONTAINS({!myVariable_current.Email} , &quot;bluewavesolar&quot;) 
+OR(CONTAINS({!myVariable_current.Email} , &quot;bluewavesolar&quot;),CONTAINS({!myVariable_current.Email} , &quot;perchenergy&quot;))
 )</expression>
     </formulas>
     <formulas>
@@ -401,7 +386,7 @@ CONTAINS({!myVariable_current.Email} , &quot;bluewavesolar&quot;)
 ([User].IsActive = FALSE),
 ISCHANGED( [User].IsActive),
 [User].License_Type__c = &quot;Standard&quot;,
-CONTAINS([User].Email , &quot;bluewavesolar&quot;) 
+OR(CONTAINS([User].Email , &quot;bluewavesolar&quot;),CONTAINS([User].Email , &quot;perchenergy&quot;))
 )</stringValue>
             </value>
         </processMetadataValues>
@@ -411,7 +396,7 @@ CONTAINS([User].Email , &quot;bluewavesolar&quot;)
 ({!myVariable_old.IsActive} = FALSE),
 ISCHANGED( {!myVariable_old.IsActive}),
 {!myVariable_old.License_Type__c} = &quot;Standard&quot;,
-CONTAINS({!myVariable_old.Email} , &quot;bluewavesolar&quot;) 
+OR(CONTAINS({!myVariable_old.Email} , &quot;bluewavesolar&quot;),CONTAINS({!myVariable_old.Email} , &quot;perchenergy&quot;))
 )</expression>
     </formulas>
     <formulas>
@@ -422,7 +407,7 @@ CONTAINS({!myVariable_old.Email} , &quot;bluewavesolar&quot;)
 ([User].IsActive = TRUE),
 ISCHANGED( [User].IsActive),
 [User].License_Type__c = &quot;Standard&quot;,
-CONTAINS([User].Email , &quot;bluewavesolar&quot;) 
+OR(CONTAINS([User].Email , &quot;bluewavesolar&quot;),CONTAINS([User].Email , &quot;perchenergy&quot;))
 )</stringValue>
             </value>
         </processMetadataValues>
@@ -432,7 +417,7 @@ CONTAINS([User].Email , &quot;bluewavesolar&quot;)
 ({!myVariable_current.IsActive} = TRUE),
 ISCHANGED( {!myVariable_current.IsActive}),
 {!myVariable_current.License_Type__c} = &quot;Standard&quot;,
-CONTAINS({!myVariable_current.Email} , &quot;bluewavesolar&quot;) 
+OR(CONTAINS({!myVariable_current.Email} , &quot;bluewavesolar&quot;),CONTAINS({!myVariable_current.Email} , &quot;perchenergy&quot;))
 )</expression>
     </formulas>
     <formulas>
@@ -443,7 +428,7 @@ CONTAINS({!myVariable_current.Email} , &quot;bluewavesolar&quot;)
 ([User].IsActive = TRUE),
 ISCHANGED( [User].IsActive),
 [User].License_Type__c = &quot;Standard&quot;,
-CONTAINS([User].Email , &quot;bluewavesolar&quot;) 
+OR(CONTAINS([User].Email , &quot;bluewavesolar&quot;),CONTAINS([User].Email , &quot;perchenergy&quot;))
 )</stringValue>
             </value>
         </processMetadataValues>
@@ -453,10 +438,10 @@ CONTAINS([User].Email , &quot;bluewavesolar&quot;)
 ({!myVariable_old.IsActive} = TRUE),
 ISCHANGED( {!myVariable_old.IsActive}),
 {!myVariable_old.License_Type__c} = &quot;Standard&quot;,
-CONTAINS({!myVariable_old.Email} , &quot;bluewavesolar&quot;) 
+OR(CONTAINS({!myVariable_old.Email} , &quot;bluewavesolar&quot;),CONTAINS({!myVariable_old.Email} , &quot;perchenergy&quot;))
 )</expression>
     </formulas>
-    <interviewLabel>First_Log_In_Date-11_InterviewLabel</interviewLabel>
+    <interviewLabel>First_Log_In_Date-12_InterviewLabel</interviewLabel>
     <label>User: Create and Edit</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -512,6 +497,20 @@ CONTAINS({!myVariable_old.Email} , &quot;bluewavesolar&quot;)
         <label>Update First Login field on Account</label>
         <locationX>100</locationX>
         <locationY>200</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>myVariable_current.Contact.AccountId</elementReference>
+            </value>
+        </filters>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>
@@ -553,19 +552,6 @@ CONTAINS({!myVariable_old.Email} , &quot;bluewavesolar&quot;)
             <operator>IsNull</operator>
             <value>
                 <booleanValue>true</booleanValue>
-            </value>
-        </filters>
-        <filters>
-            <processMetadataValues>
-                <name>implicit</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </processMetadataValues>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>myVariable_current.Contact.AccountId</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -632,6 +618,20 @@ CONTAINS({!myVariable_old.Email} , &quot;bluewavesolar&quot;)
         <connector>
             <targetReference>myWaitEvent_myWait_myRule_3_event_0_postWaitExecutionAssignment</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <field>User__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </filters>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>
@@ -679,19 +679,6 @@ CONTAINS({!myVariable_old.Email} , &quot;bluewavesolar&quot;)
             <operator>EqualTo</operator>
             <value>
                 <stringValue>0010a00001ThohAAAR</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <processMetadataValues>
-                <name>implicit</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </processMetadataValues>
-            <field>User__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>myVariable_current.Id</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -764,6 +751,20 @@ CONTAINS({!myVariable_old.Email} , &quot;bluewavesolar&quot;)
         <connector>
             <targetReference>myWaitEvent_myWait_myRule_5_event_0_postWaitExecutionAssignment</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <field>User__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </filters>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>
@@ -813,19 +814,6 @@ CONTAINS({!myVariable_old.Email} , &quot;bluewavesolar&quot;)
                 <stringValue>0010a00001Thw11AAB</stringValue>
             </value>
         </filters>
-        <filters>
-            <processMetadataValues>
-                <name>implicit</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </processMetadataValues>
-            <field>User__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>myVariable_current.Id</elementReference>
-            </value>
-        </filters>
         <inputAssignments>
             <processMetadataValues>
                 <name>dataType</name>
@@ -864,7 +852,7 @@ CONTAINS({!myVariable_old.Email} , &quot;bluewavesolar&quot;)
         </inputAssignments>
         <object>Contact</object>
     </recordUpdates>
-    <startElementReference>myVariable_waitStartTimeAssignment</startElementReference>
+    <startElementReference>myPreWaitDecision_myWait_myRule_5</startElementReference>
     <status>Active</status>
     <variables>
         <name>cancelWaits</name>
@@ -888,16 +876,6 @@ CONTAINS({!myVariable_old.Email} , &quot;bluewavesolar&quot;)
         <isInput>true</isInput>
         <isOutput>false</isOutput>
         <objectType>User</objectType>
-    </variables>
-    <variables>
-        <name>myVariable_waitStartTimeVariable</name>
-        <dataType>DateTime</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <value>
-            <elementReference>$Flow.CurrentDateTime</elementReference>
-        </value>
     </variables>
     <variables>
         <name>myWaitEvent_myWait_myRule_3_event_0_postActionExecutionVariable</name>
@@ -948,7 +926,7 @@ CONTAINS({!myVariable_old.Email} , &quot;bluewavesolar&quot;)
             <inputParameters>
                 <name>AlarmTime</name>
                 <value>
-                    <elementReference>myVariable_waitStartTimeVariable</elementReference>
+                    <elementReference>$Flow.InterviewStartTime</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -995,7 +973,7 @@ CONTAINS({!myVariable_old.Email} , &quot;bluewavesolar&quot;)
             <inputParameters>
                 <name>AlarmTime</name>
                 <value>
-                    <elementReference>myVariable_waitStartTimeVariable</elementReference>
+                    <elementReference>$Flow.InterviewStartTime</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
