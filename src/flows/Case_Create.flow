@@ -20,6 +20,7 @@
             </value>
         </inputParameters>
     </actionCalls>
+    <apiVersion>49.0</apiVersion>
     <decisions>
         <processMetadataValues>
             <name>index</name>
@@ -503,6 +504,7 @@ TEXT({!myVariable_current.Origin}) = &quot;Partner Portal&quot;)</expression>
         <label>Change to Phone Case</label>
         <locationX>1100</locationX>
         <locationY>200</locationY>
+        <filterLogic>and</filterLogic>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>
@@ -649,6 +651,7 @@ TEXT({!myVariable_current.Origin}) = &quot;Partner Portal&quot;)</expression>
         <label>Update Case</label>
         <locationX>100</locationX>
         <locationY>200</locationY>
+        <filterLogic>and</filterLogic>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>
@@ -735,6 +738,7 @@ TEXT({!myVariable_current.Origin}) = &quot;Partner Portal&quot;)</expression>
         <label>Update Case</label>
         <locationX>500</locationX>
         <locationY>200</locationY>
+        <filterLogic>and</filterLogic>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>
@@ -929,6 +933,7 @@ TEXT({!myVariable_current.Origin}) = &quot;Partner Portal&quot;)</expression>
         <label>Update Case</label>
         <locationX>800</locationX>
         <locationY>200</locationY>
+        <filterLogic>and</filterLogic>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>

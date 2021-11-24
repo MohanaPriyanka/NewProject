@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
     <interviewLabel>Permission Set Requestor - Processor {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Permission Set Requestor - Processor</label>
     <processMetadataValues>
@@ -53,6 +54,7 @@
         <label>Close Case</label>
         <locationX>1257</locationX>
         <locationY>53</locationY>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>

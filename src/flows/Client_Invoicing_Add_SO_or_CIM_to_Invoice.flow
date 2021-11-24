@@ -30,6 +30,7 @@
             <name>output</name>
         </outputParameters>
     </actionCalls>
+    <apiVersion>49.0</apiVersion>
     <description>Adds a Subscription Order or Client Invoicing Memo to an Invoice outside of the Generate Invoice flow</description>
     <interviewLabel>Client Invoicing: Add SO or CIM to Invoice {!$Flow.CurrentDateTime}</interviewLabel>
     <isAdditionalPermissionRequiredToRun>true</isAdditionalPermissionRequiredToRun>

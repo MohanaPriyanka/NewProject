@@ -14,6 +14,7 @@
             </value>
         </inputParameters>
     </actionCalls>
+    <apiVersion>49.0</apiVersion>
     <assignments>
         <name>Add_Error_Log</name>
         <label>Add Error Log</label>
@@ -145,6 +146,7 @@
         <connector>
             <targetReference>Loop_Commission_Payments</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Opportunity__c</field>
             <operator>EqualTo</operator>
@@ -165,6 +167,7 @@
         <connector>
             <targetReference>Get_Commission_Payments</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -302,6 +305,7 @@
     </subflows>
     <textTemplates>
         <name>errorMessageText</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
         <text>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;Flow: Change Commission Structure&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;Record: {!$Flow.CurrentRecord}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;Message: {!$Flow.FaultMessage}&lt;/span&gt;&lt;/p&gt;</text>
     </textTemplates>
     <variables>

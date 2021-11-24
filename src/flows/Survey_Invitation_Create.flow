@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
     <assignments>
         <name>myWaitAssignment_myWait_myRule_4</name>
         <label>myWaitAssignment_myWait_myRule_4</label>
@@ -210,12 +211,12 @@
         <processMetadataValues>
             <name>originalFormula</name>
             <value>
-                <stringValue>&quot;https://bluewavememberportal.force.com/Support/survey/runtimeApp.app?invitationId=&quot;+[SurveyInvitation].Id+&quot;&amp;surveyName=&quot;+[SurveyInvitation].Survey.DeveloperName+&quot;&amp;UUID=&quot;+[SurveyInvitation].UUID</stringValue>
+                <stringValue>$Label.Customer_Member_Portal_URL+&quot;Support/survey/runtimeApp.app?invitationId=&quot;+[SurveyInvitation].Id+&quot;&amp;surveyName=&quot;+[SurveyInvitation].Survey.DeveloperName+&quot;&amp;UUID=&quot;+[SurveyInvitation].UUID</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_2_myRule_1_A1_8389639813</name>
+        <name>formula_2_myRule_1_A1_6652282063</name>
         <dataType>String</dataType>
-        <expression>&quot;https://bluewavememberportal.force.com/Support/survey/runtimeApp.app?invitationId=&quot;+{!myVariable_current.Id}+&quot;&amp;surveyName=&quot;+{!myVariable_current.Survey.DeveloperName}+&quot;&amp;UUID=&quot;+{!myVariable_current.UUID}</expression>
+        <expression>{!$Label.Customer_Member_Portal_URL}+&quot;Support/survey/runtimeApp.app?invitationId=&quot;+{!myVariable_current.Id}+&quot;&amp;surveyName=&quot;+{!myVariable_current.Survey.DeveloperName}+&quot;&amp;UUID=&quot;+{!myVariable_current.UUID}</expression>
     </formulas>
     <formulas>
         <processMetadataValues>
@@ -224,11 +225,11 @@
                 <stringValue>&quot;https://bluewavememberportal.force.com/Support/survey/runtimeApp.app?invitationId=&quot;+[SurveyInvitation].Id+&quot;&amp;surveyName=&quot;+[SurveyInvitation].Survey.DeveloperName+&quot;&amp;UUID=&quot;+[SurveyInvitation].UUID</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_5_myWaitEvent_myWait_myRule_4_event_0_SA1_3617705119</name>
+        <name>formula_5_myWaitEvent_myWait_myRule_4_event_0_SA1_9852547804</name>
         <dataType>String</dataType>
         <expression>&quot;https://bluewavememberportal.force.com/Support/survey/runtimeApp.app?invitationId=&quot;+{!myVariable_current.Id}+&quot;&amp;surveyName=&quot;+{!myVariable_current.Survey.DeveloperName}+&quot;&amp;UUID=&quot;+{!myVariable_current.UUID}</expression>
     </formulas>
-    <interviewLabel>Survey_Invitation_Create-6_InterviewLabel</interviewLabel>
+    <interviewLabel>Survey_Invitation_Create-3_InterviewLabel</interviewLabel>
     <label>Survey Invitation: Create</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -284,6 +285,7 @@
         <label>Set Survey URL</label>
         <locationX>100</locationX>
         <locationY>200</locationY>
+        <filterLogic>and</filterLogic>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>
@@ -330,7 +332,7 @@
             </processMetadataValues>
             <field>Survey_URL__c</field>
             <value>
-                <elementReference>formula_2_myRule_1_A1_8389639813</elementReference>
+                <elementReference>formula_2_myRule_1_A1_6652282063</elementReference>
             </value>
         </inputAssignments>
         <object>Case</object>
@@ -367,6 +369,7 @@
         <connector>
             <targetReference>myWaitEvent_myWait_myRule_4_event_0_postWaitExecutionAssignment</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>
@@ -413,7 +416,7 @@
             </processMetadataValues>
             <field>Survey_URL__c</field>
             <value>
-                <elementReference>formula_5_myWaitEvent_myWait_myRule_4_event_0_SA1_3617705119</elementReference>
+                <elementReference>formula_5_myWaitEvent_myWait_myRule_4_event_0_SA1_9852547804</elementReference>
             </value>
         </inputAssignments>
         <object>Opportunity</object>

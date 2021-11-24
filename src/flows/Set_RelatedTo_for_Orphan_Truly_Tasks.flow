@@ -1,26 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <actionCalls>
-        <processMetadataValues>
-            <name>emailAlertSelection</name>
-            <value>
-                <stringValue>Send_Requestor_Email</stringValue>
-            </value>
-        </processMetadataValues>
-        <name>myRule_3_A1</name>
-        <label>Work Create eamil</label>
-        <locationX>300</locationX>
-        <locationY>200</locationY>
-        <actionName>agf__ADM_Work__c.Send_Requestor_Email</actionName>
-        <actionType>emailAlert</actionType>
-        <inputParameters>
-            <name>SObjectRowId</name>
-            <value>
-                <elementReference>myVariable_current.Id</elementReference>
-            </value>
-        </inputParameters>
-    </actionCalls>
     <apiVersion>49.0</apiVersion>
+    <assignments>
+        <name>myVariable_waitStartTimeAssignment</name>
+        <label>myVariable_waitStartTimeAssignment</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>myVariable_waitStartTimeVariable</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>myDecision</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <processMetadataValues>
             <name>index</name>
@@ -32,9 +28,6 @@
         <label>myDecision</label>
         <locationX>50</locationX>
         <locationY>0</locationY>
-        <defaultConnector>
-            <targetReference>myDecision2</targetReference>
-        </defaultConnector>
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
             <name>myRule_1</name>
@@ -49,7 +42,7 @@
                 <processMetadataValues>
                     <name>leftHandSideReferenceTo</name>
                     <value>
-                        <stringValue>Case</stringValue>
+                        <stringValue>APXT_BPM__Conductor__c;Account;Account_Bill__c;Adjustment_Application__c;Asset;AssetRelationship;Asset_Management__c;Bank__c;Bill_Adjustment__c;BlueWave_Surveys__c;Campaign;Case;Change_Order__c;ChannelProgram;ChannelProgramLevel;ChargentOrders__ChargentOrder__c;ChargentOrders__Email_Notification__c;ChargentOrders__Transaction__c;Commission_Payment__c;Commission_Structure__c;Construction__c;Contract;Deal__c;Disbursal__c;Entity__c;External_Affairs__c;Feeder__c;Financial_Relationship__c;Invoice__c;LASERCA__Inquiries__c;LASERCA__Personal_Credit_Report__c;LASERCA__Public_Records__c;LASERCA__Trade_Accounts__c;LiveAgentSession;LiveChatTranscript;Load_U__c;Loan_Data__c;Loan_Partner_Experience_Survey__c;Loan_Traunch__c;Loan__c;MC4SF__MC_Subscriber__c;MPM4_BASE__Milestone1_Milestone__c;MPM4_BASE__Milestone1_Program__c;MPM4_BASE__Milestone1_Project__c;MPM4_BASE__Milestone1_Resource__c;MPM4_BASE__Milestone1_Task__c;Management_Reporting__c;Marketing_Inventory__c;Meter_Reading_Schedule__c;Operations_Group_Assignment__c;Opportunity;Order;Paper_Check__c;PartnerFundAllocation;PartnerFundClaim;PartnerFundRequest;PartnerMarketingBudget;Partner_Task__c;Partner__c;Product2;Product_Group_Assignment__c;Product_Release__c;Project_Assemblage__c;Project_Finance__c;Quick_Sales_Sheet__c;Quote;SREC_Invoice__c;SREC__c;Schedule_Z__c;Snapshot_Report_Object__c;Solar_Loan_Syndication__c;Solution;Submittals__c;System_Bill__c;Town__c;agf__ADM_Epic__c;agf__ADM_Priority__c;agf__ADM_Release_Event__c;agf__ADM_Release_Stamp_Cache__c;agf__ADM_Release__c;agf__ADM_Severity_Type__c;agf__ADM_Severity__c;agf__ADM_Sprint__c;agf__ADM_Type__c;agf__ADM_Work__c;agf__Environments_Order__c;agf__Headcount__c;agf__Locking_Record__c;agf__OMOpportunity__c;agf__QA_Test_Case__c;agf__QA_Test_Execution__c;agf__QA_Test_Plan__c;agf__RCA__c;agf__Release_Signoff_Infrastructure__c;agf__Retrospective__c;dsfs__DocuSign_Recipient_Status__c;dsfs__DocuSign_Status__c;et4ae5__Triggered_Send_Execution__c</stringValue>
                     </value>
                 </processMetadataValues>
                 <processMetadataValues>
@@ -70,23 +63,23 @@
                         <stringValue>Boolean</stringValue>
                     </value>
                 </processMetadataValues>
-                <leftValueReference>myVariable_current.Case__c</leftValueReference>
+                <leftValueReference>myVariable_current.WhatId</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
-                    <booleanValue>false</booleanValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <conditions>
                 <processMetadataValues>
                     <name>inputDataType</name>
                     <value>
-                        <stringValue>ID</stringValue>
+                        <stringValue>Boolean</stringValue>
                     </value>
                 </processMetadataValues>
                 <processMetadataValues>
                     <name>leftHandSideReferenceTo</name>
                     <value>
-                        <stringValue>RecordType</stringValue>
+                        <stringValue>Contact;Lead</stringValue>
                     </value>
                 </processMetadataValues>
                 <processMetadataValues>
@@ -104,36 +97,15 @@
                 <processMetadataValues>
                     <name>rightHandSideType</name>
                     <value>
-                        <stringValue>ID</stringValue>
+                        <stringValue>Boolean</stringValue>
                     </value>
                 </processMetadataValues>
-                <leftValueReference>myVariable_current.Case__r.RecordTypeId</leftValueReference>
-                <operator>EqualTo</operator>
+                <leftValueReference>myVariable_current.WhoId</leftValueReference>
+                <operator>IsNull</operator>
                 <rightValue>
-                    <stringValue>0120a0000004dlv</stringValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
-            <connector>
-                <targetReference>myRule_1_A1</targetReference>
-            </connector>
-            <label>Product Support Case</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <processMetadataValues>
-            <name>index</name>
-            <value>
-                <numberValue>1.0</numberValue>
-            </value>
-        </processMetadataValues>
-        <name>myDecision2</name>
-        <label>myDecision2</label>
-        <locationX>50</locationX>
-        <locationY>0</locationY>
-        <defaultConnectorLabel>default</defaultConnectorLabel>
-        <rules>
-            <name>myRule_3</name>
-            <conditionLogic>and</conditionLogic>
             <conditions>
                 <processMetadataValues>
                     <name>inputDataType</name>
@@ -144,13 +116,13 @@
                 <processMetadataValues>
                     <name>leftHandSideType</name>
                     <value>
-                        <stringValue>String</stringValue>
+                        <stringValue>Number</stringValue>
                     </value>
                 </processMetadataValues>
                 <processMetadataValues>
                     <name>operatorDataType</name>
                     <value>
-                        <stringValue>String</stringValue>
+                        <stringValue>Number</stringValue>
                     </value>
                 </processMetadataValues>
                 <processMetadataValues>
@@ -159,55 +131,25 @@
                         <stringValue>Boolean</stringValue>
                     </value>
                 </processMetadataValues>
-                <leftValueReference>myVariable_current.agf__Scrum_Team_Name__c</leftValueReference>
+                <leftValueReference>myVariable_current.truly_id__c</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>MultiPicklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>MultiPicklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>MultiPicklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.agf__Scrum_Team__r.Email_Send_Triggers__c</leftValueReference>
-                <operator>Contains</operator>
-                <rightValue>
-                    <stringValue>Work Create</stringValue>
-                </rightValue>
-            </conditions>
             <connector>
-                <targetReference>myRule_3_A1</targetReference>
+                <targetReference>myRule_1_A1</targetReference>
             </connector>
-            <label>Send email on work creation?</label>
+            <label>Truly? RelatedTo Empty?</label>
         </rules>
     </decisions>
-    <interviewLabel>Work_On_Create-8_InterviewLabel</interviewLabel>
-    <label>Work: On Create</label>
+    <description>When incoming Truly calls do not have the RelatedTo or Name populated, set to BlueWave - Truly</description>
+    <interviewLabel>Set_RelatedTo_for_Orphan_Truly_Tasks-1_InterviewLabel</interviewLabel>
+    <label>Set RelatedTo for Orphan Truly Tasks</label>
     <processMetadataValues>
         <name>ObjectType</name>
         <value>
-            <stringValue>agf__ADM_Work__c</stringValue>
+            <stringValue>Task</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -237,9 +179,6 @@
             </value>
         </processMetadataValues>
         <processMetadataValues>
-            <name>extraTypeInfo</name>
-        </processMetadataValues>
-        <processMetadataValues>
             <name>isChildRelationship</name>
             <value>
                 <booleanValue>false</booleanValue>
@@ -248,19 +187,13 @@
         <processMetadataValues>
             <name>reference</name>
             <value>
-                <stringValue>[agf__ADM_Work__c].Case</stringValue>
+                <stringValue>[Task]</stringValue>
             </value>
         </processMetadataValues>
-        <processMetadataValues>
-            <name>referenceTargetField</name>
-        </processMetadataValues>
         <name>myRule_1_A1</name>
-        <label>Populate Work Field on Parent Case</label>
+        <label>Set RelatedTo Field to Bluewave - Truly</label>
         <locationX>100</locationX>
         <locationY>200</locationY>
-        <connector>
-            <targetReference>myDecision2</targetReference>
-        </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <processMetadataValues>
@@ -272,7 +205,7 @@
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>myVariable_current.Case__c</elementReference>
+                <elementReference>myVariable_current.Id</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -291,29 +224,29 @@
             <processMetadataValues>
                 <name>leftHandSideLabel</name>
                 <value>
-                    <stringValue>Work</stringValue>
+                    <stringValue>Related To ID</stringValue>
                 </value>
             </processMetadataValues>
             <processMetadataValues>
                 <name>leftHandSideReferenceTo</name>
                 <value>
-                    <stringValue>agf__ADM_Work__c</stringValue>
+                    <stringValue>APXT_BPM__Conductor__c;Account;Account_Bill__c;Adjustment_Application__c;Asset;AssetRelationship;Asset_Management__c;Bank__c;Bill_Adjustment__c;BlueWave_Surveys__c;Campaign;Case;Change_Order__c;ChannelProgram;ChannelProgramLevel;ChargentOrders__ChargentOrder__c;ChargentOrders__Email_Notification__c;ChargentOrders__Transaction__c;Commission_Payment__c;Commission_Structure__c;Construction__c;Contract;Deal__c;Disbursal__c;Entity__c;External_Affairs__c;Feeder__c;Financial_Relationship__c;Invoice__c;LASERCA__Inquiries__c;LASERCA__Personal_Credit_Report__c;LASERCA__Public_Records__c;LASERCA__Trade_Accounts__c;LiveAgentSession;LiveChatTranscript;Load_U__c;Loan_Data__c;Loan_Partner_Experience_Survey__c;Loan_Traunch__c;Loan__c;MC4SF__MC_Subscriber__c;MPM4_BASE__Milestone1_Milestone__c;MPM4_BASE__Milestone1_Program__c;MPM4_BASE__Milestone1_Project__c;MPM4_BASE__Milestone1_Resource__c;MPM4_BASE__Milestone1_Task__c;Management_Reporting__c;Marketing_Inventory__c;Meter_Reading_Schedule__c;Operations_Group_Assignment__c;Opportunity;Order;Paper_Check__c;PartnerFundAllocation;PartnerFundClaim;PartnerFundRequest;PartnerMarketingBudget;Partner_Task__c;Partner__c;Product2;Product_Group_Assignment__c;Product_Release__c;Project_Assemblage__c;Project_Finance__c;Quick_Sales_Sheet__c;Quote;SREC_Invoice__c;SREC__c;Schedule_Z__c;Snapshot_Report_Object__c;Solar_Loan_Syndication__c;Solution;Submittals__c;System_Bill__c;Town__c;agf__ADM_Epic__c;agf__ADM_Priority__c;agf__ADM_Release_Event__c;agf__ADM_Release_Stamp_Cache__c;agf__ADM_Release__c;agf__ADM_Severity_Type__c;agf__ADM_Severity__c;agf__ADM_Sprint__c;agf__ADM_Type__c;agf__ADM_Work__c;agf__Environments_Order__c;agf__Headcount__c;agf__Locking_Record__c;agf__OMOpportunity__c;agf__QA_Test_Case__c;agf__QA_Test_Execution__c;agf__QA_Test_Plan__c;agf__RCA__c;agf__Release_Signoff_Infrastructure__c;agf__Retrospective__c;dsfs__DocuSign_Recipient_Status__c;dsfs__DocuSign_Status__c;et4ae5__Triggered_Send_Execution__c</stringValue>
                 </value>
             </processMetadataValues>
             <processMetadataValues>
                 <name>rightHandSideType</name>
                 <value>
-                    <stringValue>Reference</stringValue>
+                    <stringValue>ID</stringValue>
                 </value>
             </processMetadataValues>
-            <field>agf__ADM_Work__c</field>
+            <field>WhatId</field>
             <value>
-                <elementReference>myVariable_current.Id</elementReference>
+                <stringValue>0010a00001ScA1K</stringValue>
             </value>
         </inputAssignments>
-        <object>Case</object>
+        <object>Task</object>
     </recordUpdates>
-    <startElementReference>myDecision</startElementReference>
+    <startElementReference>myVariable_waitStartTimeAssignment</startElementReference>
     <status>Active</status>
     <variables>
         <name>myVariable_current</name>
@@ -321,7 +254,7 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>true</isOutput>
-        <objectType>agf__ADM_Work__c</objectType>
+        <objectType>Task</objectType>
     </variables>
     <variables>
         <name>myVariable_old</name>
@@ -329,6 +262,16 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
-        <objectType>agf__ADM_Work__c</objectType>
+        <objectType>Task</objectType>
+    </variables>
+    <variables>
+        <name>myVariable_waitStartTimeVariable</name>
+        <dataType>DateTime</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <elementReference>$Flow.CurrentDateTime</elementReference>
+        </value>
     </variables>
 </Flow>

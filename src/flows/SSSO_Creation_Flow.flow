@@ -17,6 +17,7 @@
             </value>
         </inputParameters>
     </actionCalls>
+    <apiVersion>49.0</apiVersion>
     <choices>
         <name>choice_SystemSize</name>
         <choiceText>System Size kW DC</choiceText>
@@ -92,6 +93,7 @@
         <connector>
             <targetReference>scr_Intro</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>

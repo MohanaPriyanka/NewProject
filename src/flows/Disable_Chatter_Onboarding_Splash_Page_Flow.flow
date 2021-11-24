@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
+    <description>Disables the new customer&apos;s onboarding process
+
+ i.e. The onboarding video.</description>
+    <interviewLabel>Disable Chatter Onboarding Splash Page Flow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Disable Chatter Onboarding Splash Page Flow</label>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Update_Chatter_Profile</name>
+        <label>Update Chatter Profile</label>
+        <locationX>169</locationX>
+        <locationY>167</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>VarT_UserId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>IsActive</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>UserPreferencesHideChatterOnboardingSplash</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UserPreferencesHideSecondChatterOnboardingSplash</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <object>User</object>
+    </recordUpdates>
+    <startElementReference>Update_Chatter_Profile</startElementReference>
+    <status>Active</status>
+    <variables>
+        <name>VarT_UserId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <stringValue></stringValue>
+        </value>
+    </variables>
+</Flow>

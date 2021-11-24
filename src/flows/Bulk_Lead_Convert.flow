@@ -17,6 +17,7 @@
             </value>
         </inputParameters>
     </actionCalls>
+    <apiVersion>49.0</apiVersion>
     <interviewLabel>Bulk Lead Convert {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Bulk Lead Convert</label>
     <processMetadataValues>
@@ -41,6 +42,7 @@
         <connector>
             <targetReference>Review_Leads_to_Convert_Screen</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>IsConverted</field>
             <operator>EqualTo</operator>
