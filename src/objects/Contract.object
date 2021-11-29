@@ -317,7 +317,7 @@ Account.Assignment_Agreement_Template__c
         <formula>&quot;&amp;id=&quot; + Id +
 &quot;&amp;templateid=&quot; + Conga_Template_ID_Countersigned__c +
 &quot;&amp;qvar0id=a270a0000020q0rAAA?pv0=&quot; + Id +
-&quot;&amp;queryid=[ResiSig]a270a0000020q0qAAA?pv1={QVar0},[Opp]a270a0000020q0sAAA?pv1={QVar0},[UAS]a270a0000020q0vAAA?pv1={QVar0},[Tariff]{!Environment.Conga_Query_Contract_METariff_Countersign}?pv1={QVar0},[Biz]a270a0000020q0tAAA?pv1={QVar0},[Resi]a270a0000020q0qAAA?pv1={QVar0},[NonGuarantor]a270a00000211F2AAI?pv1={QVar0},[UAL]{!Environment.conga_query_contractparentual}?pv4=&quot; + Lead__r.Id + &quot;,[Account]{!Environment.congaquery_countersignparentaccount}?pv3=&quot; + Account.Id + &quot;,[BizAcct]{!Environment.congaquery_parentbizaccount}?pv3=&quot; + Account.Id + &quot;,[SSS]a270a00000211EsAAI?pv2=&quot; + Lead__r.Utility_relationship__r.Id + &quot;,[BizAcctSig]{!Environment.congaquery_businessacct}?pv0=&quot; + Id +
+&quot;&amp;queryid=[ResiSig]a270a0000020q0qAAA?pv1={QVar0},[Opp]a270a0000020q0sAAA?pv1={QVar0},[UAS]a270a0000020q0vAAA?pv1={QVar0},[Tariff]a275b0000021MZLAA2?pv1={QVar0},[Biz]a270a0000020q0tAAA?pv1={QVar0},[Resi]a270a0000020q0qAAA?pv1={QVar0},[NonGuarantor]a270a00000211F2AAI?pv1={QVar0},[UAL]a275b000002b4kNAAQ?pv4=&quot; + Lead__r.Id + &quot;,[Account]a275b000002b4kSAAQ?pv3=&quot; + Account.Id + &quot;,[BizAcct]a275b000002b4kcAAA?pv3=&quot; + Account.Id + &quot;,[SSS]a270a00000211EsAAI?pv2=&quot; + Lead__r.Utility_relationship__r.Id + &quot;,[BizAcctSig]a275b000002b4kXAAQ?pv0=&quot; + Id +
 &quot;&amp;sc1=SalesforceFile&quot; +
 &quot;&amp;defaultpdf=1&quot; +
 &quot;&amp;sc0=1&quot; +
@@ -325,7 +325,7 @@ Account.Assignment_Agreement_Template__c
 &quot;&amp;emailtemplateid=&quot; + CASE(Account.Client_Brand_Key__c,&quot;AmpRed&quot;,&quot;00X0a0000011XNv&quot;,&quot;AmpBlack&quot;,&quot;00X0a0000011XNq&quot;,&quot;00X0a000000j75n&quot;) +
 &quot;&amp;emailtoid=&quot; + Account.Send_Bills_Contact__r.Id +
 &quot;&amp;emailrelatedtoid={QVar0}&quot; +
-&quot;&amp;emailfromid=0D20a0000004K0P&quot; +
+&quot;&amp;emailfromid=&quot;+IF(ISPICKVAL($CustomMetadata.System_Default__mdt.System_Defaults.Default_Client_Brand_Key__c,&quot;BluewaveLogo&quot;),&quot;0D20a0000004K0P&quot;,&quot;0D25b000000L6gKCAS&quot;) +
 &quot;&amp;qmode=SendEmail&quot; +
 &quot;&amp;uf0=1&quot; +
 &quot;&amp;mfts0=Generate_Countersigned_Version__c&quot; +
@@ -374,7 +374,7 @@ Account.Assignment_Agreement_Template__c
         <externalId>false</externalId>
         <formula>&quot;&amp;id=&quot; + Id +
 &quot;&amp;templateid=&quot; + Conga_Signed_Template__c +
-&quot;&amp;queryid=[CustSig]a270a0000020p7JAAQ?pv0=&quot; + Id + &quot;,[Tariff]{!Environment.Conga_Query_Contract_METariff}?pv1=&quot; + Lead__r.Id + &quot;,[BizSig]a270a0000020p7KAAQ?pv0=&quot; + Id + &quot;,[UAL]a270a0000020p7HAAQ?pv1=&quot; + Lead__r.Id + &quot;,[Billing]a275b0000021FNKAA2?pv1=&quot; + Lead__r.Id + &quot;,[Biz]a270a0000020p7IAAQ?pv1=&quot; + Lead__r.Id + &quot;,[Lead]a270a0000020p7LAAQ?pv1=&quot; + Lead__r.Id + &quot;,[ResiSig]a270a0000020pb3AAA?pv0=&quot; + Id + &quot;,[NonGuarantor]a270a00000211ExAAI?pv0&quot; + Id + &quot;,[SSS]a270a00000211EsAAI?pv2=&quot; + Lead__r.Utility_relationship__r.Id +
+&quot;&amp;queryid=[CustSig]a270a0000020p7JAAQ?pv0=&quot; + Id + &quot;,[Tariff]a275b0000021MZGAA2?pv1=&quot; + Lead__r.Id + &quot;,[BizSig]a270a0000020p7KAAQ?pv0=&quot; + Id + &quot;,[UAL]a270a0000020p7HAAQ?pv1=&quot; + Lead__r.Id + &quot;,[Billing]a275b0000021FNKAA2?pv1=&quot; + Lead__r.Id + &quot;,[Biz]a270a0000020p7IAAQ?pv1=&quot; + Lead__r.Id + &quot;,[Lead]a270a0000020p7LAAQ?pv1=&quot; + Lead__r.Id + &quot;,[ResiSig]a270a0000020pb3AAA?pv0=&quot; + Id + &quot;,[NonGuarantor]a270a00000211ExAAI?pv0&quot; + Id + &quot;,[SSS]a270a00000211EsAAI?pv2=&quot; + Lead__r.Utility_relationship__r.Id +
 &quot;&amp;sc0=1&quot; +
 &quot;&amp;sc1=SalesforceFile&quot; +
 &quot;&amp;APDF=0&quot; +
@@ -388,7 +388,7 @@ Account.Assignment_Agreement_Template__c
 &quot;&amp;EmailTemplateId=00X0a000000j4jB&quot; +
 &quot;&amp;EmailToId=&quot; + Lead__r.Id +
 &quot;&amp;EmailRelatedToId=&quot; + Lead__r.Id +
-&quot;&amp;EmailFromId=0D20a0000004K0P&quot; +
+&quot;&amp;emailfromid=&quot;+IF(ISPICKVAL($CustomMetadata.System_Default__mdt.System_Defaults.Default_Client_Brand_Key__c,&quot;BluewaveLogo&quot;),&quot;0D20a0000004K0P&quot;,&quot;0D25b000000L6gKCAS&quot;) +
 &quot;&amp;qmode=SendEmail&quot; +
 &quot;&amp;ContentWorkspaceId=0585b000000aDRHAA2&quot; +
 &quot;&amp;ContentCustomFieldName=Signing_Status__c&quot; +
@@ -489,17 +489,17 @@ IF(ISBLANK(Product__r.Disclosure_Form_Conga_Template__c),&quot;&quot;,&quot;,&qu
         <fullName>Conga_UCB_Disclosure_Form__c</fullName>
         <externalId>false</externalId>
         <formula>&quot;&amp;id=&quot; + Id +
-&quot;&amp;templateid={!Environment.CONGA_UCBDISC_TEMPLATEID}&quot; +
+&quot;&amp;templateid=a2F5b000001WIRfEAO&quot; +
 &quot;&amp;qvar0id=a270a0000020q0rAAA?pv0=&quot; + Id +
 &quot;&amp;queryid=[ResiSig]a270a0000020q0qAAA?pv1={QVar0},[Opp]a270a0000020q0sAAA?pv1={QVar0},[UAS]a270a0000020q0vAAA?pv1={QVar0},[Tariff]a275b0000021MZLAA2?pv1={QVar0},[Biz]a270a0000020q0tAAA?pv1={QVar0},[Resi]a270a0000020q0qAAA?pv1={QVar0},[NonGuarantor]a270a00000211F2AAI?pv1={QVar0},[UAL]a275b000002b4kNAAQ?pv4=&quot; + Lead__r.Id + &quot;,[Account]a275b000002b4kSAAQ?pv3=&quot; + Account.Id + &quot;,[BizAcct]a275b000002b4kcAAA?pv3=&quot; + Account.Id + &quot;,[SSS]a270a00000211EsAAI?pv2=&quot; + Lead__r.Utility_relationship__r.Id + &quot;,[BizAcctSig]a275b000002b4kXAAQ?pv0=&quot; + Id +
 &quot;&amp;sc1=SalesforceFile&quot; +
 &quot;&amp;defaultpdf=1&quot; +
 &quot;&amp;sc0=1&quot; +
 &quot;&amp;apdf=0&quot; +
-&quot;&amp;emailtemplateid={!Environment.CONGA_UCBEMAILTEMPLATEID}&quot; +
+&quot;&amp;emailtemplateid=00X5b000000LKAD&quot; +
 &quot;&amp;emailtoid=&quot; + Account.Send_Bills_Contact__r.Id +
 &quot;&amp;emailrelatedtoid={QVar0}&quot; +
-&quot;&amp;emailfromid=0D20a0000004K0P&quot; +
+&quot;&amp;emailfromid=&quot;+IF(ISPICKVAL($CustomMetadata.System_Default__mdt.System_Defaults.Default_Client_Brand_Key__c,&quot;BluewaveLogo&quot;),&quot;0D20a0000004K0P&quot;,&quot;0D25b000000L6gKCAS&quot;) +
 &quot;&amp;APDF=1&quot; +
 &quot;&amp;qmode=SendEmail&quot; +
 &quot;&amp;uf0=1&quot; +

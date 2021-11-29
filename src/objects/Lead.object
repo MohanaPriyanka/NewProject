@@ -1823,7 +1823,7 @@ This field can be changed to a formula consistent with the other factors if LASE
         <externalId>false</externalId>
         <formula>&quot;&amp;id=&quot; + Id +
 &quot;&amp;templateid=&quot; + Product__r.Conga_Template_Id_s__c +
-&quot;&amp;queryid=[UAL]{!Environment.Conga_Query_SSF_UAL},[Biz]{!Environment.Conga_Query_SSF_Guarantor},[BizSig]{!Environment.conga_query_ssf_guarantor_sig},[CustSig]{!Environment.conga_query_ssf_customer_sig}&quot; + 
+&quot;&amp;queryid=[UAL]a270a0000022F3EAAU,[Biz]a270a0000022F3FAAU,[BizSig]a270a0000022F3HAAU,[CustSig]a270a0000022F3GAAU&quot; + 
 &quot;&amp;sc0=1&quot; + 
 &quot;&amp;sc1=SalesforceFile&quot; +
 &quot;&amp;APDF=0&quot; +
@@ -1832,9 +1832,9 @@ This field can be changed to a formula consistent with the other factors if LASE
 &quot;&amp;contentvisibility=AllUsers&quot; +
 &quot;&amp;defaultpdf=1&quot; +
 IF(ISBLANK(Customer_Signed_Date__c),&quot;&amp;qmode=SalesforceFile&quot;,
-&quot;&amp;EmailTemplateId={!Environment.VAR_Conga_SSF_SignedEmailTemplateID}&quot; + 
+&quot;&amp;EmailTemplateId=00X0a000000j4jB&quot; + 
 &quot;&amp;EmailToId=&quot; +  Id +
-&quot;&amp;EmailFromId=0D20a0000004K0P&quot; + 
+&quot;&amp;EmailFromid=&quot;+IF(ISPICKVAL($CustomMetadata.System_Default__mdt.System_Defaults.Default_Client_Brand_Key__c,&quot;BluewaveLogo&quot;),&quot;0D20a0000004K0P&quot;,&quot;0D25b000000L6gKCAS&quot;) +
 &quot;&amp;qmode=SendEmail&quot;
 )</formula>
         <label>Conga Contract</label>
