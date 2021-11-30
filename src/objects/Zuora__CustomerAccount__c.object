@@ -175,7 +175,7 @@
         <externalId>false</externalId>
         <formula>IF($Label.Company_Name == &apos;BlueWave&apos;, HYPERLINK(&quot;/s/customeraccount/&quot;&amp;Id,&quot;Open Your Account&quot;,
 &quot;_self &quot;
-), HYPERLINK(&quot;/PerchMemberPortal/s/customeraccount/&quot;&amp;Id,&quot;Open Your Account&quot;,
+), HYPERLINK(&quot;/customerportal/s/customeraccount/&quot;&amp;Id,&quot;Open Your Account&quot;,
 &quot;_self &quot;
 ))</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
