@@ -42,8 +42,12 @@ export default class SsfFooter extends LightningElement {
         companyAddress1,
         companyAddress2
     }
-    
+
     connectedCallback() {
         loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
+    }
+
+    get showTwitterLink() {
+        return companyTwitterLink && companyTwitterLink.length > 20;
     }
 }
