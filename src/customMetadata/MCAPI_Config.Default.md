@@ -4,7 +4,7 @@
     <protected>false</protected>
     <values>
         <field>Autopay_Reminder_Journey_Id__c</field>
-        <value xsi:type="xsd:string">APIEvent-7e12d0f4-1f3c-f499-ad4e-a6c5477cb479</value>
+        <value xsi:type="xsd:string">APIEvent-8c1b7691-9773-5ae9-987f-c3251356ec0e</value>
     </values>
     <values>
         <field>Callouts_Per_Transaction__c</field>
@@ -12,11 +12,11 @@
     </values>
     <values>
         <field>Change_in_COD_Email_Journey_Id__c</field>
-        <value xsi:type="xsd:string">APIEvent-3fb6460c-d54c-efa9-6636-fee9000b100c</value>
+        <value xsi:type="xsd:string">APIEvent-9ce42cd6-d526-738c-2912-1b9990649951</value>
     </values>
     <values>
         <field>Credits_Flowing_Email_Journey_Id__c</field>
-        <value xsi:type="xsd:string">APIEvent-9f26302c-0e8b-9358-dd8e-e00a7dc1432b</value>
+        <value xsi:type="xsd:string">APIEvent-1f63de67-fd69-3a7c-c79a-6c6ad3797816</value>
     </values>
     <values>
         <field>Sandbox_Publish_to_Prod__c</field>
