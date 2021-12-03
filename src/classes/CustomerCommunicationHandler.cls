@@ -24,6 +24,7 @@ public class CustomerCommunicationHandler implements Database.Batchable<SObject>
             'FROM Account ' +
             'WHERE Total_Outstanding_Balance_Merge__c > 1 ' +
             'AND Send_Bills_Contact__c != null ' +
+            'AND Send_Bills_Contact__r.Email != null ' +
             'AND (Collection_Email_To_Fire_Today__c = true ' +
             'OR Collection_Call_Today__c = true) ' +
             'AND Recurring_Billing__c = false ';
