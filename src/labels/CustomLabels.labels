@@ -353,6 +353,14 @@
         <value>https://bluewavememberportal.force.com/partnerportal</value>
     </labels>
     <labels>
+        <fullName>SSF_Cancellation_Contact_Info</fullName>
+        <categories>branding, ssf</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF Cancellation Contact Info</shortDescription>
+        <value>This authorization will remain in effect until all amounts I owe to BlueWave or an assignee in connection with the community solar agreement have been paid in full or this authorization is cancelled in writing by providing notice of cancellation to BCS Customer Management, LLC, at customercare@bluewavesolar.com or P.O. Box 170718, Boston, MA 02117, or to its designee. Customers may also cancel this authorization online at https://bluewavememberportal.force.com/. I understand and agree that BlueWave must receive written notice of any changes in the account information or termination of this authorization at least three (3) business days prior to the next billing date.</value>
+    </labels>
+    <labels>
         <fullName>SSF_Company_Address_1</fullName>
         <categories>branding, ssf</categories>
         <language>en_US</language>
@@ -407,6 +415,14 @@
         <protected>false</protected>
         <shortDescription>SSF Company Website</shortDescription>
         <value>https://bluewavesolar.com</value>
+    </labels>
+    <labels>
+        <fullName>SSF_Company_and_Servicers</fullName>
+        <categories>branding, ssf</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SSF Company and Servicers</shortDescription>
+        <value>BlueWave or its servicer(s), or an assignee or its servicer(s)</value>
     </labels>
     <labels>
         <fullName>SSF_Customer_Member_Portal_URL</fullName>
