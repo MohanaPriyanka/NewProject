@@ -15,16 +15,15 @@ public class CustomerCommunicationHandler implements Database.Batchable<SObject>
 
     public Database.QueryLocator start(Database.BatchableContext bc) {
         String query = 'SELECT Id, Name, Send_Bills_Contact__c, ' +
-            'Recurring_Billing__c, Days_Past_Due__c, ' +
+            'Recurring_Billing__c, Days_Past_Due__c, Send_Bills_Contact__r.Email, ' +
             'RecordTypeId, Total_Outstanding_Balance_Merge__c, ' +
             'Total_Billed__c, Client_Brand_Key__c, ' +
             'Collection_Call_Today__c, Collection_Email_To_Fire_Today__c, ' +
             'Max_Overdue_Due_Date_Merge__c, ' +
-            'Collection_Email_Text__c ' +
+            'Collection_Email_Text__c ' + 
             'FROM Account ' +
             'WHERE Total_Outstanding_Balance_Merge__c > 1 ' +
             'AND Send_Bills_Contact__c != null ' +
-            'AND Send_Bills_Contact__r.Email != null ' +
             'AND (Collection_Email_To_Fire_Today__c = true ' +
             'OR Collection_Call_Today__c = true) ' +
             'AND Recurring_Billing__c = false ';
@@ -48,7 +47,7 @@ public class CustomerCommunicationHandler implements Database.Batchable<SObject>
             if (account.Collection_Call_Today__c) {
                 caseToInsertList.add(createCollectionsCallCase(account));
             }
-            if (account.Collection_Email_To_Fire_Today__c) {
+            if (account.Collection_Email_To_Fire_Today__c && account.Send_Bills_Contact__r.Email != null) {
                 try {
                     emailsToSend.add(getEmailToSend(account));
                 } catch (Exception e) {
