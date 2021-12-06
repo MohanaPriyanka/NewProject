@@ -982,7 +982,7 @@ Specify the global country code setting or record level country code to automati
         <externalId>false</externalId>
         <formula>IF(Days_Past_Due__c &lt;=30, 
 &quot;As a reminder, there are no fees for one time OR recurring auto-payments made through our portal!&quot;,
-&quot;Per your community solar agreement, BlueWave reserves the right to cancel your agreement at any point after your account becomes ten days past due.&quot;)</formula>
+&quot;Per your community solar agreement, &quot; &amp; $Label.Company_Name &amp; &quot; reserves the right to cancel your agreement at any point after your account becomes ten days past due.&quot;)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Collection Email Text</label>
         <required>false</required>
