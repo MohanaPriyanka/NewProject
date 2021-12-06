@@ -1594,9 +1594,9 @@ MAX(TODAY()-Max_Overdue_Due_Date_Merge__c,0),
          &quot;sfc/servlet.shepherd/version/renditionDownload?rendition=ORIGINAL_Png&amp;versionId=0685b00000Kjxt7&amp;operationContext=CHATTER&amp;contentId=05T5b00001BakyB&quot;,
       &quot;AmpRed&quot;,
          LEFT( $Api.Enterprise_Server_URL_100, FIND( &quot;.com&quot;, $Api.Enterprise_Server_URL_100 ) + 4)&amp;
-         &quot;/sfc/servlet.shepherd/version/renditionDownload?rendition=ORIGINAL_Png&amp;versionId=0685b00000Kjxu5&amp;operationContext=CHATTER&amp;contentId=05T5b00001Bal07&quot;,
+         &quot;sfc/servlet.shepherd/version/renditionDownload?rendition=ORIGINAL_Png&amp;versionId=0685b00000Kjxu5&amp;operationContext=CHATTER&amp;contentId=05T5b00001Bal07&quot;,
          LEFT( $Api.Enterprise_Server_URL_100, FIND( &quot;.com&quot;, $Api.Enterprise_Server_URL_100 ) + 4)&amp;
-         &quot;/sfc/servlet.shepherd/version/renditionDownload?rendition=ORIGINAL_Png&amp;versionId=0685b00000KjxvT&amp;operationContext=CHATTER&amp;contentId=05T5b00001Bal65&quot;
+         &quot;sfc/servlet.shepherd/version/renditionDownload?rendition=ORIGINAL_Png&amp;versionId=0685b00000KjxvT&amp;operationContext=CHATTER&amp;contentId=05T5b00001Bal65&quot;
       )
 )</formula>
         <inlineHelpText>Used in Conga Templates</inlineHelpText>
