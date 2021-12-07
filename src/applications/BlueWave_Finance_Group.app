@@ -10,7 +10,6 @@
     <tabs>Shared_Solar_System__c</tabs>
     <tabs>BlueWave_Blog__c</tabs>
     <tabs>Project_Scroller__c</tabs>
-    <tabs>Residential_Equipment__c</tabs>
     <tabs>Utility_Account_Bill__c</tabs>
     <tabs>UASB__c</tabs>
     <tabs>SREC__c</tabs>
@@ -20,9 +19,6 @@
     <tabs>Daily_Production_Update__c</tabs>
     <tabs>System_Bill__c</tabs>
     <tabs>Quick_Sales_Sheet__c</tabs>
-    <tabs>standard-LiveAgentSession</tabs>
-    <tabs>standard-LiveChatVisitor</tabs>
     <tabs>Partner_Portal_Login_History</tabs>
     <tabs>Overpayment__c</tabs>
-    <tabs>et4ae5__IndividualEmailResult__c</tabs>
 </CustomApplication>
