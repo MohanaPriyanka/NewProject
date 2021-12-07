@@ -13,7 +13,6 @@
     <tabs>standard-File</tabs>
     <tabs>Load_U__c</tabs>
     <tabs>Partner__c</tabs>
-    <tabs>Loan_Traunch__c</tabs>
     <tabs>Energy_Usage_Update__c</tabs>
     <tabs>BSST__c</tabs>
     <tabs>dsfs__DocuSign_Recipient_Status__c</tabs>
