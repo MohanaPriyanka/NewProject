@@ -8,7 +8,6 @@
     <tabs>standard-Lead</tabs>
     <tabs>standard-Opportunity</tabs>
     <tabs>Shared_Solar_System__c</tabs>
-    <tabs>Loan__c</tabs>
     <tabs>BlueWave_Blog__c</tabs>
     <tabs>Project_Scroller__c</tabs>
     <tabs>Residential_Equipment__c</tabs>
