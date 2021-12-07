@@ -16,7 +16,6 @@
     <tabs>Energy_Usage_Update__c</tabs>
     <tabs>BSST__c</tabs>
     <tabs>dsfs__DocuSign_Recipient_Status__c</tabs>
-    <tabs>Loan_Data__c</tabs>
     <tabs>Project_Assemblage__c</tabs>
     <tabs>Entity__c</tabs>
     <tabs>Shared_Solar_System__c</tabs>
