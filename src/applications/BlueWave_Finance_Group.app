@@ -12,7 +12,6 @@
     <tabs>Project_Scroller__c</tabs>
     <tabs>Utility_Account_Bill__c</tabs>
     <tabs>UASB__c</tabs>
-    <tabs>SREC__c</tabs>
     <tabs>Account_Bill__c</tabs>
     <tabs>BlueWave_Surveys__c</tabs>
     <tabs>Town__c</tabs>
