@@ -761,7 +761,7 @@ public class TransferSheetBillingTest {
                 when 'getActiveUCBRecordForUtility' {
                     return new Default_Utility_Fee__c(
                         Type__c = 'UCB',
-                        Utility_Admin_Fee__c = 0.01, // Percent field
+                        Utility_Admin_Fee__c = 1, // Percent field, interpreted by Apex as Decimal. UcbUASB class does (x / 100)
                         Method_for_UCB_Utility_Admin__c = 'CDG Subscription Fee'
                     );
                 }
