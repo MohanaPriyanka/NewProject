@@ -83,10 +83,10 @@ public class UcbUASB extends UASB {
         }
         switch on activeUtilityAdminFee.Method_for_UCB_Utility_Admin__c {
             when 'Calculated Credits' {
-                utilityAdminFee = activeUtilityAdminFee.Utility_Admin_Fee__c * uasb.Calculated_Credits__c;
+                utilityAdminFee = activeUtilityAdminFee.Utility_Admin_Fee__c / 100 * uasb.Calculated_Credits__c;
             }
             when 'CDG Subscription Fee' {
-                utilityAdminFee = activeUtilityAdminFee.Utility_Admin_Fee__c * uasb.CDG_Subscription_Fee__c;
+                utilityAdminFee = activeUtilityAdminFee.Utility_Admin_Fee__c / 100 * uasb.CDG_Subscription_Fee__c;
             }
         }
         return utilityAdminFee.setScale(productionDecimalRounding, DEFAULT_ROUND);
