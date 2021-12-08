@@ -4,25 +4,20 @@
     <formFactors>Large</formFactors>
     <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
-    <label>Perch</label>
-    <tabs>standard-Chatter</tabs>
-    <tabs>standard-Account</tabs>
-    <tabs>standard-Contact</tabs>
+    <label>Perch Finance Group</label>
+    <tabs>standard-Lead</tabs>
     <tabs>standard-Opportunity</tabs>
-    <tabs>standard-Dashboard</tabs>
-    <tabs>standard-File</tabs>
-    <tabs>Load_U__c</tabs>
-    <tabs>Partner__c</tabs>
-    <tabs>Energy_Usage_Update__c</tabs>
-    <tabs>BSST__c</tabs>
-    <tabs>dsfs__DocuSign_Recipient_Status__c</tabs>
-    <tabs>Project_Assemblage__c</tabs>
-    <tabs>Entity__c</tabs>
     <tabs>Shared_Solar_System__c</tabs>
     <tabs>BlueWave_Blog__c</tabs>
+    <tabs>Project_Scroller__c</tabs>
+    <tabs>Utility_Account_Bill__c</tabs>
+    <tabs>UASB__c</tabs>
+    <tabs>Account_Bill__c</tabs>
     <tabs>BlueWave_Surveys__c</tabs>
     <tabs>Town__c</tabs>
+    <tabs>Daily_Production_Update__c</tabs>
+    <tabs>System_Bill__c</tabs>
     <tabs>Quick_Sales_Sheet__c</tabs>
-    <tabs>et4ae5__IndividualEmailResult__c</tabs>
-    <tabs>Production__c</tabs>
+    <tabs>Partner_Portal_Login_History</tabs>
+    <tabs>Overpayment__c</tabs>
 </CustomApplication>

@@ -35,11 +35,15 @@
         <type>Flexipage</type>
         <pageOrSobjectType>agf__ADM_Work__c</pageOrSobjectType>
     </actionOverrides>
+    <brand>
+        <headerColor>#0070D2</headerColor>
+        <shouldOverrideOrgTheme>false</shouldOverrideOrgTheme>
+    </brand>
     <description>Used by teams that primarily function in Agile Accelerator</description>
     <formFactors>Large</formFactors>
     <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
-    <label>BlueWave Agile</label>
+    <label>Perch Agile</label>
     <navType>Console</navType>
     <profileActionOverrides>
         <actionName>View</actionName>
@@ -48,15 +52,6 @@
         <pageOrSobjectType>Opportunity</pageOrSobjectType>
         <recordType>Opportunity.BW_Community_Solar_BCS</recordType>
         <type>Flexipage</type>
-        <profile>BFG Marketing User</profile>
-    </profileActionOverrides>
-    <profileActionOverrides>
-        <actionName>View</actionName>
-        <content>BFG_Opportunity_Page_Layout</content>
-        <formFactor>Large</formFactor>
-        <pageOrSobjectType>Opportunity</pageOrSobjectType>
-        <recordType>Opportunity.BW_Community_Solar_BCS</recordType>
-        <type>Flexipage</type>
         <profile>BFG Standard User</profile>
     </profileActionOverrides>
     <profileActionOverrides>
@@ -75,25 +70,7 @@
         <pageOrSobjectType>Opportunity</pageOrSobjectType>
         <recordType>Opportunity.BW_Community_Solar_BCS</recordType>
         <type>Flexipage</type>
-        <profile>BWC Executive</profile>
-    </profileActionOverrides>
-    <profileActionOverrides>
-        <actionName>View</actionName>
-        <content>BFG_Opportunity_Page_Layout</content>
-        <formFactor>Large</formFactor>
-        <pageOrSobjectType>Opportunity</pageOrSobjectType>
-        <recordType>Opportunity.BW_Community_Solar_BCS</recordType>
-        <type>Flexipage</type>
         <profile>Admin</profile>
-    </profileActionOverrides>
-    <profileActionOverrides>
-        <actionName>View</actionName>
-        <content>Generic_Account_Record_Page</content>
-        <formFactor>Large</formFactor>
-        <pageOrSobjectType>Account</pageOrSobjectType>
-        <recordType>Account.Account_Default</recordType>
-        <type>Flexipage</type>
-        <profile>BFG Marketing User</profile>
     </profileActionOverrides>
     <profileActionOverrides>
         <actionName>View</actionName>
@@ -120,42 +97,6 @@
         <pageOrSobjectType>Account</pageOrSobjectType>
         <recordType>Account.Account_Default</recordType>
         <type>Flexipage</type>
-        <profile>BWC Executive</profile>
-    </profileActionOverrides>
-    <profileActionOverrides>
-        <actionName>View</actionName>
-        <content>Generic_Account_Record_Page</content>
-        <formFactor>Large</formFactor>
-        <pageOrSobjectType>Account</pageOrSobjectType>
-        <recordType>Account.Account_Default</recordType>
-        <type>Flexipage</type>
-        <profile>Office Management Force.com user</profile>
-    </profileActionOverrides>
-    <profileActionOverrides>
-        <actionName>View</actionName>
-        <content>Generic_Account_Record_Page</content>
-        <formFactor>Large</formFactor>
-        <pageOrSobjectType>Account</pageOrSobjectType>
-        <recordType>Account.Account_Default</recordType>
-        <type>Flexipage</type>
-        <profile>PM Force.com user</profile>
-    </profileActionOverrides>
-    <profileActionOverrides>
-        <actionName>View</actionName>
-        <content>Generic_Account_Record_Page</content>
-        <formFactor>Large</formFactor>
-        <pageOrSobjectType>Account</pageOrSobjectType>
-        <recordType>Account.Account_Default</recordType>
-        <type>Flexipage</type>
-        <profile>PM Standard User</profile>
-    </profileActionOverrides>
-    <profileActionOverrides>
-        <actionName>View</actionName>
-        <content>Generic_Account_Record_Page</content>
-        <formFactor>Large</formFactor>
-        <pageOrSobjectType>Account</pageOrSobjectType>
-        <recordType>Account.Account_Default</recordType>
-        <type>Flexipage</type>
         <profile>Admin</profile>
     </profileActionOverrides>
     <profileActionOverrides>
@@ -166,24 +107,6 @@
         <recordType>Opportunity.Community_Solar</recordType>
         <type>Flexipage</type>
         <profile>BW Technology</profile>
-    </profileActionOverrides>
-    <profileActionOverrides>
-        <actionName>View</actionName>
-        <content>Community_Solar_Opportunity</content>
-        <formFactor>Large</formFactor>
-        <pageOrSobjectType>Opportunity</pageOrSobjectType>
-        <recordType>Opportunity.Community_Solar</recordType>
-        <type>Flexipage</type>
-        <profile>BWC Executive</profile>
-    </profileActionOverrides>
-    <profileActionOverrides>
-        <actionName>View</actionName>
-        <content>Community_Solar_Opportunity</content>
-        <formFactor>Large</formFactor>
-        <pageOrSobjectType>Opportunity</pageOrSobjectType>
-        <recordType>Opportunity.Community_Solar</recordType>
-        <type>Flexipage</type>
-        <profile>BFG Marketing User</profile>
     </profileActionOverrides>
     <profileActionOverrides>
         <actionName>View</actionName>
