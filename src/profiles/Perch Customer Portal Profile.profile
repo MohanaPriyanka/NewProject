@@ -6,6 +6,10 @@
         <field>Zuora__CustomerAccount__c.View_Account__c</field>
         <readable>false</readable>
     </fieldPermissions>
+    <flowAccesses>
+        <enabled>true</enabled>
+        <flow>Create_Account_Setup_Case</flow>
+    </flowAccesses>
     <userLicense>Guest User License</userLicense>
     <userPermissions>
         <enabled>true</enabled>

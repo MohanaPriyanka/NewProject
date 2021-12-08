@@ -116,7 +116,7 @@
 &apos;Last Name: &apos; + {!Name.lastName} + BR() +
 &apos;Email: &apos; + {!user_email.value} + BR() +
 &apos;Phone: &apos; + {!user_phone.value} + BR() +
-&apos;Account Number: &apos; + {!BlueWave_Account_Number} + BR() + BR() +
+&apos;Account Number: &apos; + {!Account_Number} + BR() + BR() +
 &apos;Please check Salesforce for their account and setup as necessary.&apos;</expression>
     </formulas>
     <formulas>
@@ -346,9 +346,9 @@
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <fields>
-            <name>BlueWave_Account_Number</name>
+            <name>Account_Number</name>
             <dataType>String</dataType>
-            <fieldText>Account Number (e.g. BW-0001234)</fieldText>
+            <fieldText>Account Number</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>false</isRequired>
         </fields>
