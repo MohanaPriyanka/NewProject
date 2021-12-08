@@ -133,6 +133,7 @@ public with sharing class UtilTest {
         String unprepped = 'this is$_@an \n=+ un\n}pr{e[pp]ed, str)ing(.';
         String expected = 'this is_an  unprepped string.';
         System.assertEquals(expected, Util.prepForCSV(unprepped));
+        System.assertEquals('', Util.prepForCSV(null));
     }
 
     @IsTest

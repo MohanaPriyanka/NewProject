@@ -148,9 +148,8 @@ public class TestFactory {
 
 	public static void insertBWAddress() {
 		insert new BW_Address__c(
-			Name = 'BlueWave',
+			Name = 'Perch Community Solar, LLC',
 			Address_Line_One__c = '137 Newbury Street',
-			Address_Line_Two__c = '4th Floor',
 			City__c = 'Boston',
 			State__c = 'MA',
 			Zip_Code__c = '02116'

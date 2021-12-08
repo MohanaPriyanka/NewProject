@@ -210,6 +210,9 @@ public without sharing class Util {
     }
 
     public static String prepForCSV(String value) {
+        if (value == null) {
+            return '';
+        }
         value = removeSpecialCharacters(value);
         return removeNewLine(value);
     }

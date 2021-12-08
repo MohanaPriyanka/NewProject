@@ -122,10 +122,10 @@ public with sharing class LetterStreamServiceTest {
     public static void testBWAddress() {
         TestFactory.insertBWAddress();
         // BW Address info
-        String bwAddress = 'BlueWave Solar,'; // SenderName1
+        String bwAddress = 'Perch Community Solar LLC,'; // SenderName1
         bwAddress += ','; //SenderName2 - blank
         bwAddress += '137 Newbury Street,'; //SenderAddr1
-        bwAddress += '4th Floor,'; //SenderAddr2
+        bwAddress += ','; //SenderAddr2
         bwAddress += 'Boston,'; //SenderCity
         bwAddress += 'MA,'; //SenderState
         bwAddress += '02116,'; //SenderZip
