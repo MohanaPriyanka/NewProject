@@ -1,5 +1,5 @@
 {
-  "activeBrandingSetId" : "63724e2b-559a-4493-88ce-b06dbf13a832",
+  "activeBrandingSetId" : "c97536ff-e32a-46d3-a4d2-3b5bca3c0f86",
   "customCSS" : "span[title='Follow'], .slds-button .slds-icon-utility-add {display: none}\nspan[title='Following'], .slds-button .slds-icon-utility-check {display: none}\nspan[title='Unfollow'], .slds-button .slds-icon-utility-close {display: none}\n\n.uiTooltip {\ndisplay: none !important;\n}\n\n@font-face {\n    font-family: 'Judson-Bold';\n    src: url('/partnerportal/s/sfsites/c/resource/PerchFonts/Fonts/Judson-Bold.ttf') format('truetype');\n}\n\n@font-face {\n    font-family: 'Manrope-Regular';\n    src: url('/partnerportal/s/sfsites/c/resource/PerchFonts/Fonts/Manrope-Regular.ttf') format('truetype');\n}",
   "developerName" : "jepson",
   "id" : "7a59c2eb-3620-40f9-97a1-c4c9cd90f9e4",
@@ -281,7 +281,7 @@
     "regions" : [ {
       "components" : [ {
         "componentAttributes" : {
-          "background" : "background: rgb(20,28,51)",
+          "background" : "background: rgb(255,255,255)",
           "backgroundOverlayColor" : "rgba(0, 0, 0, 0.3)",
           "borderBottomColor" : "rgba(255, 255, 255, 0)",
           "centerAlignLogo" : false,

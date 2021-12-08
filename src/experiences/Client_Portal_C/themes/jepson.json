@@ -1,5 +1,5 @@
 {
-  "activeBrandingSetId" : "4f5e98ed-c198-48ad-b9eb-27592b88b546",
+  "activeBrandingSetId" : "626d97da-472f-49ae-9551-513211564b75",
   "customCSS" : ".uiTooltip {\ndisplay: none !important;\n}\n@font-face {\nfont-family: 'Judson-Bold';\nsrc: url('/clientportal/s/sfsites/c/resource/PerchFonts/Fonts/Judson-Bold.ttf') format('truetype');\n}\n\n\n\n@font-face {\nfont-family: 'Manrope-Regular';\nsrc: url('/clientportal/s/sfsites/c/resource/PerchFonts/Fonts/Manrope-Regular.ttf') format('truetype');\n}",
   "developerName" : "jepson",
   "id" : "448deadd-5c2a-469d-b4b1-4c3c182ce633",
@@ -385,7 +385,7 @@
     }, {
       "components" : [ {
         "componentAttributes" : {
-          "bgImage" : "background: #FFFFFF url(/sfsites/c/file-asset/stock_AllBlue_potential_sky_and_cl?v=1) center left /cover",
+          "bgImage" : "background: #FFFFFF url(/sfsites/c/file-asset/TreesHeroImage?v=1) center left /cover",
           "bgOverlayColor" : "rgba(61, 61, 61, 0.13)",
           "captionText" : "Community Solar",
           "captionTextColor" : "rgb(255, 255, 255)",
@@ -468,7 +468,7 @@
     }, {
       "components" : [ {
         "componentAttributes" : {
-          "richTextValue" : "<p style=\"padding-left: 5px; padding-top: 25px;\"><img style=\"vertical-align: middle; display: block; margin-left: auto; margin-right: auto;\" src=\"https://bluewavesolar.com/resources/img/logomark.min.svg\" width=\"40\" height=\"40\" />&nbsp; &nbsp;</p>\n<p style=\"text-align: center;\"><span style=\"color: #333333;\">501 Boylston Street</span></p>\n<p style=\"text-align: center;\"><span style=\"color: #333333;\">Suite 10B134</span></p>\n<p style=\"text-align: center;\"><span style=\"color: #333333;\">Boston, MA 02116</span></p>\n<p style=\"text-align: center;\">&nbsp;</p>"
+          "richTextValue" : "<p style=\"padding-left: 5px; padding-top: 25px;\"><img style=\"vertical-align: middle; display: block; margin-left: auto; margin-right: auto;\" src=\"https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/fcdb4f01-0441-4b61-b99d-cb2048ecbfbf.png\" width=\"40\" height=\"40\" />&nbsp; &nbsp;</p>\n<p style=\"text-align: center;\"><span style=\"color: #333333;\">501 Boylston Street</span></p>\n<p style=\"text-align: center;\"><span style=\"color: #333333;\">Boston, MA 02116</span></p>\n<p style=\"text-align: center;\">&nbsp;</p>"
         },
         "componentName" : "forceCommunity:htmlBlock",
         "id" : "26b180e4-5585-41d1-beef-f1d1415540c8",

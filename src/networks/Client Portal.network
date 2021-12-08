@@ -9,6 +9,7 @@
     <emailSenderName>BlueWave Client Services</emailSenderName>
     <enableCustomVFErrorPageOverrides>false</enableCustomVFErrorPageOverrides>
     <enableDirectMessages>false</enableDirectMessages>
+    <enableExperienceBundleBasedSnaOverrideEnabled>true</enableExperienceBundleBasedSnaOverrideEnabled>
     <enableGuestChatter>false</enableGuestChatter>
     <enableGuestFileAccess>true</enableGuestFileAccess>
     <enableGuestMemberVisibility>false</enableGuestMemberVisibility>
@@ -26,6 +27,7 @@
     <enableUpDownVote>false</enableUpDownVote>
     <forgotPasswordTemplate>BFG_Internal_Alerts/CommunityForgotPasswordEmailTemplate</forgotPasswordTemplate>
     <gatherCustomerSentimentData>false</gatherCustomerSentimentData>
+    <logoutUrl>https://portal.perchenergy.com/clientportal</logoutUrl>
     <networkMemberGroups>
         <permissionSet>Manage_External_Users</permissionSet>
         <permissionSet>System_Administrator</permissionSet>
