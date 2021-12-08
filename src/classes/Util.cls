@@ -1,7 +1,7 @@
 /*************************************************************************************
  * Created By: Peter Yao
  * Description: Common methods used across the org
- * Tested by: UtilTest
+ * Tested by: UtilTest, ClientReportingServiceTest
  *************************************************************************************/
 
 @SuppressWarnings('PMD.ApexCRUDViolation,PMD.ExcessivePublicCount')
@@ -210,6 +210,9 @@ public without sharing class Util {
     }
 
     public static String prepForCSV(String value) {
+        if (value == null) {
+            return '';
+        }
         value = removeSpecialCharacters(value);
         return removeNewLine(value);
     }

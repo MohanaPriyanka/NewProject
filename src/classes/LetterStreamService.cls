@@ -250,16 +250,16 @@ public without sharing class LetterStreamService {
     public String blueWaveAddress() {
         String bwAddress = '';
         BW_Address__c address = [
-            SELECT Id, Address_Line_One__c, Address_Line_Two__c, Zip_Code__c, City__c, State__c
+            SELECT Id, Name, Address_Line_One__c, Address_Line_Two__c, Zip_Code__c, City__c, State__c
             FROM BW_Address__c
         ];
-        bwAddress += 'BlueWave Solar,'; //SenderName1
+        bwAddress += Util.prepForCSV(address.Name) + ','; //SenderName1
         bwAddress += ','; //SenderName2
-        bwAddress += (address.Address_Line_One__c + ','); //SenderAddr1
-        bwAddress += (address.Address_Line_Two__c + ','); //SenderAddr2
-        bwAddress += (address.City__c + ','); // SenderCity
-        bwAddress += (address.State__c + ','); //SenderState
-        bwAddress += (address.Zip_Code__c + ','); //SenderZip
+        bwAddress += Util.prepForCSV(address.Address_Line_One__c) + ','; //SenderAddr1
+        bwAddress += Util.prepForCSV(address.Address_Line_Two__c) + ','; //SenderAddr2
+        bwAddress += address.City__c + ','; // SenderCity
+        bwAddress += address.State__c + ','; //SenderState
+        bwAddress += address.Zip_Code__c + ','; //SenderZip
         return bwAddress;
     }
 
@@ -313,19 +313,6 @@ public without sharing class LetterStreamService {
             } else {
                 return extraInserts;
             }
-        }
-
-        //added
-
-        public void generateFromAccountBill(Account_Bill__c accountBill, ContentDocument document) {
-            fileId = accountBill.Id;
-            fileName = document.LatestPublishedVersion.Title.replace(' ', '_') + '.pdf';
-            recipientName = accountBill.Parent_Account__r.Name;
-            recipientStreet = accountBill.Parent_Account__r.BillingStreet ;
-            recipientCity = accountBill.Parent_Account__r.BillingCity;
-            recipientState = accountBill.Parent_Account__r.BillingState;
-            recipientPostalCode = accountBill.Parent_Account__r.BillingPostalCode;
-            pages = String.valueOf(accountBill.Bill_PDF_Page_Count__c);
         }
     }
 
