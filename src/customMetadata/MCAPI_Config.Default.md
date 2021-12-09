@@ -12,11 +12,11 @@
     </values>
     <values>
         <field>Change_in_COD_Email_Journey_Id__c</field>
-        <value xsi:type="xsd:string">APIEvent-9ce42cd6-d526-738c-2912-1b9990649951</value>
+        <value xsi:type="xsd:string">APIEvent-42f2ee19-986d-8cb7-b552-c65b8ec66cda</value>
     </values>
     <values>
         <field>Credits_Flowing_Email_Journey_Id__c</field>
-        <value xsi:type="xsd:string">APIEvent-1f63de67-fd69-3a7c-c79a-6c6ad3797816</value>
+        <value xsi:type="xsd:string">APIEvent-9b7d0316-1f75-3a5e-d691-fcb49ff04b84</value>
     </values>
     <values>
         <field>Sandbox_Publish_to_Prod__c</field>
