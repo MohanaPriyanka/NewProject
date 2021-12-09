@@ -2,5 +2,5 @@
 <ExperienceBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <label>Perch Customer Portal</label>
     <type>ChatterNetworkPicasso</type>
-    <urlPathPrefix>customerportal/s</urlPathPrefix>
+    <urlPathPrefix>CustomerPortal/s</urlPathPrefix>
 </ExperienceBundle>
