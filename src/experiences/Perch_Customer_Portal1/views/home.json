@@ -35,7 +35,7 @@
       "type" : "component"
     }, {
       "componentAttributes" : {
-        "richTextValue" : "<p style=\"text-align: center;\"><a href=\"https://bluewavesolar.com/bw-resources/a-6-minute-guide-to-community-solar-billing\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"font-size: 16px; background-color: rgb(255, 255, 255);\">W</a><a href=\"https://bluewavesolar.com/bw-resources/a-6-minute-guide-to-community-solar-billing\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"font-size: 16px; background-color: rgb(255, 255, 255);\">ant to learn more about how community solar billing works? Click Here!</a></p>"
+        "richTextValue" : "<p style=\"text-align: center;\"><a href=\"https://communitysolar.perchenergy.com/bw-resources/a-6-minute-guide-to-community-solar-billing\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"font-size: 16px; background-color: rgb(255, 255, 255);\">Want to learn more about how community solar billing works? Click Here!</a></p>"
       },
       "componentName" : "forceCommunity:richTextInline",
       "id" : "4ca83ba1-470c-4598-b042-42a34855182c",
@@ -49,7 +49,7 @@
   }, {
     "components" : [ {
       "componentAttributes" : {
-        "richTextValue" : "<div class=\"sfdcCbVideoContainer\"><iframe class=\"sfdcCbVideo\" allowfullscreen=\"true\" width=\"100%\" title=\"Video from https://player.vimeo.com/video/417286945\" src=\"https://player.vimeo.com/video/417286945\"></iframe></div><p> </p>"
+        "richTextValue" : "<div class=\"sfdcCbVideoContainer\"><iframe class=\"sfdcCbVideo\" allowfullscreen=\"true\" width=\"100%\" title=\"Video from https://player.vimeo.com/video/654252412\" src=\"https://player.vimeo.com/video/654252412\"></iframe></div><p>&nbsp;</p>"
       },
       "componentName" : "forceCommunity:richTextInline",
       "id" : "5774ca59-95d5-45f0-a214-67ae6f1dab9f",
