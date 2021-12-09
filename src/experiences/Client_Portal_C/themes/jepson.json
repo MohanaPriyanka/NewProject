@@ -1,6 +1,6 @@
 {
   "activeBrandingSetId" : "626d97da-472f-49ae-9551-513211564b75",
-  "customCSS" : ".uiTooltip {\ndisplay: none !important;\n}\n@font-face {\nfont-family: 'Judson-Bold';\nsrc: url('/clientportal/s/sfsites/c/resource/PerchFonts/Fonts/Judson-Bold.ttf') format('truetype');\n}\n\n\n\n@font-face {\nfont-family: 'Manrope-Regular';\nsrc: url('/clientportal/s/sfsites/c/resource/PerchFonts/Fonts/Manrope-Regular.ttf') format('truetype');\n}",
+  "customCSS" : ".slds-form-element .uiTooltip.tooltip-trigger, .slds-form-element + .tooltipIcon {\n    display: none;\n}\n\n@font-face {\nfont-family: 'Judson-Bold';\nsrc: url('/clientportal/s/sfsites/c/resource/PerchFonts/Fonts/Judson-Bold.ttf') format('truetype');\n}\n\n\n\n@font-face {\nfont-family: 'Manrope-Regular';\nsrc: url('/clientportal/s/sfsites/c/resource/PerchFonts/Fonts/Manrope-Regular.ttf') format('truetype');\n}",
   "developerName" : "jepson",
   "id" : "448deadd-5c2a-469d-b4b1-4c3c182ce633",
   "label" : "Jepson",
@@ -60,7 +60,7 @@
           "dropdownBorderColor" : "#F0F0F0",
           "dropdownTextColor" : "",
           "dropdownTextHoverColor" : "",
-          "headerHeight" : 7,
+          "headerHeight" : 15,
           "linkActiveBorderColor" : "",
           "linkColor" : "rgba(0, 0, 0, 0.8)",
           "linkHoverColor" : "rgba(0, 0, 0, 0.7)",
@@ -140,7 +140,7 @@
           "components" : [ {
             "componentAttributes" : {
               "navAlignment" : "left",
-              "navItemThreshold" : 4,
+              "navItemThreshold" : 6,
               "navigationMenuEditorRefresh" : "Default_Navigation4"
             },
             "componentName" : "forceCommunity:themeNav",
@@ -244,7 +244,7 @@
     }, {
       "components" : [ {
         "componentAttributes" : {
-          "richTextValue" : "<p style=\"padding-left: 5px; padding-top: 25px;\"><img style=\"vertical-align: middle; display: block; margin-left: auto; margin-right: auto;\" src=\"https://bluewavesolar.com/resources/img/logomark.min.svg\" width=\"40\" height=\"40\" />&nbsp; &nbsp;</p>\n<p style=\"text-align: center;\"><span style=\"color: #333333;\">111 Huntington Ave</span></p>\n<p style=\"text-align: center;\"><span style=\"color: #333333;\">Suite 650</span></p>\n<p style=\"text-align: center;\"><span style=\"color: #333333;\">Boston, MA 02199</span></p>\n<p style=\"text-align: center;\">&nbsp;</p>"
+          "richTextValue" : "<p style=\"padding-left: 5px; padding-top: 25px;\"><img style=\"vertical-align: middle; display: block; margin-left: auto; margin-right: auto;\" src=\"https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/fcdb4f01-0441-4b61-b99d-cb2048ecbfbf.png\" width=\"40\" height=\"40\" />&nbsp; &nbsp;</p>\n<p style=\"text-align: center;\"><span style=\"color: #333333;\">501 Boylston Street</span></p>\n<p style=\"text-align: center;\"><span style=\"color: #333333;\">Boston, MA 02116</span></p>\n<p style=\"text-align: center;\">&nbsp;</p>"
         },
         "componentName" : "forceCommunity:htmlBlock",
         "id" : "b646ccfc-3398-4ebf-8ef3-75633c43b69b",
@@ -284,7 +284,7 @@
           "dropdownBorderColor" : "#F0F0F0",
           "dropdownTextColor" : "",
           "dropdownTextHoverColor" : "",
-          "headerHeight" : 7,
+          "headerHeight" : 15,
           "linkActiveBorderColor" : "",
           "linkColor" : "rgb(81, 81, 81)",
           "linkHoverColor" : "rgba(0, 0, 0, 0.7)",
@@ -392,12 +392,12 @@
           "captionTextShadowColor" : "rgba(0, 0, 0, 0)",
           "contentAlignment" : "left",
           "contentWidth" : 52,
-          "ctaBtnOneBgColor" : "rgb(20, 28, 51)",
+          "ctaBtnOneBgColor" : "rgb(95, 108, 108)",
           "ctaBtnOneBgHoverColor" : "",
           "ctaBtnOneBorderColor" : "rgba(10, 50, 198, 0)",
           "ctaBtnOneOpenNewTab" : false,
           "ctaBtnOneText" : "Dashboards",
-          "ctaBtnOneTextColor" : "",
+          "ctaBtnOneTextColor" : "rgb(255, 255, 255)",
           "ctaBtnOneTextHoverColor" : "",
           "ctaBtnOneUrl" : "/clientportal/s/Dashboard",
           "ctaBtnRadius" : 25,
@@ -406,7 +406,7 @@
           "ctaBtnTwoBorderColor" : "rgba(0, 0, 0, 0.05)",
           "ctaBtnTwoOpenNewTab" : false,
           "ctaBtnTwoText" : "Reports",
-          "ctaBtnTwoTextColor" : "rgb(56, 125, 222)",
+          "ctaBtnTwoTextColor" : "rgb(13, 39, 39)",
           "ctaBtnTwoTextHoverColor" : "rgb(237, 237, 237)",
           "ctaBtnTwoUrl" : "/clientportal/s/report/Report/Recent",
           "ctaShowBtnOne" : true,
