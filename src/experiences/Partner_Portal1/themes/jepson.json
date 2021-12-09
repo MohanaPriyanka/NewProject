@@ -1,6 +1,6 @@
 {
   "activeBrandingSetId" : "63724e2b-559a-4493-88ce-b06dbf13a832",
-  "customCSS" : "span[title='Follow'], .slds-button .slds-icon-utility-add {display: none}\nspan[title='Following'], .slds-button .slds-icon-utility-check {display: none}\nspan[title='Unfollow'], .slds-button .slds-icon-utility-close {display: none}\n\n.uiTooltip {\ndisplay: none !important;\n}\n\n@font-face {\n    font-family: 'Judson-Bold';\n    src: url('/partnerportal/s/sfsites/c/resource/PerchFonts/Fonts/Judson-Bold.ttf') format('truetype');\n}\n\n@font-face {\n    font-family: 'Manrope-Regular';\n    src: url('/partnerportal/s/sfsites/c/resource/PerchFonts/Fonts/Manrope-Regular.ttf') format('truetype');\n}",
+  "customCSS" : "/* hide follow, following, unfollow buttons on record detail */\n.forceActionsContainer .slds-button.slds-button--neutral.not-selected.slds-not-selected, .forceActionsContainer .slds-button.slds-button--neutral.is-selected.slds-is-selected {\n    display:none\n}\n\n/* hide record detail field tooltips */\n.slds-form-element .uiTooltip.tooltip-trigger, .slds-form-element + .tooltipIcon {\n\tdisplay: none;\n}\n\n@font-face {\n    font-family: 'Judson-Bold';\n    src: url('/partnerportal/s/sfsites/c/resource/PerchFonts/Fonts/Judson-Bold.ttf') format('truetype');\n}\n\n@font-face {\n    font-family: 'Manrope-Regular';\n    src: url('/partnerportal/s/sfsites/c/resource/PerchFonts/Fonts/Manrope-Regular.ttf') format('truetype');\n}",
   "developerName" : "jepson",
   "id" : "7a59c2eb-3620-40f9-97a1-c4c9cd90f9e4",
   "label" : "Jepson",
