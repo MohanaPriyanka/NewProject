@@ -5,11 +5,9 @@
   "label" : "Register",
   "regions" : [ {
     "components" : [ {
-      "componentAttributes" : {
-        "bk" : "{!bk}"
-      },
-      "componentName" : "c:CSPDynamicLogo",
-      "id" : "477e1530-51af-4d26-be6e-3f42c91d75e9",
+      "componentAttributes" : { },
+      "componentName" : "salesforceIdentity:communityLogo2",
+      "id" : "a27c2cc2-f423-4466-b170-83786e827aac",
       "renderPriority" : "NEUTRAL",
       "renditionMap" : { },
       "type" : "component"
