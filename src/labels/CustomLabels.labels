@@ -6,7 +6,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>AMP_Powered_By_Example</shortDescription>
-        <value>http://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/9686bd1b-fa7f-4a04-987f-bee7c8786242.png</value>
+        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/9bdb80df-6827-4dd4-addf-5428954d1b68.png</value>
     </labels>
     <labels>
         <fullName>AMP_Powered_By_Faq</fullName>
@@ -14,7 +14,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>AMP_Powered_By_Faq</shortDescription>
-        <value>http://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/f206939f-82a4-411a-a690-f4c678be0c5c.pdf</value>
+        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/cb47cd31-4b16-467d-8edb-995f1d83cfbe.pdf</value>
     </labels>
     <labels>
         <fullName>AmpBlack_Main_Logo</fullName>
@@ -22,7 +22,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>AmpBlack_Main_Logo</shortDescription>
-        <value>https://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/15520f0c-3d20-435b-87b4-0956621c6bc0.png</value>
+        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/00d4add9-44a0-4208-b8d0-ebb8ea9745ea.png</value>
     </labels>
     <labels>
         <fullName>AmpRed_Main_Logo</fullName>
@@ -30,7 +30,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>AmpRed Main Logo</shortDescription>
-        <value>http://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/813e9d76-8ac8-4e5b-a40c-1d6aee2cf90e.png</value>
+        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/60cf472c-2978-4666-9866-8902b0376120.png</value>
     </labels>
     <labels>
         <fullName>Client_Portal_URL</fullName>
@@ -38,7 +38,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Client Portal URL</shortDescription>
-        <value>https://bluewavememberportal.force.com/clientportal</value>
+        <value>https://portal.perchenergy.com/clientportal</value>
     </labels>
     <labels>
         <fullName>Co_Signer_PI_Next</fullName>
@@ -54,7 +54,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Community_Solar_Hands_Banner</shortDescription>
-        <value>http://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/90e6d33b-ec0a-4f35-9490-6c14bf6e6a7f.png</value>
+        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/e2502070-3ee2-4a4e-9652-5f3daae9549d.png</value>
     </labels>
     <labels>
         <fullName>Community_Solar_Jumping_Banner</fullName>
@@ -62,7 +62,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Community_Solar_Jumping_Banner</shortDescription>
-        <value>http://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/abfbc03b-45a8-4694-b2ff-f5e82621d223.png</value>
+        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/e2502070-3ee2-4a4e-9652-5f3daae9549d.png</value>
     </labels>
     <labels>
         <fullName>Company_Client_Portal_Banner</fullName>
@@ -70,7 +70,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Company_Client_Portal_Banner</shortDescription>
-        <value>http://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/8bd52e8e-5d75-48e9-b708-aedc7ff24a96.png</value>
+        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/4cad62ed-dbf4-4658-9156-b9614539ff95.png</value>
     </labels>
     <labels>
         <fullName>Company_Color_Blue</fullName>
@@ -78,7 +78,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Company_Color_Blue_Ocean</shortDescription>
-        <value>#387CDF</value>
+        <value>#2774EE</value>
     </labels>
     <labels>
         <fullName>Company_Default_Farm_Image</fullName>
@@ -86,7 +86,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Company Default Farm Image</shortDescription>
-        <value>https://bluewavesolar--c.documentforce.com/sfc/dist/version/renditionDownload?rendition=ORIGINAL_Png&amp;versionId=0680a000009usLo&amp;operationContext=DELIVERY&amp;contentId=05T0a00000ZP055&amp;page=0&amp;d=/a/0a0000005bV7/S2le4FGiYoQLrAfw6XlDnHzVw.Quny8V_GQZf.462TY&amp;oid=00Dj0000001q7GO&amp;dpt=null&amp;viewId=</value>
+        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/e9c45853-427b-49b9-af46-59e1505321ca.png</value>
     </labels>
     <labels>
         <fullName>Company_Email_Icon</fullName>
@@ -94,7 +94,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Company_Email_Icon</shortDescription>
-        <value>http://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/baa9d76c-73a5-4b38-bbc4-1d3c21a5d503.png</value>
+        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/218aabc5-cde0-4a54-84e2-2f0a7cf50c96.png</value>
     </labels>
     <labels>
         <fullName>Company_Facebook</fullName>
@@ -102,7 +102,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Company_Facebook</shortDescription>
-        <value>https://www.facebook.com/BlueWaveSolar/</value>
+        <value>https://www.facebook.com/perch.energy/</value>
     </labels>
     <labels>
         <fullName>Company_Instagram</fullName>
@@ -110,7 +110,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Company_Instagram</shortDescription>
-        <value>https://www.instagram.com/bluewavesolar/?hl=en</value>
+        <value>https://www.instagram.com/perch.energy/?hl=en</value>
     </labels>
     <labels>
         <fullName>Company_LinkedIn</fullName>
@@ -118,7 +118,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Company_LinkedIn</shortDescription>
-        <value>https://www.linkedin.com/company/bluewavesolar/</value>
+        <value>https://www.linkedin.com/company/perchenergy</value>
     </labels>
     <labels>
         <fullName>Company_Main_Logo</fullName>
@@ -126,7 +126,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Company_Main_Logo</shortDescription>
-        <value>http://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/e9dd3d83-d085-44dd-9d93-694ab0d48935.png</value>
+        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/509a186e-a0d6-477a-a287-fe206321ada4.png</value>
     </labels>
     <labels>
         <fullName>Company_Main_Logo_600</fullName>
@@ -134,7 +134,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Company_Main_Logo_600</shortDescription>
-        <value>https://bluewavesolar--c.documentforce.com/file-asset-public/BlueLogo_600?oid=00Dj0000001q7GO</value>
+        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/7042dc9e-1c34-42a1-b5bc-96650d7a49b6.png</value>
     </labels>
     <labels>
         <fullName>Company_Main_Logo_Big</fullName>
@@ -142,7 +142,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Company_Main_Logo_Big</shortDescription>
-        <value>http://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/4f7382e4-e980-4d15-b4c5-0dcd1fe4a92e.jpg</value>
+        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/2a09e601-16c7-49a3-bd98-c494ca1cd360.png</value>
     </labels>
     <labels>
         <fullName>Company_Main_Logo_Medium</fullName>
@@ -150,7 +150,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Company_Main_Logo_Medium</shortDescription>
-        <value>http://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/b1d5c208-021b-49bb-87a4-15975de32046.png</value>
+        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/0c9fc735-3cf3-4f42-9b36-bf3f6941a029.png</value>
     </labels>
     <labels>
         <fullName>Company_Main_Logo_White</fullName>
@@ -158,7 +158,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Company_Main_Logo_White</shortDescription>
-        <value>http://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/cf410c88-0655-4601-99ba-0a22989404f0.png</value>
+        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/e51919eb-234b-4343-8642-a7deafbf99bb.png</value>
     </labels>
     <labels>
         <fullName>Company_Name</fullName>
@@ -166,7 +166,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Company Name</shortDescription>
-        <value>BlueWave</value>
+        <value>Perch</value>
     </labels>
     <labels>
         <fullName>Company_Name_Customer_Acquisition</fullName>
@@ -190,7 +190,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Company_Old_Logo</shortDescription>
-        <value>http://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/bcab316e-966f-4e7c-b4ff-54cb5f2061ae.png</value>
+        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/cafd0406-663e-4a00-a823-0abd6beee749.png</value>
     </labels>
     <labels>
         <fullName>Company_Temp_Website</fullName>
@@ -198,7 +198,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Company Temp Website</shortDescription>
-        <value>bluewavecommunitysolar.com</value>
+        <value>communitysolar.perchenergy.com</value>
     </labels>
     <labels>
         <fullName>Company_Twitter</fullName>
@@ -214,7 +214,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Company_Website</shortDescription>
-        <value>https://bluewavesolar.com/</value>
+        <value>https://communitysolar.perchenergy.com/</value>
     </labels>
     <labels>
         <fullName>Customer_Acquisition</fullName>
@@ -238,7 +238,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Customer_Member_Portal_URL</shortDescription>
-        <value>https://bluewavememberportal.force.com/</value>
+        <value>https://portal.perchenergy.com/customerportal/</value>
     </labels>
     <labels>
         <fullName>Enrollment_Portal_URL</fullName>
@@ -246,7 +246,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Enrollment Portal URL</shortDescription>
-        <value>https://bluewavememberportal.force.com/apply</value>
+        <value>https://portal.perchenergy.com/apply</value>
     </labels>
     <labels>
         <fullName>Facebook_Email_Icon</fullName>
@@ -254,7 +254,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Facebook_Email_Icon</shortDescription>
-        <value>https://bluewavesolar--c.documentforce.com/file-asset-public/icons8facebook_new?oid=00Dj0000001q7GO</value>
+        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/97d147ea-7e52-4401-9202-fc926efc7537.png</value>
     </labels>
     <labels>
         <fullName>Instagram_Email_Icon</fullName>
@@ -262,7 +262,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Instagram_Email_Icon</shortDescription>
-        <value>https://bluewavesolar--c.documentforce.com/file-asset-public/icons8instagram_new_filled?oid=00Dj0000001q7GO</value>
+        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/8b223bd4-7ec4-468b-9714-421b05122387.png</value>
     </labels>
     <labels>
         <fullName>Internal_Classic_Salesforce_URL</fullName>
@@ -270,7 +270,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Internal_Classic_Salesforce_URL</shortDescription>
-        <value>https://bluewavesolar.my.salesforce.com/</value>
+        <value>https://perchenergy.my.salesforce.com/</value>
     </labels>
     <labels>
         <fullName>Internal_Lightning_Salesforce_URL</fullName>
@@ -278,7 +278,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Internal_Lightning_Salesforce_URL</shortDescription>
-        <value>https://bluewavesolar.lightning.force.com/</value>
+        <value>https://perchenergy.lightning.force.com/</value>
     </labels>
     <labels>
         <fullName>LA_Chat_ExtendedHeader_ChatStateHeaderGreeting_04I540000008OIA_1979875</fullName>
@@ -326,7 +326,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>LinkedIn_Black_Email_Icon</shortDescription>
-        <value>https://bluewavesolar--c.documentforce.com/file-asset-public/AMPPoweredByBW_BlackLinkedIn?oid=00Dj0000001q7GO</value>
+        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/634a2a53-9bd7-4da5-af7e-4e41c0ae5217.png</value>
     </labels>
     <labels>
         <fullName>LinkedIn_Email_Icon</fullName>
@@ -334,7 +334,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>LinkedIn_Email_Icon</shortDescription>
-        <value>https://bluewavesolar--c.documentforce.com/file-asset-public/icons8linkedin?oid=00Dj0000001q7GO</value>
+        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/3cec1db7-8ef1-41e3-9549-c28f74a92555.png</value>
     </labels>
     <labels>
         <fullName>Other_Charges_MN_Example</fullName>
@@ -342,7 +342,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Other_Charges_MN_Example</shortDescription>
-        <value>http://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/30f0bf0c-395c-4d83-933f-aa3f14454472.png</value>
+        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/cd698b60-6f9c-4c09-9fd9-af0362eaae66.png</value>
     </labels>
     <labels>
         <fullName>Partner_Portal_URL</fullName>
@@ -350,7 +350,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Partner Portal URL</shortDescription>
-        <value>https://bluewavememberportal.force.com/partnerportal</value>
+        <value>https://portal.perchenergy.com/partnerportal</value>
     </labels>
     <labels>
         <fullName>SSF_Cancellation_Contact_Info</fullName>
@@ -358,7 +358,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF Cancellation Contact Info</shortDescription>
-        <value>This authorization will remain in effect until all amounts I owe to BlueWave or an assignee in connection with the community solar agreement have been paid in full or this authorization is cancelled in writing by providing notice of cancellation to BCS Customer Management, LLC, at customercare@bluewavesolar.com or P.O. Box 170718, Boston, MA 02117, or to its designee. Customers may also cancel this authorization online at https://bluewavememberportal.force.com/. I understand and agree that BlueWave must receive written notice of any changes in the account information or termination of this authorization at least three (3) business days prior to the next billing date.</value>
+        <value>This authorization will remain in effect until all amounts I owe to Perch Community Solar Acquisition, LLC, or an assignee in connection with the community solar agreement have been paid in full or this authorization is cancelled in writing by providing notice of cancellation to Perch Community Solar, LLC, or its designee, by email at customercare@perchenergy.com, by mail at P.O. Box 170718, Boston, MA 02117, or online at https://portal.perchenergy.com/customerportal.  I understand and agree that Perch Community Solar, LLC, must receive written notice of any changes in the account information or termination of this authorization at least three (3) business days prior to the next billing date.</value>
     </labels>
     <labels>
         <fullName>SSF_Company_Address_1</fullName>
@@ -382,7 +382,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF Company Logo Path</shortDescription>
-        <value>BluewaveLogo_White.png</value>
+        <value>PerchLogo_White.png</value>
     </labels>
     <labels>
         <fullName>SSF_Company_Name_Customer_Management</fullName>
@@ -398,7 +398,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF Company Privacy Policy Link</shortDescription>
-        <value>https://bluewavesolar.com/privacy-policy</value>
+        <value>https://communitysolar.perchenergy.com/privacy-policy</value>
     </labels>
     <labels>
         <fullName>SSF_Company_Short_Name</fullName>
@@ -406,7 +406,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF Company Shortname</shortDescription>
-        <value>BlueWave</value>
+        <value>Perch</value>
     </labels>
     <labels>
         <fullName>SSF_Company_Website</fullName>
@@ -414,7 +414,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF Company Website</shortDescription>
-        <value>https://bluewavesolar.com</value>
+        <value>https://communitysolar.perchenergy.com</value>
     </labels>
     <labels>
         <fullName>SSF_Company_and_Servicers</fullName>
@@ -422,7 +422,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF Company and Servicers</shortDescription>
-        <value>BlueWave or its servicer(s), or an assignee or its servicer(s)</value>
+        <value>Perch Community Solar Acquisition, LLC, or its servicer(s), or an assignee or such assignee’s servicer(s), including but not limited to Perch Community Solar, LLC</value>
     </labels>
     <labels>
         <fullName>SSF_Customer_Member_Portal_URL</fullName>
@@ -430,7 +430,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF Customer Member Portal URL</shortDescription>
-        <value>https://bluewavememberportal.force.com/</value>
+        <value>https://portal.perchenergy.com/customerportal</value>
     </labels>
     <labels>
         <fullName>SSF_Email_Customer_Care</fullName>
@@ -438,7 +438,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF Email Customer Care</shortDescription>
-        <value>customercare@bluewavesolar.com</value>
+        <value>customercare@perchenergy.com</value>
     </labels>
     <labels>
         <fullName>SSF_Email_Partner_Support</fullName>
@@ -446,7 +446,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF Email Partner Support</shortDescription>
-        <value>partnersupport@bluewavesolar.com</value>
+        <value>partnersupport@perchenergy.com</value>
     </labels>
     <labels>
         <fullName>SSF_Esign_URL</fullName>
@@ -454,7 +454,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF Esign URL</shortDescription>
-        <value>https://bluewavesolar.my.salesforce.com/sfc/p/j0000001q7GO/a/0a000000MkFk/pvivOEszT68vNzlruWfakqXulDdStUlPcwN5oAm70aA</value>
+        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/8b3e7e4e-c305-465b-996e-c0c5829d47ac.pdf</value>
     </labels>
     <labels>
         <fullName>SSF_FAQ1_Answer</fullName>
@@ -478,7 +478,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF FAQ2 - Answer</shortDescription>
-        <value>With a BlueWave Community Solar membership, you save money while supporting the development of solar energy. By signing up, you will receive bill credits that reduce your monthly electric bill and you’ll enjoy peace of mind knowing that support contributes to job growth and cleaner electric generation in your area.</value>
+        <value>With a Perch Community Solar membership, you save money while supporting the development of solar energy. By signing up, you will receive bill credits that reduce your monthly electric bill and you’ll enjoy peace of mind knowing that support contributes to job growth and cleaner electric generation in your area.</value>
     </labels>
     <labels>
         <fullName>SSF_FAQ2_Question</fullName>
@@ -486,7 +486,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF FAQ2 - Question</shortDescription>
-        <value>What are the benefits of a BlueWave Community Solar membership?</value>
+        <value>What are the benefits of a Perch Community Solar membership?</value>
     </labels>
     <labels>
         <fullName>SSF_FAQ3_Answer</fullName>
@@ -518,7 +518,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF FAQ4 - Question</shortDescription>
-        <value>How much can I save with a BlueWave Community Solar membership?</value>
+        <value>How much can I save with a Perch Community Solar membership?</value>
     </labels>
     <labels>
         <fullName>SSF_FAQ5_Answer</fullName>
@@ -542,7 +542,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF FAQ6 - Answer</shortDescription>
-        <value>We are a group of people committed to leaving the planet better than we found it - that’s why we’re a certified B-Corporation on a mission to revolutionize energy with simple, powerful solar solutions. We believe that solar power can improve the quality of life for all, save money, and protect the health of our planet. BlueWave has developed more than 135 MW of projects, providing community solar access to thousands of customers, both through our own solar farms and through farms developed by others.</value>
+        <value>We help people protect the planet by making cleaner energy options more accessible, more affordable and more equitable for all. Perch has managed more than 135 MW of projects, providing community solar access to thousands of customers, both through our own solar farms and through farms developed by others.</value>
     </labels>
     <labels>
         <fullName>SSF_FAQ6_Question</fullName>
@@ -550,7 +550,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF FAQ6 - Question</shortDescription>
-        <value>Who is BlueWave?</value>
+        <value>Who is Perch Energy?</value>
     </labels>
     <labels>
         <fullName>SSF_Facebook_Icon</fullName>
@@ -566,7 +566,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF Facebook Link</shortDescription>
-        <value>https://www.facebook.com/BlueWaveSolar/</value>
+        <value>https://www.facebook.com/perch.energy/</value>
     </labels>
     <labels>
         <fullName>SSF_Inside_Sales_Phone</fullName>
@@ -574,7 +574,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF Inside Sales Phone</shortDescription>
-        <value>6176814119</value>
+        <value>(617) 681-4119</value>
     </labels>
     <labels>
         <fullName>SSF_Linkedin_Icon</fullName>
@@ -590,7 +590,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF Linkedin Link</shortDescription>
-        <value>https://www.linkedin.com/company/bluewavesolar/</value>
+        <value>https://www.linkedin.com/company/perchenergy</value>
     </labels>
     <labels>
         <fullName>SSF_Resource_Center_Link</fullName>
@@ -598,7 +598,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF Resource Center Link</shortDescription>
-        <value>https://bluewavesolar.com/bw-resources/solar-101</value>
+        <value>https://communitysolar.perchenergy.com/bw-resources/solar-101</value>
     </labels>
     <labels>
         <fullName>SSF_Support_Email</fullName>
@@ -606,7 +606,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF Support Email</shortDescription>
-        <value>learnmore@bluewavesolar.com</value>
+        <value>partnersupport@perchenergy.com</value>
     </labels>
     <labels>
         <fullName>SSF_Twitter_Icon</fullName>
@@ -622,7 +622,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF Twitter Link</shortDescription>
-        <value>https://twitter.com/bluewavesolar</value>
+        <value>https://twitter.com</value>
     </labels>
     <labels>
         <fullName>SSF_WaitingRoom1_Text</fullName>
@@ -670,7 +670,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSF_WaitingRoom3_Url</shortDescription>
-        <value>https://www.bluewavesolar.com</value>
+        <value>https://communitysolar.perchenergy.com</value>
     </labels>
     <labels>
         <fullName>Solar_Credits_MN_Example</fullName>
@@ -678,7 +678,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Solar_Credits_MN_Example</shortDescription>
-        <value>http://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/31455307-fcc9-489b-b429-66275f45ee41.png</value>
+        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/f5efdd01-8287-4dc2-bdce-62c840577e56.png</value>
     </labels>
     <labels>
         <fullName>Summary_of_Current_Charges_Example</fullName>
@@ -686,7 +686,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Summary_of_Current_Charges_Example</shortDescription>
-        <value>http://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/0248cd5f-5217-46a4-8d67-90b82bc10c1a.png</value>
+        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/478769b2-0335-4962-8fdb-d7493f5d9a67.png</value>
     </labels>
     <labels>
         <fullName>Twitter_Black_Email_Icon</fullName>
@@ -694,7 +694,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Twitter_Black_Email_Icon</shortDescription>
-        <value>https://bluewavesolar--c.documentforce.com/file-asset-public/AMP_MN_Footer_Twitter?oid=00Dj0000001q7GO</value>
+        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/c6d6d3cd-5a44-45c4-82d8-81fc6954c1ac.png</value>
     </labels>
     <labels>
         <fullName>Twitter_Email_Icon</fullName>
@@ -702,7 +702,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Twitter_Email_Icon</shortDescription>
-        <value>https://bluewavesolar--c.documentforce.com/file-asset-public/icons8twitter_filled?oid=00Dj0000001q7GO</value>
+        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/5b98e7a5-0f7a-441d-abfc-b6b2560b9e74.png</value>
     </labels>
     <labels>
         <fullName>email_anchorsupport</fullName>
@@ -710,7 +710,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Anchor Support Email address</shortDescription>
-        <value>anchorsupport@bluewavesolar.com</value>
+        <value>anchorsupport@perchenergy.com</value>
     </labels>
     <labels>
         <fullName>email_clientservices</fullName>
@@ -718,7 +718,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Client Services Email address</shortDescription>
-        <value>clientservices@bluewavesolar.com</value>
+        <value>clientservices@perchenergy.com</value>
     </labels>
     <labels>
         <fullName>email_customercare</fullName>
@@ -726,7 +726,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Customer Care Email address</shortDescription>
-        <value>customercare@bluewavesolar.com</value>
+        <value>customercare@perchenergy.com</value>
     </labels>
     <labels>
         <fullName>email_fin_ops</fullName>
@@ -742,7 +742,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Partner Support Email Address</shortDescription>
-        <value>partnersupport@bluewavesolar.com</value>
+        <value>partnersupport@perchenergy.com</value>
     </labels>
     <labels>
         <fullName>fbc_AccessLevel</fullName>
@@ -1246,7 +1246,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>phone_clientservices</shortDescription>
-        <value>617.681.4406</value>
+        <value>(617) 681-4406</value>
     </labels>
     <labels>
         <fullName>phone_customercare</fullName>
@@ -1254,7 +1254,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Customer Care Phone</shortDescription>
-        <value>(844) 786-4100</value>
+        <value>(888) 893-3633</value>
     </labels>
     <labels>
         <fullName>phone_insidesales</fullName>
@@ -1262,7 +1262,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>phone_insidesales</shortDescription>
-        <value>617-681-4119</value>
+        <value>(617) 681-4119</value>
     </labels>
     <labels>
         <fullName>phone_partnersupport</fullName>
@@ -1270,7 +1270,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Partner Support Phone</shortDescription>
-        <value>(888) 817-2703</value>
+        <value>(888) 997-2432</value>
     </labels>
     <labels>
         <fullName>phone_partnersupport2</fullName>
@@ -1278,7 +1278,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>phone_partnersupport2</shortDescription>
-        <value>888.997.2432</value>
+        <value>(888) 997-2432</value>
     </labels>
     <labels>
         <fullName>sremailNoSearchResultsMessage</fullName>
