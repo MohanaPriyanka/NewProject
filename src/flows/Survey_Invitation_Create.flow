@@ -214,22 +214,11 @@
                 <stringValue>$Label.Customer_Member_Portal_URL+&quot;Support/survey/runtimeApp.app?invitationId=&quot;+[SurveyInvitation].Id+&quot;&amp;surveyName=&quot;+[SurveyInvitation].Survey.DeveloperName+&quot;&amp;UUID=&quot;+[SurveyInvitation].UUID</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_2_myRule_1_A1_6652282063</name>
+        <name>formula_2_myRule_1_A1_4846082425</name>
         <dataType>String</dataType>
         <expression>{!$Label.Customer_Member_Portal_URL}+&quot;Support/survey/runtimeApp.app?invitationId=&quot;+{!myVariable_current.Id}+&quot;&amp;surveyName=&quot;+{!myVariable_current.Survey.DeveloperName}+&quot;&amp;UUID=&quot;+{!myVariable_current.UUID}</expression>
     </formulas>
-    <formulas>
-        <processMetadataValues>
-            <name>originalFormula</name>
-            <value>
-                <stringValue>&quot;https://bluewavememberportal.force.com/Support/survey/runtimeApp.app?invitationId=&quot;+[SurveyInvitation].Id+&quot;&amp;surveyName=&quot;+[SurveyInvitation].Survey.DeveloperName+&quot;&amp;UUID=&quot;+[SurveyInvitation].UUID</stringValue>
-            </value>
-        </processMetadataValues>
-        <name>formula_5_myWaitEvent_myWait_myRule_4_event_0_SA1_9852547804</name>
-        <dataType>String</dataType>
-        <expression>&quot;https://bluewavememberportal.force.com/Support/survey/runtimeApp.app?invitationId=&quot;+{!myVariable_current.Id}+&quot;&amp;surveyName=&quot;+{!myVariable_current.Survey.DeveloperName}+&quot;&amp;UUID=&quot;+{!myVariable_current.UUID}</expression>
-    </formulas>
-    <interviewLabel>Survey_Invitation_Create-3_InterviewLabel</interviewLabel>
+    <interviewLabel>Survey_Invitation_Create-4_InterviewLabel</interviewLabel>
     <label>Survey Invitation: Create</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -332,7 +321,7 @@
             </processMetadataValues>
             <field>Survey_URL__c</field>
             <value>
-                <elementReference>formula_2_myRule_1_A1_6652282063</elementReference>
+                <elementReference>formula_2_myRule_1_A1_4846082425</elementReference>
             </value>
         </inputAssignments>
         <object>Case</object>
@@ -411,12 +400,12 @@
             <processMetadataValues>
                 <name>rightHandSideType</name>
                 <value>
-                    <stringValue>Formula</stringValue>
+                    <stringValue>Reference</stringValue>
                 </value>
             </processMetadataValues>
             <field>Survey_URL__c</field>
             <value>
-                <elementReference>formula_5_myWaitEvent_myWait_myRule_4_event_0_SA1_9852547804</elementReference>
+                <elementReference>myVariable_current.InvitationLink</elementReference>
             </value>
         </inputAssignments>
         <object>Opportunity</object>
