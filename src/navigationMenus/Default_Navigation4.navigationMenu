@@ -12,7 +12,7 @@
                 <label>Dashboards</label>
                 <position>0</position>
                 <publiclyAvailable>false</publiclyAvailable>
-                <target>/Dashboard</target>
+                <target>/dashboard/Dashboard/Recent</target>
                 <type>InternalLink</type>
             </navigationMenuItem>
             <navigationMenuItem>
