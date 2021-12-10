@@ -13,8 +13,8 @@
       "type" : "component"
     }, {
       "componentAttributes" : {
-        "forgotPasswordLabel" : "Forgot your password?",
-        "forgotPasswordUrl" : "/ForgotPassword",
+        "forgotPasswordLabel" : "",
+        "forgotPasswordUrl" : "",
         "loginButtonLabel" : "Log in",
         "passwordLabel" : "Password",
         "selfRegisterLabel" : "Not a member?",
@@ -24,6 +24,15 @@
       },
       "componentName" : "salesforceIdentity:loginForm2",
       "id" : "41192291-d284-4222-8485-b92abbb64dac",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    }, {
+      "componentAttributes" : {
+        "richTextValue" : "<div style=\"text-align: center;\"><a href=\"./ForgotPassword\">Forgot your password?</a></div>"
+      },
+      "componentName" : "forceCommunity:htmlBlock",
+      "id" : "8f6de5b1-ab41-406d-ac73-a8619b4440f4",
       "renderPriority" : "NEUTRAL",
       "renditionMap" : { },
       "type" : "component"
