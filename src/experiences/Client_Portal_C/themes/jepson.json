@@ -365,7 +365,7 @@
             "componentAttributes" : {
               "navAlignment" : "left",
               "navItemThreshold" : 5,
-              "navigationMenuEditorRefresh" : ""
+              "navigationMenuEditorRefresh" : "Default_Navigation4"
             },
             "componentName" : "forceCommunity:themeNav",
             "id" : "ff878ab6-0e95-4aa3-af92-e78c9578a43c",
@@ -399,7 +399,7 @@
           "ctaBtnOneText" : "Dashboards",
           "ctaBtnOneTextColor" : "rgb(255, 255, 255)",
           "ctaBtnOneTextHoverColor" : "",
-          "ctaBtnOneUrl" : "/clientportal/s/Dashboard",
+          "ctaBtnOneUrl" : "/clientportal/s/dashboard/Dashboard/Recent",
           "ctaBtnRadius" : 25,
           "ctaBtnTwoBgColor" : "rgb(255, 255, 255)",
           "ctaBtnTwoBgHoverColor" : "rgb(56, 125, 222)",
