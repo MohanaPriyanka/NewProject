@@ -47,7 +47,7 @@
     "regions" : [ {
       "components" : [ {
         "componentAttributes" : {
-          "background" : "background: rgb(20,28,51)",
+          "background" : "background: rgb(255,255,255)",
           "backgroundOverlayColor" : "rgba(0, 0, 0, 0.3)",
           "borderBottomColor" : "rgba(0, 0, 0, 0.5)",
           "centerAlignLogo" : false,
@@ -61,7 +61,7 @@
           "dropdownTextHoverColor" : "",
           "headerHeight" : 16,
           "linkActiveBorderColor" : "",
-          "linkColor" : "rgb(255, 255, 255)",
+          "linkColor" : "rgb(16, 39, 39)",
           "linkHoverColor" : "rgb(56, 125, 222)",
           "linkTextShadowColor" : "rgba(255, 255, 255, 0)",
           "logoWidth" : 150,
