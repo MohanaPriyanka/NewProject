@@ -13,8 +13,8 @@
       "type" : "component"
     }, {
       "componentAttributes" : {
-        "forgotPasswordLabel" : "Forgot your password?",
-        "forgotPasswordUrl" : "/ForgotPassword",
+        "forgotPasswordLabel" : "",
+        "forgotPasswordUrl" : "",
         "loginButtonLabel" : "Log in",
         "passwordLabel" : "Password",
         "selfRegisterLabel" : "Not a member?",
@@ -29,12 +29,10 @@
       "type" : "component"
     }, {
       "componentAttributes" : {
-        "headerText" : "",
-        "showHeader" : false,
-        "useCommunityDomainSso" : false
+        "richTextValue" : "<div style=\"text-align: center;\"><a href=\"./ForgotPassword\">Forgot your password?</a></div>"
       },
-      "componentName" : "salesforceIdentity:socialLogin2",
-      "id" : "33762678-db1a-4113-9716-dd7f91c0c324",
+      "componentName" : "forceCommunity:htmlBlock",
+      "id" : "8f6de5b1-ab41-406d-ac73-a8619b4440f4",
       "renderPriority" : "NEUTRAL",
       "renditionMap" : { },
       "type" : "component"

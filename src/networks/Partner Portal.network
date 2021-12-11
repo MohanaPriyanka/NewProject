@@ -9,6 +9,7 @@
     <emailSenderName>BlueWave Solar</emailSenderName>
     <enableCustomVFErrorPageOverrides>false</enableCustomVFErrorPageOverrides>
     <enableDirectMessages>false</enableDirectMessages>
+    <enableExperienceBundleBasedSnaOverrideEnabled>true</enableExperienceBundleBasedSnaOverrideEnabled>
     <enableGuestChatter>false</enableGuestChatter>
     <enableGuestFileAccess>true</enableGuestFileAccess>
     <enableGuestMemberVisibility>false</enableGuestMemberVisibility>
@@ -26,7 +27,7 @@
     <enableUpDownVote>false</enableUpDownVote>
     <forgotPasswordTemplate>CSPartnerEmails/Partner_Portal_Password_Reset</forgotPasswordTemplate>
     <gatherCustomerSentimentData>false</gatherCustomerSentimentData>
-    <logoutUrl>https://bluewavememberportal.force.com/partnerportal</logoutUrl>
+    <logoutUrl>https://portal.perchenergy.com/partnerportal</logoutUrl>
     <networkMemberGroups>
         <profile>partner portal community user</profile>
         <profile>admin</profile>

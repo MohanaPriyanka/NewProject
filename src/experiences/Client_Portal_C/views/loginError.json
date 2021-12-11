@@ -10,7 +10,7 @@
   }, {
     "components" : [ {
       "componentAttributes" : {
-        "richTextValue" : "<p style=\"text-align: center;\"><b style=\"color: rgb(255, 255, 255); font-size: 28px;\">Whoops!</b></p><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><b style=\"color: rgb(255, 255, 255); font-size: 20px;\">Looks like we made a mistake...There's nothing here. </b></p>"
+        "richTextValue" : "<p style=\"text-align: center;\"><b style=\"font-size: 28px; color: rgb(0, 0, 0);\">Whoops!</b></p><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\"><b style=\"font-size: 20px; color: rgb(0, 0, 0);\">Looks like we made a mistake...There's nothing here. </b></p>"
       },
       "componentName" : "forceCommunity:richTextInline",
       "id" : "c1018d62-1068-413a-87e0-85313ca5bcd0",

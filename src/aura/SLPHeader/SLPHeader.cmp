@@ -6,7 +6,7 @@
   <div aura:id="header" class="header">
     <a href="{!v.link}">
       <div class="w3-container slds-align--absolute-center">
-        <img src="{!$Resource.NewBlueWaveWhite}" class="logo fadeIn" />
+        <img src="{!$Resource.PerchLogoWhite}" class="logo fadeIn" />
       </div>
     </a>
   </div>

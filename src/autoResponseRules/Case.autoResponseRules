@@ -20,8 +20,8 @@
                 <value>Anchor Support</value>
             </criteriaItems>
             <notifyCcRecipients>true</notifyCcRecipients>
-            <replyToEmail>noreply@bluewavesolar.com</replyToEmail>
-            <senderEmail>noreply@bluewavesolar.com</senderEmail>
+            <replyToEmail>noreply@perchenergy.com</replyToEmail>
+            <senderEmail>noreply@perchenergy.com</senderEmail>
             <senderName>Anchor Support</senderName>
             <template>Customer_Care_Cases/Anchor_Support_Case_Open</template>
         </ruleEntry>
@@ -37,9 +37,9 @@
                 <value>no-reply@mail.trulywireless.com</value>
             </criteriaItems>
             <notifyCcRecipients>false</notifyCcRecipients>
-            <replyToEmail>noreply@bluewavesolar.com</replyToEmail>
-            <senderEmail>noreply@bluewavesolar.com</senderEmail>
-            <senderName>BlueWave Customer Support</senderName>
+            <replyToEmail>noreply@perchenergy.com</replyToEmail>
+            <senderEmail>noreply@perchenergy.com</senderEmail>
+            <senderName>Perch Customer Care</senderName>
             <template>Customer_Care_Cases/Customer_Care_Case_Open</template>
         </ruleEntry>
         <ruleEntry>
@@ -54,9 +54,9 @@
                 <value>no-reply@mail.trulywireless.com</value>
             </criteriaItems>
             <notifyCcRecipients>false</notifyCcRecipients>
-            <replyToEmail>noreply@bluewavesolar.com</replyToEmail>
-            <senderEmail>noreply@bluewavesolar.com</senderEmail>
-            <senderName>BlueWave Partner Support</senderName>
+            <replyToEmail>noreply@perchenergy.com</replyToEmail>
+            <senderEmail>noreply@perchenergy.com</senderEmail>
+            <senderName>Perch Partner Support</senderName>
             <template>Customer_Care_Cases/Partner_Support_Case_Open</template>
         </ruleEntry>
     </autoResponseRule>

@@ -7,7 +7,7 @@
     "ActionColor" : "#0E63AC",
     "BorderColor" : "#D4D4D4",
     "CardBackgroundColor" : "rgba(255, 255, 255, 0)",
-    "CompanyLogo" : "/file-asset/BlueLogo5?v=1&height=300&width=300",
+    "CompanyLogo" : "/file-asset/BlueLogo5?v=1&amp;height=300&amp;width=300",
     "DetailTextColor" : "#5A5A5A",
     "ErrorFontColor" : "#ff9e9e",
     "HeaderBackgroundColor" : "#FFFFFF",
