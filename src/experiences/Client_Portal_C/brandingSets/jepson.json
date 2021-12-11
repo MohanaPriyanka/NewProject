@@ -7,7 +7,7 @@
     "ActionColor" : "rgb(56, 125, 222)",
     "BorderColor" : "rgb(20, 28, 51)",
     "CardBackgroundColor" : "rgba(255, 255, 255, 0)",
-    "CompanyLogo" : "/file-asset/bluewavebluelogo?v=1&height=300&width=300",
+    "CompanyLogo" : "/file-asset/bluewavebluelogo?v=1&amp;height=300&amp;width=300",
     "DetailTextColor" : "rgb(20, 28, 51)",
     "ErrorFontColor" : "#ff9e9e",
     "HeaderFonts" : "Montserrat",

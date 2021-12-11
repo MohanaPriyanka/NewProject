@@ -27,16 +27,6 @@
       "renderPriority" : "NEUTRAL",
       "renditionMap" : { },
       "type" : "component"
-    }, {
-      "componentAttributes" : {
-        "headerText" : "",
-        "showHeader" : false
-      },
-      "componentName" : "salesforceIdentity:socialLogin2",
-      "id" : "bee8c763-0c26-490f-afb1-6f07b75b098c",
-      "renderPriority" : "NEUTRAL",
-      "renditionMap" : { },
-      "type" : "component"
     } ],
     "id" : "6712238e-0b6b-47d5-8c27-178a2d1da4ad",
     "regionName" : "content",
