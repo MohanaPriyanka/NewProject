@@ -19,7 +19,7 @@
             <field>ContactId</field>
             <type>contactLookup</type>
         </recipients>
-        <senderAddress>customercare@bluewavesolar.com</senderAddress>
+        <senderAddress>customercare@perchenergy.com</senderAddress>
         <senderType>OrgWideEmailAddress</senderType>
         <template>Customer_Care_Cases/Customer_Care_Case_CloseII</template>
     </alerts>
@@ -31,7 +31,7 @@
             <field>ContactId</field>
             <type>contactLookup</type>
         </recipients>
-        <senderAddress>customercare@bluewavesolar.com</senderAddress>
+        <senderAddress>customercare@perchenergy.com</senderAddress>
         <senderType>OrgWideEmailAddress</senderType>
         <template>Customer_Care_Cases/Customer_Care_Case_Open_Phone</template>
     </alerts>
@@ -43,7 +43,7 @@
             <field>ContactEmail</field>
             <type>email</type>
         </recipients>
-        <senderAddress>productsupport@bluewavesolar.com</senderAddress>
+        <senderAddress>cssupport@perchenergy.com</senderAddress>
         <senderType>OrgWideEmailAddress</senderType>
         <template>Product_Team/New_Product_Support_Case</template>
     </alerts>
@@ -55,7 +55,7 @@
             <field>SuppliedEmail</field>
             <type>email</type>
         </recipients>
-        <senderAddress>partnersupport@bluewavesolar.com</senderAddress>
+        <senderAddress>partnersupport@perchenergy.com</senderAddress>
         <senderType>OrgWideEmailAddress</senderType>
         <template>Customer_Care_Cases/Partner_Care_Case_CloseII</template>
     </alerts>

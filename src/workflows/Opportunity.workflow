@@ -2,7 +2,7 @@
 <Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
     <alerts>
         <fullName>CS_Partner_Contract_Complete</fullName>
-        <description>CS Partner - Contract Complete - sent via flow</description>
+        <description>CS Partner - Contract Complete - sent via the Portal_Activation flow</description>
         <protected>false</protected>
         <recipients>
             <field>Partner_Email__c</field>
@@ -12,7 +12,7 @@
             <field>Salesperson_Email_2__c</field>
             <type>email</type>
         </recipients>
-        <senderAddress>partnersupport@bluewavesolar.com</senderAddress>
+        <senderAddress>partnersupport@perchenergy.com</senderAddress>
         <senderType>OrgWideEmailAddress</senderType>
         <template>CSPartnerEmails/Cust_Application_Finalized</template>
     </alerts>
