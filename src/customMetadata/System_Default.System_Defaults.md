@@ -24,7 +24,7 @@
     </values>
     <values>
         <field>Default_Client_Brand_Key__c</field>
-        <value xsi:type="xsd:string">BluewaveLogo</value>
+        <value xsi:type="xsd:string">Perch</value>
     </values>
     <values>
         <field>Default_Copado_Project_ID__c</field>
