@@ -369,7 +369,7 @@
         String accountWithTwoOppsJson = '{"attributes":{"type":"Account","url":"/services/data/v47.0/sobjects/Account/001S000000yKIPXIA4"},' +
             '"Id":"001S000000yKIPXIA4","Name":"Ritchie Ho 20","BillingStreet":"1 Main","BillingCity":"Boston",' +
             '"BillingState":"Massachusetts","BillingStateCode":"MA","BillingPostalCode":"12312",' +
-            '"BillingCountry":"United States","Send_Bills_Contact__c":"003S0000016Y1znIAC","Client_Brand_Key__c":"BluewaveLogo",' +
+            '"BillingCountry":"United States","Send_Bills_Contact__c":"003S0000016Y1znIAC","Client_Brand_Key__c":"Perch",' +
             '"Count_of_Large_Offtake_Opps__c":0,"Zuora_Id__c":"2c92c0f86e5e38b0016e5fc9634e0f22",' +
             '"Opportunities":{"totalSize":2,"done":true,"records":[' +
             '{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/006S000000CwOfgIAF"},' +
@@ -403,7 +403,7 @@
         accountWithTwoOppsJson = '{"attributes":{"type":"Account","url":"/services/data/v47.0/sobjects/Account/001S000000yKIPXIA4"},' +
             '"Id":"001S000000yKIPXIA4","Name":"Ritchie Ho 20","BillingStreet":"1 Main","BillingCity":"Boston",' +
             '"BillingState":"Massachusetts","BillingStateCode":"MA","BillingPostalCode":"12312",' +
-            '"BillingCountry":"United States","Send_Bills_Contact__c":"003S0000016Y1znIAC","Client_Brand_Key__c":"BluewaveLogo",' +
+            '"BillingCountry":"United States","Send_Bills_Contact__c":"003S0000016Y1znIAC","Client_Brand_Key__c":"Perch",' +
             '"Count_of_Large_Offtake_Opps__c":1,"Zuora_Id__c":"2c92c0f86e5e38b0016e5fc9634e0f22",' +
             '"Opportunities":{"totalSize":2,"done":true,"records":[' +
             '{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/006S000000CwOfgIAF"},' +
@@ -601,7 +601,7 @@
                         json = '[{"attributes":{"type":"Account","url":"/services/data/v47.0/sobjects/Account/001S000000yKIPXIA4"},' +
                             '"Id":"001S000000yKIPXIA4","Name":"Ritchie Ho 20","BillingStreet":"1 Main","BillingCity":"Boston",' +
                             '"BillingState":"Massachusetts","BillingStateCode":"MA","BillingPostalCode":"12312",' +
-                            '"BillingCountry":"United States","Send_Bills_Contact__c":"003S0000016Y1znIAC","Client_Brand_Key__c":"BluewaveLogo",' +
+                            '"BillingCountry":"United States","Send_Bills_Contact__c":"003S0000016Y1znIAC","Client_Brand_Key__c":"Perch",' +
                             '"Count_of_Large_Offtake_Opps__c":0,"Zuora_Id__c":"2c92c0f86e5e38b0016e5fc9634e0f22",' +
                             '"Zuora__Invoices__r":{"totalSize":2,"done":true,"records":[' +
                             '{"attributes":{"type":"Zuora__ZInvoice__c","url":"/services/data/v47.0/sobjects/Zuora__ZInvoice__c/a7KS0000000E8g8MAC"},' +
@@ -628,7 +628,7 @@
                         json = '[{"attributes":{"type":"Account","url":"/services/data/v47.0/sobjects/Account/001S000000000FIRST"},' +
                             '"Id":"001S000000000FIRST","Name":"Ritchie Ho 20","BillingStreet":"1 Main","BillingCity":"Boston",' +
                             '"BillingState":"Massachusetts","BillingStateCode":"MA","BillingPostalCode":"12312",' +
-                            '"BillingCountry":"United States","Send_Bills_Contact__c":"003S0000016Y1znIAC","Client_Brand_Key__c":"BluewaveLogo",' +
+                            '"BillingCountry":"United States","Send_Bills_Contact__c":"003S0000016Y1znIAC","Client_Brand_Key__c":"Perch",' +
                             '"Count_of_Large_Offtake_Opps__c":0,"Zuora_Id__c":"2c92c0f86e5e38b0016e5fc9634e0f22",' +
                             '"Zuora__Invoices__r":{"totalSize":1,"done":true,"records":[' +
                             '{"attributes":{"type":"Zuora__ZInvoice__c","url":"/services/data/v47.0/sobjects/Zuora__ZInvoice__c/a7KS0000000E8g8MAC"},' +
@@ -661,29 +661,29 @@
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
                 when 'getInsertMap' {
-                    String insertMapJson = '{"true~BluewaveLogo~SMART - Community Solar~a1MS0000008BldqMAC":' +
+                    String insertMapJson = '{"true~Perch~SMART - Community Solar~a1MS0000008BldqMAC":' +
                         '{"attributes":{"type":"LetterStream_Insert__c","url":"/services/data/v47.0/sobjects/LetterStream_Insert__c/a96S00000008qZCIAY"},' +
-                        '"Id":"a96S00000008qZCIAY","Anchor__c":true,"Client_Brand_Key__c":"BluewaveLogo","Product_Program__c":"SMART - Community Solar",' +
+                        '"Id":"a96S00000008qZCIAY","Anchor__c":true,"Client_Brand_Key__c":"Perch","Product_Program__c":"SMART - Community Solar",' +
                         '"Utility__c":"a1MS0000008BldqMAC","Active__c":true},' +
                         '"true~AmpRed~SREC - Community Solar~a1MS0000008BldqMAC":' +
                         '{"attributes":{"type":"LetterStream_Insert__c","url":"/services/data/v47.0/sobjects/LetterStream_Insert__c/a96S00000008qYsIAI"},' +
                         '"Id":"a96S00000008qYsIAI","Anchor__c":true,"Client_Brand_Key__c":"AmpRed","Product_Program__c":"SREC - Community Solar",' +
                         '"Utility__c":"a1MS0000008BldqMAC","Active__c":true},' +
-                        '"false~BluewaveLogo~SREC - Community Solar~a1MS0000008BldqMAC":' +
+                        '"false~Perch~SREC - Community Solar~a1MS0000008BldqMAC":' +
                         '{"attributes":{"type":"LetterStream_Insert__c","url":"/services/data/v47.0/sobjects/LetterStream_Insert__c/a96S00000008qYqIAI"},' +
-                        '"Id":"a96S00000008qYqIAI","Anchor__c":false,"Client_Brand_Key__c":"BluewaveLogo","Product_Program__c":"SREC - Community Solar",' +
+                        '"Id":"a96S00000008qYqIAI","Anchor__c":false,"Client_Brand_Key__c":"Perch","Product_Program__c":"SREC - Community Solar",' +
                         '"Utility__c":"a1MS0000008BldqMAC","Active__c":true},' +
-                        '"false~BluewaveLogo~SMART - Community Solar~a1MS0000008BldqMAC":' +
+                        '"false~Perch~SMART - Community Solar~a1MS0000008BldqMAC":' +
                         '{"attributes":{"type":"LetterStream_Insert__c","url":"/services/data/v47.0/sobjects/LetterStream_Insert__c/a96S00000008qYpIAI"},' +
-                        '"Id":"a96S00000008qYpIAI","Anchor__c":false,"Client_Brand_Key__c":"BluewaveLogo","Product_Program__c":"SMART - Community Solar",' +
+                        '"Id":"a96S00000008qYpIAI","Anchor__c":false,"Client_Brand_Key__c":"Perch","Product_Program__c":"SMART - Community Solar",' +
                         '"Utility__c":"a1MS0000008BldqMAC","Active__c":true},' +
-                        '"false~BluewaveLogo~SREC - Community Solar~a1MS0000008BldpMAC":' +
+                        '"false~Perch~SREC - Community Solar~a1MS0000008BldpMAC":' +
                         '{"attributes":{"type":"LetterStream_Insert__c","url":"/services/data/v47.0/sobjects/LetterStream_Insert__c/a96S00000008qYoIAI"},' +
-                        '"Id":"a96S00000008qYoIAI","Anchor__c":false,"Client_Brand_Key__c":"BluewaveLogo","Product_Program__c":"SREC - Community Solar",' +
+                        '"Id":"a96S00000008qYoIAI","Anchor__c":false,"Client_Brand_Key__c":"Perch","Product_Program__c":"SREC - Community Solar",' +
                         '"Utility__c":"a1MS0000008BldpMAC","Active__c":true},' +
-                        '"false~BluewaveLogo~SMART - Community Solar~a1MS0000008BldpMAC":' +
+                        '"false~Perch~SMART - Community Solar~a1MS0000008BldpMAC":' +
                         '{"attributes":{"type":"LetterStream_Insert__c","url":"/services/data/v47.0/sobjects/LetterStream_Insert__c/a96S00000008qYnIAI"},' +
-                        '"Id":"a96S00000008qYnIAI","Anchor__c":false,"Client_Brand_Key__c":"BluewaveLogo","Product_Program__c":"SMART - Community Solar",' +
+                        '"Id":"a96S00000008qYnIAI","Anchor__c":false,"Client_Brand_Key__c":"Perch","Product_Program__c":"SMART - Community Solar",' +
                         '"Utility__c":"a1MS0000008BldpMAC","Active__c":true}}';
                     Map<String, LetterStream_Insert__c> insertMap = (Map<String, LetterStream_Insert__c>) JSON.deserialize(insertMapJson, Map<String, LetterStream_Insert__c>.class);
                     return insertMap;
