@@ -20,7 +20,7 @@ public with sharing class ContentMailerServiceTest {
         // Not really needed, but the invoice insert will log an error if there's no corresponding letterstream insert
         // for it
         LetterStream_Insert__c letterStreamInsert = new LetterStream_Insert__c(
-            Client_Brand_Key__c = 'BluewaveLogo'
+            Client_Brand_Key__c = 'Perch'
         );
         insert letterStreamInsert;
 
