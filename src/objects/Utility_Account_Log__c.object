@@ -748,7 +748,15 @@ Used for customer sizing on SMART contracts.</inlineHelpText>
         <type>Text</type>
     </nameField>
     <pluralLabel>Utility Account Logs</pluralLabel>
-    <searchLayouts />
+    <searchLayouts>
+        <excludedStandardButtons>OpenListInQuip</excludedStandardButtons>
+        <excludedStandardButtons>NewFromDocument</excludedStandardButtons>
+        <excludedStandardButtons>IsotopeSubscription</excludedStandardButtons>
+        <excludedStandardButtons>ChangeOwner</excludedStandardButtons>
+        <excludedStandardButtons>MassChangeOwner</excludedStandardButtons>
+        <excludedStandardButtons>Accept</excludedStandardButtons>
+        <massQuickActions>Request_Utility_Data</massQuickActions>
+    </searchLayouts>
     <sharingModel>Read</sharingModel>
     <sharingReasons>
         <fullName>Guest_User_Access__c</fullName>
