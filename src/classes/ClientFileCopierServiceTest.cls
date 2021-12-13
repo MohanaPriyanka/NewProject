@@ -225,6 +225,35 @@ public with sharing class ClientFileCopierServiceTest {
         System.assertEquals(5, afterFiles.size(), '5 files should have been copied for Allocation Schedule client file download');
     }
 
+    @IsTest
+    public static void testAgreementCopyForAllocationSchedule() {
+        testForAllocationSchedule = true;
+        Id allocationScheduleId = setupAllocationScheduleData();
+
+        Test.startTest();
+        useMocks(true);
+        ClientFileCopierService.CloneInputs inputs = new ClientFileCopierService.CloneInputs();
+        inputs.parentSobjectId = allocationScheduleId;
+        inputs.documentType = 'Customer Agreement';
+        inputs.deleteExisting = false;
+        ClientFileCopierService.findAndCloneDocuments(new List<ClientFileCopierService.CloneInputs>{inputs});
+        Test.stopTest();
+
+        List<Supporting_Document_Folder__c> afterFolders = [
+            SELECT Id
+            FROM Supporting_Document_Folder__c
+            WHERE Allocation_Schedule__c =: allocationScheduleId
+        ];
+        System.assertEquals(1, afterFolders.size());
+
+        List<ContentDocumentLink> afterFiles = [
+            SELECT Id, ContentDocumentId
+            FROM ContentDocumentLink
+            WHERE LinkedEntityId = :afterFolders[0].Id
+        ];
+        System.assertEquals(1, afterFiles.size(), 'The mock should have included one Terms and Conditions file on a parent contract to copy');
+    }
+
     private static void useMocks(Boolean returnContractDocs) {
         ClientFileCopierService.contractSelector = (ContractSelector) Test.createStub(ContractSelector.class, new MockContractSelector());
         ClientFileCopierService.oppSelector = (OpportunitiesSelector) Test.createStub(OpportunitiesSelector.class, new MockOppSelector());
@@ -309,7 +338,8 @@ public with sharing class ClientFileCopierServiceTest {
             String docLinksForAllocationSchedule = '[' +
                 '{"Id":"06A2f000004rUrQEAU","LinkedEntityId":"8000a0000012jqUAAQ","ContentDocumentId":"0692f000001g9v4AAA","ContentDocument":{"LatestPublishedVersionId":"0682f000001giuFAAQ","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Disclosure Form"}}},' +
                 '{"Id":"06A2f000004rUqXCCC","LinkedEntityId":"8000a0000012igyAAA","ContentDocumentId":"0692f000001g9uuAAA","ContentDocument":{"LatestPublishedVersionId":"0682f000001giuFAAQ","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Disclosure Form"}}},' +
-                '{"Id":"06A2f000004rUqXDDD","LinkedEntityId":"8000a0000012nz3AAA","ContentDocumentId":"0692f000001g9uxDDD","ContentDocument":{"LatestPublishedVersionId":"0682f000001giuFAAQ","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Disclosure Form"}}}' +
+                '{"Id":"06A2f000004rUqXDDD","LinkedEntityId":"8000a0000012nz3AAA","ContentDocumentId":"0692f000001g9uxDDD","ContentDocument":{"LatestPublishedVersionId":"0682f000001giuFAAQ","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Disclosure Form"}}},' +
+                '{"Id":"06A2f000004rUqXEEE","LinkedEntityId":"8000a0000012nz3AAC","ContentDocumentId":"0692f000001g9uxEEE","ContentDocument":{"LatestPublishedVersionId":"0682f000001giuFAAQ","LatestPublishedVersion":{"Signing_Status__c":"Countersigned","Title":"Terms and Conditions"}}}' +
             ']';
             if (methodCall.stubbedMethodName == 'selectByLinkedEntitiesWithoutData' && testForAssignmentAgreement) {
                 return (List<ContentDocumentLink>) JSON.deserialize(docLinksForAssignmentAgreement, List<ContentDocumentLink>.class);
@@ -327,7 +357,8 @@ public with sharing class ClientFileCopierServiceTest {
                 '{"Id":"a545b000000VHFtAAO","Utility_Account_Subscription__r":{"Opportunity__r":{"ContractId":"8000a0000012igyAAA"}}},'+
                 '{"Id":"a545b000000VHFuAAO","Utility_Account_Subscription__r":{"Opportunity__r":{"ContractId":"8000a0000012igyAAA"}}},'+
                 '{"Id":"a545b000000VHFvAAO","Utility_Account_Subscription__r":{"Opportunity__r":{"ContractId":"8000a0000012nz3AAA"}}},'+
-                '{"Id":"a545b000000VHFwAAO","Utility_Account_Subscription__r":{"Opportunity__r":{"ContractId":"8000a0000012nz3AAA"}}}'+
+                '{"Id":"a545b000000VHFwAAO","Utility_Account_Subscription__r":{"Opportunity__r":{"ContractId":"8000a0000012nz3AAA"}}},'+
+                '{"Id":"a545b000000VHFwAAT","Utility_Account_Subscription__r":{"Opportunity__r":{"ContractId":"8000a0000012nz3AAB","Contract":{"Parent_Contract__c":"8007j000000cl80AAC"}}}}'+
             ']';
             switch on methodCall.stubbedMethodName {
                 when 'getALSSforClientFileDownload' {
@@ -363,17 +394,15 @@ public with sharing class ClientFileCopierServiceTest {
                 '{"Id":"a1d2f000000FZqDAAW","Name":"0002302","Opportunity__c":"8002f000000GebbAAC","Opportunity__r":{"Name":"Test 2a","Personal_Credit_Report2__c":"a0Fj000000EZZV1EAL","ContractId":"8000a0000012igyAAA","Shared_Solar_System__r":{"Name":"Project E Dog St"},"Contract":{"Id":"8000a0000012igyAAA","Assignment_Agreement__c":"8002f000000GgXJAA0"}},"Utility_Account_Log__r":{"Name":"0002302"}},' +
                 '{"Id":"a1d2f000000FYqEAAW","Name":"0002303","Opportunity__c":"0062f00000EllRwAAJ","Opportunity__r":{"Name":"Test 2b","Personal_Credit_Report2__c":"a0Fj000000EYyV2EAL","ContractId":"8000a0000012igyAAA","Shared_Solar_System__r":{"Name":"Project E Dog St"},"Contract":{"Id":"8000a0000012igyAAA","Assignment_Agreement__c":"8002f000000GgXJAA0"}},"Utility_Account_Log__r":{"Name":"0002303"}},' +
                 '{"Id":"a1d2f000000FYqFAAW","Name":"0002304","Opportunity__c":"0062f00000EllRwAAJ","Opportunity__r":{"Name":"Test 3a","Personal_Credit_Report2__c":"a0Fj000000EYyV2EAL","ContractId":"8000a0000012nz3AAA","Shared_Solar_System__r":{"Name":"Project D Dee St"},"Contract":{"Id":"8000a0000012nz3AAA","Assignment_Agreement__c":"8002f000000GgXJAA0"}},"Utility_Account_Log__r":{"Name":"0002304"}},' +
-                '{"Id":"a1d2f000000FYqGAAW","Name":"0002305","Opportunity__c":"0062f00000EllRxAAJ","Opportunity__r":{"Name":"Test 3b","Personal_Credit_Report2__c":"a0Fj000000EYyV2EAL","ContractId":"8000a0000012nz3AAA","Shared_Solar_System__r":{"Name":"Project D Dee St"},"Contract":{"Id":"8000a0000012nz3AAA","Assignment_Agreement__c":"8002f000000GgXJAA0"}},"Utility_Account_Log__r":{"Name":"0002305"}}' +
+                '{"Id":"a1d2f000000FYqGAAW","Name":"0002305","Opportunity__c":"0062f00000EllRxAAJ","Opportunity__r":{"Name":"Test 3b","Personal_Credit_Report2__c":"a0Fj000000EYyV2EAL","ContractId":"8000a0000012nz3AAA","Shared_Solar_System__r":{"Name":"Project D Dee St"},"Contract":{"Id":"8000a0000012nz3AAA","Assignment_Agreement__c":"8002f000000GgXJAA0"}},"Utility_Account_Log__r":{"Name":"0002305"}},' +
+                '{"Id":"a1d2f000000FYqGAAX","Name":"0002306","Opportunity__c":"0062f00000EllRxAAK","Opportunity__r":{"Name":"Test 3c","ContractId":"8000a0000012nz3AAB","Shared_Solar_System__r":{"Name":"Project D Dee St"},"Contract":{"Id":"8000a0000012nz3AAB","Parent_Contract__c":"8000a0000012nz3AAC"}},"Utility_Account_Log__r":{"Name":"0002305"}}' +
             ']';
-            switch on methodCall.stubbedMethodName {
-                when 'getUASesForAssignmentAgreement' {
-                    return (List<Utility_Account_Subscription__c>) JSON.deserialize(uasesForAssignmentAgreement, List<Utility_Account_Subscription__c>.class);
-                }
-                when 'getNonAnchorUASesForAllocationSchedule' {
-                    return (List<Utility_Account_Subscription__c>) JSON.deserialize(uasesForAllocationSchedule, List<Utility_Account_Subscription__c>.class);
-                }
+            Id parentSObjectId = (Id) methodCall.listOfArgs[0];
+            if (parentSObjectId.getSobjectType() == Contract.SObjectType) {
+                return (List<Utility_Account_Subscription__c>) JSON.deserialize(uasesForAssignmentAgreement, List<Utility_Account_Subscription__c>.class);
+            } else {
+                return (List<Utility_Account_Subscription__c>) JSON.deserialize(uasesForAllocationSchedule, List<Utility_Account_Subscription__c>.class);
             }
-            return null;
         }
     }
 
