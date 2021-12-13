@@ -3077,11 +3077,11 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
             <values>
                 <fullName>BluewaveLogo</fullName>
-                <default>true</default>
+                <default>false</default>
             </values>
             <values>
                 <fullName>Perch</fullName>
-                <default>false</default>
+                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -4083,11 +4083,11 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
             <values>
                 <fullName>BluewaveLogo</fullName>
-                <default>true</default>
+                <default>false</default>
             </values>
             <values>
                 <fullName>Perch</fullName>
-                <default>false</default>
+                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -4573,11 +4573,11 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
             <values>
                 <fullName>BluewaveLogo</fullName>
-                <default>true</default>
+                <default>false</default>
             </values>
             <values>
                 <fullName>Perch</fullName>
-                <default>false</default>
+                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -5566,7 +5566,7 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
             <values>
                 <fullName>BluewaveLogo</fullName>
-                <default>true</default>
+                <default>false</default>
             </values>
             <values>
                 <fullName>DSD</fullName>
@@ -5574,7 +5574,7 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
             <values>
                 <fullName>Perch</fullName>
-                <default>false</default>
+                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -6181,11 +6181,11 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
             <values>
                 <fullName>BluewaveLogo</fullName>
-                <default>true</default>
+                <default>false</default>
             </values>
             <values>
                 <fullName>Perch</fullName>
-                <default>false</default>
+                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -7414,7 +7414,7 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
             <values>
                 <fullName>BluewaveLogo</fullName>
-                <default>true</default>
+                <default>false</default>
             </values>
             <values>
                 <fullName>DSD</fullName>
@@ -7422,7 +7422,7 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
             <values>
                 <fullName>Perch</fullName>
-                <default>false</default>
+                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -8542,7 +8542,7 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
             <values>
                 <fullName>BluewaveLogo</fullName>
-                <default>true</default>
+                <default>false</default>
             </values>
             <values>
                 <fullName>DSD</fullName>
@@ -8550,7 +8550,7 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
             <values>
                 <fullName>Perch</fullName>
-                <default>false</default>
+                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -9091,11 +9091,11 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
             <values>
                 <fullName>BluewaveLogo</fullName>
-                <default>true</default>
+                <default>false</default>
             </values>
             <values>
                 <fullName>Perch</fullName>
-                <default>false</default>
+                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
