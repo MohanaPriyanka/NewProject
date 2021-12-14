@@ -1,6 +1,6 @@
 /**
  * @description Created by Lindsay Holmes (Gears CRM) on 5/15/2020. Service for the Contract object.
- * Tested By: CustomerContractServiceTest, CSLeadsRESTControllerV2Test
+ * Tested By: CustomerContractServiceTest, CSLeadsRESTControllerV2Test, ClientFileCopierServiceTest
  */
 public without sharing class CustomerContractService {
 
@@ -73,5 +73,19 @@ public without sharing class CustomerContractService {
             }
         }
         Util.updateAndLog(contractsToUpdate, 'LeadService', 'updateRelatedContracts');
+    }
+
+    public static Id locateCustomerAgreementContract(Utility_Account_Subscription__c uas) {
+        if (uas.Opportunity__r.Contract.Parent_Contract__c != null) {
+            return uas.Opportunity__r.Contract.Parent_Contract__c;
+        }
+        return uas.Opportunity__r.ContractId;
+    }
+
+    public static Id locateCustomerAgreementContract(Contract contract) {
+        if (contract.Parent_Contract__c != null) {
+            return contract.Parent_Contract__c;
+        }
+        return contract.Id;
     }
 }

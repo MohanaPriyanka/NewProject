@@ -208,6 +208,14 @@ public without sharing class UASSelector {
         return oppToUASSummaryMap;
     }
 
+    public List<Utility_Account_Subscription__c> getUASesForClientFileCopy(Id parentSObjectId) {
+        if (parentSObjectId.getSobjectType() == Contract.SObjectType) {
+            return getUASesForAssignmentAgreement(parentSObjectId);
+        } else {
+            return getNonAnchorUASesForAllocationSchedule(parentSObjectId);
+        }
+    }
+    
     public List<Utility_Account_Subscription__c> getUASesForAssignmentAgreement(Id assignmentAgreementId) {
         return [
             SELECT Id,

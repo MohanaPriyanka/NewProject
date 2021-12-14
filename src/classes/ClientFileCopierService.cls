@@ -30,7 +30,7 @@ public without sharing class ClientFileCopierService {
     public Boolean deleteExistingFiles;
     public Id parentSobjectId;
     public Id supportingDocumentFolderId;
-    public Map<Id,ContentDocumentLink> documentsByLinkedEntity = new Map<Id,ContentDocumentLink>();
+    public Map<Id, ContentDocumentLink> documentsByLinkedEntity = new Map<Id, ContentDocumentLink>();
     public List<FileToCopy> filesToCopy = new List<FileToCopy>();
     public List<Utility_Account_Subscription__c> subscriptions;
     public SObjectType parentSobjectType;
@@ -51,13 +51,15 @@ public without sharing class ClientFileCopierService {
         service.deleteExistingFolderAndAttachments();
         service.createSupportingDocumentsFolder();
         service.retrieveDocumentLinks();
-        service.retrieveSubscriptionData();
+        service.subscriptions = uasSelector.getUASesForClientFileCopy(service.parentSobjectId);
         service.constructNewFileMetadata();
 
         Id batchJobId;
         batchJobId = service.startBatchCloneJob();
         Logger.flushLogs();
-        return new List<Id>{batchJobId};
+        return new List<Id>{
+            batchJobId
+        };
     }
 
     public class CloneInputs {
@@ -124,20 +126,12 @@ public without sharing class ClientFileCopierService {
             getRecordsRelatedToAssignmentAgreement() :
             getRecordsRelatedToAllocationSchedule();
 
-        try {
-            docLinks = contentDocumentSelector.selectByLinkedEntitiesWithoutData(relatedRecordIds);
-        } catch (QueryException e) {
-            String errorMessage;
-            if (e.getMessage().contains('Implementation restriction: ContentDocumentLink')) {
-                errorMessage = 'Could not find any related records with attached client files!';
-            }
-            throw new Util.BWException(errorMessage != null ? errorMessage : e.getMessage());
-        }
+        docLinks = contentDocumentSelector.selectByLinkedEntitiesWithoutData(relatedRecordIds);
 
         for (ContentDocumentLink doc : docLinks) {
             String documentName = doc.ContentDocument.LatestPublishedVersion.Title;
             Boolean countersigned = doc.ContentDocument.LatestPublishedVersion.Signing_Status__c == 'Countersigned';
-            Boolean customerAgreement = requestedDocumentType == CUSTOMER_AGREEMENT && documentName.contains('Agreement');
+            Boolean customerAgreement = requestedDocumentType == CUSTOMER_AGREEMENT && (documentName.contains('Agreement') || documentName.contains('Terms and Conditions'));
             Boolean disclosure = requestedDocumentType == DISCLOSURE && documentName.contains('Disclosure');
             Boolean creditReport = requestedDocumentType == CREDIT_REPORT;
             Boolean addendum = requestedDocumentType == ADDENDUM && documentName.contains('Addendum');
@@ -148,12 +142,6 @@ public without sharing class ClientFileCopierService {
         }
     }
 
-    private void retrieveSubscriptionData() {
-        subscriptions = parentSobjectType == Contract.SObjectType ?
-            uasSelector.getUASesForAssignmentAgreement(parentSobjectId) :
-            uasSelector.getNonAnchorUASesForAllocationSchedule(parentSobjectId);
-    }
-
     private Set<Id> getRecordsRelatedToAssignmentAgreement() {
         Set<Id> relatedRecordIds = new Set<Id>();
         switch on requestedDocumentType {
@@ -161,14 +149,11 @@ public without sharing class ClientFileCopierService {
                 // The attachment needed may live on the Parent Contract (if exists), otherwise, lives on the Opp.Contract
                 List<Contract> contracts = contractSelector.getCustomerContractsByAssignmentAgreement(parentSobjectId);
                 for (Contract contract : contracts) {
-                    Id parentRecordId = contract.Parent_Contract__c != null ? contract.Parent_Contract__c : contract.Id;
-                    relatedRecordIds.add(parentRecordId);
+                    relatedRecordIds.add(CustomerContractService.locateCustomerAgreementContract(contract));
                 }
             } when 'Customer Addendum', 'Customer Disclosure Form' {
                 List<Contract> contracts = contractSelector.getCustomerContractsByAssignmentAgreement(parentSobjectId);
-                for (Contract contract : contracts) {
-                    relatedRecordIds.add(contract.Id);
-                }
+                relatedRecordIds.addAll(CollectionUtil.getIds(contracts));
             } when 'Customer Credit Report' {
                 List<Opportunity> oppList = oppSelector.getCustomerOpportunitiesByAssignmentAgreement(parentSobjectId);
                 for (Opportunity opp : oppList) {
@@ -184,7 +169,6 @@ public without sharing class ClientFileCopierService {
     /**
      * @description Get record ids where files are stored for an ALS (Schedule_Z__c sObject type)
      * Relationship hierarchy: ALS -> ALSS -> UAS -> Opp -> Contract -> File.pdf
-     * NOTE: Currently only supports Disclosure Forms in current iteration
      * @return Set of Ids corresponding to Contract records to which files needed for clone are attached
      */
     private Set<Id> getRecordsRelatedToAllocationSchedule() {
@@ -192,6 +176,7 @@ public without sharing class ClientFileCopierService {
         List<Schedule_Z_Subscription__c> subscriptions = scheduleZSubSelector.getALSSforClientFileDownload(parentSobjectId);
         for (Schedule_Z_Subscription__c subscription : subscriptions) {
             relatedRecordIds.add(subscription.Utility_Account_Subscription__r.Opportunity__r.ContractId);
+            relatedRecordIds.add(subscription.Utility_Account_Subscription__r.Opportunity__r.Contract.Parent_Contract__c);
         }
         return relatedRecordIds;
     }
@@ -202,9 +187,7 @@ public without sharing class ClientFileCopierService {
             switch on requestedDocumentType {
                 when 'Customer Agreement' {
                     // Customer Agreement is grabbed from Parent Contract when record exists, otherwise files grabbed from Opp.Contract
-                    relatedRecordWhereDocumentIsAttached = uas.Opportunity__r.Contract.Parent_Contract__c != null ?
-                        uas.Opportunity__r.Contract.Parent_Contract__c :
-                        uas.Opportunity__r.ContractId;
+                    relatedRecordWhereDocumentIsAttached = CustomerContractService.locateCustomerAgreementContract(uas);
                 }
                 when 'Customer Credit Report' {
                     relatedRecordWhereDocumentIsAttached = uas.Opportunity__r.Personal_Credit_Report2__c;
@@ -224,7 +207,7 @@ public without sharing class ClientFileCopierService {
             } else {
                 Logger.logLater('ClientFileCopierSerivce', 'constructNewFileMetadata',
                     'When attempting to copy client files, could not locate Countersigned ' + requestedDocumentType
-                    + ' for UAS ' + uas.Id, Logger.INFO);
+                        + ' for UAS ' + uas.Id, Logger.INFO);
             }
         }
     }
@@ -235,7 +218,7 @@ public without sharing class ClientFileCopierService {
             newFileName = uas.Opportunity__r.Shared_Solar_System__r.Name + ' - ' + requestedDocumentType + ' - ' +
                 uas.Opportunity__r.Name + ' - ' + uas.Utility_Account_Log__r.Name;
         } else {
-            newFileName = uas.Opportunity__r.Shared_Solar_System__r.Name + ' - ' + 'Disclosure Form' + ' - ' +
+            newFileName = uas.Opportunity__r.Shared_Solar_System__r.Name + ' - ' + requestedDocumentType + ' - ' +
                 uas.Utility_Account_Log__r.Name_on_Account__c + ' - ' + uas.Opportunity__r.Account.Name + ' - ' +
                 uas.Utility_Account_Log__r.Name;
         }
@@ -246,8 +229,8 @@ public without sharing class ClientFileCopierService {
         BatchClientFileCopierService batchJob = new BatchClientFileCopierService(filesToCopy);
         if (Test.isRunningTest()) {
             // Don't have to worry about data storage of big files during tests, but only want to call it once:
-            return Database.executeBatch(batchJob,200);
+            return Database.executeBatch(batchJob, 200);
         }
-        return Database.executeBatch(batchJob,1);
+        return Database.executeBatch(batchJob, 1);
     }
 }

@@ -125,7 +125,7 @@ public with sharing class ScheduleZSubscriptionSelector {
 
     public List<Schedule_Z_Subscription__c> getALSSforClientFileDownload(Id allocationScheduleId) {
         return [
-            SELECT Id, Utility_Account_Subscription__r.Opportunity__r.ContractId
+            SELECT Id, Utility_Account_Subscription__r.Opportunity__r.ContractId, Utility_Account_Subscription__r.Opportunity__r.Contract.Parent_Contract__c
             FROM Schedule_Z_Subscription__c
             WHERE Schedule_Z__c = :allocationScheduleId
             AND Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c != 'Anchor'
