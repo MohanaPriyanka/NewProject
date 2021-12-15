@@ -33,59 +33,8 @@
             <caseOwnerType>Queue</caseOwnerType>
             <casePriority>Medium</casePriority>
             <createTask>true</createTask>
-            <emailAddress>anchorsupport@bluewavesolar.com</emailAddress>
-            <isVerified>true</isVerified>
-            <routingName>Anchor Support</routingName>
-            <saveEmailHeaders>true</saveEmailHeaders>
-            <taskStatus>New</taskStatus>
-        </routingAddresses>
-        <routingAddresses>
-            <addressType>EmailToCase</addressType>
-            <caseOrigin>Email</caseOrigin>
-            <caseOwner>Customer_Care</caseOwner>
-            <caseOwnerType>Queue</caseOwnerType>
-            <casePriority>Medium</casePriority>
-            <createTask>true</createTask>
-            <emailAddress>customercare@bluewavesolar.com</emailAddress>
-            <isVerified>true</isVerified>
-            <routingName>Customer Care</routingName>
-            <saveEmailHeaders>true</saveEmailHeaders>
-            <taskStatus>New</taskStatus>
-        </routingAddresses>
-        <routingAddresses>
-            <addressType>EmailToCase</addressType>
-            <caseOrigin>Email</caseOrigin>
-            <caseOwner>IT</caseOwner>
-            <caseOwnerType>Queue</caseOwnerType>
-            <casePriority>Medium</casePriority>
-            <createTask>false</createTask>
-            <emailAddress>itsupport@bluewavesolar.com</emailAddress>
-            <isVerified>true</isVerified>
-            <routingName>IT Support</routingName>
-            <saveEmailHeaders>false</saveEmailHeaders>
-        </routingAddresses>
-        <routingAddresses>
-            <addressType>EmailToCase</addressType>
-            <caseOrigin>Email</caseOrigin>
-            <caseOwner>Partner_Support</caseOwner>
-            <caseOwnerType>Queue</caseOwnerType>
-            <casePriority>Medium</casePriority>
-            <createTask>true</createTask>
-            <emailAddress>partnersupport@bluewavesolar.com</emailAddress>
-            <isVerified>true</isVerified>
-            <routingName>Partner Support</routingName>
-            <saveEmailHeaders>true</saveEmailHeaders>
-            <taskStatus>New</taskStatus>
-        </routingAddresses>
-        <routingAddresses>
-            <addressType>EmailToCase</addressType>
-            <caseOrigin>Email</caseOrigin>
-            <caseOwner>Anchor_Support</caseOwner>
-            <caseOwnerType>Queue</caseOwnerType>
-            <casePriority>Medium</casePriority>
-            <createTask>true</createTask>
             <emailAddress>anchorsupport@perchenergy.com</emailAddress>
-            <isVerified>false</isVerified>
+            <isVerified>true</isVerified>
             <routingName>Perch Anchor Support</routingName>
             <saveEmailHeaders>true</saveEmailHeaders>
             <taskStatus>New</taskStatus>
@@ -98,7 +47,7 @@
             <casePriority>Medium</casePriority>
             <createTask>true</createTask>
             <emailAddress>cssupport@perchenergy.com</emailAddress>
-            <isVerified>false</isVerified>
+            <isVerified>true</isVerified>
             <routingName>Perch BizApps Support</routingName>
             <saveEmailHeaders>true</saveEmailHeaders>
             <taskStatus>New</taskStatus>
@@ -111,7 +60,7 @@
             <casePriority>Medium</casePriority>
             <createTask>true</createTask>
             <emailAddress>customercare@perchenergy.com</emailAddress>
-            <isVerified>false</isVerified>
+            <isVerified>true</isVerified>
             <routingName>Perch Customer Care</routingName>
             <saveEmailHeaders>true</saveEmailHeaders>
             <taskStatus>New</taskStatus>
@@ -124,22 +73,10 @@
             <casePriority>Medium</casePriority>
             <createTask>true</createTask>
             <emailAddress>partnersupport@perchenergy.com</emailAddress>
-            <isVerified>false</isVerified>
+            <isVerified>true</isVerified>
             <routingName>Perch Partner Support</routingName>
             <saveEmailHeaders>true</saveEmailHeaders>
             <taskStatus>New</taskStatus>
-        </routingAddresses>
-        <routingAddresses>
-            <addressType>EmailToCase</addressType>
-            <caseOrigin>Email</caseOrigin>
-            <caseOwner>Product_Support</caseOwner>
-            <caseOwnerType>Queue</caseOwnerType>
-            <casePriority>Medium</casePriority>
-            <createTask>false</createTask>
-            <emailAddress>productsupport@bluewavesolar.com</emailAddress>
-            <isVerified>true</isVerified>
-            <routingName>Product Tickets</routingName>
-            <saveEmailHeaders>false</saveEmailHeaders>
         </routingAddresses>
         <unauthorizedSenderAction>Discard</unauthorizedSenderAction>
     </emailToCase>

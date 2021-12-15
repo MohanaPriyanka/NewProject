@@ -2,7 +2,7 @@
 <Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
     <alerts>
         <fullName>Limit_Change_Threshold_Exceeded</fullName>
-        <ccEmails>b1b2c782.perchenergy.com@amer.teams.ms</ccEmails>
+        <ccEmails>b361c321.perchenergy.com@amer.teams.ms</ccEmails>
         <description>Limit Change Threshold Exceeded</description>
         <protected>false</protected>
         <senderType>CurrentUser</senderType>
@@ -10,7 +10,7 @@
     </alerts>
     <alerts>
         <fullName>Limit_Value_Threshold_Exceeded</fullName>
-        <ccEmails>b1b2c782.perchenergy.com@amer.teams.ms</ccEmails>
+        <ccEmails>b361c321.perchenergy.com@amer.teams.ms</ccEmails>
         <description>Limit Value Threshold Exceeded</description>
         <protected>false</protected>
         <senderType>CurrentUser</senderType>
