@@ -8,7 +8,7 @@
 
 
 public without sharing class LetterStreamService {
-    public String csvHeaders = 'UniqueDocId,' +
+    private String csvHeaders = 'UniqueDocId,' +
         'PDFFileName,' +
         'RecipientName1,' +
         'RecipientName2,' +
@@ -55,75 +55,62 @@ public without sharing class LetterStreamService {
         return newJob;
     }
 
-    // Since we want to insert Letterstreamjobs independent of user permissions:
-    @SuppressWarnings('PMD.ApexCRUDViolation')
-    public LetterStreamJob__c parseLetterStreamMessage(XmlStreamReader responseReader) {
-        String responseCode;
-        String details;
-        String batchName;
-        Integer batchQuantity;
-        Decimal batchCost;
-        LetterStreamJob__c newJob;
+    private LetterStreamJob__c parseLetterStreamMessage(XmlStreamReader responseReader) {
+        LetterStreamJob__c newJob = new LetterStreamJob__c();
         List<LetterStream_Piece__c> pieces = new List<LetterStream_Piece__c>();
         while (responseReader.hasNext()) {
-            if (responseReader.getEventType() == XmlTag.START_ELEMENT
-                && 'doc' == responseReader.getLocalName()) {
+            if (responseReader.getEventType() == XmlTag.START_ELEMENT &&
+                responseReader.getLocalName() == 'doc') {
                 responseReader.next();
                 pieces.add(parseLetterStreamPiece(responseReader));
             } else if (responseReader.getEventType() == XmlTag.START_ELEMENT) {
-                if ('code' == responseReader.getLocalName()) {
-                    responseCode = getNodeText(responseReader);
-                }
-                if ('details' == responseReader.getLocalName()) {
-                    details = getNodeText(responseReader);
-                }
-                if ('batch' == responseReader.getLocalName()) {
-                    batchName = getNodeText(responseReader);
-                }
-                if ('quantity' == responseReader.getLocalName()) {
-                    batchQuantity = Integer.valueOf(getNodeText(responseReader));
-                }
-                if ('cost' == responseReader.getLocalName()) {
-                    batchCost = Decimal.valueOf(getNodeText(responseReader));
-                }
+                setLetterStreamJobFields(responseReader, newJob);
                 responseReader.next();
-            } else if (responseReader.getEventType() == XmlTag.END_ELEMENT
-                && 'message' == responseReader.getLocalName()) {
+            } else if (responseReader.getEventType() == XmlTag.END_ELEMENT &&
+                responseReader.getLocalName() == 'message') {
                 break;
-            } else if (responseReader.getEventType() == XmlTag.END_ELEMENT) {
-                responseReader.next();
             } else {
                 responseReader.next();
             }
         }
-        if (responseCode != null
-            && details != null
-            && batchName != null
-            && batchQuantity != null
-            && batchCost != null
-            && pieces.size() > 0) {
-            newJob = new LetterStreamJob__c(
-                Batch_Name__c = batchName,
-                Cost__c = batchCost,
-                Details__c = details,
-                Piece_Count__c = batchQuantity,
-                Job_Id__c = pieces[0].LetterStream_Job_Id__c
-            );
-            insert newJob;
-            for (LetterStream_Piece__c piece : pieces) {
-                piece.LetterStreamJob__c = newJob.Id;
-            }
-            insert pieces;
-        }
+        insertJobAndPieces(pieces, newJob);
         return newJob;
     }
 
-    public String getNodeText(XmlStreamReader xmlReader) {
+    // Since we want to insert Letterstreamjobs independent of user permissions:
+    @SuppressWarnings('PMD.ApexCRUDViolation')
+    private void insertJobAndPieces(List<LetterStream_Piece__c> pieces, LetterStreamJob__c newJob) {
+        if (pieces.isEmpty()) {
+            return;
+        }
+        newJob.Job_Id__c = pieces[0].LetterStream_Job_Id__c;
+        insert newJob;
+        for (LetterStream_Piece__c piece : pieces) {
+            piece.LetterStreamJob__c = newJob.Id;
+        }
+        insert pieces;
+    }
+
+    private void setLetterStreamJobFields(XmlStreamReader responseReader, LetterStreamJob__c newJob) {
+        switch on responseReader.getLocalName() {
+            when 'details' {
+                newJob.Details__c = getNodeText(responseReader);
+            } when 'batch' {
+                newJob.Batch_Name__c = getNodeText(responseReader);
+            } when 'quantity' {
+                newJob.Piece_Count__c = Integer.valueOf(getNodeText(responseReader));
+            } when 'cost' {
+                newJob.Cost__c = Decimal.valueOf(getNodeText(responseReader));
+            }
+        }
+    }
+
+    private String getNodeText(XmlStreamReader xmlReader) {
         xmlReader.next();
         return xmlReader.getText();
     }
 
-    public LetterStream_Piece__c parseLetterStreamPiece(XmlStreamReader docReader) {
+    private LetterStream_Piece__c parseLetterStreamPiece(XmlStreamReader docReader) {
         String objectId;
         String jobId;
         Decimal pieceCost;
@@ -154,12 +141,12 @@ public without sharing class LetterStreamService {
         );
     }
 
-    public HttpRequest buildRequestWithFile(Blob file_body, String file_name){
+    public HttpRequest buildRequestWithFile(Blob fileBody, String fileName) {
         List<LetterStream_Settings__c> letterStreamSettings = LetterStream_Settings__c.getall().values();
         String endpoint = letterStreamSettings.get(0).API_Endpoint__c;
         String apiId = letterStreamSettings[0].API_Id__c;
         String apiKey = letterStreamSettings[0].API_Key__c;
-        String uniqueId = String.valueOf(DateTime.now().getTime());
+        String uniqueId = String.valueOf(Datetime.now().getTime());
 
         // Repost of code  with fix for file corruption issue
         // Original code postings and explanations
@@ -177,14 +164,14 @@ public without sharing class LetterStreamService {
         header += '--'+boundary+'\nContent-Disposition: form-data; ';
         header += ('name="h"' + '\r\n\r\n' + letterStreamHeaders.get('hashedId')+ '\r\n');
         header += '--'+boundary+'\nContent-Disposition: form-data; ';
-        header += 'name="multi_file"; filename="'+file_name+'";\nContent-Type: application/zip';
+        header += 'name="multi_file"; filename="'+fileName+'";\nContent-Type: application/zip';
         String footer = '--'+boundary+'--';
         String headerEncoded = EncodingUtil.base64Encode(Blob.valueOf(header+'\r\n\r\n'));
         while(headerEncoded.endsWith('=')) {
             header+=' ';
             headerEncoded = EncodingUtil.base64Encode(Blob.valueOf(header+'\r\n\r\n'));
         }
-        String bodyEncoded = EncodingUtil.base64Encode(file_body);
+        String bodyEncoded = EncodingUtil.base64Encode(fileBody);
         Blob bodyBlob = null;
         String last4Bytes = bodyEncoded.substring(bodyEncoded.length()-4,bodyEncoded.length());
         if(last4Bytes.endsWith('==')) {
@@ -223,7 +210,7 @@ public without sharing class LetterStreamService {
         csv += (Util.prepForCSV(params.fileId) + ','); // UniqueDocId
         String fileName = Util.prepForCSV(params.fileName);
         // Can't have ' in file names to letterstream
-        filename = fileName.replace('\'', '');
+        fileName = fileName.replace('\'', '');
         csv += (fileName + ','); // PDFFileName
         csv += (Util.prepForCSV(params.recipientName) + ','); // RecipientName1
         csv += (','); // RecipientName2
@@ -234,7 +221,7 @@ public without sharing class LetterStreamService {
         csv += (Util.prepForCSV(params.recipientPostalCode) + ','); //RecipientZip
         csv += blueWaveAddress();
         csv += (Util.prepForCSV(params.getPages()) + ','); // page count
-        csv += 'firstclass,'; // mailType
+        csv += (params.mailType==null?'firstclass':params.mailType) + ',';
         csv += 'N,'; // coversheet
         csv += 'Y,'; // duplex
         csv += 'C,'; // ink
@@ -247,7 +234,8 @@ public without sharing class LetterStreamService {
 
     // Selecting BW_Address should be open to all users
     @SuppressWarnings('PMD.ApexCRUDViolation')
-    public String blueWaveAddress() {
+    @TestVisible
+    private String blueWaveAddress() {
         String bwAddress = '';
         BW_Address__c address = [
             SELECT Id, Name, Address_Line_One__c, Address_Line_Two__c, Zip_Code__c, City__c, State__c
@@ -273,9 +261,7 @@ public without sharing class LetterStreamService {
         public String recipientPostalCode;
         public String pages;
         public String extraInserts;
-
-        public LetterParameters() {
-        }
+        public String mailType;
 
         public LetterParameters(ContentMailerService.Param contentMailerParam) {
             this.fileId = contentMailerParam.linkedEntityId;
@@ -286,6 +272,7 @@ public without sharing class LetterStreamService {
             this.recipientState = contentMailerParam.state;
             this.recipientPostalCode = contentMailerParam.postalCode;
             this.extraInserts = contentMailerParam.extraInserts;
+            this.mailType = contentMailerParam.mailType;
         }
 
         // Undocumented LetterStream feature to handle the case where we don't have a page count
@@ -307,7 +294,8 @@ public without sharing class LetterStreamService {
         // Undocumented feature:
         // Remembered Items can be called and added to API mailings by using the POST argument "extrainserts".
         // Multiple Remembered Items can be called/included by simply using a pipe delimiter (ie 1297|3294).
-        public String getExtraInserts() {
+        @TestVisible
+        private String getExtraInserts() {
             if (String.isBlank(extraInserts)) {
                 return '';
             } else {
@@ -316,7 +304,8 @@ public without sharing class LetterStreamService {
         }
     }
 
-    public Map<String, String> letterStreamHeaders(String uniqueId, String apiId, String apiKey) {
+    @TestVisible
+    private Map<String, String> letterStreamHeaders(String uniqueId, String apiId, String apiKey) {
         Integer uniqueIdLength = uniqueId.length();
         // per LetterStreamDocs - String to Hash
         String rawHashedId = uniqueId.substring(uniqueIdLength - 6, uniqueIdLength) + apiKey + uniqueId.substring(0, 6);
