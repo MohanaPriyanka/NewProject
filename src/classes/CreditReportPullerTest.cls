@@ -67,7 +67,7 @@ private with sharing class CreditReportPullerTest {
 
         lead.LastName = 'Smith';
         request = creditReportPuller.getRequest(lead, systemDefault);
-        System.assertEquals('000000000', request.ssn, 'Expected to request all zeros if the last name is not testcase');
+        System.assertEquals(null, request.ssn, 'Expected to request null for SSN if lastname is not testcase');
         System.assertEquals('Smith', request.lastName, 'Expected to send the applicant last name if it is not testcase');
         System.assertEquals('testuser', request.loginAccount,
             'Expected to use the test user even for non-test pulls since we always use the test user in sandboxes or running tests');

@@ -65,7 +65,6 @@ public without sharing class CreditReportPuller {
         request.loginAccount = systemDefault.Credit_Login_Account_Username__c;
         request.firstName = lead.FirstName;
         request.lastName = lead.LastName;
-        request.ssn = '000000000';
         request.homeAddress = lead.LASERCA__Home_Address__c;
         request.homeCity = lead.LASERCA__Home_City__c;
         request.homeState = lead.LASERCA__Home_State__c;
