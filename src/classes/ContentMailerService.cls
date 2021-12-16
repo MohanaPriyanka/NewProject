@@ -24,10 +24,6 @@ public with sharing class ContentMailerService {
 
     public List<Param> remainingContentToSend;
 
-
-    public ContentMailerService() {
-    }
-
     public void mailContent() {
         List<Param> contentToSendThisTransaction = getContentForPackage();
         Map<Id, ContentDocument> contentDocumentMap = getContentMapWithVersionData(contentToSendThisTransaction);
@@ -123,7 +119,7 @@ public with sharing class ContentMailerService {
         // newJob gets inserted within here
         LetterStreamJob__c newJob = lss.parseLetterStreamResponse(responseXMLString);
 
-        if (newJob == null) {
+        if (newJob.Id == null) {
             String message = 'Job post failed for objects: (' + String.join(new List<Id>(objectIds), ',') + ') + \n';
             message += 'Response: \n' + responseXMLString + '\n';
             message += 'CSV: \n' + csv;
@@ -158,5 +154,6 @@ public with sharing class ContentMailerService {
         public String state;
         public String postalCode;
         public String extraInserts; // LetterStream only, pipe delimited ids, e.g. 1234|5678
+        public String mailType;
     }
 }
