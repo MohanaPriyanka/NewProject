@@ -4,6 +4,7 @@
  */
 
 @IsTest
+@SuppressWarnings('PMD.AvoidHardcodingId')
 public with sharing class LetterStreamServiceTest {
     @IsTest
     public static void testResponseParser() {
@@ -115,7 +116,7 @@ public with sharing class LetterStreamServiceTest {
 
         LetterStreamJob__c newJob = lss.parseLetterStreamResponse(exampleResponse);
 
-        System.assertEquals(null, newJob);
+        System.assertEquals(null, newJob.Id, 'Did not expect to insert a job for a failed response parser');
     }
 
     @IsTest
@@ -187,7 +188,7 @@ public with sharing class LetterStreamServiceTest {
 
     @IsTest
     public static void testGetPages() {
-        LetterStreamService.LetterParameters parameters = new LetterStreamService.LetterParameters();
+        LetterStreamService.LetterParameters parameters = new LetterStreamService.LetterParameters(new ContentMailerService.Param());
         System.assertEquals('v', parameters.getPages());
         parameters.pages = '2';
         System.assertEquals('2', parameters.getPages());
@@ -195,7 +196,7 @@ public with sharing class LetterStreamServiceTest {
 
     @IsTest
     public static void testExtraInserts() {
-        LetterStreamService.LetterParameters parameters = new LetterStreamService.LetterParameters();
+        LetterStreamService.LetterParameters parameters = new LetterStreamService.LetterParameters(new ContentMailerService.Param());
         System.assertEquals('', parameters.getExtraInserts());
         parameters.extraInserts = '23423|12345';
         System.assertEquals('23423|12345', parameters.getExtraInserts());

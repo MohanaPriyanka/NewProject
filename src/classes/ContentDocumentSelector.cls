@@ -1,6 +1,6 @@
 /*************************************************************************************
  * Created By: peteryao on 9/12/19  
- * Test: ContentDocumentSelectorTest,SimpleSignupFormControllerTest
+ * Test: ContentDocumentSelectorTest,SimpleSignupFormControllerTest,CollectionsContentMailerTest
  *************************************************************************************/
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public inherited sharing class ContentDocumentSelector {
@@ -147,5 +147,14 @@ public inherited sharing class ContentDocumentSelector {
         }
         return contentDocLinksByContactId;
     }
-    
+
+    public List<ContentDocument> selectForMailing() {
+        return [
+            SELECT Id, LatestPublishedVersionId, LatestPublishedVersion.Title, LatestPublishedVersion.Mail_Type__c, ContentSize, (
+                SELECT Id, LinkedEntityId FROM ContentDocumentLinks
+            )
+            FROM ContentDocument
+            WHERE LatestPublishedVersion.Ready_for_Paper_Bill_Queue__c = TRUE
+        ];
+    }
 }
