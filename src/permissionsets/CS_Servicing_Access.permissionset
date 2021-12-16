@@ -36,11 +36,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account.Cancellation_Fees_Invoiced__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account.Count_of_CS_Opportunities__c</field>
         <readable>true</readable>
     </fieldPermissions>
