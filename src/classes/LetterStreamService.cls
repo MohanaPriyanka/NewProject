@@ -43,7 +43,7 @@ public without sharing class LetterStreamService {
     public LetterStreamJob__c parseLetterStreamResponse(String responseXML) {
         XmlStreamReader responseReader = new XmlStreamReader(responseXML);
 
-        LetterStreamJob__c newJob;
+        LetterStreamJob__c newJob = new LetterStreamJob__c();
         while (responseReader.hasNext()) {
             if (responseReader.getEventType() == XmlTag.START_ELEMENT
                 && 'message' == responseReader.getLocalName()) {
