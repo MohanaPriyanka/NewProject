@@ -1,6 +1,6 @@
 @IsTest
 public class ScheduleZTriggerHandlerTest {
-    @TestSetup public static void setupTestData(){
+    @TestSetup public static void setupTestData() {
         Utility__c eversource = new Utility__c(
             Name = 'Eversource',
             Number_of_Decimal_Places__c = 4
@@ -11,7 +11,9 @@ public class ScheduleZTriggerHandlerTest {
             Number_of_Decimal_Places__c = 4
         );
 
-        insert new List<Utility__c>{eversource, nationalGrid};
+        insert new List<Utility__c>{
+            eversource, nationalGrid
+        };
 
         Utility_NMC_Tariff__c eversizeNMC = new Utility_NMC_Tariff__c (Name = 'Eversource SEMA Class 2',
             Utility__c = 'Eversource',
@@ -23,13 +25,15 @@ public class ScheduleZTriggerHandlerTest {
 
         Load_U__c everLZU = new Load_U__c (Name = '02633',
             LZ__c = 'SEMA',
-            Town__c= 'Medfield');
+            Town__c = 'Medfield');
 
         Load_U__c ngridLZU = new Load_U__c (Name = '01570',
             LZ__c = 'WCMA',
-            Town__c= 'Westtown');
+            Town__c = 'Westtown');
 
-        insert new List<Load_U__c>{everLZU, ngridLZU};
+        insert new List<Load_U__c>{
+            everLZU, ngridLZU
+        };
 
         ZipCode_Utility_Junction__c junction = new ZipCode_Utility_Junction__c(
             Load_Zone_Utility__c = everLZU.Id,
@@ -39,7 +43,9 @@ public class ScheduleZTriggerHandlerTest {
             Load_Zone_Utility__c = ngridLZU.Id,
             Utility__c = nationalGrid.Id
         );
-        insert new List<ZipCode_Utility_Junction__c>{junction, junctionTwo};
+        insert new List<ZipCode_Utility_Junction__c>{
+            junction, junctionTwo
+        };
 
         TestFactory.insertBWAddress();
 
@@ -68,10 +74,10 @@ public class ScheduleZTriggerHandlerTest {
                 Service_Territories__c = 'SEMA',
                 Open__c = true,
                 Billing_Method__c = 'kWh',
-                Reserved_Capacity_kW_DC__c = '0',
+                Pending_Small_CS_Capacity__c = 0,
                 Capacity_Committed_kW_DC__c = 0,
                 Total_System_Size_kWh_DC__c = 1445.86,
-                Total_System_Size_kW_AC__c  = 996,
+                Total_System_Size_kW_AC__c = 996,
                 Credit_Score_Requirement__c = 200,
                 Assignment_Order__c = '1',
                 Utility_NMC_Tariff__c = eversizeNMC.Id,
@@ -88,10 +94,10 @@ public class ScheduleZTriggerHandlerTest {
                 Service_Territories__c = 'SEMA',
                 Open__c = true,
                 Billing_Method__c = 'kWh',
-                Reserved_Capacity_kW_DC__c = '0',
+                Pending_Small_CS_Capacity__c = 0,
                 Capacity_Committed_kW_DC__c = 0,
                 Total_System_Size_kWh_DC__c = 1445.86,
-                Total_System_Size_kW_AC__c  = 996,
+                Total_System_Size_kW_AC__c = 996,
                 Credit_Score_Requirement__c = 200,
                 Assignment_Order__c = '2',
                 Utility_NMC_Tariff__c = eversizeNMC.Id,
@@ -102,7 +108,9 @@ public class ScheduleZTriggerHandlerTest {
                 Maximum_Subscription_Capacity_kWDC__c = 25,
                 Utility__c = eversource.Id
             );
-        insert new List<Shared_Solar_System__c>{sss1, sss2};
+        insert new List<Shared_Solar_System__c>{
+            sss1, sss2
+        };
 
         Id parentAccountRT =
             Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
@@ -111,7 +119,7 @@ public class ScheduleZTriggerHandlerTest {
             RecordTypeId = parentAccountRT);
         insert accountParent;
 
-        Contact contactA = new Contact( FirstName = 'Contact',
+        Contact contactA = new Contact(FirstName = 'Contact',
             LastName = 'A',
             AccountId = accountParent.Id);
         insert contactA;
@@ -120,7 +128,9 @@ public class ScheduleZTriggerHandlerTest {
             Parent_Account__c = accountParent.Id);
         Account accountB = new Account(Name = 'Account B',
             Parent_Account__c = accountParent.Id);
-        insert new List<Account>{accountA, accountB};
+        insert new List<Account>{
+            accountA, accountB
+        };
 
         Utility_Account_Log__c ualog =
             new Utility_Account_Log__c(Name = '0000234',
@@ -132,9 +142,11 @@ public class ScheduleZTriggerHandlerTest {
                 Account__c = accountB.Id,
                 Annual_Cost_of_Electricity__c = 10000,
                 Name_on_Account__c = 'jordan jordan');
-        insert new List<Utility_Account_Log__c>{ualog, ualogB};
+        insert new List<Utility_Account_Log__c>{
+            ualog, ualogB
+        };
 
-        Product2 normalCSProduct = new Product2( Name = 'BlueWave Community Solar',
+        Product2 normalCSProduct = new Product2(Name = 'BlueWave Community Solar',
             Family = 'Community Solar',
             Product_Type__c = 'Community Solar',
             Customer_Subscription_Type__c = 'kWh',
@@ -184,7 +196,9 @@ public class ScheduleZTriggerHandlerTest {
                 Product__c = normalCSProduct.Id,
                 CloseDate = System.today());
 
-        insert new List<Opportunity>{opportunityone, opportunityoneB, opportunitytwo, opportunitythree};
+        insert new List<Opportunity>{
+            opportunityone, opportunityoneB, opportunitytwo, opportunitythree
+        };
 
         Utility_Account_Subscription__c uasone =
             new Utility_Account_Subscription__c(Name = '0000234',
@@ -330,7 +344,7 @@ public class ScheduleZTriggerHandlerTest {
         List<Schedule_Z_Subscription__c> sss1ScheduleZs = [
             SELECT Id, Customer_Subscription_kW_DC__c
             FROM Schedule_Z_Subscription__c
-            WHERE Schedule_Z__c = : sss1ScheduleZ.Id
+            WHERE Schedule_Z__c = :sss1ScheduleZ.Id
         ];
 
         System.assertEquals(2, sss1ScheduleZs.size());
@@ -375,7 +389,7 @@ public class ScheduleZTriggerHandlerTest {
             SELECT Id, Customer_Subscription_kW_DC__c, Number_of_Decimal_Places__c,
                 System_Size_kW_DC__c, Percent_Share__c, Utility_Account_Subscription__r.Name
             FROM Schedule_Z_Subscription__c
-            WHERE Schedule_Z__c = : sss2ScheduleZ.Id
+            WHERE Schedule_Z__c = :sss2ScheduleZ.Id
         ];
 
         System.assertEquals(1, sss2ScheduleZs.size());
@@ -514,13 +528,13 @@ public class ScheduleZTriggerHandlerTest {
             ORDER BY Opportunity__r.Shared_Solar_System_Name__c
         ];
 
-        System.assertEquals(4,initialUASList.size());
-        System.assertEquals(null,initialUASList[0].Most_Recent_Enacted_ALSS__c);
-        System.assertEquals(null,initialUASList[1].Most_Recent_Enacted_ALSS__c);
-        System.assertEquals(null,initialUASList[2].Most_Recent_Enacted_ALSS__c);
-        System.assertEquals(null,initialUASList[3].Most_Recent_Enacted_ALSS__c);
+        System.assertEquals(4, initialUASList.size());
+        System.assertEquals(null, initialUASList[0].Most_Recent_Enacted_ALSS__c);
+        System.assertEquals(null, initialUASList[1].Most_Recent_Enacted_ALSS__c);
+        System.assertEquals(null, initialUASList[2].Most_Recent_Enacted_ALSS__c);
+        System.assertEquals(null, initialUASList[3].Most_Recent_Enacted_ALSS__c);
 
-        for (Utility_Account_Subscription__c uas : initialUASList){
+        for (Utility_Account_Subscription__c uas : initialUASList) {
             uas.Next_Schedule_Z_Status__c = 'Active Subscription';
         }
         update initialUASList;
@@ -541,11 +555,13 @@ public class ScheduleZTriggerHandlerTest {
 
         Schedule_Z__c sss2FirstAllocationSchedule = new Schedule_Z__c(
             Name = '18-0615 Oxford Barrett St. P2',
-            Shared_Solar_System__c =  sharedSolarSystems[1].Id,
+            Shared_Solar_System__c = sharedSolarSystems[1].Id,
             Status__c = 'QC Complete'
         );
 
-        List<Schedule_Z__c> szsList = new List<Schedule_Z__c>{sss1FirstAllocationSchedule,sss2FirstAllocationSchedule};
+        List<Schedule_Z__c> szsList = new List<Schedule_Z__c>{
+            sss1FirstAllocationSchedule, sss2FirstAllocationSchedule
+        };
         insert szsList;
 
         sss1FirstAllocationSchedule.Status__c = 'Enacted by Utility';
@@ -562,11 +578,11 @@ public class ScheduleZTriggerHandlerTest {
             ORDER BY Opportunity__r.Shared_Solar_System_Name__c
         ];
 
-        System.assertEquals(4,updatedUASListOne.size());
-        System.assertEquals(sss1FirstAllocationSchedule.Id,updatedUASListOne[0].Most_Recent_Enacted_ALSS__r.Schedule_Z__c, 'Expected uasone to be on sss1');
-        System.assertEquals(sss1FirstAllocationSchedule.Id,updatedUASListOne[1].Most_Recent_Enacted_ALSS__r.Schedule_Z__c, 'Expected uasoneB to be on sss1');
-        System.assertEquals(sss1FirstAllocationSchedule.Id,updatedUASListOne[2].Most_Recent_Enacted_ALSS__r.Schedule_Z__c, 'Expected uastwo to be on sss1');
-        System.assertEquals(sss2FirstAllocationSchedule.Id,updatedUASListOne[3].Most_Recent_Enacted_ALSS__r.Schedule_Z__c, 'Expected uasthree to be on sss2');
+        System.assertEquals(4, updatedUASListOne.size());
+        System.assertEquals(sss1FirstAllocationSchedule.Id, updatedUASListOne[0].Most_Recent_Enacted_ALSS__r.Schedule_Z__c, 'Expected uasone to be on sss1');
+        System.assertEquals(sss1FirstAllocationSchedule.Id, updatedUASListOne[1].Most_Recent_Enacted_ALSS__r.Schedule_Z__c, 'Expected uasoneB to be on sss1');
+        System.assertEquals(sss1FirstAllocationSchedule.Id, updatedUASListOne[2].Most_Recent_Enacted_ALSS__r.Schedule_Z__c, 'Expected uastwo to be on sss1');
+        System.assertEquals(sss2FirstAllocationSchedule.Id, updatedUASListOne[3].Most_Recent_Enacted_ALSS__r.Schedule_Z__c, 'Expected uasthree to be on sss2');
 
         Schedule_Z__c sss1SecondAllocationSchedule = new Schedule_Z__c(
             Name = '18-0515 Oxford Barrett St. P1',
@@ -576,11 +592,13 @@ public class ScheduleZTriggerHandlerTest {
 
         Schedule_Z__c sss2SecondAllocationSchedule = new Schedule_Z__c(
             Name = '18-0615 Oxford Barrett St. P2',
-            Shared_Solar_System__c =  sharedSolarSystems[1].Id,
+            Shared_Solar_System__c = sharedSolarSystems[1].Id,
             Status__c = 'QC Complete'
         );
 
-        List<Schedule_Z__c> secondSZList = new List<Schedule_Z__c>{sss1SecondAllocationSchedule,sss2SecondAllocationSchedule};
+        List<Schedule_Z__c> secondSZList = new List<Schedule_Z__c>{
+            sss1SecondAllocationSchedule, sss2SecondAllocationSchedule
+        };
         insert secondSZList;
 
         sss1SecondAllocationSchedule.Status__c = 'Enacted by Utility';
@@ -597,17 +615,17 @@ public class ScheduleZTriggerHandlerTest {
             ORDER BY Opportunity__r.Shared_Solar_System_Name__c
         ];
 
-        System.assertEquals(4,updatedUASListTwo.size());
+        System.assertEquals(4, updatedUASListTwo.size());
         // sss1 should still be linked to the first schedule z, since sss1SecondAllocationSchedule is dated before sss1FirstAllocationSchedule
-        System.assertEquals(sss1FirstAllocationSchedule.Id,updatedUASListTwo[0].Most_Recent_Enacted_ALSS__r.Schedule_Z__c);
-        System.assertEquals(sss1FirstAllocationSchedule.Id,updatedUASListTwo[1].Most_Recent_Enacted_ALSS__r.Schedule_Z__c);
-        System.assertEquals(sss1FirstAllocationSchedule.Id,updatedUASListTwo[2].Most_Recent_Enacted_ALSS__r.Schedule_Z__c);
+        System.assertEquals(sss1FirstAllocationSchedule.Id, updatedUASListTwo[0].Most_Recent_Enacted_ALSS__r.Schedule_Z__c);
+        System.assertEquals(sss1FirstAllocationSchedule.Id, updatedUASListTwo[1].Most_Recent_Enacted_ALSS__r.Schedule_Z__c);
+        System.assertEquals(sss1FirstAllocationSchedule.Id, updatedUASListTwo[2].Most_Recent_Enacted_ALSS__r.Schedule_Z__c);
 
         // but sss2 should be linked to the second schedule z, since sss2SecondAllocationSchedule is dated after sss2FirstAllocationSchedule
-        System.assertEquals(sss2SecondAllocationSchedule.Id,updatedUASListTwo[3].Most_Recent_Enacted_ALSS__r.Schedule_Z__c);
+        System.assertEquals(sss2SecondAllocationSchedule.Id, updatedUASListTwo[3].Most_Recent_Enacted_ALSS__r.Schedule_Z__c);
     }
 
-    @IsTest static void testReacquisitionStartDate(){
+    @IsTest static void testReacquisitionStartDate() {
         String sssListAsString = '[' +
             '{"Id":"a1J3F00000126FTUAY","Reacquisition_Start_Date__c":null},' +
             '{"Id":"a1J3F00000126FUUAY","Reacquisition_Start_Date__c":null},' +
@@ -628,14 +646,14 @@ public class ScheduleZTriggerHandlerTest {
             '"Shared_Solar_System__c":"a1J3F00000126FSUAY",' +
             '"Submitted_Utilization__c":100}]';
 
-        List<Schedule_Z__c> enactedAllocationSchedules = (List<Schedule_Z__c>)JSON.deserialize(aLSesAsString, List<Schedule_Z__c>.class);
-        List<Shared_Solar_System__c> enactedSSSes = (List<Shared_Solar_System__c>)JSON.deserialize(sssListAsString, List<Shared_Solar_System__c>.class);
+        List<Schedule_Z__c> enactedAllocationSchedules = (List<Schedule_Z__c>) JSON.deserialize(aLSesAsString, List<Schedule_Z__c>.class);
+        List<Shared_Solar_System__c> enactedSSSes = (List<Shared_Solar_System__c>) JSON.deserialize(sssListAsString, List<Shared_Solar_System__c>.class);
 
         List<Shared_Solar_System__c> sssToUpdate;
-        sssToUpdate = ScheduleZTriggerHandler.setReacquisitionStartDate(enactedAllocationSchedules,enactedSSSes);
+        sssToUpdate = ScheduleZTriggerHandler.setReacquisitionStartDate(enactedAllocationSchedules, enactedSSSes);
 
-        System.assertEquals(1,sssToUpdate.size());
-        System.assertEquals('a1J3F00000126FTUAY',sssToUpdate[0].Id);
-        System.assertEquals(Date.newInstance(2020,06,02),sssToUpdate[0].Reacquisition_Start_Date__c);
+        System.assertEquals(1, sssToUpdate.size());
+        System.assertEquals('a1J3F00000126FTUAY', sssToUpdate[0].Id);
+        System.assertEquals(Date.newInstance(2020, 06, 02), sssToUpdate[0].Reacquisition_Start_Date__c);
     }
 }

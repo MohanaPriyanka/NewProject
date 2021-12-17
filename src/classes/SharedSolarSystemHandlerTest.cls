@@ -101,7 +101,7 @@ public with sharing class SharedSolarSystemHandlerTest {
             Utility_NMC_Tariff__c = everbillNMC.Id,
             Maximum_Subscription_Capacity_kWDC__c = 25,
             Reserved_Anchor_Capacity__c = 5,
-            Reserved_Capacity_kW_DC__c = '10',
+            Pending_Small_CS_Capacity__c = 10,
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 48,
             Total_System_Size_kW_AC__c = 80,
@@ -121,7 +121,7 @@ public with sharing class SharedSolarSystemHandlerTest {
             Product__c = normalCSProduct.Id,
             Utility_NMC_Tariff__c = everbillNMC.Id,
             Reserved_Anchor_Capacity__c = 20,
-            Reserved_Capacity_kW_DC__c = '10',
+            Pending_Small_CS_Capacity__c = 10,
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 32,
             Total_System_Size_kW_AC__c = 996,
@@ -140,7 +140,7 @@ public with sharing class SharedSolarSystemHandlerTest {
             Product__c = normalCSProduct.Id,
             Utility_NMC_Tariff__c = everbillNMC.Id,
             Reserved_Anchor_Capacity__c = 100,
-            Reserved_Capacity_kW_DC__c = '10',
+            Pending_Small_CS_Capacity__c = 10,
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 1445.86,
             Total_System_Size_kW_AC__c = 996,
@@ -769,13 +769,13 @@ public with sharing class SharedSolarSystemHandlerTest {
         new SharedSolarSystemHandler().execute(null);
         Test.stopTest();
         Shared_Solar_System__c sssUpdated = [
-            SELECT Id, Capacity_Committed_kW_DC__c, Anchor_Capacity_Reserved__c, Reserved_Capacity_kW_DC__c
+            SELECT Id, Capacity_Committed_kW_DC__c, Anchor_Capacity_Reserved__c, Pending_Small_CS_Capacity__c
             FROM Shared_Solar_System__c
             WHERE Name = 'SSS 2'
             LIMIT 1
         ];
         System.assertEquals(sumComplete, sssUpdated.Capacity_Committed_kW_DC__c);
-        System.assertEquals(String.valueOf(sumReserved), sssUpdated.Reserved_Capacity_kW_DC__c);
+        System.assertEquals(sumReserved, sssUpdated.Pending_Small_CS_Capacity__c);
     }
     
     @IsTest

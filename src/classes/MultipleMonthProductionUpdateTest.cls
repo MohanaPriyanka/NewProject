@@ -52,7 +52,7 @@ public class MultipleMonthProductionUpdateTest {
             new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',
                 Service_Territory__c = 'SEMA',
                 Open__c = true,
-                Reserved_Capacity_kW_DC__c = '0',
+                Pending_Small_CS_Capacity__c = 0,
                 Capacity_Committed_kW_DC__c = 0,
                 Total_System_Size_kWh_DC__c = 1445.86,
                 Total_System_Size_kW_AC__c  = 996,

@@ -130,6 +130,8 @@ public with sharing class ClientInvoiceGeneratorTest {
         }
         insert clientInvoicingMemos;
 
+        Test.startTest();
+
         System.assertEquals(2, subscriptionOrders.size(),
             'Unexpected number of Subscription Orders in testSetup');
         System.assertEquals(2, clientInvoicingMemos.size(),
@@ -243,6 +245,8 @@ public with sharing class ClientInvoiceGeneratorTest {
         invoiceLineItems = [SELECT Id FROM Invoice_Line_Item__c WHERE Invoice__c = :newInvoice.Id];
         System.assertEquals(1, invoiceLineItems.size(),
             'Expected 1 invoice line item on the new invoice via generateLineItem');
+
+        Test.stopTest();
     }
 
     @IsTest

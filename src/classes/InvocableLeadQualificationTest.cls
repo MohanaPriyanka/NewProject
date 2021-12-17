@@ -53,7 +53,7 @@ public with sharing class InvocableLeadQualificationTest {
             Public__c = true,
             Credit_Score_Requirement__c = 650,
             Capacity_Committed_kW_DC__c = 100,
-            Reserved_Capacity_kW_DC__c = '100',
+            Pending_Small_CS_Capacity__c = 100,
             Anchor_Capacity_Reserved__c = 10,
             Reserved_Anchor_Capacity__c = 10,
             Total_System_Size_kWh_DC__c = 500,

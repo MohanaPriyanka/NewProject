@@ -561,7 +561,7 @@
     <fields>
         <fullName>Capacity_Available_to_be_Reserved__c</fullName>
         <externalId>false</externalId>
-        <formula>Total_CS_Capacity_kW_DC_Formula__c - (VALUE(Reserved_Capacity_kW_DC__c) + Capacity_Committed_kW_DC__c)</formula>
+        <formula>Total_CS_Capacity_kW_DC_Formula__c - Pending_Small_CS_Capacity__c + Capacity_Committed_kW_DC__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>Small CS Capacity not yet committed or pending; Result of Reserved Small CS Capacity - (Committed and Pending Small CS Capacity)</inlineHelpText>
         <label>Available Small CS Capacity</label>
@@ -1264,6 +1264,20 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Pending_Small_CS_Capacity__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of New, Pending, or QC in Process Small CS subscriptions</inlineHelpText>
+        <label>Pending Small CS Capacity</label>
+        <precision>11</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Picklist__c</fullName>
         <description>This is the name of the entity that we are servicing a shared solar system on behalf of.</description>
         <externalId>false</externalId>
@@ -1761,9 +1775,8 @@ Total_System_Size_kWh_DC__c
     <fields>
         <fullName>Total_Capacity_Committed_Reserved__c</fullName>
         <externalId>false</externalId>
-        <formula>Capacity_Committed_kW_DC__c +  Reserved_Capacity_Integer__c</formula>
+        <formula>Capacity_Committed_kW_DC__c +  Pending_Small_CS_Capacity__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Committed Capacity + Reserved Capacity</inlineHelpText>
         <label>Total Capacity Committed/Reserved</label>
         <precision>18</precision>
         <required>false</required>

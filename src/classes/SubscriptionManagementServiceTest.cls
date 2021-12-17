@@ -17,7 +17,7 @@ public class SubscriptionManagementServiceTest {
             Service_Territory__c = 'SEMA',
             Service_Territories__c = 'SEMA',
             Open__c = true,
-            Reserved_Capacity_kW_DC__c = '10',
+            Pending_Small_CS_Capacity__c = 10,
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 1095.84,
             Total_System_Size_kW_AC__c  = 996,
