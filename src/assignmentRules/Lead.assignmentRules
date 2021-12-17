@@ -19,7 +19,7 @@
             </criteriaItems>
         </ruleEntry>
         <ruleEntry>
-            <assignedTo>CSBD_Partners</assignedTo>
+            <assignedTo>Partner_Prospect_Request</assignedTo>
             <assignedToType>Queue</assignedToType>
             <criteriaItems>
                 <field>Lead.Product_Interest__c</field>
