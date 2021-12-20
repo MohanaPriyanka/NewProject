@@ -774,9 +774,9 @@ CASE(TEXT(Cancellation_Reason__c),
                     <label>Lack of Payment - Default</label>
                 </value>
                 <value>
-                    <fullName>Lack of Payment - Unhappy with BW Service</fullName>
+                    <fullName>Lack of Payment - Unhappy with customer service/servicing</fullName>
                     <default>false</default>
-                    <label>Lack of Payment - Unhappy with BW Service</label>
+                    <label>Lack of Payment - Unhappy with customer service/servicing</label>
                 </value>
                 <value>
                     <fullName>Lack of Payment - Does Not Understand Product</fullName>
@@ -792,6 +792,16 @@ CASE(TEXT(Cancellation_Reason__c),
                     <fullName>Lack of Payment - Financial Hardship</fullName>
                     <default>false</default>
                     <label>Lack of Payment - Financial Hardship</label>
+                </value>
+                <value>
+                    <fullName>Lack of Payment - Business Sold/Out of Business</fullName>
+                    <default>false</default>
+                    <label>Lack of Payment - Business Sold/Out of Business</label>
+                </value>
+                <value>
+                    <fullName>Lack of Payment - Customer Moved</fullName>
+                    <default>false</default>
+                    <label>Lack of Payment - Customer Moved</label>
                 </value>
                 <value>
                     <fullName>Lack of Payment - Unable to Establish Communication</fullName>
@@ -819,19 +829,29 @@ CASE(TEXT(Cancellation_Reason__c),
                     <label>Does Not Understand Product</label>
                 </value>
                 <value>
+                    <fullName>Ineligible account</fullName>
+                    <default>false</default>
+                    <label>Ineligible account</label>
+                </value>
+                <value>
                     <fullName>Product Does Not Meet Needs</fullName>
                     <default>false</default>
                     <label>Product Does Not Meet Needs</label>
                 </value>
                 <value>
-                    <fullName>Unhappy with BW Service</fullName>
+                    <fullName>Transferred Servicers</fullName>
                     <default>false</default>
-                    <label>Unhappy with BW Service</label>
+                    <label>Transferred Servicers</label>
                 </value>
                 <value>
-                    <fullName>Unable to Establish Communication</fullName>
+                    <fullName>Unauthorized Enrollment/Improper Sale</fullName>
                     <default>false</default>
-                    <label>Unable to Establish Communication</label>
+                    <label>Unauthorized Enrollment/Improper Sale</label>
+                </value>
+                <value>
+                    <fullName>Unhappy with customer service/servicing</fullName>
+                    <default>false</default>
+                    <label>Unhappy with customer service/servicing</label>
                 </value>
                 <value>
                     <fullName>Financial Hardship</fullName>
@@ -847,6 +867,12 @@ CASE(TEXT(Cancellation_Reason__c),
                     <fullName>Other</fullName>
                     <default>false</default>
                     <label>Other</label>
+                </value>
+                <value>
+                    <fullName>Unable to Establish Communication</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Unable to Establish Communication</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -8509,6 +8535,89 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <active>true</active>
         <label>Property</label>
         <picklistValues>
+            <picklist>Cancellation_Reason__c</picklist>
+            <values>
+                <fullName>Business Sold%2FOut of Business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Moved</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Death</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Does Not Understand Product</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Financial Hardship</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ineligible account</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of Payment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of Payment - Business Sold%2FOut of Business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of Payment - Customer Moved</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of Payment - Does Not Understand Product</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of Payment - Financial Hardship</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of Payment - Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of Payment - Product Does Not Meet Needs</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of Payment - Unable to Establish Communication</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of Payment - Unhappy with customer service%2Fservicing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Does Not Meet Needs</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Transferred Servicers</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unauthorized Enrollment%2FImproper Sale</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unhappy with customer service%2Fservicing</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Client_Brand_Key__c</picklist>
             <values>
                 <fullName>AmpBlack</fullName>
@@ -8593,73 +8702,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
             </values>
             <values>
                 <fullName>Word of mouth</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Cancellation_Reason__c</picklist>
-            <values>
-                <fullName>Business Sold%2FOut of Business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Moved</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Death</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Does Not Understand Product</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Financial Hardship</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lack of Payment</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lack of Payment - Does Not Understand Product</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lack of Payment - Financial Hardship</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lack of Payment - Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lack of Payment - Product Does Not Meet Needs</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lack of Payment - Unable to Establish Communication</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lack of Payment - Unhappy with BW Service</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Product Does Not Meet Needs</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Unable to Establish Communication</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Unhappy with BW Service</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
