@@ -193,10 +193,6 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Cancellation_Fees_Invoiced__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>Date_Removed_from_Project__c</field>
             </layoutItems>
         </layoutColumns>
@@ -204,10 +200,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Date_Cancellation_Email_Sent__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Cancellation_Explanation__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
