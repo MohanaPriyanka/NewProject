@@ -729,28 +729,6 @@ IMAGE(&quot;/resource/1553274837000/Crown_Icon&quot;, &quot;crown&quot;),
         <type>TextArea</type>
     </fields>
     <fields>
-        <fullName>Cancellation_Explanation__c</fullName>
-        <description>This text is used in the cancellation email.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>This text is used in the cancellation email.</inlineHelpText>
-        <label>Cancellation Explanation</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>TextArea</type>
-    </fields>
-    <fields>
-        <fullName>Cancellation_Fees_Invoiced__c</fullName>
-        <externalId>false</externalId>
-        <label>Cancellation Fees Invoiced</label>
-        <precision>7</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Cancellation_Reason_External__c</fullName>
         <externalId>false</externalId>
         <formula>IF(

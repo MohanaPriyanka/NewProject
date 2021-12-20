@@ -26,7 +26,6 @@ public without sharing class CSOpportunityFactory {
                 Opportunity opp = new Opportunity(
                     AccountId = propertyAccountId,
                     Shared_Solar_System__c = sss.Id,
-                    Reserved_System_Capacity_kW_DC2__c = sss.Reserved_Capacity_kW_DC__c,
                     Product__c = sss.Product__c,
                     System_Assigned__c = true,
                     NMC_Tariff__c = sss.Utility_NMC_Tariff__c,

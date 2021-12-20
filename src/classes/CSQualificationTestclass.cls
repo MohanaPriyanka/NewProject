@@ -108,7 +108,7 @@ public class CSQualificationTestclass {
             Service_Territory__c = 'Hudson Valley',
             Service_Territories__c = 'Hudson Valley',
             Open__c = true,
-            Reserved_Capacity_kW_DC__c = '10',
+            Pending_Small_CS_Capacity__c = 10,
             Total_System_Size_kWh_DC__c = 1445.86,
             Total_System_Size_kW_AC__c = 996,
             Utility__c = nyseg.Id,
@@ -295,6 +295,7 @@ public class CSQualificationTestclass {
 
         System.assertEquals('Unqualified', checkLead.Status, 'Lead status should be Unqualified');
         System.assertNotEquals(null, checkLead.Personal_Credit_Report__c, 'Lead should have an attached personal credit report');
+
 
         System.assertEquals('200', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score__c, 'Credit score on lead personal credit report should be 200');
         System.assertEquals(true, checkLead.Unqualified_due_to_FICO__c, 'Lead should be flagged as Unqualified due to FICO');

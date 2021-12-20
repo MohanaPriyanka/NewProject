@@ -22,7 +22,7 @@ public inherited sharing class SharedSolarSystemsSelector {
                 Client_Acquisition_Contract__c, Client_Account__c, Client_Account__r.Name, Product__c,
                 Product__r.Sizing_Method__c, Product__r.Customer_Subscription_Type__c, Product__r.Ignore_Load_Zones_When_Qualifying__c,
                 Project_Capacity_Available_kW_DC__c, Estimated_COD_Date_Manual__c, Service_Territories__c, RiskCalc_Minimum__c,
-                Reserved_Capacity_kW_DC__c, Service_Territory__c, Utility__c, Utility__r.Number_of_Decimal_Places__c,
+                Pending_Small_CS_Capacity__c, Service_Territory__c, Utility__c, Utility__r.Number_of_Decimal_Places__c,
                 Expected_Yield_kWh_kW__c, Utility_NMC_Tariff__c, Utility_NMC_Tariff__r.Size_Ratio__c, NMC_Value__c,
                 Credit_Score_Requirement__c, Assignment_Order__c, Maximum_Subscription_Capacity_kWDC__c,
                 BWC_Project_Entity_Manual__c, Total_System_Size_kWh_DC__c,
@@ -117,7 +117,7 @@ public inherited sharing class SharedSolarSystemsSelector {
     public Map<Id, Shared_Solar_System__c> getAllSSSMap() {
         return new Map<Id, Shared_Solar_System__c>([
             SELECT Id, Anchor_Capacity_Reserved__c, Capacity_Committed_kW_DC__c,
-                Reserved_Capacity_kW_DC__c, Total_CS_Capacity__c, Maximum_Subscription_Capacity_kWDC__c,
+                Pending_Small_CS_Capacity__c, Total_CS_Capacity__c, Maximum_Subscription_Capacity_kWDC__c,
                 Reserved_Anchor_Capacity__c, Name, Stage__c, Pending_Demand_Capacity__c, Committed_Demand_Capacity__c,
                 CS_Services_Type__c, Client_Management_Contract__c,
                 Client_Acquisition_Contract__c,Management_Revenue_Start_Date__c, Customer_Assignment_Date__c,
@@ -131,7 +131,7 @@ public inherited sharing class SharedSolarSystemsSelector {
             SELECT Id, Name, Maximum_Subscription_Cost__c, Billing_Method__c, Product__r.Name, Product__r.Parent_Product__c,
                 Product__c, Product__r.Sizing_Method__c, Product__r.Customer_Subscription_Type__c, Product__r.Ignore_Load_Zones_When_Qualifying__c,
                 Capacity_Available_to_be_Reserved__c, Project_Capacity_Available_kW_DC__c, Estimated_COD_Date_Manual__c,
-                Service_Territories__c, RiskCalc_Minimum__c, Reserved_Capacity_kW_DC__c, Service_Territory__c, Utility__c,
+                Service_Territories__c, RiskCalc_Minimum__c, Pending_Small_CS_Capacity__c, Service_Territory__c, Utility__c,
                 Utility__r.Number_of_Decimal_Places__c,Expected_Yield_kWh_kW__c, Utility_NMC_Tariff__c,
                 Utility_NMC_Tariff__r.Size_Ratio__c, NMC_Value__c,Credit_Score_Requirement__c, Assignment_Order__c,
                 Maximum_Subscription_Capacity_kWDC__c,Available_SMB_Underwriting_Method_FICO__c, Available_SMB_Underwriting_Method_Docs__c,
@@ -174,7 +174,7 @@ public inherited sharing class SharedSolarSystemsSelector {
 
     public List<Shared_Solar_System__c> getSSSWithActiveUASes(Set<Id> sssList) {
         return [
-            SELECT Id, Name, Reserved_Capacity_kW_DC__c, Capacity_Committed_kW_DC__c, Anchor_Capacity_Reserved__c, Reserved_Anchor_Capacity__c,
+            SELECT Id, Name, Pending_Small_CS_Capacity__c, Capacity_Committed_kW_DC__c, Anchor_Capacity_Reserved__c, Reserved_Anchor_Capacity__c,
                 Stage__c, Utility__r.Average_Demand_Threshold__c,Pending_Demand_Capacity__c, Committed_Demand_Capacity__c,
                 Demand_Customer_System_Utilization__c,Pending_Anchor_Capacity__c, (
                 SELECT Id, Customer_Group__c, Opportunity__r.Customer_Sub_Group__c, Shared_Solar_System__r.Name,
