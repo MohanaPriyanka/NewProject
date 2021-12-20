@@ -460,11 +460,6 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
-            <field>Cancellation_Fees_Invoiced__c</field>
-            <table>Account</table>
-        </columns>
-        <columns>
-            <checkedByDefault>false</checkedByDefault>
             <field>Account_Number__c</field>
             <table>Account</table>
         </columns>
