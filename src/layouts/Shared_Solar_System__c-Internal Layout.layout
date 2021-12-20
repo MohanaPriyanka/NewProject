@@ -343,7 +343,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>Reserved_Capacity_kW_DC__c</field>
+                <field>Pending_Small_CS_Capacity__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>

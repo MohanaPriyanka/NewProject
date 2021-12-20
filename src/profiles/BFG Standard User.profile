@@ -1251,6 +1251,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ContentMailerServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ContentService</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3396,6 +3400,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>SubscriptionTransferServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SystemCapacityRollupCalculator</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -33716,6 +33724,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Pending_Demand_Capacity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Pending_Small_CS_Capacity__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

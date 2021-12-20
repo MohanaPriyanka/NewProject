@@ -135,7 +135,7 @@ public without sharing class SystemCapacityRollupCalculator {
      * @param sss Shared_Solar_System__c record in question
      */
     private void registerCapacityChanges(Shared_Solar_System__c sss) {
-        updateSystemField(sss, Shared_Solar_System__c.Reserved_Capacity_kW_DC__c, String.valueOf(sumCapacity(pendingSmallCSCapacityList)));
+        updateSystemField(sss, Shared_Solar_System__c.Pending_Small_CS_Capacity__c, sumCapacity(pendingSmallCSCapacityList));
         updateSystemField(sss, Shared_Solar_System__c.Capacity_Committed_kW_DC__c, sumCapacity(committedSmallCSCapacityList));
         updateSystemField(sss, Shared_Solar_System__c.Pending_Anchor_Capacity__c, sumCapacity(pendingAnchorCapacityList));
         updateSystemField(sss, Shared_Solar_System__c.Anchor_Capacity_Reserved__c, sumCapacity(committedAnchorCapacityList));

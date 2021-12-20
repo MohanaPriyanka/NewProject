@@ -76,7 +76,7 @@ public with sharing class AllocationScheduleServiceTest {
             Service_Territories__c = 'SEMA',
             Open__c = true,
             Billing_Method__c = 'NMC',
-            Reserved_Capacity_kW_DC__c = '10',
+            Pending_Small_CS_Capacity__c = 10,
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 1445.86,
             Total_System_Size_kW_AC__c = 1000,

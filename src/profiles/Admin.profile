@@ -1223,11 +1223,19 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>SubscriptionTransferServiceTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>SystemBillsSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>SystemBillsSelectorTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SystemCapacityRollupCalculator</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -26014,6 +26022,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Pending_Demand_Capacity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Shared_Solar_System__c.Pending_Small_CS_Capacity__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -50880,6 +50893,10 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>EditTranslation</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>EinsteinArticleRecUser</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
