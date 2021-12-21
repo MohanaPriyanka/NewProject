@@ -623,19 +623,6 @@ null, Annual_Electricity_Cost__c/NMC_Value__c)</formula>
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Annual_Cost_of_Electricity_UL__c</fullName>
-        <description>Field used when the customer has multiple utility accounts</description>
-        <externalId>false</externalId>
-        <label>Annual Cost of Electricity (UL)</label>
-        <precision>12</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Annual_Electricity_Cost2__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Enter Annual Electricity Cost of the total kWh being sized. If Residential Solar is already installed please enter cost of excess uncovered kWh. If not, please enter total annual cost of electricity.</inlineHelpText>
@@ -761,20 +748,6 @@ null, Annual_Electricity_Cost__c/NMC_Value__c)</formula>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>DateTime</type>
-    </fields>
-    <fields>
-        <fullName>Anticipated_NMC_Allocation_in_kWh__c</fullName>
-        <externalId>false</externalId>
-        <formula>Shared_Solar_System__r.Expected_Yield_kWh_kW__c  *  CS_Capacity_Allocated__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Anticipated NMC Allocation in kWh</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>1</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Anticipated_Release_Date__c</fullName>
@@ -1185,25 +1158,6 @@ false
         <visibleLines>3</visibleLines>
     </fields>
     <fields>
-        <fullName>Calculated_Subscription_Size__c</fullName>
-        <externalId>false</externalId>
-        <formula>if( 
-
-Annual_Consumption__c &gt; 0 , Annual_Consumption__c   / Shared_Solar_System__r.Expected_Yield_kWh_kW__c * Subscription__c,
-
- Annual_Consumption_kWh__c / Shared_Solar_System__r.Expected_Yield_kWh_kW__c * Subscription__c
-
-  )</formula>
-        <label>Calculated Subscription Size (kW DC)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Call_Date__c</fullName>
         <externalId>false</externalId>
         <label>Call Date</label>
@@ -1241,43 +1195,6 @@ Annual_Consumption__c &gt; 0 , Annual_Consumption__c   / Shared_Solar_System__r.
         <trackTrending>false</trackTrending>
         <type>LongTextArea</type>
         <visibleLines>15</visibleLines>
-    </fields>
-    <fields>
-        <fullName>Capacity_Alarm__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(
-  
- System_Capacity_Available_kW_DC__c &gt; ( Shared_Solar_System__r.Total_CS_Capacity__c * 0.5), 
-
-IMAGE(&quot;servlet/servlet.FileDownload?file=015j00000012xaA&quot;, &quot;Available Capacity&quot;),
-
-IF(
-AND(
-
-System_Capacity_Available_kW_DC__c &lt; (Shared_Solar_System__r.Total_CS_Capacity__c *   0.5), 
-System_Capacity_Available_kW_DC__c &gt; (Shared_Solar_System__r.Total_CS_Capacity__c *   0.25)),
-
-IMAGE(&quot;servlet/servlet.FileDownload?file=015j00000012xa5&quot;, &quot;Under 1/2 Capacity&quot;),
-
-IF(
-AND(
-
-System_Capacity_Available_kW_DC__c &lt; (Shared_Solar_System__r.Total_CS_Capacity__c *   0.25), 
-System_Capacity_Available_kW_DC__c   &gt; 1),
-
-IMAGE(&quot;servlet/servlet.FileDownload?file=015j00000012xa0&quot;, &quot;Close to Full&quot;),
-
-
-
-
-Null)))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Capacity Alarm</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Channel_Partner_Account__c</fullName>
@@ -2312,101 +2229,6 @@ TEXT(DAY(Commencement_Date__c))
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>Disbursal_1_Contract_Signature_Checkbox__c</fullName>
-        <externalId>false</externalId>
-        <label>XXXDisbursal Date (Contract Signature)</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Disbursal_1_Contract_Signature__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(text(StageName)= &quot;Cancelled&quot;,0, IF(text(StageName)= &quot;Expired&quot;,0, IF(DOER_Solar_Loan__c = TRUE, (Requested_Loan_Amount__c * 0.35), IF(OR( State_ab__c = &quot;NC&quot;, State_ab__c= &quot;SC&quot;),(Requested_Loan_Amount__c * 0.3), (Requested_Loan_Amount__c * 0.3)))))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXXDisbursal Amount (Contract Signature)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Disbursal_2_Mechanical_Install_Checkbox__c</fullName>
-        <externalId>false</externalId>
-        <label>XXXDisbursal Date (Mechanical Install)</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Disbursal_2_Mechanical_Installation__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(or(text(StageName) = &quot;Cancelled&quot;,text(StageName) = &quot;Expired&quot;,  DOER_Solar_Loan__c = True),0, IF(OR( State_ab__c = &quot;NC&quot;, State_ab__c= &quot;SC&quot;),( Requested_Loan_Amount__c * 0.6),  Requested_Loan_Amount__c * 0.6))</formula>
-        <label>XXXDisbursal Amount (Mech. Installation)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Disbursal_3_Full_Install_Checkbox__c</fullName>
-        <externalId>false</externalId>
-        <label>XXXDisbursal Date (Interconnect)</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Disbursal_3_Full_Install__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(text(StageName)= &quot;Cancelled&quot;,0, IF(text(StageName)= &quot;Expired&quot;,0, IF(DOER_Solar_Loan__c = TRUE, (Requested_Loan_Amount__c* 0.65), (Requested_Loan_Amount__c* 0.1))))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXXDisbursal Amount (Interconnect)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Disbursal_Type_Contract__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>THIS WILL SEND THE DISBURSAL EMAIL (either check or ACH)</inlineHelpText>
-        <label>XXXDisbursal Type (Contract Signature)</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Check Disbursal</fullName>
-                    <default>false</default>
-                    <label>Check Disbursal</label>
-                </value>
-                <value>
-                    <fullName>ACH Disbursal</fullName>
-                    <default>false</default>
-                    <label>ACH Disbursal</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
         <fullName>Discount__c</fullName>
         <externalId>false</externalId>
         <formula>ROUND(Product__r.NMC_Discount__c,2)</formula>
@@ -3044,23 +2866,6 @@ IF(or(ISBLANK(Annual_Independent_Income__c), income_based_loan_support__c = Fals
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Installation_Queue_Duration__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF( 
-ISBLANK(Disbursal_3_Full_Install_Checkbox__c)=true, 
-TODAY()-Contract_Close_Date__c, 
-Disbursal_3_Full_Install_Checkbox__c - Contract_Close_Date__c 
-)</formula>
-        <label>Installation Queue Duration</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
         <unique>false</unique>
     </fields>
     <fields>
@@ -5436,19 +5241,6 @@ IF((Partner_tag_lookup__r.RL_Commission_Structure__c*System_Size__c)&gt;=Partner
         <type>TextArea</type>
     </fields>
     <fields>
-        <fullName>Recipient_Status__c</fullName>
-        <externalId>false</externalId>
-        <formula>&quot;See DocuSign_Recipient__r.dsfs__Recipient_Status__c&quot;</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Retired to free up Salesforce limits</inlineHelpText>
-        <label>XXXRecipient Status</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Referral_Checkbox__c</fullName>
         <externalId>false</externalId>
         <formula>IF(NOT(ISBLANK( Customer_Referral__c )), TRUE, FALSE)</formula>
@@ -6902,49 +6694,6 @@ IF((Partner_tag_lookup__r.RL_Commission_Structure__c*System_Size__c)&gt;=Partner
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>System_Capacity_Available_kW_DC__c</fullName>
-        <externalId>false</externalId>
-        <formula>Shared_Solar_System__r.Capacity_Available_to_be_Reserved__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Capacity Available that has not yet been reserved or committed.</inlineHelpText>
-        <label>System Capacity Available  (kW DC)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>System_Capacity_Committed_kW_DC__c</fullName>
-        <externalId>false</externalId>
-        <formula>Shared_Solar_System__r.Capacity_Committed_kW_DC__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Total kWs allocated to customers with fully completed contracts.</inlineHelpText>
-        <label>System Capacity Committed (kW DC)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>System_Capacity_Reserved_kW_DC__c</fullName>
-        <externalId>false</externalId>
-        <formula>Shared_Solar_System__r.Reserved_Capacity_kW_DC__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Total kWs allocated to customers which have not yet signed a contract.</inlineHelpText>
-        <label>System Capacity Reserved (kW DC)</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>System_Information_Verified__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -7417,21 +7166,6 @@ TEXT( Load_Zone_Utility_4__c  ) = &apos;Manual Lookup Required&apos;,
         <type>Date</type>
     </fields>
     <fields>
-        <fullName>Weighted_FICO_Average__c</fullName>
-        <externalId>false</externalId>
-        <formula>VALUE (Personal_Credit_Report2__r.LASERCA__Credit_Score_TransUnion__c) *  X25kW_Slug_Total__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Weighted FICO Average</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <securityClassification>Restricted</securityClassification>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Winner_Selection_Actual_Date__c</fullName>
         <externalId>false</externalId>
         <label>Winner Selection Actual Date</label>
@@ -7450,19 +7184,6 @@ TEXT( Load_Zone_Utility_4__c  ) = &apos;Manual Lookup Required&apos;,
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>X25kW_Slug_Total__c</fullName>
-        <externalId>false</externalId>
-        <label>25kW Slug Total</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Year__c</fullName>
