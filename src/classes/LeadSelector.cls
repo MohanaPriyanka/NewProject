@@ -1,6 +1,6 @@
 /**
  * @description Created By: peteryao on 2019-04-30
- * Tested by: LeadSelectorTest
+ * Tested by: LeadSelectorTest, CSLeadsDuplicateServiceTest, CSLeadsRESTControllerV2Test
  **/
 @SuppressWarnings('PMD.ApexCRUDViolation, PMD.ApexDoc')
 public without sharing class LeadSelector {
@@ -23,6 +23,7 @@ public without sharing class LeadSelector {
         'LASERCA__Home_City__c',
         'LASERCA__Home_State__c',
         'LASERCA__Home_Zip__c',
+        'LASERCA__Birthdate__c',
         'LeadSource',
         'LoadZone__c',
         'Manual_Campaign_ID__c',
@@ -197,17 +198,11 @@ public without sharing class LeadSelector {
     }
 
     public Lead selectOneForContractCreation(Id leadId) {
-        List<Lead> leads = [
+        return [
             SELECT Id, Customer_Signed_Date__c, Product__c, Product__r.Generic_Terms_Conga_Template__c, Moody_s_Risk_Calc__c, (SELECT Id FROM Accounts__r ORDER BY CreatedDate ASC LIMIT 1)
             FROM Lead
             WHERE Id = :leadId
         ];
-
-        if (leads.isEmpty()) {
-            return null;
-        }
-
-        return leads[0];
     }
 
     public Lead selectOneForStatusUpdate(Id leadId) {

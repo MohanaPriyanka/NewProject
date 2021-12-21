@@ -62,7 +62,7 @@
                       name="streetAddress"
                       class="slds-var-m-bottom_small"
                       label="Street"
-                      field-level-help="This address will be used to perform a soft credit pull. Please ensure the address is associated with applicant."
+                      field-level-help="This address will be used to perform a soft credit pull. Please ensure the address is associated with the applicant, and not a P.O. Box or business address."
                       onchange={genericOnChange}
                       value={restLead.streetAddress}
                       required>
@@ -97,6 +97,18 @@
                       label="ZIP Code"
                       onchange={genericOnChange}
                       value={restLead.zipCode}
+                      required>
+                    </lightning-input>
+                </div>
+                <div class="input-group half">
+                    <lightning-input
+                      name="birthdate"
+                      label="Date of Birth"
+                      onchange={genericOnChange}
+                      field-level-help="Providing date of birth can help find a credit match."
+                      type="date"
+                      value={restLead.birthdate}
+                      class="slds-var-m-bottom_small"
                       required>
                     </lightning-input>
                 </div>

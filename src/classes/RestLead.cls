@@ -1,6 +1,6 @@
 /**
  * Created by jlugo on 2019-07-03.
- * Tested by RestLeadTest
+ * Tested by RestLeadTest, CSLeadsRESTControllerV2Test
  */
 @SuppressWarnings('PMD.StdCyclomaticComplexity,PMD.ExcessivePublicCount,PMD.TooManyFields')
 public without sharing class RestLead {
@@ -36,6 +36,7 @@ public without sharing class RestLead {
     public Boolean noPayment;
     public Integer numberOfContractDocs;    // used in SSF only
     public Datetime mostRecentContractGen;  // used in SSF only
+    public Date birthdate;
 
     @TestVisible
     private static FeatureService featureService = new FeatureService();
@@ -71,6 +72,7 @@ public without sharing class RestLead {
         this.referralEmail = lead.Referral_Email__c;
         this.underwritingCriteria = lead.Underwriting_Criteria__c;
         this.noPayment = lead.No_Payment__c;
+        this.birthdate = lead.LASERCA__Birthdate__c;
     }
 
     public void validateCreateFields() {
@@ -154,6 +156,7 @@ public without sharing class RestLead {
         if (fieldNames.contains('continueApplicationLink')) baseLead.Continue_Application_Link__c = this.continueApplicationLink;
         if (fieldNames.contains('underwritingCriteria')) baseLead.Underwriting_Criteria__c = this.underwritingCriteria;
         if (fieldNames.contains('utilityId')) baseLead.Utility_relationship__c = this.utilityId;
+        if (fieldNames.contains('birthdate')) baseLead.LASERCA__Birthdate__c = this.birthdate;
         updateDerivedFields(new RestLead(baseLead), baseLead);
 
         if (this.utilityId == null && this.eiaId != null) {
@@ -196,7 +199,8 @@ public without sharing class RestLead {
             Continue_Application_Link__c = this.continueApplicationLink,
             Underwriting_Criteria__c = this.underwritingCriteria == null ? 'None' : this.underwritingCriteria,
             No_Payment__c = this.noPayment,
-            Utility_relationship__c = this.utilityId
+            Utility_relationship__c = this.utilityId,
+            LASERCA__Birthdate__c = this.birthdate
         );
         // Since:
         // - all UALs should have the same zip code under a property account (enforced by the UI and business logic),
@@ -399,7 +403,7 @@ public without sharing class RestLead {
             if (fieldNames.contains('billingPostalCode')) baseAccount.BillingPostalCode = this.billingPostalCode;
             if (fieldNames.contains('zuoraPaymentRefId')) baseAccount.Zuora_Payment_Ref_Id__c = this.zuoraPaymentRefId;
             if (fieldNames.contains('zuoraPaymentRefIdExpirationDate')) baseAccount.Zuora_Payment_Ref_Id_Expiration_Date__c = this.zuoraPaymentRefIdExpirationDate;
-            
+
             return baseAccount;
         }
 
@@ -476,7 +480,7 @@ public without sharing class RestLead {
             if(this.rateClass != null) {
                 updateRateClass(this.rateClass, ual);
             }
-            
+
             return ual;
         }
 
@@ -499,7 +503,7 @@ public without sharing class RestLead {
             if (fieldNames.contains('servicePostalCode')) baseUAL.Service_Zip_Code__c = this.servicePostalCode;
             if (fieldNames.contains('annualKWh')) baseUAL.Annual_kWh__c = this.annualKWh;
             if (fieldNames.contains('annualCostOfElectricity')) baseUAL.Annual_Cost_of_Electricity__c = this.annualCostOfElectricity;
-    
+
             if(fieldNames.contains('rateClass')) {
                 if(this.rateClass == null) {
                     baseUAL.Utility_Rate_Class__c = null;
@@ -520,7 +524,7 @@ public without sharing class RestLead {
             } else {
                 rateClasses = rateClassesSelector.selectByName(rateClass);
             }
-            
+
             if(!rateClasses.isEmpty()) {
                 ual.Utility_Rate_Class__c = rateClasses[0].Id;
             } else {
@@ -533,7 +537,7 @@ public without sharing class RestLead {
         }
     }
 
-    
+
     public class RestContentDocument {
         public Id id;
         public Id leadId;
@@ -602,7 +606,7 @@ public without sharing class RestLead {
             Map<String, String> requiredFields = new Map<String, String>{
                 'title' => title, 'body' => body
             };
-    
+
             Util.validateStrings(requiredFields);
             validateFileCategory();
         }
@@ -613,7 +617,7 @@ public without sharing class RestLead {
             for(Schema.PicklistEntry pickListVal : fieldResult.getPicklistValues()){
                 validFileCategories.add(pickListVal.getLabel());
             }
-            
+
             if (!validFileCategories.contains(fileCategory)) {
                 throw new Util.BWException('An fileCategory of "' + fileCategory + '" is not of a supported type: ' + String.join(validFileCategories, ', '));
             }
