@@ -731,11 +731,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Opportunity.Annual_Cost_of_Electricity_UL__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Opportunity.Annual_Electricity_Cost2__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -752,11 +747,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.CS_Capacity_Allocated__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Calculated_Subscription_Size__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -897,11 +887,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Utility_Account__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.X25kW_Slug_Total__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1197,16 +1182,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Reacquisition_Start_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Shared_Solar_System__c.Reserved_Capacity_Integer__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Shared_Solar_System__c.Reserved_Capacity_kW_DC__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
