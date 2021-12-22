@@ -155,6 +155,8 @@
                       required>
                     </lightning-input>
                 </div>
+            </div>
+            <div class="form-section">
                 <template if:true={isFicoUnderwriting}>
                     <template if:false={sameHomeAddress}>
                         <div class="input-group half">
@@ -162,6 +164,7 @@
                               name="streetAddress"
                               class="slds-var-m-bottom_small"
                               label="Street"
+                              field-level-help="This address will be used to perform a soft credit pull, please be sure it is associated with you, and not a P.O. Box or business address."
                               onchange={genericOnChange}
                               value={restLead.streetAddress}
                               required>
@@ -200,13 +203,16 @@
                             </lightning-input>
                         </div>
                     </template>
-                    <div class="input-group slds-var-m-top_small">
+                    <div class="input-group half">
                         <lightning-input
-                          class="slds-var-p-left_medium"
-                          type="checkbox"
-                          label="My home address is the same as the property address on my utility account"
-                          checked={sameHomeAddress}
-                          onchange={homeAddressToggle}>
+                          name="birthdate"
+                          label="Date of Birth"
+                          onchange={genericOnChange}
+                          field-level-help="Providing date of birth can help find a credit match."
+                          type="date"
+                          value={restLead.birthdate}
+                          class="slds-var-m-bottom_small"
+                          required>
                         </lightning-input>
                     </div>
                 </template>

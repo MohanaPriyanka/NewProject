@@ -44,8 +44,8 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @track propertyAccount;
     @track stateOptions;
     @track selectedRateClasses = [];
-    @track sameBillingAddress = true;
-    @track sameHomeAddress = true;
+    @track sameBillingAddress = false;
+    @track sameHomeAddress = false;
     @track utilityAccountSection;
     @track isFileUpload;
     @track showUnderwritingOptions;
