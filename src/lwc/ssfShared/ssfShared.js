@@ -108,7 +108,7 @@ const handlePromiseError = (component, promiseRejection, methodName, severity) =
     insertLog({
         className: 'ssf',
         methodName: methodName,
-        message: JSON.stringify(promiseRejection),
+        message: JSON.stringify(promiseRejection, Object.getOwnPropertyNames(promiseRejection)),
         severity: severity
     });
     showGenericErrorToast(component);
