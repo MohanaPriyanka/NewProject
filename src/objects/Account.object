@@ -740,10 +740,12 @@ CASE(TEXT(Cancellation_Reason__c),
 &quot;Business Sold/Out of Business&quot;, &quot;Customer Moved / Out of Business&quot;,
 &quot;Does Not Understand Product&quot;, &quot;Customer Not Satisfied with Product&quot;,
 &quot;Product Does Not Meet Needs&quot;,  &quot;Customer Not Satisfied with Product&quot;,
-&quot;Unhappy with BW Service&quot;,  &quot;Customer Not Satisfied with Product&quot;,
-&quot;Financial Hardship&quot;, &quot;Financial Hardship/Death&quot;,
-&quot;Death&quot;, &quot;Financial Hardship/Death&quot;,
-&quot;Unable to Establish Communication&quot;, &quot;Other&quot;,
+&quot;Unhappy with customer service/servicing&quot;,  &quot;Customer Not Satisfied with Product&quot;,
+&quot;Financial Hardship&quot;, &quot;Financial Hardship&quot;,
+&quot;Death&quot;, &quot;Death&quot;,
+&quot;Ineligible account&quot;, &quot;Ineligible Account&quot;,
+&quot;Unauthorized Enrollment/Improper Sale&quot;, &quot;Ineligible Account&quot;,
+&quot;Transferred Servicers&quot;, &quot;Other&quot;,
 &quot;Other&quot;, &quot;Other&quot;,
 &quot; &quot;) 
 
@@ -762,7 +764,7 @@ CASE(TEXT(Cancellation_Reason__c),
         <label>Cancellation Reason - Internal</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
@@ -869,10 +871,22 @@ CASE(TEXT(Cancellation_Reason__c),
                     <label>Other</label>
                 </value>
                 <value>
+                    <fullName>Lack of Payment - Unhappy with BW Service</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Lack of Payment - Unhappy with BW Service</label>
+                </value>
+                <value>
                     <fullName>Unable to Establish Communication</fullName>
                     <default>false</default>
                     <isActive>false</isActive>
                     <label>Unable to Establish Communication</label>
+                </value>
+                <value>
+                    <fullName>Unhappy with BW Service</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Unhappy with BW Service</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -884,8 +898,30 @@ CASE(TEXT(Cancellation_Reason__c),
         <label>Cancellation Request Date</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Cancelled_By__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>User who enters in cancellation reason and request date</inlineHelpText>
+        <label>Cancelled By</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>User.UserType</field>
+                <operation>equals</operation>
+                <value>Standard</value>
+            </filterItems>
+            <isOptional>true</isOptional>
+        </lookupFilter>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Accounts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>ChannelProgramLevelName</fullName>
@@ -9665,6 +9701,16 @@ $User.Id=&quot;0050a00000Jc6mh&quot;)))</errorConditionFormula>
    )</errorConditionFormula>
         <errorDisplayField>Cancellation_Reason__c</errorDisplayField>
         <errorMessage>Cancellation Reason and Cancellation Request Date need to be filled out at the same time, and the Cancellation Request Date can&apos;t be future dated. Once the customer has requested to cancel, their UASes will be marked Inactive.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Require_Cancelled_By</fullName>
+        <active>true</active>
+        <errorConditionFormula>OR(
+AND(NOT(ISBLANK(Cancelled_By__c)),ISBLANK(Cancellation_Request_Date__c)),
+AND(ISBLANK(Cancelled_By__c), AND(NOT(ISBLANK(Cancellation_Request_Date__c)), Cancellation_Request_Date__c &gt; DATE(2021,11,01)))
+)</errorConditionFormula>
+        <errorDisplayField>Cancelled_By__c</errorDisplayField>
+        <errorMessage>Cancelled By must be entered when the Cancellation Request Date is entered or be blank when there is no Cancellation Request Date</errorMessage>
     </validationRules>
     <webLinks>
         <fullName>APXTConga4__Conga_Composer_OAuth</fullName>
