@@ -292,6 +292,8 @@ public without sharing class LeadSelector {
             FROM Lead
             WHERE EmailBouncedDate != NULL
             AND EmailBouncedDate >= YESTERDAY
+            AND Status != 'Unqualified'
+            AND Status != 'Expired'
         ];
     }
 
