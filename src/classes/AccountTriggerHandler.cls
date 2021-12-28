@@ -6,6 +6,11 @@ public without sharing class AccountTriggerHandler {
     public void onAfterInsert(Map<Id, Account> oldMap, Map<Id, Account> newMap) {
         createZuoraAccounts(newMap.values(), oldMap);
     }
+
+    public void onBeforeUpdate(Map<Id, Account> oldMap, Map<Id, Account> newMap) {
+        CSCancellationService.initiateCancellationApprovalProcess(oldMap, newMap);
+    }
+
     public void onAfterUpdate(Map<Id, Account> oldMap, Map<Id, Account> newMap) {
         createZuoraAccounts(newMap.values(), oldMap);
 

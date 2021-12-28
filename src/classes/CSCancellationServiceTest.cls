@@ -4,11 +4,10 @@
 
 @IsTest
 public with sharing class CSCancellationServiceTest {
+
     @TestSetup public static void testSetup() {
         CustomerCommunicationHandlerTest.setupData();
     }
-
-    private static final Id cancelledById = [SELECT Id FROM User WHERE UserType = 'Standard' LIMIT 1].Id;
 
     public static void createBills(Date billDate, Id sssID) {
         Schedule_Z__c scheduleZ1 = new Schedule_Z__c(
@@ -487,8 +486,6 @@ public with sharing class CSCancellationServiceTest {
 
         // Assert there are no Schedule Z's that qualify for cancellation
 
-        Date sixMonthsAgo = Date.today().addDays(-181);
-
         List<Schedule_Z_Subscription__c> qualifyingSchedZList = [
             SELECT Id, Utility_Account_Subscription__r.Opportunity__c
             FROM Schedule_Z_Subscription__c
@@ -557,7 +554,7 @@ public with sharing class CSCancellationServiceTest {
                     Id = opportunity.Account.Id,
                     Cancellation_Reason__c = 'Other',
                     Cancellation_Request_Date__c = Date.today(),
-                    Cancelled_By__c = cancelledById
+                    Cancelled_By__c = CSCancellationService.CANCELLED_BY_ID
                 )
             );
         }
@@ -619,7 +616,7 @@ public with sharing class CSCancellationServiceTest {
                     Id = opportunity.Account.Id,
                     Cancellation_Reason__c = 'Other',
                     Cancellation_Request_Date__c = Date.today(),
-                    Cancelled_By__c = cancelledById
+                    Cancelled_By__c = CSCancellationService.CANCELLED_BY_ID
                 )
             );
         }
@@ -1470,7 +1467,7 @@ public with sharing class CSCancellationServiceTest {
 
         acctToUpdate.Cancellation_Reason__c = 'Customer Moved';
         acctToUpdate.Cancellation_Request_Date__c = System.today();
-        acctToUpdate.Cancelled_By__c = cancelledById;
+        acctToUpdate.Cancelled_By__c = CSCancellationService.CANCELLED_BY_ID;
 
         update acctToUpdate;
 
@@ -1502,7 +1499,7 @@ public with sharing class CSCancellationServiceTest {
 
         propAcct1.Cancellation_Reason__c = 'Customer Moved';
         propAcct1.Cancellation_Request_Date__c = System.today();
-        propAcct1.Cancelled_By__c = cancelledById;
+        propAcct1.Cancelled_By__c = CSCancellationService.CANCELLED_BY_ID;
 
         MessagingService.onlyUseActiveTemplates = false;
         update propAcct1;
@@ -1558,7 +1555,7 @@ public with sharing class CSCancellationServiceTest {
             acctIdList.add(acct.Id);
             acct.Cancellation_Reason__c = 'Customer Moved';
             acct.Cancellation_Request_Date__c = System.today();
-            acct.Cancelled_By__c = cancelledById;
+            acct.Cancelled_By__c = CSCancellationService.CANCELLED_BY_ID;
             if (acct.Name == 'Prop Account 2') {
                 acct.Client_Brand_Key__c = 'AmpRed';
             }
@@ -1619,7 +1616,7 @@ public with sharing class CSCancellationServiceTest {
 
         acct.Cancellation_Reason__c = 'Customer Moved';
         acct.Cancellation_Request_Date__c = today;
-        acct.Cancelled_By__c = cancelledById;
+        acct.Cancelled_By__c = CSCancellationService.CANCELLED_BY_ID;
 
         update acct;
 
@@ -1888,6 +1885,19 @@ public with sharing class CSCancellationServiceTest {
 
     private static void useMocks(Boolean featureOn) {
         FeatureService.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new FeatureServiceTest.MockCustomFeatureSelector(featureOn));
+    }
+
+    @IsTest
+    private static void testInitiateCancellationApprovalProcess() {
+        Account acc = [SELECT Id, Cancellation_Reason__c, Cancellation_Request_Date__c, Cancelled_By__c FROM Account LIMIT 1];
+        acc.Cancellation_Request_Date__c = date.today();
+        acc.Cancellation_Reason__c = 'Other';
+        acc.Cancelled_By__c = CSCancellationService.CANCELLED_BY_ID;
+
+        update acc;
+
+        Account updatedAcc = [SELECT Id, Cancellation_Reason_Approval_Status__c FROM Account WHERE Id = :acc.Id LIMIT 1];
+        System.assertEquals('Pending Approval', updatedAcc.Cancellation_Reason_Approval_Status__c);
     }
 
 }
