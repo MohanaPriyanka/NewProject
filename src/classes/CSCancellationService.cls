@@ -42,6 +42,7 @@ public without sharing class CSCancellationService {
             if (acct.Opportunities.isEmpty()){
                 acct.Cancellation_Reason__c = 'Lack of Payment';
                 acct.Cancellation_Request_Date__c = System.today();
+                acct.Cancelled_By__c = [SELECT Id FROM User WHERE LastName = 'API' LIMIT 1].Id;
                 acct.Cancellation_Comments__c = AUTOMATED_CANCELLATION_COMMENT;
                 updatedAccounts.add(acct);
             }
@@ -316,5 +317,30 @@ public without sharing class CSCancellationService {
             'Not sending ' + emails.size() + ' emails because CS Cancellation Emails is turned off via custom setting',
             Logger.WARN
         );
+    }
+
+    public static void initiateCancellationApprovalProcess(Map<Id, Account> oldMap, Map<Id, Account> newMap) {
+        List<Account> cancelledAccounts = getCancelledAccounts(oldMap, newMap);
+
+        if(!cancelledAccounts.isEmpty()) {
+            setApprovalToPending(cancelledAccounts);
+        }
+    }
+
+    private static void setApprovalToPending(List<Account> cancelledAccounts) {
+        for(Account acc : cancelledAccounts) {
+            acc.Cancellation_Reason_Approval_Status__c = 'Pending Approval';
+        }
+    }
+
+    private static List<Account> getCancelledAccounts(Map<Id, Account> oldMap, Map<Id, Account> newMap) {
+        List<Account> cancelledAccounts = new List<Account>();
+        for (Id accountId : newMap.keySet()) {
+            if (oldMap.get(accountId).Cancellation_Request_Date__c == null &&
+                newMap.get(accountId).Cancellation_Request_Date__c != null) {
+                cancelledAccounts.add(newMap.get(accountId));
+            }
+        }
+        return cancelledAccounts;
     }
 }

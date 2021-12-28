@@ -8,6 +8,8 @@ public with sharing class CSCancellationServiceTest {
         CustomerCommunicationHandlerTest.setupData();
     }
 
+    private static final Id cancelledById = [SELECT Id FROM User WHERE UserType = 'Standard' LIMIT 1].Id;
+
     public static void createBills(Date billDate, Id sssID) {
         Schedule_Z__c scheduleZ1 = new Schedule_Z__c(
             Name = '18-0515 Oxford Barrett St. P1',
@@ -554,7 +556,8 @@ public with sharing class CSCancellationServiceTest {
                 new Account(
                     Id = opportunity.Account.Id,
                     Cancellation_Reason__c = 'Other',
-                    Cancellation_Request_Date__c = Date.today()
+                    Cancellation_Request_Date__c = Date.today(),
+                    Cancelled_By__c = cancelledById
                 )
             );
         }
@@ -615,7 +618,8 @@ public with sharing class CSCancellationServiceTest {
                 new Account(
                     Id = opportunity.Account.Id,
                     Cancellation_Reason__c = 'Other',
-                    Cancellation_Request_Date__c = Date.today()
+                    Cancellation_Request_Date__c = Date.today(),
+                    Cancelled_By__c = cancelledById
                 )
             );
         }
@@ -1466,6 +1470,7 @@ public with sharing class CSCancellationServiceTest {
 
         acctToUpdate.Cancellation_Reason__c = 'Customer Moved';
         acctToUpdate.Cancellation_Request_Date__c = System.today();
+        acctToUpdate.Cancelled_By__c = cancelledById;
 
         update acctToUpdate;
 
@@ -1497,6 +1502,7 @@ public with sharing class CSCancellationServiceTest {
 
         propAcct1.Cancellation_Reason__c = 'Customer Moved';
         propAcct1.Cancellation_Request_Date__c = System.today();
+        propAcct1.Cancelled_By__c = cancelledById;
 
         MessagingService.onlyUseActiveTemplates = false;
         update propAcct1;
@@ -1552,6 +1558,7 @@ public with sharing class CSCancellationServiceTest {
             acctIdList.add(acct.Id);
             acct.Cancellation_Reason__c = 'Customer Moved';
             acct.Cancellation_Request_Date__c = System.today();
+            acct.Cancelled_By__c = cancelledById;
             if (acct.Name == 'Prop Account 2') {
                 acct.Client_Brand_Key__c = 'AmpRed';
             }
@@ -1612,6 +1619,7 @@ public with sharing class CSCancellationServiceTest {
 
         acct.Cancellation_Reason__c = 'Customer Moved';
         acct.Cancellation_Request_Date__c = today;
+        acct.Cancelled_By__c = cancelledById;
 
         update acct;
 
@@ -1880,6 +1888,19 @@ public with sharing class CSCancellationServiceTest {
 
     private static void useMocks(Boolean featureOn) {
         FeatureService.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new FeatureServiceTest.MockCustomFeatureSelector(featureOn));
+    }
+
+    @IsTest
+    private static void testInitiateCancellationApprovalProcess() {
+        Account acc = [SELECT Id, Cancellation_Reason__c, Cancellation_Request_Date__c, Cancelled_By__c FROM Account LIMIT 1];
+        acc.Cancellation_Request_Date__c = date.today();
+        acc.Cancellation_Reason__c = 'Other';
+        acc.Cancelled_By__c = cancelledById;
+
+        update acc;
+
+        Account updatedAcc = [SELECT Id, Cancellation_Reason_Approval_Status__c FROM Account WHERE Id = :acc.Id LIMIT 1];
+        System.assertEquals('Pending Approval', updatedAcc.Cancellation_Reason_Approval_Status__c);
     }
 
 }
