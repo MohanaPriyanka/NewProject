@@ -42,6 +42,7 @@ public without sharing class CSCancellationService {
             if (acct.Opportunities.isEmpty()){
                 acct.Cancellation_Reason__c = 'Lack of Payment';
                 acct.Cancellation_Request_Date__c = System.today();
+                acct.Cancelled_By__c = [SELECT Id FROM User WHERE LastName = 'API' LIMIT 1].Id;
                 acct.Cancellation_Comments__c = AUTOMATED_CANCELLATION_COMMENT;
                 updatedAccounts.add(acct);
             }
