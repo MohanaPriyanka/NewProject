@@ -318,29 +318,4 @@ public without sharing class CSCancellationService {
             Logger.WARN
         );
     }
-
-    public static void initiateCancellationApprovalProcess(Map<Id, Account> oldMap, Map<Id, Account> newMap) {
-        List<Account> cancelledAccounts = getCancelledAccounts(oldMap, newMap);
-
-        if(!cancelledAccounts.isEmpty()) {
-            setApprovalToPending(cancelledAccounts);
-        }
-    }
-
-    private static void setApprovalToPending(List<Account> cancelledAccounts) {
-        for(Account acc : cancelledAccounts) {
-            acc.Cancellation_Reason_Approval_Status__c = 'Pending Approval';
-        }
-    }
-
-    private static List<Account> getCancelledAccounts(Map<Id, Account> oldMap, Map<Id, Account> newMap) {
-        List<Account> cancelledAccounts = new List<Account>();
-        for (Id accountId : newMap.keySet()) {
-            if (oldMap.get(accountId).Cancellation_Request_Date__c == null &&
-                newMap.get(accountId).Cancellation_Request_Date__c != null) {
-                cancelledAccounts.add(newMap.get(accountId));
-            }
-        }
-        return cancelledAccounts;
-    }
 }
