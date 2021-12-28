@@ -1890,17 +1890,4 @@ public with sharing class CSCancellationServiceTest {
         FeatureService.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new FeatureServiceTest.MockCustomFeatureSelector(featureOn));
     }
 
-    @IsTest
-    private static void testInitiateCancellationApprovalProcess() {
-        Account acc = [SELECT Id, Cancellation_Reason__c, Cancellation_Request_Date__c, Cancelled_By__c FROM Account LIMIT 1];
-        acc.Cancellation_Request_Date__c = date.today();
-        acc.Cancellation_Reason__c = 'Other';
-        acc.Cancelled_By__c = cancelledById;
-
-        update acc;
-
-        Account updatedAcc = [SELECT Id, Cancellation_Reason_Approval_Status__c FROM Account WHERE Id = :acc.Id LIMIT 1];
-        System.assertEquals('Pending Approval', updatedAcc.Cancellation_Reason_Approval_Status__c);
-    }
-
 }
