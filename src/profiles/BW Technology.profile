@@ -14573,6 +14573,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.Cancellation_Reason_Approval_Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.Cancellation_Reason_External__c</field>
         <readable>true</readable>
     </fieldPermissions>
