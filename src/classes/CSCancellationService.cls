@@ -18,7 +18,7 @@
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class CSCancellationService {
     @TestVisible
-    private static final Id CANCELLED_BY_ID = [SELECT Id FROM User WHERE UserType = 'Standard' LIMIT 1].Id;
+    private static final Id CANCELLED_BY_ID = [SELECT Id FROM User WHERE LastName = 'API' LIMIT 1].Id;
     private static final String AUTOMATED_CANCELLATION_COMMENT = 'Automated Cancellation';
     @TestVisible
     private static final String CANCELLATION_PARAGRAPH_TWO_LABEL = '{!Cancellation_Paragraph_Two__c}';
