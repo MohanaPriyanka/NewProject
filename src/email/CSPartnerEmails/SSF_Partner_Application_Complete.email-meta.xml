@@ -4,6 +4,7 @@
     <encodingKey>ISO-8859-1</encodingKey>
     <name>SSF Partner: Application Complete</name>
     <style>none</style>
+    <subject>Application Complete</subject>
     <type>custom</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>
