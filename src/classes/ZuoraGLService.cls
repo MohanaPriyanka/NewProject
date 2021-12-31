@@ -32,23 +32,24 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         ZuoraDataQueryService.callFromApex(queryString, methodToRunAfter);
     }
 
-    @SuppressWarnings('PMD.VariableNamingConventions,PMD.FieldNamingConventions')
+    @SuppressWarnings('PMD.VariableNamingConventions,PMD.FieldNamingConventions,PMD.TooManyFields')
     private class GeneralLedgerItem {
-        public String Project;
-        public String Client;
-        public String CustomerAccount;
-        public String CRMId;
-        public Date GLDate;
-        public Datetime GLDatetime;
-        public Decimal Amount;
-        public String ReasonCode;
-        public String ExternalId;
-        public String Gateway;
-        public String Lockbox;
-        public String PaymentMethod;
-        public String ArchivedChargentData;
-        public String AppliedRecordId;
-        public String Comments;
+        private String Project;
+        private String Client;
+        private String CustomerAccount;
+        private String CRMId;
+        private Date GLDate;
+        private Datetime GLDatetime;
+        private Decimal Amount;
+        private String ReasonCode;
+        private String ExternalId;
+        private String Gateway;
+        private String Lockbox;
+        private String PaymentMethod;
+        private String ArchivedChargentData;
+        private String AppliedRecordId;
+        private String Comments;
+        private String ReferenceId;
     }
 
     public void executePostQueryJob(ZuoraDataQueryService.ProcessingParameter method, String response) {
@@ -164,7 +165,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         Logger.flushLogs();
     }
 
-    public Map<String, String> getDepositAccountToClientMap() {
+    private Map<String, String> getDepositAccountToClientMap() {
         Map<String, String> depositAccountToClientMap = new Map<String, String>();
         GatewaySelector gatewaySelector = new GatewaySelector();
         List<Zuora__PaymentGateway__c> zuoraGateways = gatewaySelector.getAllZuoraGateways();
@@ -231,6 +232,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
             entry.External_Id__c = ledger.ExternalId;
             entry.Customer_Account__c = ledger.CustomerAccount;
             entry.Applied_Record_Id__c = ledger.AppliedRecordId;
+            entry.Reference_Id__c = ledger.ReferenceId;
 
             populateJournalEntry(objectType, ledger, entry);
             journalEntriesMap.put(entry.External_Id__c, entry);
