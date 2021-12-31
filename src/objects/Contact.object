@@ -294,17 +294,6 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Account_Product_Line__c</fullName>
-        <externalId>false</externalId>
-        <formula>Account.Product_Line_Formula__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Account Product Line</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Active_Communities_User__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
