@@ -112,7 +112,7 @@
                 <br>
                 Please make a payment as soon as possible.&nbsp;<br>
                 <br>
-                To check the status of your account, make a one time payment online, or to sign up for recurring payments, please login to your Perch Customer Portal.&nbsp;You can also access your portal <a alias="Perch Customer Portal" conversion="false" data-linkto="https://" href="https://communitysolar.perchenergy.com/" style="color:#2774EE;text-decoration:none;" title="Perch Customer Portal"><span style="color:#ff0000;">here</span></a>.<br>
+                To check the status of your account, make a one time payment online, or to sign up for recurring payments, please login to your Perch Customer Portal. You can also access your portal <a alias="Perch Customer Portal" conversion="false" data-linkto="https://" href="https://portal.perchenergy.com/customerportal/" style="color:#2774EE;text-decoration:none;" title="Perch Customer Portal"><span style="color:#ff0000;">here</span></a>.<br>
                 <br>
                 <b>{{{Recipient.Custom_Email_Text}}}</b><br>
                 <br>
