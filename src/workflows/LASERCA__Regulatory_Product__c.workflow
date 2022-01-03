@@ -2,7 +2,7 @@
 <Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
     <alerts>
         <fullName>OFAC_Hit_Alert</fullName>
-        <ccEmails>partnersupport@bluewavesolar.com</ccEmails>
+        <ccEmails>partnersupport@perchenergy.com</ccEmails>
         <description>OFAC Hit Alert</description>
         <protected>false</protected>
         <recipients>
