@@ -464,9 +464,9 @@
     <fields>
         <fullName>Account_Owner__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
-        <description>This is used for internal BlueWave Sales tracking efforts.</description>
+        <description>This is used for internal Perch Sales tracking efforts.</description>
         <externalId>false</externalId>
-        <inlineHelpText>This is used for internal BlueWave Sales tracking efforts.</inlineHelpText>
+        <inlineHelpText>This is used for internal Perch Sales tracking efforts.</inlineHelpText>
         <label>Account Owner at Origination</label>
         <referenceTo>User</referenceTo>
         <relationshipName>Opportunities1</relationshipName>
@@ -480,8 +480,8 @@
         <fullName>Acquired_By_Client_Closed_By_BlueWave__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <inlineHelpText>When checked, the lead was acquired by Client but closed by BlueWave. Used for Client Invoicing</inlineHelpText>
-        <label>Acquired By Client, Closed By BlueWave</label>
+        <inlineHelpText>When checked, the lead was acquired by Client but closed by Perch. Used for Client Invoicing</inlineHelpText>
+        <label>Acquired By Client, Closed By Perch</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
@@ -1744,7 +1744,7 @@ TEXT(DAY(Commencement_Date__c))
  Contract.Parent_Contract__c,
  Contract.Id 
 )</formula>
-        <inlineHelpText>Returns the ID of the contract that covers the opportunity that is countersigned by BlueWave.</inlineHelpText>
+        <inlineHelpText>Returns the ID of the contract that covers the opportunity that is countersigned by Perch.</inlineHelpText>
         <label>Countersigned Contract Id</label>
         <required>false</required>
         <trackHistory>false</trackHistory>

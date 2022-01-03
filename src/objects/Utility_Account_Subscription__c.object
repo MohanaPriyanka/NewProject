@@ -112,9 +112,9 @@ Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c* Opportunity__r.S
     </fields>
     <fields>
         <fullName>Annual_Subscription_Production_Summary__c</fullName>
-        <description>Sum of the last 12 months of UASB Subscription Production (kWh) for Anchor &amp; Public Offtake customers serviced by BlueWave</description>
+        <description>Sum of the last 12 months of UASB Subscription Production (kWh) for Anchor &amp; Public Offtake customers serviced by Perch</description>
         <externalId>false</externalId>
-        <inlineHelpText>Sum of the last 12 months of UASB Subscription Production (kWh) for Anchor &amp; Public Offtake customers serviced by BlueWave</inlineHelpText>
+        <inlineHelpText>Sum of the last 12 months of UASB Subscription Production (kWh) for Anchor &amp; Public Offtake customers serviced by Perch</inlineHelpText>
         <label>Annual Subscription Production Summary</label>
         <precision>18</precision>
         <required>false</required>
