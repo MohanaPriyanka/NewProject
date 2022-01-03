@@ -190,7 +190,7 @@
         <fullName>Acquisition_Channels_Closed_by_BCS__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <inlineHelpText>When lead is acquired by Client but Closed by BlueWave</inlineHelpText>
+        <inlineHelpText>When lead is acquired by Client but Closed by Perch</inlineHelpText>
         <label>Acq Channels: Client Acquired/BCS Closed</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>

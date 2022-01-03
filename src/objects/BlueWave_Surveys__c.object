@@ -859,7 +859,7 @@
     <fields>
         <fullName>NPS__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>How likely are you to recommend BlueWave to colleagues in the solar industry? (1 to 10 1 is highly unlikely)</inlineHelpText>
+        <inlineHelpText>How likely are you to recommend Perch to colleagues in the solar industry? (1 to 10 1 is highly unlikely)</inlineHelpText>
         <label>NPS</label>
         <precision>2</precision>
         <required>false</required>
@@ -893,7 +893,7 @@
     <fields>
         <fullName>PF_Q1__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>How would you rate the overall partner experience with BlueWave?</inlineHelpText>
+        <inlineHelpText>How would you rate the overall partner experience with Perch?</inlineHelpText>
         <label>PFQ1 Overall Experience</label>
         <precision>1</precision>
         <required>false</required>
@@ -1224,7 +1224,7 @@ New York</description>
     <fields>
         <fullName>Suggested_Changes__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>What changes would BlueWave have to make for you to give it an even higher rating?</inlineHelpText>
+        <inlineHelpText>What changes would Perch have to make for you to give it an even higher rating?</inlineHelpText>
         <label>Suggested Changes</label>
         <length>32768</length>
         <trackHistory>false</trackHistory>
@@ -1403,7 +1403,7 @@ New York</description>
     <fields>
         <fullName>Transformer_Nomination__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>BlueWave is instituting a new employee transformer award that will recognize a employee that has implemented profound and radical change across the organization in 2016. More specifically, we are looking for &quot;the&quot; individual that has helped revolutionize</inlineHelpText>
+        <inlineHelpText>Perch is instituting a new employee transformer award that will recognize a employee that has implemented profound and radical change across the organization in 2016. More specifically, we are looking for &quot;the&quot; individual that has helped revolutionize</inlineHelpText>
         <label>Transformer Nomination</label>
         <length>20</length>
         <required>false</required>

@@ -155,20 +155,6 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>ARL_Margin_Over__c</fullName>
-        <externalId>false</externalId>
-        <formula>Product__r.Margin_Over_Index_Rate__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>ARL Margin Over</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>6</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>ARL_Max_Adjustment__c</fullName>
         <externalId>false</externalId>
         <formula>Product__r.Maximum_Adjustment__c</formula>

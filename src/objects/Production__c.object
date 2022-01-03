@@ -210,7 +210,7 @@
     <fields>
         <fullName>Credits_Externally_Serviced__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Portions of the project that are billed by a party other than BlueWave</inlineHelpText>
+        <inlineHelpText>Portions of the project that are billed by a party other than Perch</inlineHelpText>
         <label>Credits Externally Serviced</label>
         <summarizedField>Transfer_Part__c.Amount__c</summarizedField>
         <summaryFilterItems>

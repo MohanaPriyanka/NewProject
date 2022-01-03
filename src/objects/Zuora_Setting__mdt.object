@@ -5,7 +5,7 @@
         <fullName>ACH_Payment_Page_Id_Internal__c</fullName>
         <externalId>false</externalId>
         <fieldManageability>DeveloperControlled</fieldManageability>
-        <inlineHelpText>ACH Hosted Payment Page ID with domain = bluewavesolar.lightning.force.com</inlineHelpText>
+        <inlineHelpText>ACH Hosted Payment Page ID with domain = perchenergy.lightning.force.com</inlineHelpText>
         <label>ACH Payment Page Id Internal</label>
         <length>100</length>
         <required>false</required>
@@ -37,7 +37,7 @@
         <fullName>CC_Payment_Page_Id_Internal__c</fullName>
         <externalId>false</externalId>
         <fieldManageability>DeveloperControlled</fieldManageability>
-        <inlineHelpText>CC Hosted Payment Page ID with domain = bluewavesolar.lightning.force.com</inlineHelpText>
+        <inlineHelpText>CC Hosted Payment Page ID with domain = perchenergy.lightning.force.com</inlineHelpText>
         <label>CC Payment Page Id Internal</label>
         <length>100</length>
         <required>false</required>
