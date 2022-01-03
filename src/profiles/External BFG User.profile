@@ -21105,11 +21105,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Product2.Margin_Over_Index_Rate__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Product2.Maximum_Adjustment__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -40360,9 +40355,6 @@
         <recordType>Idea.Record_type_for_community_09aj0000000VvbjAAC_entity_Idea</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Index_Rate__c-Index Rate Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Invoice__c-Invoice Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -43833,10 +43825,6 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>Getting_Started_reg</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Index_Rate__c</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>

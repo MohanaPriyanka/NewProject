@@ -21774,11 +21774,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Product2.Margin_Over_Index_Rate__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Product2.Maximum_Adjustment__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -41545,9 +41540,6 @@
         <recordType>Incentive__c.SREC</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Index_Rate__c-Index Rate Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Interconnection__c-Interconnection Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -42588,15 +42580,6 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>Incentive__c</object>
-        <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
-        <allowEdit>true</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
-        <object>Index_Rate__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -46623,10 +46606,6 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>Incentive__c</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Index_Rate__c</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>

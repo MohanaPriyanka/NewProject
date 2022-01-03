@@ -31612,11 +31612,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Product2.Margin_Over_Index_Rate__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>false</editable>
         <field>Product2.Max_Subscription_kW_AC_for_DC_calc__c</field>
         <readable>true</readable>
@@ -51636,9 +51631,6 @@
         <recordType>Idea.Record_type_for_community_09aj0000000VvbjAAC_entity_Idea</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Index_Rate__c-Index Rate Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Invoice_Line_Item__c-Invoice Line Item Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -52937,15 +52929,6 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>IdeaComment</object>
-        <viewAllRecords>false</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>false</allowCreate>
-        <allowDelete>false</allowDelete>
-        <allowEdit>false</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>false</modifyAllRecords>
-        <object>Index_Rate__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -59501,10 +59484,6 @@
     <tabVisibilities>
         <tab>Getting_Started_reg</tab>
         <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Index_Rate__c</tab>
-        <visibility>DefaultOff</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>Invoice__c</tab>
