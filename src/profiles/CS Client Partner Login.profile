@@ -34591,11 +34591,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.ARL_Margin_Over__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Quick_Sales_Sheet__c.ARL_Max_Adjustment__c</field>
         <readable>false</readable>
     </fieldPermissions>
