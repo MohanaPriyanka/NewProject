@@ -9737,7 +9737,7 @@ $User.Id=&quot;0050a00000Jc6mh&quot;)))</errorConditionFormula>
         <active>true</active>
         <errorConditionFormula>OR(
 AND(NOT(ISBLANK(Cancelled_By__c)),ISBLANK(Cancellation_Request_Date__c)),
-AND(ISBLANK(Cancelled_By__c), AND(NOT(ISBLANK(Cancellation_Request_Date__c)), Cancellation_Request_Date__c &gt; DATE(2021,11,01)))
+AND(ISBLANK(Cancelled_By__c), AND(NOT(ISBLANK(Cancellation_Request_Date__c)), Cancellation_Request_Date__c &gt; DATE(2022,01,01)))
 )</errorConditionFormula>
         <errorDisplayField>Cancelled_By__c</errorDisplayField>
         <errorMessage>Cancelled By must be entered when the Cancellation Request Date is entered or be blank when there is no Cancellation Request Date</errorMessage>
