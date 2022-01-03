@@ -650,8 +650,8 @@
         <fullName>Acquired_By_Client_Closed_By_BlueWave__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <inlineHelpText>Populated by Client Lead form. Signifies this warm lead will be closed by BlueWave</inlineHelpText>
-        <label>Acquired By Client, Closed By BlueWave</label>
+        <inlineHelpText>Populated by Client Lead form. Signifies this warm lead will be closed by Perch</inlineHelpText>
+        <label>Acquired By Client, Closed By Perch</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
@@ -4605,9 +4605,9 @@ MobilePhone
     </fields>
     <fields>
         <fullName>Product_Program__c</fullName>
-        <description>This designates what program the customer&apos;s product is a part of. It gets its value from the product record relates to this lead. An example would be BlueWave&apos;s Solar Loan took part in the Massachusetts Solar Loan Program so the program would be MSLP.</description>
+        <description>This designates what program the customer&apos;s product is a part of. It gets its value from the product record relates to this lead. An example would be Perch&apos;s Solar Loan took part in the Massachusetts Solar Loan Program so the program would be MSLP.</description>
         <externalId>false</externalId>
-        <inlineHelpText>This designates what program the customer&apos;s product is a part of. It gets its value from the product record relates to this lead. An example would be BlueWave&apos;s Solar Loan took part in the Massachusetts Solar Loan Program so the program would be MSLP.</inlineHelpText>
+        <inlineHelpText>This designates what program the customer&apos;s product is a part of. It gets its value from the product record relates to this lead. An example would be Perch&apos;s Solar Loan took part in the Massachusetts Solar Loan Program so the program would be MSLP.</inlineHelpText>
         <label>Product Program</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>

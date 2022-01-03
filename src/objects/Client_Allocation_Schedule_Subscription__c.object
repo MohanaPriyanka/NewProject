@@ -131,7 +131,7 @@
         <externalId>false</externalId>
         <formula>Allocation_Schedule_Subscription__r.Stop_Credit_Transfer__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>If checked, BlueWave is no longer billing due to closed Utility account</inlineHelpText>
+        <inlineHelpText>If checked, Perch is no longer billing due to closed Utility account</inlineHelpText>
         <label>Stop Credit Transfer</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -159,7 +159,7 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Client Allocation Schedule Subscriptions</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

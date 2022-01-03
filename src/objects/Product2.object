@@ -1453,18 +1453,6 @@ IF (Loan_Term__c = 162, &quot;fifteenth&quot;, &quot;&quot;) )</formula>
         </valueSet>
     </fields>
     <fields>
-        <fullName>Margin_Over_Index_Rate__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>The percentage that is added to the benchmark index to calculate the variable rate. A 3% margin is equivalent to 300 basis points</inlineHelpText>
-        <label>Margin Over Index Rate</label>
-        <precision>4</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Percent</type>
-    </fields>
-    <fields>
         <fullName>Max_Subscription_kW_AC_for_DC_calc__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>When populated, multiplied by the Conversion Ratio on SSS to populate Maximum Subscription Capacity (kW DC). Intended to be set to 25 kW AC for SMART projects.</inlineHelpText>

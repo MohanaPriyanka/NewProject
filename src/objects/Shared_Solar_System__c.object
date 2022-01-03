@@ -535,7 +535,7 @@
         <fullName>CS_Services_Type__c</fullName>
         <description>Should use the CS Services Type global picklist, but can&apos;t because it&apos;s already created.</description>
         <externalId>false</externalId>
-        <inlineHelpText>Differentiates between projects where BlueWave is contracted to acquire customers and projects where customers are acquired by another party. Set automatically when a new related Client Contract record is effective</inlineHelpText>
+        <inlineHelpText>Differentiates between projects where Perch is contracted to acquire customers and projects where customers are acquired by another party. Set automatically when a new related Client Contract record is effective</inlineHelpText>
         <label>CS Services Type</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
@@ -1612,7 +1612,7 @@ Total_System_Size_kWh_DC__c - Anchor_Capacity_Reserved__c,
 Total_System_Size_kWh_DC__c 
 )</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>If BlueWave services the anchor, anchor capacity is included, if not, the total size of the project minus the anchor capacity</inlineHelpText>
+        <inlineHelpText>If Perch services the anchor, anchor capacity is included, if not, the total size of the project minus the anchor capacity</inlineHelpText>
         <label>Serviced Capacity</label>
         <precision>18</precision>
         <required>false</required>

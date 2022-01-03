@@ -198,8 +198,8 @@ Account.Assignment_Agreement_Template__c
         <fullName>BW_Company_Entity__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <inlineHelpText>BlueWave entity named and executed in contract (BWC, BFG, BCS Customer Mgmt, or BCS Customer Acq). Manually entered by CSBD at contract execution.</inlineHelpText>
-        <label>BlueWave Entity</label>
+        <inlineHelpText>Perch entity named and executed in contract (BWC, BFG, BCS Customer Mgmt, or BCS Customer Acq). Manually entered by CSBD at contract execution.</inlineHelpText>
+        <label>Perch Entity</label>
         <referenceTo>Entity__c</referenceTo>
         <relationshipLabel>Contracts (BW Company Entity)</relationshipLabel>
         <relationshipName>BW_Company_Contracts</relationshipName>
@@ -216,7 +216,7 @@ Account.Assignment_Agreement_Template__c
     <fields>
         <fullName>BlueWave_Entity_Involved__c</fullName>
         <externalId>false</externalId>
-        <label>BlueWave Entity(s) Involved</label>
+        <label>Perch Entity(s) Involved</label>
         <length>150</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
@@ -241,7 +241,7 @@ Account.Assignment_Agreement_Template__c
     <fields>
         <fullName>CS_Services__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Detailed description of BlueWave&apos;s responsibilities as a servicer</inlineHelpText>
+        <inlineHelpText>Detailed description of Perch&apos;s responsibilities as a servicer</inlineHelpText>
         <label>CS Services</label>
         <length>131072</length>
         <trackFeedHistory>false</trackFeedHistory>
