@@ -36,7 +36,6 @@ public without sharing class CustomLabelResolver {
         '{!$Label.Company_Name_Customer_Management}' => System.Label.Company_Name_Customer_Management,
         '{!$Label.Company_Old_Logo}' => System.Label.Company_Old_Logo,
         '{!$Label.Company_Temp_Website}' => System.Label.Company_Temp_Website,
-        '{!$Label.Company_Twitter}' => System.Label.Company_Twitter,
         '{!$Label.Company_Website}' => System.Label.Company_Website,
         '{!$Label.Customer_Acquisition}' => System.Label.Customer_Acquisition,
         '{!$Label.Customer_Management}' => System.Label.Customer_Management,
@@ -61,9 +60,7 @@ public without sharing class CustomLabelResolver {
         '{!$Label.phone_partnersupport}' => System.Label.phone_partnersupport,
         '{!$Label.phone_partnersupport2}' => System.Label.phone_partnersupport2,
         '{!$Label.Solar_Credits_MN_Example}' => System.Label.Solar_Credits_MN_Example,
-        '{!$Label.Summary_of_Current_Charges_Example}' => System.Label.Summary_of_Current_Charges_Example,
-        '{!$Label.Twitter_Black_Email_Icon}' => System.Label.Twitter_Black_Email_Icon,
-        '{!$Label.Twitter_Email_Icon}' => System.Label.Twitter_Email_Icon
+        '{!$Label.Summary_of_Current_Charges_Example}' => System.Label.Summary_of_Current_Charges_Example
     };
 
     /**
