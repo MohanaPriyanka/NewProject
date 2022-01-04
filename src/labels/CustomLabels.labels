@@ -201,14 +201,6 @@
         <value>communitysolar.perchenergy.com</value>
     </labels>
     <labels>
-        <fullName>Company_Twitter</fullName>
-        <categories>branding, email</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Company_Twitter</shortDescription>
-        <value>https://twitter.com/bluewavesolar</value>
-    </labels>
-    <labels>
         <fullName>Company_Website</fullName>
         <categories>branding</categories>
         <language>en_US</language>
@@ -609,22 +601,6 @@
         <value>partnersupport@perchenergy.com</value>
     </labels>
     <labels>
-        <fullName>SSF_Twitter_Icon</fullName>
-        <categories>branding, ssf</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>SSF Twitter Icon</shortDescription>
-        <value>twitter.min.svg</value>
-    </labels>
-    <labels>
-        <fullName>SSF_Twitter_Link</fullName>
-        <categories>branding, ssf</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>SSF Twitter Link</shortDescription>
-        <value>https://twitter.com</value>
-    </labels>
-    <labels>
         <fullName>SSF_WaitingRoom1_Text</fullName>
         <categories>branding, ssf</categories>
         <language>en_US</language>
@@ -687,22 +663,6 @@
         <protected>false</protected>
         <shortDescription>Summary_of_Current_Charges_Example</shortDescription>
         <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/478769b2-0335-4962-8fdb-d7493f5d9a67.png</value>
-    </labels>
-    <labels>
-        <fullName>Twitter_Black_Email_Icon</fullName>
-        <categories>branding</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Twitter_Black_Email_Icon</shortDescription>
-        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/c6d6d3cd-5a44-45c4-82d8-81fc6954c1ac.png</value>
-    </labels>
-    <labels>
-        <fullName>Twitter_Email_Icon</fullName>
-        <categories>branding, email</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Twitter_Email_Icon</shortDescription>
-        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/5b98e7a5-0f7a-441d-abfc-b6b2560b9e74.png</value>
     </labels>
     <labels>
         <fullName>email_anchorsupport</fullName>
