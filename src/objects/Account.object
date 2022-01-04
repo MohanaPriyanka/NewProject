@@ -1115,13 +1115,14 @@ Specify the global country code setting or record level country code to automati
     <fields>
         <fullName>Conga_Lettersteam_Delinquency__c</fullName>
         <externalId>false</externalId>
-        <formula>&quot;&amp;solmgr=1&quot; + 
+        <formula>IF(NOT($CustomMetadata.Custom_Feature_Enablement__mdt.Automated_Collections_Letters.Feature_is_Enabled__c),
+&quot;&amp;solmgr=1&quot; +
 &quot;&amp;id=&quot; + Id +
 &quot;&amp;templateid=a2F5b000001WQuBEAW&quot;+
-&quot;&amp;ofn=&quot; + TEXT(TODAY()) +  TEXT(Days_Past_Due__c) + &quot; Days CS Delinquency Letters&quot; + 
+&quot;&amp;ofn=&quot; + TEXT(TODAY()) + TEXT(Days_Past_Due__c) + &quot; Days CS Delinquency Letters&quot; +
 &quot;&amp;APDF=1&quot; + /*Specifies whether merged PDF documents will be saved as individual PDF documents or consolidated into one document. */
 &quot;&amp;QMode=Download&quot; + /* Downloads files to content workspace */
-&quot;&amp;ContentWorkspaceId=0580a0000001Ji4&quot; + 
+&quot;&amp;ContentWorkspaceId=0580a0000001Ji4&quot; +
 &quot;&amp;queryid=[Account]a275b000002bSl3AAE?pv0=&quot; + Id +
 &quot;&amp;DefaultPDF=1&quot; + /* DefaultPDF sets the default output type to Adobe Acrobat. */
 &quot;&amp;ZipPDFs=0&quot; + /* Assembles PDFs into one large file */
@@ -1131,7 +1132,29 @@ Specify the global country code setting or record level country code to automati
 &quot;&amp;LG0=0&quot; + /*(Save Text) determines whether to store the text of the document (post-merge) to the body of the Task.*/
 &quot;&amp;LG1=Past Due Delinquency Letter Generated&quot; + /*Activity subject*/
 &quot;&amp;LG4=1&quot; + /*Specifies whether to automatically log an activity after merging. 1=Enabled */
-&quot;&amp;lgwhoid=&quot; + Send_Bills_Contact__c</formula>
+&quot;&amp;lgwhoid=&quot; + Send_Bills_Contact__c,
+
+&quot;&amp;solmgr=1&quot; + 
+&quot;&amp;id=&quot; + Id +
+&quot;&amp;templateid=a2F5b000001WQuBEAW&quot;+
+&quot;&amp;ofn=&quot; + TEXT(TODAY()) + &quot; &quot; + TEXT(Days_Past_Due__c) + &quot; Days CS Delinquency Letter&quot; + 
+&quot;&amp;APDF=0&quot; + /*Specifies whether merged PDF documents will be saved as individual PDF documents or consolidated into one document. */
+&quot;&amp;QMode=SalesforceFile&quot; + /* Downloads files to Master Object (Account) */
+&quot;&amp;ContentWorkspaceId=0580a0000001Ji4&quot; + /* unused, but required for ContentCustomFieldName */
+&quot;&amp;SC0=1&quot; + 
+&quot;&amp;SC1=SalesforceFile&quot; + 
+&quot;&amp;queryid=[Account]a275b000002bSl3AAE?pv0=&quot; + Id +
+&quot;&amp;DefaultPDF=1&quot; + /* DefaultPDF sets the default output type to Adobe Acrobat. */
+&quot;&amp;ZipPDFs=0&quot; + /* Assembles PDFs into one large file */
+&quot;&amp;ac0=1&quot; +  /*Automatic Activity Logging 1=True */
+&quot;&amp;ac2=1&quot; +  /* AC2 saves the text of a merged Word document to the body of an Activity (Task)*/
+&quot;&amp;ac1=Past Due Delinquency Letter Generated&quot; + /*AC1 provides an Activity Subject.*/
+&quot;&amp;LG0=0&quot; + /*(Save Text) determines whether to store the text of the document (post-merge) to the body of the Task.*/
+&quot;&amp;LG1=Past Due Delinquency Letter Generated&quot; + /*Activity subject*/
+&quot;&amp;LG4=1&quot; + /*Specifies whether to automatically log an activity after merging. 1=Enabled */
+&quot;&amp;lgwhoid=&quot; + Send_Bills_Contact__c +
+&quot;&amp;ContentCustomFieldName=Mail_Type__c&quot; +
+IF(Days_Past_Due__c = 67, &quot;&amp;ContentCustomFieldValue=certified&quot;, &quot;&amp;ContentCustomFieldValue=firstclass&quot;)) /* can set only one custom field so ContentVersionTrigger sets Ready_for_Paper_Bill_Queue__c if Mail_Type__c is set */</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>Field leveraged by Conga batch to generate delinquency letters</inlineHelpText>
         <label>Conga Lettersteam Delinquency</label>
