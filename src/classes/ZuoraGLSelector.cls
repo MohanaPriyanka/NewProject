@@ -98,7 +98,8 @@ public with sharing class ZuoraGLSelector {
             'pm.type as PaymentMethod, ' +
             'm.Id as AppliedRecordId, ' +
             'py.ArchivedChargentData__c as ArchivedChargentData, ' +
-            'p.Id as ExternalId ' +
+            'p.Id as ExternalId, ' +
+            'py.ReferenceId as ReferenceId ' +
             'FROM PaymentPartItem p ' +
             'INNER JOIN PaymentPart pt ON p.paymentpartid = pt.Id ' +
             'INNER JOIN Payment py ON pt.paymentid = py.Id ' +
@@ -107,7 +108,7 @@ public with sharing class ZuoraGLSelector {
             'INNER JOIN DebitMemo m ON d.debitMemoId = m.Id ' +
             'INNER JOIN Account a ON m.accountid = a.Id';
 
-        if (startDate != null && endDate != null){
+        if (startDate != null && endDate != null) {
             Datetime startTime = Datetime.newInstance(startDate.year(),startDate.month(),startDate.day());
             Datetime endTime = Datetime.newInstance(endDate.year(),endDate.month(),endDate.day());
             payPartDebitMemoQuery += ' WHERE p.createddate > TIMESTAMP \'' + startTime.formatGmt('yyyy-MM-dd HH:mm:ss') + '\'';
@@ -133,7 +134,8 @@ public with sharing class ZuoraGLSelector {
             'pm.type as PaymentMethod, ' +
             'p.invoiceitemid as AppliedRecordId, ' +
             'py.ArchivedChargentData__c as ArchivedChargentData, ' +
-            'p.Id as ExternalId ' +
+            'p.Id as ExternalId, ' +
+            'py.ReferenceId as ReferenceId ' +
             'FROM PaymentPartItem p ' +
             'INNER JOIN PaymentPart pt ON p.paymentpartid = pt.Id ' +
             'INNER JOIN Payment py ON pt.paymentid = py.Id ' +
