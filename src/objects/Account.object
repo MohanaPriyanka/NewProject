@@ -666,60 +666,6 @@ IMAGE(&quot;/resource/1553274837000/Crown_Icon&quot;, &quot;crown&quot;),
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>CS_Delinquency_Letter_67_no_fee__c</fullName>
-        <description>Field used on conductor to send cs delinquency letters to customers without a cancellation fee.</description>
-        <externalId>false</externalId>
-        <formula>&quot;&amp;solmgr=1&quot; + 
-&quot;&amp;id=&quot; + Id + 
-&quot;&amp;templateid=a2F0a000001ZcDO&quot; + 
-&quot;&amp;ofn=&quot; + TEXT(TODAY()) + &quot; 67 Days No Fee CS Delinquency Letters&quot; + 
-&quot;&amp;APDF=1&quot; + 
-&quot;&amp;QMode=1&quot; + 
-&quot;&amp;ContentWorkspaceId=0580a0000001Ji4&quot; + 
-&quot;&amp;DefaultPDF=1&quot; + 
-&quot;&amp;ZipPDFs=0&quot; + 
-&quot;&amp;ac0=1&quot; + 
-&quot;&amp;ac2=1&quot; + 
-&quot;&amp;ac1=Past Due Delinquency Letter Generated&quot; + 
-&quot;&amp;LG0=0&quot; + 
-&quot;&amp;LG1=Past Due Delinquency Letter Generated&quot; + 
-&quot;&amp;LG4=1&quot; + 
-&quot;&amp;lgwhoid=&quot; + Send_Bills_Contact__c</formula>
-        <inlineHelpText>Field used on conductor to send cs delinquency letters to customers without a cancellation fee.</inlineHelpText>
-        <label>CS Delinquency Letter (67 no fee)</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>CS_Delinquency_Letter_67_with_fee__c</fullName>
-        <description>This field is used in the conga conductor to generate cs past due letters.</description>
-        <externalId>false</externalId>
-        <formula>&quot;&amp;solmgr=1&quot; + 
-&quot;&amp;id=&quot; + Id + 
-&quot;&amp;templateid=a2F0a000001ZcDJ&quot; + 
-&quot;&amp;ofn=&quot; + TEXT(TODAY()) + &quot; 67 Days with fee CS Delinquency Letters&quot; + 
-&quot;&amp;APDF=1&quot; + 
-&quot;&amp;QMode=1&quot; + 
-&quot;&amp;ContentWorkspaceId=a270a000000NDzm&quot; + 
-&quot;&amp;DefaultPDF=1&quot; + 
-&quot;&amp;ZipPDFs=0&quot; + 
-&quot;&amp;ac0=1&quot; + 
-&quot;&amp;ac2=1&quot; + 
-&quot;&amp;ac1=Past Due Delinquency Letter Generated&quot; + 
-&quot;&amp;LG0=0&quot; + 
-&quot;&amp;LG1=Past Due Delinquency Letter Generated&quot; + 
-&quot;&amp;LG4=1&quot; + 
-&quot;&amp;lgwhoid=&quot; + Send_Bills_Contact__c</formula>
-        <inlineHelpText>This field is used in the conga conductor to generate cs past due letters.</inlineHelpText>
-        <label>CS Delinquency Letter (67 with fee)</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Cancellation_Comments__c</fullName>
         <externalId>false</externalId>
         <label>Cancellation Comments</label>
