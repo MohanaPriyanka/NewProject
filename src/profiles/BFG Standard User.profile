@@ -3663,6 +3663,14 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ZuoraGLSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraGLService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ZuoraGatewayAssigner</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -17109,6 +17117,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Invoice__c.Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Journal_Entry__c.Reference_Id__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
