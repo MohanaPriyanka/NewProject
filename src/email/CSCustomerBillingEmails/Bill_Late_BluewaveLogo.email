@@ -1,23 +1,155 @@
-<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta name="viewport" content="width=device-width, initialscale=1.0" /><meta http-equiv="X-UA-Compatible" content="IE=edge" /><style type="text/css">@media screen and (max-width: 480px) {
-  .contentbuilderBaseColumnRow .columnCell {display:inline-block; width:100%}
-}
- .contentpageDefaultEmailTemplatePageTemplate .contentRoot {width:600px}
-@media only screen and (max-width: 480px) {
-  .contentpageDefaultEmailTemplatePageTemplate .contentRoot {width:320px}
-}
- </style></head><body><table width="100%" cellpadding="0" cellspacing="0" role="presentation" class="contentpageDefaultEmailTemplatePageTemplate" id="contentpage_emailTemplateBodyContent" style="background-color:#FFFFFF;"><tr><td width="100%" align="center"><table width="600" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" role="presentation" class="contentRoot"><tr><td style="padding-right:10px;padding-bottom:10px;padding-top:10px;padding-left:10px;"><table width="100%" cellpadding="0" cellspacing="0" class="contentbuilderBaseColumnRow" role="presentation" bgcolor=""><tr valign="top"><td class="columnCell" style="vertical-align:top;" width="100%"><table style="width:100%;border-collapse:collapse;word-break:break-word;" role="presentation" cellspacing="0" cellpadding="0" locked="0"><tr><td style="" align="Center"><img style="max-width:40%;width:100%;display:block;border:none;" width="240" src="{!$Label.Company_Main_Logo_600}" alt="{!$Label.Company_Name} Logo" /></td></tr></table></td></tr></table><table width="100%" cellpadding="0" cellspacing="0" class="contentbuilderBaseColumnRow" role="presentation" bgcolor=""><tr valign="top"><td class="columnCell" style="vertical-align:top;" width="100%"><table style="font-size:14px;width:100%;border-collapse:collapse;word-break:break-word;" role="presentation" cellspacing="0" cellpadding="0" locked="0"><tr><td style="font-family:Arial,Helvetica,sans-serif;"><b><i><span style="font-size:11.0pt"><span style="font-family:&quot;Arial&quot;,sans-serif"><span style="color:#4472c4">Please disregard this notification if you have already mailed a payment for your most recent {!$Label.Company_Name} Bill.</span></span></span></i></b><br />
-<br />
-<span style="font-size:11.0pt"><span style="font-family:&quot;Arial&quot;,sans-serif"><span style="font-family:Arial,Helvetica,sans-serif;">Hello {{{Recipient.Name}}},<br />
-<br />
-We recognize that the unprecedented COVID-19 situation may be causing financial difficulty. Please contact our Customer Care team by replying to this email if you have concerns about making payments for your {!$Label.Company_Name} Community Solar subscription, and <b>please disregard this notification if you've already sent a check by mail.</b> {!$Label.Company_Name} employees are all working remotely, which is causing significant delays in processing check payments. {!$Label.Company_Name} is actively working to improve this new remote process while continuing to ensure the security of our customers. <b>We apologize for any inconvenience this may cause and appreciate your patience during this challenging time.</b><br />
-<br />
-Your {!$Label.Company_Name} account is </span></span></span><b>{{{Recipient.Days_Past_Due}}}&nbsp;</b><span style="font-size:11.0pt"><span style="font-family:&quot;Arial&quot;,sans-serif"><span style="font-family:Arial,Helvetica,sans-serif;"><b>days </b>past due, and your outstanding account balance is </span></span></span>{{{Recipient.Total_Outstanding_Balance_Merge}}}<span style="font-size:11.0pt"><span style="font-family:&quot;Arial&quot;,sans-serif"><span style="font-family:Arial,Helvetica,sans-serif;">.<br />
-<br />
-Please make a payment as soon as possible.&nbsp;<br />
-&nbsp;<br />
-To check the status of your account, make a one time payment online, or to sign up for recurring payments, please login to your {!$Label.Company_Name} Customer Portal.&nbsp;You can also access your portal at </span></span></span><a href="{!$Label.Customer_Member_Portal_URL}"><span style="font-size:11.0pt"><span style="font-family:&quot;Arial&quot;,sans-serif"><span style="font-family:Arial,Helvetica,sans-serif;">{!$Label.Customer_Member_Portal_URL}</span></span></span></a><span style="font-size:11.0pt"><span style="font-family:&quot;Arial&quot;,sans-serif"><span style="font-family:Arial,Helvetica,sans-serif;">.</span></span></span></td></tr></table></td></tr></table><table width="100%" cellpadding="0" cellspacing="0" class="contentbuilderBaseColumnRow" role="presentation" bgcolor=""><tr valign="top"><td class="columnCell" style="vertical-align:top;" width="100%"><div style="text-align:center;word-break:break-word;margin-bottom:15px;margin-top:15px;" locked="0"><div style="display:inline-block;"><a target="_blank" style="display:block;mso-padding-alt:0;margin:0;text-align:center;border:0px solid #000000;font-family:Arial,sans-serif;background-color:#387CDF;padding-right:20px;color:#ffffff;padding-bottom:10px;border-radius:30px;text-decoration:none;padding-top:10px;padding-left:20px;font-size:16px;" href="{!$Label.Customer_Member_Portal_URL}s/login/?startURL=%2Fs%2F&amp;inst=0a"><!--[if mso]><i style="mso-font-width:-100%;mso-text-raise:10px;letter-spacing:20px;">&nbsp;</i><![endif]--><span>Log Into Your Portal Here</span><!--[if mso]><i style="mso-font-width:-100%;letter-spacing:20px;mso-text-raise:-10px;">&nbsp;</i><![endif]--></a></div></div></td></tr></table><table width="100%" cellpadding="0" cellspacing="0" class="contentbuilderBaseColumnRow" role="presentation" bgcolor=""><tr valign="top"><td class="columnCell" style="vertical-align:top;" width="100%"><table style="font-size:14px;width:100%;border-collapse:collapse;word-break:break-word;" role="presentation" cellspacing="0" cellpadding="0" locked="0"><tr><td style="font-family:Arial,Helvetica,sans-serif;padding-bottom:25px;"><b>{{{Recipient.Custom_Email_Text}}}</b><br />
-<br />
-<span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><span style="color:gray"><span style="font-size:11.5pt"><span style="font-family:&quot;Arial&quot;,sans-serif"><span style="color:#333434">Thanks for being part of {!$Label.Company_Name}, we're happy you're here.</span></span></span></span></span></span><br />
-<br />
-<span style="font-size:11.5pt"><span style="font-family:&quot;Arial&quot;,sans-serif"><span style="color:#333434">- All of us here at {!$Label.Company_Name}</span></span></span></td></tr></table></td></tr></table><table width="100%" cellpadding="0" cellspacing="0" class="contentbuilderBaseColumnRow" role="presentation" bgcolor=""><tr valign="top"><td class="columnCell" style="vertical-align:top;" width="16.66%"><table style="width:100%;border-collapse:collapse;word-break:break-word;" role="presentation" cellspacing="0" cellpadding="0" locked="0"><tr><td style="" align="Center"><a target="_blank" href="{!$Label.Company_Website}"><img style="max-width:50%;width:100%;display:block;border:none;" width="49" src="{!$Label.Company_Email_Icon}" alt="{!$Label.Company_Name} Icon" /></a></td></tr></table></td><td class="columnCell" style="vertical-align:top;" width="50%"><table style="font-size:14px;width:100%;border-collapse:collapse;word-break:break-word;" role="presentation" cellspacing="0" cellpadding="0" locked="0"><tr><td style="font-family:Arial,Helvetica,sans-serif;"><span style="font-size:12px;">{!$Label.Company_Name} Customer Care<br />
-{!$Label.phone_customercare} | <a href="mailto:{!$Label.email_customercare}">{!$Label.email_customercare}</a></span></td></tr></table></td><td class="columnCell" style="vertical-align:top;" width="8.33%"><table style="width:100%;border-collapse:collapse;word-break:break-word;" role="presentation" cellspacing="0" cellpadding="0" locked="0"><tr><td style="padding-right:10px;padding-bottom:10px;padding-top:10px;padding-left:10px;" align="Center"><a target="_blank" href="{!$Label.Company_Facebook}"><img style="max-width:80%;width:100%;display:block;border:none;" width="19" src="{!$Label.Facebook_Email_Icon}" alt="Facebook Icon" /></a></td></tr></table></td><td class="columnCell" style="vertical-align:top;" width="8.33%"><table style="width:100%;border-collapse:collapse;word-break:break-word;" role="presentation" cellspacing="0" cellpadding="0" locked="0"><tr><td style="padding-right:10px;padding-bottom:10px;padding-top:10px;padding-left:10px;" align="Center"><a target="_blank" href="{!$Label.Company_Twitter}"><img style="max-width:80%;width:100%;display:block;border:none;" width="19" src="{!$Label.Twitter_Email_Icon}" alt="Twitter Icon" /></a></td></tr></table></td><td class="columnCell" style="vertical-align:top;" width="8.33%"><table style="width:100%;border-collapse:collapse;word-break:break-word;" role="presentation" cellspacing="0" cellpadding="0" locked="0"><tr><td style="padding-right:10px;padding-bottom:10px;padding-top:10px;padding-left:10px;" align="Center"><a target="_blank" href="{!$Label.Company_LinkedIn}"><img style="max-width:80%;width:100%;display:block;border:none;" width="19" src="{!$Label.LinkedIn_Email_Icon}" alt="Linkedin Icon" /></a></td></tr></table></td><td class="columnCell" style="vertical-align:top;" width="8.33%"><table style="width:100%;border-collapse:collapse;word-break:break-word;" role="presentation" cellspacing="0" cellpadding="0" locked="0"><tr><td style="padding-right:10px;padding-bottom:10px;padding-top:10px;padding-left:10px;" align="Center"><a target="_blank" href="{!$Label.Company_Instagram}?hl=en"><img style="max-width:80%;width:100%;display:block;border:none;" width="19" src="{!$Label.Instagram_Email_Icon}" alt="Instagram Icon" /></a></td></tr></table></td></tr></table></td></tr></table></td></tr></table></body></html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+ <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+ <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ <style type="text/css">
+  ReadMsgBody{ width: 100%;}
+  .ExternalClass {width: 100%;}
+  .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {line-height: 100%;}
+  body {-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;margin:0 !important;}
+  p { margin: 1em 0;}
+  table td { border-collapse: collapse;}
+  img {outline:0;}
+  a img {border:none;}
+  @-ms-viewport{ width: device-width;}
+ </style>
+ <style type="text/css">
+  @media only screen and (max-width: 480px) {
+   .container {width: 100% !important;}
+   .footer { width:auto !important; margin-left:0; }
+   .mobile-hidden { display:none !important; }
+   .logo { display:block !important; padding:0 !important; }
+   img { max-width:100% !important; height:auto !important; max-height:auto !important;}
+   .header img{max-width:100% !important;height:auto !important; max-height:auto !important;}
+   .photo img { width:100% !important; max-width:100% !important; height:auto !important;}
+   .drop { display:block !important; width: 100% !important; float:left; clear:both;}
+   .footerlogo { display:block !important; width: 100% !important; padding-top:15px; float:left; clear:both;}
+   .nav4, .nav5, .nav6 { display: none !important; }
+   .tableBlock {width:100% !important;}
+   .responsive-td {width:100% !important; display:block !important; padding:0 !important; }
+   .fluid, .fluid-centered {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+   }
+   .fluid-centered {
+    margin-left: auto !important;
+    margin-right: auto !important;
+   }
+   /* MOBILE GLOBAL STYLES - DO NOT CHANGE */
+   body, .tb_properties{font-family: Verdana, Geneva, sans-serif !important; font-size: 16px !important; color: #808080 !important; line-height: 1.5 !important; padding: 0px !important; }.buttonstyles{font-family: Verdana, Geneva, sans-serif !important; font-size: 16px !important; color: #FFFFFF !important; padding: 20px 99px !important; }h1{font-family: Arial !important; font-size: 22px !important; color: #202020 !important; line-height: 1.5 !important; }h2{font-family: Verdana, Geneva, sans-serif !important; font-size: 20px !important; color: #202020 !important; line-height: 1.5 !important; }h3{font-family: Verdana, Geneva, sans-serif !important; font-size: 18px !important; color: #202020 !important; line-height: 1.5 !important; }a:not(.buttonstyles){line-height: 1.5 !important; }.mobile-hidden{display: none !important; }.responsive-td {width: 100% !important; display: block !important; padding: 0 !important;}
+   /* END OF MOBILE GLOBAL STYLES - DO NOT CHANGE */
+  }
+  @media only screen and (max-width: 640px) {
+   .container { width:100% !important; }
+   .mobile-hidden { display:none !important; }
+   .logo { display:block !important; padding:0 !important; }
+   .photo img { width:100% !important; height:auto !important;}
+   .nav5, .nav6 { display: none !important;}
+   .fluid, .fluid-centered {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+   }
+   .fluid-centered {
+    margin-left: auto !important;
+    margin-right: auto !important;
+   }
+  }
+ </style>
+ <!--[if mso]>
+ <style type="text/css">
+  /* Begin Outlook Font Fix */
+  body, table, td {
+   font-family : Verdana, Geneva, sans-serif;
+   line-height : 150%;
+   font-size : 16px;
+   color : #3A4545;
+  }
+  /* End Outlook Font Fix */
+ </style>
+ <![endif]-->
+</head>
+<body bgcolor="#F8F0E9" text="#808080" style="margin: 0px; -webkit-text-size-adjust:none;background-color : #F8F0E9; font-family : Verdana, Geneva, sans-serif; line-height : 150%; font-size : 16px; color : #3A4545; padding : 20px 0px; ">
+<div style="font-size:0; line-height:0;"><custom name="opencounter" type="tracking"><custom name="usermatch" type="tracking" /></div>
+<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center">
+ <tr>
+  <td align="center" valign="top">
+   <custom type="header" />
+  </td>
+ </tr>
+ <tr>
+  <td align="center">
+   <table cellspacing="0" cellpadding="0" border="0" width="600" class="container" align="center">
+    <tr>
+     <td>
+      <table style="background-color : #FFFFFF; border : 1px solid #F8F0E9;font-size : 16px; font-family : Verdana, Geneva, sans-serif; line-height : 150%; color : #3A4545; " class="tb_properties border_style" cellspacing="0" cellpadding="0" bgcolor="#FFFFFF" width="100%">
+       <tr>
+        <td align="center" valign="top">
+         <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%">
+          <tr>
+           <td class="content_padding" style="border:0px;padding : 10px 0px 0px; ">
+            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+             <tr>
+              <td align="left" class="header" valign="top">
+               <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="border: 0px solid transparent; background-color: transparent; min-width: 100%; " class="slot-styling"><tr><td style="padding: 0px 0px 20px; " class="slot-styling camarker-inner"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="text-align: center; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding-top: 10px; " class="stylingblock-content-wrapper camarker-inner" align="center"><table width="100%" cellspacing="0" cellpadding="0" role="presentation"><tr><td align="center"><a href="https://portal.perchenergy.com/customerportal/" title="Perch Community Solar" alias="" conversion="false" data-linkto="https://"><img data-assetid="192168" src="https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/4685e94e-d6dc-452b-ab1a-8d1a7835bca7.png" alt="Perch Community Solar Logo" height="61" width="190" style="display: block; height: 61px; width: 190px; text-align: center; padding: 0px;"></a></td></tr></table></td></tr></table></td></tr></table>
+              </td>
+             </tr>
+             <tr>
+              <td align="left" class="" valign="top">
+               <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="border: 0px solid transparent; background-color: transparent; min-width: 100%; " class="slot-styling"><tr><td style="padding: 10px 0px; " class="slot-styling camarker-inner"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 0px 50px; " class="stylingblock-content-wrapper camarker-inner"><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td valign="top" class="responsive-td" style="width: 100%;"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" class="stylingblock-content-wrapper" style="min-width: 100%; "><tr><td class="stylingblock-content-margin-cell" style="padding: 0px 0px 40px; "><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 8px 8px 0px; " class="stylingblock-content-wrapper camarker-inner"><span style="color:#2774ee;"><b><i>Please disregard this notification if you have already mailed a payment for your most recent Perch Bill.</i></b></span><br>
+                <br>
+                Hello {{{Recipient.Name}}},<br>
+                <br>
+                We recognize that the unprecedented COVID-19 situation may be causing financial difficulty. Please contact our Customer Care team by replying to this email if you have concerns about making payments for your Perch Community Solar subscription, and&nbsp;<b>please disregard this notification if you've already sent a check by mail.</b>&nbsp;Perch employees are all working remotely, which is causing significant delays in processing check payments. Perch is actively working to improve this new remote process while continuing to ensure the security of our customers.&nbsp;<b>We apologize for any inconvenience this may cause and appreciate your patience during this challenging time.</b><br>
+                <br>
+                Your Perch account is&nbsp;<b>{{{Recipient.Days_Past_Due}}}&nbsp;</b><b>days&nbsp;</b>past due, and your outstanding account balance is&nbsp;{{{Recipient.Total_Outstanding_Balance_Merge}}}.<br>
+                <br>
+                Please make a payment as soon as possible.&nbsp;<br>
+                <br>
+                To check the status of your account, make a one time payment online, or to sign up for recurring payments, please login to your Perch Customer Portal.&nbsp;You can also access your portal&nbsp;<a alias="Perch Customer Portal" conversion="false" data-linkto="https://" href="https://portal.perchenergy.com/customerportal/" style="color:#2774EE;text-decoration:none;" title="Perch Customer Portal">here</a>.<br>
+                <br>
+                <b>{{{Recipient.Custom_Email_Text}}}</b><br>
+                <br>
+                Thanks for being part of Perch, we're happy you're here.<br>
+                <br>
+                - All of us here at Perch&nbsp;</td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" class="stylingblock-content-wrapper" style="min-width: 100%; "><tr><td class="stylingblock-content-margin-cell" style="padding: 0px 50px 50px; "><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 0px; " class="stylingblock-content-wrapper camarker-inner"><table width="100%" border="0" cellspacing="0" cellpadding="0" role="presentation"><tr><td align="center"><table border="0" cellspacing="0" cellpadding="0" role="presentation"><tr><td class="innertd buttonblock" bgcolor="#15E399" style=" border-radius: 0px; -moz-border-radius: 0px; -webkit-border-radius: 0px; background-color: #15E399;"><a style=" font-size: 16px; font-family: Verdana, Geneva, sans-serif; color: #0D2727; text-align: center; text-decoration: none; display: block; word-break: keep-all !important; background-color: #15E399; border: 1px solid #15E399; padding: 17px 99px; border-radius: 0px; -moz-border-radius: 0px; -webkit-border-radius: 0px;" target="_blank" class="buttonstyles" href="https://portal.perchenergy.com/customerportal/" title="Customer Portal Login" alias="Customer Portal Login" conversion="false" data-linkto="https://">Log Into Your Portal Here</a></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table>
+              </td>
+             </tr>
+             <tr>
+              <td align="left" class="" valign="top">
+               <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: #F8F0E9; min-width: 100%; border-top: 0px; border-right: 0px; border-bottom: 1px solid #F8F0E9; border-left: 0px; " class="slot-styling"><tr><td style="padding: 10px 0px; " class="slot-styling camarker-inner"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 0px 0px 20px; " class="stylingblock-content-wrapper camarker-inner"><h2 style="color: rgb(13, 39, 39); font-family: Verdana, Geneva, sans-serif; font-size: 22px; font-style: normal; font-weight: bold; line-height: 1.5; text-align: center;">
+                Have questions?</h2><div style="text-align: center;">
+                We're happy to help. Contact a member of our Customer Care team M-F, 9am-5pm at customercare@perchenergy.com or 888-893-3633</div></td></tr></table></td></tr></table>
+              </td>
+             </tr>
+             <tr>
+              <td align="left" class="" valign="top">
+               <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: #F8F0E9; border: 0px solid transparent; min-width: 100%; " class="slot-styling"><tr><td style="padding: 0px; " class="slot-styling camarker-inner"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" class="stylingblock-content-wrapper" style="min-width: 100%; "><tr><td class="stylingblock-content-margin-cell" style="padding: 0px 30px 20px; "><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 0px; " class="stylingblock-content-wrapper camarker-inner"><table width="100%" border="0" cellspacing="0" cellpadding="0" role="presentation"><tr><td align="center"><table border="0" cellspacing="0" cellpadding="0" role="presentation"><tr><td class="innertd buttonblock" bgcolor="#0D2727" style=" border-radius: 0px; -moz-border-radius: 0px; -webkit-border-radius: 0px; word-break: keep-all; background-color: #0D2727;"><a style=" font-size: 16px; font-family: Verdana, Geneva, sans-serif; color: #FFFFFF; text-align: center; text-decoration: none; display: block; word-break: keep-all !important; background-color: #0D2727; border: 1px solid #0D2727; padding: 17px 99px; border-radius: 0px; -moz-border-radius: 0px; -webkit-border-radius: 0px;" target="_blank" class="buttonstyles" href="mailto:customercare@perchenergy.com?subject=" title="Email customer care" alias="Contact Customer Care" conversion="true" data-linkto="mailto:">Contact Customer Care</a></td></tr></table></td></tr></table></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: #F8F0E9; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 30px 0px 45px; " class="stylingblock-content-wrapper camarker-inner"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table cellpadding="0" cellspacing="0" class="socialshare-wrapper" width="100%"><tr><td align="center"><table cellpadding="0" cellspacing="0" align="center"><tr><td align="center"><!--[if mso]><table border="0" cellspacing="0" cellpadding="0"><tr><td style="padding-right:10px;"><![endif]--><table class="socialshare-innertable" style="display: inline-block"><tr><td style="padding:5px 10px"><a href="https://www.instagram.com/perch.energy/?hl=en" alias="instagram follow"><img src="https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/8318f3c2-dc6b-46f1-a4b7-b084baa5753b.png" alt="Instagram" width="22" height="22" style="display: block;; width: 22px !important; height: 22px !important"></a></td></tr></table><!--[if mso]></td><td style="padding-right:10px;"><![endif]--><table class="socialshare-innertable" style="display: inline-block"><tr><td style="padding:5px 10px"><a href="https://www.facebook.com/perch.energy/" alias="facebook follow"><img src="https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/ba11084b-a39e-4c67-a091-f7bf77f1fa06.png" alt="Facebook" width="11" height="22" style="display: block;; width: 11px !important; height: 22px !important"></a></td></tr></table><!--[if mso]></td><td><![endif]--><table class="socialshare-innertable" style="display: inline-block"><tr><td style="padding:5px 10px"><a href="https://www.linkedin.com/company/perchenergy" alias="linkedin follow"><img src="https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/f133258f-bbdd-4921-a694-db2e102ae01b.png" alt="LinkedIn" width="22" height="22" style="display: block;; width: 22px !important; height: 22px !important"></a></td></tr></table><!--[if mso]></td></tr></table><![endif]--></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table>
+              </td>
+             </tr>
+            </table>
+           </td>
+          </tr>
+         </table>
+        </td>
+       </tr>
+      </table>
+     </td>
+    </tr>
+   </table>
+  </td>
+ </tr>
+ <tr>
+  <td valign="top">
+   <custom type="footer" />
+  </td>
+ </tr>
+</table>
+</body>
+</html>
