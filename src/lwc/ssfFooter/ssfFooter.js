@@ -12,8 +12,6 @@ import companyFacebookLink from '@salesforce/label/c.SSF_Facebook_Link';
 import companyFacebookIcon from '@salesforce/label/c.SSF_Facebook_Icon';
 import companyLinkedinLink from '@salesforce/label/c.SSF_Linkedin_Link';
 import companyLinkedinIcon from '@salesforce/label/c.SSF_Linkedin_Icon';
-import companyTwitterLink from '@salesforce/label/c.SSF_Twitter_Link';
-import companyTwitterIcon from '@salesforce/label/c.SSF_Twitter_Icon';
 import companySupportEmail from '@salesforce/label/c.SSF_Support_Email';
 import companyAddress1 from '@salesforce/label/c.SSF_Company_Address_1';
 import companyAddress2 from '@salesforce/label/c.SSF_Company_Address_2';
@@ -34,8 +32,6 @@ export default class SsfFooter extends LightningElement {
         companyFacebookIconImg: staticResourceFolder + '/' + companyFacebookIcon,
         companyLinkedinLink,
         companyLinkedinIconImg: staticResourceFolder + '/' + companyLinkedinIcon,
-        companyTwitterLink,
-        companyTwitterIconImg: staticResourceFolder + '/' + companyTwitterIcon,
         companyResourceCenterLink,
         companySupportEmail,
         companySupportEmailLink: "mailto:" + companySupportEmail,
@@ -46,8 +42,5 @@ export default class SsfFooter extends LightningElement {
     connectedCallback() {
         loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
     }
-
-    get showTwitterLink() {
-        return companyTwitterLink && companyTwitterLink.length > 20;
-    }
+    
 }
