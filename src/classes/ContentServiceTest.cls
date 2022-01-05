@@ -121,4 +121,49 @@ public with sharing class ContentServiceTest {
         System.assertEquals(1, linkList.size(), 'There should be only one Content Document Link');
         System.assertEquals('InternalUsers', linkList[0].Visibility, 'The visibility of the Content Document Link should be InternalUsers');
     }
+
+    @IsTest
+    public static void testSetReadyForPaperBillQueue() {
+        List<ContentVersion> contentVersions = new List<ContentVersion>();
+        ContentVersion cvOne = new ContentVersion(
+            ContentLocation = 'S',
+            VersionData = EncodingUtil.base64Decode('collections 1'),
+            Title = 'Collections1.pdf',
+            PathOnClient = '/Collections.pdf'
+        );
+        contentVersions.add(cvOne);
+        ContentVersion cvTwo = new ContentVersion(
+            ContentLocation = 'S',
+            VersionData = EncodingUtil.base64Decode('collections 2'),
+            Title = 'Collections2.pdf',
+            PathOnClient = '/collectionsTwo.pdf'
+        );
+        contentVersions.add(cvTwo);
+        ContentVersion cvThree = new ContentVersion(
+            ContentLocation = 'S',
+            VersionData = EncodingUtil.base64Decode('Not collections'),
+            Title = 'NotCollections.pdf',
+            PathOnClient = '/invoice.pdf'
+        );
+        contentVersions.add(cvThree);
+        insert contentVersions;
+        // Apparently, Conga sets custom fields in an update, not insert
+        cvOne.Mail_Type__c = 'certified';
+        cvTwo.Mail_Type__c = 'firstclass';
+        update contentVersions;
+
+        List<ContentVersion> contentVersionsAfterInsert = [
+            SELECT Id, ContentDocumentId, Ready_for_Paper_Bill_Queue__c, Title
+            FROM ContentVersion
+            ORDER BY Title
+        ];
+        System.assertEquals(cvOne.Title, contentVersionsAfterInsert[0].Title, 'contentVersions[0] should be Collections1');
+        System.assertEquals(true, contentVersionsAfterInsert[0].Ready_for_Paper_Bill_Queue__c,
+            'Ready for Paper Bill Queue should be set since Mail Type is certified');
+        System.assertEquals(true, contentVersionsAfterInsert[1].Ready_for_Paper_Bill_Queue__c,
+            'Ready for Paper Bill Queue should be set since Mail Type is firstclass');
+        System.assertEquals(false, contentVersionsAfterInsert[2].Ready_for_Paper_Bill_Queue__c,
+            'Ready for Paper Bill Queue should not be set unless Mail Type is set');
+    }
+
 }

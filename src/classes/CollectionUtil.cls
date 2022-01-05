@@ -51,63 +51,6 @@ public with sharing class CollectionUtil {
         return !isEmpty(values);
     }
 
-    // TODO: These are disabled for now because of issues with proper polymorphic behavior with type parameters of
-    // TODO: Set and Map. Once those issues are resolved by Salesforce these can be restored.
-
-//    /**
-//     * Determines if the provided set is <code>null</code> or empty.
-//     *
-//     * @param values the set of values
-//     *
-//     * @return <code>true</code> if the provided set is <code>null</code> or empty; otherwise <code>false</code>
-//     *
-//     * @see Set
-//     */
-//    public static Boolean isEmpty(Set<Object> values) {
-//        return (values == null) || values.isEmpty();
-//    }
-//
-//    /**
-//     * Determines if the provided set is non-<code>null</code> and contains at least a single value.
-//     *
-//     * @param values the set of values
-//     *
-//     * @return <code>true</code> if the provided set is non-<code>null</code> and contains at least one value;
-//     * otherwise <code>false</code>
-//     *
-//     * @see Set
-//     */
-//    public static Boolean isNotEmpty(Set<Object> values) {
-//        return !isEmpty(values);
-//    }
-//
-//    /**
-//     * Determines if the provided map is <code>null</code> or empty.
-//     *
-//     * @param values the map of values
-//     *
-//     * @return <code>true</code> if the provided map is <code>null</code> or empty; otherwise <code>false</code>
-//     *
-//     * @see Map
-//     */
-//    public static Boolean isEmpty(Map<Object, Object> values) {
-//        return (values == null) || values.isEmpty();
-//    }
-//
-//    /**
-//     * Determines if the provided map is non-<code>null</code> and contains at least a single value.
-//     *
-//     * @param values the map of values
-//     *
-//     * @return <code>true</code> if the provided map is non-<code>null</code> and contains at least one value;
-//     * otherwise <code>false</code>
-//     *
-//     * @see Map
-//     */
-//    public static Boolean isNotEmpty(Map<Object, Object> values) {
-//        return !isEmpty(values);
-//    }
-
     /**
      * Adds the provided value to the specified list if both are non-null.
      *
@@ -123,24 +66,6 @@ public with sharing class CollectionUtil {
             values.add(value);
         }
     }
-
-    // TODO: Same issue as above
-
-//    /**
-//     * Adds the provided value to the specified set if both are non-null.
-//     *
-//     * @param values the set of values to which the non-null value should be added
-//     * @param value a value which will be added to the set if non-null
-//     */
-//    public static void addIfNotNull(Set<Object> values, Object value) {
-//        if (values == null) {
-//            throw new IllegalArgumentException('The set must be non-null.');
-//        }
-//
-//        if (value != null) {
-//            values.add(value);
-//        }
-//    }
 
     /**
      * Adds all non-null values from the source list to the target list. The source values list may be null.
@@ -484,6 +409,18 @@ public with sharing class CollectionUtil {
             for (ComparatorAdapter adapter : adapters) {
                 objects.add(adapter.getValue());
             }
+        }
+    }
+
+    /**
+     * @description sets a field on the list of sobjects
+     * @param sobjects List of objects to set
+     * @param field field
+     * @param value value
+     */
+    public static void setField(List<SObject> sobjects, SObjectField field, Object value) {
+        for (SObject sobj : sobjects) {
+            sobj.put(field, value);
         }
     }
 
