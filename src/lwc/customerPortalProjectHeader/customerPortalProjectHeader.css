@@ -3,7 +3,8 @@
  */
 
 .cpp-header__container {
-    background-color: var(--lwc-colorBackgroundButtonBrand);
+    /*Perch Ocean blue*/
+    background-color: #2774EE;
 }
 
 .cpp-header__col {

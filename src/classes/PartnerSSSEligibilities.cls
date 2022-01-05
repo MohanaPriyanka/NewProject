@@ -25,7 +25,7 @@ public without sharing class PartnerSSSEligibilities {
     public void preventDeleteForPreviouslyActiveRecords() {
         for (Partner_Shared_Solar_System_Eligibility__c partnerEligibility : records) {
             if (partnerEligibility.Start_Date__c <= System.today()) {
-                partnerEligibility.addError('You cannot delete ' + partnerEligibility.Id + ' which that started in the past');
+                partnerEligibility.addError('You cannot delete ' + partnerEligibility.Id + ' because its Start Date has already passed.');
             }
         }
     }
