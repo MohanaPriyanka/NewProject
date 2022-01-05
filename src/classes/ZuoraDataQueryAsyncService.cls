@@ -55,7 +55,7 @@ public class ZuoraDataQueryAsyncService implements Queueable, Database.AllowsCal
                 retryAfterException = true;
                 Logger.logNow('ZuoraDataQueryAsyncService', 'checkZuoraQueryStatus', 'Exception caught, but retrying: ' + re.getMessage() + '\n' + re.getStackTraceString(), Logger.WARN);
             } catch (Exception e) {
-                String errorMessage = String.valueOf(zuoraQueryResult) + '\n' + e.getMessage() + '\n' + e.getStackTraceString();
+                String errorMessage = e.getMessage() + '\n' + e.getStackTraceString() + '\n' + String.valueOf(zuoraQueryResult);
                 Logger.logNow('ZuoraDataQueryAsyncService', 'checkZuoraQueryStatus', errorMessage);
             }
         } else if (zuoraQueryResult.data.queryStatus == 'failed' && attemptedQuery.numberOfRetries > 0) {

@@ -28,4 +28,18 @@ public with sharing class ZuoraGatewayAssigner {
             }
         }
     }
+
+    /**
+     * @description Since Zuora does not set a payment gateway on the account in Zuora if it is the default gatewa, and Conga uses
+     * the Payment Gateway on the Billing Account to get the remittance address for collections letters, this sets the
+     * Payment Gateway on the Billing Account to the default gateway if it is null before insert or update
+     * @param billingAccounts Trigger.new before insert or update
+     */
+    public void setDefaultPaymentGateway(List<Zuora__CustomerAccount__c> billingAccounts) {
+        for (Zuora__CustomerAccount__c customerAccount : billingAccounts) {
+            if (customerAccount.Zuora__PaymentGateway__c == null) {
+                customerAccount.Zuora__PaymentGateway__c = defaultGatewayId;
+            }
+        }
+    }
 }
