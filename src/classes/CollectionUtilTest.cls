@@ -25,17 +25,6 @@ private class CollectionUtilTest {
     private static final List<Integer> TEST_LIST = new List<Integer> { 10, 20, 30 };
     private static final Integer[] TEST_ARRAY = new Integer[] { 10, 20, 30 };
 
-    // TODO: These are disabled for now because of issues with proper polymorphic behavior with type parameters of
-    // TODO: Set and Map. Once those issues are resolved by Salesforce these can be restored.
-
-//    private static final Set<Integer> NULL_SET = null;
-//    private static final Set<Integer> EMPTY_SET = new Set<Integer>();
-//    private static final Set<Integer> TEST_SET = new Set<Integer> { 10, 20, 30 };
-//
-//    private static final Map<Integer, Integer> NULL_MAP = null;
-//    private static final Map<Integer, Integer> EMPTY_MAP = new Map<Integer, Integer>();
-//    private static final Map<Integer, Integer> TEST_MAP = new Map<Integer, Integer> { 10 => 100, 20 => 200, 30 => 300 };
-
     @IsTest
     static void testIsEmpty_List() {
         System.assert(CollectionUtil.isEmpty(NULL_LIST), 'Expected true for null list.');
@@ -569,5 +558,22 @@ private class CollectionUtilTest {
                 System.assertEquals(managerId, contact.ReportsToId);
             }
         }
+    }
+
+    @IsTest
+    static void testSetField() {
+        List<Contact> contacts = new List<Contact>();
+        contacts.add(new Contact(
+            FirstName = 'Test',
+            LastName = 'Contact'
+        ));
+        contacts.add(new Contact(
+            FirstName = 'Another Test',
+            LastName = 'Contact'
+        ));
+        String testEmail = 'test@test.com';
+        CollectionUtil.setField(contacts, Contact.Email, testEmail);
+        System.assertEquals(testEmail, contacts[0].Email, 'Expected setfield to set email on first contact');
+        System.assertEquals(testEmail, contacts[1].Email, 'Expected setfield to set email on second contact');
     }
 }

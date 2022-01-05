@@ -77,4 +77,19 @@ public without sharing class ContentService {
 
         Util.insertAndLog(distList, 'ContentService', 'createDistribution');
     }
+
+    /**
+     * @description Sets Ready for Paper Bill Queue to true for CVs inserted with a Mail Type, assuming Conga creates
+     * the ContentVersions and can only set one custom field (Mail Type). Used to automate sending Collections Letters
+     * via Account.Conga_Letterstream_Delinquency__c.
+     * @param oldMap Trigger.oldMap
+     * @param newContentVersions Trigger.new
+     */
+    public static void setReadyForPaperBillQueue(Map<Id, ContentVersion> oldMap, List<ContentVersion> newContentVersions) {
+        List<ContentVersion> newContentWithMailTypeSet = (List<ContentVersion>)
+            new SObjectFilter(oldMap, newContentVersions, ContentVersion.Mail_Type__c, null, SObjectFilter.ANY_VALUE)
+                .addFilterCriteria(ContentVersion.Added_to_Paper_Bill_Queue__c, SObjectFilter.NOT_EQUAL_TO, true)
+                .get(SObjectFilter.SOBJECT_LIST);
+        CollectionUtil.setField(newContentWithMailTypeSet, ContentVersion.Ready_for_Paper_Bill_Queue__c, true);
+    }
 }
