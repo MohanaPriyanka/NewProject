@@ -26339,11 +26339,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Lead.Change_Order_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Lead.ClickToDial__Click_to_Call_Mobile__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -26564,11 +26559,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Lead.Continue_Loan_Application_Link__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Lead.Credit_Check_Acknowledged__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -26604,11 +26594,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Lead.Cumulative_Loan_to_Value_if_Applicable__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Lead.Custom_ID_Clone__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -26639,22 +26624,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Lead.DOER_Solar_Loan__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Lead.Date_of_Application_2__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Date_of_Application__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Lead.Date_of_Birth__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -26755,11 +26730,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Employed_less_than_a_year__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Lead.Employer_Annual_Salary__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
