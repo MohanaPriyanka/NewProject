@@ -1,22 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
     <labels>
-        <fullName>AMP_Powered_By_Example</fullName>
-        <categories>branding</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>AMP_Powered_By_Example</shortDescription>
-        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/9bdb80df-6827-4dd4-addf-5428954d1b68.png</value>
-    </labels>
-    <labels>
-        <fullName>AMP_Powered_By_Faq</fullName>
-        <categories>branding</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>AMP_Powered_By_Faq</shortDescription>
-        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/cb47cd31-4b16-467d-8edb-995f1d83cfbe.pdf</value>
-    </labels>
-    <labels>
         <fullName>AmpBlack_Main_Logo</fullName>
         <categories>branding</categories>
         <language>en_US</language>
@@ -47,38 +31,6 @@
         <protected>false</protected>
         <shortDescription>Next</shortDescription>
         <value>Next, we need to gather your co-signer&apos;s personal information:</value>
-    </labels>
-    <labels>
-        <fullName>Community_Solar_Hands_Banner</fullName>
-        <categories>branding</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Community_Solar_Hands_Banner</shortDescription>
-        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/e2502070-3ee2-4a4e-9652-5f3daae9549d.png</value>
-    </labels>
-    <labels>
-        <fullName>Community_Solar_Jumping_Banner</fullName>
-        <categories>branding</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Community_Solar_Jumping_Banner</shortDescription>
-        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/e2502070-3ee2-4a4e-9652-5f3daae9549d.png</value>
-    </labels>
-    <labels>
-        <fullName>Company_Client_Portal_Banner</fullName>
-        <categories>branding</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Company_Client_Portal_Banner</shortDescription>
-        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/4cad62ed-dbf4-4658-9156-b9614539ff95.png</value>
-    </labels>
-    <labels>
-        <fullName>Company_Color_Blue</fullName>
-        <categories>branding, email</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Company_Color_Blue_Ocean</shortDescription>
-        <value>#2774EE</value>
     </labels>
     <labels>
         <fullName>Company_Default_Farm_Image</fullName>
@@ -129,38 +81,6 @@
         <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/509a186e-a0d6-477a-a287-fe206321ada4.png</value>
     </labels>
     <labels>
-        <fullName>Company_Main_Logo_600</fullName>
-        <categories>branding</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Company_Main_Logo_600</shortDescription>
-        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/7042dc9e-1c34-42a1-b5bc-96650d7a49b6.png</value>
-    </labels>
-    <labels>
-        <fullName>Company_Main_Logo_Big</fullName>
-        <categories>branding</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Company_Main_Logo_Big</shortDescription>
-        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/2a09e601-16c7-49a3-bd98-c494ca1cd360.png</value>
-    </labels>
-    <labels>
-        <fullName>Company_Main_Logo_Medium</fullName>
-        <categories>branding</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Company_Main_Logo_Medium</shortDescription>
-        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/0c9fc735-3cf3-4f42-9b36-bf3f6941a029.png</value>
-    </labels>
-    <labels>
-        <fullName>Company_Main_Logo_White</fullName>
-        <categories>branding</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Company_Main_Logo_White</shortDescription>
-        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/e51919eb-234b-4343-8642-a7deafbf99bb.png</value>
-    </labels>
-    <labels>
         <fullName>Company_Name</fullName>
         <categories>branding, email</categories>
         <language>en_US</language>
@@ -183,14 +103,6 @@
         <protected>false</protected>
         <shortDescription>Company Name Customer Management</shortDescription>
         <value>BCS Customer Management, LLC</value>
-    </labels>
-    <labels>
-        <fullName>Company_Old_Logo</fullName>
-        <categories>branding</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Company_Old_Logo</shortDescription>
-        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/cafd0406-663e-4a00-a823-0abd6beee749.png</value>
     </labels>
     <labels>
         <fullName>Company_Temp_Website</fullName>
@@ -239,22 +151,6 @@
         <protected>false</protected>
         <shortDescription>Enrollment Portal URL</shortDescription>
         <value>https://portal.perchenergy.com/apply</value>
-    </labels>
-    <labels>
-        <fullName>Facebook_Email_Icon</fullName>
-        <categories>branding, email</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Facebook_Email_Icon</shortDescription>
-        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/97d147ea-7e52-4401-9202-fc926efc7537.png</value>
-    </labels>
-    <labels>
-        <fullName>Instagram_Email_Icon</fullName>
-        <categories>branding, email</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Instagram_Email_Icon</shortDescription>
-        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/8b223bd4-7ec4-468b-9714-421b05122387.png</value>
     </labels>
     <labels>
         <fullName>Internal_Classic_Salesforce_URL</fullName>
@@ -311,30 +207,6 @@
         <protected>false</protected>
         <shortDescription>Asks how long the applicant has been with their employer.</shortDescription>
         <value>Have you been with your employer for more than one year?</value>
-    </labels>
-    <labels>
-        <fullName>LinkedIn_Black_Email_Icon</fullName>
-        <categories>branding</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>LinkedIn_Black_Email_Icon</shortDescription>
-        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/634a2a53-9bd7-4da5-af7e-4e41c0ae5217.png</value>
-    </labels>
-    <labels>
-        <fullName>LinkedIn_Email_Icon</fullName>
-        <categories>branding, email</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>LinkedIn_Email_Icon</shortDescription>
-        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/3cec1db7-8ef1-41e3-9549-c28f74a92555.png</value>
-    </labels>
-    <labels>
-        <fullName>Other_Charges_MN_Example</fullName>
-        <categories>branding</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Other_Charges_MN_Example</shortDescription>
-        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/cd698b60-6f9c-4c09-9fd9-af0362eaae66.png</value>
     </labels>
     <labels>
         <fullName>Partner_Portal_URL</fullName>
@@ -647,22 +519,6 @@
         <protected>false</protected>
         <shortDescription>SSF_WaitingRoom3_Url</shortDescription>
         <value>https://communitysolar.perchenergy.com</value>
-    </labels>
-    <labels>
-        <fullName>Solar_Credits_MN_Example</fullName>
-        <categories>branding</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Solar_Credits_MN_Example</shortDescription>
-        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/f5efdd01-8287-4dc2-bdce-62c840577e56.png</value>
-    </labels>
-    <labels>
-        <fullName>Summary_of_Current_Charges_Example</fullName>
-        <categories>branding</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Summary_of_Current_Charges_Example</shortDescription>
-        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/478769b2-0335-4962-8fdb-d7493f5d9a67.png</value>
     </labels>
     <labels>
         <fullName>email_anchorsupport</fullName>
@@ -1230,14 +1086,6 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Partner Support Phone</shortDescription>
-        <value>(888) 997-2432</value>
-    </labels>
-    <labels>
-        <fullName>phone_partnersupport2</fullName>
-        <categories>branding</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>phone_partnersupport2</shortDescription>
         <value>(888) 997-2432</value>
     </labels>
     <labels>
