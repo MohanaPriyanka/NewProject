@@ -2459,17 +2459,6 @@ This field can be changed to a formula consistent with the other factors if LASE
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Financing_Fee__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(DOER_Solar_Loan__c = TRUE, 0,  max(1250,0.05*( Loan_Amount__c)) )</formula>
-        <label>Financing Fee</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Flag__c</fullName>
         <externalId>false</externalId>
         <formula>IF(LASER_Credit_Score__c = &apos;9999&apos;, IMAGE(&quot;/resource/1563473582000/Panda_Icon&quot;, &quot;panda&quot;), &quot;&quot;)</formula>
@@ -3431,19 +3420,6 @@ TEXT( LZU__c ) = &apos;Manual Lookup Required&apos;,
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Loan_Rate__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(ISPICKVAL(Interest_Rate_Picklist__c,&quot;&quot;), 
-IF(DOER_Solar_Loan__c=TRUE, 0.0399, 0.0599), VALUE(TEXT(Interest_Rate_Picklist__c))/100)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Loan Rate</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <type>Percent</type>
-    </fields>
-    <fields>
         <fullName>Loan_System_Information__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Representation of system information set by installers when sending a loan application to an applicant</inlineHelpText>
@@ -3683,28 +3659,6 @@ IF(DOER_Solar_Loan__c=TRUE, 0.0399, 0.0599), VALUE(TEXT(Interest_Rate_Picklist__
         <scale>2</scale>
         <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Monthly_Payment_IBLS__c</fullName>
-        <description>IF DOER rate changes, need to update this field</description>
-        <externalId>false</externalId>
-        <formula>IF(Income_Support__c != &apos;No&apos;, 
-IF(Income_Support__c == &apos;Category 1&apos;, 
-IF(DOER_Solar_Loan__c = TRUE, 
-IF(Product__c != NULL, (((Loan_Principal__c*0.7)) * Product__r.Loan_Interest_Rate__c /12 )/(1-((1+ Product__r.Loan_Interest_Rate__c /12)^(-1*Product__r.Loan_Term__c))), 0.00)
-, Monthly_Payment__c), 
-IF(DOER_Solar_Loan__c=TRUE, 
-If(Product__c != NULL, (((Loan_Principal__c*0.8)) * Product__r.Loan_Interest_Rate__c /12 )/(1-((1+ Product__r.Loan_Interest_Rate__c /12)^(-1*Product__r.Loan_Term__c))), 0.00), 
-Monthly_Payment__c)), 
-Monthly_Payment__c)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Monthly Payment (IBLS)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Currency</type>
     </fields>

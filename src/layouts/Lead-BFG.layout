@@ -82,10 +82,6 @@
                 <field>Risk_Level_Business_Type__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Monthly_Payment_IBLS__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Contingent_Contract__c</field>
             </layoutItems>

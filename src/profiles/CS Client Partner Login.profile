@@ -22741,11 +22741,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Lead.Financing_Fee__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Lead.Flag__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -23096,11 +23091,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Lead.Loan_Rate__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Lead.Loan_System_Information__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -23187,11 +23177,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Monthly_Mortgage_Tax_and_Insurance__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Lead.Monthly_Payment_IBLS__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -31717,11 +31702,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.LeadSource</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Lead_Continue_App_Link__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
