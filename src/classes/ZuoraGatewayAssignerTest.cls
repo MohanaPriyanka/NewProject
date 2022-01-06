@@ -66,6 +66,12 @@ public with sharing class ZuoraGatewayAssignerTest {
         );
         insert new List<Zuora__Payment__c>{bcsPayment1, bcsPayment2, ampPayment3, ampPayment4, ampPayment5};
 
+        List<Zuora__CustomerAccount__c> customerAccounts = [
+            SELECT Id, Name, Zuora__PaymentGateway__c
+            FROM Zuora__CustomerAccount__c
+            ORDER BY Name
+        ];
+
         Map<Id, Zuora__Payment__c> payments = new Map<Id, Zuora__Payment__c>([
             SELECT Id, Payment_Gateway__c, Lockbox_Formula__c
             FROM Zuora__Payment__c
@@ -84,6 +90,26 @@ public with sharing class ZuoraGatewayAssignerTest {
             'Payment Gateway should be null for an external payment');
         System.assertEquals(ampPayment5.Lockbox__c, payments.get(ampPayment5.Id).Lockbox_Formula__c,
             'Lockbox should be populated for an External payment');
+        System.assertEquals('Test', customerAccounts[0].Name, 'First customer account should be Test');
+        System.assertEquals(bcsGateway.Id, customerAccounts[0].Zuora__PaymentGateway__c,
+            'First customer account was inserted without a Payment Gateway, and should have been assigned the default');
+        System.assertEquals(ampGateway.Id, customerAccounts[1].Zuora__PaymentGateway__c,
+            'Second customer account was inserted with the Amp Gateway');
+
+        customerAccounts[0].Zuora__PaymentGateway__c = ampGateway.Id;
+        customerAccounts[1].Zuora__PaymentGateway__c = null;
+        update customerAccounts;
+
+        customerAccounts = [
+            SELECT Id, Name, Zuora__PaymentGateway__c
+            FROM Zuora__CustomerAccount__c
+            ORDER BY Name
+        ];
+        System.assertEquals(ampGateway.Id, customerAccounts[0].Zuora__PaymentGateway__c,
+            'First customer account was updated to have the Amp Gateway');
+        System.assertEquals(bcsGateway.Id, customerAccounts[1].Zuora__PaymentGateway__c,
+            'Second customer account was updated to have the default, but should have been assigned the default');
+
     }
 
 }

@@ -3139,17 +3139,6 @@ TEXT(DAY(Interest_Only_Start_Date__c))
         <type>Picklist</type>
     </fields>
     <fields>
-        <fullName>Lead_Continue_App_Link__c</fullName>
-        <externalId>false</externalId>
-        <formula>Lead__r.Continue_Loan_Application_Link__c</formula>
-        <label>Lead Continue App Link</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Lead_ID__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Set by Lead Mapping on conversion</inlineHelpText>

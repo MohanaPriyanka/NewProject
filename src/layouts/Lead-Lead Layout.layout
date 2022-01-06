@@ -73,10 +73,6 @@
                 <field>Days_Since_App_Started__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Monthly_Payment_IBLS__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Contingent_Contract__c</field>
             </layoutItems>
