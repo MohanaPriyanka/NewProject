@@ -1349,21 +1349,6 @@
         </valueSet>
     </fields>
     <fields>
-        <fullName>Change_Order_Status__c</fullName>
-        <description>Needs to be on the Lead because an installer might start a change before the lead is converted (if we release the change process before contingent contracting)</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Used by the Residential Loan process to update loan amount and equipment.</inlineHelpText>
-        <label>Change Order Status</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetName>Change_Order_Status</valueSetName>
-        </valueSet>
-    </fields>
-    <fields>
         <fullName>ClickToDial__Click_to_Call_Mobile__c</fullName>
         <deprecated>false</deprecated>
         <description>You must dial + then the country code and number you wish to call. Example: +12125551313.
@@ -1886,16 +1871,6 @@ IF(ISBLANK(Customer_Signed_Date__c),&quot;&amp;qmode=SalesforceFile&quot;,
         <type>Url</type>
     </fields>
     <fields>
-        <fullName>Continue_Loan_Application_Link__c</fullName>
-        <externalId>false</externalId>
-        <formula>&quot;https://bluewavememberportal.force.com/apply/s/loan-application?leadId=&quot; &amp; Id</formula>
-        <label>Continue Loan Application Link</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Contract_eSign_Link__c</fullName>
         <description>Link that points to the loc=agree page for SSF, if Contract Re-Signs are ever necessary for a customer.</description>
         <externalId>false</externalId>
@@ -2027,17 +2002,6 @@ This field can be changed to a formula consistent with the other factors if LASE
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Cumulative_Loan_to_Value_if_Applicable__c</fullName>
-        <externalId>false</externalId>
-        <formula>&quot;N/A&quot;</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Cumulative Loan to Value if Applicable</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Custom_ID_Clone__c</fullName>
         <externalId>false</externalId>
         <formula>Custom_ID__c</formula>
@@ -2106,15 +2070,6 @@ This field can be changed to a formula consistent with the other factors if LASE
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>DOER_Solar_Loan__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>DOER Solar Loan</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>Date_of_Application_2__c</fullName>
         <externalId>false</externalId>
         <formula>LEFT(Date_of_Application__c,10)</formula>
@@ -2137,17 +2092,6 @@ This field can be changed to a formula consistent with the other factors if LASE
         <trackHistory>true</trackHistory>
         <type>Text</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Date_of_Birth__c</fullName>
-        <businessStatus>Active</businessStatus>
-        <externalId>false</externalId>
-        <label>Date of Birth</label>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Date</type>
     </fields>
     <fields>
         <fullName>Date_of_Credit_Report__c</fullName>
@@ -2371,19 +2315,6 @@ This field can be changed to a formula consistent with the other factors if LASE
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>Employer_Annual_Salary__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Provided by loan applicant</inlineHelpText>
-        <label>Employer Annual Salary</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>EnergySage_Lead__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -2524,17 +2455,6 @@ This field can be changed to a formula consistent with the other factors if LASE
         <required>false</required>
         <scale>2</scale>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Financing_Fee__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(DOER_Solar_Loan__c = TRUE, 0,  max(1250,0.05*( Loan_Amount__c)) )</formula>
-        <label>Financing Fee</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
         <trackHistory>false</trackHistory>
         <type>Currency</type>
     </fields>
@@ -3500,19 +3420,6 @@ TEXT( LZU__c ) = &apos;Manual Lookup Required&apos;,
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Loan_Rate__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(ISPICKVAL(Interest_Rate_Picklist__c,&quot;&quot;), 
-IF(DOER_Solar_Loan__c=TRUE, 0.0399, 0.0599), VALUE(TEXT(Interest_Rate_Picklist__c))/100)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Loan Rate</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <type>Percent</type>
-    </fields>
-    <fields>
         <fullName>Loan_System_Information__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Representation of system information set by installers when sending a loan application to an applicant</inlineHelpText>
@@ -3752,28 +3659,6 @@ IF(DOER_Solar_Loan__c=TRUE, 0.0399, 0.0599), VALUE(TEXT(Interest_Rate_Picklist__
         <scale>2</scale>
         <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Monthly_Payment_IBLS__c</fullName>
-        <description>IF DOER rate changes, need to update this field</description>
-        <externalId>false</externalId>
-        <formula>IF(Income_Support__c != &apos;No&apos;, 
-IF(Income_Support__c == &apos;Category 1&apos;, 
-IF(DOER_Solar_Loan__c = TRUE, 
-IF(Product__c != NULL, (((Loan_Principal__c*0.7)) * Product__r.Loan_Interest_Rate__c /12 )/(1-((1+ Product__r.Loan_Interest_Rate__c /12)^(-1*Product__r.Loan_Term__c))), 0.00)
-, Monthly_Payment__c), 
-IF(DOER_Solar_Loan__c=TRUE, 
-If(Product__c != NULL, (((Loan_Principal__c*0.8)) * Product__r.Loan_Interest_Rate__c /12 )/(1-((1+ Product__r.Loan_Interest_Rate__c /12)^(-1*Product__r.Loan_Term__c))), 0.00), 
-Monthly_Payment__c)), 
-Monthly_Payment__c)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Monthly Payment (IBLS)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Currency</type>
     </fields>
@@ -7555,7 +7440,6 @@ SEMA = 13 -14</inlineHelpText>
         <fullName>Leads_with_Credit_Pulled</fullName>
         <booleanFilter>(1 OR 2) AND 3 AND 4</booleanFilter>
         <columns>FULL_NAME</columns>
-        <columns>DOER_Solar_Loan__c</columns>
         <columns>LEAD.CREATED_DATE</columns>
         <columns>Date_of_Credit_Report__c</columns>
         <columns>Application_Source_Phase_2__c</columns>
@@ -7628,7 +7512,6 @@ SEMA = 13 -14</inlineHelpText>
         <fullName>Non_DOER_Leads_with_Credit_Pulled</fullName>
         <booleanFilter>1 AND 2 AND 3 AND 4 AND 5 AND 6</booleanFilter>
         <columns>FULL_NAME</columns>
-        <columns>DOER_Solar_Loan__c</columns>
         <columns>LEAD.CREATED_DATE</columns>
         <columns>Date_of_Credit_Report__c</columns>
         <columns>Application_Source_Phase_2__c</columns>
@@ -7737,7 +7620,6 @@ SEMA = 13 -14</inlineHelpText>
         <columns>LEAD.COMPANY</columns>
         <columns>LEAD.STATE_CODE</columns>
         <columns>LEAD.EMAIL</columns>
-        <columns>DOER_Solar_Loan__c</columns>
         <columns>LEAD.STATUS</columns>
         <columns>LEAD.CREATED_DATE</columns>
         <columns>Comments__c</columns>
@@ -7760,7 +7642,6 @@ SEMA = 13 -14</inlineHelpText>
     </listViews>
     <listViews>
         <fullName>Resi_Loan_PreQualified_Leads</fullName>
-        <columns>DOER_Solar_Loan__c</columns>
         <columns>FULL_NAME</columns>
         <columns>LEAD.COMPANY</columns>
         <columns>LEAD.STATE_CODE</columns>
@@ -7872,7 +7753,6 @@ SEMA = 13 -14</inlineHelpText>
         <fullName>Unreviewed_Leads</fullName>
         <booleanFilter>1 AND 2 AND 3 AND 4 AND 5</booleanFilter>
         <columns>FULL_NAME</columns>
-        <columns>DOER_Solar_Loan__c</columns>
         <columns>LEAD.CREATED_DATE</columns>
         <columns>Date_of_Credit_Report__c</columns>
         <columns>Application_Source_Phase_2__c</columns>
@@ -8530,33 +8410,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Change_Order_Status__c</picklist>
-            <values>
-                <fullName>Customer Authorized</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Rejected</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Installer Withdrawn</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Requested</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Reviewed - Accepted</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Reviewed - Rejected</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -9608,33 +9461,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Change_Order_Status__c</picklist>
-            <values>
-                <fullName>Customer Authorized</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Rejected</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Installer Withdrawn</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Requested</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Reviewed - Accepted</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Reviewed - Rejected</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -10702,33 +10528,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Change_Order_Status__c</picklist>
-            <values>
-                <fullName>Customer Authorized</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Rejected</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Installer Withdrawn</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Requested</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Reviewed - Accepted</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Reviewed - Rejected</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Direct_Disbursal_to_Installer_Authorized__c</picklist>
             <values>
                 <fullName>No</fullName>
@@ -11764,33 +11563,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Change_Order_Status__c</picklist>
-            <values>
-                <fullName>Customer Authorized</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Rejected</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Installer Withdrawn</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Requested</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Reviewed - Accepted</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Reviewed - Rejected</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -12869,33 +12641,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Change_Order_Status__c</picklist>
-            <values>
-                <fullName>Customer Authorized</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Rejected</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Installer Withdrawn</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Requested</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Reviewed - Accepted</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Reviewed - Rejected</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Direct_Disbursal_to_Installer_Authorized__c</picklist>
             <values>
                 <fullName>No</fullName>
@@ -13966,33 +13711,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Change_Order_Status__c</picklist>
-            <values>
-                <fullName>Customer Authorized</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Rejected</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Installer Withdrawn</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Requested</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Reviewed - Accepted</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Reviewed - Rejected</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -15072,33 +14790,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Change_Order_Status__c</picklist>
-            <values>
-                <fullName>Customer Authorized</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Rejected</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Installer Withdrawn</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Requested</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Reviewed - Accepted</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Reviewed - Rejected</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Direct_Disbursal_to_Installer_Authorized__c</picklist>
             <values>
                 <fullName>No</fullName>
@@ -16169,33 +15860,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Change_Order_Status__c</picklist>
-            <values>
-                <fullName>Customer Authorized</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Rejected</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Installer Withdrawn</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Requested</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Reviewed - Accepted</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Reviewed - Rejected</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -17275,33 +16939,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Change_Order_Status__c</picklist>
-            <values>
-                <fullName>Customer Authorized</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Rejected</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Installer Withdrawn</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Requested</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Reviewed - Accepted</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Reviewed - Rejected</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Direct_Disbursal_to_Installer_Authorized__c</picklist>
             <values>
                 <fullName>No</fullName>
@@ -18376,33 +18013,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Change_Order_Status__c</picklist>
-            <values>
-                <fullName>Customer Authorized</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Rejected</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Installer Withdrawn</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Requested</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Reviewed - Accepted</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Reviewed - Rejected</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Direct_Disbursal_to_Installer_Authorized__c</picklist>
             <values>
                 <fullName>No</fullName>
@@ -19465,33 +19075,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Change_Order_Status__c</picklist>
-            <values>
-                <fullName>Customer Authorized</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Rejected</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Installer Withdrawn</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Requested</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Reviewed - Accepted</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Reviewed - Rejected</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -20578,33 +20161,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Change_Order_Status__c</picklist>
-            <values>
-                <fullName>Customer Authorized</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Rejected</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Installer Withdrawn</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Requested</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Reviewed - Accepted</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Reviewed - Rejected</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Direct_Disbursal_to_Installer_Authorized__c</picklist>
             <values>
                 <fullName>No</fullName>
@@ -21337,33 +20893,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Change_Order_Status__c</picklist>
-            <values>
-                <fullName>Customer Authorized</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Rejected</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Installer Withdrawn</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Requested</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Reviewed - Accepted</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Reviewed - Rejected</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -23795,33 +23324,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Change_Order_Status__c</picklist>
-            <values>
-                <fullName>Customer Authorized</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Rejected</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Installer Withdrawn</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Requested</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Reviewed - Accepted</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Reviewed - Rejected</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Direct_Disbursal_to_Installer_Authorized__c</picklist>
             <values>
                 <fullName>No</fullName>
@@ -24885,33 +24387,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Change_Order_Status__c</picklist>
-            <values>
-                <fullName>Customer Authorized</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Rejected</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Installer Withdrawn</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Requested</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Reviewed - Accepted</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Reviewed - Rejected</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -26970,33 +26445,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Yes</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Change_Order_Status__c</picklist>
-            <values>
-                <fullName>Customer Authorized</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Rejected</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Installer Withdrawn</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Requested</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Reviewed - Accepted</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Reviewed - Rejected</fullName>
                 <default>false</default>
             </values>
         </picklistValues>

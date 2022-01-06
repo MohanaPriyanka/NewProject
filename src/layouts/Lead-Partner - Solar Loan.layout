@@ -52,10 +52,6 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>Monthly_Payment_IBLS__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
                 <field>Loan_Principal__c</field>
             </layoutItems>
             <layoutItems>
