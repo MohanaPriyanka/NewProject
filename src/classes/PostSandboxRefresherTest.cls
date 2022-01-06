@@ -316,7 +316,8 @@ private class PostSandboxRefresherTest {
             WHERE Class__c = 'ZuoraBillingAccountTrigger'
             AND Method__c = 'TriggerDisabled'
         ];
-        System.assertEquals(1,updatedTriggerOffWarning.size());
+        System.assertEquals(2, updatedTriggerOffWarning.size(),
+            'Expected two errors logged, one before insert and one after insert, but got these: ' + updatedTriggerOffWarning);
     }
     @IsTest
     static void testInvocableGenericBatch(){
