@@ -51,10 +51,6 @@
                 <field>Days_Since_App_Started__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Loan_Principal__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Contingent_Contract__c</field>
             </layoutItems>
@@ -163,12 +159,7 @@
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
         <label>Credit Information</label>
-        <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Loan_Amount__c</field>
-            </layoutItems>
-        </layoutColumns>
+        <layoutColumns />
         <layoutColumns />
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>

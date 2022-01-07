@@ -346,23 +346,6 @@
         <trackHistory>false</trackHistory>
     </fields>
     <fields>
-        <fullName>Auto_Number__c</fullName>
-        <externalId>false</externalId>
-        <label>Auto Number</label>
-        <trackHistory>false</trackHistory>
-        <type>AutoNumber</type>
-    </fields>
-    <fields>
-        <fullName>Avidia_Service_Provider__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <inlineHelpText>Reg O question. Is borrower or co-borrower a service provider of Avidia Bank?</inlineHelpText>
-        <label>Avidia Service Provider?</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>Birthdate</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -550,50 +533,6 @@ Specify the global country code setting or record level country code to automati
         <type>TextArea</type>
     </fields>
     <fields>
-        <fullName>Employed__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <inlineHelpText>Indicates Co-Applicant Employment</inlineHelpText>
-        <label>Employed</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Employed_less_than_a_year__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <inlineHelpText>This checkbox serves as the false value to the Employed longer than a year checkbox. It allows the CAP UI to show blank checkboxes without having to default to false.</inlineHelpText>
-        <label>Employed less than a year</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Employer_Annual_Salary__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Provided by loan applicant</inlineHelpText>
-        <label>Employer Annual Salary</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Express_Consent__c</fullName>
-        <businessStatus>Active</businessStatus>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <inlineHelpText>Set by applicants with the CAP during a loan application</inlineHelpText>
-        <label>Express Consent</label>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>Fax</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -634,18 +573,6 @@ Specify the global country code setting or record level country code to automati
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Income__c</fullName>
-        <externalId>false</externalId>
-        <label>Income</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Jigsaw</fullName>
@@ -957,17 +884,6 @@ Specify the global country code setting or record level country code to automati
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Link_to_Recurring_Payment_Form__c</fullName>
-        <externalId>false</externalId>
-        <formula>&quot;https://forms.bluewaverenewables.com/381548&amp;tfa_364=&quot;&amp;AccountId</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Link to Recurring Payment Form</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>MC4SF__MC_Subscriber__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <deprecated>false</deprecated>
@@ -990,58 +906,6 @@ Specify the global country code setting or record level country code to automati
         <fullName>MobilePhone</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-    </fields>
-    <fields>
-        <fullName>Monthly_Income_2__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Used for co-applicant &quot;Other Income&quot;</inlineHelpText>
-        <label>Monthly Income 2</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Monthly_Income_Details_2__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Used for co-applicant &quot;Other Income&quot;</inlineHelpText>
-        <label>Monthly Income Details 2</label>
-        <length>255</length>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Monthly_Income_Details__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Used for co-applicant &quot;Other Income&quot;</inlineHelpText>
-        <label>Monthly Income Details</label>
-        <length>255</length>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Monthly_Income__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Used for co-applicant &quot;Other Income&quot;</inlineHelpText>
-        <label>Monthly Income</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
     </fields>
     <fields>
         <fullName>NABCEP_Certification_Number__c</fullName>
@@ -1081,27 +945,6 @@ Specify the global country code setting or record level country code to automati
         <fullName>OtherPhone</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-    </fields>
-    <fields>
-        <fullName>Other_Bank_Executive__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <inlineHelpText>Reg O question: I am an executive officer or director at a financial institution</inlineHelpText>
-        <label>Other Bank Executive?</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Other_Income__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <inlineHelpText>Used for a loan applicant to provide other monthly income (alimony, dividend, rental, etc)</inlineHelpText>
-        <label>Other Income</label>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>OwnerId</fullName>
@@ -1202,19 +1045,6 @@ SUBSTITUTE(Phone, &quot;(&quot;, &quot;&quot;), &quot;)&quot;, &quot;&quot;), &q
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Project_Finance__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Project Finance</label>
-        <referenceTo>Project_Finance__c</referenceTo>
-        <relationshipLabel>Contacts</relationshipLabel>
-        <relationshipName>Contacts</relationshipName>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>Referral_Code__c</fullName>
         <externalId>false</externalId>
         <formula>Custom_ID__c</formula>
@@ -1230,29 +1060,6 @@ SUBSTITUTE(Phone, &quot;(&quot;, &quot;&quot;), &quot;)&quot;, &quot;&quot;), &q
         <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>Retired__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <inlineHelpText>Indicates Co-Applicant Retirement Income</inlineHelpText>
-        <label>Retired</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Retirement_Annual_Salary__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Provided by loan applicant</inlineHelpText>
-        <label>Retirement Annual Salary</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
     </fields>
     <fields>
         <fullName>SSF_Link__c</fullName>
@@ -1280,29 +1087,6 @@ SUBSTITUTE(Phone, &quot;(&quot;, &quot;&quot;), &quot;)&quot;, &quot;&quot;), &q
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
         <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>Self_Employed__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <inlineHelpText>Indicates Co-Applicant Self Employment Income</inlineHelpText>
-        <label>Self Employed</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Self_Employment_Annual_Salary__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Provided by loan applicant</inlineHelpText>
-        <label>Self-Employment Annual Salary</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Soft_Pull_Credit_Report__c</fullName>
@@ -1346,47 +1130,6 @@ Hard Pull: Bluewave2</description>
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Type_of_Avidia_Service_Provider__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Reg O question</inlineHelpText>
-        <label>Type of Avidia Service Provider</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Real Estate Appraiser</fullName>
-                    <default>false</default>
-                    <label>Real Estate Appraiser</label>
-                </value>
-                <value>
-                    <fullName>Attorney</fullName>
-                    <default>false</default>
-                    <label>Attorney</label>
-                </value>
-                <value>
-                    <fullName>Accountant</fullName>
-                    <default>false</default>
-                    <label>Accountant</label>
-                </value>
-                <value>
-                    <fullName>Consultant</fullName>
-                    <default>false</default>
-                    <label>Consultant</label>
-                </value>
-                <value>
-                    <fullName>None of the above</fullName>
-                    <default>false</default>
-                    <label>None of the above</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
         <fullName>User__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -1408,38 +1151,6 @@ Hard Pull: Bluewave2</description>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>Veteran_Annual_Salary__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Provided by loan applicant</inlineHelpText>
-        <label>Veteran Annual Salary</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Veteran_Disability__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <inlineHelpText>Indicates Co-Applicant Veteran or Disability Income</inlineHelpText>
-        <label>Veteran Disability</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Year_Employment__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <inlineHelpText>Contact has been employed by current employer for more than a year</inlineHelpText>
-        <label>Employed longer than a year</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>et4ae5__HasOptedOutOfMobile__c</fullName>
@@ -2728,15 +2439,6 @@ Hard Pull: Bluewave2</description>
         <type>Text</type>
         <unique>false</unique>
     </fields>
-    <fields>
-        <fullName>test__c</fullName>
-        <externalId>false</externalId>
-        <label>test</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Date</type>
-    </fields>
     <listViews>
         <fullName>Active_Communities_User</fullName>
         <columns>FULL_NAME</columns>
@@ -3028,29 +2730,6 @@ Hard Pull: Bluewave2</description>
                 <default>false</default>
             </values>
         </picklistValues>
-        <picklistValues>
-            <picklist>Type_of_Avidia_Service_Provider__c</picklist>
-            <values>
-                <fullName>Accountant</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Attorney</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Consultant</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>None of the above</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Real Estate Appraiser</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
     </recordTypes>
     <recordTypes>
         <fullName>Community_Solar_Contact</fullName>
@@ -3110,29 +2789,6 @@ Hard Pull: Bluewave2</description>
             </values>
             <values>
                 <fullName>Prof%2E</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Type_of_Avidia_Service_Provider__c</picklist>
-            <values>
-                <fullName>Accountant</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Attorney</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Consultant</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>None of the above</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Real Estate Appraiser</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -3218,29 +2874,6 @@ Hard Pull: Bluewave2</description>
                 <default>false</default>
             </values>
         </picklistValues>
-        <picklistValues>
-            <picklist>Type_of_Avidia_Service_Provider__c</picklist>
-            <values>
-                <fullName>Accountant</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Attorney</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Consultant</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>None of the above</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Real Estate Appraiser</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
     </recordTypes>
     <recordTypes>
         <fullName>Contact_Co_Applicant</fullName>
@@ -3320,29 +2953,6 @@ Hard Pull: Bluewave2</description>
             </values>
             <values>
                 <fullName>Prof%2E</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Type_of_Avidia_Service_Provider__c</picklist>
-            <values>
-                <fullName>Accountant</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Attorney</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Consultant</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>None of the above</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Real Estate Appraiser</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -3428,29 +3038,6 @@ Hard Pull: Bluewave2</description>
                 <default>false</default>
             </values>
         </picklistValues>
-        <picklistValues>
-            <picklist>Type_of_Avidia_Service_Provider__c</picklist>
-            <values>
-                <fullName>Accountant</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Attorney</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Consultant</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>None of the above</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Real Estate Appraiser</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
     </recordTypes>
     <recordTypes>
         <fullName>Project_Management_Contact</fullName>
@@ -3531,29 +3118,6 @@ Hard Pull: Bluewave2</description>
             </values>
             <values>
                 <fullName>Prof%2E</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Type_of_Avidia_Service_Provider__c</picklist>
-            <values>
-                <fullName>Accountant</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Attorney</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Consultant</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>None of the above</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Real Estate Appraiser</fullName>
                 <default>false</default>
             </values>
         </picklistValues>

@@ -235,11 +235,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Account_Bill__c.Contact_ID_conga__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Account_Bill__c.Date__c</field>
         <readable>true</readable>
@@ -407,11 +402,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account_Bill__c.PrintSF_Bill_Message__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Account_Bill__c.Product_Profile__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -722,11 +712,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Energy_Usage_Update__c.Product_LIne__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Energy_Usage_Update__c.Product_Profile__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
