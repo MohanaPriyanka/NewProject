@@ -1,6 +1,7 @@
 @IsTest
 @SuppressWarnings('PMD.AvoidHardcodingId')
 public class PartnerCommissionServiceTest {
+
     @IsTest
     private static void testContractExecution(){
         useMocks();
@@ -20,11 +21,6 @@ public class PartnerCommissionServiceTest {
             2 opportunities already have pending payments (which should update instead of insert)
             1 opportunity already has CS_Capacity_Allocated__c populated and should not be updated
         */
-
-        System.assertEquals(10,pendingComm.opportunitiesToRun.size());
-        for (Opportunity opp : pendingComm.opportunitiesToRun) {
-            System.assertEquals(null,opp.Commission_Structure__c);
-        }
 
         Test.startTest();
         fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
@@ -48,7 +44,7 @@ public class PartnerCommissionServiceTest {
             FFLibHelperTest.getRegisterDirtyListFromUnitOfWork(uow, 'Commission_Payment__c');
 
         System.debug(LoggingLevel.ERROR, JSON.serialize(opportunitiesToUpdate));
-        System.assertEquals(10,opportunitiesToUpdate.size());
+        System.assertEquals(9,opportunitiesToUpdate.size());
         System.assertEquals(1,casesToInsert.size());
         System.assertEquals(7,commissionPaymentRecordsToInsert.size());
         System.assertEquals(2,commissionPaymentRecordsToUpdate.size());
@@ -61,8 +57,6 @@ public class PartnerCommissionServiceTest {
                 System.assertNotEquals(1434.564,payment.Amount_Due__c);
                 System.assertEquals(1434.56,payment.Amount_Due__c);
                 containsOpp = true;
-            } else if (payment.Opportunity__c == '0063K000003pyqIQAQ') {
-                System.assertEquals('a4w3K0000000EMWQA2', payment.Commission_Structure__c, 'For Opportunity assigned to different SSS, Commission Structure is assigned via Partner Eligibility');
             }
         }
         System.assert(containsOpp);
@@ -116,7 +110,6 @@ public class PartnerCommissionServiceTest {
         System.assertEquals(0,opportunitiesToUpdate.size());
         System.assertEquals(0,casesToInsert.size());
         System.assertEquals(0,commissionPaymentRecordsToUpdate.size());
-
         System.assertEquals(10,commissionPaymentRecordsToInsert.size());
     }
 
@@ -131,26 +124,24 @@ public class PartnerCommissionServiceTest {
 
     private static void useMocks() {
         PartnerCommissionService.utilityaccountSelector = (UASSelector) Test.createStub(UASSelector.class, new MockUASSelector());
-        PartnerCommissionService.commissionStructureSelector = (CommissionStructureSelector) Test.createStub(CommissionStructureSelector.class, new MockCommStructureSelector());
         PartnerCommissionService.commissionPaySelector = (CommissionPaymentSelector) Test.createStub(CommissionPaymentSelector.class, new MockCommPaySelector());
         PartnerCommissionService.partnerInvoiceSelector = (PartnerInvoiceSelector) Test.createStub(PartnerInvoiceSelector.class, new MockPartnerInvoiceSelector());
-        PartnerCommissionService.eligibilitySelector = (PartnerSSSEligibilitySelector) Test.createStub(PartnerSSSEligibilitySelector.class, new MockPartnerSSSEligibilitySelector());
     }
 
     public static List<Opportunity> getOpportunityMockForContractExecutionType(){
-        //First opp has a different SSS from the rest (same partner)
-        //Second opp has a different Partner from the rest (same SSS)
+        // First opp has a different SSS from the rest (same partner)
+        // Second opp has a different Partner from the rest (same SSS)
         String queryData = '[' +
-            '{"Id":"0063K000003pyqIQAQ","StageName":"Complete","Name":"Ashley Smith","AccountId":"0013K000006yKHDQA2","Shared_Solar_System__c":"a1J3K0000005hM0UAI","Product__c":"01t3K000000Rb2VQAS","Partner_tag_lookup__c":"a0s3K0000006wCRQAY","Partner_Account__c":"0010a00001Ljv4ZAAR","Account":{"Id":"0013K000006yKHDQA2","Account_Number__c":"BW-0035450"},"Shared_Solar_System__r":{"Id":"a1J3K0000005hM0UAI","Unique_ID__c":"SSS-000181", "Name": "Test SSS B"},"Partner_tag_lookup__r": {"Id":"a0s3K0000006wCRQAY","Name":"Test Partner", "Account__c":"0010a00001Ljv4ZAAR"},"Partner_Account__r": {"Id":"0010a00001Ljv4ZAAR","Name":"Test Partner Account"}},' +
-            '{"Id":"0063K000003pyqJQAQ","StageName":"Complete","Name":"Steven Ward","AccountId":"0013K000006yKHEQA2","Shared_Solar_System__c":"a1J3K0000005hM1UAI","Product__c":"01t3K000000Rb2VQAS","Partner_tag_lookup__c":"a0s3K0000006wCMQAY","Partner_Account__c":"0010a00001Ljv4ZAAL","Account":{"Id":"0013K000006yKHEQA2","Account_Number__c":"BW-0035451"},"Shared_Solar_System__r":{"Id":"a1J3K0000005hM1UAI","Unique_ID__c":"SSS-000182", "Name": "Test SSS A"},"Partner_tag_lookup__r": {"Id":"a0s3K0000006wCMQAY","Name":"Test Partner 2", "Account__c":"0010a00001Ljv4ZAAL"},"Partner_Account__r": {"Id":"0010a00001Ljv4ZAAL","Name":"Test Partner Account 2"}},' +
-            '{"Id":"0063K000003pyqKQAQ","StageName":"Complete","Name":"Marie Mitchell","AccountId":"0013K000006yKHFQA2","Shared_Solar_System__c":"a1J3K0000005hM1UAI","Product__c":"01t3K000000Rb2VQAS","Partner_tag_lookup__c":"a0s3K0000006wCRQAY","Partner_Account__c":"0010a00001Ljv4ZAAR","Account":{"Id":"0013K000006yKHFQA2","Account_Number__c":"BW-0035452"},"Shared_Solar_System__r":{"Id":"a1J3K0000005hM1UAI","Unique_ID__c":"SSS-000182", "Name": "Test SSS A"},"Partner_tag_lookup__r": {"Id":"a0s3K0000006wCRQAY","Name":"Test Partner", "Account__c":"0010a00001Ljv4ZAAR"},"Partner_Account__r": {"Id":"0010a00001Ljv4ZAAR","Name":"Test Partner Account"}},' +
-            '{"Id":"0063K000003pyqLQAQ","StageName":"Complete","Name":"Justin Jenkins","AccountId":"0013K000006yKHGQA2","Shared_Solar_System__c":"a1J3K0000005hM1UAI","Product__c":"01t3K000000Rb2UQAS","Partner_tag_lookup__c":"a0s3K0000006wCRQAY","Partner_Account__c":"0010a00001Ljv4ZAAR","Account":{"Id":"0013K000006yKHGQA2","Account_Number__c":"BW-0035453"},"Shared_Solar_System__r":{"Id":"a1J3K0000005hM1UAI","Unique_ID__c":"SSS-000182", "Name": "Test SSS A"},"Partner_tag_lookup__r": {"Id":"a0s3K0000006wCRQAY","Name":"Test Partner", "Account__c":"0010a00001Ljv4ZAAR"},"Partner_Account__r": {"Id":"0010a00001Ljv4ZAAR","Name":"Test Partner Account"}},' +
-            '{"Id":"0063K000003pyqNQAQ","StageName":"Complete","Name":"Cobie Croft","AccountId":"0013K000006yKHIQA2","Shared_Solar_System__c":"a1J3K0000005hM1UAI","Product__c":"01t3K000000Rb2UQAS","Partner_tag_lookup__c":"a0s3K0000006wCRQAY","Partner_Account__c":"0010a00001Ljv4ZAAR","Account":{"Id":"0013K000006yKHIQA2","Account_Number__c":"BW-0035455"},"Shared_Solar_System__r":{"Id":"a1J3K0000005hM1UAI","Unique_ID__c":"SSS-000182", "Name": "Test SSS A"},"Partner_tag_lookup__r": {"Id":"a0s3K0000006wCRQAY","Name":"Test Partner", "Account__c":"0010a00001Ljv4ZAAR"},"Partner_Account__r": {"Id":"0010a00001Ljv4ZAAR","Name":"Test Partner Account"}},' +
-            '{"Id":"0063K000003pyqOQAQ","StageName":"Complete","Name":"Ridwan Conner","AccountId":"0013K000006yKHJQA2","Shared_Solar_System__c":"a1J3K0000005hM1UAI","Product__c":"01t3K000000Rb2UQAS","Partner_tag_lookup__c":"a0s3K0000006wCRQAY","Partner_Account__c":"0010a00001Ljv4ZAAR","Account":{"Id":"0013K000006yKHJQA2","Account_Number__c":"BW-0035456"},"Shared_Solar_System__r":{"Id":"a1J3K0000005hM1UAI","Unique_ID__c":"SSS-000182", "Name": "Test SSS A"},"Partner_tag_lookup__r": {"Id":"a0s3K0000006wCRQAY","Name":"Test Partner", "Account__c":"0010a00001Ljv4ZAAR"},"Partner_Account__r": {"Id":"0010a00001Ljv4ZAAR","Name":"Test Partner Account"}},' +
-            '{"Id":"0063K000003pyqPQAQ","StageName":"Complete","Name":"Margaux Maldonado","CS_Capacity_Allocated__c": "15.0", "AccountId":"0013K000006yKHKQA2","Shared_Solar_System__c":"a1J3K0000005hM1UAI","Product__c":"01t3K000000Rb2UQAS","Partner_tag_lookup__c":"a0s3K0000006wCRQAY","Partner_Account__c":"0010a00001Ljv4ZAAR","Account":{"Id":"0013K000006yKHKQA2","Account_Number__c":"BW-0035457"},"Shared_Solar_System__r":{"Id":"a1J3K0000005hM1UAI","Unique_ID__c":"SSS-000182", "Name": "Test SSS A"},"Partner_tag_lookup__r": {"Id":"a0s3K0000006wCRQAY","Name":"Test Partner", "Account__c":"0010a00001Ljv4ZAAR"},"Partner_Account__r": {"Id":"0010a00001Ljv4ZAAR","Name":"Test Partner Account"}},' +
-            '{"Id":"0063K000003pyqQQAQ","StageName":"Complete","Name":"Conor Schmitt", "AccountId":"0013K000006yKHLQA2","Shared_Solar_System__c":"a1J3K0000005hM1UAI","Product__c":"01t3K000000Rb2UQAS","Partner_tag_lookup__c":"a0s3K0000006wCRQAY","Partner_Account__c":"0010a00001Ljv4ZAAR","Account":{"Id":"0013K000006yKHLQA2","Account_Number__c":"BW-0035458"},"Shared_Solar_System__r":{"Id":"a1J3K0000005hM1UAI","Unique_ID__c":"SSS-000182", "Name": "Test SSS A"},"Partner_tag_lookup__r": {"Id":"a0s3K0000006wCRQAY","Name":"Test Partner", "Account__c":"0010a00001Ljv4ZAAR"},"Partner_Account__r": {"Id":"0010a00001Ljv4ZAAR","Name":"Test Partner Account"}},' +
-            '{"Id":"0063K000003pyqRQAQ","StageName":"Complete","Name":"Akbar Boyce","AccountId":"0013K000006yKHMQA2","Shared_Solar_System__c":"a1J3K0000005hM1UAI","Product__c":"01t3K000000Rb2UQAS","Partner_tag_lookup__c":"a0s3K0000006wCRQAY","Partner_Account__c":"0010a00001Ljv4ZAAR","Account":{"Id":"0013K000006yKHMQA2","Account_Number__c":"BW-0035459"},"Shared_Solar_System__r":{"Id":"a1J3K0000005hM1UAI","Unique_ID__c":"SSS-000182", "Name": "Test SSS A"},"Partner_tag_lookup__r": {"Id":"a0s3K0000006wCRQAY","Name":"Test Partner", "Account__c":"0010a00001Ljv4ZAAR"},"Partner_Account__r": {"Id":"0010a00001Ljv4ZAAR","Name":"Test Partner Account"}},' +
-            '{"Id":"0063K000003pyqSQAQ","StageName":"Complete","Name":"Viaan Faulkner","AccountId":"0013K000006yKHNQA2","Shared_Solar_System__c":"a1J3K0000005hM1UAI","Product__c":"01t3K000000Rb2UQAS","Partner_tag_lookup__c":"a0s3K0000006wCRQAY","Partner_Account__c":"0010a00001Ljv4ZAAR","Account":{"Id":"0013K000006yKHNQA2","Account_Number__c":"BW-0035460"},"Shared_Solar_System__r":{"Id":"a1J3K0000005hM1UAI","Unique_ID__c":"SSS-000182", "Name": "Test SSS A"},"Partner_tag_lookup__r": {"Id":"a0s3K0000006wCRQAY","Name":"Test Partner", "Account__c":"0010a00001Ljv4ZAAR"},"Partner_Account__r": {"Id":"0010a00001Ljv4ZAAR","Name":"Test Partner Account"}}' +
+            '{"Id":"0063K000003pyqIQAQ","StageName":"Complete","Name":"Ashley Smith","AccountId":"0013K000006yKHDQA2","Shared_Solar_System__c":"a1J3K0000005hM0UAI","Product__c":"01t3K000000Rb2VQAS","Commission_Structure__c":"a4w3K0000000EMXQA2","Partner_tag_lookup__c":"a0s3K0000006wCRQAY","Partner_Account__c":"0010a00001Ljv4ZAAR","Account":{"Id":"0013K000006yKHDQA2","Account_Number__c":"BW-0035450"},"Commission_Structure__r":{"Id":"a4w3K0000000EMXQA2","Cents_kW_DC_Up_Front__c":0.16},"Shared_Solar_System__r":{"Id":"a1J3K0000005hM0UAI","Unique_ID__c":"SSS-000181", "Name": "Test SSS B"},"Partner_tag_lookup__r": {"Id":"a0s3K0000006wCRQAY","Name":"Test Partner", "Account__c":"0010a00001Ljv4ZAAR"},"Partner_Account__r": {"Id":"0010a00001Ljv4ZAAR","Name":"Test Partner Account"}},' +
+            '{"Id":"0063K000003pyqJQAQ","StageName":"Complete","Name":"Steven Ward","AccountId":"0013K000006yKHEQA2","Shared_Solar_System__c":"a1J3K0000005hM1UAI","Product__c":"01t3K000000Rb2VQAS","Commission_Structure__c":null,"Partner_tag_lookup__c":"a0s3K0000006wCMQAY","Partner_Account__c":"0010a00001Ljv4ZAAL","Account":{"Id":"0013K000006yKHEQA2","Account_Number__c":"BW-0035451"},"Shared_Solar_System__r":{"Id":"a1J3K0000005hM1UAI","Unique_ID__c":"SSS-000182", "Name": "Test SSS A"},"Partner_tag_lookup__r": {"Id":"a0s3K0000006wCMQAY","Name":"Test Partner 2", "Account__c":"0010a00001Ljv4ZAAL"},"Partner_Account__r": {"Id":"0010a00001Ljv4ZAAL","Name":"Test Partner Account 2"}},' +
+            '{"Id":"0063K000003pyqKQAQ","StageName":"Complete","Name":"Marie Mitchell","AccountId":"0013K000006yKHFQA2","Shared_Solar_System__c":"a1J3K0000005hM1UAI","Product__c":"01t3K000000Rb2VQAS","Commission_Structure__c":"a4w3K0000000EMXQA2","Partner_tag_lookup__c":"a0s3K0000006wCRQAY","Partner_Account__c":"0010a00001Ljv4ZAAR","Account":{"Id":"0013K000006yKHFQA2","Account_Number__c":"BW-0035452"},"Commission_Structure__r":{"Id":"a4w3K0000000EMXQA2","Cents_kW_DC_Up_Front__c":0.16},"Shared_Solar_System__r":{"Id":"a1J3K0000005hM1UAI","Unique_ID__c":"SSS-000182", "Name": "Test SSS A"},"Partner_tag_lookup__r": {"Id":"a0s3K0000006wCRQAY","Name":"Test Partner", "Account__c":"0010a00001Ljv4ZAAR"},"Partner_Account__r": {"Id":"0010a00001Ljv4ZAAR","Name":"Test Partner Account"}},' +
+            '{"Id":"0063K000003pyqLQAQ","StageName":"Complete","Name":"Justin Jenkins","AccountId":"0013K000006yKHGQA2","Shared_Solar_System__c":"a1J3K0000005hM1UAI","Product__c":"01t3K000000Rb2UQAS","Commission_Structure__c":"a4w3K0000000EMXQA2","Partner_tag_lookup__c":"a0s3K0000006wCRQAY","Partner_Account__c":"0010a00001Ljv4ZAAR","Account":{"Id":"0013K000006yKHGQA2","Account_Number__c":"BW-0035453"},"Commission_Structure__r":{"Id":"a4w3K0000000EMXQA2","Cents_kW_DC_Up_Front__c":0.1},"Shared_Solar_System__r":{"Id":"a1J3K0000005hM1UAI","Unique_ID__c":"SSS-000182", "Name": "Test SSS A"},"Partner_tag_lookup__r": {"Id":"a0s3K0000006wCRQAY","Name":"Test Partner", "Account__c":"0010a00001Ljv4ZAAR"},"Partner_Account__r": {"Id":"0010a00001Ljv4ZAAR","Name":"Test Partner Account"}},' +
+            '{"Id":"0063K000003pyqNQAQ","StageName":"Complete","Name":"Cobie Croft","AccountId":"0013K000006yKHIQA2","Shared_Solar_System__c":"a1J3K0000005hM1UAI","Product__c":"01t3K000000Rb2UQAS","Commission_Structure__c":"a4w3K0000000EMVQA2","Partner_tag_lookup__c":"a0s3K0000006wCRQAY","Partner_Account__c":"0010a00001Ljv4ZAAR","Account":{"Id":"0013K000006yKHIQA2","Account_Number__c":"BW-0035455"},"Commission_Structure__r":{"Id":"a4w3K0000000EMVQA2","Cents_kW_DC_Up_Front__c":0.1},"Shared_Solar_System__r":{"Id":"a1J3K0000005hM1UAI","Unique_ID__c":"SSS-000182", "Name": "Test SSS A"},"Partner_tag_lookup__r": {"Id":"a0s3K0000006wCRQAY","Name":"Test Partner", "Account__c":"0010a00001Ljv4ZAAR"},"Partner_Account__r": {"Id":"0010a00001Ljv4ZAAR","Name":"Test Partner Account"}},' +
+            '{"Id":"0063K000003pyqOQAQ","StageName":"Complete","Name":"Ridwan Conner","AccountId":"0013K000006yKHJQA2","Shared_Solar_System__c":"a1J3K0000005hM1UAI","Product__c":"01t3K000000Rb2UQAS","Commission_Structure__c":"a4w3K0000000EMVQA2","Partner_tag_lookup__c":"a0s3K0000006wCRQAY","Partner_Account__c":"0010a00001Ljv4ZAAR","Account":{"Id":"0013K000006yKHJQA2","Account_Number__c":"BW-0035456"},"Commission_Structure__r":{"Id":"a4w3K0000000EMVQA2","Cents_kW_DC_Up_Front__c":0.1},"Shared_Solar_System__r":{"Id":"a1J3K0000005hM1UAI","Unique_ID__c":"SSS-000182", "Name": "Test SSS A"},"Partner_tag_lookup__r": {"Id":"a0s3K0000006wCRQAY","Name":"Test Partner", "Account__c":"0010a00001Ljv4ZAAR"},"Partner_Account__r": {"Id":"0010a00001Ljv4ZAAR","Name":"Test Partner Account"}},' +
+            '{"Id":"0063K000003pyqPQAQ","StageName":"Complete","Name":"Margaux Maldonado","CS_Capacity_Allocated__c": "15.0", "AccountId":"0013K000006yKHKQA2","Shared_Solar_System__c":"a1J3K0000005hM1UAI","Commission_Structure__c":"a4w3K0000000EMVQA2","Product__c":"01t3K000000Rb2UQAS","Partner_tag_lookup__c":"a0s3K0000006wCRQAY","Partner_Account__c":"0010a00001Ljv4ZAAR","Account":{"Id":"0013K000006yKHKQA2","Account_Number__c":"BW-0035457"},"Commission_Structure__r":{"Id":"a4w3K0000000EMVQA2","Cents_kW_DC_Up_Front__c":0.1},"Shared_Solar_System__r":{"Id":"a1J3K0000005hM1UAI","Unique_ID__c":"SSS-000182", "Name": "Test SSS A"},"Partner_tag_lookup__r": {"Id":"a0s3K0000006wCRQAY","Name":"Test Partner", "Account__c":"0010a00001Ljv4ZAAR"},"Partner_Account__r": {"Id":"0010a00001Ljv4ZAAR","Name":"Test Partner Account"}},' +
+            '{"Id":"0063K000003pyqQQAQ","StageName":"Complete","Name":"Conor Schmitt", "AccountId":"0013K000006yKHLQA2","Shared_Solar_System__c":"a1J3K0000005hM1UAI","Product__c":"01t3K000000Rb2UQAS","Commission_Structure__c":"a4w3K0000000EMVQA2","Partner_tag_lookup__c":"a0s3K0000006wCRQAY","Partner_Account__c":"0010a00001Ljv4ZAAR","Account":{"Id":"0013K000006yKHLQA2","Account_Number__c":"BW-0035458"},"Commission_Structure__r":{"Id":"a4w3K0000000EMVQA2","Cents_kW_DC_Up_Front__c":0.1},"Shared_Solar_System__r":{"Id":"a1J3K0000005hM1UAI","Unique_ID__c":"SSS-000182", "Name": "Test SSS A"},"Partner_tag_lookup__r": {"Id":"a0s3K0000006wCRQAY","Name":"Test Partner", "Account__c":"0010a00001Ljv4ZAAR"},"Partner_Account__r": {"Id":"0010a00001Ljv4ZAAR","Name":"Test Partner Account"}},' +
+            '{"Id":"0063K000003pyqRQAQ","StageName":"Complete","Name":"Akbar Boyce","AccountId":"0013K000006yKHMQA2","Shared_Solar_System__c":"a1J3K0000005hM1UAI","Product__c":"01t3K000000Rb2UQAS","Commission_Structure__c":"a4w3K0000000EMVQA2","Partner_tag_lookup__c":"a0s3K0000006wCRQAY","Partner_Account__c":"0010a00001Ljv4ZAAR","Account":{"Id":"0013K000006yKHMQA2","Account_Number__c":"BW-0035459"},"Commission_Structure__r":{"Id":"a4w3K0000000EMVQA2","Cents_kW_DC_Up_Front__c":0.1},"Shared_Solar_System__r":{"Id":"a1J3K0000005hM1UAI","Unique_ID__c":"SSS-000182", "Name": "Test SSS A"},"Partner_tag_lookup__r": {"Id":"a0s3K0000006wCRQAY","Name":"Test Partner", "Account__c":"0010a00001Ljv4ZAAR"},"Partner_Account__r": {"Id":"0010a00001Ljv4ZAAR","Name":"Test Partner Account"}},' +
+            '{"Id":"0063K000003pyqSQAQ","StageName":"Complete","Name":"Viaan Faulkner","AccountId":"0013K000006yKHNQA2","Shared_Solar_System__c":"a1J3K0000005hM1UAI","Product__c":"01t3K000000Rb2UQAS","Commission_Structure__c":"a4w3K0000000EMVQA2","Partner_tag_lookup__c":"a0s3K0000006wCRQAY","Partner_Account__c":"0010a00001Ljv4ZAAR","Account":{"Id":"0013K000006yKHNQA2","Account_Number__c":"BW-0035460"},"Commission_Structure__r":{"Id":"a4w3K0000000EMVQA2","Cents_kW_DC_Up_Front__c":0.1},"Shared_Solar_System__r":{"Id":"a1J3K0000005hM1UAI","Unique_ID__c":"SSS-000182", "Name": "Test SSS A"},"Partner_tag_lookup__r": {"Id":"a0s3K0000006wCRQAY","Name":"Test Partner", "Account__c":"0010a00001Ljv4ZAAR"},"Partner_Account__r": {"Id":"0010a00001Ljv4ZAAR","Name":"Test Partner Account"}}' +
             ']';
         return (List<Opportunity>) JSON.deserialize(queryData, List<Opportunity>.class);
     }
@@ -188,46 +179,6 @@ public class PartnerCommissionServiceTest {
             switch on methodCall.stubbedMethodName {
                 when 'getUASSummaryByOpportunity' {
                     return (Map<Id,Decimal>) JSON.deserialize(queryData, Map<Id,Decimal>.class);
-                }
-            }
-            return null;
-        }
-    }
-
-    public class MockCommStructureSelector extends MockProvider {
-        public override Object handleMethodCall(MethodCall methodCall) {
-            //Same Partner
-                // 2 are for same product
-                // 1 for different product
-            String queryData = '[' +
-                '{"Id":"a4w3K0000000EMVQA2","Partner__c":"a0s3K0000006wCRQAY","Product__c":"01t3K000000Rb2UQAS","Cents_kW_DC_Up_Front__c":0.1000},' +
-                '{"Id":"a4w3K0000000EMWQA2","Partner__c":"a0s3K0000006wCRQAY","Product__c":"01t3K000000Rb2UQAS","Cents_kW_DC_Up_Front__c":0.1400},' +
-                '{"Id":"a4w3K0000000EMXQA2","Partner__c":"a0s3K0000006wCRQAY","Product__c":"01t3K000000Rb2VQAS","Cents_kW_DC_Up_Front__c":0.1600}' +
-                ']';
-            switch on methodCall.stubbedMethodName {
-                when 'getCommissionStructureMapByIds' {
-                    Map<Id, Commission_Structure__c> csMap = new Map<Id, Commission_Structure__c>();
-                    List<Commission_Structure__c> csList = (List<Commission_Structure__c>) JSON.deserialize(queryData, List<Commission_Structure__c>.class);
-                    for (Commission_Structure__c cs : csList) {
-                        csMap.put(cs.Id, cs);
-                    }
-                    return csMap;
-                }
-            }
-            return null;
-        }
-    }
-
-    public class MockPartnerSSSEligibilitySelector extends MockProvider {
-        public override Object handleMethodCall(MethodCall methodCall) {
-            //Same partner, different SSS, different Commission Structure
-            String queryData = '[' +
-                '{"Id":"a0he0000007mR0mAAA","Account__c":"0010a00001Ljv4ZAAR","Shared_Solar_System__c":"a1J3K0000005hM1UAI","Commission_Structure__c":"a4w3K0000000EMVQA2"},' +
-                '{"Id":"a0he0000007mR0mBBB","Account__c":"0010a00001Ljv4ZAAR","Shared_Solar_System__c":"a1J3K0000005hM0UAI","Commission_Structure__c":"a4w3K0000000EMWQA2"}' +
-                ']';
-            switch on methodCall.stubbedMethodName {
-                when 'getSSSByPartner' {
-                    return (List<Partner_Shared_Solar_System_Eligibility__c>) JSON.deserialize(queryData, List<Partner_Shared_Solar_System_Eligibility__c>.class);
                 }
             }
             return null;
