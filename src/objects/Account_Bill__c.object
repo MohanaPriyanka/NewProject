@@ -443,18 +443,6 @@
         </valueSet>
     </fields>
     <fields>
-        <fullName>Contact_ID_conga__c</fullName>
-        <externalId>false</externalId>
-        <formula>Product_Profile__r.Contact__r.Id</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Contact ID (conga)</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Date__c</fullName>
         <externalId>false</externalId>
         <label>Bill Statment Date</label>
@@ -928,20 +916,6 @@ New Charges...</inlineHelpText>
         <trackTrending>false</trackTrending>
         <type>LongTextArea</type>
         <visibleLines>3</visibleLines>
-    </fields>
-    <fields>
-        <fullName>Product_Profile__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Product Profile</label>
-        <referenceTo>Product_Profile__c</referenceTo>
-        <relationshipLabel>Account Bills</relationshipLabel>
-        <relationshipName>Account_Bills</relationshipName>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Property_Account_ID__c</fullName>

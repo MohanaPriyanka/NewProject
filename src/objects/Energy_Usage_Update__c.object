@@ -564,20 +564,6 @@ if( month( Date__c ) == 12, &quot;December&quot;, null))))))))))))</formula>
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Product_Profile__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Product Profile</label>
-        <referenceTo>Product_Profile__c</referenceTo>
-        <relationshipLabel>Production Updates</relationshipLabel>
-        <relationshipName>Production_Updates</relationshipName>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>Production__c</fullName>
         <externalId>false</externalId>
         <label>Production (kWh)</label>

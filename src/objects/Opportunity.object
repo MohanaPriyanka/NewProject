@@ -3984,21 +3984,6 @@ MIN(DAY(Commencement_Date__c),
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Monthly_Mortgage_Tax_and_Insurance__c</fullName>
-        <description>Formula from lead, used in Avidia list view.</description>
-        <externalId>false</externalId>
-        <formula>Lead__r.Monthly_Mortgage_Tax_and_Insurance__c</formula>
-        <inlineHelpText>Formula from lead, used in Avidia list view.</inlineHelpText>
-        <label>Monthly Mortgage, Tax, and Insurance</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <securityClassification>Restricted</securityClassification>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Monthly_Payment__c</fullName>
         <externalId>false</externalId>
         <formula>( Loan_Amount_Financed__c  *    Product__r.Loan_Interest_Rate__c/12  )/(1-((1+  Product__r.Loan_Interest_Rate__c /12)^(-1* Product__r.Loan_Term__c )))</formula>
@@ -7363,7 +7348,6 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <columns>Lead_Status__c</columns>
         <columns>Community_Solar_State__c</columns>
         <columns>Email__c</columns>
-        <columns>Monthly_Mortgage_Tax_and_Insurance__c</columns>
         <columns>OPPORTUNITY.CREATED_DATE</columns>
         <columns>OPPORTUNITY.STAGE_NAME</columns>
         <filterScope>Everything</filterScope>
@@ -7807,7 +7791,6 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <columns>Application_Date__c</columns>
         <columns>Lead_Status__c</columns>
         <columns>OPPORTUNITY.CREATED_DATE</columns>
-        <columns>Monthly_Mortgage_Tax_and_Insurance__c</columns>
         <columns>Email__c</columns>
         <columns>Community_Solar_State__c</columns>
         <columns>Personal_Credit_Report2__c</columns>
@@ -8060,7 +8043,6 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <columns>Application_Date__c</columns>
         <columns>Lead_Status__c</columns>
         <columns>OPPORTUNITY.CREATED_DATE</columns>
-        <columns>Monthly_Mortgage_Tax_and_Insurance__c</columns>
         <columns>Email__c</columns>
         <columns>Community_Solar_State__c</columns>
         <columns>Personal_Credit_Report2__c</columns>

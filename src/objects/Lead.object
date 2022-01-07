@@ -2732,32 +2732,6 @@ This field can be changed to a formula consistent with the other factors if LASE
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Is_Loan_Secured__c</fullName>
-        <description>Hidden Field for MCEC Reporting.  Defaults to Yes.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Hidden Field for MCEC Reporting.  Defaults to Yes.</inlineHelpText>
-        <label>Is Loan Secured</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Picklist</type>
-        <valueSet>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Y</fullName>
-                    <default>true</default>
-                    <label>Y</label>
-                </value>
-                <value>
-                    <fullName>N</fullName>
-                    <default>false</default>
-                    <label>N</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
         <fullName>Is_there_a_Partner_Record__c</fullName>
         <defaultValue>false</defaultValue>
         <description>This is a QC checkbox for confirming that the Customer has an installer we are ready to work with.</description>
@@ -3326,54 +3300,6 @@ TEXT( LZU__c ) = &apos;Manual Lookup Required&apos;,
         <visibleLines>4</visibleLines>
     </fields>
     <fields>
-        <fullName>Loan_Amount__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Includes System Cost and Added Expenditures</inlineHelpText>
-        <label>Loan Amount</label>
-        <precision>12</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Loan_Fee_1_Amount__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(NOT(ISBLANK(Loan_Fee_1__c)),Loan_Fee_1__c * Requested_Loan_Amount__c,NULL)</formula>
-        <inlineHelpText>Calculated Loan Fee 1 Amount: Loan Fee * Requested Loan Amount</inlineHelpText>
-        <label>Loan Fee 1 Amount</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Loan_Fee_1_Description__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(NOT(ISNULL(Product__r.Loan_Fee_1_Description__c)),Product__r.Loan_Fee_1_Description__c,NULL)</formula>
-        <inlineHelpText>Description of Loan Fee 1</inlineHelpText>
-        <label>Loan Fee 1 Description</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Loan_Fee_1__c</fullName>
-        <externalId>false</externalId>
-        <formula>Product__r.Loan_Fee_1__c</formula>
-        <inlineHelpText>Copy of Product.Loan Fee 1, to be used by the LoanHandler when creating the Loan</inlineHelpText>
-        <label>Loan Fee 1</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>10</scale>
-        <trackHistory>false</trackHistory>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Loan_Financing_Fee__c</fullName>
         <externalId>false</externalId>
         <label>Loan Financing Fee</label>
@@ -3383,87 +3309,6 @@ TEXT( LZU__c ) = &apos;Manual Lookup Required&apos;,
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Loan_Interest_Rate_Product__c</fullName>
-        <externalId>false</externalId>
-        <formula>Product__r.Loan_Interest_Rate__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Loan Interest Rate</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <type>Percent</type>
-    </fields>
-    <fields>
-        <fullName>Loan_Principal__c</fullName>
-        <externalId>false</externalId>
-        <formula>Requested_Loan_Amount__c +  Loan_Financing_Fee__c +  Loan_Fee_1_Amount__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Loan Principal</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Loan_Program_Class__c</fullName>
-        <externalId>false</externalId>
-        <formula>if(isblank( Personal_Credit_Report__c )=true,null,if(value(Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c)&gt;=720,&quot;A&quot;,if(value(Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c)&gt;680,&quot;B&quot;,&quot;C&quot;)))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Loan Program Class</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Loan_System_Information__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Representation of system information set by installers when sending a loan application to an applicant</inlineHelpText>
-        <label>Loan System Information</label>
-        <length>32768</length>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>LongTextArea</type>
-        <visibleLines>3</visibleLines>
-    </fields>
-    <fields>
-        <fullName>Loan_Term_Override__c</fullName>
-        <externalId>false</externalId>
-        <label>Loan Term Override</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>108</fullName>
-                    <default>false</default>
-                    <label>108</label>
-                </value>
-                <value>
-                    <fullName>120</fullName>
-                    <default>false</default>
-                    <label>120</label>
-                </value>
-                <value>
-                    <fullName>144</fullName>
-                    <default>false</default>
-                    <label>144</label>
-                </value>
-                <value>
-                    <fullName>180</fullName>
-                    <default>false</default>
-                    <label>180</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
     </fields>
     <fields>
         <fullName>MA_120_of_Median_Income__c</fullName>
@@ -3645,34 +3490,6 @@ TEXT( LZU__c ) = &apos;Manual Lookup Required&apos;,
         <scale>2</scale>
         <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Monthly_Mortgage_Tax_and_Insurance__c</fullName>
-        <description>Form assembly forms 381607 and 381610.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Provided by a loan application via the Form Assembly form. This amount might just be Tax and Insurance if the home is paid off.</inlineHelpText>
-        <label>Monthly Mortgage, Tax and Insurance</label>
-        <precision>7</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Monthly_Payment__c</fullName>
-        <externalId>false</externalId>
-        <formula>If(Product__c != NULL, ((Loan_Principal__c) *  Product__r.Loan_Interest_Rate__c /12  )/(1-((1+ Product__r.Loan_Interest_Rate__c /12)^(-1*(Product__r.Loan_Term__c)))), 0.00)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Starting P&amp;I payment for adjustable rate products, or actual P&amp;I payment for fixed rate products.</inlineHelpText>
-        <label>Monthly Payment</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Currency</type>
     </fields>
@@ -3950,16 +3767,6 @@ TEXT( LZU__c ) = &apos;Manual Lookup Required&apos;,
         <externalId>false</externalId>
         <inlineHelpText>Reg O Question. Is borrower or co-borrower an executive officer or director of another institution?</inlineHelpText>
         <label>Other Bank Executive?</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Other_Income__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <inlineHelpText>Used for a loan applicant to provide other monthly income (alimony, dividend, rental, etc)</inlineHelpText>
-        <label>Other Income</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
@@ -4762,35 +4569,12 @@ IF(AND(Risk_Level_Business_Type__c = &quot;Not Risky&quot;, VALUE(Number_of_Year
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>Requested_Loan_Amount__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>This represents the amount of the system cost that is being financed by Bluewave. Updates to this field are made on the corresponding Requested Loan Amount field on the Loan.</inlineHelpText>
-        <label>Requested Loan Amount</label>
-        <precision>12</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Residence_Owner__c</fullName>
         <externalId>false</externalId>
         <label>Residence Owner?</label>
         <length>5</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Residential_Loan_Availability__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF( OR(Parcel_State__c == &quot;MASSACHUSETTS&quot; , Parcel_State__c == &quot;NORTH CAROLINA&quot;, Parcel_State__c == &quot;SOUTH CAROLINA&quot;), &quot;Good News! BlueWave is in your area!&quot; , &quot;Unfortunately we do not service your area yet, please check back soon!&quot;)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>WEB - Residential Loan Availability</label>
-        <required>false</required>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -4803,19 +4587,6 @@ IF(AND(Risk_Level_Business_Type__c = &quot;Not Risky&quot;, VALUE(Number_of_Year
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Retirement_Annual_Salary__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Provided by loan applicant</inlineHelpText>
-        <label>Retirement Annual Salary</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Risk_Level_Business_Type__c</fullName>
@@ -4940,19 +4711,6 @@ IF(AND(Risk_Level_Business_Type__c = &quot;Not Risky&quot;, VALUE(Number_of_Year
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Self_Employment_Annual_Salary__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Provided by loan applicant</inlineHelpText>
-        <label>Self-Employment Annual Salary</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Self_Reported_Partner__c</fullName>
@@ -5111,19 +4869,6 @@ if( or(text(Status) = &quot;Cancelled&quot;, text(Status) = &quot;Not Interested
                 </value>
             </valueSetDefinition>
         </valueSet>
-    </fields>
-    <fields>
-        <fullName>System_Cost__c</fullName>
-        <description>This is the cost of the system being installed for the applicant as reported by the installer. It is not to be confused with the requested loan amount or principal value.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>This is the cost of the system being installed for the applicant as reported by the installer. It is not to be confused with the requested loan amount or principal value.</inlineHelpText>
-        <label>System Cost</label>
-        <precision>12</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
     </fields>
     <fields>
         <fullName>System_Size_kW_DC__c</fullName>
@@ -5581,19 +5326,6 @@ IF(INCLUDES(  Utility_1__c , &quot;SCE&amp;G&quot;), &quot;SCE&amp;G&quot;,
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>Veteran_Annual_Salary__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Provided by loan applicant</inlineHelpText>
-        <label>Veteran Annual Salary</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Veteran_Disability__c</fullName>
@@ -7191,7 +6923,6 @@ SEMA = 13 -14</inlineHelpText>
         <columns>LEAD.STATUS</columns>
         <columns>LEAD.CREATED_DATE</columns>
         <columns>Partner_Name__c</columns>
-        <columns>Loan_Amount__c</columns>
         <columns>Application_Type__c</columns>
         <filterScope>Everything</filterScope>
         <filters>
@@ -7307,7 +7038,6 @@ SEMA = 13 -14</inlineHelpText>
         <columns>FULL_NAME</columns>
         <columns>LEAD.STATUS</columns>
         <columns>LEAD.CREATED_DATE</columns>
-        <columns>Loan_Amount__c</columns>
         <filterScope>Everything</filterScope>
         <filters>
             <field>Product_line__c</field>
@@ -7339,7 +7069,6 @@ SEMA = 13 -14</inlineHelpText>
         <columns>FULL_NAME</columns>
         <columns>LEAD.STATUS</columns>
         <columns>LEAD.CREATED_DATE</columns>
-        <columns>Loan_Amount__c</columns>
         <filterScope>Everything</filterScope>
         <filters>
             <field>Credit_Approval_Status__c</field>
@@ -7443,7 +7172,6 @@ SEMA = 13 -14</inlineHelpText>
         <columns>LEAD.CREATED_DATE</columns>
         <columns>Date_of_Credit_Report__c</columns>
         <columns>Application_Source_Phase_2__c</columns>
-        <columns>Monthly_Mortgage_Tax_and_Insurance__c</columns>
         <columns>LEAD.STATE_CODE</columns>
         <columns>LEAD.EMAIL</columns>
         <columns>LEAD.STATUS</columns>
@@ -7515,7 +7243,6 @@ SEMA = 13 -14</inlineHelpText>
         <columns>LEAD.CREATED_DATE</columns>
         <columns>Date_of_Credit_Report__c</columns>
         <columns>Application_Source_Phase_2__c</columns>
-        <columns>Monthly_Mortgage_Tax_and_Insurance__c</columns>
         <columns>LEAD.STATE_CODE</columns>
         <columns>LEAD.EMAIL</columns>
         <columns>LEAD.STATUS</columns>
@@ -7688,7 +7415,6 @@ SEMA = 13 -14</inlineHelpText>
         <columns>bs_Sales_ID__c</columns>
         <columns>LEAD.EMAIL</columns>
         <columns>LEAD.STATUS</columns>
-        <columns>Requested_Loan_Amount__c</columns>
         <columns>Product_line__c</columns>
         <columns>LEAD.LAST_ACTIVITY</columns>
         <columns>LEAD.STATE_CODE</columns>
@@ -7756,7 +7482,6 @@ SEMA = 13 -14</inlineHelpText>
         <columns>LEAD.CREATED_DATE</columns>
         <columns>Date_of_Credit_Report__c</columns>
         <columns>Application_Source_Phase_2__c</columns>
-        <columns>Monthly_Mortgage_Tax_and_Insurance__c</columns>
         <columns>LEAD.STATE_CODE</columns>
         <columns>LEAD.EMAIL</columns>
         <columns>LEAD.STATUS</columns>
@@ -8624,17 +8349,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Is_Loan_Secured__c</picklist>
-            <values>
-                <fullName>N</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Y</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>LASERCA__Credit_Bureau__c</picklist>
             <values>
                 <fullName>Equifax</fullName>
@@ -8717,25 +8431,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>WCMA Unitil</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Loan_Term_Override__c</picklist>
-            <values>
-                <fullName>108</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>120</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>144</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>180</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -9675,17 +9370,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Is_Loan_Secured__c</picklist>
-            <values>
-                <fullName>N</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Y</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>LASERCA__Credit_Bureau__c</picklist>
             <values>
                 <fullName>Equifax</fullName>
@@ -9768,25 +9452,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>WCMA Unitil</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Loan_Term_Override__c</picklist>
-            <values>
-                <fullName>108</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>120</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>144</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>180</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -10738,17 +10403,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Is_Loan_Secured__c</picklist>
-            <values>
-                <fullName>N</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Y</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>LASERCA__Credit_Bureau__c</picklist>
             <values>
                 <fullName>Equifax</fullName>
@@ -10831,25 +10485,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>WCMA Unitil</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Loan_Term_Override__c</picklist>
-            <values>
-                <fullName>108</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>120</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>144</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>180</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -11785,17 +11420,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Is_Loan_Secured__c</picklist>
-            <values>
-                <fullName>N</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Y</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Joint_Applicant_Type__c</picklist>
             <values>
                 <fullName>Co-Applicant</fullName>
@@ -11889,25 +11513,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>WCMA Unitil</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Loan_Term_Override__c</picklist>
-            <values>
-                <fullName>108</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>120</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>144</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>180</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -12859,17 +12464,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Is_Loan_Secured__c</picklist>
-            <values>
-                <fullName>N</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Y</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Joint_Applicant_Type__c</picklist>
             <values>
                 <fullName>Co-Applicant</fullName>
@@ -12963,25 +12557,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>WCMA Unitil</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Loan_Term_Override__c</picklist>
-            <values>
-                <fullName>108</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>120</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>144</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>180</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -13925,17 +13500,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Is_Loan_Secured__c</picklist>
-            <values>
-                <fullName>N</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Y</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Joint_Applicant_Type__c</picklist>
             <values>
                 <fullName>Co-Applicant</fullName>
@@ -14029,25 +13593,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>WCMA Unitil</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Loan_Term_Override__c</picklist>
-            <values>
-                <fullName>108</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>120</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>144</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>180</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -15000,17 +14545,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Is_Loan_Secured__c</picklist>
-            <values>
-                <fullName>N</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Y</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Joint_Applicant_Type__c</picklist>
             <values>
                 <fullName>Co-Applicant</fullName>
@@ -15104,25 +14638,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>WCMA Unitil</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Loan_Term_Override__c</picklist>
-            <values>
-                <fullName>108</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>120</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>144</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>180</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -16074,17 +15589,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Is_Loan_Secured__c</picklist>
-            <values>
-                <fullName>N</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Y</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Joint_Applicant_Type__c</picklist>
             <values>
                 <fullName>Co-Applicant</fullName>
@@ -16178,25 +15682,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>WCMA Unitil</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Loan_Term_Override__c</picklist>
-            <values>
-                <fullName>108</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>120</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>144</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>180</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -17149,17 +16634,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Is_Loan_Secured__c</picklist>
-            <values>
-                <fullName>N</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Y</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Joint_Applicant_Type__c</picklist>
             <values>
                 <fullName>Co-Applicant</fullName>
@@ -17253,25 +16727,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>WCMA Unitil</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Loan_Term_Override__c</picklist>
-            <values>
-                <fullName>108</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>120</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>144</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>180</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -18223,17 +17678,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Is_Loan_Secured__c</picklist>
-            <values>
-                <fullName>N</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Y</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Joint_Applicant_Type__c</picklist>
             <values>
                 <fullName>Co-Applicant</fullName>
@@ -18327,25 +17771,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>WCMA Unitil</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Loan_Term_Override__c</picklist>
-            <values>
-                <fullName>108</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>120</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>144</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>180</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -19289,17 +18714,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Is_Loan_Secured__c</picklist>
-            <values>
-                <fullName>N</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Y</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Joint_Applicant_Type__c</picklist>
             <values>
                 <fullName>Co-Applicant</fullName>
@@ -19393,25 +18807,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>WCMA Unitil</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Loan_Term_Override__c</picklist>
-            <values>
-                <fullName>108</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>120</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>144</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>180</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -20379,17 +19774,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Is_Loan_Secured__c</picklist>
-            <values>
-                <fullName>N</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Y</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Joint_Applicant_Type__c</picklist>
             <values>
                 <fullName>Co-Applicant</fullName>
@@ -20483,25 +19867,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>WCMA Unitil</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Loan_Term_Override__c</picklist>
-            <values>
-                <fullName>108</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>120</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>144</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>180</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -20984,17 +20349,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Is_Loan_Secured__c</picklist>
-            <values>
-                <fullName>N</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Y</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Joint_Applicant_Type__c</picklist>
             <values>
                 <fullName>Co-Applicant</fullName>
@@ -21103,25 +20457,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>WCMA</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Loan_Term_Override__c</picklist>
-            <values>
-                <fullName>108</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>120</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>144</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>180</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -23534,17 +22869,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Is_Loan_Secured__c</picklist>
-            <values>
-                <fullName>N</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Y</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>LASERCA__Credit_Bureau__c</picklist>
             <values>
                 <fullName>Equifax</fullName>
@@ -23627,25 +22951,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>WCMA Unitil</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Loan_Term_Override__c</picklist>
-            <values>
-                <fullName>108</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>120</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>144</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>180</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -24613,17 +23918,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Is_Loan_Secured__c</picklist>
-            <values>
-                <fullName>N</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Y</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Joint_Applicant_Type__c</picklist>
             <values>
                 <fullName>Co-Applicant</fullName>
@@ -24717,25 +24011,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>WCMA Unitil</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Loan_Term_Override__c</picklist>
-            <values>
-                <fullName>108</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>120</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>144</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>180</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -26659,17 +25934,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Is_Loan_Secured__c</picklist>
-            <values>
-                <fullName>N</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Y</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>LASERCA__Credit_Bureau__c</picklist>
             <values>
                 <fullName>Equifax</fullName>
@@ -26752,25 +26016,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>WCMA Unitil</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Loan_Term_Override__c</picklist>
-            <values>
-                <fullName>108</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>120</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>144</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>180</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -26926,12 +26171,6 @@ IsConverted,
     Product_line__c != &quot;Residential Loan&quot;
 )</errorConditionFormula>
         <errorMessage>Customer is not Qualified</errorMessage>
-    </validationRules>
-    <validationRules>
-        <fullName>Loan_Amount_on_Convert</fullName>
-        <active>true</active>
-        <errorConditionFormula>AND( IsConverted, Product_line__c == &apos;Residential Loan&apos;,  Loan_Amount__c == null)</errorConditionFormula>
-        <errorMessage>Please enter in a loan amount on the lead record.</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>No_Credit_Check</fullName>
