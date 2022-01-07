@@ -208,17 +208,6 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Product_Profile__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Product Profile</label>
-        <referenceTo>Product_Profile__c</referenceTo>
-        <relationshipName>CS_Billing_Logs</relationshipName>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>Production_Update__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
