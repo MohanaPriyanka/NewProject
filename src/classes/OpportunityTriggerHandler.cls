@@ -161,7 +161,5 @@ public without sharing class OpportunityTriggerHandler {
     private void setActivePartnerCommissionStructure() {
         PartnerCommissionStructureLocator service = new PartnerCommissionStructureLocator(newList);
         service.setStructureOnOpportunities();
-        Logger.postLog('OpportunityTriggerHandler','setActivePartnerCommissionStructure',
-            JSON.serializePretty(newList), System.now(), Logger.ERROR);
     }
 }
