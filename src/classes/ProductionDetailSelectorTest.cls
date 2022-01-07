@@ -82,6 +82,7 @@ public class ProductionDetailSelectorTest {
             Shared_Solar_System__c = sss1.Id,
             Attempted_Transfer__c = 1000,
             Attempted_kWh_Transfer__c = 126218,
+            Transfer_kWh__c = 126218,
             Transfer_Amount__c = 122924,
             Date_of_Transfer__c = lastMonthStart + 4,
             Bill_Period__c = billPeriod.Id,
@@ -93,6 +94,7 @@ public class ProductionDetailSelectorTest {
             Shared_Solar_System__c = sss1.Id,
             Attempted_Transfer__c = 1000,
             Attempted_kWh_Transfer__c = 19000,
+            Transfer_kWh__c = 19000,
             Transfer_Amount__c = 1000,
             Date_of_Transfer__c = lastMonthStart + 4,
             Bill_Period__c = billPeriod.Id,
@@ -104,6 +106,7 @@ public class ProductionDetailSelectorTest {
             Shared_Solar_System__c = sss2.Id,
             Attempted_Transfer__c = 1000,
             Attempted_kWh_Transfer__c = 19000,
+            Transfer_kWh__c = 19000,
             Transfer_Amount__c = 2000,
             Date_of_Transfer__c = lastMonthStart + 4
         );
