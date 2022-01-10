@@ -34,6 +34,10 @@ public with sharing class ContentMailerService {
             lss.addLetterToCSV(letterParams);
             // Can't have ' in file names to letterstream
             String fileName = Util.prepForCSV(letterParams.fileName).replace('\'', '');
+            if (zippex.getFileNames().contains(fileName)) {
+                throw new Util.BWException('Duplicate file: ' + fileName + '\n unsupported. LetterStream would send this ' +
+                    'file to the wrong recipient.\n' + JSON.serializePretty(contentToSendThisTransaction));
+            }
             zippex.addFile(fileName, contentDocumentMap.get(param.contentDocumentId).LatestPublishedVersion.VersionData, null);
             contentParentIds.add(param.linkedEntityId); // e.g. ZInvoice__c.Id
         }
