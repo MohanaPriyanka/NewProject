@@ -43,7 +43,6 @@ public class PartnerCommissionServiceTest {
         List<Commission_Payment__c> commissionPaymentRecordsToUpdate = (List<Commission_Payment__c>)
             FFLibHelperTest.getRegisterDirtyListFromUnitOfWork(uow, 'Commission_Payment__c');
 
-        System.debug(LoggingLevel.ERROR, JSON.serialize(opportunitiesToUpdate));
         System.assertEquals(9,opportunitiesToUpdate.size());
         System.assertEquals(1,casesToInsert.size());
         System.assertEquals(7,commissionPaymentRecordsToInsert.size());

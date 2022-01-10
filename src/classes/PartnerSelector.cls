@@ -2,6 +2,7 @@
  * @description Created by SarahRenfro on 6/13/2019.
  * Tested By: PartnerSelectorTest, PartnerCommissionStructureLocatorTest
  */
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class PartnerSelector {
 
     public static Partner__c selectPartnerByPartnerId(String partnerId) {
