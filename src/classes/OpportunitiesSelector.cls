@@ -16,7 +16,6 @@ public without sharing class OpportunitiesSelector {
         'Commission_Structure__r.Cents_kW_DC_First_Bill__c, \n' +
         'StageName, \n' +
         'Product_Line__c,\n' +
-        'Commission_Structure__c, \n' +
         'Partner_tag_lookup__c, \n' +
         'Partner_tag_lookup__r.Id, \n' +
         'Partner_tag_lookup__r.Name, \n' +
