@@ -30,6 +30,7 @@ public with sharing class ContentMailerServiceTest {
         List<Zuora__ZInvoice__c> invoices = new List<Zuora__ZInvoice__c>();
         for (Integer i = 0; i < 20; i++) {
             Zuora__ZInvoice__c invoice = new Zuora__ZInvoice__c(
+                Name = 'INV0000' + i,
                 Zuora__Account__c = account.Id,
                 Downloaded_Date__c = System.today(),
                 Zuora__BillingAccount__c = customerAccount.Id,
@@ -39,7 +40,7 @@ public with sharing class ContentMailerServiceTest {
         }
         insert invoices;
         invoices = [
-            SELECT Id, Ready_for_Paper_Bill_Queue__c, Added_to_Paper_Bill_Queue__c, LetterStreamJob__c
+            SELECT Id, Name, Ready_for_Paper_Bill_Queue__c, Added_to_Paper_Bill_Queue__c, LetterStreamJob__c
             FROM Zuora__ZInvoice__c
             WHERE Id = :invoices
         ];
@@ -52,7 +53,7 @@ public with sharing class ContentMailerServiceTest {
             ContentVersion cv = new ContentVersion(
                 ContentLocation = 'S',
                 VersionData = EncodingUtil.base64Decode('invoice body'),
-                Title = 'InvoiceNumber.pdf',
+                Title = invoice.Name,
                 PathOnClient = '/InvoiceNumber.pdf'
             );
             contentVersions.add(cv);
@@ -131,6 +132,45 @@ public with sharing class ContentMailerServiceTest {
         ];
         System.assertEquals(0, errorLogs.size());
     }
+
+    @IsTest
+    public static void testMailNonUniqueFiles() {
+        Test.setMock(HttpCalloutMock.class, new LetterStreamAPIMock());
+
+        List<Zuora__ZInvoice__c> invoices = [SELECT Id FROM Zuora__ZInvoice__c LIMIT 2];
+        List<ContentDocument> contentDocuments = [
+            SELECT Id
+            FROM ContentDocument
+        ];
+        for (ContentDocument contentDocument : contentDocuments) {
+            contentDocument.Title = 'Invoice.pdf';
+        }
+        update contentDocuments;
+
+        ContentMailerService mailerService = new ContentMailerService();
+        List<ContentMailerService.Param> params = new List<ContentMailerService.Param>();
+        ContentMailerService.Param param = getParam();
+        param.contentDocumentId = contentDocuments[0].Id;
+        param.contentSize = 256;
+        param.linkedEntityId = invoices[0].Id;
+        params.add(param);
+        ContentMailerService.Param param2 = getParam();
+        param2.contentDocumentId = contentDocuments[1].Id;
+        param2.contentSize = 256;
+        param2.linkedEntityId = invoices[1].Id;
+        params.add(param2);
+        mailerService.remainingContentToSend = params;
+
+        try {
+            mailerService.mailContent();
+            System.assert(false, 'Expected mailContent to throw an exception about duplicate files, since that would ' +
+                'cause a file to be overwritten and sent to the wrong recipient');
+        } catch (Exception e) {
+            System.assert(e.getMessage().contains('Duplicate file:'),
+                'Expected Duplicate file: but got ' + e.getMessage());
+        }
+    }
+
 
     private static ContentMailerService.Param getParam() {
         ContentMailerService.Param param = new ContentMailerService.Param();
@@ -241,7 +281,6 @@ public with sharing class ContentMailerServiceTest {
         Test.setMock(HttpCalloutMock.class, new LetterStreamAPIMock());
 
         ContentDocument cd = [SELECT Id FROM ContentDocument LIMIT 1];
-        List<Zuora__ZInvoice__c> invoices = [SELECT Id FROM Zuora__ZInvoice__c LIMIT 2];
 
         List<ContentMailerService.Param> params = new List<ContentMailerService.Param>();
         // This param should fail, since Accounts don't have the fields (Ready for Paper Bill Queue, etc) to send Content
