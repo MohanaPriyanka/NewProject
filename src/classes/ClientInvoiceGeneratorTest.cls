@@ -109,6 +109,7 @@ public with sharing class ClientInvoiceGeneratorTest {
 
     @IsTest
     private static void systemTest() {
+        Test.startTest();
         List<Subscription_Order__c> subscriptionOrders = [
             SELECT Id, Utility_Account_Subscription__r.Shared_Solar_System__r.Name, Utility_Account_Subscription__r.Opportunity__r.StageName,
                 Invoice_Line_Item__c, Effective_Date__c, Client_Invoicing_Fee__c, Potential_Client_Invoicing_Fee__c, Client_Assignment_Agreement__c,
@@ -234,6 +235,7 @@ public with sharing class ClientInvoiceGeneratorTest {
                 Client_Invoicing_Memo__c.SObjectType
             }
         );
+        Test.stopTest();
 
         // Tests InvocableClientInvoiceLineItemGenerator.generateLineItem
         InvocableClientInvoiceLineItemGenerator.generateLineItem(lineItemRequests);

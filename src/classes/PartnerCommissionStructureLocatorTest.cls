@@ -34,6 +34,61 @@ public without sharing class PartnerCommissionStructureLocatorTest {
     );
 
     @IsTest
+    private static void systemTestAssignCommissionStructure() {
+        // Setup data
+        Util.disableAllTriggers();
+        UtilityAccountSubscriptionHandlerTest.setupData();
+
+        Id partnerId = [SELECT Id FROM Partner__c WHERE Name = 'Some Partner'].Id;
+        Id partnerAccountId = [SELECT Id FROM Account WHERE Name = 'Partner Account'].Id;
+        Id sssId = [SELECT Id FROM Shared_Solar_System__c WHERE Name = 'Project A'].Id;
+        Id productId = [SELECT Id FROM Product2 WHERE Name = 'BlueWave Community Solar'].Id;
+
+        Commission_Structure__c commissionOne = new Commission_Structure__c(
+            Name = 'Commission Structure One',
+            Partner__c = partnerId,
+            Partner_Account__c = partnerAccountId,
+            Product__c = productId,
+            Cents_kW_DC_Up_Front__c = 0.10,
+            Cents_kW_DC_First_Bill__c = 0.23,
+            Cents_kW_DC_First_Bill_Paid__c = 0.11
+        );
+        insert commissionOne;
+
+        Partner_Shared_Solar_System_Eligibility__c partnerEligibility =
+            new Partner_Shared_Solar_System_Eligibility__c(
+                Account__c = partnerAccountId,
+                Shared_Solar_System__c = sssId,
+                Commission_Structure__c = commissionOne.Id,
+                Start_Date__c = Date.newInstance(2020, 1, 1)
+            );
+        insert partnerEligibility;
+        Util.enableAllTriggers();
+
+        // Run test
+        Test.startTest();
+        Opportunity opportunity = new Opportunity(
+            Name = 'System Test Opportunity',
+            Product_Line__c = 'Community Solar',
+            AccountId = [SELECT Id FROM Account WHERE Name = 'Account A'].Id,
+            Shared_Solar_System__c = sssId,
+            NMC_Tariff__c = [SELECT Id FROM Utility_NMC_Tariff__c WHERE Name = 'Eversource SEMA Class 2'].Id,
+            Partner_tag_lookup__c = partnerId,
+            Partner_Account__c = partnerAccountId,
+            Customer_Group__c = 'Residential',
+            Product__c = productId,
+            StageName = 'New',
+            CloseDate = System.today()
+        );
+        insert opportunity;
+        Test.stopTest();
+
+        // Verify Commission Structure stamped on INSERT
+        Opportunity opp = [SELECT Commission_Structure__c FROM Opportunity WHERE Id =: opportunity.Id];
+        System.assertEquals(commissionOne.Id, opp.Commission_Structure__c);
+    }
+
+    @IsTest
     private static void mockSetStructureOnOpportunities() {
         // Setup Test
         useMocks();
