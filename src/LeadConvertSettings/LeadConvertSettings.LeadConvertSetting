@@ -4,12 +4,12 @@
     <objectMapping>
         <inputObject>Lead</inputObject>
         <mappingFields>
-            <inputField>LASERCA__Birthdate__c</inputField>
-            <outputField>Date_of_Birth__c</outputField>
-        </mappingFields>
-        <mappingFields>
             <inputField>Business_Phone__c</inputField>
             <outputField>Business_Phone__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>LASERCA__Birthdate__c</inputField>
+            <outputField>Date_of_Birth__c</outputField>
         </mappingFields>
         <mappingFields>
             <inputField>Moody_s_Risk_Calc__c</inputField>
@@ -56,20 +56,12 @@
             <outputField>CS_Capacity_Allocated__c</outputField>
         </mappingFields>
         <mappingFields>
-            <inputField>Commencement_Date__c</inputField>
-            <outputField>Commencement_Date__c</outputField>
-        </mappingFields>
-        <mappingFields>
             <inputField>Custom_ID__c</inputField>
             <outputField>Custom_ID__c</outputField>
         </mappingFields>
         <mappingFields>
             <inputField>Customer_Referral__c</inputField>
             <outputField>Customer_Referral__c</outputField>
-        </mappingFields>
-        <mappingFields>
-            <inputField>Customer_type__c</inputField>
-            <outputField>customer_type_cs__c</outputField>
         </mappingFields>
         <mappingFields>
             <inputField>Customer_Type_Formula__c</inputField>
@@ -96,8 +88,8 @@
             <outputField>Form_Completion_Time__c</outputField>
         </mappingFields>
         <mappingFields>
-            <inputField>LASERCA__Home_Address__c</inputField>
-            <outputField>Community_Solar_Street_Address__c</outputField>
+            <inputField>Lead_ID__c</inputField>
+            <outputField>Lead_ID__c</outputField>
         </mappingFields>
         <mappingFields>
             <inputField>LASERCA__Home_City__c</inputField>
@@ -112,10 +104,6 @@
             <outputField>Parcel_ZIp__c</outputField>
         </mappingFields>
         <mappingFields>
-            <inputField>Lead_ID__c</inputField>
-            <outputField>Lead_ID__c</outputField>
-        </mappingFields>
-        <mappingFields>
             <inputField>Partner_Lookup__c</inputField>
             <outputField>Partner_tag_lookup__c</outputField>
         </mappingFields>
@@ -128,16 +116,20 @@
             <outputField>Partner_Tag__c</outputField>
         </mappingFields>
         <mappingFields>
+            <inputField>LASERCA__Home_Address__c</inputField>
+            <outputField>Community_Solar_Street_Address__c</outputField>
+        </mappingFields>
+        <mappingFields>
             <inputField>Personal_Credit_Report__c</inputField>
             <outputField>Personal_Credit_Report2__c</outputField>
         </mappingFields>
         <mappingFields>
-            <inputField>Product__c</inputField>
-            <outputField>Product__c</outputField>
+            <inputField>Referral_Email__c</inputField>
+            <outputField>Referral_Email__c</outputField>
         </mappingFields>
         <mappingFields>
-            <inputField>Product_line__c</inputField>
-            <outputField>Product_Line__c</outputField>
+            <inputField>Product__c</inputField>
+            <outputField>Product__c</outputField>
         </mappingFields>
         <mappingFields>
             <inputField>Product_Program__c</inputField>
@@ -146,10 +138,6 @@
         <mappingFields>
             <inputField>Project_Identification_Number__c</inputField>
             <outputField>project_identification_number__c</outputField>
-        </mappingFields>
-        <mappingFields>
-            <inputField>Referral_Email__c</inputField>
-            <outputField>Referral_Email__c</outputField>
         </mappingFields>
         <mappingFields>
             <inputField>bs_Sales_ID__c</inputField>
@@ -168,16 +156,12 @@
             <outputField>Subscription__c</outputField>
         </mappingFields>
         <mappingFields>
-            <inputField>System_Size_kw_AC__c</inputField>
-            <outputField>Estimated_System_Size_kW_AC__c</outputField>
-        </mappingFields>
-        <mappingFields>
-            <inputField>Yield_kWh_kW__c</inputField>
-            <outputField>Yield_kWh_kW__c</outputField>
-        </mappingFields>
-        <mappingFields>
             <inputField>System_Size_kW_DC__c</inputField>
             <outputField>Estimated_System_Size_kW_DC__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>Product_line__c</inputField>
+            <outputField>Product_Line__c</outputField>
         </mappingFields>
         <mappingFields>
             <inputField>Total_Annual_Consumption_kWh__c</inputField>
@@ -188,16 +172,8 @@
             <outputField>Annual_Electricity_Cost__c</outputField>
         </mappingFields>
         <mappingFields>
-            <inputField>Underwriting_Criteria__c</inputField>
-            <outputField>Underwriting_Criteria__c</outputField>
-        </mappingFields>
-        <mappingFields>
             <inputField>Utility_relationship__c</inputField>
             <outputField>Utility_relationship__c</outputField>
-        </mappingFields>
-        <mappingFields>
-            <inputField>Utility_Account_Holder__c</inputField>
-            <outputField>Utility_Account_Holder_Name__c</outputField>
         </mappingFields>
         <mappingFields>
             <inputField>Utility_Account_Holder_Business__c</inputField>
@@ -214,6 +190,10 @@
         <mappingFields>
             <inputField>Electricity_Provider__c</inputField>
             <outputField>UtilityMapper__c</outputField>
+        </mappingFields>
+        <mappingFields>
+            <inputField>Utility_Account_Holder__c</inputField>
+            <outputField>Utility_Account_Holder_Name__c</outputField>
         </mappingFields>
         <outputObject>Opportunity</outputObject>
     </objectMapping>

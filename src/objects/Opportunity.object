@@ -343,7 +343,6 @@
         <fullName>BW_Community_Solar_BCS</fullName>
         <fields>Name</fields>
         <fields>AccountId</fields>
-        <fields>System_Size__c</fields>
         <fields>UtilityMapper__c</fields>
         <fields>Community_Solar_State__c</fields>
         <fields>NextStep</fields>
@@ -427,19 +426,6 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>APR__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Populated manually by BizOps for old BWS loans (Avidia was not LOR) that included a Financing Fee which would change the APR to be higher than the monthly interest rate. To be set by code for adjustable rate products</inlineHelpText>
-        <label>APR</label>
-        <precision>8</precision>
-        <required>false</required>
-        <scale>3</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Percent</type>
-    </fields>
-    <fields>
         <fullName>AccountId</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -486,19 +472,6 @@
         <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Added_Expenditures__c</fullName>
-        <defaultValue>0</defaultValue>
-        <externalId>false</externalId>
-        <label>Added Expenditures</label>
-        <precision>12</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Additional_Components__c</fullName>
@@ -674,32 +647,6 @@ null, Annual_Electricity_Cost__c/NMC_Value__c)</formula>
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Annual_Escalator__c</fullName>
-        <externalId>false</externalId>
-        <label>Annual Escalator</label>
-        <length>20</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Annual_Independent_Income__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Copied from Lead&apos;s Annual Income (Annual_Income_Currency__c) upon conversion</inlineHelpText>
-        <label>Annual Income (Primary Applicant)</label>
-        <precision>14</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Annual_Production__c</fullName>
         <externalId>false</externalId>
         <label>Annual Production</label>
@@ -713,46 +660,10 @@ null, Annual_Electricity_Cost__c/NMC_Value__c)</formula>
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Annual_SRECs_Est__c</fullName>
-        <externalId>false</externalId>
-        <formula>System_Size__c *  Residential_Yield__c / 1000</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Annual SRECs (Est.)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Anticipated_First_Billing_Date__c</fullName>
         <description>Anticipated First Billing Date</description>
         <externalId>false</externalId>
         <label>Anticipated COD Date</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Anticipated_Loan_Purchase_Date__c</fullName>
-        <description>BW to purchase loans from Avidia. Typical time is 184 days after creation date for closed loans</description>
-        <externalId>false</externalId>
-        <formula>CreatedDate + 184</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Anticipated Loan Purchase Date</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>DateTime</type>
-    </fields>
-    <fields>
-        <fullName>Anticipated_Release_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>Anticipated Release Date</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -881,18 +792,6 @@ false
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Avidia_Checking_Account__c</fullName>
-        <defaultValue>false</defaultValue>
-        <description>This is populated in the application forms for if they are interested in opening an Avidia checking account.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>This is populated in the application forms for if they are interested in opening an Avidia checking account.</inlineHelpText>
-        <label>Avidia Checking Account</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>BCS_Commission_Paid_P2__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -953,32 +852,6 @@ false
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Building_Owner__c</fullName>
-        <description>Building owner for proposed C&amp;I project</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Building owner for proposed C&amp;I project</inlineHelpText>
-        <label>Building Owner</label>
-        <length>40</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Building_Use__c</fullName>
-        <description>Collected in C&amp;I intake form</description>
-        <externalId>false</externalId>
-        <inlineHelpText>C&amp;I intake building use</inlineHelpText>
-        <label>Building Use</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>TextArea</type>
     </fields>
     <fields>
         <fullName>Business_Title__c</fullName>
@@ -1143,19 +1016,6 @@ false
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>C_I_In_take_Form_info__c</fullName>
-        <description>Collection of text fields from C&amp;I in-take form</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Collection of text fields from C&amp;I in-take form</inlineHelpText>
-        <label>C&amp;I In-take Form info</label>
-        <length>32768</length>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>LongTextArea</type>
-        <visibleLines>3</visibleLines>
     </fields>
     <fields>
         <fullName>Call_Date__c</fullName>
@@ -1325,21 +1185,6 @@ IF( Month(CloseDate) = 12, &apos;December&apos;, null))))))))))))</formula>
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Co_Applicant_Income__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Copied from Lead&apos;s CoApplicant Income (Co_Applicant_Income__c) upon conversion</inlineHelpText>
-        <label>Annual Income (Co-Applicant)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Co_Applicant_Last_Name__c</fullName>
         <externalId>false</externalId>
         <label>Co-Applicant Last Name</label>
@@ -1369,56 +1214,6 @@ IF( Month(CloseDate) = 12, &apos;December&apos;, null))))))))))))</formula>
         <length>15</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Commencement_Date_QC__c</fullName>
-        <defaultValue>false</defaultValue>
-        <description>Is the Commencement Date in the future (when the contract is being QCed)?</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Is the Commencement Date in the future (when the contract is being QCed)?</inlineHelpText>
-        <label>Commencement Date QC</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Commencement_Date__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>This is the estimated date of system operation.  This is the end of the Interest Only period for DOER loans.  This is the beginning of the IO period for standard loans.</inlineHelpText>
-        <label>Commencement Date</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Commencement_Date_text__c</fullName>
-        <externalId>false</externalId>
-        <formula>CASE(MONTH(Commencement_Date__c), 
-1, &quot;January&quot;, 
-2, &quot;February&quot;, 
-3, &quot;March&quot;, 
-4, &quot;April&quot;, 
-5, &quot;May&quot;, 
-6, &quot;June&quot;, 
-7, &quot;July&quot;, 
-8, &quot;August&quot;, 
-9, &quot;September&quot;, 
-10, &quot;October&quot;, 
-11, &quot;November&quot;, 
-12, &quot;December&quot;, 
-&quot;None&quot;) + &quot; &quot; + 
-TEXT(DAY(Commencement_Date__c)) 
-+ &quot;, &quot; + TEXT(YEAR(Commencement_Date__c))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Commencement Date</label>
-        <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -1670,16 +1465,6 @@ TEXT(DAY(Commencement_Date__c))
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Contingent_Contract__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Contingent Contract</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>ContractId</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -1710,34 +1495,6 @@ TEXT(DAY(Commencement_Date__c))
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Copy_of_Contract_Close_Date__c</fullName>
-        <externalId>false</externalId>
-        <formula>17547.18</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Copy of Contract Close Date</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Cost_per_Watt_DC__c</fullName>
-        <externalId>false</externalId>
-        <formula>Loan_Principle__c /System_Size__c / 1000</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Lots of decimals on purpose for use in calculating Avidia Debt Purchase accurately</inlineHelpText>
-        <label>Cost per Watt (DC)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>8</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Countersigned_Contract_Id__c</fullName>
         <externalId>false</externalId>
         <formula>BLANKVALUE(
@@ -1760,19 +1517,6 @@ TEXT(DAY(Commencement_Date__c))
         <label>Credit Score</label>
         <required>false</required>
         <securityClassification>Restricted</securityClassification>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Cumulative_Loan_to_Value__c</fullName>
-        <description>Maps from field of same name on Lead</description>
-        <externalId>false</externalId>
-        <label>Cumulative Loan to Value</label>
-        <length>5</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -2010,58 +1754,6 @@ TEXT(DAY(Commencement_Date__c))
         <visibleLines>4</visibleLines>
     </fields>
     <fields>
-        <fullName>DAS_Installed__c</fullName>
-        <defaultValue>false</defaultValue>
-        <description>Used as part of QC process for loans. This is required to be checked for applicants with the Fixed Monthly Payment</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Used as part of QC process for loans. This is required to be checked for applicants with the Fixed Monthly Payment</inlineHelpText>
-        <label>DAS Installed</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>DOER_Loan_Program__c</fullName>
-        <externalId>false</externalId>
-        <label>DOER Loan Program Class</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Class A</fullName>
-                    <default>true</default>
-                    <label>Class A</label>
-                </value>
-                <value>
-                    <fullName>Class B</fullName>
-                    <default>false</default>
-                    <label>Class B</label>
-                </value>
-                <value>
-                    <fullName>Class C</fullName>
-                    <default>false</default>
-                    <label>Class C</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
-        <fullName>DOER_Solar_Loan__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>DOER Solar Loan</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>DS_Envelope_ID__c</fullName>
         <externalId>false</externalId>
         <label>DS Envelope ID</label>
@@ -2095,36 +1787,6 @@ TEXT(DAY(Commencement_Date__c))
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Date_of_Expiration__c</fullName>
-        <externalId>false</externalId>
-        <label>Date of Expiration</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Date_of_Issuance__c</fullName>
-        <externalId>false</externalId>
-        <label>Date of Issuance</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Date_of_Loan_Purchase__c</fullName>
-        <externalId>false</externalId>
-        <label>Date of Loan Purchase</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
     </fields>
     <fields>
         <fullName>Days_Since_Application_Receipt__c</fullName>
@@ -2175,46 +1837,6 @@ TEXT(DAY(Commencement_Date__c))
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-    </fields>
-    <fields>
-        <fullName>Development_Fee__c</fullName>
-        <description>C&amp;I development fee</description>
-        <externalId>false</externalId>
-        <inlineHelpText>C&amp;I development fee</inlineHelpText>
-        <label>Development Fee</label>
-        <length>20</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Direct_Disbursal_to_Installer_Authorized__c</fullName>
-        <description>Maps from Lead Field - DOER ONLY</description>
-        <externalId>false</externalId>
-        <label>Direct Disbursal to Installer Authorized</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Yes</fullName>
-                    <default>false</default>
-                    <label>Yes</label>
-                </value>
-                <value>
-                    <fullName>No</fullName>
-                    <default>false</default>
-                    <label>No</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
     </fields>
     <fields>
         <fullName>Disable_Emails__c</fullName>
@@ -2289,91 +1911,6 @@ IF(AND(Application_Type__c=&quot;Joint&quot;,TEXT(Joint_Applicant_Type__c)=&quot
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Dummy_Update__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Dummy Update</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>EPC_Financing_Partners_chosen__c</fullName>
-        <externalId>false</externalId>
-        <label>EPC/Financing Partners chosen</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Yes</fullName>
-                    <default>false</default>
-                    <label>Yes</label>
-                </value>
-                <value>
-                    <fullName>No</fullName>
-                    <default>false</default>
-                    <label>No</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
-        <fullName>EPC_MOU__c</fullName>
-        <externalId>false</externalId>
-        <label>EPC MOU</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Drafted</fullName>
-                    <default>false</default>
-                    <label>Drafted</label>
-                </value>
-                <value>
-                    <fullName>Sent</fullName>
-                    <default>false</default>
-                    <label>Sent</label>
-                </value>
-                <value>
-                    <fullName>Signed</fullName>
-                    <default>false</default>
-                    <label>Signed</label>
-                </value>
-                <value>
-                    <fullName>N/A</fullName>
-                    <default>false</default>
-                    <label>N/A</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
-        <fullName>EPC_Pricing__c</fullName>
-        <description>EPC Pricing</description>
-        <externalId>false</externalId>
-        <inlineHelpText>EPC Pricing originally collected in C&amp;I in-take form</inlineHelpText>
-        <label>EPC Pricing</label>
-        <length>80</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Electricity_Provider__c</fullName>
         <externalId>false</externalId>
         <formula>Account.Electricity_Provider__c</formula>
@@ -2384,32 +1921,6 @@ IF(AND(Application_Type__c=&quot;Joint&quot;,TEXT(Joint_Applicant_Type__c)=&quot
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Electronic_Disbursal_Authorized__c</fullName>
-        <description>Maps from Lead Field, DOER ONLY</description>
-        <externalId>false</externalId>
-        <label>Electronic Disbursal Authorized?</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Yes</fullName>
-                    <default>false</default>
-                    <label>Yes</label>
-                </value>
-                <value>
-                    <fullName>No</fullName>
-                    <default>false</default>
-                    <label>No</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
     </fields>
     <fields>
         <fullName>Email_Template_Parent_Account_ID__c</fullName>
@@ -2438,46 +1949,6 @@ IF(AND(Application_Type__c=&quot;Joint&quot;,TEXT(Joint_Applicant_Type__c)=&quot
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Employed_for_more_than_one_year__c</fullName>
-        <externalId>false</externalId>
-        <label>Employed for more than one year</label>
-        <length>5</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Employed_for_more_than_six_months__c</fullName>
-        <externalId>false</externalId>
-        <label>Employed for more than six months</label>
-        <length>5</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>End_Date_of_Set_Rate_Period__c</fullName>
-        <description>Formula field adds Product.First_Adjustment__c months -1 to the commencement date.  This is meant to reflect the date the first bill with an adjusted rate is due.</description>
-        <externalId>false</externalId>
-        <formula>text(month(addmonths(Commencement_Date__c, (Product__r.First_Adjustment__c-1))))+&quot;/&quot;+
-text(day(addmonths(Commencement_Date__c, (Product__r.First_Adjustment__c-1)))) +&quot;/&quot;+
-text(year(addmonths(Commencement_Date__c, (Product__r.First_Adjustment__c-1))))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Formula field adds Product.First_Adjustment__c months -1 to the commencement date.  This is meant to reflect the date the first bill with an adjusted rate is due.</inlineHelpText>
-        <label>End Date of Set Rate Period</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Entity_DPU_Id__c</fullName>
         <externalId>false</externalId>
         <label>Entity DPU Id #</label>
@@ -2503,19 +1974,6 @@ text(year(addmonths(Commencement_Date__c, (Product__r.First_Adjustment__c-1))))<
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Estimated_System_Size_kW_AC__c</fullName>
-        <externalId>false</externalId>
-        <label>Estimated System Size (kW AC)</label>
-        <precision>10</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Estimated_System_Size_kW_DC__c</fullName>
         <externalId>false</externalId>
         <label>Estimated System Size (kW DC)</label>
@@ -2526,20 +1984,6 @@ text(year(addmonths(Commencement_Date__c, (Product__r.First_Adjustment__c-1))))<
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Estimated_Utility_Upgrade_Cost__c</fullName>
-        <description>Collected in C&amp;I in-take form</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Collected in C&amp;I in-take form</inlineHelpText>
-        <label>Estimated Utility Upgrade Cost</label>
-        <length>80</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
@@ -2570,93 +2014,6 @@ text(year(addmonths(Commencement_Date__c, (Product__r.First_Adjustment__c-1))))<
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>False_Record__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF( OR(Shared_Solar_System_Name__c == &quot;Oxford Barrett St. P1&quot;, Shared_Solar_System_Name__c == &quot;Oxford Barrett St. P2&quot;,    CONTAINS(Name, &quot;Test&quot;), CONTAINS(Name, &quot;TEST&quot;), CONTAINS(Name, &quot;test&quot;), CONTAINS(Parent_Account_Name__c, &quot;test&quot;)), TRUE, FALSE)</formula>
-        <label>False Record</label>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Financing_Cost__c</fullName>
-        <defaultValue>1000</defaultValue>
-        <externalId>false</externalId>
-        <label>Financing Cost</label>
-        <precision>12</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Financing_Fee_Legal_Disclaimer__c</fullName>
-        <description>Pulls from the product object and populates the &quot;lender&apos;s Fee&quot; section of pg. 4 of the contract</description>
-        <externalId>false</externalId>
-        <formula>Product__r.Financing_Fee_Legal_Disclaimer__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Financing Fee Legal Disclaimer</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Financing_Fee_Override__c</fullName>
-        <externalId>false</externalId>
-        <label>Financing Fee Override</label>
-        <precision>12</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Financing_Fee_SLA2__c</fullName>
-        <externalId>false</externalId>
-        <label>Financing Fee SLA</label>
-        <precision>10</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Financing_Fee__c</fullName>
-        <description>Financing Fee, Greater of 5% or $1250</description>
-        <externalId>false</externalId>
-        <formula>IF(TEXT(Product__r.Loan_Financing_Fee_Terms__c)=&quot;Maximum (5%, $1,250)&quot;,
-max(1250,0.05*(Requested_Loan_Amount__c)),
-0 )</formula>
-        <inlineHelpText>Financing Fee, Greater of 5% or $1250, autocalculated</inlineHelpText>
-        <label>Financing Fee</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Financing_Partner__c</fullName>
-        <externalId>false</externalId>
-        <label>Financing Partner</label>
-        <length>50</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
@@ -2721,88 +2078,6 @@ max(1250,0.05*(Requested_Loan_Amount__c)),
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Homeowner_s_Insurance_Policy_End_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>Homeowner&apos;s Insurance Policy End Date</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Homeowner_s_Insurance_Status__c</fullName>
-        <externalId>false</externalId>
-        <label>Homeowner&apos;s Insurance Status</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Requested</fullName>
-                    <default>false</default>
-                    <label>Requested</label>
-                </value>
-                <value>
-                    <fullName>Received</fullName>
-                    <default>false</default>
-                    <label>Received</label>
-                </value>
-                <value>
-                    <fullName>Received: Approved</fullName>
-                    <default>false</default>
-                    <isActive>false</isActive>
-                    <label>Received: Approved</label>
-                </value>
-                <value>
-                    <fullName>Received: Did Not Qualify</fullName>
-                    <default>false</default>
-                    <isActive>false</isActive>
-                    <label>Received: Did Not Qualify</label>
-                </value>
-                <value>
-                    <fullName>Received: in QC</fullName>
-                    <default>false</default>
-                    <isActive>false</isActive>
-                    <label>Received: in QC</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
-        <fullName>IBLS_Category_MappedFromLead__c</fullName>
-        <description>IBLS Category - mapped from manual entry on Lead</description>
-        <externalId>false</externalId>
-        <inlineHelpText>IBLS Category - mapped from manual entry on lead</inlineHelpText>
-        <label>IBLS Category</label>
-        <length>20</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>IBLS_Category__c</fullName>
-        <externalId>false</externalId>
-        <formula>if( isblank(IBLS_Category_MappedFromLead__c )=False,IBLS_Category_MappedFromLead__c
-,
-IF(or(ISBLANK(Annual_Independent_Income__c), income_based_loan_support__c = False),&quot;No&quot;,IF(  Annual_Independent_Income__c  &gt; 66866, if(Annual_Independent_Income__c &gt; 80240, &quot;No&quot;,&quot;Category 2&quot;), &quot;Category 1&quot;)))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>IBLS Category</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>IRBD_Rate__c</fullName>
         <defaultValue>0.0189</defaultValue>
         <description>This is the post-buy-down rate to the customer</description>
@@ -2817,250 +2092,9 @@ IF(or(ISBLANK(Annual_Independent_Income__c), income_based_loan_support__c = Fals
         <type>Percent</type>
     </fields>
     <fields>
-        <fullName>ISA_Status__c</fullName>
-        <description>Collected in C&amp;I in-take form</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Collected in C&amp;I in-take form</inlineHelpText>
-        <label>ISA Status</label>
-        <length>80</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Impact_Study_Costs__c</fullName>
-        <description>Collected in C&amp;I in-take form</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Collected in C&amp;I in-take form</inlineHelpText>
-        <label>Impact Study Costs</label>
-        <length>80</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Income_Type_2__c</fullName>
-        <externalId>false</externalId>
-        <label>Income Type (2)</label>
-        <length>25</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Income_Type__c</fullName>
-        <externalId>false</externalId>
-        <label>Income Type</label>
-        <length>25</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Interconnect_File_Submitted_MSLP_ONLY__c</fullName>
-        <defaultValue>false</defaultValue>
-        <description>Manual checkbox for when the interconnect file is sent to LD for mass solar loan program loans.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>MSLP ONLY</inlineHelpText>
-        <label>Interconnect File Submitted? MSLP ONLY</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Interconnected__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Interconnected</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Interconnection_Date_From_RE__c</fullName>
-        <externalId>false</externalId>
-        <label>Interconnection Date (From RE)</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Interest_Only_Payment__c</fullName>
-        <description>This field is a formula multiplying the Loan Amount Financed times the Interest Rate from the Product and dividing by 12. For DOER Loans it is the same calculation but multiplied times 0.35 to account for the disbursal and payment terms for those products.</description>
-        <externalId>false</externalId>
-        <formula>IF(DOER_Solar_Loan__c = FALSE, Loan_Amount_Financed__c *   Product__r.Loan_Interest_Rate__c /12, 0.35 * Loan_Amount_Financed__c *  Product__r.Loan_Interest_Rate__c/12)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>This field is a formula multiplying the Loan Amount Financed times the Interest Rate from the Product and dividing by 12. For DOER Loans it is the same calculation but multiplied times 0.35 to account for the disbursal and payment terms for those products</inlineHelpText>
-        <label>Interest Only Payment</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Interest_Only_Period__c</fullName>
-        <defaultValue>12</defaultValue>
-        <externalId>false</externalId>
-        <label>Interest Only Period</label>
-        <precision>5</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Interest_Only_Start_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>Interest Only End Date</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Interest_Payment__c</fullName>
-        <externalId>false</externalId>
-        <formula>Loan_Amount_Financed__c *   Product__r.Loan_Interest_Rate__c / 12</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Interest Payment</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Interest_Rate_Picklist__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>This field is controlled by workflows and updates the formula field value</inlineHelpText>
-        <label>Interest Rate Picklist</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>1.89</fullName>
-                    <default>false</default>
-                    <label>1.89</label>
-                </value>
-                <value>
-                    <fullName>3.25</fullName>
-                    <default>false</default>
-                    <label>3.25</label>
-                </value>
-                <value>
-                    <fullName>3.29</fullName>
-                    <default>false</default>
-                    <label>3.29</label>
-                </value>
-                <value>
-                    <fullName>3.39</fullName>
-                    <default>false</default>
-                    <label>3.39</label>
-                </value>
-                <value>
-                    <fullName>3.99</fullName>
-                    <default>false</default>
-                    <label>3.99</label>
-                </value>
-                <value>
-                    <fullName>5.99</fullName>
-                    <default>false</default>
-                    <label>5.99</label>
-                </value>
-                <value>
-                    <fullName>6.25</fullName>
-                    <default>false</default>
-                    <label>6.25</label>
-                </value>
-                <value>
-                    <fullName>6.49</fullName>
-                    <default>false</default>
-                    <label>6.49</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
-        <fullName>Interest_Rate__c</fullName>
-        <externalId>false</externalId>
-        <formula>Product__r.Loan_Interest_Rate__c</formula>
-        <label>Interest Rate</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>3</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Percent</type>
-    </fields>
-    <fields>
-        <fullName>Interest_Start_Date_Text__c</fullName>
-        <externalId>false</externalId>
-        <formula>CASE(MONTH(Interest_Only_Start_Date__c), 
-1, &quot;January&quot;, 
-2, &quot;February&quot;, 
-3, &quot;March&quot;, 
-4, &quot;April&quot;, 
-5, &quot;May&quot;, 
-6, &quot;June&quot;, 
-7, &quot;July&quot;, 
-8, &quot;August&quot;, 
-9, &quot;September&quot;, 
-10, &quot;October&quot;, 
-11, &quot;November&quot;, 
-12, &quot;December&quot;, 
-&quot;None&quot;) + &quot; &quot; + 
-TEXT(DAY(Interest_Only_Start_Date__c)) 
-+ &quot;, &quot; + TEXT(YEAR(Interest_Only_Start_Date__c))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Interest Start Date (Text)</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Internal_Review_Deadline__c</fullName>
         <externalId>false</externalId>
         <label>Internal Review Deadline</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Interviews_Week__c</fullName>
-        <externalId>false</externalId>
-        <label>Interviews Week</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -3091,19 +2125,6 @@ TEXT(DAY(Interest_Only_Start_Date__c))
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-    </fields>
-    <fields>
-        <fullName>Is_Loan_Secured__c</fullName>
-        <description>Maps from field of same name on lead</description>
-        <externalId>false</externalId>
-        <label>Is Loan Secured</label>
-        <length>5</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Joint_Applicant_Type__c</fullName>
@@ -3191,71 +2212,6 @@ TEXT(DAY(Interest_Only_Start_Date__c))
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Lease_Agreement__c</fullName>
-        <description>Status of Lease Agreement for C&amp;I projects</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Status of Lease Agreement for C&amp;I projects</inlineHelpText>
-        <label>Lease Agreement</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Drafted</fullName>
-                    <default>false</default>
-                    <label>Drafted</label>
-                </value>
-                <value>
-                    <fullName>Sent</fullName>
-                    <default>false</default>
-                    <label>Sent</label>
-                </value>
-                <value>
-                    <fullName>Signed</fullName>
-                    <default>false</default>
-                    <label>Signed</label>
-                </value>
-                <value>
-                    <fullName>N/A</fullName>
-                    <default>false</default>
-                    <label>N/A</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
-        <fullName>Lease_Price_MW_DC__c</fullName>
-        <description>C&amp;I Lease Price per MW DC</description>
-        <externalId>false</externalId>
-        <inlineHelpText>C&amp;I Lease Price per MW DC</inlineHelpText>
-        <label>Lease Price/MW DC</label>
-        <length>20</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Lease__c</fullName>
-        <externalId>false</externalId>
-        <label>Lease</label>
-        <precision>12</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Lender_of_Record__c</fullName>
         <externalId>false</externalId>
         <formula>TEXT(Product__r.Lender_of_Record__c)</formula>
@@ -3266,44 +2222,6 @@ TEXT(DAY(Interest_Only_Start_Date__c))
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Letter_of_Intent__c</fullName>
-        <description>Status of LOI for C&amp;I projects</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Status of LOI for C&amp;I projects</inlineHelpText>
-        <label>Letter of Intent</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Drafted</fullName>
-                    <default>false</default>
-                    <label>Drafted</label>
-                </value>
-                <value>
-                    <fullName>Sent</fullName>
-                    <default>false</default>
-                    <label>Sent</label>
-                </value>
-                <value>
-                    <fullName>Signed</fullName>
-                    <default>false</default>
-                    <label>Signed</label>
-                </value>
-                <value>
-                    <fullName>N/A</fullName>
-                    <default>false</default>
-                    <label>N/A</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
     </fields>
     <fields>
         <fullName>Level_of_Interest__c</fullName>
@@ -3344,18 +2262,6 @@ TEXT(DAY(Interest_Only_Start_Date__c))
                 </value>
             </valueSetDefinition>
         </valueSet>
-    </fields>
-    <fields>
-        <fullName>Link_to_Interconnection_Form__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF( State_ab__c	== &apos;MA&apos;, hyperlink(&quot;https://forms.bluewaverenewables.com/381489?tfa_107=&quot; &amp; Id &amp; &quot;&amp;tfa_1=&quot; &amp; Name, &quot;Interconnection Form&quot;),  hyperlink(&quot;https://forms.bluewaverenewables.com/381496?tfa_107=&quot; &amp; Id &amp; &quot;&amp;tfa_1=&quot; &amp; Name, &quot;Interconnection Form&quot;) )</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Link to Interconnection Form</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Lived_at_residence_more_than_six_months__c</fullName>
@@ -3507,118 +2413,6 @@ TEXT(DAY(Interest_Only_Start_Date__c))
         </valueSet>
     </fields>
     <fields>
-        <fullName>Loan_Amount_Financed__c</fullName>
-        <externalId>false</externalId>
-        <formula>Requested_Loan_Amount__c +    Financing_Fee_SLA2__c +  Added_Expenditures__c+  Loan_Fee_1__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Principal</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Loan_Amount_Verified__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Loan Amount Verified</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Loan_Fee_1__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(NOT(ISBLANK( Product__r.Loan_Fee_1__c)),Product__r.Loan_Fee_1__c*Requested_Loan_Amount__c,NULL)</formula>
-        <inlineHelpText>Handles fees like Stamp Tax or Financing Fee: Product.Loan Fee 1 * Requested Loan Amount (if there&apos;s a Loan Fee 1). See Loan Fee 1 for description of fee</inlineHelpText>
-        <label>Loan Fee 1</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Loan_Principle__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>The request loan amount (could be different than the true system cost)</inlineHelpText>
-        <label>System Cost</label>
-        <precision>12</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Loan_Program_Class__c</fullName>
-        <description>Maps from the lead field of the same name.  Indicates which FICO classification the Customer has.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Maps from the lead field of the same name.  Indicates which FICO classification the Customer has.</inlineHelpText>
-        <label>Loan Program Class</label>
-        <length>5</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Loan_Rate__c</fullName>
-        <defaultValue>0.0599</defaultValue>
-        <externalId>false</externalId>
-        <label>Interest Rate (OLD)</label>
-        <precision>7</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Percent</type>
-    </fields>
-    <fields>
-        <fullName>Loan_Term_Override__c</fullName>
-        <externalId>false</externalId>
-        <label>Loan Term Override</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>108</fullName>
-                    <default>false</default>
-                    <label>108</label>
-                </value>
-                <value>
-                    <fullName>120</fullName>
-                    <default>false</default>
-                    <label>120</label>
-                </value>
-                <value>
-                    <fullName>144</fullName>
-                    <default>false</default>
-                    <label>144</label>
-                </value>
-                <value>
-                    <fullName>180</fullName>
-                    <default>false</default>
-                    <label>180</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
         <fullName>MCEC_Funds_Reserved__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -3627,18 +2421,6 @@ TEXT(DAY(Interest_Only_Start_Date__c))
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>MCEC_Status_Last_Modified__c</fullName>
-        <description>Date field.  Modified by workflow to show the last time the MCEC Status field was modified.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Date field.  Modified by workflow to show the last time the MCEC Status field was modified.</inlineHelpText>
-        <label>MCEC Status Last Modified</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
     </fields>
     <fields>
         <fullName>MCEC_Status__c</fullName>
@@ -3756,49 +2538,6 @@ Zip_Code__c =&quot;01775&quot;),
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>Maturity_Date2__c</fullName>
-        <description>8/23/17: Changed from assuming 3650 days from commencement date to using the Product record Loan Term and IO period, since it was found to be incorrect on DOER loan notes.</description>
-        <externalId>false</externalId>
-        <formula>DATE(
-
-YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.TermPlusIO__c - 1)/12), 
-
-CASE(MOD(MONTH(Commencement_Date__c)+Product__r.TermPlusIO__c, 12), 
-   0, 12,
-   MOD(MONTH(Commencement_Date__c)+Product__r.TermPlusIO__c, 12)), 
-
-MIN(DAY(Commencement_Date__c),
-  CASE(MOD(MONTH(Commencement_Date__c)+Product__r.TermPlusIO__c,12), 
-     9, 30, 
-     4, 30, 
-     6, 30, 
-     11, 30, 
-     2, IF(MOD(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.TermPlusIO__c)/12), 400) = 0 ||
-         (MOD(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.TermPlusIO__c)/12), 4) = 0 &amp;&amp; 
-          MOD(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.TermPlusIO__c)/12), 100) &lt;&gt; 0), 
-         29,28), 
-     31))
-)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Maturity Date</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Maximum_Loan__c</fullName>
-        <externalId>false</externalId>
-        <label>Maximum Loan</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Maximum_Monthly_Disbursement__c</fullName>
         <externalId>false</externalId>
         <label>Maximum Monthly Payment</label>
@@ -3824,26 +2563,6 @@ MIN(DAY(Commencement_Date__c),
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Mechanical_Install_Date_From_RE__c</fullName>
-        <externalId>false</externalId>
-        <label>Mechanical Install Date (From RE)</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Mechanically_Installed__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Mechanically Installed</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Meeting_Location__c</fullName>
@@ -3918,104 +2637,10 @@ MIN(DAY(Commencement_Date__c),
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Month_of_Loan_Purchase__c</fullName>
-        <defaultValue>0</defaultValue>
-        <externalId>false</externalId>
-        <label>Month of Loan Purchase</label>
-        <precision>3</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Monthly_Income_2__c</fullName>
-        <externalId>false</externalId>
-        <label>Monthly Income (2)</label>
-        <precision>8</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Monthly_Income_Details_2__c</fullName>
-        <externalId>false</externalId>
-        <label>Monthly Income Details (2)</label>
-        <length>30</length>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Monthly_Income_Details__c</fullName>
-        <externalId>false</externalId>
-        <label>Monthly Income Details</label>
-        <length>30</length>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Monthly_Income__c</fullName>
-        <externalId>false</externalId>
-        <label>Monthly Income</label>
-        <precision>8</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Monthly_Payment__c</fullName>
-        <externalId>false</externalId>
-        <formula>( Loan_Amount_Financed__c  *    Product__r.Loan_Interest_Rate__c/12  )/(1-((1+  Product__r.Loan_Interest_Rate__c /12)^(-1* Product__r.Loan_Term__c )))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Shows original monthly payment in the P&amp;I period, disregarding any principal paydowns, or interest rate adjustments for adjustable products.</inlineHelpText>
-        <label>Original Monthly Payment</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>More_than_five_years_industry_experience__c</fullName>
         <externalId>false</externalId>
         <label>More than five years industry experience</label>
         <length>5</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Mortgage_Lender__c</fullName>
-        <description>Mortgage Lender of record from C&amp;I in-take form</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Collected in C&amp;I in-take form</inlineHelpText>
-        <label>Mortgage Lender</label>
-        <length>80</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -4170,18 +2795,6 @@ MIN(DAY(Commencement_Date__c),
         <visibleLines>5</visibleLines>
     </fields>
     <fields>
-        <fullName>Notes_on_Credit_Decision__c</fullName>
-        <description>This is where we will enter any context on credit decisions.</description>
-        <externalId>false</externalId>
-        <label>Notes on Credit Decision</label>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>TextArea</type>
-    </fields>
-    <fields>
         <fullName>Number_of_Inverters__c</fullName>
         <externalId>false</externalId>
         <label>Number of Inverters</label>
@@ -4198,21 +2811,6 @@ MIN(DAY(Commencement_Date__c),
         <fullName>Number_of_Panels__c</fullName>
         <externalId>false</externalId>
         <label>Number of Panels</label>
-        <precision>5</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Number_of_Periods_Months__c</fullName>
-        <defaultValue>108</defaultValue>
-        <externalId>false</externalId>
-        <inlineHelpText>This is the amortization period after the interest-only period.</inlineHelpText>
-        <label>Periods (Months)</label>
         <precision>5</precision>
         <required>false</required>
         <scale>0</scale>
@@ -4366,19 +2964,6 @@ MIN(DAY(Commencement_Date__c),
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>PILOT__c</fullName>
-        <externalId>false</externalId>
-        <label>PILOT</label>
-        <precision>12</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
         <unique>false</unique>
     </fields>
     <fields>
@@ -4704,19 +3289,6 @@ IF(INCLUDES(Customer_Type__c, &quot;Private Affordable&quot;),&quot;Error&quot;,
         <type>Percent</type>
     </fields>
     <fields>
-        <fullName>Period_months_Formula__c</fullName>
-        <externalId>false</externalId>
-        <formula>Product__r.Loan_Term__c</formula>
-        <label>Period (months) Formula</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Personal_Credit_Report2__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -4834,42 +3406,6 @@ IF(INCLUDES(Customer_Type__c, &quot;Private Affordable&quot;),&quot;Error&quot;,
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Principal_Balance_from_Loan__c</fullName>
-        <externalId>false</externalId>
-        <label>Principal Balance (from Loan)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Principal_Step_Down_Occurs__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Principal Step Down Occurs</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Principal_and_Interest_Period_DOER__c</fullName>
-        <defaultValue>120</defaultValue>
-        <externalId>false</externalId>
-        <label>Principal and Interest Period (DOER)</label>
-        <precision>5</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Probability</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -4923,61 +3459,6 @@ IF(INCLUDES(Customer_Type__c, &quot;Private Affordable&quot;),&quot;Error&quot;,
                     <fullName>MSLP</fullName>
                     <default>false</default>
                     <label>MSLP</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
-        <fullName>Product_XXX__c</fullName>
-        <externalId>false</externalId>
-        <label>Product</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Solar Loan</fullName>
-                    <default>false</default>
-                    <label>Solar Loan</label>
-                </value>
-                <value>
-                    <fullName>Offtaker - Residential</fullName>
-                    <default>false</default>
-                    <label>Offtaker - Residential</label>
-                </value>
-                <value>
-                    <fullName>Offtaker - Private</fullName>
-                    <default>false</default>
-                    <label>Offtaker - Private</label>
-                </value>
-                <value>
-                    <fullName>Offtaker - Utility</fullName>
-                    <default>false</default>
-                    <label>Offtaker - Utility</label>
-                </value>
-                <value>
-                    <fullName>Site-Acquisition</fullName>
-                    <default>false</default>
-                    <label>Site-Acquisition</label>
-                </value>
-                <value>
-                    <fullName>Offtaker - Public</fullName>
-                    <default>false</default>
-                    <label>Offtaker - Public</label>
-                </value>
-                <value>
-                    <fullName>RFP</fullName>
-                    <default>false</default>
-                    <label>RFP</label>
-                </value>
-                <value>
-                    <fullName>RFQ</fullName>
-                    <default>false</default>
-                    <label>RFQ</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -5038,90 +3519,6 @@ IF(INCLUDES(Customer_Type__c, &quot;Private Affordable&quot;),&quot;Error&quot;,
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>RFP_Issue_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>RFP Issue Date</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>RFP_Questions_Due__c</fullName>
-        <externalId>false</externalId>
-        <label>RFP Questions Due</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>DateTime</type>
-    </fields>
-    <fields>
-        <fullName>RFP_Submission_Deadline__c</fullName>
-        <externalId>false</externalId>
-        <label>RFP Submission Deadline</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>DateTime</type>
-    </fields>
-    <fields>
-        <fullName>RFP_Submitted_On__c</fullName>
-        <externalId>false</externalId>
-        <label>RFP Submitted On</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>DateTime</type>
-    </fields>
-    <fields>
-        <fullName>RL_Partner_Commission__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(DOER_Solar_Loan__c == True, 
-
-IF(( Partner_tag_lookup__r.RL_DOER_Commission_Structure_kW_DC__c *System_Size__c)&gt;=Partner_tag_lookup__r.RL_DOER_Commission_Cap_kW__c, Partner_tag_lookup__r.RL_DOER_Commission_Cap_kW__c, 
-( Partner_tag_lookup__r.RL_DOER_Commission_Structure_kW_DC__c *System_Size__c)),
-
-IF((Partner_tag_lookup__r.RL_Commission_Structure__c*System_Size__c)&gt;=Partner_tag_lookup__r.RL_Commission_Cap__c , Partner_tag_lookup__r.RL_Commission_Cap__c,
-(Partner_tag_lookup__r.RL_Commission_Structure__c*System_Size__c)))</formula>
-        <inlineHelpText>If blank, the partner commission structure isn&apos;t filled in on the partner object</inlineHelpText>
-        <label>RL Partner Commission</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>RL_Underwriting_Queue_Duration__c</fullName>
-        <description>This is the number of days between the start of the &quot;Under Bluewave Review&quot; Partner Task and when a contract is sent.</description>
-        <externalId>false</externalId>
-        <label>RL Underwriting Queue Duration</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>RL_Underwriting_Start_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>RL Underwriting Start Date</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
     </fields>
     <fields>
         <fullName>Ready_to_Reserve_MCEC_Funds__c</fullName>
@@ -5294,32 +3691,6 @@ IF((Partner_tag_lookup__r.RL_Commission_Structure__c*System_Size__c)&gt;=Partner
         </valueSet>
     </fields>
     <fields>
-        <fullName>Remaining_Term_Months__c</fullName>
-        <externalId>false</externalId>
-        <formula>Maturity_Date2__c - TODAY()</formula>
-        <label>Remaining Term (Months)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Requested_Loan_Amount__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>This represents the amount of the system cost that is being financed by Bluewave.</inlineHelpText>
-        <label>Requested Loan Amount</label>
-        <precision>12</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Reserved_System_Capacity_kW_DC2__c</fullName>
         <externalId>false</externalId>
         <label>Reserved System Capacity (kW DC)</label>
@@ -5330,404 +3701,6 @@ IF((Partner_tag_lookup__r.RL_Commission_Structure__c*System_Size__c)&gt;=Partner
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Residence_Owner__c</fullName>
-        <externalId>false</externalId>
-        <label>Residence Owner?</label>
-        <length>5</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Residential_Yield__c</fullName>
-        <externalId>false</externalId>
-        <label>Residential Yield (kWh/kW)</label>
-        <precision>12</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Roof_Age__c</fullName>
-        <description>Collected in C&amp;I in-take form</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Collected in C&amp;I in-take form</inlineHelpText>
-        <label>Roof Age</label>
-        <length>20</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Roof_Type__c</fullName>
-        <description>Collected in C&amp;I in-take form</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Collected in C&amp;I in-take form</inlineHelpText>
-        <label>Roof Type</label>
-        <length>80</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>SMART_Capacity_Block__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Expected block for SMART</inlineHelpText>
-        <label>SMART Capacity Block</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>1</fullName>
-                    <default>false</default>
-                    <label>1</label>
-                </value>
-                <value>
-                    <fullName>2</fullName>
-                    <default>false</default>
-                    <label>2</label>
-                </value>
-                <value>
-                    <fullName>3</fullName>
-                    <default>false</default>
-                    <label>3</label>
-                </value>
-                <value>
-                    <fullName>4</fullName>
-                    <default>false</default>
-                    <label>4</label>
-                </value>
-                <value>
-                    <fullName>5</fullName>
-                    <default>false</default>
-                    <label>5</label>
-                </value>
-                <value>
-                    <fullName>6</fullName>
-                    <default>false</default>
-                    <label>6</label>
-                </value>
-                <value>
-                    <fullName>7</fullName>
-                    <default>false</default>
-                    <label>7</label>
-                </value>
-                <value>
-                    <fullName>8</fullName>
-                    <default>false</default>
-                    <label>8</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
-        <fullName>SMART_Location_Adder_Tranche__c</fullName>
-        <description>Which tranche we are expected to fall in for the SMART location adder</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Which tranche we are expected to fall in for the SMART location adder</inlineHelpText>
-        <label>SMART Location Adder Tranche</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>1</fullName>
-                    <default>false</default>
-                    <label>1</label>
-                </value>
-                <value>
-                    <fullName>2</fullName>
-                    <default>false</default>
-                    <label>2</label>
-                </value>
-                <value>
-                    <fullName>3</fullName>
-                    <default>false</default>
-                    <label>3</label>
-                </value>
-                <value>
-                    <fullName>4</fullName>
-                    <default>false</default>
-                    <label>4</label>
-                </value>
-                <value>
-                    <fullName>5</fullName>
-                    <default>false</default>
-                    <label>5</label>
-                </value>
-                <value>
-                    <fullName>6</fullName>
-                    <default>false</default>
-                    <label>6</label>
-                </value>
-                <value>
-                    <fullName>7</fullName>
-                    <default>false</default>
-                    <label>7</label>
-                </value>
-                <value>
-                    <fullName>8</fullName>
-                    <default>false</default>
-                    <label>8</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
-        <fullName>SMART_Location_Adder__c</fullName>
-        <externalId>false</externalId>
-        <label>SMART Location Adder</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Building</fullName>
-                    <default>false</default>
-                    <label>Building</label>
-                </value>
-                <value>
-                    <fullName>Floating</fullName>
-                    <default>false</default>
-                    <label>Floating</label>
-                </value>
-                <value>
-                    <fullName>Brownfield</fullName>
-                    <default>false</default>
-                    <label>Brownfield</label>
-                </value>
-                <value>
-                    <fullName>Landfill</fullName>
-                    <default>false</default>
-                    <label>Landfill</label>
-                </value>
-                <value>
-                    <fullName>Canopy</fullName>
-                    <default>false</default>
-                    <label>Canopy</label>
-                </value>
-                <value>
-                    <fullName>Agricultural</fullName>
-                    <default>false</default>
-                    <label>Agricultural</label>
-                </value>
-                <value>
-                    <fullName>N/A</fullName>
-                    <default>false</default>
-                    <label>N/A</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
-        <fullName>SMART_Offtake_Adder_Trance__c</fullName>
-        <description>Which Trance we are expected to fall in for the SMART oftake adder</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Which Trance we are expected to fall in for the SMART oftake adder</inlineHelpText>
-        <label>SMART Offtake Adder Trance</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>1</fullName>
-                    <default>false</default>
-                    <label>1</label>
-                </value>
-                <value>
-                    <fullName>2</fullName>
-                    <default>false</default>
-                    <label>2</label>
-                </value>
-                <value>
-                    <fullName>3</fullName>
-                    <default>false</default>
-                    <label>3</label>
-                </value>
-                <value>
-                    <fullName>4</fullName>
-                    <default>false</default>
-                    <label>4</label>
-                </value>
-                <value>
-                    <fullName>5</fullName>
-                    <default>false</default>
-                    <label>5</label>
-                </value>
-                <value>
-                    <fullName>6</fullName>
-                    <default>false</default>
-                    <label>6</label>
-                </value>
-                <value>
-                    <fullName>7</fullName>
-                    <default>false</default>
-                    <label>7</label>
-                </value>
-                <value>
-                    <fullName>8</fullName>
-                    <default>false</default>
-                    <label>8</label>
-                </value>
-                <value>
-                    <fullName>9</fullName>
-                    <default>false</default>
-                    <label>9</label>
-                </value>
-                <value>
-                    <fullName>10</fullName>
-                    <default>false</default>
-                    <label>10</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
-        <fullName>SREC_Assumption__c</fullName>
-        <externalId>false</externalId>
-        <label>SREC Category</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>SREC I</fullName>
-                    <default>false</default>
-                    <label>SREC I</label>
-                </value>
-                <value>
-                    <fullName>SREC II - Sector A</fullName>
-                    <default>false</default>
-                    <label>SREC II - Sector A</label>
-                </value>
-                <value>
-                    <fullName>SREC II - Sector B</fullName>
-                    <default>false</default>
-                    <label>SREC II - Sector B</label>
-                </value>
-                <value>
-                    <fullName>SREC II - Sector C</fullName>
-                    <default>false</default>
-                    <label>SREC II - Sector C</label>
-                </value>
-                <value>
-                    <fullName>SREC II - MGS</fullName>
-                    <default>false</default>
-                    <label>SREC II - MGS</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
-        <fullName>SREC_Fixed_Monthly_Payment_Price__c</fullName>
-        <externalId>false</externalId>
-        <formula>13.30</formula>
-        <label>SREC Fixed Monthly Payment Price</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>SREC_Fixed_Monthly_Payment__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(CONTAINS( SREC_Product__r.Name ,&quot;Fixed Monthly&quot;), TRUE, FALSE)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>SREC - Fixed Monthly Payment</label>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>SREC_Fixed_Strip_Price__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(CONTAINS(SREC_Product__r.Name,&quot;Fixed Strip&quot;), TRUE, FALSE)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>SREC - Fixed Strip Price</label>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>SREC_Product__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>SREC Product</label>
-        <referenceTo>Product2</referenceTo>
-        <relationshipLabel>Opportunities (SREC Product)</relationshipLabel>
-        <relationshipName>Opportunities1</relationshipName>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>SREC_Strip_Price__c</fullName>
-        <description>This is the Sol System strip price.  This is a fixed and hidden field, but it must be modified whenever the Strip Price changes.</description>
-        <externalId>false</externalId>
-        <formula>150</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>This is the Sol System strip price.  This is a fixed and hidden field, but it must be modified whenever the Strip Price changes.</inlineHelpText>
-        <label>SREC Strip Price</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>SREC_Variable_Spot_Market__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(CONTAINS(SREC_Product__r.Name,&quot;Market Price&quot;), TRUE, FALSE)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>SREC - Variable Spot Market</label>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Sales_Fee__c</fullName>
@@ -6555,52 +4528,6 @@ IF((Partner_tag_lookup__r.RL_Commission_Structure__c*System_Size__c)&gt;=Partner
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Submitted_to_Concord_Servicing__c</fullName>
-        <defaultValue>false</defaultValue>
-        <description>Used for loan opportunities to track onboarding to concord.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Used for loan opportunities to track if they&apos;ve been submitted to Concord as their loan servicer.</inlineHelpText>
-        <label>Submitted to Concord Servicing</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Submitted_to_First_Associates__c</fullName>
-        <defaultValue>false</defaultValue>
-        <description>Checkbox to indicate if a customer file has been submitted to first associates for boarding</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Do not edit - should only be populated automatically upon upload to First Associates</inlineHelpText>
-        <label>Submitted to First Associates</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Submitted_to_Lease_Dimensions__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Submitted to Lease Dimensions</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Submitted_to_Sol_Systems__c</fullName>
-        <defaultValue>false</defaultValue>
-        <description>NOTICE: This sends emails to Parters and Customers.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>NOTICE: This sends emails to Parters and Customers.</inlineHelpText>
-        <label>Submitted to Sol Systems</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>Subscription_Share__c</fullName>
         <externalId>false</externalId>
         <formula>CS_Capacity_Allocated__c /   Shared_Solar_System__r.Total_System_Size_kWh_DC__c</formula>
@@ -6668,42 +4595,6 @@ IF((Partner_tag_lookup__r.RL_Commission_Structure__c*System_Size__c)&gt;=Partner
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>System_Information_Verified__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>System Information Verified</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>System_Size__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>kw - DC</inlineHelpText>
-        <label>System Size (kW)</label>
-        <precision>9</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Term__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(Number_of_Periods_Months__c = 144, &quot;Thirteen (13)&quot;, IF(Number_of_Periods_Months__c = 120, &quot;Eleven (11)&quot;, IF(Number_of_Periods_Months__c = 180, &quot;Sixteen (16)&quot;, &quot;Ten (10)&quot;)))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Term</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Testing_Date__c</fullName>
         <description>Testing workflow</description>
         <externalId>false</externalId>
@@ -6714,22 +4605,6 @@ IF((Partner_tag_lookup__r.RL_Commission_Structure__c*System_Size__c)&gt;=Partner
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>DateTime</type>
-    </fields>
-    <fields>
-        <fullName>Time_to_Close__c</fullName>
-        <description>This is a formula field.  It measures the difference in days between the contract close date and the date of application. It was adjusted on 4/5/18.  Previously it measured the difference between the CloseDate and CreatedDate on the Opportunity.</description>
-        <externalId>false</externalId>
-        <formula>Contract_Close_Date__c  - dateValue( Date_of_Application__c )</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>This is a formula field.  It measures the difference in days between the contract close date and the date of application. It was adjusted on 4/5/18.  Previously it measured the difference between the CloseDate and CreatedDate on the Opportunity.</inlineHelpText>
-        <label>Time to Close Loan</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Today__c</fullName>
@@ -6747,34 +4622,6 @@ IF((Partner_tag_lookup__r.RL_Commission_Structure__c*System_Size__c)&gt;=Partner
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-    </fields>
-    <fields>
-        <fullName>Total_Loan_Payments_Override__c</fullName>
-        <description>Populated with Apex to show the total loan payments for the adjustable rate loan. Is it used as an override field for the Total Loan Payments field on the opportunity, which is used in docusign.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Populated with Apex to show the total loan payments for the adjustable rate loan. Is it used as an override field for the Total Loan Payments field on the opportunity, which is used in docusign.</inlineHelpText>
-        <label>Total Loan Payments Override</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Total_SRECs_Est__c</fullName>
-        <externalId>false</externalId>
-        <formula>Annual_SRECs_Est__c *  Number_of_Periods_Months__c / 12</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Total SRECs (Est.)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Total_Subscribed_kW_DC__c</fullName>
@@ -6834,16 +4681,6 @@ IF((Partner_tag_lookup__r.RL_Commission_Structure__c*System_Size__c)&gt;=Partner
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>UCC_Filing_Submission_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>UCC Filing Submission Date</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
         <fullName>Undersubscribed_but_at_max_capacity__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -6881,30 +4718,6 @@ IF((Partner_tag_lookup__r.RL_Commission_Structure__c*System_Size__c)&gt;=Partner
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>true</unique>
-    </fields>
-    <fields>
-        <fullName>Update_Dummy__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Update Dummy</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Upfront_Payment__c</fullName>
-        <description>Used for C&amp;I opportunities</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Upfront payment for C&amp;I project opportunities</inlineHelpText>
-        <label>Upfront Payment</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Username__c</fullName>
@@ -7094,21 +4907,6 @@ TEXT( Load_Zone_Utility_4__c  ) = &apos;Manual Lookup Required&apos;,
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>WSJ_Prime_2_75__c</fullName>
-        <defaultValue>0.0489</defaultValue>
-        <description>This is the &apos;Base Rate&apos; for the DOER loan, capped at WSJ Prime plus 2.75%</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Do not change - default value is adjusted at each loan intrest rate change.</inlineHelpText>
-        <label>DOER Loan Base Rate</label>
-        <precision>7</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Percent</type>
-    </fields>
-    <fields>
         <fullName>Waitlist__c</fullName>
         <externalId>false</externalId>
         <formula>Shared_Solar_System__r.Waitlist__c</formula>
@@ -7120,66 +4918,12 @@ TEXT( Load_Zone_Utility_4__c  ) = &apos;Manual Lookup Required&apos;,
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>Webform_2_Submittal_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>Webform 2 Submittal Date</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Webform_3_Submittal_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>Webform 3 Submittal Date</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Winner_Selection_Actual_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>Winner Selection Actual Date</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Winner_Selection_Anticipated_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>Winner Selection Anticipated Date</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
         <fullName>Year__c</fullName>
         <externalId>false</externalId>
         <formula>text(year(CloseDate))</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Year</label>
         <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Yield_kWh_kW__c</fullName>
-        <description>Expected yield of C&amp;I rooftop installation, from in-take form</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Expected yield of C&amp;I rooftop installation, from in-take form</inlineHelpText>
-        <label>Yield (kWh/kW)</label>
-        <length>30</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -7196,38 +4940,6 @@ TEXT( Load_Zone_Utility_4__c  ) = &apos;Manual Lookup Required&apos;,
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>customer_type_cs__c</fullName>
-        <externalId>false</externalId>
-        <label>Customer Type</label>
-        <length>25</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>dummy_2__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>dummy 2</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>income_based_loan_support__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Income Based Loan Support</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>kWDC_Derivation__c</fullName>
@@ -7286,51 +4998,6 @@ TEXT( Load_Zone_Utility_4__c  ) = &apos;Manual Lookup Required&apos;,
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>maturity_date_text__c</fullName>
-        <description>8/23/17: Added &quot;(e)&quot; to signify an estimated date.
-Uses the components of the Maturity_Date2__c formula - broken up to get under the formula size limit.</description>
-        <externalId>false</externalId>
-        <formula>CASE(MOD(MONTH(Commencement_Date__c)+Product__r.TermPlusIO__c, 12), 
-   1, &quot;January&quot;, 
-   2, &quot;February&quot;, 
-   3, &quot;March&quot;, 
-   4, &quot;April&quot;, 
-   5, &quot;May&quot;, 
-   6, &quot;June&quot;, 
-   7, &quot;July&quot;, 
-   8, &quot;August&quot;, 
-   9, &quot;September&quot;, 
-   10, &quot;October&quot;, 
-   11, &quot;November&quot;, 
-   0, &quot;December&quot;, 
-   &quot;None&quot;) + 
-
-&quot; &quot; + 
-
-TEXT(MIN(DAY(Commencement_Date__c),
-   CASE(MOD(MONTH(Commencement_Date__c)+Product__r.TermPlusIO__c,12),
-     9, 30, 
-     4, 30, 
-     6, 30, 
-     11, 30, 
-     2, IF(MOD(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.TermPlusIO__c)/12), 400) = 0 ||
-         (MOD(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.TermPlusIO__c)/12), 4) = 0 &amp;&amp; 
-          MOD(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.TermPlusIO__c)/12), 100) &lt;&gt; 0), 
-         29,28), 
-     31))) +
-
-&quot;, &quot; + 
-
-TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.TermPlusIO__c - 1)/12))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Maturity Date</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>project_identification_number__c</fullName>
         <externalId>false</externalId>
         <label>Project Identification Number</label>
@@ -7373,7 +5040,6 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <columns>OPPORTUNITY.RECORDTYPE</columns>
         <columns>OPPORTUNITY.NAME</columns>
         <columns>OPPORTUNITY.STAGE_NAME</columns>
-        <columns>Product_XXX__c</columns>
         <columns>kWh_confirmed__c</columns>
         <columns>kWh__c</columns>
         <columns>Old_History__c</columns>
@@ -7469,8 +5135,6 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <fullName>BlueWave_Solar_Loan</fullName>
         <columns>OPPORTUNITY.NAME</columns>
         <columns>OPPORTUNITY.STAGE_NAME</columns>
-        <columns>Loan_Principle__c</columns>
-        <columns>Loan_Amount_Financed__c</columns>
         <columns>OPPORTUNITY.CREATED_DATE</columns>
         <columns>Community_Solar_State__c</columns>
         <filterScope>Everything</filterScope>
@@ -7751,11 +5415,9 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <booleanFilter>1 AND 3 AND (2 OR 4)</booleanFilter>
         <columns>Date_of_Application__c</columns>
         <columns>OPPORTUNITY.NAME</columns>
-        <columns>Loan_Amount_Financed__c</columns>
         <columns>Lead_Status__c</columns>
         <columns>OPPORTUNITY.STAGE_NAME</columns>
         <columns>Community_Solar_State__c</columns>
-        <columns>DOER_Solar_Loan__c</columns>
         <columns>Partner_tag_lookup__c</columns>
         <columns>Comments__c</columns>
         <filterScope>Everything</filterScope>
@@ -7826,8 +5488,6 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <fullName>DOER_Solar_Loan</fullName>
         <columns>OPPORTUNITY.NAME</columns>
         <columns>OPPORTUNITY.STAGE_NAME</columns>
-        <columns>Loan_Principle__c</columns>
-        <columns>Loan_Amount_Financed__c</columns>
         <columns>Contract_Close_Date__c</columns>
         <filterScope>Everything</filterScope>
         <filters>
@@ -7850,7 +5510,6 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <columns>OPPORTUNITY.NAME</columns>
         <columns>OPPORTUNITY.CLOSE_DATE</columns>
         <columns>OPPORTUNITY.STAGE_NAME</columns>
-        <columns>Loan_Amount_Financed__c</columns>
         <filterScope>Everything</filterScope>
         <filters>
             <field>DOER_Solar_Loan__c</field>
@@ -7871,7 +5530,6 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <fullName>DOER_Solar_Loan_Reserve_MCEC_Funds</fullName>
         <columns>OPPORTUNITY.NAME</columns>
         <columns>OPPORTUNITY.STAGE_NAME</columns>
-        <columns>Loan_Amount_Financed__c</columns>
         <filterScope>Everything</filterScope>
         <filters>
             <field>DOER_Solar_Loan__c</field>
@@ -8023,7 +5681,6 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <columns>OPPORTUNITY.CLOSE_DATE</columns>
         <columns>OPPORTUNITY.STAGE_NAME</columns>
         <columns>CORE.USERS.ALIAS</columns>
-        <columns>Product_XXX__c</columns>
         <columns>Product_Line__c</columns>
         <filterScope>Everything</filterScope>
         <filters>
@@ -8111,7 +5768,6 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <columns>ACCOUNT.NAME</columns>
         <columns>City__c</columns>
         <columns>OPPORTUNITY.STAGE_NAME</columns>
-        <columns>RFP_Submission_Deadline__c</columns>
         <columns>OPPORTUNITY.CLOSE_DATE</columns>
         <columns>Site_Walk__c</columns>
         <filterScope>Everything</filterScope>
@@ -8141,7 +5797,6 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <columns>State__c</columns>
         <columns>Partner_tag_lookup__c</columns>
         <columns>Comments__c</columns>
-        <columns>Loan_Principle__c</columns>
         <filterScope>Everything</filterScope>
         <filters>
             <field>Product_Line__c</field>
@@ -8184,16 +5839,12 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <columns>OPPORTUNITY.CREATED_DATE</columns>
         <columns>Contract_Close_Date__c</columns>
         <columns>OPPORTUNITY.CLOSE_DATE</columns>
-        <columns>Loan_Principle__c</columns>
-        <columns>Loan_Amount_Financed__c</columns>
         <columns>OPPORTUNITY.NAME</columns>
         <columns>OPPORTUNITY.STAGE_NAME</columns>
         <columns>ACCOUNT.NAME</columns>
         <columns>Partner_tag2__c</columns>
-        <columns>DOER_Solar_Loan__c</columns>
         <columns>Comments__c</columns>
         <columns>Application_Type__c</columns>
-        <columns>SREC_Product__c</columns>
         <filterScope>Everything</filterScope>
         <filters>
             <field>State__c</field>
@@ -8221,7 +5872,6 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <fullName>Resi_Loan_SC_Opportunities</fullName>
         <columns>OPPORTUNITY.CREATED_DATE</columns>
         <columns>Product__c</columns>
-        <columns>Loan_Amount_Financed__c</columns>
         <columns>Partner_tag2__c</columns>
         <columns>OPPORTUNITY.NAME</columns>
         <columns>Lead_Status__c</columns>
@@ -8282,7 +5932,6 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <columns>OPPORTUNITY.NAME</columns>
         <columns>OPPORTUNITY.STAGE_NAME</columns>
         <columns>Partner_tag_lookup__c</columns>
-        <columns>Product_XXX__c</columns>
         <filterScope>Everything</filterScope>
         <filters>
             <field>Product_Line__c</field>
