@@ -6,7 +6,7 @@
 public without sharing class OpportunityTriggerHandler {
 
     @TestVisible private static PartnerCommissionHandler partnerCommissionHandler = new PartnerCommissionHandler();
-    private static Id csRecordTypeId = Schema.SObjectType.Opportunity.getRecordTypeInfosByName().get('Community Solar').getRecordTypeId();
+    private static Id csRecordTypeId = SObjectType.Opportunity.getRecordTypeInfosByName().get('Community Solar').getRecordTypeId();
     private Map<Id, Opportunity> oldMap;
     private Map<Id, Opportunity> newMap;
     private List<Opportunity> newList;
@@ -23,6 +23,7 @@ public without sharing class OpportunityTriggerHandler {
         setPartnerForTests();
         setCSRecordType();
         setServicingOnBehalfOf();
+        setActivePartnerCommissionStructure();
     }
 
     public void afterInsert() {
@@ -155,5 +156,10 @@ public without sharing class OpportunityTriggerHandler {
                 opportunity.Servicing_on_Behalf_oftest__c = opportunity.Servicing_on_behalf_of__c;
             }
         }
+    }
+
+    private void setActivePartnerCommissionStructure() {
+        PartnerCommissionStructureLocator service = new PartnerCommissionStructureLocator(newList);
+        service.setStructureOnOpportunities();
     }
 }

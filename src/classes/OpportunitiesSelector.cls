@@ -11,11 +11,11 @@ public without sharing class OpportunitiesSelector {
         'Shared_Solar_System__r.Unique_ID__c,\n' +
         'Shared_Solar_System__r.Name, \n' +
         'CS_Capacity_Allocated__c,\n' +
+        'Commission_Structure__c,\n' +
         'Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c,\n' +
         'Commission_Structure__r.Cents_kW_DC_First_Bill__c, \n' +
         'StageName, \n' +
         'Product_Line__c,\n' +
-        'Commission_Structure__c, \n' +
         'Partner_tag_lookup__c, \n' +
         'Partner_tag_lookup__r.Id, \n' +
         'Partner_tag_lookup__r.Name, \n' +
@@ -150,7 +150,8 @@ public without sharing class OpportunitiesSelector {
                 Product__c, Commission_Structure__c, Partner_tag_lookup__c, Partner_tag_lookup__r.Id,
                 Partner_tag_lookup__r.Account__c, Partner_tag_lookup__r.Name, Partner_tag_lookup__r.Account__r.Name,
                 Partner_tag_lookup__r.Account__r.RecordType.Name, Partner_Account__c, Partner_Account__r.Name,
-                Partner_Account__r.RecordType.Name, (SELECT Id, Status__c FROM Commission_Payments__r WHERE Commission_Type__c = 'Contract Execution')
+                Partner_Account__r.RecordType.Name,
+                (SELECT Id, Status__c FROM Commission_Payments__r WHERE Commission_Type__c = 'Contract Execution')
             FROM Opportunity
             WHERE Id IN :opportunityIds
         ];
