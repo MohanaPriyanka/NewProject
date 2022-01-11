@@ -1054,30 +1054,6 @@
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>Building_Owner__c</fullName>
-        <description>Building owner for proposed C&amp;I project</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Building owner for proposed C&amp;I project</inlineHelpText>
-        <label>Building Owner</label>
-        <length>40</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Building_Use__c</fullName>
-        <description>From C&amp;I intake form</description>
-        <externalId>false</externalId>
-        <inlineHelpText>C&amp;I intake building use</inlineHelpText>
-        <label>Building Use</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>TextArea</type>
-    </fields>
-    <fields>
         <fullName>Business_Email__c</fullName>
         <externalId>false</externalId>
         <label>Business Email</label>
@@ -1289,17 +1265,6 @@
                 </value>
             </valueSetDefinition>
         </valueSet>
-    </fields>
-    <fields>
-        <fullName>C_I_In_take_Form_info__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Collection of text fields from C&amp;I in-take form</inlineHelpText>
-        <label>C&amp;I In-take Form info</label>
-        <length>32768</length>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>LongTextArea</type>
-        <visibleLines>5</visibleLines>
     </fields>
     <fields>
         <fullName>CampaignId</fullName>
@@ -1561,19 +1526,6 @@ This field can be changed to a formula consistent with the other factors if LASE
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>Co_App_Monthly_Mortgage__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Estimated monthly mortgage not reported by the primary applicant</inlineHelpText>
-        <label>Co App Monthly Mortgage</label>
-        <precision>7</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Co_Applicant_Address__c</fullName>
         <externalId>false</externalId>
         <label>Co-Applicant Address</label>
@@ -1660,15 +1612,6 @@ This field can be changed to a formula consistent with the other factors if LASE
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Commencement_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>Commencement Date</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Date</type>
     </fields>
     <fields>
         <fullName>Comments__c</fullName>
@@ -2274,47 +2217,6 @@ This field can be changed to a formula consistent with the other factors if LASE
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Employed__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Employed</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Employed_for_more_than_one_year__c</fullName>
-        <externalId>false</externalId>
-        <label>Employed for more than one year</label>
-        <length>5</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Employed_for_more_than_six_months__c</fullName>
-        <externalId>false</externalId>
-        <label>Employed for more than six months</label>
-        <length>5</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Employed_less_than_a_year__c</fullName>
-        <defaultValue>false</defaultValue>
-        <description>This checkbox serves as the false value to the Employed longer than a year checkbox. It allows the CAP UI to show blank checkboxes without having to default to false.</description>
-        <externalId>false</externalId>
-        <label>Employed less than a year</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>EnergySage_Lead__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -2371,19 +2273,6 @@ This field can be changed to a formula consistent with the other factors if LASE
         <scale>0</scale>
         <trackHistory>false</trackHistory>
         <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Estimated_Utility_Upgrade_Cost__c</fullName>
-        <description>Collected in the C&amp;I in-take form</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Collected in the C&amp;I in-take form</inlineHelpText>
-        <label>Estimated Utility Upgrade Cost</label>
-        <length>80</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Express_Consent__c</fullName>
@@ -2548,19 +2437,6 @@ This field can be changed to a formula consistent with the other factors if LASE
                 </value>
             </valueSetDefinition>
         </valueSet>
-    </fields>
-    <fields>
-        <fullName>ISA_Status__c</fullName>
-        <description>Collected in C&amp;I form</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Collected in C&amp;I in-take form</inlineHelpText>
-        <label>ISA Status</label>
-        <length>80</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Impact_Study_Costs__c</fullName>
@@ -3391,17 +3267,6 @@ TEXT( LZU__c ) = &apos;Manual Lookup Required&apos;,
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>Maximum_monthly_Disbursement__c</fullName>
-        <externalId>false</externalId>
-        <label>Maximum Monthly Payment</label>
-        <precision>17</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>MobilePhone</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -3446,54 +3311,6 @@ TEXT( LZU__c ) = &apos;Manual Lookup Required&apos;,
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Monthly_Income_2__c</fullName>
-        <externalId>false</externalId>
-        <label>Monthly Income (2)</label>
-        <precision>8</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Monthly_Income_Details_2__c</fullName>
-        <externalId>false</externalId>
-        <label>Monthly Income Details (2)</label>
-        <length>30</length>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Monthly_Income_Details__c</fullName>
-        <externalId>false</externalId>
-        <label>Monthly Income Details</label>
-        <length>30</length>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Monthly_Income__c</fullName>
-        <externalId>false</externalId>
-        <label>Monthly Income</label>
-        <precision>8</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Moody_s_Risk_Calc__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Score returned from Moody&apos;s Rrisk Calc engine</inlineHelpText>
@@ -3512,19 +3329,6 @@ TEXT( LZU__c ) = &apos;Manual Lookup Required&apos;,
         <externalId>false</externalId>
         <label>More than five years industry experience</label>
         <length>5</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Mortgage_Lender__c</fullName>
-        <description>Mortgage Lender of record from C&amp;I in-take form</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Collected in C&amp;I in-take form</inlineHelpText>
-        <label>Mortgage Lender</label>
-        <length>80</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -3589,51 +3393,11 @@ TEXT( LZU__c ) = &apos;Manual Lookup Required&apos;,
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>Not_Employed__c</fullName>
-        <defaultValue>false</defaultValue>
-        <description>This checkbox serves as the false value to the Employed checkbox. It allows the CAP UI to show blank checkboxes without having to default to false.</description>
-        <externalId>false</externalId>
-        <label>XXXNot Employed</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Not_Reliant_on_Alimony_Child_Support_Oth__c</fullName>
-        <defaultValue>false</defaultValue>
-        <description>This checkbox serves as the false value to the Reliant on Alimony/Child Support/Other checkbox. It allows the CAP UI to show blank checkboxes without having to default to false.</description>
-        <externalId>false</externalId>
-        <label>XXXNot Reliant on Alimony/Child Support</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Not_Residence_Owner__c</fullName>
-        <defaultValue>false</defaultValue>
-        <description>This checkbox serves as the false value to the Residence_Owner__r checkbox. It allows the CAP UI to show blank checkboxes without having to default to false.</description>
-        <externalId>false</externalId>
-        <label>Not Residence Owner</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>Not_Retired__c</fullName>
         <defaultValue>false</defaultValue>
         <description>This checkbox serves as the false value to the Retired checkbox. It allows the CAP UI to show blank checkboxes without having to default to false.</description>
         <externalId>false</externalId>
         <label>XXXNot Retired</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Not_Self_Employed__c</fullName>
-        <defaultValue>false</defaultValue>
-        <description>This checkbox serves as the false value to the Self-Employed checkbox. It allows the CAP UI to show blank checkboxes without having to default to false.</description>
-        <externalId>false</externalId>
-        <label>XXXNot Self-Employed</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
@@ -4323,34 +4087,6 @@ MobilePhone
         </valueSet>
     </fields>
     <fields>
-        <fullName>Product_XXX__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(
-
-Product_line__c == &quot;Community Solar&quot;, &quot;Community Solar&quot;,
-
-IF(
-
-AND(Product_line__c == &quot;Residential Loan&quot;, Community_Solar_Redirect__c = &quot;No&quot;), &quot;Residential Loan&quot;,
-
-
-IF(
-
-AND(Product_line__c == &quot;Residential Loan&quot;, Community_Solar_Redirect__c = &quot;Yes&quot;), &quot;Community Solar&quot;,
-
-
-IF(
-
-AND(Product_line__c == &quot;Residential Loan&quot;, Community_Solar_Redirect__c = null), &quot;Residential Loan&quot;, null))))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Formula based off of Product Line and Community Solar Redirect. Shows &quot;Community Solar&quot; if Community Solar Redirect is &quot;Yes&quot;</inlineHelpText>
-        <label>Product</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Product__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -4559,27 +4295,6 @@ IF(AND(Risk_Level_Business_Type__c = &quot;Not Risky&quot;, VALUE(Number_of_Year
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Reliant_on_Alimony_Child_Support_Other__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Reliant on Alimony/Child Support/Other</label>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Residence_Owner__c</fullName>
-        <externalId>false</externalId>
-        <label>Residence Owner?</label>
-        <length>5</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Retired__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -4595,32 +4310,6 @@ IF(AND(Risk_Level_Business_Type__c = &quot;Not Risky&quot;, VALUE(Number_of_Year
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Risk Level (Business Type)</label>
         <required>false</required>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Roof_Age__c</fullName>
-        <description>Collected in C&amp;I In-take form</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Collected in C&amp;I In-take form</inlineHelpText>
-        <label>Roof Age</label>
-        <length>20</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Roof_Type__c</fullName>
-        <description>Collected in C&amp;I in-take form</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Collected in C&amp;I in-take form</inlineHelpText>
-        <label>Roof Type</label>
-        <length>80</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -4702,15 +4391,6 @@ IF(AND(Risk_Level_Business_Type__c = &quot;Not Risky&quot;, VALUE(Number_of_Year
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Self_Employed__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Self-Employed</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Self_Reported_Partner__c</fullName>
@@ -5380,16 +5060,6 @@ IF(INCLUDES(  Utility_1__c , &quot;SCE&amp;G&quot;), &quot;SCE&amp;G&quot;,
         <fullName>Website</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-    </fields>
-    <fields>
-        <fullName>Year_Employment__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <inlineHelpText>Lead was employed with the current employer for longer than one year</inlineHelpText>
-        <label>Employed longer than a year</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Yield_kWh_kW__c</fullName>
@@ -6776,17 +6446,6 @@ IF(load_zone_check_needed__c = TRUE,
                 </value>
             </valueSetDefinition>
         </valueSet>
-    </fields>
-    <fields>
-        <fullName>lived_residence_six_months__c</fullName>
-        <externalId>false</externalId>
-        <label>Lived at residence more than six months</label>
-        <length>5</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>load_zone_check_needed__c</fullName>

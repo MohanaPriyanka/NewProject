@@ -5,15 +5,6 @@
 @IsTest
 public class TestcaseRecordDeleterTest {
     @TestSetup public static void setupData() {
-        Product2 srecProduct = new Product2(Name = 'Market Price - $10 Fee',
-            Family = 'Solar Loan',
-            Product_Type__c = 'SREC',
-            State__c = 'MA',
-            ProductCode = 'SREC-2',
-            SREC_Fee_Fixed_Rate__c = 10,
-            IsActive = True);
-        insert srecProduct;
-
         Partner__c partner = new Partner__c(Name = 'Installer Co');
         insert partner;
 
@@ -43,19 +34,16 @@ public class TestcaseRecordDeleterTest {
         Opportunity oppOne = new Opportunity (Name = 'OppOne',
             AccountId = accountOne.Id,
             Email__c = 'jpentaleri@bluewavesolar.com',
-            SREC_Product__c = srecProduct.Id,
             StageName = 'Complete',
             CloseDate = Date.today().addYears(-1));
         Opportunity oppTwo = new Opportunity (Name = 'OppTwo',
             AccountId = accountTwo.Id,
             Email__c = 'jpentaleri@bluewavesolar.com',
-            SREC_Product__c = srecProduct.Id,
             StageName = 'Complete',
             CloseDate = Date.today().addYears(-1));
         Opportunity oppThree = new Opportunity (Name = 'OppThree',
             AccountId = accountThree.Id,
             Email__c = 'jpentaleri@bluewavesolar.com',
-            SREC_Product__c = srecProduct.Id,
             StageName = 'Complete',
             CloseDate = Date.today().addYears(-1));
         insert new List<Opportunity>{
@@ -223,7 +211,7 @@ public class TestcaseRecordDeleterTest {
         Test.stopTest();
     }
 
-    @isTest static void testOpportunityTestcaseDeletion() {
+    @IsTest static void testOpportunityTestcaseDeletion() {
         List<Opportunity> testOpportunities = new List<Opportunity>();
         Date today = System.today();
         for (Integer i = 0; i < 5; i++) {
