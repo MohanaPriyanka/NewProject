@@ -876,11 +876,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Opportunity.customer_type_cs__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Production__c.Billing_Method__c</field>
         <readable>true</readable>
     </fieldPermissions>

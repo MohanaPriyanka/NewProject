@@ -35,24 +35,6 @@
         <protected>false</protected>
     </fieldUpdates>
     <fieldUpdates>
-        <fullName>Commencement_Date</fullName>
-        <field>Commencement_Date__c</field>
-        <formula>TODAY() + 45</formula>
-        <name>Commencement Date</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>Formula</operation>
-        <protected>false</protected>
-    </fieldUpdates>
-    <fieldUpdates>
-        <fullName>Interest_Rate_Field_Calc_Non_DOER</fullName>
-        <field>Interest_Rate_Picklist__c</field>
-        <literalValue>5.99</literalValue>
-        <name>Interest Rate Field Calc Non DOER</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>Literal</operation>
-        <protected>false</protected>
-    </fieldUpdates>
-    <fieldUpdates>
         <fullName>Opp_Stage_to_Contract_Pending</fullName>
         <field>StageName</field>
         <literalValue>Contract Pending</literalValue>
@@ -68,16 +50,6 @@
         <name>Opportunity Name - Remove Hyphen</name>
         <notifyAssignee>false</notifyAssignee>
         <operation>Formula</operation>
-        <protected>false</protected>
-    </fieldUpdates>
-    <fieldUpdates>
-        <fullName>Opportunity_Record_Type_DOER_Solar_L</fullName>
-        <field>RecordTypeId</field>
-        <lookupValue>BFG_DOER_Solar_Loan</lookupValue>
-        <lookupValueType>RecordType</lookupValueType>
-        <name>Opportunity - Record Type - DOER Solar L</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>LookupValue</operation>
         <protected>false</protected>
     </fieldUpdates>
     <fieldUpdates>
@@ -128,15 +100,6 @@
         <protected>false</protected>
     </fieldUpdates>
     <fieldUpdates>
-        <fullName>Opportunity_Update_Dummy</fullName>
-        <field>Update_Dummy__c</field>
-        <literalValue>1</literalValue>
-        <name>Opportunity - Update Dummy</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>Literal</operation>
-        <protected>false</protected>
-    </fieldUpdates>
-    <fieldUpdates>
         <fullName>Partner_CC_Email</fullName>
         <field>Partner_Additional_Email__c</field>
         <formula>Partner_Additional_Email_Formula__c</formula>
@@ -164,138 +127,10 @@
         <protected>false</protected>
     </fieldUpdates>
     <fieldUpdates>
-        <fullName>Perio</fullName>
-        <field>Number_of_Periods_Months__c</field>
-        <formula>VALUE(TEXT(Interest_Rate_Picklist__c))</formula>
-        <name>Perio</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>Formula</operation>
-        <protected>false</protected>
-    </fieldUpdates>
-    <fieldUpdates>
-        <fullName>Period_120</fullName>
-        <field>Number_of_Periods_Months__c</field>
-        <formula>120</formula>
-        <name>Period (120)</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>Formula</operation>
-        <protected>false</protected>
-    </fieldUpdates>
-    <fieldUpdates>
-        <fullName>RL_DOER_Lead_Record_Type_DOER_Co_A</fullName>
-        <field>RecordTypeId</field>
-        <lookupValue>BFG_DOER_Solar_Loan_Co_Applicant</lookupValue>
-        <lookupValueType>RecordType</lookupValueType>
-        <name>RL - DOER - Lead Record Type - DOER Co-A</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>LookupValue</operation>
-        <protected>false</protected>
-    </fieldUpdates>
-    <fieldUpdates>
-        <fullName>RL_Lead_Record_Type_MA_SL_Co_App</fullName>
-        <field>RecordTypeId</field>
-        <lookupValue>BFG_MA_Solar_Loan_Co_Applicant</lookupValue>
-        <lookupValueType>RecordType</lookupValueType>
-        <name>RL - Lead Record Type - MA SL (Co-App)</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>LookupValue</operation>
-        <protected>false</protected>
-    </fieldUpdates>
-    <fieldUpdates>
-        <fullName>RL_Lead_Record_Type_NC_Co_App</fullName>
-        <field>RecordTypeId</field>
-        <lookupValue>BFG_NC_Solar_Loan_Co_Applicant</lookupValue>
-        <lookupValueType>RecordType</lookupValueType>
-        <name>RL - Lead Record Type - NC (Co-App)</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>LookupValue</operation>
-        <protected>false</protected>
-    </fieldUpdates>
-    <fieldUpdates>
-        <fullName>RL_Lead_Record_Type_SC_Co_App</fullName>
-        <field>RecordTypeId</field>
-        <lookupValue>BFG_SC_Solar_Loan_Co_Applicant</lookupValue>
-        <lookupValueType>RecordType</lookupValueType>
-        <name>RL - Lead Record Type - SC (Co-App)</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>LookupValue</operation>
-        <protected>false</protected>
-    </fieldUpdates>
-    <fieldUpdates>
-        <fullName>RL_OPP_Record_Type_NC_Solar_Loan</fullName>
-        <description>Changes the Record Type to NC Solar loan</description>
-        <field>RecordTypeId</field>
-        <lookupValue>BFG_NC_Solar_Loan</lookupValue>
-        <lookupValueType>RecordType</lookupValueType>
-        <name>RL - OPP Record Type - NC Solar Loan</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>LookupValue</operation>
-        <protected>false</protected>
-    </fieldUpdates>
-    <fieldUpdates>
-        <fullName>RL_Opportunity_Record_Type_SC_Solar</fullName>
-        <description>Changes the Opportunity Record Type to SC Solar Loan</description>
-        <field>RecordTypeId</field>
-        <lookupValue>BFG_SC_Solar_Loan</lookupValue>
-        <lookupValueType>RecordType</lookupValueType>
-        <name>RL - Opportunity Record Type - SC Solar</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>LookupValue</operation>
-        <protected>false</protected>
-    </fieldUpdates>
-    <fieldUpdates>
-        <fullName>RS_Commencement_Date_Update</fullName>
-        <field>Commencement_Date__c</field>
-        <formula>DATE ( 
-
-/*YEAR*/ YEAR(Commencement_Date__c) + FLOOR((MONTH(Commencement_Date__c) + 1 - 1)/12), 
-
-/*MONTH*/ CASE(MOD(MONTH(Commencement_Date__c) + 1, 12 ), 0, 12, MOD(MONTH(Commencement_Date__c)+ 1, 12 )), 
-
-/*DAY*/ MIN(DAY(Commencement_Date__c), CASE(MOD(MONTH(Commencement_Date__c) + 1,12), 9, 30, 4, 30, 6, 30, 11, 30, 2, 
-
-/* return max days for February dependent on if end date is leap year */ 
-
-IF(MOD(YEAR(Commencement_Date__c) + FLOOR((MONTH(Commencement_Date__c) + 1)/12), 400) = 0 || (MOD(YEAR(Commencement_Date__c) + FLOOR((MONTH(Commencement_Date__c) + 1)/12), 4) = 0 &amp;&amp; MOD(YEAR(Commencement_Date__c) + FLOOR((MONTH(Commencement_Date__c) + 1)/12), 100) &lt;&gt; 0 ), 29,28), 31)) )</formula>
-        <name>RS - Commencement Date (Update)</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>Formula</operation>
-        <protected>false</protected>
-    </fieldUpdates>
-    <fieldUpdates>
-        <fullName>RS_Mechanical_Installation_Date</fullName>
-        <field>Webform_2_Submittal_Date__c</field>
-        <formula>today()</formula>
-        <name>RS - Mechanical Installation Date</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>Formula</operation>
-        <protected>false</protected>
-    </fieldUpdates>
-    <fieldUpdates>
         <fullName>Set_Contract_Close_Date</fullName>
         <field>Contract_Close_Date__c</field>
         <formula>TODAY()</formula>
         <name>Set Contract Close Date</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>Formula</operation>
-        <protected>false</protected>
-    </fieldUpdates>
-    <fieldUpdates>
-        <fullName>Set_Record_Type_to_Solar_Loan</fullName>
-        <description>Sets the Opportunity Record Type to BFG - Solar Loan when Product Line is Solar Loan</description>
-        <field>RecordTypeId</field>
-        <lookupValue>BFG_Solar_Loan</lookupValue>
-        <lookupValueType>RecordType</lookupValueType>
-        <name>Set Record Type to Solar Loan</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>LookupValue</operation>
-        <protected>false</protected>
-    </fieldUpdates>
-    <fieldUpdates>
-        <fullName>updates_underwriting_queue_duration</fullName>
-        <field>RL_Underwriting_Queue_Duration__c</field>
-        <formula>TODAY()- RL_Underwriting_Start_Date__c</formula>
-        <name>RL - updates underwriting queue duration</name>
         <notifyAssignee>false</notifyAssignee>
         <operation>Formula</operation>
         <protected>false</protected>
