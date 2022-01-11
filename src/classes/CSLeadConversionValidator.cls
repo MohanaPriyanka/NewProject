@@ -39,7 +39,7 @@ public without sharing class CSLeadConversionValidator {
             detail.error = ALREADY_CONVERTED;
             detail.errorsEncountered.add(ALREADY_CONVERTED);
         }
-        if (detail.isTestcaseLead()) {
+        if (detail.isTestcaseLead() && !Util.isSandboxOrTest()) {
             detail.error = TESTCASE_LEAD;
             detail.errorsEncountered.add(TESTCASE_LEAD);
         }

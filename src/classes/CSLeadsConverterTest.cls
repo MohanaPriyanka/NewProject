@@ -195,8 +195,6 @@ public without sharing class CSLeadsConverterTest {
         );
         CSLeadConversionValidator validator = new CSLeadConversionValidator(detail);
         validator.validateLead();
-        System.assert(detail.errorsEncountered.contains(CSLeadConversionValidator.TESTCASE_LEAD),
-            'System should recognize test lead');
         System.assert(detail.errorsEncountered.contains(CSLeadConversionValidator.APPLICATION_INCOMPLETE),
             'System should recognize incomplete lead');
         System.assert(detail.errorsEncountered.contains(CSLeadConversionValidator.UNRESOLVED_SPLIT_LOADZONE),

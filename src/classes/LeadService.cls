@@ -7,6 +7,15 @@ public without sharing class LeadService {
     public static Boolean firstRun = true;
     private LeadSelector leadSelector = new LeadSelector();
     private CustomerContractService contractService = new CustomerContractService();
+    private static User apiUser = [
+        SELECT Id, Name, Username
+        FROM User
+        WHERE Name = 'API'
+        AND IsActive = TRUE
+        LIMIT 1
+    ];
+    private static Id parentAccountRTId =
+        Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
 
     public void completeLeadConversion(List<Lead> updatedLeads, Map<Id, Lead> oldLeadMap){
         List<Lead> convertedCSLeads = new List<Lead>();
@@ -16,8 +25,6 @@ public without sharing class LeadService {
                 lead.Product_line__c == 'Community Solar' &&
                 firstRun) {
                 convertedCSLeads.add(lead);
-            }
-            if (lead.ConvertedAccountId != null) {
                 setupSwitchLead(lead);
             }
         }
@@ -28,7 +35,7 @@ public without sharing class LeadService {
         }
     }
 
-    public void setupSwitchLead(Lead lead){
+    private void setupSwitchLead(Lead lead){
         List<Account> propAcctsList = new List<Account>();
         List<Account> updateAccounts = new List<Account>();
         Account convertedAccount = [SELECT Id FROM Account WHERE Id = :lead.ConvertedAccountId LIMIT 1];
@@ -38,21 +45,13 @@ public without sharing class LeadService {
             FROM Account
             WHERE Lead__c = :lead.Id AND RecordType.Name = 'Property'
         ];
-        Id recordType = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
-        User apiUser = [
-            SELECT Id, Name, Username
-            FROM User
-            WHERE Name = 'API'
-            AND IsActive = TRUE
-            LIMIT 1
-        ];
 
         convertedAccount.Name = lead.FirstName + ' ' + lead.LastName;
         convertedAccount.ShippingStreet = lead.Street;
         convertedAccount.ShippingCity = lead.City;
         convertedAccount.ShippingState = lead.State;
         convertedAccount.ShippingPostalCode = lead.PostalCode;
-        convertedAccount.RecordTypeId = recordType;
+        convertedAccount.RecordTypeId = parentAccountRTId;
         convertedAccount.BillingStreet = lead.LASERCA__Home_Address__c;
         convertedAccount.BillingCity = lead.LASERCA__Home_City__c;
         convertedAccount.BillingState = BlueWaveParent.convertAbbreviationToState(lead.LASERCA__Home_State__c);
@@ -72,9 +71,7 @@ public without sharing class LeadService {
             propAcct.UAL_Convert__c = true;
             updateAccounts.add(propAcct);
         }
-        if (updateAccounts.size() > 0 ) {
-            update updateAccounts;
-        }
+        update updateAccounts;
     }
 
     public void convertCasesToContact(List<Lead> convertedLeads) {
@@ -113,11 +110,14 @@ public without sharing class LeadService {
     }
 
     /**
-     * Copies Property Account info from a Lead
+     * @description Copies Property Account info from a Lead
      *
      * @deprecated  Not to be used after Switch moves to v2 API (new Property Account / UAL structure)
+     * @param lead lead
+     * @return Account for testing
      */
-    public Account buildPropertyAccountFromLegacyLead(Lead lead) {
+    @TestVisible
+    private Account buildPropertyAccountFromLegacyLead(Lead lead) {
         Id recordType = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Property').getRecordTypeId();
         Account propAcct = new Account(
             Name = lead.Company,
@@ -134,11 +134,15 @@ public without sharing class LeadService {
     }
 
     /**
-     * Copies UAL info from a Lead
+     * @description Copies UAL info from a Lead
      *
      * @deprecated  Not to be used after Switch moves to v2 API (new Property Account / UAL structure)
+     * @param lead lead
+     * @param propertyAccount propertyAccount
+     * @return UAL for testing
      */
-    public Utility_Account_Log__c buildUtilityAccountLogFromLegacyLead(Lead lead, Account propertyAccount) {
+    @TestVisible
+    private Utility_Account_Log__c buildUtilityAccountLogFromLegacyLead(Lead lead, Account propertyAccount) {
         Utility_Account_Log__c ual = new Utility_Account_Log__c(
             Name = '',
             Account__c = propertyAccount.Id,
