@@ -144,16 +144,13 @@
     </flowActions>
     <rules>
         <fullName>Interest Only Start Date</fullName>
-        <actions>
-            <name>Interest_Only_Start_Date_Opp</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <active>true</active>
+        <active>false</active>
         <criteriaItems>
-            <field>Opportunity.Interest_Only_Period__c</field>
+            <field>Opportunity.Account_Days_Past_Due__c</field>
             <operation>greaterThan</operation>
             <value>0</value>
         </criteriaItems>
+        <description>Rule criteria used to be on Interest Only Period, need to update and deactivate before deleting.</description>
         <triggerType>onAllChanges</triggerType>
     </rules>
     <tasks>
