@@ -57976,10 +57976,6 @@
         <visibility>DefaultOff</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>Customer_Analytics</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
         <tab>Customer_Assignment</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>

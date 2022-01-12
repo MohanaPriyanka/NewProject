@@ -48329,10 +48329,6 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>Customer_Analytics</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
         <tab>Customer_Assignment</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
