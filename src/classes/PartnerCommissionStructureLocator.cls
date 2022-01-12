@@ -26,6 +26,9 @@ public with sharing class PartnerCommissionStructureLocator {
      * the caller. The expected calling context is a BEFORE_INSERT trigger where no DML would be necessary.
      */
     public void setStructureOnOpportunities() {
+        if (opportunities.isEmpty()) {
+            return;
+        }
         cachePartnerAccountIds();
         retrievePartnerEligibilities();
         populateCommissionStructureMap();

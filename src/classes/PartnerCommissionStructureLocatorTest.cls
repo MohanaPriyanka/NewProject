@@ -33,12 +33,16 @@ public without sharing class PartnerCommissionStructureLocatorTest {
         Partner_Account__c = Util.getFakeId(Account.SObjectType) // No mock Partner_Shared_Solar_System_Eligibility__c
     );
 
+    @TestSetup
+    private static void insertTestData() {
+        Util.disableAllTriggers();
+        UtilityAccountSubscriptionHandlerTest.setupData();
+        Util.enableAllTriggers();
+    }
+
     @IsTest
     private static void systemTestAssignCommissionStructure() {
         // Setup data
-        Util.disableAllTriggers();
-        UtilityAccountSubscriptionHandlerTest.setupData();
-
         Id partnerId = [SELECT Id FROM Partner__c WHERE Name = 'Some Partner'].Id;
         Id partnerAccountId = [SELECT Id FROM Account WHERE Name = 'Partner Account'].Id;
         Id sssId = [SELECT Id FROM Shared_Solar_System__c WHERE Name = 'Project A'].Id;
@@ -63,9 +67,8 @@ public without sharing class PartnerCommissionStructureLocatorTest {
                 Start_Date__c = Date.newInstance(2020, 1, 1)
             );
         insert partnerEligibility;
-        Util.enableAllTriggers();
 
-        // Run test
+        // Run test -- INSERT Opportunity
         Test.startTest();
         Opportunity opportunity = new Opportunity(
             Name = 'System Test Opportunity',
@@ -84,8 +87,48 @@ public without sharing class PartnerCommissionStructureLocatorTest {
         Test.stopTest();
 
         // Verify Commission Structure stamped on INSERT
-        Opportunity opp = [SELECT Commission_Structure__c FROM Opportunity WHERE Id =: opportunity.Id];
+        Opportunity opp = [SELECT Commission_Structure__c FROM Opportunity WHERE Id = :opportunity.Id];
         System.assertEquals(commissionOne.Id, opp.Commission_Structure__c);
+    }
+
+    @IsTest
+    private static void systemTestSSSChangeCommissionStructureRecalculation() {
+        // Setup test
+        systemTestAssignCommissionStructure();
+        Id partnerId = [SELECT Id FROM Partner__c WHERE Name = 'Some Partner'].Id;
+        Id newSystemId = [SELECT Id FROM Shared_Solar_System__c WHERE Name = 'Project B'].Id;
+        Id partnerAccountId = [SELECT Id FROM Account WHERE Name = 'Partner Account'].Id;
+        Id productId = [SELECT Id FROM Product2 WHERE Name = 'BlueWave Community Solar'].Id;
+        Commission_Structure__c newCommissionStructure = new Commission_Structure__c(
+            Name = 'Commission Structure Two',
+            Partner__c = partnerId,
+            Partner_Account__c = partnerAccountId,
+            Product__c = productId,
+            Cents_kW_DC_Up_Front__c = 0.20,
+            Cents_kW_DC_First_Bill__c = 0.43,
+            Cents_kW_DC_First_Bill_Paid__c = 0.13
+        );
+        insert newCommissionStructure;
+        Partner_Shared_Solar_System_Eligibility__c newPartnerEligibility =
+            new Partner_Shared_Solar_System_Eligibility__c(
+                Account__c = partnerAccountId,
+                Shared_Solar_System__c = newSystemId,
+                Commission_Structure__c = newCommissionStructure.Id,
+                Start_Date__c = Date.newInstance(2020, 1, 1)
+            );
+        insert newPartnerEligibility;
+
+        // Run test -- modify Opportunity to use new Shared_Solar_System__c, forcing recalculation of Commission_Structure__c
+        Opportunity opp = [SELECT Id, Commission_Structure__c FROM Opportunity WHERE Name = 'System Test Opportunity' LIMIT 1];
+        Id oldCommissionStructureId = opp.Commission_Structure__c;
+        opp.Shared_Solar_System__c = newSystemId;
+        update opp;
+
+        // Verify Commission_Structure__c is different than before
+        opp = [SELECT Id, Commission_Structure__c FROM Opportunity WHERE Name = 'System Test Opportunity' LIMIT 1];
+        System.assertNotEquals(oldCommissionStructureId, opp.Commission_Structure__c,
+            'Commission Structure not updated but should have been due to System change');
+        System.assertEquals(newCommissionStructure.Id, opp.Commission_Structure__c, 'Incorrect new Commission Structure');
     }
 
     @IsTest
@@ -113,18 +156,24 @@ public without sharing class PartnerCommissionStructureLocatorTest {
     private static void systemTestPartnerQuery() {
         Account partnerAccount1 = new Account(Name = 'Partner Account 1');
         Account partnerAccount2 = new Account(Name = 'Partner Account 2');
-        insert new List<Account>{partnerAccount1, partnerAccount2};
+        insert new List<Account>{
+            partnerAccount1, partnerAccount2
+        };
 
         Partner__c partner1 = new Partner__c(Name = 'Partner 1', Account__c = partnerAccount1.Id);
         Partner__c partner2 = new Partner__c(Name = 'Partner 2', Account__c = partnerAccount2.Id);
-        insert new List<Partner__c>{partner1, partner2};
+        insert new List<Partner__c>{
+            partner1, partner2
+        };
 
         Opportunity opp1 = new Opportunity(Partner_tag_lookup__c = partner1.Id);
         Opportunity opp2 = new Opportunity(Partner_tag_lookup__c = partner2.Id);
         Opportunity opp3 = new Opportunity(Partner_tag_lookup__c = null);
 
         PartnerSelector partnerSelector = new PartnerSelector();
-        Map<Id,Id> result = partnerSelector.legacyGetPartnerAccountIdsByOpp(new List<Opportunity>{opp1, opp2, opp3});
+        Map<Id, Id> result = partnerSelector.legacyGetPartnerAccountIdsByOpp(new List<Opportunity>{
+            opp1, opp2, opp3
+        });
 
         System.assertEquals(2, result.size());
         System.assertEquals(partnerAccount1.Id, result.get(partner1.Id));
