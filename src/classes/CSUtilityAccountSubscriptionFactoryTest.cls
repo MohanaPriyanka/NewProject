@@ -186,8 +186,12 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
         uals.add(ual2);
         insert uals;
         uals = [
-            SELECT Id, Annual_Cost_of_Electricity__c, Lead__r.Product__r.Customer_Subscription_Type__c, Name,
-                Name_on_Account__c
+            SELECT Id,
+                Annual_Cost_of_Electricity__c,
+                Annual_kWh__c,
+                Lead__r.Product__r.Customer_Subscription_Type__c,Name,
+                Name_on_Account__c,
+                Utility_Rate_Class__r.Utility_NMC_Tariff__r.Value_of_Net_Metering_Credit__c
             FROM Utility_Account_Log__c
             WHERE Id IN :uals
         ];
@@ -325,7 +329,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
                 Subscription_Order__c.SObjectType
             }
         );
-        CSUtilityAccountSubscriptionFactory.createUASbyCost(ual, opportunities, uow1);
+        CSUtilityAccountSubscriptionFactory.createUAS(ual, opportunities, uow1);
         List<SObject> singleUASes = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow1, 'Utility_Account_Subscription__c');
         List<SObject> singleSOs = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow1, 'Subscription_Order__c');
         //1 uasOrder for single
@@ -338,7 +342,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
                 Subscription_Order__c.SObjectType
             }
         );
-        CSUtilityAccountSubscriptionFactory.createUASbyCost(ual, opportunities, uow2);
+        CSUtilityAccountSubscriptionFactory.createUAS(ual, opportunities, uow2);
         List<SObject> multipleUASes = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow2, 'Utility_Account_Subscription__c');
         List<SObject> multipleSOs = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow2, 'Utility_Account_Subscription__c');
         //2 uasOrders for multipe 
@@ -383,7 +387,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
                 Subscription_Order__c.SObjectType
             }
         );
-        CSUtilityAccountSubscriptionFactory.createUASbyCapacity(ual, opportunities, uow1);
+        CSUtilityAccountSubscriptionFactory.createUAS(ual, opportunities, uow1);
         List<SObject> singleUASes = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow1, 'Utility_Account_Subscription__c');
         //1 uasOrder for single
         System.assertEquals(1, singleUASes.size());
@@ -394,10 +398,10 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
                 Subscription_Order__c.SObjectType
             }
         );
-        CSUtilityAccountSubscriptionFactory.createUASbyCapacity(ual, opportunities, uow2);
+        CSUtilityAccountSubscriptionFactory.createUAS(ual, opportunities, uow2);
         List<SObject> multipleUASes = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow2, 'Utility_Account_Subscription__c');
         List<SObject> multipleSOs = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow2, 'Utility_Account_Subscription__c');
-        //2 uasOrders for multipe 
+        //2 uasOrders for multiple
         System.assertEquals(2, multipleUASes.size());
         System.assertEquals(2, multipleSOs.size());
     }
@@ -406,7 +410,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             SELECT Id, Name, Annual_Cost_of_Electricity__c, Name_on_Account__c, Lead__c,
                 Annual_kWh__c, Lead__r.Product__r.Customer_Subscription_Type__c,
                 Utility_NMC_Tariff__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Utility_NMC_Tariff__c,
-                Utility_Rate_Class__r.Utility_NMC_Tariff__r.Size_Ratio__c, Subsc_Annual_Cost_of_Electricity_Rollup__c,
+                Utility_Rate_Class__r.Utility_NMC_Tariff__r.Size_Ratio__c, Utility_Rate_Class__r.Utility_NMC_Tariff__r.Value_of_Net_Metering_Credit__c, Subsc_Annual_Cost_of_Electricity_Rollup__c,
                 Subscribed_Annual_kWhs_Rollup__c
             FROM Utility_Account_Log__c
             ORDER BY Annual_kWh__c DESC
@@ -501,7 +505,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
                 Subscription_Order__c.SObjectType
             }
         );
-        CSUtilityAccountSubscriptionFactory.createUASbyCapacity(ualList[0], opportunities, uow);
+        CSUtilityAccountSubscriptionFactory.createUAS(ualList[0], opportunities, uow);
         List<SObject> generatedUASes = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow, 'Utility_Account_Subscription__c');
         Utility_Account_Subscription__c single = (Utility_Account_Subscription__c) generatedUASes[0];
         System.assertEquals(sharedSolarSystems[0].Utility_NMC_Tariff__c, single.Sizing_Method__c,
@@ -557,9 +561,10 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
                 Subscription_Order__c.SObjectType
             }
         );
-        CSUtilityAccountSubscriptionFactory.createUASbyCapacity(ualList[0], opportunities, uow);
+        CSUtilityAccountSubscriptionFactory.createUAS(ualList[0], opportunities, uow);
         List<SObject> uasSingle = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow, 'Utility_Account_Subscription__c');
         Utility_Account_Subscription__c single = (Utility_Account_Subscription__c) uasSingle[0];
+        System.debug('UAS SINGLE: ' + uasSingle);
         System.assertEquals(1, uasSingle.size());
         System.assertEquals(sizeRatio.Id, single.Sizing_Method__c,
             'UAS should be assigned the Sizing Method from the UALs Rate Class');
@@ -614,7 +619,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
                 Subscription_Order__c.SObjectType
             }
         );
-        CSUtilityAccountSubscriptionFactory.createUASbyCapacity(ualList[0], opportunities, uow);
+        CSUtilityAccountSubscriptionFactory.createUAS(ualList[0], opportunities, uow);
         List<SObject> uasMultiple = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow, 'Utility_Account_Subscription__c');
         System.assertEquals(2, uasMultiple.size());
         Utility_Account_Subscription__c uasMultiple0 = (Utility_Account_Subscription__c) uasMultiple[0];
@@ -766,7 +771,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
                 Subscription_Order__c.SObjectType
             }
         );
-        CSUtilityAccountSubscriptionFactory.createUASbyCapacity(ualList[0], opportunities, uow);
+        CSUtilityAccountSubscriptionFactory.createUAS(ualList[0], opportunities, uow);
         List<SObject> uasMultiple = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow, 'Utility_Account_Subscription__c');
         System.assertEquals(2, uasMultiple.size());
         Utility_Account_Subscription__c uasMultiple0 = (Utility_Account_Subscription__c) uasMultiple[0];
