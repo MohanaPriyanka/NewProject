@@ -4595,6 +4595,20 @@ IF(INCLUDES(Customer_Type__c, &quot;Private Affordable&quot;),&quot;Error&quot;,
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>System_Size__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>kw - DC</inlineHelpText>
+        <label>System Size (kW)</label>
+        <precision>9</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Testing_Date__c</fullName>
         <description>Testing workflow</description>
         <externalId>false</externalId>
