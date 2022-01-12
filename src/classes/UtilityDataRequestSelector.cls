@@ -23,7 +23,7 @@ public inherited sharing class UtilityDataRequestSelector {
         return [
             SELECT Id, Exception_Reason_Code__c, Utility_Account_Log__r.Lead__c, Utility_Account_Log__r.Lead__r.Name,
                 Utility_Account_Log__r.Lead__r.Partner_Account__c, Utility_Account_Log__r.Lead__r.Sales_Person__c,
-                Utility_Account_Log__r.Name
+                Utility_Account_Log__r.Name, Utility_Account_Log__r.Lead__r.IsConverted
             FROM Utility_Data_Request__c
             WHERE Id IN :udrIds
         ];
