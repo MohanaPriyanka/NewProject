@@ -154,7 +154,8 @@ public without sharing class CaseFactory implements Queueable {
 
     /**
      * @description This method inserts a case when Utility Data Requests come back in an error state
-     * Handles multiple UDRs in error state in a single transaction
+     * Handles multiple UDRs in error state in a single transaction. We don't want to create cases for converted leads
+     * because it may be for a UDR for an old Lead that is not active with the partner anymore.
      */
     @TestVisible
     private void insertEDIErrorCases() {
@@ -163,7 +164,7 @@ public without sharing class CaseFactory implements Queueable {
         utilityDataRequests = udrSelector.selectUdrsForErrorCase(erroredUtilityDataRequestIds);
         utilityDataRequestsWithOpenErrorCases = udrSelector.getUtilityDataRequestsWithOpenErrorCases(utilityDataRequests);
         for (Utility_Data_Request__c udr : utilityDataRequests) {
-            if (!utilityDataRequestsWithOpenErrorCases.contains(udr.Id)) {
+            if (!utilityDataRequestsWithOpenErrorCases.contains(udr.Id) && !udr.Utility_Account_Log__r.Lead__r.IsConverted) {
                 casesToInsert.add(createEDIErrorCase(udr));
             }
         }
