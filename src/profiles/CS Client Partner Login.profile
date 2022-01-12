@@ -69353,10 +69353,6 @@
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>Customer_Analytics</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
         <tab>Daily_Production_Update__c</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>

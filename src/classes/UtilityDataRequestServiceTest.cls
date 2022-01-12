@@ -43,14 +43,16 @@ private class UtilityDataRequestServiceTest {
             LastName = 'testLead1',
             Company = 'testBlueWave1',
             Partner_Lookup__c = testPartner.Id,
-            Utility_relationship__c = testUtility.Id
+            Utility_relationship__c = testUtility.Id,
+            Status = 'Qualified'
         );
         Lead resiLead = new Lead(
             Product__c = testProduct.Id,
             Customer_type__c = 'Residential',
             LastName = 'testLead2',
             Company = 'testBlueWave2',
-            Partner_Lookup__c = testPartner.Id
+            Partner_Lookup__c = testPartner.Id,
+            Status = 'Qualified'
         );
         List<Lead> testLeadList = new List<Lead>{
             nonResiLead, resiLead
@@ -669,6 +671,47 @@ private class UtilityDataRequestServiceTest {
         Test.stopTest();
         System.assertEquals(1, [SELECT Id, QC_Case_Subject__c, Subject, Description FROM Case].size(),
             'Multiple cases should not have been created for a single UDR in error');
+    }
+
+    @IsTest
+    static void systemTestSkipErrorCasesForConvertedLeads() {
+        List<Lead> leads = [
+            SELECT Id
+            FROM Lead
+            WHERE IsConverted = FALSE
+        ];
+        List<Database.LeadConvert> conversionsReady = new List<Database.LeadConvert>();
+        for (Lead lead : leads) {
+            Database.LeadConvert conversion = new Database.LeadConvert();
+            conversion.setLeadId(lead.Id);
+            conversion.setOwnerId(System.UserInfo.getUserId());
+            conversion.setConvertedStatus('Qualified');
+            conversion.setDoNotCreateOpportunity(true);
+            conversionsReady.add(conversion);
+        }
+        List<Database.LeadConvertResult> results = Database.convertLead(conversionsReady, false);
+        for (Database.LeadConvertResult result : results) {
+            if (!result.isSuccess()) {
+                System.assert(false, 'Lead did not convert as expected: ' + result.getErrors().toString());
+            }
+        }
+
+        Utility_Data_Request__c udr = [SELECT Id, Utility_Account_Log__r.Lead__r.IsConverted FROM Utility_Data_Request__c LIMIT 1];
+        System.assertEquals(true, udr.Utility_Account_Log__r.Lead__r.IsConverted, 'Expected the test UDR to be for a converted lead');
+        UtilityDataRequestSelector udrSelector = new UtilityDataRequestSelector();
+        udr = udrSelector.selectUdrsForErrorCase(new Set<Id>{
+            udr.Id
+        })[0];
+
+        CaseFactory factory = new CaseFactory();
+        factory.erroredUtilityDataRequestIds = new Set<Id>{
+            udr.Id
+        };
+        factory.setQueueType('EDI Error');
+        factory.getEDIErrorMappings();
+        factory.insertEDIErrorCases();
+        System.assertEquals(0, [SELECT Id, QC_Case_Subject__c, Subject, Description FROM Case].size(),
+            'There should be no cases since the UDR was for a converted lead');
     }
 
     @IsTest

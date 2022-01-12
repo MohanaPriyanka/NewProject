@@ -1,7 +1,7 @@
 /**
  * @description Trigger handler for Opportunity
  * Tested by: OpportunityTriggerTest, CSCancellationServiceTest, ClientBrandingServiceTest, PartnerCommissionHandlerTest,
- *      UserHandlerTest
+ *      UserHandlerTest, PartnerCommissionStructureLocatorTest
  */
 public without sharing class OpportunityTriggerHandler {
 
@@ -19,11 +19,11 @@ public without sharing class OpportunityTriggerHandler {
 
     public void beforeInsert() {
         setLeadLookup();
-        eventHandling();
+        publishSubscriptionChangeEvent();
         setPartnerForTests();
         setCSRecordType();
         setServicingOnBehalfOf();
-        setActivePartnerCommissionStructure();
+        setActivePartnerCommissionStructure(newList);
     }
 
     public void afterInsert() {
@@ -31,9 +31,10 @@ public without sharing class OpportunityTriggerHandler {
     }
 
     public void beforeUpdate() {
-        eventHandling();
+        publishSubscriptionChangeEvent();
         setCSRecordType();
         setServicingOnBehalfOf();
+        assessCommissionStructureChange();
     }
 
     public void afterUpdate() {
@@ -51,7 +52,7 @@ public without sharing class OpportunityTriggerHandler {
     }
 
     @TestVisible
-    private Map<Id, Subscription_Change_Event__e> eventHandling() {
+    private Map<Id, Subscription_Change_Event__e> publishSubscriptionChangeEvent() {
         Map<Id, Subscription_Change_Event__e> subscriptionEventMap = createSubscriptionChangeEvents(newList, oldMap);
         EventBus.publish(subscriptionEventMap.values());
         return subscriptionEventMap;
@@ -158,8 +159,15 @@ public without sharing class OpportunityTriggerHandler {
         }
     }
 
-    private void setActivePartnerCommissionStructure() {
-        PartnerCommissionStructureLocator service = new PartnerCommissionStructureLocator(newList);
+    private void setActivePartnerCommissionStructure(List<Opportunity> oppList) {
+        PartnerCommissionStructureLocator service = new PartnerCommissionStructureLocator(oppList);
         service.setStructureOnOpportunities();
+    }
+
+    private void assessCommissionStructureChange() {
+        List<Opportunity> oppsWithSystemChange = (List<Opportunity>) new SObjectFilter(
+            oldMap, newList, Opportunity.Shared_Solar_System__c, SObjectFilter.ANY_VALUE, SObjectFilter.ANY_VALUE
+        ).get(SObjectFilter.SOBJECT_LIST);
+        setActivePartnerCommissionStructure(oppsWithSystemChange);
     }
 }

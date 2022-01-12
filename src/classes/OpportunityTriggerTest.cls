@@ -52,7 +52,6 @@ public with sharing class OpportunityTriggerTest {
         update accounts;
     }
 
-
     @IsTest
     public static void testEventHandling(){
         Account newAccount = new Account(
@@ -89,7 +88,7 @@ public with sharing class OpportunityTriggerTest {
         List<Opportunity> newOppList = new List<Opportunity>{newOpp1, newOpp2, newOpp3};
         Map<Id,Subscription_Change_Event__e> eventMap = new Map<Id,Subscription_Change_Event__e>();
         OpportunityTriggerHandler handler = new OpportunityTriggerHandler(oldOppMap, null, newOppList);
-        eventMap = handler.eventHandling();
+        eventMap = handler.publishSubscriptionChangeEvent();
         System.assert(eventMap.containsKey(oppList[0].AccountId));
         System.assert(eventMap.containsKey(oppList[1].AccountId));
         System.assert(eventMap.containsKey(oppList[2].AccountId));
@@ -104,7 +103,7 @@ public with sharing class OpportunityTriggerTest {
         Opportunity cancelledOpp = completeOpp.clone(true);
         cancelledOpp.StageName = 'Cancelled';
         handler = new OpportunityTriggerHandler(oldOppMap, null, new List<Opportunity>{cancelledOpp});
-        eventMap = handler.eventHandling();
+        eventMap = handler.publishSubscriptionChangeEvent();
         System.assert(eventMap.containsKey(completeOpp.AccountId),
             'Expected a Subscription Change Event because an Opportunity was cancelled');
     }
