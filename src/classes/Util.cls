@@ -123,9 +123,9 @@ public without sharing class Util {
     }
 
     public static String getCommunitySiteURL(String communityName) {
-        Domain d = [SELECT Domain, DomainType FROM Domain WHERE Domain LIKE '%memberportal%' LIMIT 1];
-        Network n = [SELECT Name,UrlPathPrefix FROM Network WHERE Name = :communityName LIMIT 1];
-        return 'https://' + d.Domain + '/' + n.UrlPathPrefix;
+        Site mySite = [SELECT Id FROM Site WHERE Name = :communityName];
+        SiteDetail mySiteDetail = [SELECT SecureURL FROM SiteDetail WHERE DurableId = :mySite.Id];
+        return mySiteDetail.SecureUrl;
     }
 
     // Converts string rounding method to System.RoundingMode

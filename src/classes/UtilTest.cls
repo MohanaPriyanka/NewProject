@@ -85,7 +85,7 @@ public with sharing class UtilTest {
     @IsTest
     private static void testGetCommunitySiteURL() {
         String siteURL = Util.getCommunitySiteURL('Apply');
-        System.assert(siteURL.contains('bluewavememberportal'), 'Should contain link to BlueWave Member Portal');
+        System.assert(siteURL.contains('perchenergy'), 'Should contain a perchenergy domain');
         System.assert(siteURL.contains('apply'), 'Should include apply in the URL');
     }
 
