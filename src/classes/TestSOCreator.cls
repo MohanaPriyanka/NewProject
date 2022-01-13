@@ -12,20 +12,20 @@ public with sharing class TestSOCreator {
     );
 
     public static void registerByCapacity(Utility_Account_Subscription__c uas, Decimal annualElectricityCapacityAssigned) {
-        CSUtilityAccountSubscriptionFactory.createSOByCapacity(uas, annualElectricityCapacityAssigned, uow);
+        CSUtilityAccountSubscriptionFactory.createSubscriptionOrder(uas, annualElectricityCapacityAssigned, uow,'kWh');
     }
 
     public static void registerByCost(Utility_Account_Subscription__c uas, Decimal annualElectricityCostAssigned) {
-        CSUtilityAccountSubscriptionFactory.createSOByCost(uas, annualElectricityCostAssigned, uow);
+        CSUtilityAccountSubscriptionFactory.createSubscriptionOrder(uas, annualElectricityCostAssigned, uow, 'Electricity Cost ($)');
     }
 
     public static void createByCapacity(Utility_Account_Subscription__c uas, Decimal annualElectricityCapacityAssigned) {
-        CSUtilityAccountSubscriptionFactory.createSOByCapacity(uas, annualElectricityCapacityAssigned, uow);
+        CSUtilityAccountSubscriptionFactory.createSubscriptionOrder(uas, annualElectricityCapacityAssigned, uow,'kWh');
         uow.commitWork();
     }
 
     public static void createByCost(Utility_Account_Subscription__c uas, Decimal annualElectricityCostAssigned) {
-        CSUtilityAccountSubscriptionFactory.createSOByCost(uas, annualElectricityCostAssigned, uow);
+        CSUtilityAccountSubscriptionFactory.createSubscriptionOrder(uas, annualElectricityCostAssigned, uow, 'Electricity Cost ($)');
         uow.commitWork();
     }
 
