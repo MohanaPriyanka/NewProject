@@ -5,7 +5,7 @@
  *************************************************************************************/
 
 @SuppressWarnings('PMD.ApexCRUDViolation,PMD.ExcessivePublicCount')
-public without sharing class Util { 
+public without sharing class Util {
     // We're starting to get this error in Apex tests in Sept 2017:
     // System.DmlException: Insert failed. First exception on row 0; first error:
     // UNABLE_TO_LOCK_ROW, unable to obtain exclusive access to this record
@@ -18,7 +18,9 @@ public without sharing class Util {
     private static Set<String> disabledTriggers = new Set<String>();
 
     public static void insertSObj(SObject sobj) {
-        insertSObjs(new List<SObject>{sobj}, 0, null, null);
+        insertSObjs(new List<SObject>{
+            sobj
+        }, 0, null, null);
     }
     public static void insertSObjs(List<SObject> sobjs) {
         insertSObjs(sobjs, 0, null, null);
@@ -40,11 +42,11 @@ public without sharing class Util {
         }
     }
 
-    public static void commitWorkWithRetry(fflib_SObjectUnitOfWork uow, Integer numberOfRetries){
+    public static void commitWorkWithRetry(fflib_SObjectUnitOfWork uow, Integer numberOfRetries) {
         commitWork(uow, 0, numberOfRetries);
     }
 
-    private static void commitWork(fflib_SObjectUnitOfWork uow, Integer attemptCount, Integer numberOfRetries){
+    private static void commitWork(fflib_SObjectUnitOfWork uow, Integer attemptCount, Integer numberOfRetries) {
         try {
             attemptCount += 1;
             uow.commitWork();
@@ -79,13 +81,15 @@ public without sharing class Util {
         }
     }
 
-    private enum DatabaseOperation {DBINSERT, DBUPDATE}
+    private enum DatabaseOperation {
+        DBINSERT, DBUPDATE
+    }
     public static Boolean updateAndLog(List<SObject> sobjs, String classname, String method) {
         if (mockDML) {
             objectsUpdatedIfMockingDML = sobjs;
             return true;
         }
-        
+
         return databaseOperationAndLog(DatabaseOperation.DBUPDATE, sobjs, classname, method);
     }
     public static Boolean insertAndLog(List<SObject> sobjs, String classname, String method) {
@@ -115,17 +119,17 @@ public without sharing class Util {
     }
 
     public static Decimal nullToZero(Decimal value) {
-        return (value==null?0:value);
+        return (value == null ? 0 : value);
     }
 
     public static String nullToZero(String value) {
-        return (String.isBlank(value)?'0':value);
+        return (String.isBlank(value) ? '0' : value);
     }
 
     public static String getCommunitySiteURL(String communityName) {
-        Domain d = [SELECT Domain, DomainType FROM Domain WHERE Domain LIKE '%memberportal%' LIMIT 1];
-        Network n = [SELECT Name,UrlPathPrefix FROM Network WHERE Name = :communityName LIMIT 1];
-        return 'https://' + d.Domain + '/' + n.UrlPathPrefix;
+        Site mySite = [SELECT Id FROM Site WHERE Name = :communityName LIMIT 1];
+        SiteDetail mySiteDetail = [SELECT SecureUrl FROM SiteDetail WHERE DurableId = :mySite.Id LIMIT 1];
+        return mySiteDetail.SecureUrl;
     }
 
     // Converts string rounding method to System.RoundingMode
@@ -181,7 +185,7 @@ public without sharing class Util {
     public static String getHeapLimit(String prefix) {
         Integer heapSize = Limits.getHeapSize();
         Integer heapLimit = Limits.getLimitHeapSize();
-        Decimal percent = (Decimal) (heapSize*100)/heapLimit;
+        Decimal percent = (Decimal) (heapSize * 100) / heapLimit;
         return 'Limits: ' + prefix + ': ' + heapSize + ' of '
             + heapLimit + ' bytes used (' + percent.setScale(2) + '%)';
     }
@@ -197,9 +201,12 @@ public without sharing class Util {
             Util.getRowLimit('Rows');
     }
 
-    public class BWException extends Exception {}
-    public class FatalBWException extends Exception {}
-    public class AuthorizationBWException extends Exception {}
+    public class BWException extends Exception {
+    }
+    public class FatalBWException extends Exception {
+    }
+    public class AuthorizationBWException extends Exception {
+    }
 
     private static String removeSpecialCharacters(String value) {
         return value.replaceAll('(?i)[^a-z0-9 ._]', '');
@@ -217,7 +224,7 @@ public without sharing class Util {
         return removeNewLine(value);
     }
 
-    public static Map<Integer, List<String>> readCSV(String csvData){
+    public static Map<Integer, List<String>> readCSV(String csvData) {
         CSVReader csvReader = new CSVReader(csvData);
         List<String> line;
         Map<Integer, List<String>> rowNumberToDataMap = new Map<Integer, List<String>>();
@@ -234,7 +241,7 @@ public without sharing class Util {
             return true;
         }
         Boolean property = (Boolean) getSystemPropertyCheckbox(triggerType);
-        return (property==null?false:property);
+        return (property == null ? false : property);
     }
 
     /**
@@ -323,7 +330,7 @@ public without sharing class Util {
         }
     }
 
-    public static AuraHandledException createAuraExceptionWithMessage(String message){
+    public static AuraHandledException createAuraExceptionWithMessage(String message) {
         // If you don't setMessage, you get back generic 'script-thrown exception' but no custom message
         AuraHandledException excep = new AuraHandledException(message);
         excep.setMessage(message);
@@ -368,13 +375,13 @@ public without sharing class Util {
     }
     @TestVisible
     private static String incrementFakeId(String id) {
-        Integer lastChar = id.charAt(id.length()-1);
+        Integer lastChar = id.charAt(id.length() - 1);
         String key = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
         Integer index = key.indexOfChar(lastChar);
-        if (index == key.length()-1) {
+        if (index == key.length() - 1) {
             throw new BWException('Can only increment 62 times... improve incrementFakeId before using it more than that');
         }
-        return id.substring(0,id.length()-1) + key.substring(index+1, index+2);
+        return id.substring(0, id.length() - 1) + key.substring(index + 1, index + 2);
     }
 
     public static Boolean isSandboxOrTest() {
