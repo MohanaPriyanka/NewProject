@@ -274,10 +274,10 @@ public with sharing class ZuoraInvoiceService {
         if (invoiceItemByAccountCache.containsKey(zuoraAcctId)) {
             return (List<ZuoraAPI.InvoiceItem>) CollectionUtil.toTypedList(invoiceItemByAccountCache.getValues(zuoraAcctId), new List<ZuoraAPI.InvoiceItem>());
         }
-        // Just getting a year's worth of posted invoices to constrain the query, and also making sure we only get
+        // Getting 5 year's worth of posted invoices to constrain the query, and also making sure we only get
         // invoices that are earlier than current day to avoid the Zuora error:
         // Memo date should not be earlier than invoice date.
-        Datetime startDate = Datetime.now() - 365;
+        Datetime startDate = Datetime.now() - 365 * 5;
         String queryString = invoiceSelector.getByAccountId(zuoraAcctId) +
             ' AND InvoiceDate > \'' + startDate.format('yyyy-MM-dd') + '\'' +
             ' AND InvoiceDate < \'' + Datetime.now().format('yyyy-MM-dd') + '\'' +
