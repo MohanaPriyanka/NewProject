@@ -1,7 +1,6 @@
-import { LightningElement, track, api } from 'lwc';
-
-import getMatches from '@salesforce/apex/CSQualificationService.getQualificationMatches';
-import { ShowToastEvent } from 'lightning/platformShowToastEvent'
+import {LightningElement, track, api} from 'lwc';
+import getMatches from '@salesforce/apex/AskYoda.getQualificationMatches';
+import {ShowToastEvent} from 'lightning/platformShowToastEvent'
 
 export default class CSQualificationTable extends LightningElement {
     @track matches;
@@ -11,36 +10,36 @@ export default class CSQualificationTable extends LightningElement {
     @api partner;
     @api product;
     @api underwriting;
-    //TODO: to be removed after deleting old versions of CheckCSQualification flows
     @api fico;
     @api utility;
+    tableHasContents = true;
 
     connectedCallback() {
         this.getMatches();
     }
 
     getMatches() {
-        getMatches({leadId: this.leadId, product: this.product, partner: this.partner, zipCode: this.zipCode, underwriting: this.underwriting})
+        getMatches({
+            leadId: this.leadId,
+            product: this.product,
+            partner: this.partner,
+            zipCode: this.zipCode,
+            underwriting: this.underwriting
+        })
         .then(result => {
             this.highlightMatches(result);
         })
         .catch(error => {
-            var errorMessage = '_'
-            if (error.body.message) {
-                errorMessage = error.body.message;
-            }
-            const event = new ShowToastEvent({title: 'Error Generating Table', mode: 'sticky'});
-            this.dispatchEvent(event);
+            console.log(error);
         });
     }
 
-
     highlightMatches(result) {
         let formattedDataMap = new Map();
-        var i;
+        let i;
         try {
             for (i = 0; i < result.length; i++) {
-                let match = new Object()
+                let match = {}
                 match.sssMatch = result[i].completeMatch;
                 match.sssName = result[i].sss.Name;
 
@@ -65,6 +64,7 @@ export default class CSQualificationTable extends LightningElement {
                 formattedDataMap.set(match.sssName, match)
             }
             this.sssMap = formattedDataMap;
+            this.tableHasContents = this.sssMap.size > 0;
         } catch (err) {
             const event = new ShowToastEvent({
                 title: 'System Error Reading SSS List',
@@ -76,9 +76,7 @@ export default class CSQualificationTable extends LightningElement {
         this.refreshDataTable();
     }
 
-
     refreshDataTable() {
         this.matches = this.sssMap.values();
     }
-
 }

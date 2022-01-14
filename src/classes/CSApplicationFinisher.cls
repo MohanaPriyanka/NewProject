@@ -54,7 +54,7 @@ public without sharing class CSApplicationFinisher implements Queueable, Databas
         lead.Application_Status__c = 'Application Completed';
         CSLeadsRESTControllerV2.setContinueApplicationLinks(lead, 'Application Completed');
         SharedSolarSystemQualifier.ignoreLoadZones(); // Set to ignore load zones for qualification check (in case of split LZ)
-        qualificationService.qualifyLead(lead);
+        qualifyLeadIfNoUnderwritingRequired(lead);
         leadService.updateLead(lead);
     }
 
@@ -99,7 +99,7 @@ public without sharing class CSApplicationFinisher implements Queueable, Databas
      */
     public void createQCCaseForNoMatchPCR(Lead lead) {
         try {
-            if (lead.Personal_Credit_Report__r.LASERCA__Credit_Score__c == '9999') {
+            if (lead.Underwriting_Criteria__c == 'FICO' && lead.Personal_Credit_Report__r.LASERCA__Credit_Score__c == null) {
                 CaseFactory noMatchFactory = new CaseFactory();
                 noMatchFactory.setLead(lead);
                 noMatchFactory.setQueueType('No FICO Match');
@@ -159,5 +159,16 @@ public without sharing class CSApplicationFinisher implements Queueable, Databas
             message += '\n\n ' + caughtException.getMessage() + '\n\n' + caughtException.getStackTraceString();
         }
         Logger.logNow('CSApplicationFinisher', method, message, Logger.ERROR);
+    }
+
+    /**
+     * @description Runs a Qualification check on the Lead if (and ONLY if) it has no Underwriting requirement set.
+     * For other underwriting cases, e.g. FICO, Financial Documents, qualification check is handled elsewhere.
+     * @param lead Lead to assess Qualification needs
+     */
+    private void qualifyLeadIfNoUnderwritingRequired(Lead lead) {
+        if (lead.Underwriting_Criteria__c == 'None') {
+            qualificationService.qualifyLead(lead);
+        }
     }
 }

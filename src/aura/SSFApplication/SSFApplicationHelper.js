@@ -52,7 +52,7 @@
     assessCreditReport : function(component, response) {
         const creditReportDetail = response.getReturnValue();
         if (creditReportDetail.noMatch === true) {
-            // PCR has been generated, but no match credit score ("9999") indicated
+            // PCR has been generated, but no match credit score indicated
             component.set('v.latestCreditReport', creditReportDetail);
             component.set('v.showCreditCheckInfoPage', true);
         }

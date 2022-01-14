@@ -3,7 +3,7 @@
     <apiVersion>50.0</apiVersion>
     <packageVersions>
         <majorNumber>5</majorNumber>
-        <minorNumber>30</minorNumber>
+        <minorNumber>22</minorNumber>
         <namespace>LASERCA</namespace>
     </packageVersions>
     <status>Active</status>

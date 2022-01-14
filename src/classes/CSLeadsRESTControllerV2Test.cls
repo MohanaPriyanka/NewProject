@@ -1,5 +1,5 @@
 /**
- * Created by jlugo on 2019-07-09.
+ * @description Created by jlugo on 2019-07-09.
  */
 @IsTest
 @SuppressWarnings('PMD.ExcessivePublicCount, PMD.AvoidHardcodingId')
@@ -154,7 +154,8 @@ public with sharing class CSLeadsRESTControllerV2Test {
         controller.patchLead(jsonRequest);
         Test.stopTest();
         System.assertEquals(200, RestContext.response.statusCode, 'Properly formed PATCH should succeed');
-        System.assertEquals('Qualified', mockLeadService.getLastUpdatedLead().Status, 'Lead status should be populated by CSQualificationService when Financial Review leads are completed.');
+        System.assertEquals(null, mockLeadService.getLastUpdatedLead().Status,
+            'As of W-023944, Lead status should not be modified at the end of the application process.');
     }
     
     @IsTest
@@ -1103,13 +1104,12 @@ public with sharing class CSLeadsRESTControllerV2Test {
         insert leadToUpdate;
         LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
             LASERCA__Lead__c = leadToUpdate.Id,
-            LASERCA__Credit_Score__c = '9999'
+            LASERCA__Credit_Score__c = null
         );
         insert pcr;
         leadToUpdate.Personal_Credit_Report__c = pcr.Id;
         update leadToUpdate;
         leadToUpdate = new LeadSelector().selectOne(leadToUpdate.Id);
-        CSLeadsRESTControllerV2 controller = new CSLeadsRESTControllerV2();
 
         Test.startTest();
         CSApplicationFinisher appFinisher = new CSApplicationFinisher(leadToUpdate.Id, null);

@@ -17,7 +17,7 @@ private class CreditReportCheckerTest {
     private static LASERCA__Personal_Credit_Report__c buildPCR(Id leadId) {
         LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
             LASERCA__Lead__c = leadId,
-            LASERCA__Credit_Score__c = '9999',
+            LASERCA__Credit_Score__c = null,
             LASERCA__TransUnion_Score_Factor__c = 'Score Factor',
             LASERCA__TransUnion_Alert_Message__c = 'Alert',
             LASERCA__TransUnion_Indicator__c = true
@@ -35,26 +35,28 @@ private class CreditReportCheckerTest {
 
         // Run test
         Test.startTest();
-        CreditReportChecker crcConstructorA = new CreditReportChecker(lead.Id);
-        CreditReportChecker crcConstructorB = new CreditReportChecker(lead.Id, Datetime.now());
+        CreditReportChecker allHistoricalChecker = new CreditReportChecker(lead.Id);
+        CreditReportChecker afterDatetimeChecker = new CreditReportChecker(lead.Id, Datetime.now());
         CreditReportChecker.LatestReportDetail crcDetail = SimpleSignupFormController.getLatestCreditReport(lead.Id, true, null);
         Test.stopTest();
 
-        // Constructor A checks
-        System.assertEquals(true, crcConstructorA.latestReportNoMatch, 'Latest Credit Report should show no match');
-        System.assertEquals(lead.Id, crcConstructorA.leadId, 'Invalid leadId property defined in class');
-        System.assertEquals(1, crcConstructorA.reportList.size(), 'Invalid number of credit reports aggregated');
-        System.assertEquals(pcr.LASERCA__Credit_Score__c, crcConstructorA.latestReport.LASERCA__Credit_Score__c, 'Invalid credit score val');
+        // Validate constructor which provides all historical PCRs
+        System.assertEquals(true, allHistoricalChecker.latestReportNoMatch, 'Latest Credit Report should show no match');
+        System.assertEquals(lead.Id, allHistoricalChecker.leadId, 'Invalid leadId property defined in class');
+        System.assertEquals(1, allHistoricalChecker.reportList.size(), 'Invalid number of credit reports aggregated');
+        System.assertEquals(pcr.LASERCA__Credit_Score__c, allHistoricalChecker.latestReport.LASERCA__Credit_Score__c,
+            'Invalid credit score val');
 
-        // Constructor B checks
-        System.assertEquals(0, crcConstructorB.reportList.size(), 'Constructor should return 0 rows');
-        System.assertEquals(null, crcConstructorB.latestReport, 'Constructor should return null for this property');
-        System.assertEquals(null, crcConstructorB.latestReportNoMatch, 'Constructor should return null for this property');
+        // Validate constructor which provides all PCRs after the specified datetime
+        System.assertEquals(0, afterDatetimeChecker.reportList.size(), 'afterDatetimeChecker should return 0 rows');
+        System.assertEquals(null, afterDatetimeChecker.latestReport,
+            'afterDatetimeChecker should return null for this property');
+        System.assertEquals(null, afterDatetimeChecker.latestReportNoMatch,
+            'afterDatetimeChecker should return null for this property');
 
         // CreditReportChecker.LatestReportDetail class checks (instanced from SimpleSignupFormController method)
         System.assertEquals(true, crcDetail.noMatch, 'Detail class invalid noMatch value');
         System.assertEquals(pcr.LASERCA__TransUnion_Score_Factor__c, crcDetail.scoreFactor, 'Detail class invalid scoreFactor value');
         System.assertEquals(pcr.LASERCA__TransUnion_Alert_Message__c, crcDetail.alertMessage, 'Detail class invalid alertMessage value');
     }
-
 }

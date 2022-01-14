@@ -3,17 +3,19 @@
  * Tested By: SharedSolarSystemsTest, CSQualificationTestclass, LeadServiceTestclass
  */
 public without sharing class SharedSolarSystemQualifier {
-    @TestVisible private static SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
+
     @TestVisible private static final Boolean LOG_FINE_RESULTS = Logger.shouldLog(Logger.FINE);
-    @TestVisible private static Boolean capacityCheckInstance = false;
-    private static Boolean ignoreLoadZones = false;
+    private static final String QUALIFIED = 'Qualified';
+    private static final String UNQUALIFIED = 'Unqualified';
+    private static final String SALES_QUALIFIED = 'Sales Qualified';
     private static final List<String> ORDERED_MOODY_RISK_SCORES = new List<String>{
         'Aaa', 'Aa1', 'Aa2', 'Aa3', 'A1', 'A2', 'A3',
         'Baa1', 'Baa2', 'Baa3', 'Ba1', 'Ba2', 'Ba3', 'B1', 'B2', 'B3',
         'Caa1', 'Caa2', 'Ca', 'C'
     };
-    private static final String QUALIFIED = 'Qualified';
-    private static final String UNQUALIFIED = 'Unqualified';
+    @TestVisible private static SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
+    @TestVisible private static Boolean capacityCheckInstance = false;
+    private static Boolean ignoreLoadZones = false;
 
     /**
      * @description Instructs this class to run qualification logic based on if this is for a new or existing lead
@@ -39,21 +41,29 @@ public without sharing class SharedSolarSystemQualifier {
      * @param records Shared Solar Systems
      * @return Qualified or Unqualified
      */
-    public String checkCSQualification(Lead lead, Decimal creditScore, List<Shared_Solar_System__c> records) {
+    public String checkCSQualification(Lead lead, String creditScore, List<Shared_Solar_System__c> records) {
         for (Shared_Solar_System__c sss : records) {
             if (qualifiedForSystem(lead, sss, creditScore)) {
                 return QUALIFIED;
             }
         }
-        // If the lead qualifies for any system, ignoring FICO, then they must have been unqualified due to FICO. If
-        // none qualify, they have been unqualified for a different reason
+
+        // If the lead qualifies for any system, ignoring FICO, then they must have been unqualified due to FICO or
+        // have a NO MATCH PCR. If no systems qualify ignoring FICO, the Lead must be unqualified for a different reason
+        Boolean creditScoreOnFile = lead.LASER_Credit_Score__c != null;
         for (Shared_Solar_System__c sss : records) {
-            if (sss.Available_SMB_Underwriting_Method_FICO__c &&
-                qualifiedForSystemSkipingFICO(lead, sss, creditScore)) {
+            Boolean isFicoSystem = sss.Available_SMB_Underwriting_Method_FICO__c;
+            Boolean isQualifiedWithoutFICO = qualifiedForSystemIgnoringFICO(lead, sss, creditScore);
+            if (isFicoSystem && isQualifiedWithoutFICO && creditScoreOnFile) {
                 CSQualificationService.handleLeadUnqualifiedDueToFICO(lead);
                 return UNQUALIFIED;
+            } else if (isFicoSystem && isQualifiedWithoutFICO && !creditScoreOnFile) {
+                // Indicates likely there is a NO MATCH credit report on file, do not send adverse credit notice and
+                // do not qualify or unqualify the Lead. Keep in 'Sales Qualified' pending further action by Sales Ops.
+                return SALES_QUALIFIED;
             }
         }
+
         // We only want to send the unqualified email if we haven't already sent it, which we would have done if the
         // lead.Status is already Unqualified.
         if (lead.Status != UNQUALIFIED) {
@@ -69,7 +79,7 @@ public without sharing class SharedSolarSystemQualifier {
      * @return List of systems that qualify
      */
     public List<Shared_Solar_System__c> getQualifiedForLead(Lead lead, List<Shared_Solar_System__c> records) {
-        List<SSSWrapper> sssWrappers = new List<SSSWrapper>();
+        List<SortedSystem> sortedSystems = new List<SortedSystem>();
         List<Shared_Solar_System__c> sortedSharedSolarSystems = new List<Shared_Solar_System__c>();
 
         if (lead.Selected_SSS_For_Conversion__c != null) {
@@ -77,12 +87,12 @@ public without sharing class SharedSolarSystemQualifier {
         }
         for (Shared_Solar_System__c sss : records) {
             if (qualifiedForSystem(lead, sss, null)) {
-                sssWrappers.add(new SSSWrapper(sss, lead.System_Assignment__c));
+                sortedSystems.add(new SortedSystem(sss, lead.System_Assignment__c));
             }
         }
-        sssWrappers.sort();
-        for (Integer wrapperIndex = 0; wrapperIndex < sssWrappers.size(); wrapperIndex++) {
-            sortedSharedSolarSystems.add(sssWrappers[wrapperIndex].sss);
+        sortedSystems.sort();
+        for (Integer wrapperIndex = 0; wrapperIndex < sortedSystems.size(); wrapperIndex++) {
+            sortedSharedSolarSystems.add(sortedSystems[wrapperIndex].sss);
         }
 
         Logger.flushLogs();
@@ -90,15 +100,15 @@ public without sharing class SharedSolarSystemQualifier {
     }
 
     @TestVisible
-    private Boolean qualifiedForSystem(Lead lead, Shared_Solar_System__c sss, Decimal creditScore) {
+    private Boolean qualifiedForSystem(Lead lead, Shared_Solar_System__c sss, String creditScore) {
         return qualifiedForSystem(lead, sss, creditScore, false);
     }
 
-    private Boolean qualifiedForSystemSkipingFICO(Lead lead, Shared_Solar_System__c sss, Decimal creditScore) {
+    private Boolean qualifiedForSystemIgnoringFICO(Lead lead, Shared_Solar_System__c sss, String creditScore) {
         return qualifiedForSystem(lead, sss, creditScore, true);
     }
 
-    private Boolean qualifiedForSystem(Lead lead, Shared_Solar_System__c sss, Decimal creditScore, Boolean skipFICOCheck) {
+    private Boolean qualifiedForSystem(Lead lead, Shared_Solar_System__c sss, String creditScore, Boolean skipFICOCheck) {
         Boolean utilityMatch = sss.Utility__c == lead.Utility_relationship__c;
         Boolean lzInServiceTerritory = loadZoneInServiceTerritory(lead.LoadZone__c, sss);
         Boolean isPartnerEligible = isPartnerEligible(lead.Partner_Lookup__c, sss);
@@ -135,35 +145,25 @@ public without sharing class SharedSolarSystemQualifier {
     }
 
     private static Boolean matchesProduct(Lead lead, Shared_Solar_System__c sss) {
-        Boolean matchesProduct = false;
-        if (capacityCheckInstance) {
-            matchesProduct = true;
-        } else if (sss.Product__r.Parent_Product__c != null && sss.Product__r.Parent_Product__c == lead.Product__c) {
-            matchesProduct = true;
-        } else if (sss.Product__c == lead.Product__c) {
-            matchesProduct = true;
-        }
-        return matchesProduct;
+        Boolean productMatch = sss.Product__c == lead.Product__c;
+        Boolean parentProductMatch = sss.Product__r.Parent_Product__c != null &&
+            sss.Product__r.Parent_Product__c == lead.Product__c;
+        return capacityCheckInstance || productMatch || parentProductMatch;
     }
 
     public static Boolean meetsPaymentCriteria(Lead lead, Shared_Solar_System__c sss) {
-        Boolean meetsCriteria = false;
-        if (capacityCheckInstance) {
-            meetsCriteria = true;
-        } else if (lead.No_Payment__c == sss.Do_Not_Ask_for_Payment_Method__c) {
-            meetsCriteria = true;
-        }
-        return meetsCriteria;
+        Boolean paymentMatch = lead.No_Payment__c == sss.Do_Not_Ask_for_Payment_Method__c;
+        return capacityCheckInstance || paymentMatch;
     }
 
     @TestVisible
-    private Boolean meetsUnderwritingCriteria(Lead lead, Shared_Solar_System__c sss, Decimal creditScore) {
+    private Boolean meetsUnderwritingCriteria(Lead lead, Shared_Solar_System__c sss, String creditScore) {
         Boolean meetsCriteria = true;
         Boolean sssDoesNotUnderwrite = sss.Do_Not_Underwrite__c;
 
         switch on (lead.Underwriting_Criteria__c) {
             when 'FICO' {
-                meetsCriteria = meetsFICOUnderwriting(lead, sss, creditScore);
+                meetsCriteria = meetsFICOUnderwriting(sss, creditScore);
             } when 'Financial Review' {
                 meetsCriteria = meetsFinancialReviewUnderwriting(lead, sss);
             }
@@ -173,16 +173,15 @@ public without sharing class SharedSolarSystemQualifier {
         return sssDoesNotUnderwrite != null && sssDoesNotUnderwrite ? true : meetsCriteria;
     }
 
-    private Boolean meetsFICOUnderwriting(Lead lead, Shared_Solar_System__c sss, Decimal creditScore) {
+    private Boolean meetsFICOUnderwriting(Shared_Solar_System__c sss, String creditScore) {
         if (!sss.Available_SMB_Underwriting_Method_FICO__c) {
             return false;
         }
         if (capacityCheckInstance) {
-            creditScore = 999;
-        } else if (creditScore == null && lead.Underwriting_Criteria__c == 'FICO') {
-            creditScore = Decimal.valueOf(Util.nullToZero(lead.LASER_Credit_Score__c));
+            return true;
         }
-        return creditScore >= sss.Credit_Score_Requirement__c;
+        Decimal creditScoreValue = Decimal.valueOf(Util.nullToZero(creditScore));
+        return creditScoreValue >= sss.Credit_Score_Requirement__c;
     }
 
     private Boolean meetsFinancialReviewUnderwriting(Lead lead, Shared_Solar_System__c sss) {
@@ -190,7 +189,8 @@ public without sharing class SharedSolarSystemQualifier {
             // Default "virtual lead" for capacity checks to have lowest possible Moody's risk score
             lead.Moody_s_Risk_Calc__c = 'Aaa';
         }
-        if (!sss.Available_SMB_Underwriting_Method_Docs__c || lead.Moody_s_Risk_Calc__c == null || sss.RiskCalc_Minimum__c == null) {
+        if (!sss.Available_SMB_Underwriting_Method_Docs__c || lead.Moody_s_Risk_Calc__c == null ||
+            sss.RiskCalc_Minimum__c == null) {
             return false;
         }
         Integer leadRiskScore = ORDERED_MOODY_RISK_SCORES.indexOf(lead.Moody_s_Risk_Calc__c);
@@ -209,7 +209,8 @@ public without sharing class SharedSolarSystemQualifier {
             return true;
         }
         for (Partner_Shared_Solar_System_Eligibility__c partnerEligibility : sss.Partner_Shared_Solar_System_Accesses__r) {
-            if (partnerOrAccountId == partnerEligibility.Account__c || partnerOrAccountId == partnerEligibility.Account__r.Partner__c) {
+            if (partnerOrAccountId == partnerEligibility.Account__c ||
+                partnerOrAccountId == partnerEligibility.Account__r.Partner__c) {
                 return true;
             }
         }
@@ -233,15 +234,17 @@ public without sharing class SharedSolarSystemQualifier {
     /**
      * @description Used to sort systems based on either COD and Project Capacity, or Assignment Order
      */
-    private class SSSWrapper implements Comparable {
+    private class SortedSystem implements Comparable {
         public Shared_Solar_System__c sss;
         public String systemAssignment;
-        public SSSWrapper(Shared_Solar_System__c sss, String systemAssignment) {
+
+        public SortedSystem(Shared_Solar_System__c sss, String systemAssignment) {
             this.sss = sss;
             this.systemAssignment = systemAssignment;
         }
+
         public Integer compareTo(Object compareTo) {
-            SSSWrapper compareToSSS = (SSSWrapper) compareTo;
+            SortedSystem compareToSSS = (SortedSystem) compareTo;
             Integer returnValue = 0;
             if (systemAssignment == 'Automatic - COD Date/Available Capacity' || systemAssignment == null) {
                 return compareByCOD(compareToSSS);
@@ -251,7 +254,7 @@ public without sharing class SharedSolarSystemQualifier {
             return returnValue;
         }
 
-        private Integer compareByAssignmentOrder(SSSWrapper compareToSSS) {
+        private Integer compareByAssignmentOrder(SortedSystem compareToSSS) {
             if (sss.Assignment_Order__c > compareToSSS.sss.Assignment_Order__c) {
                 return 1;
             } else if (sss.Assignment_Order__c < compareToSSS.sss.Assignment_Order__c) {
@@ -260,7 +263,7 @@ public without sharing class SharedSolarSystemQualifier {
             return 0;
         }
 
-        private Integer compareByCOD(SSSWrapper compareToSSS) {
+        private Integer compareByCOD(SortedSystem compareToSSS) {
             if (sss.Estimated_COD_Date_Manual__c > compareToSSS.sss.Estimated_COD_Date_Manual__c) {
                 return 1;
             } else if (sss.Estimated_COD_Date_Manual__c < compareToSSS.sss.Estimated_COD_Date_Manual__c) {
