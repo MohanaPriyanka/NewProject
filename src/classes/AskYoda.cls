@@ -68,7 +68,7 @@ public with sharing class AskYoda {
      */
     private void createQualificationList() {
         SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
-        List<Shared_Solar_System__c> sssList = sssSelector.selectSharedSolarSystemsForQualificationCheck(
+        List<Shared_Solar_System__c> sssList = sssSelector.selectSystemsForAskYoda(
             this.productId, this.utilityIds);
 
         for (Shared_Solar_System__c sss : sssList) {
