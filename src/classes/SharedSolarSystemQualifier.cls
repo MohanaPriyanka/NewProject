@@ -86,7 +86,7 @@ public without sharing class SharedSolarSystemQualifier {
             records = sssSelector.selectAll(CollectionUtil.toIds(lead.Selected_SSS_For_Conversion__c.split('/')));
         }
         for (Shared_Solar_System__c sss : records) {
-            if (qualifiedForSystem(lead, sss, null)) {
+            if (qualifiedForSystem(lead, sss, lead.LASER_Credit_Score__c)) {
                 sortedSystems.add(new SortedSystem(sss, lead.System_Assignment__c));
             }
         }

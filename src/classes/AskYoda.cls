@@ -15,6 +15,18 @@ public with sharing class AskYoda {
     private Integer fico;
     private String underwriting;
 
+    public virtual class QualificationMatch {
+        @AuraEnabled public Shared_Solar_System__c sss;
+        @AuraEnabled public Boolean completeMatch = false;
+        @AuraEnabled public Boolean isOpen = false;
+        @AuraEnabled public Boolean hasCapacity = false;
+        @AuraEnabled public Boolean hasLZ = false;
+        @AuraEnabled public Boolean hasPartner = false;
+        @AuraEnabled public Boolean isUnderwritten = false;
+        @AuraEnabled public String eligiblePartners;
+        @AuraEnabled public String underwritingOptions;
+    }
+
     @SuppressWarnings('PMD.ExcessiveParameterList')
     @AuraEnabled
     public static List<QualificationMatch> getQualificationMatches(
@@ -59,7 +71,7 @@ public with sharing class AskYoda {
             // Checking qualification with an existing Lead
             creditScore = Integer.valueOf(Util.nullToZero(this.lead?.LASER_Credit_Score__c));
         }
-        return Integer.valueOf(creditScore);
+        return creditScore;
     }
 
     /**
@@ -139,17 +151,5 @@ public with sharing class AskYoda {
             options += 'Payment Details Required';
         }
         return options;
-    }
-
-    public virtual class QualificationMatch {
-        @AuraEnabled public Shared_Solar_System__c sss;
-        @AuraEnabled public Boolean completeMatch = false;
-        @AuraEnabled public Boolean isOpen = false;
-        @AuraEnabled public Boolean hasCapacity = false;
-        @AuraEnabled public Boolean hasLZ = false;
-        @AuraEnabled public Boolean hasPartner = false;
-        @AuraEnabled public Boolean isUnderwritten = false;
-        @AuraEnabled public String eligiblePartners;
-        @AuraEnabled public String underwritingOptions;
     }
 }
