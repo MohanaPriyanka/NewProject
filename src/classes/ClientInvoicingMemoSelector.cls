@@ -50,7 +50,12 @@ public inherited sharing class ClientInvoicingMemoSelector {
             AND Subscription_Order__r.Utility_Account_Subscription__r.Opportunity__r.StageName = 'Complete'
             AND Effective_Date__c <= :effectiveDate
             AND Invoice_Line_Item__c = NULL
+            // We only want to invoice customers that have been assigned to a client
             AND Subscription_Order__r.Utility_Account_Subscription__r.Opportunity__r.Contract.Assignment_Agreement__c != NULL
+            AND Subscription_Order__r.Utility_Account_Subscription__r.Opportunity__r.Contract.Assignment_Agreement__r.Status = 'Executed'
+            // The Subscription Order doesn't need to be included in the original assignment agreement, but if it's
+            // on an assignment agreement, the AA needs to be executed
+            AND (Subscription_Order__r.Client_Assignment_Agreement__c = NULL OR Subscription_Order__r.Client_Assignment_Agreement__r.Status = 'Executed')
             AND Subscription_Order__r.Acquisition_Type__c = :acquisitionType
             AND Subscription_Order__r.Utility_Account_Subscription__r.Shared_Solar_System__r.Contract_Assignment_Entity__c = :entityId
             GROUP BY Subscription_Order__r.Utility_Account_Subscription__r.Shared_Solar_System__c,
@@ -74,6 +79,8 @@ public inherited sharing class ClientInvoicingMemoSelector {
             AND Effective_Date__c <= :effectiveDate
             AND Invoice_Line_Item__c = NULL
             AND Subscription_Order__r.Utility_Account_Subscription__r.Opportunity__r.Contract.Assignment_Agreement__c != NULL
+            AND Subscription_Order__r.Utility_Account_Subscription__r.Opportunity__r.Contract.Assignment_Agreement__r.Status = 'Executed'
+            AND (Subscription_Order__r.Client_Assignment_Agreement__c = NULL OR Subscription_Order__r.Client_Assignment_Agreement__r.Status = 'Executed')
             AND Subscription_Order__r.Acquisition_Type__c = :acquisitionType
             AND Subscription_Order__r.Utility_Account_Subscription__r.Shared_Solar_System__r.Contract_Assignment_Entity__c = :entityId
         ];
