@@ -125,11 +125,17 @@ public inherited sharing class SubscriptionOrderSelector {
             FROM Subscription_Order__c	
             WHERE Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Account__c IN :clientAccountIds	
             AND Utility_Account_Subscription__r.Opportunity__r.StageName = 'Complete'	
-            AND Invoice_Line_Item__c = NULL	
+            AND Invoice_Line_Item__c = NULL
+            AND Invoice_Date__c = NULL
             AND Effective_Date__c <= :effectiveDate	
             AND Client_Invoicing_Fee__c != NULL	
             AND Client_Invoicing_Fee__c != 0
+            // We only want to invoice customers that have been assigned to a client
             AND Utility_Account_Subscription__r.Opportunity__r.Contract.Assignment_Agreement__c != NULL
+            AND Utility_Account_Subscription__r.Opportunity__r.Contract.Assignment_Agreement__r.Status = 'Executed'
+            // The Subscription Order doesn't need to be included in the original assignment agreement, but if it's
+            // on an assignment agreement, the AA needs to be executed
+            AND (Client_Assignment_Agreement__c = NULL OR Client_Assignment_Agreement__r.Status = 'Executed')
             AND Acquisition_Type__c = :acquisitionType
             AND Utility_Account_Subscription__r.Shared_Solar_System__r.Contract_Assignment_Entity__c = :entityId
             GROUP BY Utility_Account_Subscription__r.Shared_Solar_System__c,
@@ -151,12 +157,15 @@ public inherited sharing class SubscriptionOrderSelector {
             FROM Subscription_Order__c	
             WHERE Utility_Account_Subscription__r.Shared_Solar_System__c IN :sharedSolarSystems	
             AND Utility_Account_Subscription__r.Opportunity__r.StageName = 'Complete'	
-            AND Invoice_Line_Item__c = NULL	
+            AND Invoice_Line_Item__c = NULL
+            AND Invoice_Date__c = NULL
             AND Effective_Date__c <= :effectiveDate	
             AND Client_Invoicing_Fee__c != NULL	
             AND Client_Invoicing_Fee__c != 0
             AND Acquisition_Type__c = :acquisitionType
             AND Utility_Account_Subscription__r.Opportunity__r.Contract.Assignment_Agreement__c != NULL
+            AND Utility_Account_Subscription__r.Opportunity__r.Contract.Assignment_Agreement__r.Status = 'Executed'
+            AND (Client_Assignment_Agreement__c = NULL OR Client_Assignment_Agreement__r.Status = 'Executed')
             AND Utility_Account_Subscription__r.Shared_Solar_System__r.Contract_Assignment_Entity__c = :entityId
         ];
     }

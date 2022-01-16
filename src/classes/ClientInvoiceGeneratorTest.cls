@@ -5,6 +5,8 @@
 @IsTest
 public with sharing class ClientInvoiceGeneratorTest {
     private static Id soId = Util.getFakeId(Subscription_Order__c.SObjectType);
+    private static Id assignmentAgreementRecordTypeId =
+        Schema.SObjectType.Contract.getRecordTypeInfosByName().get('Assignment Agreement').getRecordTypeId();
 
     @TestSetup
     private static void setupData() {
@@ -12,8 +14,6 @@ public with sharing class ClientInvoiceGeneratorTest {
         Account account = [SELECT Id FROM Account WHERE Name = 'Test Client' LIMIT 1];
         Id clientContractRecordTypeId =
             Schema.SObjectType.Contract.getRecordTypeInfosByName().get('Client Contract').getRecordTypeId();
-        Id assignmentAgreementRecordTypeId =
-            Schema.SObjectType.Contract.getRecordTypeInfosByName().get('Assignment Agreement').getRecordTypeId();
 
         Contract contractA = new Contract(
             Name = 'Client Contract A',
@@ -144,6 +144,21 @@ public with sharing class ClientInvoiceGeneratorTest {
         // Tests InvocableCSFeeSelector.getFeesToInvoice
         List<String> serializedSSS = InvocableCSFeeSelector.getFeesToInvoice(new List<InvocableCSFeeSelector.FeeRequest>{feeRequest});
         List<SharedSolarSystem> sharedSolarSystems =
+            (List<SharedSolarSystem>) JSON.deserialize(serializedSSS[0], List<SharedSolarSystem>.class);
+
+        Contract assignmentAgreement = [
+            SELECT Id, Status
+            FROM Contract
+            WHERE RecordTypeId = :assignmentAgreementRecordTypeId
+        ];
+        System.assertEquals('Draft', assignmentAgreement.Status, 'TestSetup should have created one AA in Draft');
+        System.assertEquals(0, sharedSolarSystems.size(),
+            'Expected no systems to invoice because the Assignment Agreement is not executed');
+        assignmentAgreement.Status = 'Executed';
+        update assignmentAgreement;
+
+        serializedSSS = InvocableCSFeeSelector.getFeesToInvoice(new List<InvocableCSFeeSelector.FeeRequest>{feeRequest});
+        sharedSolarSystems =
             (List<SharedSolarSystem>) JSON.deserialize(serializedSSS[0], List<SharedSolarSystem>.class);
         System.assertEquals(1, sharedSolarSystems.size(),
             'Expected one system with charges to invoice');
