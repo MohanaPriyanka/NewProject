@@ -2803,7 +2803,12 @@ null)</formula>
             </values>
         </picklistValues>
     </recordTypes>
-    <searchLayouts />
+    <searchLayouts>
+        <searchResultsAdditionalFields>Open__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Capacity_Available_to_be_Reserved__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Estimated_PTO_Date_MANUAL__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Estimated_COD_Date_Manual__c</searchResultsAdditionalFields>
+    </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <sharingReasons>
         <fullName>Customer_Portal_Access__c</fullName>
