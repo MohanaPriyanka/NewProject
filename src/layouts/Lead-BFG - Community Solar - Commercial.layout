@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Layout xmlns="http://soap.sforce.com/2006/04/metadata">
-    <customButtons>LASER_Credit_Access_Custom</customButtons>
-    <customButtons>Disable_Enable_Emails</customButtons>
+    <customButtons>New_Customer_Care_Case</customButtons>
     <customButtons>Check_Loadzone</customButtons>
+    <customButtons>LASER_Credit_Access_Custom</customButtons>
     <excludeButtons>ChangeOwnerOne</excludeButtons>
     <excludeButtons>ChangeRecordType</excludeButtons>
     <excludeButtons>Convert</excludeButtons>
-    <excludeButtons>DataDotComClean</excludeButtons>
+    <excludeButtons>FindDup</excludeButtons>
     <excludeButtons>Share</excludeButtons>
     <excludeButtons>Submit</excludeButtons>
     <excludeButtons>XClean</excludeButtons>
@@ -17,8 +17,8 @@
         <label>Record Information</label>
         <layoutColumns>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>OwnerId</field>
+                <behavior>Required</behavior>
+                <field>Company</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
@@ -27,6 +27,13 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Lead_QC_Complete__c</field>
+            </layoutItems>
+            <layoutItems>
+                <emptySpace>true</emptySpace>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Previous_BW_Applicant__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -44,13 +51,6 @@
                 <behavior>Edit</behavior>
                 <field>Objections__c</field>
             </layoutItems>
-            <layoutItems>
-                <emptySpace>true</emptySpace>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Generate_Docs_for_Review__c</field>
-            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -59,19 +59,23 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Customer_type__c</field>
+                <field>OwnerId</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
+                <behavior>Edit</behavior>
                 <field>Product_line__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>RecordTypeId</field>
+                <field>Product__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Product__c</field>
+                <field>Customer_type__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>RecordTypeId</field>
             </layoutItems>
             <layoutItems>
                 <emptySpace>true</emptySpace>
@@ -83,10 +87,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Application_Source_Phase_1__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Application_Status__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -102,20 +102,16 @@
     <layoutSections>
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
-        <editHeading>false</editHeading>
-        <label>Hubspot Information</label>
-        <layoutColumns/>
-        <style>OneColumn</style>
-    </layoutSections>
-    <layoutSections>
-        <customLabel>true</customLabel>
-        <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
-        <label>Customer Information</label>
+        <label>Guarantor Information</label>
         <layoutColumns>
             <layoutItems>
                 <behavior>Required</behavior>
                 <field>Name</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Business_Title__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -126,15 +122,8 @@
                 <field>MobilePhone</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
-                <field>Company</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Partner_Name__c</field>
-            </layoutItems>
-            <layoutItems>
-                <emptySpace>true</emptySpace>
+                <behavior>Edit</behavior>
+                <field>Business_Phone__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -151,66 +140,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>ZipCode__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>LoadZone__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Utility_relationship__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Address</field>
-            </layoutItems>
-        </layoutColumns>
-        <style>TwoColumnsLeftToRight</style>
-    </layoutSections>
-    <layoutSections>
-        <customLabel>true</customLabel>
-        <detailHeading>true</detailHeading>
-        <editHeading>true</editHeading>
-        <label>Acquisition Information</label>
-        <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Partner_Lookup__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>bs_Sales_ID__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Partner_Email__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Partner_Application_Status__c</field>
-            </layoutItems>
-        </layoutColumns>
-        <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Referral_Email__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Referral_Name__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Acquired_By_Client_Closed_By_BlueWave__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Underwriting_Criteria__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>No_Payment__c</field>
+                <field>Type_of_Business__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -235,11 +165,11 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>LASERCA__Birthdate__c</field>
+                <field>Moody_s_Risk_Calc__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>LASERCA__SSN__c</field>
+                <field>LASERCA__Birthdate__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -274,17 +204,43 @@
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
-        <label>System Information</label>
+        <label>Guarantor Address</label>
         <layoutColumns>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>CreatedById</field>
+                <behavior>Edit</behavior>
+                <field>Address</field>
+            </layoutItems>
+        </layoutColumns>
+        <layoutColumns/>
+        <style>TwoColumnsLeftToRight</style>
+    </layoutSections>
+    <layoutSections>
+        <customLabel>true</customLabel>
+        <detailHeading>true</detailHeading>
+        <editHeading>true</editHeading>
+        <label>Utility Information</label>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Utility_Account_Holder_Business__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Electricity_Provider__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>LastModifiedById</field>
+                <behavior>Edit</behavior>
+                <field>ZipCode__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>LoadZone__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Utility_relationship__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -293,17 +249,60 @@
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
-        <label>Sales Communication Preferences</label>
+        <label>Interaction</label>
         <layoutColumns>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>HasOptedOutOfEmail</field>
+                <behavior>Edit</behavior>
+                <field>Last_Contact_Date__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Follow_Up_date__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>DoNotCall</field>
+                <field>Processed_By__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <style>TwoColumnsLeftToRight</style>
+    </layoutSections>
+    <layoutSections>
+        <customLabel>true</customLabel>
+        <detailHeading>true</detailHeading>
+        <editHeading>true</editHeading>
+        <label>Acquisition Information</label>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Partner_Lookup__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>bs_Sales_ID__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Partner_Email__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Referral_Email__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Underwriting_Criteria__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Partner_Application_Status__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>No_Payment__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -340,6 +339,25 @@
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
     <layoutSections>
+        <customLabel>true</customLabel>
+        <detailHeading>true</detailHeading>
+        <editHeading>true</editHeading>
+        <label>Sales Communication Preferences</label>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>HasOptedOutOfEmail</field>
+            </layoutItems>
+        </layoutColumns>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>DoNotCall</field>
+            </layoutItems>
+        </layoutColumns>
+        <style>TwoColumnsLeftToRight</style>
+    </layoutSections>
+    <layoutSections>
         <customLabel>false</customLabel>
         <detailHeading>false</detailHeading>
         <editHeading>false</editHeading>
@@ -356,6 +374,29 @@
         </layoutColumns>
         <layoutColumns/>
         <style>CustomLinks</style>
+    </layoutSections>
+    <layoutSections>
+        <customLabel>false</customLabel>
+        <detailHeading>false</detailHeading>
+        <editHeading>true</editHeading>
+        <label>Lead Information</label>
+        <layoutColumns/>
+        <layoutColumns/>
+        <style>TwoColumnsTopToBottom</style>
+    </layoutSections>
+    <layoutSections>
+        <customLabel>true</customLabel>
+        <detailHeading>true</detailHeading>
+        <editHeading>true</editHeading>
+        <label>System Information</label>
+        <layoutColumns/>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>LastModifiedById</field>
+            </layoutItems>
+        </layoutColumns>
+        <style>TwoColumnsLeftToRight</style>
     </layoutSections>
     <layoutSections>
         <customLabel>false</customLabel>
@@ -388,59 +429,79 @@
             <sortOrder>3</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
-            <actionName>Lead.Log_a_Call</actionName>
+            <actionName>Lead.Email_Contract_Re_Sign_Link</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>4</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
-            <actionName>Lead.Event</actionName>
+            <actionName>FeedItem.TextPost</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>5</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
-            <actionName>NewTask</actionName>
+            <actionName>FeedItem.ContentPost</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>6</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
-            <actionName>Task</actionName>
+            <actionName>Lead.Task</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>7</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
-            <actionName>CallHighlightAction</actionName>
-            <actionType>ProductivityAction</actionType>
+            <actionName>Lead.Log_a_Call</actionName>
+            <actionType>QuickAction</actionType>
             <sortOrder>8</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
-            <actionName>FeedItem.TextPost</actionName>
+            <actionName>Lead.Event</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>9</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
-            <actionName>FeedItem.ContentPost</actionName>
+            <actionName>FeedItem.LinkPost</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>10</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
-            <actionName>Lead.Task</actionName>
+            <actionName>FeedItem.PollPost</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>11</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
-            <actionName>EmailHighlightAction</actionName>
-            <actionType>ProductivityAction</actionType>
+            <actionName>Submit</actionName>
+            <actionType>StandardButton</actionType>
             <sortOrder>12</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
-            <actionName>SendEmail</actionName>
-            <actionType>QuickAction</actionType>
+            <actionName>Delete</actionName>
+            <actionType>StandardButton</actionType>
             <sortOrder>13</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
-            <actionName>Lead.Email_Contract_Re_Sign_Link</actionName>
-            <actionType>QuickAction</actionType>
+            <actionName>Clone</actionName>
+            <actionType>StandardButton</actionType>
             <sortOrder>14</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>PrintableView</actionName>
+            <actionType>StandardButton</actionType>
+            <sortOrder>15</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>CallHighlightAction</actionName>
+            <actionType>ProductivityAction</actionType>
+            <sortOrder>16</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>SmsHighlightAction</actionName>
+            <actionType>ProductivityAction</actionType>
+            <sortOrder>17</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>EmailHighlightAction</actionName>
+            <actionType>ProductivityAction</actionType>
+            <sortOrder>18</sortOrder>
         </platformActionListItems>
     </platformActionList>
     <quickActionList>
@@ -468,9 +529,6 @@
         <quickActionListItems>
             <quickActionName>SendEmail</quickActionName>
         </quickActionListItems>
-        <quickActionListItems>
-            <quickActionName>Task</quickActionName>
-        </quickActionListItems>
     </quickActionList>
     <relatedContent>
         <relatedContentItems>
@@ -489,11 +547,21 @@
         <relatedList>Case.Lead_Lookup__c</relatedList>
     </relatedLists>
     <relatedLists>
+        <fields>OPPORTUNITY.NAME</fields>
         <fields>ACCOUNT.NAME</fields>
-        <fields>ACCOUNT.ADDRESS1_STREET</fields>
-        <fields>ACCOUNT.ADDRESS1_CITY</fields>
-        <fields>ACCOUNT.ADDRESS1_STATE_CODE</fields>
-        <fields>ACCOUNT.PHONE1</fields>
+        <fields>OPPORTUNITY.STAGE_NAME</fields>
+        <fields>Shared_Solar_System__c</fields>
+        <fields>Contract_Close_Date__c</fields>
+        <fields>Total_Subscribed_kW_DC__c</fields>
+        <fields>Customer_Group__c</fields>
+        <relatedList>Opportunity.Lead__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>ACCOUNT.NAME</fields>
+        <fields>ACCOUNT.ADDRESS2_STREET</fields>
+        <fields>ACCOUNT.ADDRESS2_STATE_CODE</fields>
+        <fields>ACCOUNT.ADDRESS2_CITY</fields>
+        <fields>ACCOUNT.ADDRESS2_ZIP</fields>
         <relatedList>Account.Lead__c</relatedList>
     </relatedLists>
     <relatedLists>
@@ -515,9 +583,6 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
-        <fields>Approval_Status__c</fields>
-        <fields>Debt_to_Income_Approval__c</fields>
-        <fields>Solar_Loan_Approval__c</fields>
         <fields>CREATED_DATE</fields>
         <relatedList>LASERCA__Personal_Credit_Report__c.LASERCA__Lead__c</relatedList>
         <sortField>CREATED_DATE</sortField>
@@ -546,42 +611,16 @@
         <relatedList>RelatedHistoryList</relatedList>
     </relatedLists>
     <relatedLists>
-        <fields>NAME</fields>
-        <relatedList>et4ae5__IndividualEmailResult__c.et4ae5__Lead__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <fields>et4ae5__EmailName__c</fields>
-        <fields>et4ae5__fBusiness_Unit__c</fields>
-        <fields>et4ae5__Created_Date_Time__c</fields>
-        <fields>et4ae5__Send_Status_View__c</fields>
-        <fields>et4ae5__Status_Date_Time__c</fields>
-        <fields>et4ae5__FromName__c</fields>
-        <fields>et4ae5__FromEmail__c</fields>
-        <fields>et4ae5__Campaigns__c</fields>
-        <fields>et4ae5__Reports__c</fields>
-        <relatedList>et4ae5__SendDefinition__c.et4ae5__Lead__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>CAMPAIGN.NAME</fields>
-        <fields>CAMPAIGN.START_DATE</fields>
-        <fields>CAMPAIGN.CAMPAIGN_TYPE</fields>
-        <fields>CM.STATUS</fields>
-        <fields>CM.RESPONDED</fields>
-        <fields>CM.LAST_UPDATE</fields>
-        <relatedList>RelatedCampaignList</relatedList>
-    </relatedLists>
-    <relatedLists>
         <relatedList>RelatedEntityHistoryList</relatedList>
     </relatedLists>
-    <runAssignmentRulesDefault>true</runAssignmentRulesDefault>
+    <runAssignmentRulesDefault>false</runAssignmentRulesDefault>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
     <showInteractionLogPanel>false</showInteractionLogPanel>
     <showRunAssignmentRulesCheckbox>true</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00hj0000006UtnY</masterLabel>
+        <masterLabel>00hj000000BEbp6</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

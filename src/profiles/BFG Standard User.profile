@@ -50248,15 +50248,19 @@
         <recordType>Knowledge__kav.Solution</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Lead-BFG - Community Solar %28Commercial%29</layout>
+        <layout>Lead-BFG - Community Solar - Commercial</layout>
         <recordType>Lead.BFG_Community_Solar_Anchor</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Lead-BFG - Community Solar %28Commercial%29</layout>
+        <layout>Lead-BFG - Community Solar - Commercial</layout>
         <recordType>Lead.BFG_Community_Solar_Business</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Lead-BFG - Community Solar %28Residential%29</layout>
+        <layout>Lead-BFG - Community Solar - Residential</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Lead-BFG - Community Solar - Residential</layout>
+        <recordType>Lead.BFG_Community_Solar</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-BFG - DOER Solar Loan</layout>
