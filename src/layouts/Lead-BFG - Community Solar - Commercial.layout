@@ -547,6 +547,16 @@
         <relatedList>Case.Lead_Lookup__c</relatedList>
     </relatedLists>
     <relatedLists>
+        <fields>OPPORTUNITY.NAME</fields>
+        <fields>ACCOUNT.NAME</fields>
+        <fields>OPPORTUNITY.STAGE_NAME</fields>
+        <fields>Shared_Solar_System__c</fields>
+        <fields>Contract_Close_Date__c</fields>
+        <fields>Total_Subscribed_kW_DC__c</fields>
+        <fields>Customer_Group__c</fields>
+        <relatedList>Opportunity.Lead__c</relatedList>
+    </relatedLists>
+    <relatedLists>
         <fields>ACCOUNT.NAME</fields>
         <fields>ACCOUNT.ADDRESS2_STREET</fields>
         <fields>ACCOUNT.ADDRESS2_STATE_CODE</fields>
@@ -573,9 +583,6 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
-        <fields>Approval_Status__c</fields>
-        <fields>Debt_to_Income_Approval__c</fields>
-        <fields>Solar_Loan_Approval__c</fields>
         <fields>CREATED_DATE</fields>
         <relatedList>LASERCA__Personal_Credit_Report__c.LASERCA__Lead__c</relatedList>
         <sortField>CREATED_DATE</sortField>
