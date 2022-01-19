@@ -1125,101 +1125,6 @@ IF( Month(CloseDate) = 12, &apos;December&apos;, null))))))))))))</formula>
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Co_Applicant_Address__c</fullName>
-        <externalId>false</externalId>
-        <label>Co-Applicant Address</label>
-        <length>100</length>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Co_Applicant_Date_of_Birth__c</fullName>
-        <externalId>false</externalId>
-        <label>Co-Applicant Date of Birth</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Co_Applicant_Email__c</fullName>
-        <externalId>false</externalId>
-        <label>Co-Applicant Email</label>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Email</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Co_Applicant_First_Name__c</fullName>
-        <externalId>false</externalId>
-        <label>Co-Applicant First Name</label>
-        <length>20</length>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Co_Applicant_Full_Name__c</fullName>
-        <externalId>false</externalId>
-        <formula>Co_Applicant_First_Name__c + &quot; &quot; + Co_Applicant_Last_Name__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Co-Applicant Full Name</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Co_Applicant_Last_Name__c</fullName>
-        <externalId>false</externalId>
-        <label>Co-Applicant Last Name</label>
-        <length>20</length>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Co_Applicant_Phone__c</fullName>
-        <externalId>false</externalId>
-        <label>Co-Applicant Phone</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Phone</type>
-    </fields>
-    <fields>
-        <fullName>Co_Applicant_Signature_Status__c</fullName>
-        <externalId>false</externalId>
-        <label>Co-Applicant Signature Status</label>
-        <length>15</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Comments__c</fullName>
         <externalId>false</externalId>
         <label>Comments</label>
@@ -3296,20 +3201,6 @@ IF(INCLUDES(Customer_Type__c, &quot;Private Affordable&quot;),&quot;Error&quot;,
         <referenceTo>LASERCA__Personal_Credit_Report__c</referenceTo>
         <relationshipLabel>Opportunities (Personal Credit Report)</relationshipLabel>
         <relationshipName>Opportunities2</relationshipName>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>Personal_Credit_Report_Co_Applicant__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Personal Credit Report (Co-Applicant)</label>
-        <referenceTo>LASERCA__Personal_Credit_Report__c</referenceTo>
-        <relationshipLabel>Opportunities (Personal Credit Report (Co-Applicant))</relationshipLabel>
-        <relationshipName>Opportunities</relationshipName>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -5470,7 +5361,6 @@ TEXT( Load_Zone_Utility_4__c  ) = &apos;Manual Lookup Required&apos;,
         <columns>Email__c</columns>
         <columns>Community_Solar_State__c</columns>
         <columns>Personal_Credit_Report2__c</columns>
-        <columns>Personal_Credit_Report_Co_Applicant__c</columns>
         <filterScope>Everything</filterScope>
         <filters>
             <field>Product_Line__c</field>
@@ -5717,7 +5607,6 @@ TEXT( Load_Zone_Utility_4__c  ) = &apos;Manual Lookup Required&apos;,
         <columns>Email__c</columns>
         <columns>Community_Solar_State__c</columns>
         <columns>Personal_Credit_Report2__c</columns>
-        <columns>Personal_Credit_Report_Co_Applicant__c</columns>
         <filterScope>Everything</filterScope>
         <filters>
             <field>Product_Line__c</field>
@@ -5890,7 +5779,6 @@ TEXT( Load_Zone_Utility_4__c  ) = &apos;Manual Lookup Required&apos;,
         <columns>OPPORTUNITY.NAME</columns>
         <columns>Lead_Status__c</columns>
         <columns>OPPORTUNITY.STAGE_NAME</columns>
-        <columns>Co_Applicant_Signature_Status__c</columns>
         <columns>Partner_Sales_Agreement_Status__c</columns>
         <columns>Comments__c</columns>
         <filterScope>Everything</filterScope>
@@ -7058,24 +6946,6 @@ COPY THE URL FROM THIS BUTTON and paste it into your own custom button or link. 
             }</url>
     </webLinks>
     <webLinks>
-        <fullName>New_Amortization_Schedule</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <linkType>javascript</linkType>
-        <masterLabel>New Amortization Schedule</masterLabel>
-        <openType>onClickJavaScript</openType>
-        <protected>false</protected>
-        <url>{!requireScript(&quot;/soap/ajax/30.0/connection.js&quot;)} 
-{!requireScript(&quot;/soap/ajax/30.0/apex.js&quot;)} 
-
-
-var newwindow = window.open( 
-&apos;apex/AmortizationSchedule?scontrolCaching=1&amp;id={!Opportunity.Id}&apos;, 
-&quot;Amortization Schedule&quot;, 
-&apos;scrollbars=yes,toolbar=no,status=no,location=no&apos;); 
-newwindow.focus();</url>
-    </webLinks>
-    <webLinks>
         <fullName>New_Customer_Care_Case</fullName>
         <availability>online</availability>
         <displayType>button</displayType>
@@ -7119,160 +6989,6 @@ newwindow.focus();</url>
         <showsLocation>false</showsLocation>
         <showsStatus>false</showsStatus>
         <url>/flow/CS_QC_Task_Flow?varOppID={!Opportunity.Id}&amp;retURL={!Opportunity.Id}</url>
-    </webLinks>
-    <webLinks>
-        <fullName>Send_Contract_Click_to_Sign</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <encodingKey>UTF-8</encodingKey>
-        <linkType>url</linkType>
-        <masterLabel>Send Contract (Click to Sign NY)</masterLabel>
-        <openType>replace</openType>
-        <protected>false</protected>
-        <url>{!URLFOR(&apos;/apex/dsfs__DocuSign_CreateEnvelope&apos;, null, [
-SourceID = Opportunity.Id,
-CCRM = &apos;R3~CustomerCC&apos;,
-CCTM = &apos;R3~CarbonCopy&apos;,
-CRL = &apos;Email~&apos;+ Opportunity.Email__c +&apos;;LastName~&apos;+ Opportunity.Parent_Account_Name__c +&apos;;Role~R3&apos;,
-DST =  &apos;{!Environment.VAR_DSENVELOPE_CPP}&apos;,
-LA = &apos;0&apos;,
-LF = &apos;0&apos;,
-OCO = &apos;Tag&apos;
-]
-)}</url>
-    </webLinks>
-    <webLinks>
-        <fullName>Send_Partner_Documents</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <linkType>javascript</linkType>
-        <masterLabel>Send SSA/Partner Documents</masterLabel>
-        <openType>onClickJavaScript</openType>
-        <protected>false</protected>
-        <url>{!REQUIRESCRIPT(&quot;/apex/dsfs__DocuSign_JavaScript&quot;)} 
-
-//********* Option Declarations (Do not modify )*********// 
-var RC = &apos;&apos;;var RSL=&apos;&apos;;var RSRO=&apos;&apos;;var RROS=&apos;&apos;;var CCRM=&apos;&apos;;var CCTM=&apos;&apos;;var CCNM=&apos;&apos;;var CRCL=&apos;&apos;;var CRL=&apos;&apos;;var OCO=&apos;&apos;;var DST=&apos;&apos;;var LA=&apos;&apos;;var CEM=&apos;&apos;;var CES=&apos;&apos;;var STB=&apos;&apos;;var SSB=&apos;&apos;;var SES=&apos;&apos;;var SEM=&apos;&apos;;var SRS=&apos;&apos;;var SCS =&apos;&apos;;var RES=&apos;&apos;; 
-//*************************************************// 
-
-CES=&apos;{!Opportunity.Account} Documents to Sign&apos;; //Custom Email Subject 
-CEM=&apos;Please Review and Sign these Documents&apos;; //Custom Email Message 
-
-var State = &quot;{!Opportunity.State_Multiselect__c}&quot;; 
-if (State === &quot;SC&quot;) { 
-DST = &apos;AA7BCB2E-36FA-4A30-9F22-3BCCAFD44AB6&apos;; 
-} else if (State === &quot;NC&quot;) { 
-DST = &apos;AA7BCB2E-36FA-4A30-9F22-3BCCAFD44AB6&apos;; 
-} else if (State === &quot;FL&quot;) { 
-DST = &apos;fd94d84c-dc17-4362-81a9-3358339fd431&apos;; 
-} else if (State === &quot;MA&quot;) { 
-DST = &apos;CFB9A3F8-B508-4A7D-8479-5B9FBDC1AF92&apos;; 
-} else if (State === &quot;RI&quot;) {
-DST = &apos;E5318822-096D-4B3B-A9A3-9B0652CF7373&apos;; 
-} else {
-alert(&apos;Please fill in the State Abbreviation field with the appropriate state before trying to send the documents.&apos;)
-};
-
-
-
-CRL=&apos;Email~{!Opportunity.Contact_Email__c};Role~R1;LastName~{!Opportunity.Contact_Name__c};,Email~egraberlopez@bluewavesolar.com;Role~R2;LastName~Eric Graber-Lopez;,Email~sales@bluewavesolar.com;Role~R3;LastName~BlueWave Sales;,&apos; //Custom Recipient List  
-
-CCRM=&apos;R1~Signer 1;R2~Signer 2;R3~Recipient 3&apos;; //Custom Role Map 
-
-
-OCO=&apos;Tag&apos;; //On Click Options 
-
-//********* Page Callout (Do not modify) *********// 
-window.location.href =&quot;/apex/dsfs__DocuSign_CreateEnvelope?DSEID=0&amp;SourceID={!Opportunity.Id}&amp;RC=&quot;+RC+&quot;&amp;RSL=&quot;+RSL+&quot;&amp;RSRO=&quot;+RSRO+&quot;&amp;RROS=&quot;+RROS+&quot;&amp;CCRM=&quot;+CCRM+&quot;&amp;CCTM=&quot;+CCTM+&quot;&amp;CRCL=&quot;+CRCL+&quot;&amp;CRL=&quot;+CRL+&quot;&amp;OCO=&quot;+OCO+&quot;&amp;DST=&quot;+DST+&quot;&amp;CCNM=&quot;+CCNM+&quot;&amp;LA=&quot;+LA+&quot;&amp;CEM=&quot;+CEM+&quot;&amp;CES=&quot;+CES+&quot;&amp;SRS=&quot;+SRS+&quot;&amp;STB=&quot;+STB+&quot;&amp;SSB=&quot;+SSB+&quot;&amp;SES=&quot;+SES+&quot;&amp;SEM=&quot;+SEM+&quot;&amp;SRS=&quot;+SRS+&quot;&amp;SCS=&quot;+SCS+&quot;&amp;RES=&quot;+RES;
-//*******************************************// 
-
-{!REQUIRESCRIPT(&quot;/soap/ajax/27.0/connection.js&quot;)} 
-var objCase = new sforce.SObject(&apos;opportunity&apos;); 
-
-objCase.Id = &apos;{!Opportunity.Id}&apos;; 
-
-var result = sforce.connection.update([objCase]); 
-
-{!requireScript(&quot;/soap/ajax/30.0/connection.js&quot;)} 
-{!requireScript(&quot;/soap/ajax/30.0/apex.js&quot;)}</url>
-    </webLinks>
-    <webLinks>
-        <fullName>Send_SSA</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <linkType>javascript</linkType>
-        <masterLabel>Send SSA</masterLabel>
-        <openType>onClickJavaScript</openType>
-        <protected>false</protected>
-        <url>{!REQUIRESCRIPT(&quot;/apex/dsfs__DocuSign_JavaScript&quot;)} 
-
-//********* Option Declarations (Do not modify )*********// 
-var RC = &apos;&apos;;var RSL=&apos;&apos;;var RSRO=&apos;&apos;;var RROS=&apos;&apos;;var CCRM=&apos;&apos;;var CCTM=&apos;&apos;;var CCNM=&apos;&apos;;var CRCL=&apos;&apos;;var CRL=&apos;&apos;;var OCO=&apos;&apos;;var DST=&apos;&apos;;var LA=&apos;&apos;;var CEM=&apos;&apos;;var CES=&apos;&apos;;var STB=&apos;&apos;;var SSB=&apos;&apos;;var SES=&apos;&apos;;var SEM=&apos;&apos;;var SRS=&apos;&apos;;var SCS =&apos;&apos;;var RES=&apos;&apos;; 
-//*************************************************// 
-
-CES=&apos;{!Opportunity.Account} Documents to Sign&apos;; //Custom Email Subject 
-CEM=&apos;Please Review and Sign these Documents&apos;; //Custom Email Message 
-
-var State = &quot;{!Opportunity.State_Multiselect__c}&quot;; 
-if(State.indexOf(&quot;SC&quot;) !== -1){ 
-DST = &apos;D68A826F-97D1-4E84-ADF9-E8D337A9E63A&apos;; 
-} else if(State.indexOf(&quot;NC&quot;) !== -1){ 
-DST = &apos;D68A826F-97D1-4E84-ADF9-E8D337A9E63A&apos;;
-} else if (State === &quot;MA&quot;) { 
-DST = &apos;B33C23E1-3C34-45BA-8E75-863C2FF6CB9C&apos;; 
-} else if (State === &quot;FL&quot;) { 
-DST = &apos;fd94d84c-dc17-4362-81a9-3358339fd431&apos;; 
-} else if (State === &quot;NY&quot;) { 
-DST = &apos;727352b8-e272-48b9-881e-406d59a8c629&apos;;
-} else if (State === &quot;RI&quot;) { 
-DST = &apos;E8F71663-A615-42D4-A2B6-72285F619E99&apos;; 
-} else if((State.indexOf(&quot;RI&quot;) !== -1) &amp;&amp; (State.indexOf(&quot;MA&quot;)) !== -1) {
-DST = &apos;138B7428-BDA8-4AEC-BD40-0962BB5C20E3&apos;; 
-} else { 
-alert(&apos;Please fill in the State Multiselect field with the appropriate state(s) before trying to send the documents. If the state you are looking for is not there, please contact your system administrator.&apos;) 
-}; 
-
-
-
-CRL=&apos;Email~{!Opportunity.Contact_Email__c};Role~R1;LastName~{!Opportunity.Contact_Name__c};,Email~egraberlopez@bluewavesolar.com;Role~R2;LastName~Eric Graber-Lopez;,Email~sales@bluewavesolar.com;Role~R3;LastName~BlueWave Sales;,&apos; //Custom Recipient List 
-
-CCRM=&apos;R1~Signer 1;R2~Signer 2;R3~Recipient 3&apos;; //Custom Role Map 
-
-
-OCO=&apos;Tag&apos;; //On Click Options 
-
-//********* Page Callout (Do not modify) *********// 
-window.location.href =&quot;/apex/dsfs__DocuSign_CreateEnvelope?DSEID=0&amp;SourceID={!Opportunity.Id}&amp;RC=&quot;+RC+&quot;&amp;RSL=&quot;+RSL+&quot;&amp;RSRO=&quot;+RSRO+&quot;&amp;RROS=&quot;+RROS+&quot;&amp;CCRM=&quot;+CCRM+&quot;&amp;CCTM=&quot;+CCTM+&quot;&amp;CRCL=&quot;+CRCL+&quot;&amp;CRL=&quot;+CRL+&quot;&amp;OCO=&quot;+OCO+&quot;&amp;DST=&quot;+DST+&quot;&amp;CCNM=&quot;+CCNM+&quot;&amp;LA=&quot;+LA+&quot;&amp;CEM=&quot;+CEM+&quot;&amp;CES=&quot;+CES+&quot;&amp;SRS=&quot;+SRS+&quot;&amp;STB=&quot;+STB+&quot;&amp;SSB=&quot;+SSB+&quot;&amp;SES=&quot;+SES+&quot;&amp;SEM=&quot;+SEM+&quot;&amp;SRS=&quot;+SRS+&quot;&amp;SCS=&quot;+SCS+&quot;&amp;RES=&quot;+RES;
-//*******************************************// 
-
-{!REQUIRESCRIPT(&quot;/soap/ajax/27.0/connection.js&quot;)} 
-var objCase = new sforce.SObject(&apos;opportunity&apos;); 
-
-objCase.Id = &apos;{!Opportunity.Id}&apos;; 
-
-var result = sforce.connection.update([objCase]); 
-
-{!requireScript(&quot;/soap/ajax/30.0/connection.js&quot;)} 
-{!requireScript(&quot;/soap/ajax/30.0/apex.js&quot;)}</url>
-    </webLinks>
-    <webLinks>
-        <fullName>System_Capacity</fullName>
-        <availability>online</availability>
-        <displayType>link</displayType>
-        <encodingKey>UTF-8</encodingKey>
-        <hasMenubar>false</hasMenubar>
-        <hasScrollbars>true</hasScrollbars>
-        <hasToolbar>false</hasToolbar>
-        <height>600</height>
-        <isResizable>true</isResizable>
-        <linkType>url</linkType>
-        <masterLabel>System Capacity</masterLabel>
-        <openType>newWindow</openType>
-        <position>none</position>
-        <protected>false</protected>
-        <showsLocation>false</showsLocation>
-        <showsStatus>false</showsStatus>
-        <url>&quot;/00Oj00000048Tw3?pv0={!Opportunity.Shared_Solar_System_Name__c}</url>
     </webLinks>
     <webLinks>
         <fullName>dsfs__Send_with_DocuSign</fullName>

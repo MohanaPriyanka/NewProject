@@ -1008,21 +1008,6 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Average_FICO__c</fullName>
-        <businessStatus>Active</businessStatus>
-        <externalId>false</externalId>
-        <formula>(Personal_Credit_Report__r.Credit_Score_Integer__c + Personal_Credit_Report_Co_Applicant__r.Credit_Score_Integer__c)/2</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Average FICO</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <securityClassification>Restricted</securityClassification>
-        <trackHistory>false</trackHistory>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Avidia_Checking_Account__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -1394,224 +1379,6 @@ Specify the global country code setting or record level country code to automati
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>Co_App_Adverse_Credit_Notice_1__c</fullName>
-        <externalId>false</externalId>
-        <formula>TEXT(Personal_Credit_Report_Co_Applicant__r.Adverse_Credit_Notice_1__c)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Co App Adverse Credit Notice (1)</label>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Co_App_Adverse_Credit_Notice_2__c</fullName>
-        <externalId>false</externalId>
-        <formula>TEXT( Personal_Credit_Report_Co_Applicant__r.Adverse_Credit_Notice_2__c )</formula>
-        <label>Co App Adverse Credit Notice 2</label>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Co_App_Adverse_Credit_Notice_3__c</fullName>
-        <externalId>false</externalId>
-        <formula>TEXT(Personal_Credit_Report_Co_Applicant__r.Adverse_Credit_Notice_3__c )</formula>
-        <label>Co App Adverse Credit Notice 3</label>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Co_App_Credit_Report_Detail_1_c__c</fullName>
-        <externalId>false</externalId>
-        <formula>Personal_Credit_Report_Co_Applicant__r.LASERCA__Code__c &amp; &quot; - &quot; &amp; Personal_Credit_Report_Co_Applicant__r.LASERCA__Detail_1__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Co App Credit Report Detail 1</label>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Co_App_Credit_Report_Detail_2__c</fullName>
-        <externalId>false</externalId>
-        <formula>Personal_Credit_Report_Co_Applicant__r.LASERCA__Code_2__c &amp; &quot; - &quot; &amp; Personal_Credit_Report_Co_Applicant__r.LASERCA__Detail_2__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Co App Credit Report Detail 2</label>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Co_App_Credit_Report_Detail_3__c</fullName>
-        <externalId>false</externalId>
-        <formula>Personal_Credit_Report_Co_Applicant__r.LASERCA__Code_3__c &amp; &quot; - &quot; &amp; Personal_Credit_Report_Co_Applicant__r.LASERCA__Detail_3__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Co App Credit Report Detail 3</label>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Co_App_Credit_Report_Detail_4__c</fullName>
-        <externalId>false</externalId>
-        <formula>Personal_Credit_Report_Co_Applicant__r.LASERCA__Code_4__c &amp; &quot; - &quot; &amp; Personal_Credit_Report_Co_Applicant__r.LASERCA__Detail_4__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Co App Credit Report Detail 4</label>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Co_App_Credit_Report_Detail_5__c</fullName>
-        <description>Set by LoanUnderwriting.updateManualCreditDecline when the adverse notice is sent to the lead or co-applicant through the Lead buttons or Loan Underwriting VF page.
-
-This field can be changed to a formula consistent with the other factors if LASERCA adds the fifth code.</description>
-        <externalId>false</externalId>
-        <label>Co App Credit Report Detail 5</label>
-        <length>255</length>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Co_App_Date_of_Credit_Report__c</fullName>
-        <externalId>false</externalId>
-        <formula>Personal_Credit_Report_Co_Applicant__r.LASERCA__Date_of_Credit_Report__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Co App Date of Credit Report</label>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackHistory>false</trackHistory>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Co_App_FICO__c</fullName>
-        <externalId>false</externalId>
-        <formula>Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c</formula>
-        <label>Co App FICO</label>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Co_App_Manual_Credit_Decline__c</fullName>
-        <defaultValue>false</defaultValue>
-        <description>This box is checked when you press the Co Applicant Email Credit Decline button on the lead</description>
-        <externalId>false</externalId>
-        <inlineHelpText>This box is checked when you press the Co Applicant Email Credit Decline button on the lead</inlineHelpText>
-        <label>Co App Manual Credit Decline</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Co_Applicant_Address__c</fullName>
-        <externalId>false</externalId>
-        <label>Co-Applicant Address</label>
-        <length>100</length>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Co_Applicant_Date_of_Birth__c</fullName>
-        <externalId>false</externalId>
-        <label>Co-Applicant Date of Birth</label>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Co_Applicant_Email__c</fullName>
-        <externalId>false</externalId>
-        <label>Co-Applicant Email</label>
-        <required>false</required>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Email</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Co_Applicant_First_Name__c</fullName>
-        <externalId>false</externalId>
-        <label>Co-Applicant First Name</label>
-        <length>20</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Co_Applicant_Income__c</fullName>
-        <externalId>false</externalId>
-        <label>Co-Applicant Income</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <securityClassification>Restricted</securityClassification>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Co_Applicant_Last_Name__c</fullName>
-        <externalId>false</externalId>
-        <label>Co-Applicant Last Name</label>
-        <length>20</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Co_Applicant_Phone__c</fullName>
-        <externalId>false</externalId>
-        <label>Co-Applicant Phone</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Phone</type>
-    </fields>
-    <fields>
-        <fullName>Co_Applicant_Social_Security__c</fullName>
-        <externalId>false</externalId>
-        <label>xxxCo-Applicant Social Security</label>
-        <length>15</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Comments__c</fullName>
@@ -2184,15 +1951,6 @@ This field can be changed to a formula consistent with the other factors if LASE
         <fullName>Email</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
-    </fields>
-    <fields>
-        <fullName>Email_Co_Applicant_Form_Sent__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Email Co-Applicant Form Sent</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Email_Helper_Map__c</fullName>
@@ -3542,18 +3300,6 @@ TEXT( LZU__c ) = &apos;Manual Lookup Required&apos;,
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>PCR_Percentile_Co_App__c</fullName>
-        <externalId>false</externalId>
-        <formula>Personal_Credit_Report_Co_Applicant__r.LASERCA__Ranking__c</formula>
-        <label>PCR Percentile Co App</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <securityClassification>Restricted</securityClassification>
-        <trackHistory>false</trackHistory>
-        <type>Percent</type>
-    </fields>
-    <fields>
         <fullName>PCR_Percentile__c</fullName>
         <externalId>false</externalId>
         <formula>Personal_Credit_Report__r.LASERCA__Ranking__c</formula>
@@ -3791,19 +3537,6 @@ TEXT( LZU__c ) = &apos;Manual Lookup Required&apos;,
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Personal_Credit_Report_Co_Applicant__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Personal Credit Report (Co-Applicant)</label>
-        <referenceTo>LASERCA__Personal_Credit_Report__c</referenceTo>
-        <relationshipLabel>Leads (Personal Credit Report (Co-Applicant))</relationshipLabel>
-        <relationshipName>Leads2</relationshipName>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Personal_Credit_Report__c</fullName>
@@ -7077,7 +6810,6 @@ SEMA = 13 -14</inlineHelpText>
         <columns>Product_line__c</columns>
         <columns>LEAD.LAST_ACTIVITY</columns>
         <columns>LEAD.STATE_CODE</columns>
-        <columns>Co_Applicant_First_Name__c</columns>
         <filterScope>Everything</filterScope>
         <filters>
             <field>Product_line__c</field>
@@ -25978,29 +25710,6 @@ COPY THE URL FROM THIS BUTTON and paste it into your own custom button or link. 
         <width>900</width>
     </webLinks>
     <webLinks>
-        <fullName>Check_Loadzone</fullName>
-        <availability>online</availability>
-        <description>Use the following URL to check the customer&apos;s Load Zone. 
-WCMA = 8,9,10
-NEMA = 11,12
-SEMA = 13,14</description>
-        <displayType>button</displayType>
-        <encodingKey>UTF-8</encodingKey>
-        <hasMenubar>false</hasMenubar>
-        <hasScrollbars>true</hasScrollbars>
-        <hasToolbar>false</hasToolbar>
-        <height>600</height>
-        <isResizable>true</isResizable>
-        <linkType>url</linkType>
-        <masterLabel>Check Load Zone</masterLabel>
-        <openType>newWindow</openType>
-        <position>none</position>
-        <protected>false</protected>
-        <showsLocation>false</showsLocation>
-        <showsStatus>false</showsStatus>
-        <url>http://www.iso-ne.com/markets-operations/markets/forward-capacity-market/zone-determination</url>
-    </webLinks>
-    <webLinks>
         <fullName>ClickToDial__Enable_Click_to_Call</fullName>
         <availability>online</availability>
         <displayType>link</displayType>
@@ -26011,67 +25720,6 @@ SEMA = 13,14</description>
         <url>{!REQUIRESCRIPT(&quot;/soap/ajax/20.0/connection.js&quot;)} 
 {!REQUIRESCRIPT(&quot;/soap/ajax/20.0/apex.js&quot;)} 
 {!REQUIRESCRIPT(&quot;/resource/1290987267000/ClickToDial__Createtask&quot;)}</url>
-    </webLinks>
-    <webLinks>
-        <fullName>Continue_Loan_Application</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <encodingKey>UTF-8</encodingKey>
-        <hasMenubar>false</hasMenubar>
-        <hasScrollbars>true</hasScrollbars>
-        <hasToolbar>false</hasToolbar>
-        <height>600</height>
-        <isResizable>true</isResizable>
-        <linkType>url</linkType>
-        <masterLabel>Continue Loan Application</masterLabel>
-        <openType>newWindow</openType>
-        <position>none</position>
-        <protected>false</protected>
-        <showsLocation>false</showsLocation>
-        <showsStatus>false</showsStatus>
-        <url>https://forms.bluewaverenewables.com/381478?tfa_541={!Lead.Lead_ID__c}&amp;tfa_3={!Lead.FirstName}&amp;tfa_92={!Lead.LastName}&amp;tfa_529={!Lead.Email}&amp;tfa_531={!Lead.Custom_ID__c}&amp;tfa_542=&quot;Yes&quot;&amp;tfa_545={!Lead.Street}&amp;tfa_546={!Lead.City}&amp;tfa_547={!Lead.State}&amp;tfa_548={!Lead.PostalCode}&amp;tfa_549={!Lead.CoApplicant_ContactId__c}&amp;tfa_551={!Lead.Co_Applicant_Last_Name__c}&amp;tfa_550={!Lead.Co_Applicant_First_Name__c}&amp;tfa_553</url>
-    </webLinks>
-    <webLinks>
-        <fullName>Email_Credit_Decline</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <linkType>javascript</linkType>
-        <masterLabel>Email - Credit Decline</masterLabel>
-        <openType>onClickJavaScript</openType>
-        <protected>false</protected>
-        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/27.0/connection.js&quot;)} 
-{!REQUIRESCRIPT(&quot;/soap/ajax/27.0/apex.js&quot;)} 
-
-
-if({!ISBLANK(Lead.Adverse_Credit_Notice_1__c)}) {
-   alert(&quot;ADVERSE CREDIT NOTICE NOT SENT - PLEASE PROVIDE CONTENT FOR THE ADVERSE CREDIT NOTICE IN THE PERSONAL CREDIT REPORT&quot;);
-} else if({!ISBLANK(Lead.Adverse_Credit_Notice_Code_1__c )}) {
-   alert(&quot;ADVERSE CREDIT NOTICE NOT SENT - PLEASE MANUALLY ENTER CREDIT DENIAL CODES FROM PDF ATTACHMENT ON CREDIT REPORT&quot;);
-} else {
-
-   var objLead = new sforce.SObject(&apos;lead&apos;); 
-   objLead.Id = &apos;{!Lead.Id}&apos;;
-   sforce.apex.execute(&quot;LoanUnderwriting&quot;,
-                       &quot;updateManualCreditDecline&quot;,
-                       {lead:objLead, coApplicant:false});
-   alert(&apos;The Adverse Credit Notice has been sent.&apos;);
-}</url>
-    </webLinks>
-    <webLinks>
-        <fullName>Email_Waitlist</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <linkType>javascript</linkType>
-        <masterLabel>Email - Waitlist</masterLabel>
-        <openType>onClickJavaScript</openType>
-        <protected>false</protected>
-        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/27.0/connection.js&quot;)} 
-var objCase = new sforce.SObject(&apos;lead&apos;); 
-
-objCase.Id = &apos;{!Lead.Id}&apos;; 
-objCase.Manual_waitlist__c = true; 
-
-var result = sforce.connection.update([objCase]);</url>
     </webLinks>
     <webLinks>
         <fullName>GoogleMaps</fullName>
@@ -26395,36 +26043,6 @@ alert(&apos;You have queued a credit check, please refresh the page to check for
         <showsLocation>false</showsLocation>
         <showsStatus>false</showsStatus>
         <url>/flow/CS_QC_Task_Flow?varLeadID={!Lead.Id}&amp;retURL={!Lead.Id}</url>
-    </webLinks>
-    <webLinks>
-        <fullName>Request_Customer_Information</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <linkType>javascript</linkType>
-        <masterLabel>Request Customer Information</masterLabel>
-        <openType>onClickJavaScript</openType>
-        <protected>false</protected>
-        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/20.0/connection.js&quot;)} 
-{!REQUIRESCRIPT(&quot;/soap/ajax/20.0/apex.js&quot;)} 
-
-if (confirm(&apos;This button will change the lead status to &quot;Awaiting Information from customer&quot; and bring you to the email template for requesting additional information from a customer. If you do not want to do this, click Cancel. To Continue, click OK.&apos;)) {
-
-
-var query = &quot;select Id, Status from Lead where Id = &apos;{!Lead.Id}&apos; limit 1&quot;;
-
-var result = sforce.connection.query(query); 
-var records = result.getArray(&quot;records&quot;); 
-
-var myObj = records[0]; 
-
-var d = myObj.Status; 
-
-myObj.Status =&quot;Awaiting Info Requested from Customer&quot;; 
-var results = sforce.connection.update([myObj]);  
-window.location.href = &apos;{!$Site.BaseUrl}/_ui/core/email/author/EmailAuthor?p2_lkid={!Lead.Id}&amp;p26=customercare@bluewavesolar.com&amp;template_id=00Xj0000000aFsP&amp;retURL={!Lead.Id}&apos;;
-} else {
-
-}</url>
     </webLinks>
     <webLinks>
         <fullName>dsfs__Send_with_DocuSign</fullName>

@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
     <fieldUpdates>
-        <fullName>Contact_Record_Type_Co_Applicant</fullName>
-        <field>RecordTypeId</field>
-        <lookupValue>Contact_Co_Applicant</lookupValue>
-        <lookupValueType>RecordType</lookupValueType>
-        <name>Contact - Record Type - Co-Applicant</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>LookupValue</operation>
-        <protected>false</protected>
-    </fieldUpdates>
-    <fieldUpdates>
         <fullName>Contact_Record_Type_Community_Solar</fullName>
         <field>RecordTypeId</field>
         <lookupValue>Community_Solar_Contact</lookupValue>
@@ -20,25 +10,6 @@
         <operation>LookupValue</operation>
         <protected>false</protected>
     </fieldUpdates>
-    <rules>
-        <fullName>Contact - Record Type - Co-Applicant</fullName>
-        <actions>
-            <name>Contact_Record_Type_Co_Applicant</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <active>true</active>
-        <criteriaItems>
-            <field>Contact.Product_Line__c</field>
-            <operation>equals</operation>
-            <value>Residential Loan</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Contact.Application_Type__c</field>
-            <operation>equals</operation>
-            <value>Joint</value>
-        </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
     <rules>
         <fullName>Contact - Record Type - Community Solar</fullName>
         <actions>

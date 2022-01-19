@@ -12,16 +12,6 @@
         <template>BFG_Internal_Alerts/Partner_App_Submitted_Alert_Internal</template>
     </alerts>
     <fieldUpdates>
-        <fullName>Account_Record_Type_Residential_Loan</fullName>
-        <field>RecordTypeId</field>
-        <lookupValue>Residential_Loan</lookupValue>
-        <lookupValueType>RecordType</lookupValueType>
-        <name>Account Record Type - Residential Loan</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>LookupValue</operation>
-        <protected>false</protected>
-    </fieldUpdates>
-    <fieldUpdates>
         <fullName>Date_Email_Sent</fullName>
         <field>Date_Cancellation_Email_Sent__c</field>
         <formula>TODAY()</formula>
@@ -30,21 +20,6 @@
         <operation>Formula</operation>
         <protected>false</protected>
     </fieldUpdates>
-    <rules>
-        <fullName>RL - Account Record Type</fullName>
-        <actions>
-            <name>Account_Record_Type_Residential_Loan</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <active>true</active>
-        <criteriaItems>
-            <field>Account.Product_Line__c</field>
-            <operation>equals</operation>
-            <value>Residential Loan</value>
-        </criteriaItems>
-        <description>Changes the Account Record Type to Residential Loan</description>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
     <tasks>
         <fullName>EMAIL_LOG_Recurring_Billing_Receipt</fullName>
         <assignedTo>api@bluewavesolar.com</assignedTo>
