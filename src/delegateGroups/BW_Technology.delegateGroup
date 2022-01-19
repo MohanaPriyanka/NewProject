@@ -61,7 +61,6 @@
     <permissionSets>Work Request Change Management</permissionSets>
     <permissionSets>Lightning Email Template Report Folder Creation</permissionSets>
     <permissionSets>Full Macro Access</permissionSets>
-    <permissionSets>Loan Document Visibility</permissionSets>
     <permissionSets>Client Subscription Reporting Object Access</permissionSets>
     <permissionSets>Presence Status Access</permissionSets>
     <permissionSets>Client Reporting General Ledger Modify</permissionSets>
@@ -104,18 +103,12 @@
     <permissionSets>Import Custom Objects</permissionSets>
     <permissionSets>Standard Einstein Activity Capture</permissionSets>
     <permissionSets>Knowledge Manager</permissionSets>
-    <permissionSets>Inbox With Einstein Activity Capture</permissionSets>
-    <permissionSets>Inbox Without Einstein Activity Capture</permissionSets>
-    <permissionSets>Netsuite Project ID</permissionSets>
-    <permissionSets>Project, Construction, Incentive, Adder</permissionSets>
     <permissionSets>LASER Credit Access Site Guest User</permissionSets>
     <permissionSets>LASER Credit Access User</permissionSets>
-    <permissionSets>Project, Construction, related, Platform</permissionSets>
-    <permissionSets>Expense object (Custom)</permissionSets>
-    <permissionSets>Inspire Planner Project, child objects</permissionSets>
-    <permissionSets>Feeders</permissionSets>
     <permissionSets>CS Subscription Admin</permissionSets>
     <permissionSets>Edit Email Templates</permissionSets>
+    <permissionSets>Inbox Without Einstein Activity Capture</permissionSets>
+    <permissionSets>Inbox With Einstein Activity Capture</permissionSets>
     <permissionSets>Limit Monitoring App</permissionSets>
     <permissionSets>Lightning</permissionSets>
     <permissionSets>DocuSign Administrator</permissionSets>
