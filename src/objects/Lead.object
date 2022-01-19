@@ -26032,56 +26032,6 @@ SEMA = 13,14</description>
         <url>https://forms.bluewaverenewables.com/381478?tfa_541={!Lead.Lead_ID__c}&amp;tfa_3={!Lead.FirstName}&amp;tfa_92={!Lead.LastName}&amp;tfa_529={!Lead.Email}&amp;tfa_531={!Lead.Custom_ID__c}&amp;tfa_542=&quot;Yes&quot;&amp;tfa_545={!Lead.Street}&amp;tfa_546={!Lead.City}&amp;tfa_547={!Lead.State}&amp;tfa_548={!Lead.PostalCode}&amp;tfa_549={!Lead.CoApplicant_ContactId__c}&amp;tfa_551={!Lead.Co_Applicant_Last_Name__c}&amp;tfa_550={!Lead.Co_Applicant_First_Name__c}&amp;tfa_553</url>
     </webLinks>
     <webLinks>
-        <fullName>Disable_Enable_Emails</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <linkType>javascript</linkType>
-        <masterLabel>Disable/Enable Emails</masterLabel>
-        <openType>onClickJavaScript</openType>
-        <protected>false</protected>
-        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/27.0/connection.js&quot;)} 
-
-var objCase = new sforce.SObject(&apos;Lead&apos;); 
-objCase.Id = &apos;{!Lead.Id}&apos;; 
-
-if({!CONTAINS(Lead.Email,&quot;dis@bled.com&quot;)}){ 
-
-var email = &apos;{!Lead.Email}&apos;; 
-var newemail = email.replace(/dis@bled.com/,&quot;@&quot;); 
-objCase.Email = newemail; 
-
-var coapp = &apos;{!Lead.Co_Applicant_Email__c}&apos;; 
-var newcoapp = coapp.replace(/dis@bled.com/,&quot;@&quot;); 
-objCase.Co_Applicant_Email__c = newcoapp; 
-
-var partner = &apos;{!Lead.Partner_Email__c}&apos;; 
-var newpartner = partner.replace(/dis@bled.com/,&quot;@&quot;); 
-objCase.Partner_Email__c = newpartner; 
-
-var result = sforce.connection.update([objCase]); 
-
-alert(&apos;The Email Has Been Enabled. Please Refresh the Page.&apos;); 
-
-} else { 
-
-var email = &apos;{!Lead.Email}&apos;; 
-var newemail = email.replace(/@/,&quot;dis@bled.com&quot;); 
-objCase.Email = newemail; 
-
-var coapp = &apos;{!Lead.Co_Applicant_Email__c}&apos;; 
-var newcoapp = coapp.replace(/@/,&quot;dis@bled.com&quot;); 
-objCase.Co_Applicant_Email__c = newcoapp; 
-
-var partner = &apos;{!Lead.Partner_Email__c}&apos;; 
-var newpartner = partner.replace(/@/,&quot;dis@bled.com&quot;); 
-objCase.Partner_Email__c = newpartner; 
-
-var result = sforce.connection.update([objCase]); 
-
-alert(&apos;The Email Has Been Disabled. Please Refresh the Page.&apos;); 
-}</url>
-    </webLinks>
-    <webLinks>
         <fullName>Email_Credit_Decline</fullName>
         <availability>online</availability>
         <displayType>button</displayType>
