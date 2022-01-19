@@ -28,11 +28,6 @@ public with sharing class OpportunitiesSelectorTest {
         System.assert(OpportunitiesSelector.selectAllCompleteCSWithUASesAndSystemBills().size() > 0, 'Expected Complete CS Opps');
     }
 
-    @IsTest public static void testSelectForContractSend() {
-        Opportunity opp = [SELECT Id FROM Opportunity LIMIT 1];
-        System.assertNotEquals(null, OpportunitiesSelector.selectForContractSend(opp.Id));
-    }
-
     @IsTest
     public static void testSelectForMap() {
         List<Opportunity> opps = [SElECT Id FROM Opportunity LIMIT 3];

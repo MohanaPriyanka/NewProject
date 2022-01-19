@@ -2,7 +2,6 @@
 <Layout xmlns="http://soap.sforce.com/2006/04/metadata">
     <customButtons>LASER_Credit_Access_Custom</customButtons>
     <customButtons>Disable_Enable_Emails</customButtons>
-    <customButtons>Check_Loadzone</customButtons>
     <excludeButtons>ChangeOwnerOne</excludeButtons>
     <excludeButtons>ChangeRecordType</excludeButtons>
     <excludeButtons>Convert</excludeButtons>
@@ -486,16 +485,6 @@
         <fields>CASES.PRIORITY</fields>
         <fields>OWNER_NAME</fields>
         <relatedList>Case.Lead_Lookup__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>OPPORTUNITY.NAME</fields>
-        <fields>ACCOUNT.NAME</fields>
-        <fields>OPPORTUNITY.STAGE_NAME</fields>
-        <fields>Shared_Solar_System__c</fields>
-        <fields>Contract_Close_Date__c</fields>
-        <fields>Total_Subscribed_kW_DC__c</fields>
-        <fields>Customer_Group__c</fields>
-        <relatedList>Opportunity.Lead__c</relatedList>
     </relatedLists>
     <relatedLists>
         <fields>ACCOUNT.NAME</fields>
