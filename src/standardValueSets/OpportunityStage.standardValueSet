@@ -65,9 +65,9 @@
         <won>false</won>
     </standardValue>
     <standardValue>
-        <fullName>Pending BlueWave Signature</fullName>
+        <fullName>Pending Perch Signature</fullName>
         <default>false</default>
-        <label>Pending BlueWave Signature</label>
+        <label>Pending Perch Signature</label>
         <closed>false</closed>
         <forecastCategory>Pipeline</forecastCategory>
         <probability>95</probability>
