@@ -23,9 +23,6 @@ public class CSPaymentTest {
         Test.loadData(Bill_Period__c.SObjectType, 'TestCSBillPeriod');
         Test.loadData(Production__c.SObjectType, 'TestCSProduction');
         Test.loadData(Transfer__c.SObjectType, 'TestCSTransfer');
-        Test.loadData(Account_Bill__c.SObjectType, 'TestCSAccountBill');
-        Test.loadData(System_Bill__c.SObjectType, 'TestCSSystemBill');
-        Test.loadData(Utility_Account_Bill__c.SObjectType, 'TestCSUtilityAccountBill');
         Test.stopTest();
         Test.loadData(UASB__c.SObjectType, 'TestCSUASB');
         TestFactory.setCSBillSettings();
@@ -58,22 +55,7 @@ public class CSPaymentTest {
         }
         Util.printCPULimit('1');
         Util.enableAllTriggers();
-
-        List<Account_Bill__c> abs = [
-            SELECT Id, Name, Bill_Number__c
-            FROM Account_Bill__c
-            WHERE Name LIKE '%Donut Shop%'
-            OR Name LIKE '%Payment Test%'
-            OR Name LIKE '%Account A%'
-            OR Name LIKE '%Account B%'
-            OR Name LIKE '%Pizza Shop%'
-        ];
-        for (Account_Bill__c ab : abs) {
-            if (!ab.Name.contains('Pizza Shop') || ab.Bill_Number__c != 2) {
-                ab.Published__c = true;
-            }
-        }
-        update abs;
+        
     }
 
     // We get System.UnexpectedException: Salesforce System Error: 900955498-340097 (1185570226) (1185570226)

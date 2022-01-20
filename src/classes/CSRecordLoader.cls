@@ -1029,9 +1029,6 @@ public without sharing class CSRecordLoader implements Queueable {
             delete [SELECT Id FROM Transfer_Part__c];
             delete [SELECT Id FROM Transfer__c WHERE CreatedDate = :csDataDate];
             delete [SELECT Id FROM Commission_Structure__c WHERE CreatedDate = :csDataDate];
-            delete [SELECT Id FROM Utility_Account_Bill__c WHERE CreatedDate = :csDataDate];
-            delete [SELECT Id FROM Account_Bill__c WHERE CreatedDate = :csDataDate];
-            delete [SELECT Id FROM System_Bill__c WHERE CreatedDate = :csDataDate];
             delete [SELECT Id FROM UASB__c WHERE CreatedDate = :csDataDate];
             delete [SELECT Id FROM Bill_Period__c WHERE CreatedDate = :csDataDate];
             delete [SELECT Id FROM Production__c WHERE CreatedDate = :csDataDate];

@@ -500,11 +500,6 @@ public with sharing class CSCancellationServiceTest {
 
     @IsTest static void testNoOppsAreCancelled() {
         // Run method and assert that no opportunities are cancelled because there are no system bills yet
-        List<System_Bill__c> systemBills = [
-            SELECT Id
-            FROM System_Bill__c
-        ];
-        System.assertEquals(0, systemBills.size());
 
         Test.startTest();
         CSCancellationService.cancelOpportunities(CSCancellationService.getOpportunitiesToCancel());

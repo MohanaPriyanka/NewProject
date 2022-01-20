@@ -107,10 +107,7 @@ public without sharing class GenericBatchDMLOperation implements Database.Batcha
 
     private List<GenericResult> handleUpsertWithExternalIds(List<SObject> scope) {
         List<GenericResult> resultList = new List<GenericResult>();
-        if (scope.getSObjectType().getDescribe().getName() == 'Utility_Account_Bill__c') {
-            Schema.SObjectField externalId = Utility_Account_Bill__c.Unique_Id__c;
-            resultList = upsertResult2GR(Database.upsert((List<Utility_Account_Bill__c>) scope, externalId, false));
-        } else if (scope.getSObjectType().getDescribe().getName() == 'Journal_Entry__c') {
+        if (scope.getSObjectType().getDescribe().getName() == 'Journal_Entry__c') {
             Schema.SObjectField externalId = Journal_Entry__c.External_Id__c;
             resultList = upsertResult2GR(Database.upsert((List<Journal_Entry__c>) scope, externalId, false));
         } else {

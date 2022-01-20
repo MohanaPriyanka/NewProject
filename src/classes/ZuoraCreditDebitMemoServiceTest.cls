@@ -2,7 +2,6 @@
 public class ZuoraCreditDebitMemoServiceTest {
     @TestSetup public static void testDataSetup() {
         MultipleMonthProductionUpdateTest.multipleMonthTest();
-        setBillsToUnPublished();
 
         List<Utility_Account_Subscription__c> uasList = [
             SELECT Id, Opportunity__r.Shared_Solar_System__r.Unique_ID__c, Opportunity__r.AccountId
@@ -124,18 +123,6 @@ public class ZuoraCreditDebitMemoServiceTest {
         update accounts;
     }
 
-    public static void setBillsToUnPublished() {
-        List <Account_Bill__c> listAccountBills = [
-            SELECT Id, Published__c
-            FROM Account_Bill__c
-            WHERE Published__c = TRUE
-        ];
-        for (Account_Bill__c acctBill : listAccountBills) {
-            acctBill.Published__c = FALSE;
-            acctBill.Reason_For_Unpublish__c = 'Test reason for unpublishing this bill';
-        }
-        update listAccountBills;
-    }
 
     @IsTest
     private static void testBatch() {
