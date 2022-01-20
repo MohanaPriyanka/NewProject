@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
     <alerts>
+        <fullName>CS_Opportunity_Complete_Email</fullName>
+        <description>CS Opportunity Complete Email</description>
+        <protected>false</protected>
+        <recipients>
+            <field>Email__c</field>
+            <type>email</type>
+        </recipients>
+        <senderAddress>customercare@perchenergy.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>CSCustOnboard_Auto_SF/CS_Customer_Executed_Survey</template>
+    </alerts>
+    <alerts>
         <fullName>CS_Partner_Contract_Complete</fullName>
         <description>CS Partner - Contract Complete - sent via the Portal_Activation flow</description>
         <protected>false</protected>
@@ -24,6 +36,7 @@
         <notifyAssignee>false</notifyAssignee>
         <operation>Literal</operation>
         <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
     </fieldUpdates>
     <fieldUpdates>
         <fullName>Check_Email_Sent_Box</fullName>
@@ -33,6 +46,7 @@
         <notifyAssignee>false</notifyAssignee>
         <operation>Literal</operation>
         <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
     </fieldUpdates>
     <fieldUpdates>
         <fullName>Opp_Stage_to_Contract_Pending</fullName>
@@ -42,6 +56,7 @@
         <notifyAssignee>false</notifyAssignee>
         <operation>Literal</operation>
         <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
     </fieldUpdates>
     <fieldUpdates>
         <fullName>Opportunity_Name_Remove_Hyphen</fullName>
@@ -51,15 +66,17 @@
         <notifyAssignee>false</notifyAssignee>
         <operation>Formula</operation>
         <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
     </fieldUpdates>
     <fieldUpdates>
         <fullName>Opportunity_Stage_BW_Signature</fullName>
         <field>StageName</field>
-        <literalValue>Pending BlueWave Signature</literalValue>
-        <name>Opportunity Stage - BW Signature</name>
+        <literalValue>Pending Perch Signature</literalValue>
+        <name>Opportunity Stage - Perch Signature</name>
         <notifyAssignee>false</notifyAssignee>
         <operation>Literal</operation>
         <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
     </fieldUpdates>
     <fieldUpdates>
         <fullName>Opportunity_Stage_Expired</fullName>
@@ -69,6 +86,7 @@
         <notifyAssignee>false</notifyAssignee>
         <operation>Literal</operation>
         <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
     </fieldUpdates>
     <fieldUpdates>
         <fullName>Opportunity_Stage_QC_Signature_Pending</fullName>
@@ -79,6 +97,7 @@
         <notifyAssignee>false</notifyAssignee>
         <operation>Literal</operation>
         <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
     </fieldUpdates>
     <fieldUpdates>
         <fullName>Opportunity_Stage_QC_in_Process</fullName>
@@ -89,6 +108,7 @@
         <notifyAssignee>false</notifyAssignee>
         <operation>Literal</operation>
         <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
     </fieldUpdates>
     <fieldUpdates>
         <fullName>Opportunity_Stage_complete</fullName>
@@ -98,6 +118,7 @@
         <notifyAssignee>false</notifyAssignee>
         <operation>Literal</operation>
         <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
     </fieldUpdates>
     <fieldUpdates>
         <fullName>Partner_CC_Email</fullName>
@@ -107,6 +128,7 @@
         <notifyAssignee>false</notifyAssignee>
         <operation>Formula</operation>
         <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
     </fieldUpdates>
     <fieldUpdates>
         <fullName>Partner_Email_Update</fullName>
@@ -116,6 +138,7 @@
         <notifyAssignee>false</notifyAssignee>
         <operation>Formula</operation>
         <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
     </fieldUpdates>
     <fieldUpdates>
         <fullName>Partner_additional_cc</fullName>
@@ -125,6 +148,7 @@
         <notifyAssignee>false</notifyAssignee>
         <operation>Formula</operation>
         <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
     </fieldUpdates>
     <fieldUpdates>
         <fullName>Set_Contract_Close_Date</fullName>
@@ -134,6 +158,7 @@
         <notifyAssignee>false</notifyAssignee>
         <operation>Formula</operation>
         <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
     </fieldUpdates>
     <flowActions>
         <fullName>Stage_is_change_to_complete</fullName>

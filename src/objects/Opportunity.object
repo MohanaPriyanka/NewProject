@@ -140,7 +140,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Pending BlueWave Signature</fullName>
+            <fullName>Pending Perch Signature</fullName>
             <default>false</default>
         </values>
         <values>
@@ -209,7 +209,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Pending BlueWave Signature</fullName>
+            <fullName>Pending Perch Signature</fullName>
             <default>false</default>
         </values>
         <values>
@@ -318,7 +318,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Pending BlueWave Signature</fullName>
+            <fullName>Pending Perch Signature</fullName>
             <default>false</default>
         </values>
         <values>
@@ -5324,14 +5324,14 @@ TEXT( Load_Zone_Utility_4__c  ) = &apos;Manual Lookup Required&apos;,
         <filters>
             <field>OPPORTUNITY.STAGE_NAME</field>
             <operation>equals</operation>
-            <value>Pending BlueWave Signature</value>
+            <value>Pending Perch Signature</value>
         </filters>
         <filters>
             <field>Product_Line__c</field>
             <operation>equals</operation>
             <value>Community Solar</value>
         </filters>
-        <label>Community Solar - Pending BW Signature</label>
+        <label>CS - Pending Perch Signature</label>
         <sharedTo>
             <group>BFG</group>
         </sharedTo>
