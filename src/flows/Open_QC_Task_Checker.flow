@@ -5,7 +5,7 @@
         <description>Counter for QC Cases in loop</description>
         <name>assgQCCaseCounter</name>
         <label>assgQCCaseCounter</label>
-        <locationX>746</locationX>
+        <locationX>868</locationX>
         <locationY>409</locationY>
         <assignmentItems>
             <assignToReference>varQCCaseCounter</assignToReference>
@@ -22,7 +22,7 @@
         <description>Update Opp stage to QC In Process</description>
         <name>AssignOppStage</name>
         <label>AssignOppStage</label>
-        <locationX>66</locationX>
+        <locationX>188</locationX>
         <locationY>656</locationY>
         <assignmentItems>
             <assignToReference>sovOpportunity.StageName</assignToReference>
@@ -39,7 +39,7 @@
         <description>Decision if there are still open QC tasks.</description>
         <name>dec_QCCaseNumber</name>
         <label>QC Case Decision</label>
-        <locationX>45</locationX>
+        <locationX>167</locationX>
         <locationY>502</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -73,7 +73,7 @@
     <decisions>
         <name>Found_Opportunities</name>
         <label>Found Opportunities?</label>
-        <locationX>234</locationX>
+        <locationX>356</locationX>
         <locationY>203</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -99,7 +99,7 @@
         <description>Loops through open tasks to get count.</description>
         <name>loopQCCases</name>
         <label>loopQCCases</label>
-        <locationX>492</locationX>
+        <locationX>614</locationX>
         <locationY>411</locationY>
         <assignNextValueToReference>loopvar_QCCase</assignNextValueToReference>
         <collectionReference>socv_QCCases</collectionReference>
@@ -118,6 +118,12 @@
         </value>
     </processMetadataValues>
     <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
         <name>OriginBuilderType</name>
         <value>
             <stringValue>LightningFlowBuilder</stringValue>
@@ -128,7 +134,7 @@
         <description>Finds the sobject variable for the Opportunity. If it doesn&apos;t find a CS one, ends the flow.</description>
         <name>Find_CS_Opportunity</name>
         <label>Find CS Opportunity</label>
-        <locationX>54</locationX>
+        <locationX>176</locationX>
         <locationY>152</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -167,7 +173,7 @@
             <field>StageName</field>
             <operator>NotEqualTo</operator>
             <value>
-                <stringValue>Pending BlueWave Signature</stringValue>
+                <stringValue>Pending Perch Signature</stringValue>
             </value>
         </filters>
         <object>Opportunity</object>
@@ -178,7 +184,7 @@
         <description>Looks up all of the QC Cases for the Opportunity passed through the Process Builders</description>
         <name>Lookup</name>
         <label>Lookup All QC Cases</label>
-        <locationX>52</locationX>
+        <locationX>174</locationX>
         <locationY>317</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -228,7 +234,7 @@
         <description>If there are no open tasks, update the opportunity stage to</description>
         <name>updateOpportunityStage</name>
         <label>updateOpportunityStage</label>
-        <locationX>348</locationX>
+        <locationX>470</locationX>
         <locationY>692</locationY>
         <inputReference>sovOpportunity</inputReference>
     </recordUpdates>

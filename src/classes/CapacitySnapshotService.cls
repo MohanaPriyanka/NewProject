@@ -49,7 +49,7 @@ public without sharing class CapacitySnapshotService {
         AvailableCapacityBasis availableCapacityBasis) {
         if (uas.Opportunity__r.StageName == 'QC In Process' ||
             uas.Opportunity__r.StageName == 'Pending Quality Control Signature' ||
-            uas.Opportunity__r.StageName == 'Pending BlueWave Signature') {
+            uas.Opportunity__r.StageName == 'Pending Perch Signature') {
             capacitySnapshot.QC_Capacity__c += uas.Future_Customer_Subscription_KWDC_Rollup__c;
         } else if (uas.Shared_Solar_System__r.Waitlist__c) {
             capacitySnapshot.Waitlist_Capacity__c += uas.Future_Customer_Subscription_KWDC_Rollup__c;

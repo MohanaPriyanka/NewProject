@@ -130,7 +130,7 @@ public without sharing class SystemCapacityRollupCalculatorTest {
             FROM Opportunity
             WHERE Name = 'Alyssa Testcase2 0000236'
         ];
-        opp.StageName = 'Pending BlueWave Review';
+        opp.StageName = 'Pending Perch Signature';
         update opp;
 
         sss = [

@@ -278,7 +278,7 @@
         <allowPause>true</allowPause>
         <fields>
             <name>txt_End</name>
-            <fieldText>&lt;p&gt;The selected contracts have been successfully countersigned and sent to the customer.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Click Finish or exist out of the screen.&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;The selected contracts have been successfully countersigned and sent to the customer.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Click Finish or exit out of the screen.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -297,7 +297,7 @@
         </connector>
         <fields>
             <name>scr_SelectOpportunities</name>
-            <fieldText>&lt;p&gt;Below, select the Opportunities that you would like to countersign.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;If you don&apos;t see the Opportunity that you&apos;d like to countersign, make sure that it:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Has a Contract associated with it&lt;/li&gt;&lt;li&gt;Stage= Pending BlueWave Countersignature&lt;/li&gt;&lt;li&gt;Generate Countersignature checkbox on the Contract is set to False&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;By clicking &quot;Next&quot;, the completed contract will be emailed to the customer, and the Opportunity stage will be set to Complete.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;Below, select the Opportunities that you would like to countersign.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;If you don&apos;t see the Opportunity that you&apos;d like to countersign, make sure that it:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Has a Contract associated with it&lt;/li&gt;&lt;li&gt;Stage = Pending Perch Signature&lt;/li&gt;&lt;li&gt;Generate Countersignature checkbox on the Contract is set to False&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;By clicking &quot;Next&quot;, the completed contract will be emailed to the customer, and the Opportunity stage will be set to Complete.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -329,7 +329,7 @@
             <inputParameters>
                 <name>columnFields</name>
                 <value>
-                    <stringValue>Name,StageName,Shared_Solar_System__c,Total_Subscribed_kW_DC__c,ContractId,Customer_Group__c,Comments__c</stringValue>
+                    <stringValue>Name,StageName,Shared_Solar_System__c,Total_Subscribed_kW_DC__c,ContractId,Customer_Group__c,Commission_Structure__c,Comments__c</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -341,17 +341,11 @@
             <inputParameters>
                 <name>columnWidths</name>
                 <value>
-                    <stringValue>Name:159, StageName:133, Shared_Solar_System__c:191, Total_Subscribed_kW_DC__c:150, ContractId:148, Customer_Group__c:159, Comments__c:170</stringValue>
+                    <stringValue>Name:159, StageName:133, Shared_Solar_System__c:191, Total_Subscribed_kW_DC__c:150, ContractId:148, Customer_Group__c:159, Commission_Structure__c:193, Comments__c:170</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
                 <name>isDisplayHeader</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>isRequired</name>
                 <value>
                     <booleanValue>true</booleanValue>
                 </value>
@@ -400,11 +394,11 @@
     <textTemplates>
         <name>SOQL_Opportunities</name>
         <isViewedAsPlainText>true</isViewedAsPlainText>
-        <text>select id,Name, StageName, ContractId, Customer_Group__c, Shared_Solar_System__c, CS_Capacity_Allocated__c, Comments__c, Countersigned_Contract_Id__c, Total_Subscribed_kW_DC__c
+        <text>select id,Name, StageName, ContractId, Customer_Group__c, Shared_Solar_System__c, CS_Capacity_Allocated__c, Comments__c, Countersigned_Contract_Id__c, Total_Subscribed_kW_DC__c, Commission_Structure__c
 from Opportunity 
 where Product_Line__c=&apos;Community Solar&apos; 
 and Contract.Generate_Countersigned_Version__c=false 
-and StageName=&apos;Pending BlueWave Signature&apos; 
+and StageName=&apos;Pending Perch Signature&apos; 
 and Customer_Group__c!=null 
 and ContractId!=null</text>
     </textTemplates>
