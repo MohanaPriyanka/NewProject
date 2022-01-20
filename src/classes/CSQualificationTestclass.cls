@@ -413,7 +413,7 @@ public class CSQualificationTestclass {
 
         // Check results using Partner, Product, ZIP. Should result in completeMatch = TRUE
         qualificationMatches = AskYoda.getQualificationMatches(null, productId, partnerId, zipCode, underwriting);
-        System.assertEquals(1, qualificationMatches.size(), 'There should be no qualification matches');
+        System.assertEquals(1, qualificationMatches.size(), 'There should be 1 qualification match');
         System.assert(qualificationMatches[0].completeMatch, 'The qualification match should be a complete match');
 
         // Check with a Lead which has a good FICO score / PCR. Should result in completeMatch = TRUE
@@ -423,7 +423,7 @@ public class CSQualificationTestclass {
         qualificationMatches = AskYoda.getQualificationMatches(
             goodFicoLead.Id, productId, partnerId, zipCode, underwriting
         );
-        System.assertEquals(1, qualificationMatches.size(), 'There should be no qualification matches');
+        System.assertEquals(1, qualificationMatches.size(), 'There should be 1 qualification match');
         System.assert(qualificationMatches[0].completeMatch, 'The qualification match should be a complete match');
     }
 

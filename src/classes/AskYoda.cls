@@ -4,7 +4,7 @@
  * to showcase a list of qualified Shared Solar Systems for a Lead (either real or hypothetical Lead)
  * Tested by: CSQualificationTestclass
  */
-public with sharing class AskYoda {
+public without sharing class AskYoda {
 
     public List<QualificationMatch> qualificationMatches = new List<QualificationMatch>();
     private List<Id> utilityIds = new List<Id>();
