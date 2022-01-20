@@ -2350,7 +2350,7 @@ This field can be changed to a formula consistent with the other factors if LASE
     <fields>
         <fullName>Flag__c</fullName>
         <externalId>false</externalId>
-        <formula>IF(LASER_Credit_Score__c = &apos;9999&apos;, IMAGE(&quot;/resource/1563473582000/Panda_Icon&quot;, &quot;panda&quot;), &quot;&quot;)</formula>
+        <formula>IF(LASER_Credit_Score__c = null, IMAGE(&quot;/resource/1563473582000/Panda_Icon&quot;, &quot;panda&quot;), &quot;&quot;)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>Displays panda icon if no PCR was returned for this lead. Please update customer info and pull credit again</inlineHelpText>
         <label>Flag</label>
