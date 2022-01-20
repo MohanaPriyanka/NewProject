@@ -221,7 +221,7 @@
     <formulas>
         <name>ficoResult</name>
         <dataType>String</dataType>
-        <expression>IF({!underwritingInput} = &apos;FICO&apos;, {!fico}, &apos;&apos;)</expression>
+        <expression>IF( {!chooseMethod} = {!manualInputs}, IF( {!underwritingInput} = &apos;FICO&apos;, &apos;800&apos;, &apos;N/A&apos;), {!fico})</expression>
     </formulas>
     <formulas>
         <name>formula_RunningUserID</name>
@@ -229,7 +229,7 @@
         <expression>{!$User.Id}</expression>
     </formulas>
     <interviewLabel>CheckCSQualification {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Ask Yoda (Check CS Qualification)</label>
+    <label>Ask Yoda</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -273,7 +273,7 @@
         <object>Lead</object>
         <outputAssignments>
             <assignToReference>fico</assignToReference>
-            <field>FICO_PCR__c</field>
+            <field>LASER_Credit_Score__c</field>
         </outputAssignments>
         <outputAssignments>
             <assignToReference>zipCode</assignToReference>
@@ -795,9 +795,6 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
-        <value>
-            <stringValue>700</stringValue>
-        </value>
     </variables>
     <variables>
         <name>firstUtilityId</name>
