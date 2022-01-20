@@ -1,5 +1,7 @@
 /**
  * Created by rebeccanachison on 1/14/22.
+ * Description: Helper class for CSUtilityAccountSubscriptionFactory
+ * Tested by: CSUtilityAccountSubscriptionFactoryTest
  */
 
 public with sharing class CSUASFactoryHelper {
