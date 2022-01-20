@@ -8,6 +8,25 @@
     "regionName" : "header",
     "type" : "region"
   }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "richTextValue" : "<h1 style=\"text-align: center;\"><br></h1><h1 style=\"text-align: center;\"><br></h1><h1 style=\"text-align: center;\"><b>Did you fall off your perch?</b></h1><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\">We can't seem to find the page you're looing for. Error code: 404</p>"
+      },
+      "componentName" : "forceCommunity:richTextInline",
+      "id" : "6bffdf71-3ac6-4fad-a48d-37d0f07e0c33",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    }, {
+      "componentAttributes" : {
+        "richTextValue" : "<div class=\"slds-align_absolute-center\"><div class=\"slds-button slds-button_brand\"><a href=\"./\" style=\"color: #fff;\">Let's take you home</a></div></div>"
+      },
+      "componentName" : "forceCommunity:htmlBlock",
+      "id" : "e99153df-f6ba-47ee-95ed-6d23a969a049",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
     "id" : "a534ded8-3512-4eb5-881d-8099b0141127",
     "regionName" : "content",
     "type" : "region"
