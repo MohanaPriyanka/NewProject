@@ -1,0 +1,15 @@
+/**
+ * Created by jeffparlin on 1/14/22.
+ */
+table {
+    border-collapse: collapse;
+    border: 1px solid #7e7e7e;
+}
+
+th {
+    text-align: center;
+}
+
+td {
+    border: 1px solid #7e7e7e;
+}

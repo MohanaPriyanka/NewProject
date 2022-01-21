@@ -3,6 +3,7 @@
  */
 @IsTest
 public with sharing class SharedSolarSystemsTest {
+
     @IsTest
     private static void testRecalculateMaximumSubscriptionCapacityForNonSMART() {
         SharedSolarSystemCapacityCalculator.productSelector = (ProductSelector) Test.createStub(ProductSelector.class, new MockProductSelector(true));
@@ -54,6 +55,7 @@ public with sharing class SharedSolarSystemsTest {
             }
         }
     }
+
     @IsTest
     private static void testUpdateManagementRevenueStartDate() {
         Date ptoDate = Date.newInstance(2020, 1, 1);
@@ -132,26 +134,67 @@ public with sharing class SharedSolarSystemsTest {
             Credit_Score_Requirement__c = 750,
             RiskCalc_Minimum__c = 'Ba3'
         );
-        System.assert(sharedSolarSystemQualifier.meetsUnderwritingCriteria(getLead('FICO', '800', null), sss, null),
-            'lead with FICO of 800 should meet underwriting for a system with FICO min of 750');
-        System.assert(!sharedSolarSystemQualifier.meetsUnderwritingCriteria(getLead('FICO', '700', null), sss, null),
-            'lead with FICO of 800 should meet underwriting for a system with FICO min of 750');
-        System.assert(sharedSolarSystemQualifier.meetsUnderwritingCriteria(getLead('FICO', null, null), sss, 800),
-            'lead getting a credit pull of 800 (before it\'s set on the lead) should meet underwriting for a system with FICO min of 750');
-        System.assert(!sharedSolarSystemQualifier.meetsUnderwritingCriteria(getLead('FICO', null, null), sss, 700),
-            'lead getting a credit pull of 700 (before it\'s set on the lead) should not meet underwriting for a system with FICO min of 750');
-        sss.Available_SMB_Underwriting_Method_FICO__c = false;
-        System.assert(!sharedSolarSystemQualifier.meetsUnderwritingCriteria(getLead('FICO', '800', null), sss, null),
-            'lead with FICO of 800 should not meet underwriting for a system that is not available to qualify for FICO');
 
-        System.assert(sharedSolarSystemQualifier.meetsUnderwritingCriteria(getLead('Financial Review', '800', 'Aaa'), sss, null),
-            'Finanical Review lead with a Moody\'s of Aaa should meet underwriting for a system with RiskCalc min of Ba3');
-        System.assert(sharedSolarSystemQualifier.meetsUnderwritingCriteria(getLead('Financial Review', '800', 'Ba3'), sss, null),
-            'Finanical Review lead with a Moody\'s of Ba3 should meet underwriting for a system with RiskCalc min of Ba3');
-        System.assert(!sharedSolarSystemQualifier.meetsUnderwritingCriteria(getLead('Financial Review', '800', 'C1'), sss, null),
-            'Finanical Review lead with a Moody\'s of C1 should not meet underwriting for a system with RiskCalc min of Ba3');
+        // 800 FICO Lead
+        Lead fico800Lead = getLead('FICO', '800', null);
+        Boolean fico800LeadQualifies = sharedSolarSystemQualifier.meetsUnderwritingCriteria(
+            fico800Lead, sss, fico800Lead.LASER_Credit_Score__c
+        );
+        System.assertEquals(true, fico800LeadQualifies,
+            'lead with FICO of 800 should meet underwriting for a system with FICO min of 750');
+
+        // 700 FICO Lead
+        Lead fico700Lead = getLead('FICO', '700', null);
+        Boolean fico700LeadQualifies = sharedSolarSystemQualifier.meetsUnderwritingCriteria(
+            fico700Lead, sss, fico700Lead.LASER_Credit_Score__c
+        );
+        System.assertEquals(false, fico700LeadQualifies,
+            'lead with FICO of 700 should NOT meet underwriting for a system with FICO min of 750'
+        );
+
+        sss.Available_SMB_Underwriting_Method_FICO__c = false;
+
+        // 800 FICO Lead on System with Fin Docs Underwriting (not FICO)
+        fico800LeadQualifies = sharedSolarSystemQualifier.meetsUnderwritingCriteria(
+            fico800Lead, sss, fico800Lead.LASER_Credit_Score__c);
+        System.assertEquals(false, fico800LeadQualifies,
+            'lead with FICO of 800 should not meet underwriting for a system that is not available to qualify for FICO'
+        );
+
+        // Moody Aaa Lead
+        Lead moodysAaaLead = getLead('Financial Review', null, 'Aaa');
+        Boolean moodysAaaQualifies = sharedSolarSystemQualifier.meetsUnderwritingCriteria(
+            moodysAaaLead, sss, moodysAaaLead.LASER_Credit_Score__c
+        );
+        System.assertEquals(true, moodysAaaQualifies,
+            'Finanical Review lead with a Moody\'s of Aaa should meet underwriting for a system with RiskCalc min of Ba3'
+        );
+
+        // Moody Ba3 Lead
+        Lead moodysBa3Lead = getLead('Financial Review', null, 'Ba3');
+        Boolean moodysBa3LeadQualifies = sharedSolarSystemQualifier.meetsUnderwritingCriteria(
+            moodysBa3Lead, sss, moodysBa3Lead.LASER_Credit_Score__c
+        );
+        System.assertEquals(true, moodysBa3LeadQualifies,
+            'Finanical Review lead with a Moody\'s of Ba3 should meet underwriting for a system with RiskCalc min of Ba3'
+        );
+
+        // Moody C1 Lead
+        Lead moodysC1Lead = getLead('Financial Review', null, 'C1');
+        Boolean moodysC1LeadQualifies = sharedSolarSystemQualifier.meetsUnderwritingCriteria(
+            moodysC1Lead, sss, moodysC1Lead.LASER_Credit_Score__c
+        );
+        System.assertEquals(false, moodysC1LeadQualifies,
+            'Finanical Review lead with a Moody\'s of C1 should not meet underwriting for a system with RiskCalc min of Ba3'
+        );
+
         sss.Available_SMB_Underwriting_Method_Docs__c = false;
-        System.assert(!sharedSolarSystemQualifier.meetsUnderwritingCriteria(getLead('Financial Review', '800', 'Aaa'), sss, null),
+
+        // Disable Financial Docs Underwriting
+        moodysAaaQualifies = sharedSolarSystemQualifier.meetsUnderwritingCriteria(
+            moodysAaaLead, sss, moodysAaaLead.LASER_Credit_Score__c
+        );
+        System.assertEquals(false, moodysAaaQualifies,
             'Finanical Review lead with a Moody\'s of Aaa should not meet underwriting for a system that is not available to qualify');
     }
 
@@ -182,6 +225,7 @@ public with sharing class SharedSolarSystemsTest {
             return null;
         }
     }
+
     public class MockContractFeeDetailSelector extends MockProvider {
         Id systemSpecificCFDId;
         public MockContractFeeDetailSelector(String sssId) {
@@ -234,7 +278,9 @@ public with sharing class SharedSolarSystemsTest {
     }
 
     @TestVisible
-    private static List<Partner_Shared_Solar_System_Eligibility__c> getPartnerEligibilities(Shared_Solar_System__c sharedSolarSystem, Account partnerAccount) {
+    private static List<Partner_Shared_Solar_System_Eligibility__c> getPartnerEligibilities(
+        Shared_Solar_System__c sharedSolarSystem, Account partnerAccount)
+    {
         return getPartnerEligibilities(new List<Shared_Solar_System__c>{
             sharedSolarSystem
         }, new List<Account>{
@@ -243,7 +289,9 @@ public with sharing class SharedSolarSystemsTest {
     }
 
     @TestVisible
-    private static List<Partner_Shared_Solar_System_Eligibility__c> getPartnerEligibilities(List<Shared_Solar_System__c> sharedSolarSystems, List<Account> partnerAccounts) {
+    private static List<Partner_Shared_Solar_System_Eligibility__c> getPartnerEligibilities(
+        List<Shared_Solar_System__c> sharedSolarSystems, List<Account> partnerAccounts)
+    {
         Map<String, Commission_Structure__c> commissionStructureMap = getCommissionStructures(sharedSolarSystems, partnerAccounts);
         List<Partner_Shared_Solar_System_Eligibility__c> partnerSharedSolarSystemEligibilities =
             new List<Partner_Shared_Solar_System_Eligibility__c>();
@@ -262,7 +310,9 @@ public with sharing class SharedSolarSystemsTest {
     }
 
     @TestVisible
-    private static Map<String, Commission_Structure__c> getCommissionStructures(List<Shared_Solar_System__c> sharedSolarSystems, List<Account> partnerAccounts) {
+    private static Map<String, Commission_Structure__c> getCommissionStructures(
+        List<Shared_Solar_System__c> sharedSolarSystems, List<Account> partnerAccounts)
+    {
         Map<String, Commission_Structure__c> commissionStructureMap = new Map<String, Commission_Structure__c>();
         Set<Id> productIds = new Set<Id>();
         for (Shared_Solar_System__c sss : sharedSolarSystems) {
@@ -287,5 +337,4 @@ public with sharing class SharedSolarSystemsTest {
         insert commissionStructureMap.values();
         return commissionStructureMap;
     }
-
 }

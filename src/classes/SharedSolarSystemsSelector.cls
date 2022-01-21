@@ -144,16 +144,19 @@ public inherited sharing class SharedSolarSystemsSelector {
         ];
     }
 
-    public List<Shared_Solar_System__c> selectSharedSolarSystemsForQualificationCheck(String productId, List<Id> utilityIds) {
+    public List<Shared_Solar_System__c> selectSystemsForAskYoda(String productId, List<Id> utilityIds) {
         return [
             SELECT Id, Name, Open__c, Capacity_Available_to_be_Reserved__c, Service_Territories__c,
                 Credit_Score_Requirement__c, Product__r.Name, Utility__r.Name, Public__c, Product__r.Ignore_Load_Zones_When_Qualifying__c,
                 Do_Not_Underwrite__c, Available_SMB_Underwriting_Method_FICO__c, Available_SMB_Underwriting_Method_Docs__c,
-                RiskCalc_Minimum__c, Do_Not_Ask_for_Payment_Method__c, Product__r.Parent_Product__c, Waitlist__c, (SELECT Id, Account__c, Account__r.Partner__c, Account__r.Name FROM Partner_Shared_Solar_System_Accesses__r WHERE IsActive__c = TRUE)
+                RiskCalc_Minimum__c, Do_Not_Ask_for_Payment_Method__c, Product__r.Parent_Product__c, Waitlist__c,
+                (SELECT Id, Account__c, Account__r.Partner__c, Account__r.Name
+                FROM Partner_Shared_Solar_System_Accesses__r
+                WHERE IsActive__c = TRUE)
             FROM Shared_Solar_System__c
             WHERE (Product__c = :productId OR Product__r.Parent_Product__c = :productId)
             AND Utility__c IN :utilityIds
-            AND Stage__c = 'Acquisition'
+            AND Capacity_Available_to_be_Reserved__c > 0
             ORDER BY Assignment_Order__c
         ];
     }

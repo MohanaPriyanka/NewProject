@@ -264,11 +264,7 @@ Utility_Account_Subscription__r.Opportunity__r.Account.BillingCountry</formula>
     <fields>
         <fullName>FICO_score__c</fullName>
         <externalId>false</externalId>
-        <formula>IF( 
-OR (
-(Utility_Account_Subscription__r.Opportunity__r.FICO__c = 0),
-(Utility_Account_Subscription__r.Opportunity__r.FICO__c = 9999)), 
-null, Utility_Account_Subscription__r.Opportunity__r.FICO__c)</formula>
+        <formula>Utility_Account_Subscription__r.Opportunity__r.FICO__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>FICO score</label>
         <precision>18</precision>
