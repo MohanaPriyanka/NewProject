@@ -3,26 +3,34 @@
         <div class="slds-theme_default">
             <table>
                 <tr class="slds-theme_alt-inverse slds-theme_alert-texture">
-                    <th class="slds-size_1-of-12 slds-p-around_xx-small slds-align--absolute-center">Match Status</th>
-                    <th class="slds-size_2-of-12 slds-p-around_xx-small">Shared Solar System</th>
-                    <th class="slds-size_1-of-12 slds-p-around_xx-small">Open?</th>
-                    <th class="slds-size_1-of-12 slds-p-around_xx-small">Product</th>
-                    <th class="slds-size_1-of-12 slds-p-around_xx-small">Utility</th>
-                    <th class="slds-size_2-of-12 slds-p-around_xx-small">Service Territories</th>
-                    <th class="slds-size_1-of-12 slds-p-around_xx-small">Available Capacity</th>
-                    <th class="slds-size_1-of-12 slds-p-around_xx-small">Underwriting</th>
-                    <th class="slds-size_3-of-12 slds-p-around_xx-small">Sales Partners</th>
+                    <th class="slds-p-around_xx-small">Match Status</th>
+                    <th class="slds-p-around_xx-small">Shared Solar System</th>
+                    <th class="slds-p-around_xx-small">Open?</th>
+                    <th class="slds-p-around_xx-small">Product</th>
+                    <th class="slds-p-around_xx-small">Utility</th>
+                    <th class="slds-p-around_xx-small">Service Territories</th>
+                    <th class="slds-p-around_xx-small">Available Capacity</th>
+                    <th class="slds-p-around_xx-small">Underwriting</th>
+                    <th class="slds-p-around_xx-small">Sales Partners</th>
                 </tr>
                 <template for:each={matches} for:item="item">
                     <tr key={item.sssName} class = "slds-theme_shade">
                         <template if:true={item.sssMatch}>
-                            <td class="slds-p-around_xx-small slds-align_absolute-center">
-                                    <lightning-icon icon-name="action:approval" size="xx-small" alternative-text="Qualified" title="Qualified"></lightning-icon>
+                            <td class="slds-p-around_xx-small" style="text-align: center;">
+                                <lightning-icon icon-name="action:approval"
+                                                size="xx-small"
+                                                alternative-text="Qualified"
+                                                title="Qualified">
+                                </lightning-icon>
                             </td>
                         </template>
                         <template if:false={item.sssMatch}>
-                            <td class="slds-p-around_xx-small slds-align_absolute-center">
-                                    <lightning-icon icon-name="action:close" size="xx-small" alternative-text="NotQualified" title="NotQualified"></lightning-icon>
+                            <td class="slds-p-around_xx-small" style="text-align: center;">
+                                <lightning-icon icon-name="action:close"
+                                                size="xx-small"
+                                                alternative-text="NotQualified"
+                                                title="NotQualified">
+                                </lightning-icon>
                             </td>
                         </template>
 
@@ -44,7 +52,6 @@
                         <template if:false={item.hasLZ}>
                             <td class="slds-theme_warning slds-p-around_xx-small">{item.sssTerritories}</td>
                         </template>
-
 
                         <template if:true={item.hasCapacity}>
                             <td class="slds-p-around_xx-small">{item.sssCapacity}</td>
@@ -69,6 +76,13 @@
                     </tr>
                 </template>
             </table>
+            <template if:false={tableHasContents}>
+                <div class="slds-theme_shade">
+                    <span class="slds-align_absolute-center slds-p-around_xx-large" style="color:red;">
+                        <b>No Qualified Shared Solar Systems found</b>
+                    </span>
+                </div>
+            </template>
         </div>
     </div>
 </template>

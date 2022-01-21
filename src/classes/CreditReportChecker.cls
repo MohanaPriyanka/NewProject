@@ -6,6 +6,7 @@
  */
 public without sharing class CreditReportChecker {
 
+    private static CreditReportSelector creditReportSelector = new CreditReportSelector();
     public Id leadId;
     public LASERCA__Personal_Credit_Report__c latestReport;
     public Boolean latestReportNoMatch;
@@ -20,7 +21,7 @@ public without sharing class CreditReportChecker {
     public CreditReportChecker(Id leadId, Datetime dt) {
         this.leadId = leadId;
         this.queryAfterDateTime = dt;
-        this.reportList = retrieveCreditReportsByLead();
+        this.reportList = creditReportSelector.retrieveCreditReportsByLead(leadId, queryAfterDateTime);
         this.latestReport = !reportList.isEmpty() ? reportList[0] : null;
         this.latestReportNoMatch = isNoMatch(this.latestReport);
     }
@@ -32,7 +33,7 @@ public without sharing class CreditReportChecker {
     public CreditReportChecker(Id leadId) {
         this.leadId = leadId;
         this.queryAfterDateTime = Datetime.newInstance(2000,1,1);
-        this.reportList = retrieveCreditReportsByLead();
+        this.reportList = creditReportSelector.retrieveCreditReportsByLead(leadId, queryAfterDateTime);
         this.latestReport = !reportList.isEmpty() ? reportList[0] : null;
         this.latestReportNoMatch = isNoMatch(this.latestReport);
     }
@@ -57,26 +58,8 @@ public without sharing class CreditReportChecker {
     private Boolean isNoMatch(LASERCA__Personal_Credit_Report__c report) {
         if (report == null) {
             return null;
-        } else {
-            return report.LASERCA__Credit_Score__c == '9999' ? true : false;
         }
-    }
-
-    /**
-     * @description Retrieve Personal Credit Reports (PCRs) for specified Lead created after specified date/time
-     * @return List of PCRs
-     */
-    @TestVisible
-    private List<LASERCA__Personal_Credit_Report__c> retrieveCreditReportsByLead() {
-        return [
-            SELECT Id, LASERCA__Credit_Score__c, LASERCA__TransUnion_Score_Factor__c,
-                LASERCA__TransUnion_Alert_Message__c, LASERCA__Experian_Alert_Message__c,
-                LASERCA__Experian_Score_Factor__c, LASERCA__TransUnion_Indicator__c,
-                LASERCA__Experian_Indicator__c, CreatedDate
-            FROM LASERCA__Personal_Credit_Report__c
-            WHERE LASERCA__Lead__c = :leadId AND CreatedDate > :queryAfterDateTime
-            ORDER BY CreatedDate DESC
-        ];
+        return report.LASERCA__Credit_Score__c == null ? true : false;
     }
 
     /**
@@ -88,5 +71,4 @@ public without sharing class CreditReportChecker {
         @AuraEnabled public String alertMessage;
         @AuraEnabled public Datetime createdDate;
     }
-
 }

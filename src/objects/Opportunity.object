@@ -1910,7 +1910,7 @@ IF(AND(Application_Type__c=&quot;Joint&quot;,TEXT(Joint_Applicant_Type__c)=&quot
     <fields>
         <fullName>FICO__c</fullName>
         <externalId>false</externalId>
-        <formula>Value(Personal_Credit_Report2__r.LASERCA__Credit_Score_TransUnion__c)</formula>
+        <formula>Value(Personal_Credit_Report2__r.LASERCA__Credit_Score__c)</formula>
         <label>FICO</label>
         <precision>18</precision>
         <required>false</required>

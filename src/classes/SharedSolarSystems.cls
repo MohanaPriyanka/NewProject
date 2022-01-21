@@ -65,7 +65,7 @@ public inherited sharing class SharedSolarSystems {
      * @param creditScore The lead's credit score
      * @return Qualified or Unqualified
      */
-    public String checkCSQualification(Lead lead, Decimal creditScore) {
+    public String checkCSQualification(Lead lead, String creditScore) {
         return qualifier.checkCSQualification(lead, creditScore, records);
     }
 }

@@ -3,6 +3,7 @@
  */
 @IsTest
 public with sharing class InvocableLeadQualificationTest {
+
     @TestSetup
     public static void testSetup() {
         Product2 product1 = new Product2(
@@ -79,11 +80,13 @@ public with sharing class InvocableLeadQualificationTest {
         Lead updatedLead1 = getTestLead('testLead1');
         System.assertEquals('New', updatedLead1.Status, 'The lead.Status should still be New because ' +
             'the list passed was empty, so the lead.Status was not updated.');
+
         // Passing a null list
         InvocableLeadQualification.runLeadQualificationCheck(null);
         Lead updatedLead2 = getTestLead('testLead1');
         System.assertEquals('New', updatedLead2.Status, 'The lead.Status should still be New because ' +
             'the list passed was null, so the lead.Status was not updated.');
+
         //Passing a valid list
         Lead lead = getTestLead('testLead1');
         leadList.add(lead.Id);
@@ -99,5 +102,4 @@ public with sharing class InvocableLeadQualificationTest {
         Lead updatedLead4 = getTestLead('testLead1');
         System.assertEquals('Unqualified', updatedLead4.Status, 'Lead should not be qualified since the FICO score is too low');
     }
-
 }
