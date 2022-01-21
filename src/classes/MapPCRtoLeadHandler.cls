@@ -1,67 +1,52 @@
 /*************************************************************************************
- * Description: 
+ * @description: Sets the Personal Credit Report lookup on Lead when a credit pull finishes
  * Tested By: LeadServiceTestclass, ZuoraAccountServiceTest, CSQualificationTestclass
  *************************************************************************************/
-
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class MapPCRtoLeadHandler {
-    public static void mapPCRtoLead(
-        Map<Id, LASERCA__Credit_Report_Log__c> triggerNewMap,
+    @TestVisible private static Boolean throwException = false;
+    private static CreditReportSelector creditReportSelector = new CreditReportSelector();
+
+    public static void mapPCRtoLeadAfterInsert(List<LASERCA__Credit_Report_Log__c> triggerNew) {
+        Set<Id> pcrIds = new Set<Id>();
+        for (LASERCA__Credit_Report_Log__c crl : triggerNew) {
+            if (crl.LASERCA__Status__c == 'Completed' || (crl.LASERCA__Status__c == 'Error' && crl.LASERCA__Personal_Credit_Report__c != null)) {
+                pcrIds.add(crl.LASERCA__Personal_Credit_Report__c);
+            }
+        }
+        updateLeadsWithPCR(pcrIds);
+    }
+
+    public static void mapPCRtoLeadAfterUpdate(Map<Id, LASERCA__Credit_Report_Log__c> triggerNewMap,
         Map<Id, LASERCA__Credit_Report_Log__c> triggerOldMap) {
         Set<Id> pcrIds = new Set<Id>();
-        if (triggerOldMap == null) {
-            for (LASERCA__Credit_Report_Log__c crl : triggerNewMap.values()) {
-                if (crl.LASERCA__Status__c == 'Completed' || (crl.LASERCA__Status__c == 'Error' && crl.LASERCA__Personal_Credit_Report__c != null)) {
-                    pcrIds.add(crl.LASERCA__Personal_Credit_Report__c);
-                }
-            }
-
-        } else {
-            for (Id oldId : triggerOldMap.keySet()) {
-                if (triggerNewMap.get(oldId).LASERCA__Status__c == 'Completed' &&
-                    triggerOldMap.get(oldId).LASERCA__Status__c != 'Completed') {
-                    pcrIds.add(triggerNewMap.get(oldId).LASERCA__Personal_Credit_Report__c);
-                }
+        for (Id oldId : triggerOldMap.keySet()) {
+            if (triggerNewMap.get(oldId).LASERCA__Status__c == 'Completed' &&
+                triggerOldMap.get(oldId).LASERCA__Status__c != 'Completed') {
+                pcrIds.add(triggerNewMap.get(oldId).LASERCA__Personal_Credit_Report__c);
             }
         }
+        updateLeadsWithPCR(pcrIds);
+    }
 
-        List<LASERCA__Personal_Credit_Report__c> completedPCRs = [
-            SELECT Id, LASERCA__Lead__c, LASERCA__Lead__r.Personal_Credit_Report__c
-            FROM LASERCA__Personal_Credit_Report__c
-            WHERE Id = :pcrIds
-        ];
+    private static void updateLeadsWithPCR(Set<Id> pcrIds) {
+        if (throwException) {
+            throw new Util.BWException('Throwing exception to test error handling in CreditReportLogTrigger');
+        }
 
-        List<String> leadIds = new List<String>();
-        Map<Id, Lead> leadUpdateMap = new Map<Id, Lead>();
+        List<LASERCA__Personal_Credit_Report__c> completedPCRs = creditReportSelector.getCompletedPCRs(pcrIds);
 
+        List<Lead> leadsToUpdateWithPCR = new List<Lead>();
         for (LASERCA__Personal_Credit_Report__c pcr : completedPCRs) {
-            if (pcr.LASERCA__Lead__c != null) {
-                leadIds.add(pcr.LASERCA__Lead__c);
+            if (pcr.LASERCA__Lead__c != null && pcr.LASERCA__Lead__r.Personal_Credit_Report__c != pcr.Id) {
+                Lead lead = new Lead(
+                    Id = pcr.LASERCA__Lead__c,
+                    Personal_Credit_Report__c = pcr.Id
+                );
+                leadsToUpdateWithPCR.add(lead);
             }
         }
 
-        if (leadIds.isEmpty()) {
-            return;
-        }
-
-        Map<Id, Lead> leadMap =
-            new Map<Id, Lead>([
-                SELECT Id, Personal_Credit_Report__c
-                FROM Lead
-                WHERE Id IN :leadIds
-            ]);
-
-        for (LASERCA__Personal_Credit_Report__c pcr : completedPCRs) {
-            Lead lead = leadMap.get(pcr.LASERCA__Lead__c);
-
-            if (lead != null &&
-                lead.Personal_Credit_Report__c != pcr.Id) {
-                lead.Personal_Credit_Report__c = pcr.Id;
-                leadUpdateMap.put(lead.Id, lead);
-            }
-
-        }
-
-        update leadUpdateMap.values();
-
+        update leadsToUpdateWithPCR;
     }
 }

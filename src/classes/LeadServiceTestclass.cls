@@ -800,4 +800,30 @@ public class LeadServiceTestclass {
         System.assertEquals(1, errorLogs.size(),
             'Expected one error log about not being able to attach a lead to a campaign, but got this: ' + errorLogs);
     }
+
+    @IsTest
+    private static void testCreditReportLogTriggerFailure() {
+        MapPCRtoLeadHandler.throwException = true;
+        LASERCA__Credit_Report_Log__c crLog = new LASERCA__Credit_Report_Log__c(
+            LASERCA__Status__c = 'Completed'
+        );
+        insert crLog;
+        List<Error_Log__c> errorLogs = [
+            SELECT Id, Message__c
+            FROM Error_Log__c
+            WHERE Severity__c = :Logger.ERROR
+        ];
+        System.assertEquals(1, errorLogs.size(), 'Expected CreditReportLogTrigger to log an error after insert from a forced exception but got: ' + errorLogs);
+        System.assert(errorLogs[0].Message__c.contains('to test error handling'), errorLogs[0].Message__c);
+
+        update crLog;
+        errorLogs = [
+            SELECT Id, Message__c
+            FROM Error_Log__c
+            WHERE Severity__c = :Logger.ERROR
+            AND Id != :errorLogs[0].Id
+        ];
+        System.assertEquals(1, errorLogs.size(), 'Expected CreditReportLogTrigger to log an error after update from a forced exception but got: ' + errorLogs);
+        System.assert(errorLogs[0].Message__c.contains('to test error handling'), errorLogs[0].Message__c);
+    }
 }
