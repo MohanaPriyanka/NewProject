@@ -405,6 +405,42 @@ private class CollectionUtilTest {
     }
 
     @IsTest
+    static void testGetIdSetWithSObjectField() {
+        Account account1 = new Account(
+            Id = Util.getFakeId(Account.SObjectType)
+        );
+        Account account2 = new Account(
+            Id = Util.incrementFakeId(account1.Id)
+        );
+        Account account3 = new Account(
+            Id = Util.incrementFakeId(account2.Id)
+        );
+
+        List<Contact> contacts = new List<Contact>();
+        contacts.add(new Contact(
+            Id = Util.getFakeId(Contact.SObjectType),
+            AccountId = account1.Id
+        ));
+        contacts.add(new Contact(
+            Id = Util.getFakeId(Contact.SObjectType),
+            AccountId = account2.Id
+        ));
+        contacts.add(new Contact(
+            Id = Util.getFakeId(Contact.SObjectType),
+            AccountId = account3.Id
+        ));
+        contacts.add(new Contact(
+            Id = Util.getFakeId(Contact.SObjectType),
+            AccountId = account3.Id
+        ));
+        Set<Id> accountIds = CollectionUtil.getIdSet(contacts, Contact.AccountId);
+        System.assertEquals(3, accountIds.size(), 'Expected 3 account ids in the accountIds set');
+        System.assert(accountIds.contains(account1.Id), 'Account1 should be in the set');
+        System.assert(accountIds.contains(account2.Id), 'Account2 should be in the set');
+        System.assert(accountIds.contains(account3.Id), 'Account3 should be in the set');
+    }
+
+    @IsTest
     static void testHasField() {
         System.assert(!CollectionUtil.hasField(new Account(), Contact.FirstName), 'Unexpected field');
         System.assert(!CollectionUtil.hasField(null, Contact.FirstName), 'Unexpected field');
