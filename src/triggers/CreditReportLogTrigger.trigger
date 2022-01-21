@@ -13,11 +13,16 @@ trigger CreditReportLogTrigger on LASERCA__Credit_Report_Log__c (after insert, a
                 MapPCRtoLeadHandler.mapPCRtoLeadAfterInsert(Trigger.new);
                 csQualificationService.checkCreditReportLog(Trigger.newMap);
             } when AFTER_UPDATE {
-                MapPCRtoLeadHandler.mapPCRtoLeadAfterUpdate(Trigger.newMap, Trigger.oldMap);
+                MapPCRtoLeadHandler.mapPCRtoLeadAfterUpdate(Trigger.new, Trigger.oldMap);
                 csQualificationService.checkCreditReportLog(Trigger.newMap);
             }
         }
     } catch (Exception e) {
-        Logger.logNow('CreditReportLogTrigger', Trigger.operationType.name(), e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
+        Logger.logNow(
+            'CreditReportLogTrigger',
+            Trigger.operationType.name(),
+            e.getMessage() + '\n' + e.getStackTraceString() + '\n' + JSON.serializePretty(Trigger.new),
+            Logger.ERROR
+        );
     }
 }

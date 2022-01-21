@@ -17,15 +17,11 @@ public without sharing class MapPCRtoLeadHandler {
         updateLeadsWithPCR(pcrIds);
     }
 
-    public static void mapPCRtoLeadAfterUpdate(Map<Id, LASERCA__Credit_Report_Log__c> triggerNewMap,
+    public static void mapPCRtoLeadAfterUpdate(List<LASERCA__Credit_Report_Log__c> triggerNew,
         Map<Id, LASERCA__Credit_Report_Log__c> triggerOldMap) {
-        Set<Id> pcrIds = new Set<Id>();
-        for (Id oldId : triggerOldMap.keySet()) {
-            if (triggerNewMap.get(oldId).LASERCA__Status__c == 'Completed' &&
-                triggerOldMap.get(oldId).LASERCA__Status__c != 'Completed') {
-                pcrIds.add(triggerNewMap.get(oldId).LASERCA__Personal_Credit_Report__c);
-            }
-        }
+        Set<Id> pcrIds = (Set<Id>) new SObjectFilter(
+            triggerOldMap, triggerNew, LASERCA__Credit_Report_Log__c.LASERCA__Status__c, SObjectFilter.ANY_VALUE, 'Completed')
+            .get(SObjectFilter.SOBJECT_ID_SET);
         updateLeadsWithPCR(pcrIds);
     }
 
