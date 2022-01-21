@@ -10,10 +10,19 @@
   }, {
     "components" : [ {
       "componentAttributes" : {
-        "richTextValue" : "<div style='text-align: center;'>Invalid Page</div>"
+        "richTextValue" : "<h1 style=\"text-align: center;\"><br></h1><h1 style=\"text-align: center;\"><br></h1><h1 style=\"text-align: center;\"><b>Did you fall off your perch?</b></h1><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\">We can't seem to find the page you're looing for. Error code: 404</p><p style=\"text-align: center;\"><br></p>"
       },
       "componentName" : "forceCommunity:richTextInline",
-      "id" : "97d1c6a5-f09f-45e5-a00d-48fa3d590eed",
+      "id" : "def02e50-6418-4fc9-a913-577d7c4c2185",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    }, {
+      "componentAttributes" : {
+        "richTextValue" : "<div class=\"slds-align_absolute-center\"><div class=\"slds-button slds-button_brand\"><a href=\"../\" style=\"color: #fff;\">Let's take you home</a></div></div>"
+      },
+      "componentName" : "forceCommunity:htmlBlock",
+      "id" : "568aae82-2d37-4ab0-b7fb-e99b76ec5525",
       "renderPriority" : "NEUTRAL",
       "renditionMap" : { },
       "type" : "component"
