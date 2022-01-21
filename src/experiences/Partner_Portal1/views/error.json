@@ -10,10 +10,19 @@
   }, {
     "components" : [ {
       "componentAttributes" : {
-        "richTextValue" : " <div class='slds-grid slds-grid--vertical slds-align--absolute-center slds-container--large'>   <div class='slds-align-middle slds-m-bottom--xx-large slds-m-top--xx-large' alt='Page not available'>      <img src='/sfsites/c/img/community/slds/messaging/illustration-page-not-found.png' class='slds-p-horizontal--large'/>   </div>   <h4 class='slds-text-align--center slds-text-heading--large slds-text-color--weak slds-m-bottom--small'>Page not available</h4>    <p class='slds-text-align--center slds-text-heading--medium slds-text-color--weak'>Maybe the page was deleted, the URL is incorrect, or something else went wrong. If you know the page exists but you still can’t get to it, please ask the community administrator for help.</p>  </div>"
+        "richTextValue" : "<h1 style=\"text-align: center;\"><br></h1><h1 style=\"text-align: center;\"><br></h1><h1 style=\"text-align: center;\"><b>Did you fall off your perch?</b></h1><p style=\"text-align: center;\"><br></p><p style=\"text-align: center;\">We can't seem to find the page you're looing for. Error code: 404</p><p> </p>"
+      },
+      "componentName" : "forceCommunity:richTextInline",
+      "id" : "7342327e-7a70-40fa-a7f4-44ed00e8fc9d",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    }, {
+      "componentAttributes" : {
+        "richTextValue" : "<div class=\"slds-align_absolute-center\"><div class=\"slds-button slds-button_brand\"><a href=\"/partnerportal\" style=\"color: #fff;\">Let's take you home</a></div></div>"
       },
       "componentName" : "forceCommunity:htmlBlock",
-      "id" : "0dedc81d-f970-4977-a36a-f4246682a59a",
+      "id" : "8cc218a6-d730-496c-bf93-71b6b4090f7c",
       "renderPriority" : "NEUTRAL",
       "renditionMap" : { },
       "type" : "component"
