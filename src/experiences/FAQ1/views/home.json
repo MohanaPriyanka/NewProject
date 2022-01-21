@@ -37,12 +37,12 @@
   }, {
     "components" : [ {
       "componentAttributes" : {
-        "numberOfArticles" : 5,
+        "numberOfArticles" : 3,
         "showTitle" : false,
         "title" : "Top Articles",
         "topicList" : [ {
           "isPublic" : true,
-          "name" : "0TO0a000000DpniGAC"
+          "name" : "0TO5b000000UC61GAG"
         } ]
       },
       "componentName" : "forceCommunity:topArticleList",
@@ -57,12 +57,12 @@
   }, {
     "components" : [ {
       "componentAttributes" : {
-        "numberOfArticles" : 5,
+        "numberOfArticles" : 3,
         "showTitle" : false,
         "title" : "Top Articles",
         "topicList" : [ {
           "isPublic" : true,
-          "name" : "0TO7j000000SSlRGAW"
+          "name" : "0TO5b000000UC62GAG"
         } ]
       },
       "componentName" : "forceCommunity:topArticleList",
@@ -77,12 +77,12 @@
   }, {
     "components" : [ {
       "componentAttributes" : {
-        "numberOfArticles" : 5,
+        "numberOfArticles" : 3,
         "showTitle" : false,
         "title" : "Top Articles",
         "topicList" : [ {
           "isPublic" : true,
-          "name" : "0TO7j000000SSlWGAW"
+          "name" : "0TO5b000000UC63GAG"
         } ]
       },
       "componentName" : "forceCommunity:topArticleList",
