@@ -19,9 +19,10 @@ public without sharing class MapPCRtoLeadHandler {
 
     public static void mapPCRtoLeadAfterUpdate(List<LASERCA__Credit_Report_Log__c> triggerNew,
         Map<Id, LASERCA__Credit_Report_Log__c> triggerOldMap) {
-        Set<Id> pcrIds = (Set<Id>) new SObjectFilter(
+        List<LASERCA__Credit_Report_Log__c> creditReportLogs = (List<LASERCA__Credit_Report_Log__c>) new SObjectFilter(
             triggerOldMap, triggerNew, LASERCA__Credit_Report_Log__c.LASERCA__Status__c, SObjectFilter.ANY_VALUE, 'Completed')
-            .get(SObjectFilter.SOBJECT_ID_SET);
+            .get(SObjectFilter.SOBJECT_LIST);
+        Set<Id> pcrIds = CollectionUtil.getIdSet(creditReportLogs, LASERCA__Credit_Report_Log__c.LASERCA__Personal_Credit_Report__c);
         updateLeadsWithPCR(pcrIds);
     }
 

@@ -259,6 +259,14 @@ public with sharing class CollectionUtil {
         return ids;
     }
 
+    public static Set<Id> getIdSet(List<SObject> objects, SObjectField idField) {
+        Set<Id> ids = new Set<Id>();
+        for (SObject sobj : objects) {
+            ids.add((Id) sobj.get(idField));
+        }
+        return ids;
+    }
+
     /**
      *
      * Take the given list of <code>SObject</code> instances and create a map from them using the value
