@@ -8,7 +8,7 @@
     "headerUrl" : ""
   },
   "currentThemeId" : "448deadd-5c2a-469d-b4b1-4c3c182ce633",
-  "headMarkup" : "<link rel=\"shortcut icon\" href=\"/clientportal/s/BlueWave_Favicon.ico\">",
+  "headMarkup" : "<link rel=\"shortcut icon\" href=\"https://portal.perchenergy.com/clientportal/favicon.ico?v=2>",
   "id" : "ccc1c0c4-65cf-4753-831e-812cc65bf47c",
   "isRelaxedCSPLevel" : true,
   "label" : "main",

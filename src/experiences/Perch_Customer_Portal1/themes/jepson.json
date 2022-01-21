@@ -1,6 +1,6 @@
 {
   "activeBrandingSetId" : "b7d7954c-d6d9-4fee-99d5-cbe7bfcffd3b",
-  "customCSS" : ".slds-form-element .uiTooltip.tooltip-trigger, .slds-form-element + .tooltipIcon {\n    display: none;\n}\n\n@font-face {\nfont-family: 'Judson-Bold';\nsrc: url('/CustomerPortal/s/sfsites/c/resource/PerchFonts/Fonts/Judson-Bold.ttf') format('truetype');\n}\n\n@font-face {\nfont-family: 'Manrope-Regular';\nsrc: url('/CustomerPortal/s/sfsites/c/resource/PerchFonts/Fonts/Manrope-Regular.ttf') format('truetype');\n}",
+  "customCSS" : ".slds-form-element .uiTooltip.tooltip-trigger, .slds-form-element + .tooltipIcon {\n    display: none;\n}\n\n@font-face {\nfont-family: 'Judson-Bold';\nsrc: url('/customerportal/s/sfsites/c/resource/PerchFonts/Fonts/Judson-Bold.ttf') format('truetype');\n}\n\n@font-face {\nfont-family: 'Manrope-Regular';\nsrc: url('/customerportal/s/sfsites/c/resource/PerchFonts/Fonts/Manrope-Regular.ttf') format('truetype');\n}",
   "developerName" : "jepson",
   "id" : "fb6d4abb-d0a4-4286-943c-963ad571d0dd",
   "label" : "Jepson",
@@ -46,7 +46,7 @@
     "regions" : [ {
       "components" : [ {
         "componentAttributes" : {
-          "background" : "background: rgb(20,28,51)",
+          "background" : "background: rgb(13,39,39)",
           "backgroundOverlayColor" : "rgba(0, 0, 0, 0)",
           "borderBottomColor" : "rgba(0, 0, 0, 0)",
           "centerAlignLogo" : false,
