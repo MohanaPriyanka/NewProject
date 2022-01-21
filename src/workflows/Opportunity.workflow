@@ -167,17 +167,6 @@
         <language>en_US</language>
         <protected>false</protected>
     </flowActions>
-    <rules>
-        <fullName>Interest Only Start Date</fullName>
-        <active>false</active>
-        <criteriaItems>
-            <field>Opportunity.Account_Days_Past_Due__c</field>
-            <operation>greaterThan</operation>
-            <value>0</value>
-        </criteriaItems>
-        <description>Rule criteria used to be on Interest Only Period, need to update and deactivate before deleting.</description>
-        <triggerType>onAllChanges</triggerType>
-    </rules>
     <tasks>
         <fullName>EMAIL_LOG_60_Disbursal_for_Non_MA_States</fullName>
         <assignedTo>api@bluewavesolar.com</assignedTo>
