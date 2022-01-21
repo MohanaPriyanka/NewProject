@@ -592,7 +592,6 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
         CSUtilityAccountSubscriptionFactory.createUAS(ualList[0], opportunities, uow);
         List<SObject> uasSingle = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow, 'Utility_Account_Subscription__c');
         Utility_Account_Subscription__c single = (Utility_Account_Subscription__c) uasSingle[0];
-        System.debug('UAS SINGLE: ' + uasSingle);
         System.assertEquals(1, uasSingle.size());
         System.assertEquals(sizeRatio.Id, single.Sizing_Method__c,
             'UAS should be assigned the Sizing Method from the UALs Rate Class');
@@ -939,9 +938,16 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             ));
             ++counter;
             if (sss.Product__r.Name == 'SREC Community Solar') {
-                setMaximumSubscriptionCost(sss, (ual.Annual_Cost_of_Electricity__c) / 2);
+                // we want the max subscription cost on each CSUtilityAccountSubscriptionFactory.SSSSubscription to be 1/2 the UAL annual cost so that we get a UAS for each SSS
+                // the SSSSubscription uses the formula field sss.Maximum_Subscription_Cost__c to set the max subscription
+                // Maximum_Subscription_Cost__c is calculated using the formula Maximum_Subscription_Capacity_kWDC__c *  NMC_Value__c *  Expected_Yield_kWh_kW__c
+                // therefore we need to set sss.Expected_Yield_kWh_kW__c to the right value to get sss.Maximum_Subscription_Cost__c = (ual.Annual_Cost_of_Electricity__c / 2)
+                sss.Expected_Yield_kWh_kW__c = (ual.Annual_Cost_of_Electricity__c / 2) / (sss.Maximum_Subscription_Capacity_kWDC__c * sss.NMC_Value__c);
             } else {
-                setMaximumSubscriptionCapacity(sss, (ual.Annual_kWh__c / 2));
+                // we want the max subscription capacity on each CSUtilityAccountSubscriptionFactory.SSSSubscription to be 1/2 the UAL annual capacity so that we get a UAS for each SSS
+                // the SSSSubscription calculates the max capacity using sss.Maximum_Subscription_Capacity_kWDC__c * sss.Expected_Yield_kWh_kW__c for Rate Class Ratio products
+                // therefore we need to set sss.Expected_Yield_kWh_kW__c to the right value to get an SSSSubscription with max subscription = (ual.Annual_kWh__c / 2)
+                sss.Expected_Yield_kWh_kW__c = (ual.Annual_kWh__c / 2) / sss.Maximum_Subscription_Capacity_kWDC__c;
             }
         }
         update sharedSolarSystemList;
@@ -955,8 +961,20 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
         );
         CSUtilityAccountSubscriptionFactory.generateSubscriptions(uals, sharedSolarSystemList, opportunities, uow);
         List<SObject> generatedUASes = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow, 'Utility_Account_Subscription__c');
+        List<SObject> generatedSOs = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow, 'Subscription_Order__c');
+        String soJSON = JSON.serialize(generatedSOs);
+        List<Subscription_Order__c> soList = (List<Subscription_Order__c>) JSON.deserialize(soJSON, List<Subscription_Order__c>.class);
         // 4 opps with max = 1/2 ual size => 4 subscriptions (2 for each ual)
         // there should be UASs for a mix of both kWh and Electricity Cost ($)
         System.assertEquals(opportunities.size(), generatedUASes.size(), 'There should be a uas for each opportunity');
+        System.assertEquals(4, soList.size());
+        System.assert(soList[0].New_Annual_Cost__c == 184.8 || soList[0].New_Annual_Cost__c == null, 'Each SO using cost should have a new annual cost of half one ual annual cost');
+        System.assert(soList[1].New_Annual_Cost__c == 184.8 || soList[1].New_Annual_Cost__c == null, 'Each SO using cost should have a new annual cost of half one ual annual cost');
+        System.assert(soList[2].New_Annual_Cost__c == 184.8 || soList[2].New_Annual_Cost__c == null, 'Each SO using cost should have a new annual cost of half one ual annual cost');
+        System.assert(soList[3].New_Annual_Cost__c == 184.8 || soList[3].New_Annual_Cost__c == null, 'Each SO using cost should have a new annual cost of half one ual annual cost');
+        System.assert(soList[0].New_Annual_kWh__c == 1000 || soList[0].New_Annual_kWh__c == null, 'Each SO using capacity should have a new annual capacity of half one ual annual capacity');
+        System.assert(soList[1].New_Annual_kWh__c == 1000 || soList[1].New_Annual_kWh__c == null, 'Each SO using capacity should have a new annual capacity of half one ual annual capacity');
+        System.assert(soList[2].New_Annual_kWh__c == 1000 || soList[2].New_Annual_kWh__c == null, 'Each SO using capacity should have a new annual capacity of half one ual annual capacity');
+        System.assert(soList[3].New_Annual_kWh__c == 1000 || soList[3].New_Annual_kWh__c == null, 'Each SO using capacity should have a new annual capacity of half one ual annual capacity');
     }
 }
