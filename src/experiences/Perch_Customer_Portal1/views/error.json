@@ -19,7 +19,7 @@
       "type" : "component"
     }, {
       "componentAttributes" : {
-        "richTextValue" : "<div class=\"slds-align_absolute-center\"><div class=\"slds-button slds-button_brand\"><a href=\"./\" style=\"color: #fff;\">Let's take you home</a></div></div>"
+        "richTextValue" : "<div class=\"slds-align_absolute-center\"><div class=\"slds-button slds-button_brand\"><a href=\"/customerportal\" style=\"color: #fff;\">Let's take you home</a></div></div>"
       },
       "componentName" : "forceCommunity:htmlBlock",
       "id" : "e99153df-f6ba-47ee-95ed-6d23a969a049",
