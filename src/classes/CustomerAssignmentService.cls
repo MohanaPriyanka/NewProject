@@ -12,22 +12,6 @@ public without sharing class CustomerAssignmentService {
     @TestVisible private static SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
     @TestVisible private static Id aaTypeId = Schema.SObjectType.Contract.getRecordTypeInfosByName().get('Assignment Agreement').getRecordTypeId();
 
-    public void updateInvoicedSubscriptionOrders(Map<Id, Contract> oldMap, Map<Id, Contract> newMap) {
-        Set<Id> invoicedAAIds = new Set<Id>();
-        for (Contract aa : newMap.values()) {
-            if (aa.RecordTypeId == aaTypeId && aa.Date_Invoiced__c != null &&
-                aa.Date_Invoiced__c != oldMap.get(aa.Id).Date_Invoiced__c) {
-                invoicedAAIds.add(aa.Id);
-            }
-        }
-
-        if (invoicedAAIds.size() > 0) {
-            List<Subscription_Order__c> soUpdateList = setInvoiceDateOnSubscriptionOrders(invoicedAAIds, newMap);
-            GenericBatchDMLOperation batchSOs = new GenericBatchDMLOperation(soUpdateList, 'Update');
-            Database.executeBatch(batchSOs);
-        }
-    }
-
     public void updateSignedAssignmentAgreements(Map<Id, Contract> oldMap, Map<Id, Contract> newMap) {
         Set<Id> signedAAIds = new Set<Id>();
         for (Contract aa : newMap.values()) {
