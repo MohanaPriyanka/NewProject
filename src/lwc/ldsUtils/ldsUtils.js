@@ -75,8 +75,7 @@ export function reduceErrors(errors) {
                 return error.statusText;
             }
             // If all else fails, return whatever is in the error object
-            console.log('got here');
-            return JSON.stringify(error);
+            return error;
         })
         // Flatten
         .reduce((prev, curr) => prev.concat(curr), [])
