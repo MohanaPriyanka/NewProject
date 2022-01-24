@@ -587,6 +587,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>AskYoda</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>AuthNetAPI</apexClass>
         <enabled>true</enabled>
     </classAccesses>
