@@ -136,8 +136,7 @@ public class ZuoraUsageServiceTest {
 
         UASB__c uasb = [
             SELECT Id, Date__c, NMC_Rate__c, NMC_Discount__c, Utility_Account_Subscription__r.Id, Opportunity__r.Id,
-                System_Bill__r.Id, Shared_Solar_System__r.Id, Total_System_Size_kW_DC__c, CS_Billing_Log__r.Id,
-                Opportunity__r.AccountId
+                Shared_Solar_System__r.Id, Total_System_Size_kW_DC__c, CS_Billing_Log__r.Id, Opportunity__r.AccountId
             FROM UASB__c
             LIMIT 1
         ];
@@ -153,7 +152,6 @@ public class ZuoraUsageServiceTest {
             Utility_Account_Subscription__c = uasb.Utility_Account_Subscription__r.Id,
             Opportunity__c = uasb.Opportunity__r.Id,
             Account__c = uasb.Opportunity__r.AccountId,
-            System_Bill__c = uasb.System_Bill__r.Id,
             Shared_Solar_System__c = uasb.Shared_Solar_System__r.Id,
             Total_System_Size_kW_DC__c = uasb.Total_System_Size_kW_DC__c,
             NMC_Rate__c = uasb.NMC_Rate__c,

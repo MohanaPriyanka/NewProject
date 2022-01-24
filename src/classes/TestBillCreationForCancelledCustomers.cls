@@ -471,27 +471,13 @@ public class TestBillCreationForCancelledCustomers {
                 Production_Update__r.Name, Credits_on_Bill_Period__c,
                 Utility_Account_Subscription__r.Next_Schedule_Z_Status__c,
                 Net_Metering_Credits_Allocated__c, Discounted_Bill__c,
-                Subscription_Production_kWh__c, System_Bill__r.Opportunity__r.Name
+                Subscription_Production_kWh__c
             FROM UASB__c
         ];
 
         Test.stopTest();
-        setBillsToPublished();
-
     }
 
-    public static void setBillsToPublished() {
-        List <Account_Bill__c> listAccountBills = [
-            SELECT Id, Published__c
-            FROM Account_Bill__c
-            WHERE Published__c = FALSE
-        ];
-
-        for (Account_Bill__c acctBill : listAccountBills) {
-            acctBill.Published__c = True;
-        }
-        update listAccountBills;
-    }
 
     public static void runSecondMonthBillPeriods() {
         List<Shared_Solar_System__c> sssList = [

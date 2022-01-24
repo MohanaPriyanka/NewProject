@@ -387,8 +387,8 @@ public class MultipleMonthProductionUpdateTest {
 
     @isTest public static void testBillCreation() {
         List<UASB__c> uasblist =
-        [SELECT Id, Name, Date__c, System_Bill__r.Bill_Number__c, Above_NM_Rate_Floor__c,
-            Total_System_NMCs__c, NM_Rate_Floor__c, NMC_Rate__c, System_Bill__c,
+        [SELECT Id, Name, Date__c, Above_NM_Rate_Floor__c,
+            Total_System_NMCs__c, NM_Rate_Floor__c, NMC_Rate__c,
             Total_System_Production_kWh__c, Utility_Account_Subscription__c, Bill_Value__c, Schedule_Z_Subscription__c
         FROM UASB__c
         ORDER BY Date__c, NMC_Rate__c];

@@ -850,10 +850,9 @@ public class ProductEscalationTest {
                 Production_Update__r.Name, Credits_on_Bill_Period__c,
                 Utility_Account_Subscription__r.Next_Schedule_Z_Status__c,
                 Net_Metering_Credits_Allocated__c, Discounted_Bill__c,
-                Subscription_Production_kWh__c, System_Bill__r.Opportunity__r.Name,
-                Shared_Solar_System__r.Name, Solar_Electricity_Rate__c,
-                Solar_Share_Rate_Bill_Value__c, Subscription_Production_kWh_Static__c,
-                NMC_Discount__c, Bill_Value__c
+                Subscription_Production_kWh__c, Shared_Solar_System__r.Name,
+                Solar_Electricity_Rate__c, Solar_Share_Rate_Bill_Value__c,
+                Subscription_Production_kWh_Static__c, NMC_Discount__c, Bill_Value__c
             FROM UASB__c
         ]) {
             if (uasb.Shared_Solar_System__r.Name == 'Project A Oak Road') {
@@ -954,9 +953,9 @@ public class ProductEscalationTest {
                 Production_Update__r.Name, Credits_on_Bill_Period__c,
                 Utility_Account_Subscription__r.Next_Schedule_Z_Status__c,
                 Net_Metering_Credits_Allocated__c, Discounted_Bill__c,
-                Subscription_Production_kWh__c, System_Bill__r.Opportunity__r.Name,
-                Shared_Solar_System__r.Name, Solar_Electricity_Rate__c,
-                Solar_Share_Rate_Bill_Value__c, Subscription_Production_kWh_Static__c
+                Subscription_Production_kWh__c, Shared_Solar_System__r.Name,
+                Solar_Electricity_Rate__c, Solar_Share_Rate_Bill_Value__c,
+                Subscription_Production_kWh_Static__c
             FROM UASB__c
         ]) {
             if (uasb.Shared_Solar_System__r.Name == 'Project A Oak Road') {
