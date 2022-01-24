@@ -551,6 +551,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>AskYoda</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>AsyncApexJobSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
