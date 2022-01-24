@@ -1023,18 +1023,4 @@
         <searchResultsAdditionalFields>PRODUCT2.FAMILY</searchResultsAdditionalFields>
     </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
-    <validationRules>
-        <fullName>Lock_Product</fullName>
-        <active>false</active>
-        <description>Prevents making any changes to existing Product records</description>
-        <errorConditionFormula>AND(AND(NOT(ISNEW()), NOT(ISCLONE())),
-    OR(ISCHANGED(Loan_Interest_Rate__c ),
-       ISCHANGED(Loan_Term__c),
-       ISCHANGED(Loan_Interest_Only_Period__c), 
-       ISCHANGED(Disbursal_Terms__c), 
-       ISCHANGED(Family),ISCHANGED(Product_Type__c),
-       ISCHANGED(State__c),
-       ISCHANGED(Program__c)))</errorConditionFormula>
-        <errorMessage>Product records cannot be edited! Please clone this records to make updates.</errorMessage>
-    </validationRules>
 </CustomObject>
