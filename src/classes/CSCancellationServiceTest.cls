@@ -499,7 +499,6 @@ public with sharing class CSCancellationServiceTest {
     }
 
     @IsTest static void testNoOppsAreCancelled() {
-        // Run method and assert that no opportunities are cancelled because there are no system bills yet
 
         Test.startTest();
         CSCancellationService.cancelOpportunities(CSCancellationService.getOpportunitiesToCancel());
