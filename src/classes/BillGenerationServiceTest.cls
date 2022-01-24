@@ -130,8 +130,7 @@ public class BillGenerationServiceTest {
                 Utility_Account_Subscription__r.Next_Schedule_Z_Status__c,
                 Utility_Account_Subscription__r.Opportunity__r.Name,
                 Net_Metering_Credits_Allocated__c, Discounted_Bill__c,
-                Subscription_Production_kWh__c, System_Bill__r.Opportunity__r.Name,
-                Date__c
+                Subscription_Production_kWh__c, Date__c
             FROM UASB__c
             ORDER BY Utility_Account_Subscription__r.Opportunity__r.Name, CreatedDate
         ];

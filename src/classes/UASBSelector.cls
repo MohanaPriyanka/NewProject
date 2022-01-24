@@ -5,7 +5,7 @@ public without sharing class UASBSelector {
 
     public static Database.QueryLocator uasbsNotYetInZuora(Date invoiceDate) {
         String query =
-            'SELECT Id, Name, Date__c, System_Bill__c,' +
+            'SELECT Id, Name, Date__c, ' +
             '    Net_Metering_Credits_Allocated__c, Savings__c,' +
             '    Discounted_Bill__c, Shared_Solar_System__r.Name,' +
             '    Shared_Solar_System__r.System_Utility__c,' +
@@ -13,7 +13,6 @@ public without sharing class UASBSelector {
             '    Utility_Account_Subscription__r.Utility_Account_Log__r.Name,' +
             '    Utility_Account_Subscription__r.Shared_Solar_System__r.Unique_ID__c,' +
             '    Utility_Account_Subscription__r.Opportunity__r.Account.Zuora_Id__c,' +
-            '    System_Bill__r.Account_Bill__c,' +
             '    Client_Account_Number__c ' + // A formula for the Client Account that is stamped on UASB on insert
             'FROM UASB__c ' +
             'WHERE Zuora_Id__c = NULL ' +
