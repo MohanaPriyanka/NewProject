@@ -17,7 +17,8 @@ public without sharing class ClientInvoiceGenerator {
             Invoice__c.SObjectType,
             Invoice_Line_Item__c.SObjectType,
             Subscription_Order__c.SObjectType,
-            Client_Invoicing_Memo__c.SObjectType
+            Client_Invoicing_Memo__c.SObjectType,
+            Contract.SObjectType
         }
     );
 
@@ -175,6 +176,14 @@ public without sharing class ClientInvoiceGenerator {
         uow.registerNew(invoiceLineItem, Invoice_Line_Item__c.Invoice__c, invoice);
         subscriptionOrder.Invoice_Date__c = invoice.Effective_Date__c==null?System.today():invoice.Effective_Date__c;
         uow.registerDirty(subscriptionOrder, Subscription_Order__c.Invoice_Line_Item__c, invoiceLineItem);
+        if (subscriptionOrder.Client_Assignment_Agreement__c != null &&
+            subscriptionOrder.Client_Assignment_Agreement__r.Date_Invoiced__c == null) {
+            Contract assignmentAgreement = new Contract(
+                Id = subscriptionOrder.Client_Assignment_Agreement__c,
+                Date_Invoiced__c = subscriptionOrder.Invoice_Date__c
+            );
+            uow.registerDirty(assignmentAgreement);
+        }
         return invoiceLineItem;
     }
 

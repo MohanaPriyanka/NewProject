@@ -17,7 +17,6 @@ trigger ContractTrigger on Contract (after update, after insert, after delete, a
         when AFTER_UPDATE {
             customerAssignmentService.handleRejectedAssignmentAgreement(Trigger.oldMap, Trigger.newMap);
             customerAssignmentService.updateSignedAssignmentAgreements(Trigger.oldMap, Trigger.newMap);
-            customerAssignmentService.updateInvoicedSubscriptionOrders(Trigger.oldMap, Trigger.newMap);
             clientReportingService.rollupActiveContractsToAccounts(Trigger.oldMap, Trigger.newMap);
         }
         when AFTER_DELETE {

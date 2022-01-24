@@ -229,6 +229,14 @@ public with sharing class ClientInvoiceGeneratorTest {
         ];
         System.assertEquals(0, clientInvoicingMemos.size(),
             'Expected all Client Invoicing Memos to get invoiced');
+        assignmentAgreement = [
+            SELECT Id, Date_Invoiced__c
+            FROM Contract
+            WHERE RecordTypeId = :assignmentAgreementRecordTypeId
+        ];
+        System.assertNotEquals(null, assignmentAgreement.Date_Invoiced__c,
+            'ClientInvoiceGenerator should mark the Assignment Agreement with a Date Invoiced. ' +
+                'Accounting uses that field to do manual invoicing');
 
         Invoice__c newInvoice = new Invoice__c(
             Account__c = invoice.Account__c
@@ -247,7 +255,8 @@ public with sharing class ClientInvoiceGeneratorTest {
                 Invoice__c.SObjectType,
                 Invoice_Line_Item__c.SObjectType,
                 Subscription_Order__c.SObjectType,
-                Client_Invoicing_Memo__c.SObjectType
+                Client_Invoicing_Memo__c.SObjectType,
+                Contract.SObjectType
             }
         );
         Test.stopTest();
@@ -357,7 +366,8 @@ public with sharing class ClientInvoiceGeneratorTest {
                 Invoice__c.SObjectType,
                 Invoice_Line_Item__c.SObjectType,
                 Subscription_Order__c.SObjectType,
-                Client_Invoicing_Memo__c.SObjectType
+                Client_Invoicing_Memo__c.SObjectType,
+                Contract.SObjectType
             }
         );
         new ClientInvoiceGenerator().generateInvoiceForClient(
@@ -381,7 +391,8 @@ public with sharing class ClientInvoiceGeneratorTest {
                 Invoice__c.SObjectType,
                 Invoice_Line_Item__c.SObjectType,
                 Subscription_Order__c.SObjectType,
-                Client_Invoicing_Memo__c.SObjectType
+                Client_Invoicing_Memo__c.SObjectType,
+                Contract.SObjectType
             }
         );
         new ClientInvoiceGenerator().generateInvoiceForClient(
