@@ -79,96 +79,6 @@
         <type>Percent</type>
     </fields>
     <fields>
-        <fullName>ARL_Ceiling_Rate__c</fullName>
-        <externalId>false</externalId>
-        <formula>Product__r.Ceiling_Rate__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>ARL Ceiling Rate</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>6</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>ARL_Floor_Rate__c</fullName>
-        <externalId>false</externalId>
-        <formula>Product__r.Floor_Rate__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>ARL Floor Rate</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>6</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>ARL_LTT2__c</fullName>
-        <externalId>false</externalId>
-        <formula>&quot;Months &quot; + TEXT(Product__r.First_Adjustment__c) + &quot; - &quot; + TEXT(Product__r.TermPlusIO__c)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>ARL LTT2</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>ARL_LTT3__c</fullName>
-        <externalId>false</externalId>
-        <formula>&quot;Months 1 - &quot; + TEXT(Product__r.TermPlusIO__c)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>ARL LTT3</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>ARL_LTT4__c</fullName>
-        <externalId>false</externalId>
-        <formula>&quot;Months 1 - &quot; + TEXT(Product__r.First_Adjustment__c - 1)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>ARL LTT4</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>ARL_LTT__c</fullName>
-        <externalId>false</externalId>
-        <formula>&quot;Months &quot; + TEXT(Product__r.Loan_Interest_Only_Period__c + 1) + &quot; - &quot; + TEXT(Product__r.First_Adjustment__c - 1)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>ARL LTT</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>ARL_Max_Adjustment__c</fullName>
-        <externalId>false</externalId>
-        <formula>Product__r.Maximum_Adjustment__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>ARL Max Adjustment</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Applied_ITC__c</fullName>
         <externalId>false</externalId>
         <formula>IF (
@@ -312,20 +222,6 @@ TEXT(Round(ITC_Estimated__c,0))
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Interest_Only_Payments__c</fullName>
-        <externalId>false</externalId>
-        <formula>(Product__r.Loan_Interest_Only_Period__c *  Interest_Payment__c)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Interest Only Payments</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Interest_Pay_Text__c</fullName>
         <externalId>false</externalId>
         <formula>IF ( ISPICKVAL(Product__r.Program__c,&quot;MSLP&quot;) , &quot;During System Construction&quot; , &quot;Months 1 - &quot; + TEXT(Product__r.Loan_Interest_Only_Period__c) )</formula>
@@ -362,32 +258,6 @@ TEXT(Round(ITC_Estimated__c,0))
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Percent</type>
-    </fields>
-    <fields>
-        <fullName>LTT_Second_Amort__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF ( Product__r.State_Incentive_Second_Reamort__c , &quot;Months 19 -&quot; + TEXT(Product__r.Loan_Term__c + Product__r.Loan_Interest_Only_Period__c),&quot;&quot;)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Loan Term Text (Second Amort)</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>LTT__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF ( ISPICKVAL(Product__r.Program__c,&quot;MSLP&quot;) , &quot;First month after System Operation Date &quot; + &quot; - &quot; + TEXT(Product__r.Loan_Term__c ) + &quot; Months&quot;,
-IF ( Product__r.State_Incentive_Second_Reamort__c, &quot;Months &quot; + TEXT(Product__r.Loan_Interest_Only_Period__c + 1) + &quot; - 18&quot;,
-&quot;Months &quot; + TEXT(Product__r.Loan_Interest_Only_Period__c + 1) + &quot; - &quot; + TEXT(Product__r.Loan_Term__c +  Product__r.Loan_Interest_Only_Period__c )))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Loan Term Text</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Link_to_File__c</fullName>
@@ -449,30 +319,6 @@ IF ( Product__r.State_Incentive_Second_Reamort__c, &quot;Months &quot; + TEXT(Pr
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Loan_Term_in_Years__c</fullName>
-        <externalId>false</externalId>
-        <formula>SUBSTITUTE(
-  SUBSTITUTE( 
-   SUBSTITUTE( 
-    SUBSTITUTE( 
-     SUBSTITUTE( 
-      SUBSTITUTE( 
-       SUBSTITUTE( TEXT(Product__r.Term_in_Years__c) ,&quot;(20)&quot;,&quot;&quot;)
-      ,&quot;(16)&quot;,&quot;&quot;)
-     ,&quot;(15)&quot;,&quot;&quot;)
-    ,&quot;(13)&quot;,&quot;&quot;)
-   ,&quot;(12)&quot;,&quot;&quot;)
-  ,&quot;(11)&quot;,&quot;&quot;)
- ,&quot;(10)&quot;,&quot;&quot;)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Loan Term in Years</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Max_Payment__c</fullName>
@@ -602,26 +448,6 @@ IF ( Product__r.State_Incentive_Second_Reamort__c, &quot;Months &quot; + TEXT(Pr
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Quick_Sales_Sheet__c</fullName>
-        <description>##Conga created btn:00bV0000000QsHI</description>
-        <externalId>false</externalId>
-        <formula>&quot;&amp;solmgr=1&quot; + 
-&quot;&amp;id=&quot; + Id +
-&quot;&amp;templateid=&quot; + IF( State_Tax_Incentive__c &gt; 0.02,IF(ISPICKVAL(Product__r.Index_Rate_for_Adjustment__c,&quot;WSJ Prime Rate&quot;),&quot;a2F0a000001VAzZ&quot;,&quot;a2F0a000000zxNr&quot;), IF(ISPICKVAL(Product__r.Index_Rate_for_Adjustment__c,&quot;WSJ Prime Rate&quot;),&quot;a2F0a000001VBJv&quot;,&quot;a2F0a00000109xQ&quot;)) +
-&quot;&amp;defaultpdf=1&quot; +
-&quot;&amp;ofn=Loan Summary Sheet&quot; +  
-&quot;&amp;FP0=1&quot; +
-&quot;&amp;sc0=1&quot; + 
-&quot;&amp;sc1=SalesforceFile&quot; + 
-&quot;&amp;qmode=SalesforceFile&quot;</formula>
-        <label>Quick Sales Sheet</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Send_to_Email__c</fullName>
         <description>Populated by the SLPQuickSalesSheetController component when sending the quick sales sheet</description>
         <externalId>false</externalId>
@@ -652,20 +478,6 @@ IF ( Product__r.State_Incentive_Second_Reamort__c, &quot;Months &quot; + TEXT(Pr
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>State_Tax_Incentive__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF ( ISNULL(Product__r.State_Tax_Incentive__c) , 0 ,
-MIN(System_Cost__c * Product__r.State_Tax_Incentive__c, Product__r.State_Tax_Incentive_Cap__c))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>State Tax Incentive</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
     </fields>
     <fields>
         <fullName>System_Cost__c</fullName>
@@ -745,7 +557,6 @@ MIN(System_Cost__c * Product__r.State_Tax_Incentive__c, Product__r.State_Tax_Inc
         <columns>System_Cost__c</columns>
         <columns>Product__c</columns>
         <columns>CREATED_DATE</columns>
-        <columns>Quick_Sales_Sheet__c</columns>
         <columns>CREATEDBY_USER</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
