@@ -1,9 +1,8 @@
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { makeRequest } from 'c/httpRequestService';
 import getContentDocumentLinksByLead from '@salesforce/apex/SimpleSignupFormController.getContentDocumentLinksByLead';
-import insertLog from '@salesforce/apex/Logger.insertLog';
 import getContentDistributionLink from '@salesforce/apex/SimpleSignupFormController.getContentDistributionById';
-import { toggleLoadingSpinnerEvent, modifySpinnerMessageEvent, postReadyStateEvent } from "c/ssfShared";
+import { toggleLoadingSpinnerEvent, modifySpinnerMessageEvent, postReadyStateEvent, postErrorLogEvent } from "c/ssfShared";
 import companyShortName from '@salesforce/label/c.SSF_Company_Short_Name';
 import esignURL from '@salesforce/label/c.SSF_Esign_URL';
 
@@ -144,12 +143,7 @@ const consentsComplete = async (component) => {
             });
             component.dispatchEvent(consentsCompleteEvent);
         } catch (error) {
-            insertLog({
-                className: 'ssf',
-                methodName: 'patchLead',
-                message: error,
-                severity: 'Error'
-            });
+            postErrorLogEvent(component, error, null,'ssfAgreementsShared', 'consentsComplete', 'Error');
             showWarningToast(
                 component,
                 'Oops',
@@ -250,12 +244,8 @@ const getContractDocuments = (component) => {
                 'Error',
                 'Sorry, we ran into a technical issue. Please try again by clicking “Next” or contact our Customer Care team.'
             );
-            insertLog({
-                className: 'ssf',
-                methodName: 'getContractDocuments',
-                message: `Unexpected error occurred for Lead ${component.lead.id}: \n\n Error: ${JSON.stringify(error)}`,
-                severity: 'Error'
-            });
+            let errContext = `Unexpected error occurred for Lead ${component.lead.id}`;
+            postErrorLogEvent(component, error, errContext, 'ssfAgreementsShared', 'getContractDocuments', 'Error');
         });
     }, 2000);
     component.documentPollerTimeoutId = window.setTimeout(() => {
@@ -267,12 +257,8 @@ const getContractDocuments = (component) => {
             'Error',
             'Oops! We had an issue generating your documents. Please try again by clicking “Next” or contact our Customer Care team.'
         );
-        insertLog({
-            className: 'ssf',
-            methodName: 'getContractDocuments',
-            message: `Contract document generation timed out for Lead ${component.lead.id}`,
-            severity: 'Error'
-        });
+        let error = `Contract document generation timed out for Lead ${component.lead.id}`;
+        postErrorLogEvent(component, error, null, 'ssfAgreementsShared', 'getContractDocuments', 'Error');
     }, DOC_GEN_TIMEOUT);
 }
 
