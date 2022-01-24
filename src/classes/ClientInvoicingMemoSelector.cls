@@ -8,6 +8,7 @@ public inherited sharing class ClientInvoicingMemoSelector {
                 Subscription_Order__c,
                 Type__c,
                 Subscription_Order__r.Client_Assignment_Agreement__c,
+                Subscription_Order__r.Client_Assignment_Agreement__r.Date_Invoiced__c,
                 Subscription_Order__r.Approved_Change_in_Subscription__c,
                 Subscription_Order__r.Utility_Account_Subscription__r.Shared_Solar_System__c,
                 Subscription_Order__r.Contract_Fee_Detail__c,

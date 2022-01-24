@@ -23,7 +23,8 @@ public inherited sharing class SubscriptionOrderSelector {
                 Approved_Change_in_Subscription__c,
                 Effective_Date__c,
                 Client_Invoicing_Fee__c,	              
-                Client_Assignment_Agreement__c,	
+                Client_Assignment_Agreement__c,
+                Client_Assignment_Agreement__r.Date_Invoiced__c,
                 Invoice_Line_Item__c,
                 Utility_Account_Subscription__r.Opportunity__r.Id,
                 Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c,
@@ -125,7 +126,7 @@ public inherited sharing class SubscriptionOrderSelector {
             FROM Subscription_Order__c	
             WHERE Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Account__c IN :clientAccountIds	
             AND Utility_Account_Subscription__r.Opportunity__r.StageName = 'Complete'	
-            AND Invoice_Line_Item__c = NULL
+            AND Invoice_Line_Item__c = NULL	
             AND Invoice_Date__c = NULL
             AND Effective_Date__c <= :effectiveDate	
             AND Client_Invoicing_Fee__c != NULL	
@@ -153,11 +154,12 @@ public inherited sharing class SubscriptionOrderSelector {
                 Contract_Fee_Detail__c, Contract_Fee_Detail__r.Fee__c, Client_Assignment_Agreement__c,	
                 Utility_Account_Subscription__r.Shared_Solar_System__r.Client_Account__c, Approved_Change_in_Subscription__c,	
                 Contract_Fee_Detail__r.Acquisition_Type_Acquisition__c, Contract_Fee_Detail__r.Acquisition_Type_Reacquisition__c,
-                Utility_Account_Subscription__r.Utility_Account_Log__r.Name, Acquisition_Type__c
+                Utility_Account_Subscription__r.Utility_Account_Log__r.Name, Acquisition_Type__c,
+                Client_Assignment_Agreement__r.Date_Invoiced__c
             FROM Subscription_Order__c	
             WHERE Utility_Account_Subscription__r.Shared_Solar_System__c IN :sharedSolarSystems	
             AND Utility_Account_Subscription__r.Opportunity__r.StageName = 'Complete'	
-            AND Invoice_Line_Item__c = NULL
+            AND Invoice_Line_Item__c = NULL	
             AND Invoice_Date__c = NULL
             AND Effective_Date__c <= :effectiveDate	
             AND Client_Invoicing_Fee__c != NULL	

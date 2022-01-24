@@ -99,78 +99,7 @@ public with sharing class CustomerAssignmentServiceTest {
         List<Shared_Solar_System__c> sssToUpdate = (List<Shared_Solar_System__c>) Util.objectsUpdatedIfMockingDML;
         System.assertEquals(2, sssToUpdate.size());
     }
-
-    @IsTest
-    private static void systemTestInvoicedAssignmentAgreements() {
-        Util.disableTrigger('Disable_SubscriptionOrder_Trigger__c');
-        Id aaTypeId = Schema.SObjectType.Contract.getRecordTypeInfosByName().get('Assignment Agreement').getRecordTypeId();
-        Account clientAccount = new Account(
-            Name = 'Client Account'
-        );
-        insert clientAccount;
-
-        Contract invoicedAA = new Contract(
-            RecordTypeId = aaTypeId,
-            AccountId = clientAccount.Id
-        );
-
-        Contract invoicedAA2 = new Contract(
-            RecordTypeId = aaTypeId,
-            AccountId = clientAccount.Id,
-            Date_Invoiced__c = System.today()
-        );
-
-        insert new List<Contract>{invoicedAA, invoicedAA2};
-
-        Utility_Account_Log__c ual = new Utility_Account_Log__c(
-            Name = 'Utility Account'
-        );
-        insert ual;
-        Utility_Account_Subscription__c uas = new Utility_Account_Subscription__c(
-            Name = 'Utility Account Subscription',
-            Utility_Account_Log__c = ual.Id
-        );
-        insert uas;
-
-        Subscription_Order__c so1 = new Subscription_Order__c(
-            Utility_Account_Subscription__c = uas.Id,
-            Client_Assignment_Agreement__c = invoicedAA.Id
-        );
-        Subscription_Order__c so2 = new Subscription_Order__c(
-            Utility_Account_Subscription__c = uas.Id,
-            Client_Assignment_Agreement__c = invoicedAA.Id
-        );
-        Subscription_Order__c so3 = new Subscription_Order__c(
-            Utility_Account_Subscription__c =uas.Id,
-            Client_Assignment_Agreement__c = invoicedAA2.Id
-        );
-
-        insert new List<Subscription_Order__c> {so1, so2, so3};
-
-        //Update should populate Invoiced on 2 SOs
-        invoicedAA.Date_Invoiced__c = System.today();
-        //Setting Date_Invoiced to null should not cause changes on SOs
-        invoicedAA2.Date_Invoiced__c = null;
-
-        Test.startTest();
-        update new List<Contract>{invoicedAA, invoicedAA2};
-        Test.stopTest();
-
-        List<Subscription_Order__c> sOrders = [
-            SELECT Id, Invoice_Date__c, Client_Assignment_Agreement__c
-            FROM Subscription_Order__c
-        ];
-
-        System.assertEquals(3, sOrders.size(), 'Total of 3 SO records');
-        for (Subscription_Order__c so : sOrders) {
-            if (so.Client_Assignment_Agreement__c == invoicedAA.Id) {
-                System.assertEquals(System.today(), so.Invoice_Date__c, 'Invoice Date should be populated with invoiceAA date');
-            } else {
-                System.assertEquals(null, so.Invoice_Date__c, 'Invoice Date should not be populated for invoicedAA2');
-            }
-        }
-    }
-
+    
     @IsTest
     private static void testUpdateAssignmentAgreementsFromContract() {
         CustomerAssignmentService.subscriptionOrderSelector =
