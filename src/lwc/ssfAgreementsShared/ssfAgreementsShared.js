@@ -369,6 +369,7 @@ const getText = (component, identifier) => {
             return null;
     }
 }
+
 const creditCheckLabel = (component) => {
     if (component.isFicoUnderwriting) {
         return 'Check to Authorize Credit and Utility Billing Review';
