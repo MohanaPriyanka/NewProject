@@ -40200,11 +40200,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.Applied_Tax_Credits__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Quick_Sales_Sheet__c.Average_Adjustable_Payment_With_Buydown__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -40222,11 +40217,6 @@
         <editable>false</editable>
         <field>Quick_Sales_Sheet__c.Federal_Tax_Credit_Text_Rounded__c</field>
         <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.Finance_Charge__c</field>
-        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -40252,11 +40242,6 @@
         <editable>false</editable>
         <field>Quick_Sales_Sheet__c.Loan_Amount__c</field>
         <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.Loan_Payments__c</field>
-        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>

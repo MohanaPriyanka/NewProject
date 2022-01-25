@@ -96,19 +96,6 @@ ITC_Estimated__c
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Applied_Tax_Credits__c</fullName>
-        <externalId>false</externalId>
-        <formula>Applied_State_Credits__c + Applied_ITC__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Applied Tax Credits</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Average_Adjustable_Payment_With_Buydown__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Average P&amp;I Payment for Adjustable Loans, calculated by code</inlineHelpText>
@@ -170,19 +157,6 @@ TEXT(Round(ITC_Estimated__c,0))
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Finance_Charge__c</fullName>
-        <externalId>false</externalId>
-        <formula>Total_Loan_Payments__c - Loan_Amount__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Finance Charge</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Generate_Doc__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -234,19 +208,6 @@ TEXT(Round(ITC_Estimated__c,0))
         <formula>System_Cost__c - Down_Payment__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Loan Amount</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Loan_Payments__c</fullName>
-        <externalId>false</externalId>
-        <formula>Monthly_Payment__c *  Product__r.Loan_Term__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Loan Payments</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
