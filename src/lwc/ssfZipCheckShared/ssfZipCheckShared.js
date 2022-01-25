@@ -1,11 +1,9 @@
 /**
  * Created by lindsayholmes_gearscrm on 2020-09-14.
 **/
-
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { getZipCodeCapacity } from 'c/zipCodeService';
-import insertLog from '@salesforce/apex/Logger.insertLog';
-import { postReadyStateEvent, modifySpinnerMessageEvent, toggleLoadingSpinnerEvent } from "c/ssfShared";
+import { postReadyStateEvent, modifySpinnerMessageEvent, toggleLoadingSpinnerEvent, postErrorLogEvent } from "c/ssfShared";
 
 const onLoad = (component) => {
     modifySpinnerMessageEvent(component, 'Checking availability...');
@@ -51,15 +49,9 @@ const getCapacity = async (component, utilityId) => {
             noCapacity(component);
         }
     } catch (exception) {
-        console.log(exception);
         postReadyStateEvent(component, null);
         toggleLoadingSpinnerEvent(component, true);
-        insertLog({
-            className: 'ssf',
-            methodName: 'getZipCodeCapacity',
-            message: `Error: ${exception}`,
-            severity: 'Error'
-        });
+        postErrorLogEvent(component, exception, null, 'ssfZipCheckShared', 'getZipCodeCapacity', 'Error');
         const evt = new ShowToastEvent({
             title: 'Sorry, we ran into a technical problem',
             message: 'Please contact Customer Care for help',

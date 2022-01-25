@@ -1,6 +1,7 @@
 import {makeRequest} from 'c/httpRequestService';
 import {ShowToastEvent} from 'lightning/platformShowToastEvent';
 import insertLog from '@salesforce/apex/Logger.insertLog';
+import { reduceErrors } from 'c/ldsUtils';
 import getZipcodeDataForResumeApp from '@salesforce/apex/SimpleSignupFormController.getZipcodeDataForResumeApp';
 
 const loadApplication = (component) => {
@@ -71,7 +72,8 @@ const retrieveApplication = async (component) => {
             }
             showInvalidAuthorizationToast(component);
         } else {
-            handlePromiseError(component, error, 'getLead', 'Error');
+            insertErrorLog(component, error, null, 'ssfShared', 'getLead', 'Error');
+            showGenericErrorToast(component);
         }
         return;
     }
@@ -85,7 +87,8 @@ const retrieveApplication = async (component) => {
                 utilityId: JSON.parse(component.leadJSON).utilityId,
             });
         } catch (error) {
-            handlePromiseError(component, error, 'getZipCodeData', 'Error');
+            insertErrorLog(component, error, null, 'ssfShared', 'getZipCodeData', 'Error');
+            showGenericErrorToast(component);
         }
     }
 
@@ -102,16 +105,6 @@ const getLead = async (component, leadId, email) => {
         headers: {name: 'Content-Type', value:'application/json'}
     };
     return makeRequest(calloutURI, 'GET', options);
-}
-
-const handlePromiseError = (component, promiseRejection, methodName, severity) => {
-    insertLog({
-        className: 'ssf',
-        methodName: methodName,
-        message: JSON.stringify(promiseRejection, Object.getOwnPropertyNames(promiseRejection)),
-        severity: severity
-    });
-    showGenericErrorToast(component);
 }
 
 const showInvalidAuthorizationToast = (component) => {
@@ -178,6 +171,23 @@ const postReadyStateEvent = (cmp, location) => {
     cmp.dispatchEvent(new CustomEvent('readystate',{detail: location}));
 }
 
+const postErrorLogEvent = (cmp, error, context, module, method, severity) => {
+    let info = {error, context, module, method, severity};
+    cmp.dispatchEvent(new CustomEvent('loggableerror', {detail: info}));
+}
+
+const insertErrorLog = (cmp, error, context, module, method, severity) => {
+    let formattedErrorMessage = !!context ?
+        context + ': \n\n' + reduceErrors(error) + '\n\n' + 'Error encountered on ' + cmp.platform :
+        reduceErrors(error) + '\n\n' + 'Error encountered on ' + cmp.platform;
+    insertLog({
+        className: module,
+        methodName: method,
+        message: formattedErrorMessage,
+        severity: severity
+    });
+}
+
 export {
     loadApplication,
     retrieveApplication,
@@ -185,5 +195,7 @@ export {
     modifySpinnerMessageEvent,
     postReadyStateEvent,
     resetReadyStateEvent,
-    handlePromiseError,
+    postErrorLogEvent,
+    showGenericErrorToast,
+    insertErrorLog
 }
