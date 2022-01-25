@@ -94,7 +94,6 @@ public class SubscriptionManagementServiceTest {
 
     @IsTest
     private static void testSharedSolarSystemOrderTrigger() {
-        useMocks(true);
         Shared_Solar_System_Order__c ssso = [
             SELECT Id
             FROM Shared_Solar_System_Order__c
@@ -102,6 +101,7 @@ public class SubscriptionManagementServiceTest {
             LIMIT 1
         ];
         ssso.Total_System_Size_kW_DC__c = 3000;
+        ssso.Approval_Status__c = 'Approved';
         update ssso;
         ssso = [
             SELECT Id, Total_System_Size_kW_DC__c
@@ -133,7 +133,7 @@ public class SubscriptionManagementServiceTest {
         SubscriptionManagementService service = new SubscriptionManagementService();
         Map<Id, Shared_Solar_System_Order__c> oldMap = new Map<Id, Shared_Solar_System_Order__c>();
         oldMap.put(sssoOld.Id, sssoOld);
-        List<Shared_Solar_System_Order__c> checkSSSO = service.checkSSSOApproval(new List<Shared_Solar_System_Order__c>{sssoApproved}, oldMap);
+        List<Shared_Solar_System_Order__c> checkSSSO = service.getApprovedSSSOs(new List<Shared_Solar_System_Order__c>{sssoApproved}, oldMap);
         System.assertEquals(1, checkSSSO.size());
     }
     @IsTest
@@ -145,10 +145,59 @@ public class SubscriptionManagementServiceTest {
             WHERE Total_System_Size_kW_DC__c != null
             LIMIT 1
         ];
+        Capacity_Reservation_Order__c cro = new Capacity_Reservation_Order__c(
+            Shared_Solar_System_Order__c = ssso.Id,
+            Shared_Solar_System__c = ssso.Shared_Solar_System__c,
+            Customer_Type__c = 'Small CS',
+            Responsible_for_Capacity__c = 'Perch',
+            New_Reserved_Capacity_kW_DC__c = 1000
+        );
+
         SubscriptionManagementService service = new SubscriptionManagementService();
-        Shared_Solar_System__c checkSSS = service.updateSSSFromSSSO(ssso);
+        Shared_Solar_System__c checkSSS = service.updateSSSFromSSSO(ssso, new List<Capacity_Reservation_Order__c>{cro});
         System.assertEquals('Test SSS', checkSSS.Name);
         System.assertEquals(ssso.Total_System_Size_kW_DC__c, checkSSS.Total_System_Size_kWh_DC__c);
+        System.assertEquals(cro.New_Reserved_Capacity_kW_DC__c, checkSSS.Perch_Acq_Reserved_Small_CS_Capacity__c,
+            'Expected Perch Acq Small CS on SSS to be set based on the Capacity Reservation Order');
+    }
+    @IsTest
+    private static void testCapacityReserver() {
+        List<Capacity_Reservation_Order__c> capacityReservationOrders = new List<Capacity_Reservation_Order__c>();
+        Capacity_Reservation_Order__c perchSmallCS = new Capacity_Reservation_Order__c(
+            Customer_Type__c = 'Small CS',
+            Responsible_for_Capacity__c = 'Perch',
+            New_Reserved_Capacity_kW_DC__c = 1000
+        );
+        capacityReservationOrders.add(perchSmallCS);
+        Capacity_Reservation_Order__c perchAnchor = new Capacity_Reservation_Order__c(
+            Customer_Type__c = 'Anchor',
+            Responsible_for_Capacity__c = 'Perch',
+            New_Reserved_Capacity_kW_DC__c = 2000
+        );
+        capacityReservationOrders.add(perchAnchor);
+        Capacity_Reservation_Order__c clientAnchor = new Capacity_Reservation_Order__c(
+            Customer_Type__c = 'Anchor',
+            Responsible_for_Capacity__c = 'Client',
+            New_Reserved_Capacity_kW_DC__c = 3000
+        );
+        capacityReservationOrders.add(clientAnchor);
+        Capacity_Reservation_Order__c clientSmallCS = new Capacity_Reservation_Order__c(
+            Customer_Type__c = 'Small CS',
+            Responsible_for_Capacity__c = 'Client',
+            New_Reserved_Capacity_kW_DC__c = 4000
+        );
+        capacityReservationOrders.add(clientSmallCS);
+        Shared_Solar_System__c sss = new Shared_Solar_System__c();
+        new CapacityReserver().updateSystem(sss, capacityReservationOrders);
+        System.assertEquals(perchSmallCS.New_Reserved_Capacity_kW_DC__c, sss.Perch_Acq_Reserved_Small_CS_Capacity__c,
+            'CapacityReserver should set Perch Small CS');
+        System.assertEquals(perchAnchor.New_Reserved_Capacity_kW_DC__c, sss.Reserved_Anchor_Capacity__c,
+            'CapacityReserver should set Perch Anchor');
+        System.assertEquals(clientAnchor.New_Reserved_Capacity_kW_DC__c, sss.Client_Acq_Reserved_Anchor_Capacity__c,
+            'CapacityReserver should set Client Anchor');
+        System.assertEquals(clientSmallCS.New_Reserved_Capacity_kW_DC__c, sss.Client_Acq_Reserved_Small_CS_Capacity__c,
+            'CapacityReserver should set Client Small CS');
+
     }
     @IsTest
     private static void testCreateSubscriptionOrders() {
