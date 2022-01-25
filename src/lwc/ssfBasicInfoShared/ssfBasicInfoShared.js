@@ -1,6 +1,6 @@
 import {getUSStateOptionsFull} from 'c/util';
 import findDuplicateUALs from '@salesforce/apex/SimpleSignupFormController.findDuplicateUALs';
-import { toggleLoadingSpinnerEvent, modifySpinnerMessageEvent, handlePromiseError, resetReadyStateEvent } from "c/ssfShared";
+import {toggleLoadingSpinnerEvent, modifySpinnerMessageEvent, postErrorLogEvent, resetReadyStateEvent, showGenericErrorToast} from "c/ssfShared";
 import {makeRequest} from "c/httpRequestService";
 import {accountInputMask} from 'c/inputMask';
 import {ShowToastEvent} from "lightning/platformShowToastEvent";
@@ -526,7 +526,8 @@ const insertLead = async (cmp) => {
     } catch (error) {
         toggleLoadingSpinnerEvent(cmp, true, 'waitingRoom');
         cmp.dispatchEvent(new CustomEvent('readystate'));
-        handlePromiseError(cmp, error, 'insertLead', 'Error');
+        postErrorLogEvent(cmp, error, null,'ssfBasicInfoShared', 'insertLead', 'Error');
+        showGenericErrorToast(cmp);
     }
 }
 
@@ -537,7 +538,8 @@ const patchLead = async (cmp) => {
     } catch (error) {
         toggleLoadingSpinnerEvent(cmp, true, 'waitingRoom');
         cmp.dispatchEvent(new CustomEvent('readystate'));
-        handlePromiseError(cmp, error, 'patchLead', 'Error');
+        postErrorLogEvent(cmp, error, null, 'ssfBasicInfoShared', 'patchLead', 'Error');
+        showGenericErrorToast(cmp);
     }
 }
 

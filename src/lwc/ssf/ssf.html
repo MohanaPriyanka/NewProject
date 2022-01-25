@@ -34,7 +34,8 @@
                 onspinnermessageupdate={handleSpinnerMessageEvent}
                 ontoggleloading={toggleLoadingSpinner}
                 onreadystate={handleReadyStateEvent}
-                oncapacitycheckcomplete={handleCapacityCheckComplete}>
+                oncapacitycheckcomplete={handleCapacityCheckComplete}
+                onloggableerror={handleLoggableErrorEvent}>
             </c-ssf-zip-check>
         </template>
         <template if:true={getBasicInfo}>
@@ -51,7 +52,8 @@
                 onreadystate={handleReadyStateEvent}
                 ontoggleloading={toggleLoadingSpinner}
                 onleadcreated={handleLeadCreation}
-                onunderwritingchange={setUnderwritingMethod}>
+                onunderwritingchange={setUnderwritingMethod}
+                onloggableerror={handleLoggableErrorEvent}>
             </c-ssf-basic-info>
         </template>
         <template if:true={getAgreements}>
@@ -63,7 +65,8 @@
                 onconsentscomplete={handleConsentsComplete}
                 onnavigateback={handleNavigateBackToBasicInfo}
                 ontoggleloading={toggleLoadingSpinner}
-                underwriting={underwriting}>
+                underwriting={underwriting}
+                onloggableerror={handleLoggableErrorEvent}>
             </c-ssf-agreements>
         </template>
     </div>

@@ -1,8 +1,9 @@
 import { LightningElement, api, track, wire} from 'lwc';
 import { NavigationMixin, CurrentPageReference } from 'lightning/navigation';
-import { loadStyle } from 'lightning/platformResourceLoader';
+import { loadStyle, loadScript } from 'lightning/platformResourceLoader';
 import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStyling';
-import { loadApplication, retrieveApplication } from 'c/ssfShared';
+import { loadApplication, retrieveApplication, insertErrorLog } from 'c/ssfShared';
+import platformJS from '@salesforce/resourceUrl/platformJS'
 
 export default class SsfDTC extends NavigationMixin(LightningElement) {
     @api leadId;
@@ -30,8 +31,12 @@ export default class SsfDTC extends NavigationMixin(LightningElement) {
     loc = '';
     init = true;
     underwriting = 'FICO'; // Defaulted to FICO
+    platform; // Used for debugging information
 
     connectedCallback() {
+        loadScript(this, platformJS + '/platform_1.3.6.js').then(() => {
+            this.platform = platform.description
+        });
         loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
         loadApplication(this);
     }
@@ -169,5 +174,15 @@ export default class SsfDTC extends NavigationMixin(LightningElement) {
         else if (variant === 'waitingRoom') {
             this.showWaitingRoom = !turnOff;
         }
+    }
+
+    handleLoggableErrorEvent(event) {
+        insertErrorLog(this,
+            event.detail.error,
+            event.detail.context,
+            event.detail.module,
+            event.detail.method,
+            event.detail.severity
+        );
     }
 }
