@@ -2160,43 +2160,6 @@ This field can be changed to a formula consistent with the other factors if LASE
         <trackHistory>false</trackHistory>
     </fields>
     <fields>
-        <fullName>IBLS_Category__c</fullName>
-        <defaultValue>&quot;No category selected&quot;</defaultValue>
-        <description>Manually Select the IBLS Category Based off of MCEC Technical Confirmation</description>
-        <externalId>false</externalId>
-        <label>IBLS Category</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>No category selected</fullName>
-                    <default>false</default>
-                    <label>No category selected</label>
-                </value>
-                <value>
-                    <fullName>None</fullName>
-                    <default>true</default>
-                    <label>None</label>
-                </value>
-                <value>
-                    <fullName>Category 1</fullName>
-                    <default>false</default>
-                    <label>Category 1</label>
-                </value>
-                <value>
-                    <fullName>Category 2</fullName>
-                    <default>false</default>
-                    <label>Category 2</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
         <fullName>Impact_Study_Costs__c</fullName>
         <description>Collected in C&amp;I in-take form</description>
         <externalId>false</externalId>
@@ -4318,18 +4281,6 @@ if( or(text(Status) = &quot;Cancelled&quot;, text(Status) = &quot;Not Interested
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Technology_Platform_Fee__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Calculated by Product</inlineHelpText>
-        <label>XXX Technology Platform Fee</label>
-        <precision>16</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Terms_Conditions_Acknowledged__c</fullName>
@@ -7563,21 +7514,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>IBLS_Category__c</picklist>
-            <values>
-                <fullName>Category 1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Category 2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>None</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Industry</picklist>
             <values>
                 <fullName>Agriculture</fullName>
@@ -8581,21 +8517,6 @@ SEMA = 13 -14</inlineHelpText>
             <values>
                 <fullName>Declined</fullName>
                 <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>IBLS_Category__c</picklist>
-            <values>
-                <fullName>Category 1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Category 2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>None</fullName>
-                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -9617,21 +9538,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>IBLS_Category__c</picklist>
-            <values>
-                <fullName>Category 1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Category 2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>None</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Industry</picklist>
             <values>
                 <fullName>Agriculture</fullName>
@@ -10623,21 +10529,6 @@ SEMA = 13 -14</inlineHelpText>
             <values>
                 <fullName>Declined</fullName>
                 <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>IBLS_Category__c</picklist>
-            <values>
-                <fullName>Category 1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Category 2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>None</fullName>
-                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -11670,21 +11561,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>IBLS_Category__c</picklist>
-            <values>
-                <fullName>Category 1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Category 2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>None</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Industry</picklist>
             <values>
                 <fullName>Agriculture</fullName>
@@ -12711,21 +12587,6 @@ SEMA = 13 -14</inlineHelpText>
             <values>
                 <fullName>Declined</fullName>
                 <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>IBLS_Category__c</picklist>
-            <values>
-                <fullName>Category 1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Category 2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>None</fullName>
-                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -13759,21 +13620,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>IBLS_Category__c</picklist>
-            <values>
-                <fullName>Category 1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Category 2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>None</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Industry</picklist>
             <values>
                 <fullName>Agriculture</fullName>
@@ -14800,21 +14646,6 @@ SEMA = 13 -14</inlineHelpText>
             <values>
                 <fullName>Declined</fullName>
                 <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>IBLS_Category__c</picklist>
-            <values>
-                <fullName>Category 1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Category 2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>None</fullName>
-                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -15848,21 +15679,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>IBLS_Category__c</picklist>
-            <values>
-                <fullName>Category 1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Category 2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>None</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Industry</picklist>
             <values>
                 <fullName>Agriculture</fullName>
@@ -16892,21 +16708,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>IBLS_Category__c</picklist>
-            <values>
-                <fullName>Category 1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Category 2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>None</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Industry</picklist>
             <values>
                 <fullName>Agriculture</fullName>
@@ -17925,21 +17726,6 @@ SEMA = 13 -14</inlineHelpText>
             <values>
                 <fullName>Declined</fullName>
                 <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>IBLS_Category__c</picklist>
-            <values>
-                <fullName>Category 1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Category 2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>None</fullName>
-                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -18980,21 +18766,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>IBLS_Category__c</picklist>
-            <values>
-                <fullName>Category 1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Category 2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>None</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Industry</picklist>
             <values>
                 <fullName>Agriculture</fullName>
@@ -19683,25 +19454,6 @@ SEMA = 13 -14</inlineHelpText>
             <values>
                 <fullName>Declined</fullName>
                 <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>IBLS_Category__c</picklist>
-            <values>
-                <fullName>Category 1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Category 2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>No category selected</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>None</fullName>
-                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -22083,21 +21835,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>IBLS_Category__c</picklist>
-            <values>
-                <fullName>Category 1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Category 2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>None</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Industry</picklist>
             <values>
                 <fullName>Agriculture</fullName>
@@ -23117,25 +22854,6 @@ SEMA = 13 -14</inlineHelpText>
             <values>
                 <fullName>Declined</fullName>
                 <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>IBLS_Category__c</picklist>
-            <values>
-                <fullName>Category 1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Category 2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>No category selected</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>None</fullName>
-                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -25145,21 +24863,6 @@ SEMA = 13 -14</inlineHelpText>
             <values>
                 <fullName>Declined</fullName>
                 <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>IBLS_Category__c</picklist>
-            <values>
-                <fullName>Category 1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Category 2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>None</fullName>
-                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>

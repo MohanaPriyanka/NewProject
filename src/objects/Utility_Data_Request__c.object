@@ -819,5 +819,12 @@ IF( Utility__r.Dual_Data__c ,
         <searchResultsAdditionalFields>Utility_DUNS__c</searchResultsAdditionalFields>
     </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>UAL_Is_Required</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND (ISNEW(), ISBLANK( Utility_Account_Log__c ))</errorConditionFormula>
+        <errorDisplayField>Utility_Account_Log__c</errorDisplayField>
+        <errorMessage>A Utility Account Log is required to process the UDR when complete.</errorMessage>
+    </validationRules>
     <visibility>Public</visibility>
 </CustomObject>

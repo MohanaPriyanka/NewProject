@@ -8994,11 +8994,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Lead.IBLS_Category__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Lead.Income_Support__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -9645,11 +9640,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Lead.Technical_Approval_Verified__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Lead.Technology_Platform_Fee__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -18004,11 +17994,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Opportunity.Docusign_Template__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Opportunity.Electricity_Provider__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -19669,16 +19654,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Product2.Anniversary_Term_Text__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Product2.Annual_Late_Fee_Interest__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Product2.Annual_kWh_Maximum__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -19689,28 +19664,8 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Product2.Ceiling_Rate__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Product2.Conga_Template_Id_s__c</field>
         <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Product2.Contract_Docusign_Template__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Product2.Credit_Maximum__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Product2.Credit_Minimum__c</field>
-        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -19724,28 +19679,13 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Product2.DTI_After_Rate_Gross_Up__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Product2.Days_in_Bill_Period__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Product2.Debt_To_Income_Maximum__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Product2.Description</field>
         <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Product2.Disbursal_Terms__c</field>
-        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -19763,16 +19703,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Product2.Docusign_Template_CoSigner__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Product2.Docusign_Template_Joint__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Product2.ExternalDataSourceId</field>
         <readable>true</readable>
@@ -19783,33 +19713,8 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Product2.External_Name__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Product2.Family</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Product2.Financing_Fee_Legal_Disclaimer__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Product2.First_Adjustment__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Product2.Fixed_Payment__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Product2.Fixed_Payment_per_kW_DC__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -19833,109 +19738,14 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Product2.Hide_in_Requested_Product__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Product2.IBLS_Category__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Product2.Index_Rate_for_Adjustment__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Product2.Lender_of_Record__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Product2.Loan_Base_Rate__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Product2.Loan_Date_Structure__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Product2.Loan_Fee_1_Description__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Product2.Loan_Fee_1__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Product2.Loan_Financing_Fee_Terms__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Product2.Loan_Interest_Only_Period__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Product2.Loan_Interest_Rate__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Product2.Loan_Internal_Lender_Rate__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Product2.Loan_Term__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Product2.Loan_Tranche_Type__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Product2.Maximum_Adjustment__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Product2.Maximum_Loan_Size__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Product2.Monthly_Late_Fee__c</field>
         <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Product2.Months_Between_Adjustment__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Product2.Months_in_Adjustable_Rate_Period__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Product2.Months_in_Final_3rd_Adjustment_Period__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Product2.Months_in_Set_Rate_Period__c</field>
-        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -19950,11 +19760,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Product2.Opp_Conga_Template_Id_s__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Product2.Percent_Share_Decimal_Places__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -19994,43 +19799,8 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Product2.Require_Junctions_to_Enable__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Product2.SREC_Fee_Fixed_Rate__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Product2.SREC_Fee_Percentage__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Product2.Solar_Electricity_Rate__c</field>
         <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Product2.Stamp_Tax__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Product2.State_Incentive_Second_Reamort__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Product2.State_Tax_Incentive_Cap__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Product2.State_Tax_Incentive__c</field>
-        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -20040,31 +19810,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Product2.StockKeepingUnit</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Product2.Technology_Platform_Fee__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Product2.TermPlusIO__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Product2.Term_Length_Rate__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Product2.Term_in_Years__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Product2.X25_BPS_Eligible__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -20274,52 +20019,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.ARL_Ceiling_Rate__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.ARL_Floor_Rate__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.ARL_LTT2__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.ARL_LTT3__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.ARL_LTT4__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.ARL_LTT__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.ARL_Max_Adjustment__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Quick_Sales_Sheet__c.Applied_ITC__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.Applied_State_Credits__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.Applied_Tax_Credits__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -20344,47 +20044,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.Finance_Charge__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Quick_Sales_Sheet__c.Generate_Doc__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Quick_Sales_Sheet__c.ITC_Estimated__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.Interest_Only_Payments__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.Interest_Pay_Text__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.Interest_Payment__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.Interest_Rate__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.LTT_Second_Amort__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.LTT__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -20404,17 +20069,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.Loan_Payments__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Quick_Sales_Sheet__c.Loan_Principal__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.Loan_Term_in_Years__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -20433,26 +20088,6 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.Monthly_Payment_After_Buydown__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.Monthly_Payment_After_Secondary_Buydown__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.Monthly_Payment_IBLS__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.Monthly_Payment__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Quick_Sales_Sheet__c.Partner_Logo_File_Name__c</field>
         <readable>true</readable>
@@ -20464,27 +20099,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.Quick_Sales_Sheet__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Quick_Sales_Sheet__c.Send_to_Email__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Quick_Sales_Sheet__c.Sent_to_Customer__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.State_Tax_Incentive_Bool__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.State_Tax_Incentive__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -20500,11 +20120,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Quick_Sales_Sheet__c.Tax_Credit_Modified_by_Partner__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.Total_Loan_Payments__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>

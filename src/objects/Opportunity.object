@@ -1797,25 +1797,6 @@ IF( Month(CloseDate) = 12, &apos;December&apos;, null))))))))))))</formula>
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Docusign_Template__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF( Product_Line__c =&quot;Community Solar&quot;,TEXT(Product__r.Contract_Docusign_Template__c),
-IF(OR(Application_Type__c=&quot;Individual&quot;,ISBLANK(Application_Type__c)),TEXT(Product__r.Contract_Docusign_Template__c),
-
-
-IF(AND(Application_Type__c=&quot;Joint&quot;,TEXT(Joint_Applicant_Type__c)=&quot;Co-Applicant&quot;),TEXT(Product__r.Docusign_Template_Joint__c),
-
-IF(AND(Application_Type__c=&quot;Joint&quot;,TEXT(Joint_Applicant_Type__c)=&quot;Co-Signer&quot;,ISBLANK(TEXT(Product__r.Docusign_Template_CoSigner__c))),TEXT(Product__r.Docusign_Template_Joint__c),TEXT(Product__r.Docusign_Template_CoSigner__c)
-
-))))</formula>
-        <label>Docusign Template</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Electricity_Provider__c</fullName>
         <externalId>false</externalId>
         <formula>Account.Electricity_Provider__c</formula>

@@ -55,12 +55,9 @@ private class PostSandboxRefresherTest {
             ProductCode = 'CS-MA-7',
             IsActive = true,
             zqu__SKU__c = '1234',
-            Lender_of_Record__c = 'BlueWave',
             NMC_Discount__c = 10,
             Annual_kWh_Maximum__c = 100000000,
             NM_Rate_Floor__c = 0,
-            Credit_Minimum__c = '200',
-            Monthly_Late_Fee__c = 1,
             Cancellation_Paragraph_Two__c = '<br>Per Massachusetts utility and state regulations, project capacity ' +
                 'allocation forms can only be filed up to two times per year; therefore, it may take up to six ' +
                 'months for your subscription to stop receiving solar credits. During this time, you will remain ' +
@@ -77,12 +74,9 @@ private class PostSandboxRefresherTest {
             ProductCode = 'CS-MA-8',
             IsActive = true,
             zqu__SKU__c = '5678',
-            Lender_of_Record__c = 'BlueWave',
             NMC_Discount__c = 10,
             Annual_kWh_Maximum__c = 100000000,
             NM_Rate_Floor__c = 0,
-            Credit_Minimum__c = '200',
-            Monthly_Late_Fee__c = 1,
             Cancellation_Paragraph_Two__c = '<br>Per Massachusetts utility and state regulations, project capacity ' +
                 'allocation forms can only be filed up to two times per year; therefore, it may take up to six ' +
                 'months for your subscription to stop receiving solar credits. During this time, you will remain ' +

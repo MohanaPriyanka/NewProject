@@ -40,7 +40,6 @@ public with sharing class ScheduleZSubscriptionSelector {
         'Utility_Account_Subscription__r.Opportunity__r.Product__r.NM_Rate_Floor__c,' +
         'Utility_Account_Subscription__r.Opportunity__r.Product__r.Solar_Electricity_Rate__c,' +
         'Utility_Account_Subscription__r.Opportunity__r.Product__r.Pricing_Structure__c,' +
-        'Utility_Account_Subscription__r.Opportunity__r.Product__r.Percent_Share_Decimal_Places__c,' +
         'Utility_Account_Subscription__r.Opportunity__r.Product_Escalation_Schedule__c,' +
         'Schedule_Z__r.Shared_Solar_System__r.Utility__r.Credits_Allocated_Rounding_Method__c, ' +
         'Schedule_Z__r.Shared_Solar_System__r.Utility__r.UASB_Number_of_Decimals__c ';
@@ -182,7 +181,6 @@ public with sharing class ScheduleZSubscriptionSelector {
                     Utility_Account_Subscription__r.Opportunity__r.Product__r.NM_Rate_Floor__c,
                     Utility_Account_Subscription__r.Opportunity__r.Product__r.Solar_Electricity_Rate__c,
                     Utility_Account_Subscription__r.Opportunity__r.Product__r.Pricing_Structure__c,
-                    Utility_Account_Subscription__r.Opportunity__r.Product__r.Percent_Share_Decimal_Places__c,
                     Utility_Account_Subscription__r.Opportunity__r.Product_Escalation_Schedule__c,
                     Schedule_Z__r.Shared_Solar_System__r.Utility__r.Credits_Allocated_Rounding_Method__c,
                     Schedule_Z__r.Shared_Solar_System__r.Utility__r.UASB_Number_of_Decimals__c
