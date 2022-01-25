@@ -180,8 +180,6 @@ const insertErrorLog = (cmp, error, context, module, method, severity) => {
     let formattedErrorMessage = !!context ?
         context + ': \n\n' + reduceErrors(error) + '\n\n' + 'Error encountered on ' + cmp.platform :
         reduceErrors(error) + '\n\n' + 'Error encountered on ' + cmp.platform;
-    console.log(formattedErrorMessage);
-    console.log(module);
     insertLog({
         className: module,
         methodName: method,
