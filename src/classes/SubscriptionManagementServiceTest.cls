@@ -95,54 +95,30 @@ public class SubscriptionManagementServiceTest {
     @IsTest
     private static void testSharedSolarSystemOrderTrigger() {
         Shared_Solar_System_Order__c ssso = [
-            SELECT Id
+            SELECT Id, Shared_Solar_System__c, Total_System_Size_kW_DC__c
             FROM Shared_Solar_System_Order__c
             WHERE Approval_Status__c = 'New'
             LIMIT 1
         ];
-        ssso.Total_System_Size_kW_DC__c = 3000;
         ssso.Approval_Status__c = 'Approved';
+        ssso.Total_System_Size_kW_DC__c = 3000;
         update ssso;
-        ssso = [
-            SELECT Id, Total_System_Size_kW_DC__c
-            FROM Shared_Solar_System_Order__c
-            WHERE Id = :ssso.Id
-            LIMIT 1
+        Shared_Solar_System__c sss = [
+            SELECT Id, Total_System_Size_kWh_DC__c
+            FROM Shared_Solar_System__c
+            WHERE Id = :ssso.Shared_Solar_System__c
         ];
-        List<Subscription_Order__c> soList = [
-            SELECT Id
-            FROM Subscription_Order__c
-            WHERE Shared_Solar_System_Order__c = :ssso.Id
-        ];
-        System.assertEquals(3000, ssso.Total_System_Size_kW_DC__c);
-        System.assertEquals(0, soList.size());
+        System.assertEquals(ssso.Total_System_Size_kW_DC__c, sss.Total_System_Size_kWh_DC__c,
+            'Expected the SSSOTrigger to update the SSS system size based on an approved SSSO');
     }
-    @IsTest
-    private static void testApprovedSSSO() {
-        useMocks(true);
-        Shared_Solar_System_Order__c sssoApproved = new Shared_Solar_System_Order__c(
-            Shared_Solar_System__c = sssId,
-            Total_System_Size_kW_DC__c = 2891.72,
-            Approval_Status__c = 'Approved'
-        );
-        Shared_Solar_System_Order__c sssoOld = new Shared_Solar_System_Order__c(
-            Shared_Solar_System__c = sssId,
-            Total_System_Size_kW_DC__c = 2891.72,
-            Approval_Status__c = 'New'
-        );
-        SubscriptionManagementService service = new SubscriptionManagementService();
-        Map<Id, Shared_Solar_System_Order__c> oldMap = new Map<Id, Shared_Solar_System_Order__c>();
-        oldMap.put(sssoOld.Id, sssoOld);
-        List<Shared_Solar_System_Order__c> checkSSSO = service.getApprovedSSSOs(new List<Shared_Solar_System_Order__c>{sssoApproved}, oldMap);
-        System.assertEquals(1, checkSSSO.size());
-    }
+
     @IsTest
     private static void testUpdateSSS() {
         useMocks(true);
         Shared_Solar_System_Order__c ssso = [
             SELECT Id, Shared_Solar_System__c, Yield__c, Total_System_Size_kW_DC__c
             FROM Shared_Solar_System_Order__c
-            WHERE Total_System_Size_kW_DC__c != null
+            WHERE Total_System_Size_kW_DC__c != NULL
             LIMIT 1
         ];
         Capacity_Reservation_Order__c cro = new Capacity_Reservation_Order__c(
