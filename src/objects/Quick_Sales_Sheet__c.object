@@ -96,23 +96,6 @@ ITC_Estimated__c
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Applied_State_Credits__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF (
-Tax_Credit_Modified_by_Partner__c , 
-Modified_State_Tax_Credit__c,
-State_Tax_Incentive__c
-)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Applied State Credits</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Applied_Tax_Credits__c</fullName>
         <externalId>false</externalId>
         <formula>Applied_State_Credits__c + Applied_ITC__c</formula>
@@ -222,44 +205,6 @@ TEXT(Round(ITC_Estimated__c,0))
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Interest_Pay_Text__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF ( ISPICKVAL(Product__r.Program__c,&quot;MSLP&quot;) , &quot;During System Construction&quot; , &quot;Months 1 - &quot; + TEXT(Product__r.Loan_Interest_Only_Period__c) )</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Interest Pay Text</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Interest_Payment__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF( ISPICKVAL(Product__r.Program__c, &quot;MSLP&quot;), 0.35 * Loan_Amount__c * Product__r.Loan_Interest_Rate__c/12 ,Loan_Amount__c * Product__r.Loan_Interest_Rate__c /12)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Interest Payment</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Interest_Rate__c</fullName>
-        <externalId>false</externalId>
-        <formula>Product__r.Loan_Interest_Rate__c/100</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Interest Rate</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>6</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Percent</type>
-    </fields>
-    <fields>
         <fullName>Link_to_File__c</fullName>
         <defaultValue>&quot;notgenerated&quot;</defaultValue>
         <externalId>false</externalId>
@@ -355,76 +300,6 @@ TEXT(Round(ITC_Estimated__c,0))
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Monthly_Payment_After_Buydown__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF (
-
-(( (Loan_Amount__c - Applied_Tax_Credits__c) * Product__r.Loan_Interest_Rate__c) /12 ) 
-/ (1-((1+ Product__r.Loan_Interest_Rate__c /12)^(-1*(Product__r.Loan_Term__c)))) &lt; 0,
-
-0, 
-
-(( (Loan_Amount__c  -  Applied_Tax_Credits__c) * Product__r.Loan_Interest_Rate__c) /12 ) 
-/ (1-((1+ Product__r.Loan_Interest_Rate__c /12)^(-1* (Product__r.Loan_Term__c))))
-
-)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Monthly Payment After Buydown</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Monthly_Payment_After_Secondary_Buydown__c</fullName>
-        <externalId>false</externalId>
-        <formula>(( (Loan_Amount__c - ITC_Estimated__c - State_Tax_Incentive__c  - State_Tax_Incentive__c) * Product__r.Loan_Interest_Rate__c) /12 ) 
-/ (1-((1+ Product__r.Loan_Interest_Rate__c /12)^(-1* (Product__r.Loan_Term__c))))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Monthly Payment After Secondary Buydown</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Monthly_Payment_IBLS__c</fullName>
-        <externalId>false</externalId>
-        <formula>((Loan_Amount__c *0.7) * Product__r.Loan_Interest_Rate__c /12 ) / (1-((1+ Product__r.Loan_Interest_Rate__c /12)^(-1*(120 - 12))))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Monthly Payment (IBLS)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Monthly_Payment__c</fullName>
-        <externalId>false</externalId>
-        <formula>((Loan_Amount__c  * Product__r.Loan_Interest_Rate__c) /12 )
-/
-(1-(
-(1+ Product__r.Loan_Interest_Rate__c /12)^
-(-1*
-(Product__r.Loan_Term__c))
-
-))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Monthly Payment</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Partner_Logo_File_Name__c</fullName>
         <externalId>false</externalId>
         <label>Partner Logo File Name</label>
@@ -470,16 +345,6 @@ TEXT(Round(ITC_Estimated__c,0))
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>State_Tax_Incentive_Bool__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF ( State_Tax_Incentive__c &gt; 0.02 , TRUE, FALSE)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>State Tax Incentive Bool</label>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>System_Cost__c</fullName>
         <externalId>false</externalId>
         <label>System Cost</label>
@@ -510,19 +375,6 @@ TEXT(Round(ITC_Estimated__c,0))
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Total_Loan_Payments__c</fullName>
-        <externalId>false</externalId>
-        <formula>Interest_Only_Payments__c +  Loan_Payments__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Total Loan Payments</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Year_2_Payoff__c</fullName>

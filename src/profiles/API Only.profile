@@ -20523,11 +20523,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.Applied_State_Credits__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Quick_Sales_Sheet__c.Applied_Tax_Credits__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -20564,21 +20559,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Quick_Sales_Sheet__c.ITC_Estimated__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.Interest_Pay_Text__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.Interest_Payment__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.Interest_Rate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -20622,26 +20602,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.Monthly_Payment_After_Buydown__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.Monthly_Payment_After_Secondary_Buydown__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.Monthly_Payment_IBLS__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.Monthly_Payment__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Quick_Sales_Sheet__c.Partner_Logo_File_Name__c</field>
         <readable>true</readable>
@@ -20662,11 +20622,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.State_Tax_Incentive_Bool__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Quick_Sales_Sheet__c.System_Cost__c</field>
         <readable>true</readable>
@@ -20679,11 +20634,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Quick_Sales_Sheet__c.Tax_Credit_Modified_by_Partner__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Quick_Sales_Sheet__c.Total_Loan_Payments__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
