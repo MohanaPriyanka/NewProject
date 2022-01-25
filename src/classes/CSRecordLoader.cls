@@ -80,18 +80,7 @@ public without sharing class CSRecordLoader implements Queueable {
         systemProperties[0].DocuSign_Guest_User_Credential__c = '137Newbury';
         systemProperties[0].DocuSign_Integrator_Key__c = '2ceabed4-3a84-4220-9a76-9b1f9f0cf6ed';
         update systemProperties[0];
-
-        List<Product2> docuSignEnabledProducts = [
-            SELECT Id
-            FROM Product2
-            WHERE Contract_Docusign_Template__c != NULL
-        ];
-        for (Product2 product2 : docuSignEnabledProducts) {
-            // All products will point to a valid template in the demo docusign environment so DocuSign will at least
-            // produce some document by default
-            product2.Contract_Docusign_Template__c = 'e03c7f33-0754-4abb-9d8e-42a46923e512';
-        }
-        update docuSignEnabledProducts;
+        
     }
 
     public static void setupBWTestPartner() {

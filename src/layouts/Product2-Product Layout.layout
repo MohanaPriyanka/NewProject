@@ -12,10 +12,6 @@
                 <field>Name</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>External_Name__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Family</field>
             </layoutItems>
@@ -57,10 +53,6 @@
                 <behavior>Edit</behavior>
                 <field>Description</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Disable_Multiple_UAL_CSAP__c</field>
-            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
@@ -70,10 +62,6 @@
         <editHeading>true</editHeading>
         <label>Template Information</label>
         <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Contract_Docusign_Template__c</field>
-            </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Disclosure_Form_Conga_Template__c</field>
@@ -160,10 +148,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Monthly_Late_Fee__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Annual_Late_Fee_Interest__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
