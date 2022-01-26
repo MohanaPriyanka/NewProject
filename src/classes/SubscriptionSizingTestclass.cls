@@ -81,12 +81,10 @@ public with sharing class SubscriptionSizingTestclass {
             Sizing_Method__c = 'Project Ratio',
             ProductCode = 'CS - BlueWave - 10%',
             IsActive = True,
-            Lender_of_Record__c = 'BlueWave',
             NMC_Discount__c = 10,
             Annual_kWh_Maximum__c = 100000000,
             NM_Rate_Floor__c = 0,
-            Days_In_Bill_Period__c = 30,
-            Monthly_Late_Fee__c = 1);
+            Days_In_Bill_Period__c = 30);
 
         Product2 kwhProduct = new Product2( Name = 'BlueWave Community Solar',
             Family = 'Community Solar',
@@ -96,12 +94,10 @@ public with sharing class SubscriptionSizingTestclass {
             Sizing_Method__c = 'Rate Class Ratio',
             ProductCode = 'CS - BlueWave - 10%',
             IsActive = True,
-            Lender_of_Record__c = 'BlueWave',
             NMC_Discount__c = 10,
             Annual_kWh_Maximum__c = 100000000,
             NM_Rate_Floor__c = 0,
-            Days_In_Bill_Period__c = 30,
-            Monthly_Late_Fee__c = 1);
+            Days_In_Bill_Period__c = 30);
 
         insert new List<Product2>{costProduct, kwhProduct};
 

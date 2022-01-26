@@ -40,12 +40,10 @@ public with sharing class SubscriptionTransferServiceTest {
             State__c = 'MA',
             ProductCode = 'CS - BlueWave - 10%',
             IsActive = true,
-            Lender_of_Record__c = 'BlueWave',
             NMC_Discount__c = 10,
             Annual_kWh_Maximum__c = 100000000,
             NM_Rate_Floor__c = 0,
             Days_in_Bill_Period__c = 20,
-            Monthly_Late_Fee__c = 1,
             Cancellation_Paragraph_Two__c = 'Your cancellation will take up to 6 months',
             Cancellation_Paragraph_Three__c = 'There is a termination fee');
 
@@ -56,12 +54,10 @@ public with sharing class SubscriptionTransferServiceTest {
             State__c = 'MA',
             ProductCode = 'CS - BlueWave - 10%',
             IsActive = true,
-            Lender_of_Record__c = 'BlueWave',
             NMC_Discount__c = 10,
             Annual_kWh_Maximum__c = 100000000,
             NM_Rate_Floor__c = 0,
             Days_in_Bill_Period__c = 20,
-            Monthly_Late_Fee__c = 1,
             Cancellation_Paragraph_Two__c = 'Your cancellation will take up to 6 months',
             Cancellation_Paragraph_Three__c = 'There is a termination fee',
             Utility_Account_Subscription_Type__c = 'Single subscription per Utility Account');

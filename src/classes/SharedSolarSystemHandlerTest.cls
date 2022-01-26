@@ -65,14 +65,12 @@ public with sharing class SharedSolarSystemHandlerTest {
             State__c = 'MA',
             ProductCode = 'CS - BlueWave - 10%',
             IsActive = true,
-            Lender_of_Record__c = 'BlueWave',
             NMC_Discount__c = 10,
             Annual_kWh_Maximum__c = 100000000,
             NM_Rate_Floor__c = 0,
             Days_in_Bill_Period__c = 20,
             Customer_Subscription_Type__c = 'kWh',
             Sizing_Method__c = 'Rate Class Ratio',
-            Monthly_Late_Fee__c = 1,
             Max_Subscription_kW_AC_for_DC_calc__c = 25);
         Product2 publicCSProduct = new Product2(Name = 'BlueWave Public Offtake CS',
             Family = 'Community Solar',
@@ -82,12 +80,10 @@ public with sharing class SharedSolarSystemHandlerTest {
             State__c = 'MA',
             ProductCode = 'CS - Bluewave - Public CS - 20%',
             IsActive = true,
-            Lender_of_Record__c = 'BlueWave',
             NMC_Discount__c = 20,
             Annual_kWh_Maximum__c = 63000,
             NM_Rate_Floor__c = 0.09,
-            Days_in_Bill_Period__c = 20,
-            Monthly_Late_Fee__c = 0.8333);
+            Days_in_Bill_Period__c = 20);
         insert new List<Product2>{
             normalCSProduct, publicCSProduct
         };
