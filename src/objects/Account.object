@@ -2590,34 +2590,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Total_Outstanding_Balance_Zuora__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Zuora Data: sum of balance on all debit memos and invoices</inlineHelpText>
-        <label>Total Outstanding Balance Zuora</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Total_Outstanding_Balance__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Should not be negative, unless cross-subscribed: (Due This Month + Late Fees + Adjustments + Previous Overpayments) - Payments Applied to SB</inlineHelpText>
-        <label>Total Outstanding Balance</label>
-        <summarizedField>Account_Bill__c.Outstanding_Balance_Rollup__c</summarizedField>
-        <summaryFilterItems>
-            <field>Account_Bill__c.Published__c</field>
-            <operation>equals</operation>
-            <value>True</value>
-        </summaryFilterItems>
-        <summaryForeignKey>Account_Bill__c.Parent_Account__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <type>Summary</type>
-    </fields>
-    <fields>
         <fullName>Total_Payments__c</fullName>
         <description>Total payments, including overpayments (Rollup of AB:Total Payments This Month)</description>
         <externalId>false</externalId>
@@ -9650,7 +9622,6 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <searchResultsAdditionalFields>ACCOUNT.SITE</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>ACCOUNT.PHONE1</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>CORE.USERS.ALIAS</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Total_Outstanding_Balance__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Account_Number__c</searchResultsAdditionalFields>
     </searchLayouts>
     <sharingModel>Private</sharingModel>
