@@ -4,58 +4,58 @@ import formFactorName from '@salesforce/client/formFactor';
 import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStyling';
 import getDummyRecordId from  '@salesforce/apex/SimpleSignupFormController.getDummyRecordId';
 import unlinkDocsFromDummy from '@salesforce/apex/SimpleSignupFormController.unlinkDocsFromDummyRecord';
+import { reduceErrors } from "c/ldsUtils";
 import insertLog from '@salesforce/apex/Logger.insertLog';
 
 export default class SsfFileUpload extends LightningElement {
     @api required;
-    @api inputText;
+    @api inputText = 'Please select a file for upload.';
     @api index;
     @api recordId;
     @api categoryType;
     @api hasHelpText;
-    @api acceptedFileTypes;
+    @api acceptedFileTypes = ['.png', '.jpg', '.jpeg', '.pdf'];
 
     @track showSpinner = false;
     @track success = false;
     @track isError = false;
-    @track isUtilityBill;
-    @track smallFormFactor;
+    @track isUtilityBill = this.categoryType === 'Customer Utility Bill';
+    @track smallFormFactor = formFactorName === 'Small';
     @track documents = [];
     @track fileName;
     @track fileUrl;
     @track helpTextVisible = false;
-    
-    
-    // a dummy record for the file upload is necessary for cases when the record to which the file should be attached
-    // has not yet been created, and the relevant operations are taking place in the context of a site guest user.
-    // many other methods of achieving this upload were attempted (including a custom file upload component),
-    // and none were successful in connecting the uploaded file to the new record.
 
     connectedCallback() {
         loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
+        this.getDummyRecordForFileUpload(4);
+    }
 
-        this.smallFormFactor = formFactorName === 'Small';
-        if (!this.inputText) {
-            this.inputText = 'Please select a file for upload.';
-        }
-        if (!this.acceptedFileTypes) {
-            this.acceptedFileTypes = ['.png', '.jpg', '.jpeg', '.pdf'];
-        }
-        if (!this.recordId) {
-            getDummyRecordId({})
-            .then(result => {
-                this.recordId = result;
-            })
-            .catch(error => {
+    getDummyRecordForFileUpload(numberOfRetries) {
+        // A dummy record for the file upload is necessary for cases when the record to which the file should be attached
+        // has not yet been created, and the relevant operations are taking place in the context of a site guest user.
+        // Many other methods of achieving this upload were attempted (including a custom file upload component),
+        // and none were successful in connecting the uploaded file to the new record.
+        getDummyRecordId({})
+        .then(result => {
+            this.recordId = result;
+        })
+        .catch(error => {
+            if (numberOfRetries === 0) {
                 insertLog({
                     className: 'ssf',
                     methodName: 'getDummyRecordId',
-                    message: 'Unable to find dummy record ID for site guest user file upload. ' + JSON.stringify(error.body.message),
+                    message: 'Unable to find dummy record ID for site guest user file upload. ' + reduceErrors(error),
                     severity: 'Error'
                 });
-            })
-        }
-        this.isUtilityBill = (this.categoryType === 'Customer Utility Bill');
+            }
+        })
+        .finally(() => {
+           if (!this.recordId && numberOfRetries > 0) {
+               numberOfRetries--;
+               this.getDummyRecordForFileUpload(numberOfRetries);
+           }
+        });
     }
 
     handleUploadFinished(event) {
@@ -69,7 +69,7 @@ export default class SsfFileUpload extends LightningElement {
 
     removeDummyContentLinks() {
         unlinkDocsFromDummy({ documents: this.documents, category: this.categoryType })
-        .then(result => {
+        .then(() => {
             this.inputText = 'File uploaded successfully';
             this.success = true;
             this.showSpinner = false;
