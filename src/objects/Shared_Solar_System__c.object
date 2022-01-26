@@ -1568,7 +1568,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
     <fields>
         <fullName>Reserved_Anchor_Capacity_Percent__c</fullName>
         <externalId>false</externalId>
-        <formula>Reserved_Anchor_Capacity__c /  Total_System_Size_kWh_DC__c</formula>
+        <formula>(Client_Acq_Reserved_Anchor_Capacity__c + Reserved_Anchor_Capacity__c )/  Total_System_Size_kWh_DC__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>Reserved Anchor Capacity / Total System Size, used for information only (to compare to contracts that might specify an Anchor %). Change the Reserved Anchor Capacity value or the Total System Size to change this percentage.</inlineHelpText>
         <label>Reserved Anchor Capacity %</label>

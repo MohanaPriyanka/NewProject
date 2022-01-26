@@ -304,6 +304,13 @@
                 <behavior>Readonly</behavior>
                 <field>Demand_Customer_System_Utilization__c</field>
             </layoutItems>
+            <layoutItems>
+                <emptySpace>true</emptySpace>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Reserved_Anchor_Capacity_Percent__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
