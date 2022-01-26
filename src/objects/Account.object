@@ -2580,7 +2580,7 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
     <fields>
         <fullName>Total_Outstanding_Balance_Merge__c</fullName>
         <externalId>false</externalId>
-        <formula>IF($CustomMetadata.Zuora_Setting__mdt.Production.Zuora_Is_Live__c, Total_Outstanding_Balance_Zuora__c , Total_Outstanding_Balance__c )</formula>
+        <formula>Billing_Account__r.Zuora__Balance__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Total Outstanding Balance</label>
         <precision>18</precision>

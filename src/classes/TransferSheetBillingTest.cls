@@ -939,24 +939,26 @@ public class TransferSheetBillingTest {
 
     public class MockAccountSelector extends MockProvider {
         public override Object handleMethodCall(MethodCall methodCall) {
-            Map<Id, Account> accountMap = new Map<Id, Account>();
             Date todayDate = System.today();
-            Account accountOne = new Account(
-                Id = '0015400000SajzCAAA',
-                Last_Bill_Send_Date_New_Charges_Zuora__c = todayDate.addDays(-30),
-                Total_Outstanding_Balance_Zuora__c = 100
-            );
-            Account accountTwo = new Account(
-                Id = '0015400000SajzCBBB',
-                Last_Bill_Send_Date_New_Charges_Zuora__c = null,
-                Total_Outstanding_Balance_Zuora__c = 0
-            );
-            accountMap.put(accountOne.Id, accountOne);
-            accountMap.put(accountTwo.Id, accountTwo);
 
             switch on methodCall.stubbedMethodName {
                 when 'selectById' {
-                    return accountMap;
+                    sfab_FabricatedSObject fabbedAccount1 = new sfab_FabricatedSObject(Account.class);
+                    fabbedAccount1.setField(Account.Id, '0015400000SajzCAAA');
+                    fabbedAccount1.setField(Account.Last_Bill_Send_Date_New_Charges_Zuora__c, todayDate.addDays(-30));
+                    fabbedAccount1.setField(Account.Total_Outstanding_Balance_Merge__c, 100);
+                    Account acc1 = (Account) fabbedAccount1.toSObject();
+
+                    sfab_FabricatedSObject fabbedAccount2 = new sfab_FabricatedSObject(Account.class);
+                    fabbedAccount2.setField(Account.Id, '0015400000SajzCBBB');
+                    fabbedAccount2.setField(Account.Last_Bill_Send_Date_New_Charges_Zuora__c, null);
+                    fabbedAccount2.setField(Account.Total_Outstanding_Balance_Merge__c, 0);
+                    Account acc2 = (Account) fabbedAccount2.toSObject();
+
+                    return new Map<Id, Account>{
+                        acc1.Id => acc1,
+                        acc2.Id => acc2
+                    };
                 }
             }
             return null;

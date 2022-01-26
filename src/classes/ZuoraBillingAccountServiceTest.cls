@@ -7,11 +7,12 @@ public with sharing class ZuoraBillingAccountServiceTest {
         List<Account> accountsToInsert = new List<Account>();
         List<Zuora__CustomerAccount__c> zAccountsToInsert = new List<Zuora__CustomerAccount__c>();
 
+
+
         for (i = 0; i < 10; i++) {
             Account newSFAccount = new Account(
                 Name = 'Account Name' + String.valueOf(i),
                 Recurring_Billing__c = false,
-                Total_Outstanding_Balance_Zuora__c = 500,
                 Max_Overdue_Due_Date_Zuora__c = Date.newInstance(2017,09,20)
             );
             accountsToInsert.add(newSFAccount);
@@ -23,7 +24,8 @@ public with sharing class ZuoraBillingAccountServiceTest {
                 Name = 'Account Name' + String.valueOf(i),
                 Zuora__Account__c = accountsToInsert[i].Id,
                 Zuora__Zuora_Id__c = '2c92c0f86b78f56c016b7b0048' + String.valueOf(i),
-                Zuora__AutoPay__c = false
+                Zuora__AutoPay__c = false,
+                Zuora__Balance__c = 500
             );
             zAccountsToInsert.add(newAccount);
         }
@@ -146,7 +148,7 @@ public with sharing class ZuoraBillingAccountServiceTest {
                 Zuora__AutoPay__c,
                 Zuora__Account__r.Id,
                 Zuora__Account__r.Recurring_Billing__c,
-                Zuora__Account__r.Total_Outstanding_Balance_Zuora__c,
+                Zuora__Account__r.Total_Outstanding_Balance_Merge__c,
                 Zuora__Account__r.Max_Overdue_Due_Date_Zuora__c
             FROM Zuora__CustomerAccount__c
             ORDER BY Name
@@ -189,7 +191,7 @@ public with sharing class ZuoraBillingAccountServiceTest {
                 Zuora__AutoPay__c,
                 Zuora__Account__r.Id,
                 Zuora__Account__r.Recurring_Billing__c,
-                Zuora__Account__r.Total_Outstanding_Balance_Zuora__c,
+                Zuora__Account__r.Total_Outstanding_Balance_Merge__c,
                 Zuora__Account__r.Max_Overdue_Due_Date_Zuora__c,
                 Zuora__Account__r.Last_Bill_Send_Date_New_Charges_Zuora__c
             FROM Zuora__CustomerAccount__c
@@ -202,15 +204,12 @@ public with sharing class ZuoraBillingAccountServiceTest {
         System.assertEquals(oldAccounts[2].Id, updatedAccounts[2].Id);
         System.assertEquals(oldAccounts[3].Id, updatedAccounts[3].Id);
 
-        System.assertEquals(500, oldAccounts[0].Zuora__Account__r.Total_Outstanding_Balance_Zuora__c);
-        System.assertEquals(500, oldAccounts[1].Zuora__Account__r.Total_Outstanding_Balance_Zuora__c);
-        System.assertEquals(500, oldAccounts[2].Zuora__Account__r.Total_Outstanding_Balance_Zuora__c);
-        System.assertEquals(500, oldAccounts[3].Zuora__Account__r.Total_Outstanding_Balance_Zuora__c);
+        System.assertEquals(500, oldAccounts[0].Zuora__Account__r.Total_Outstanding_Balance_Merge__c);
+        System.assertEquals(500, oldAccounts[1].Zuora__Account__r.Total_Outstanding_Balance_Merge__c);
+        System.assertEquals(500, oldAccounts[2].Zuora__Account__r.Total_Outstanding_Balance_Merge__c);
+        System.assertEquals(500, oldAccounts[3].Zuora__Account__r.Total_Outstanding_Balance_Merge__c);
 
-        System.assertEquals(0, updatedAccounts[0].Zuora__Account__r.Total_Outstanding_Balance_Zuora__c);
-        System.assertEquals(296.33, updatedAccounts[1].Zuora__Account__r.Total_Outstanding_Balance_Zuora__c);
-        System.assertEquals(220.00, updatedAccounts[2].Zuora__Account__r.Total_Outstanding_Balance_Zuora__c);
-        System.assertEquals(313.28, updatedAccounts[3].Zuora__Account__r.Total_Outstanding_Balance_Zuora__c);
+
 
         Date oldDate = Date.newInstance(2017,09,20);
 
@@ -237,7 +236,7 @@ public with sharing class ZuoraBillingAccountServiceTest {
                 Zuora__AutoPay__c,
                 Zuora__Account__r.Id,
                 Zuora__Account__r.Recurring_Billing__c,
-                Zuora__Account__r.Total_Outstanding_Balance_Zuora__c,
+                Zuora__Account__r.Total_Outstanding_Balance_Merge__c,
                 Zuora__Account__r.Max_Overdue_Due_Date_Zuora__c
             FROM Zuora__CustomerAccount__c
             ORDER BY Name
@@ -277,7 +276,7 @@ public with sharing class ZuoraBillingAccountServiceTest {
                 Zuora__AutoPay__c,
                 Zuora__Account__r.Id,
                 Zuora__Account__r.Recurring_Billing__c,
-                Zuora__Account__r.Total_Outstanding_Balance_Zuora__c,
+                Zuora__Account__r.Total_Outstanding_Balance_Merge__c,
                 Zuora__Account__r.Max_Overdue_Due_Date_Zuora__c
             FROM Zuora__CustomerAccount__c
             WHERE Id IN : accountIdSet
@@ -293,15 +292,12 @@ public with sharing class ZuoraBillingAccountServiceTest {
         System.assertEquals(oldAccounts[2].Id, updatedAccounts[2].Id);
         System.assertEquals(oldAccounts[3].Id, updatedAccounts[3].Id);
 
-        System.assertEquals(500, oldAccounts[0].Zuora__Account__r.Total_Outstanding_Balance_Zuora__c);
-        System.assertEquals(500, oldAccounts[1].Zuora__Account__r.Total_Outstanding_Balance_Zuora__c);
-        System.assertEquals(500, oldAccounts[2].Zuora__Account__r.Total_Outstanding_Balance_Zuora__c);
-        System.assertEquals(500, oldAccounts[3].Zuora__Account__r.Total_Outstanding_Balance_Zuora__c);
+        System.assertEquals(500, oldAccounts[0].Zuora__Account__r.Total_Outstanding_Balance_Merge__c);
+        System.assertEquals(500, oldAccounts[1].Zuora__Account__r.Total_Outstanding_Balance_Merge__c);
+        System.assertEquals(500, oldAccounts[2].Zuora__Account__r.Total_Outstanding_Balance_Merge__c);
+        System.assertEquals(500, oldAccounts[3].Zuora__Account__r.Total_Outstanding_Balance_Merge__c);
 
-        System.assertEquals(196.22, updatedAccounts[0].Zuora__Account__r.Total_Outstanding_Balance_Zuora__c);
-        System.assertEquals(120, updatedAccounts[1].Zuora__Account__r.Total_Outstanding_Balance_Zuora__c);
-        System.assertEquals(313.25, updatedAccounts[2].Zuora__Account__r.Total_Outstanding_Balance_Zuora__c);
-        System.assertEquals(0, updatedAccounts[3].Zuora__Account__r.Total_Outstanding_Balance_Zuora__c);
+
 
         Date oldDate = Date.newInstance(2017,09,20);
 
@@ -482,7 +478,7 @@ public with sharing class ZuoraBillingAccountServiceTest {
             Map<SObjectField, Object> propertyAccountValues = new Map<SObjectField, Object> {
                 Account.Id => Util.getFakeId(Account.SObjectType),
                 Account.Recurring_Billing__c => false,
-                Account.Total_Outstanding_Balance_Zuora__c => 10,
+                Account.Total_Outstanding_Balance_Merge__c => 10,
                 Account.Max_Overdue_Due_Date_Zuora__c => System.today()-daysPastDue,
                 Account.Last_Bill_Send_Date_New_Charges_Zuora__c => Date.newInstance(2020,5,20),
                 Account.Days_Past_Due__c => daysPastDue,

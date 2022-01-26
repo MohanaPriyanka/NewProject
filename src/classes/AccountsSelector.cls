@@ -177,7 +177,7 @@ public without sharing class AccountsSelector {
 
     public Map<Id,Account> selectById(Set<Id> acctIds){
         Map<Id, Account> accountMap = new Map<Id, Account>([
-            SELECT Id, Last_Bill_Send_Date_New_Charges_Zuora__c, Total_Outstanding_Balance_Zuora__c
+            SELECT Id, Last_Bill_Send_Date_New_Charges_Zuora__c, Total_Outstanding_Balance_Merge__c
             FROM Account
             WHERE Id IN : acctIds
         ]);
@@ -193,14 +193,14 @@ public without sharing class AccountsSelector {
         return properties;
     }
 
-    public Map<String,Account> selectByBlueWaveId(Set<String> blueWaveIds){
-        Map<String,Account> bwIdToAccountMap = new Map<String,Account>();
+    public Map<String,Account> selectByPerchId(Set<String> perchIds){
+        Map<String,Account> perchIdToAccountMap = new Map<String,Account>();
         for (Account acct : [   SELECT Id, Account_Number__c
                                 FROM Account
-                                WHERE Account_Number__c IN : blueWaveIds]){
-            bwIdToAccountMap.put(acct.Account_Number__c, acct);
+                                WHERE Account_Number__c IN : perchIds]){
+            perchIdToAccountMap.put(acct.Account_Number__c, acct);
         }
-        return bwIdToAccountMap;
+        return perchIdToAccountMap;
     }
 
     public static Account selectPartnerAccount(String accountId) {

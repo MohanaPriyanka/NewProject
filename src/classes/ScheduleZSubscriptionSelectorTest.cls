@@ -5,6 +5,12 @@
 public with sharing class ScheduleZSubscriptionSelectorTest {
     @TestSetup public static void setupData() {
         CSPaymentTest.csPaymentSetupTestData();
+
+        Account parentAccount = new Account(Name = 'Parent Account');
+        insert parentAccount;
+
+        Zuora__CustomerAccount__c billingAccount = new Zuora__CustomerAccount__c(Zuora__Account__c = parentAccount.Id, Zuora__Balance__c = 200.00);
+        insert billingAccount;
     }
 
     @IsTest
@@ -33,16 +39,6 @@ public with sharing class ScheduleZSubscriptionSelectorTest {
         update sharedSolarSystemMap.values();
 
         Map<Id, Schedule_Z__c> scheduleZMap= new Map<Id, Schedule_Z__c>([SELECT Id FROM Schedule_Z__c]);
-        List<Schedule_Z_Subscription__c> scheduleZSubscriptions = [
-            SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Name,Utility_Account_Subscription__r.Opportunity__c,
-                Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c,
-                Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c
-            FROM Schedule_Z_Subscription__c
-            WHERE Schedule_Z__c IN : scheduleZMap.keySet()
-            AND (Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c != 'RadianGen'
-            OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c = 'Residential'
-            OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c = 'Non-Residential')
-        ];
 
         List<Schedule_Z_Subscription__c> szsList = ScheduleZSubscriptionSelector.getListForBilling(scheduleZMap.keySet());
         //2 are Externally Serviced
@@ -53,12 +49,14 @@ public with sharing class ScheduleZSubscriptionSelectorTest {
     public static void testGetSZSFromTransfer() {
         Date todaysDate = Date.today();
 
+        Zuora__CustomerAccount__c billingAccount = [SELECT Id FROM Zuora__CustomerAccount__c WHERE Zuora__Balance__c = 200.00 LIMIT 1];
+
         List<Account> accounts = [
             SELECT Id
             FROM Account
         ];
         for (Account acct : accounts) {
-            acct.Total_Outstanding_Balance_Zuora__c = 200;
+            acct.Billing_Account__c = billingAccount.Id;
             acct.Last_Bill_Send_Date_New_Charges_Zuora__c = todaysDate.addDays(-60);
         }
         update accounts;
@@ -99,12 +97,14 @@ public with sharing class ScheduleZSubscriptionSelectorTest {
     public static void testGetSZSFromTransferWithNonBillingSZSes() {
         Date todaysDate = Date.today();
 
+        Zuora__CustomerAccount__c billingAccount = [SELECT Id FROM Zuora__CustomerAccount__c WHERE Zuora__Balance__c = 200.00 LIMIT 1];
+
         List<Account> accounts = [
             SELECT Id
             FROM Account
         ];
         for (Account acct : accounts) {
-            acct.Total_Outstanding_Balance_Zuora__c = 200;
+            acct.Billing_Account__c = billingAccount.Id;
             acct.Last_Bill_Send_Date_New_Charges_Zuora__c = todaysDate.addDays(-60);
         }
         update accounts;

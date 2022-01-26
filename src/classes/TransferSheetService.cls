@@ -360,7 +360,7 @@ public without sharing class TransferSheetService {
             Account propAccount = acctMap.get(uasb.sfUASB.Account__c);
             if (propAccount.Last_Bill_Send_Date_New_Charges_Zuora__c != null
                 && propAccount.Last_Bill_Send_Date_New_Charges_Zuora__c >= maxPastDueDate
-                && propAccount.Total_Outstanding_Balance_Zuora__c > minimumBalance) {
+                && propAccount.Total_Outstanding_Balance_Merge__c > minimumBalance) {
                 uasb.overdue = true;
             } else {
                 uasb.overdue = false;

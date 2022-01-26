@@ -174,7 +174,7 @@ public class JournalEntryServiceTest {
                 '"BW-0009186":{"Id":"0015400000SajzCFFF", "Name":"Client Account Two","Account_Number__c":"BW-0009186"}' +
                 '}';
             switch on methodCall.stubbedMethodName {
-                when 'selectByBlueWaveId' {
+                when 'selectByPerchId' {
                     return (Map<String, Account>)JSON.deserialize(accountMapString, Map<String, Account>.class);
                 }
             }

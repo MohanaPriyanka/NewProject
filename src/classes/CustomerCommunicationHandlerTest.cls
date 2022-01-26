@@ -110,25 +110,32 @@ public class CustomerCommunicationHandlerTest {
                 Billing_Method__c = 'NMC');
         insert sss3;
 
-        Account accountParent1 = new Account(Name = 'Par Account 1', Client_Brand_Key__c = 'BluewaveLogo');
+        Account accountParent1 = new Account(Name = 'Par Account 1', Client_Brand_Key__c = 'Perch');
         Account accountParent2 = new Account(Name = 'Par Account 2', Client_Brand_Key__c = 'AmpRed');
-        Account accountParent3 = new Account(Name = 'Par Account 3', Client_Brand_Key__c = 'BluewaveLogo');
+        Account accountParent3 = new Account(Name = 'Par Account 3', Client_Brand_Key__c = 'Perch');
         insert new List<Account>{
             accountParent1, accountParent2, accountParent3
         };
 
+
+        Zuora__CustomerAccount__c billingAccount = new Zuora__CustomerAccount__c(Zuora__Account__c = accountParent1.Id, Zuora__Balance__c = 15.00);
+
+        insert billingAccount;
+
         Contact contactA = new Contact(FirstName = 'Contact A',
             LastName = 'Last',
             Account = accountParent1,
-            Email = 'jpentaleriA@bluewavesolar.com');
+            Email = 'jpentaleriA@perchenergy.com');
         Contact contactB = new Contact(FirstName = 'Contact B',
             LastName = 'Last',
             Account = accountParent2,
-            Email = 'jpentaleriB@bluewavesolar.com');
+
+            Email = 'jpentalerib@perchenergy.com');
+
         Contact contactC = new Contact(FirstName = 'Contact C',
             LastName = 'Last',
             Account = accountParent3,
-            Email = 'jpentaleriC@bluewavesolar.com');
+            Email = 'jpentaleriC@perchenergy.com');
 
         insert new List<Contact>{
             contactA, contactB, contactC
@@ -139,7 +146,7 @@ public class CustomerCommunicationHandlerTest {
             Parent_Account__c = accountParent1.Id,
             Send_Bills_Contact__c = contactA.Id,
             RecordTypeId = propertyAccountRT,
-            Client_Brand_Key__c = 'BluewaveLogo');
+            Client_Brand_Key__c = 'Perch');
         Account propAcct2 = new Account(Name = 'Prop Account 2',
             Parent_Account__c = accountParent2.Id,
             Send_Bills_Contact__c = contactB.Id,
@@ -149,7 +156,7 @@ public class CustomerCommunicationHandlerTest {
             Parent_Account__c = accountParent3.Id,
             Send_Bills_Contact__c = contactC.Id,
             RecordTypeId = propertyAccountRT,
-            Client_Brand_Key__c = 'BluewaveLogo');
+            Client_Brand_Key__c = 'Perch');
 
         insert new List<Account>{
             propAcct1, propAcct2, propAcct3
@@ -177,7 +184,7 @@ public class CustomerCommunicationHandlerTest {
             ualog1, ualog2, ualog3
         };
 
-        Product2 normalCSProduct = new Product2(Name = 'BlueWave Community Solar',
+        Product2 normalCSProduct = new Product2(Name = 'Perch Community Solar',
             Family = 'Community Solar',
             Product_Type__c = 'Community Solar',
             State__c = 'MA',
@@ -193,7 +200,7 @@ public class CustomerCommunicationHandlerTest {
             Cancellation_Paragraph_Two__c = 'Your cancellation will take up to 6 months',
             Cancellation_Paragraph_Three__c = 'There is a termination fee');
 
-        Product2 publicCSProduct = new Product2(Name = 'BlueWave Public Offtake CS',
+        Product2 publicCSProduct = new Product2(Name = 'Perch Public Offtake CS',
             Family = 'Community Solar',
             Product_Type__c = 'Community Solar',
             State__c = 'MA',
@@ -308,12 +315,22 @@ public class CustomerCommunicationHandlerTest {
     }
 
     public static void setDaysPastDue(Date overdueDate, Integer numberOfAccounts, String suppressCollections) {
+
+        Account parentAccount = [SELECT ID FROM Account LIMIT 1];
+        Zuora__CustomerAccount__c billingAccount1 = new Zuora__CustomerAccount__c(Zuora__Account__c = parentAccount.Id, Zuora__Balance__c = 12.00);
+        Zuora__CustomerAccount__c billingAccount2 = new Zuora__CustomerAccount__c(Zuora__Account__c = parentAccount.Id, Zuora__Balance__c = 100.00);
+
+        insert new List<Zuora__CustomerAccount__c>{
+            billingAccount1, billingAccount2
+        };
+
         List<Account> accounts = [
             SELECT Id,
                 Max_Overdue_Due_Date_Zuora__c,
-                Total_Outstanding_Balance_Zuora__c,
+
                 Max_Overdue_Due_Date__c,
-                Total_Outstanding_Balance__c
+                Billing_Account__c
+
             FROM Account
             WHERE Parent_Account__c != NULL
             ORDER BY Account.Name
@@ -322,11 +339,11 @@ public class CustomerCommunicationHandlerTest {
         for (Account acct : accounts) {
             if (count < numberOfAccounts) {
                 acct.Max_Overdue_Due_Date_Zuora__c = overdueDate;
-                acct.Total_Outstanding_Balance_Zuora__c = 12.00;
+                acct.Billing_Account__c = billingAccount1.Id;
                 count += 1;
             } else {
                 acct.Max_Overdue_Due_Date_Zuora__c = System.today().addDays(15);
-                acct.Total_Outstanding_Balance_Zuora__c = 100;
+                acct.Billing_Account__c = billingAccount2.Id;
             }
             acct.Suppress_Collections__c = suppressCollections;
         }

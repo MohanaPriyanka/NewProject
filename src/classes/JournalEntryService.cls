@@ -35,7 +35,7 @@ public with sharing class JournalEntryService {
             accountBWIds.add(entry.Client__c);
         }
         uniqueIdToSSSMap = sssSelector.getSSSByUniqueId(sssUniqueIds);
-        bwNumberToAccountMap = accountSelector.selectByBlueWaveId(accountBWIds);
+        bwNumberToAccountMap = accountSelector.selectByPerchId(accountBWIds);
     }
 
     private Boolean hasBlankValues(Journal_Entry__c entry){

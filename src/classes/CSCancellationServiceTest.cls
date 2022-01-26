@@ -447,7 +447,8 @@ public with sharing class CSCancellationServiceTest {
         }
     }
 
-    @IsTest static void setupDataForOppCancellationIsCorrect() {
+    @IsTest static void
+    setupDataForOppCancellationIsCorrect() {
         // Assert all Opps are active
         List<Opportunity> oppList = [
             SELECT Id, StageName, Product_Line__c
@@ -471,6 +472,16 @@ public with sharing class CSCancellationServiceTest {
         for (Schedule_Z_Subscription__c schedZ : schedZList) {
             System.assertEquals('Billing', schedZ.Schedule_Z_Status__c);
         }
+
+        // Clear billing account from accounts so balance is 0
+
+        List<Account> accounts = [SELECT Id, Billing_Account__c
+        FROM Account];
+
+        for (Account a : accounts) {
+            a.Billing_Account__c = null;
+        }
+        update accounts;
 
         // Assert Accounts have no outstanding balance.  There should be a total of 6 accounts - 3 property and 3 parent.
 
@@ -662,7 +673,7 @@ public with sharing class CSCancellationServiceTest {
         List<UASB__c> uasbList = [
             SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Next_Schedule_Z_Status__c,
                 Opportunity__c, Opportunity__r.StageName, Date__c
-            FROM UASB__c
+            FROM UASB__c ORDER BY Utility_Account_Subscription__r.Name
         ];
 
         Map<Id, Opportunity> opportunityMap = new Map<Id, Opportunity>(OpportunitiesSelector.selectAllCompleteCSWithUASesAndSystemBills());
@@ -976,7 +987,7 @@ public with sharing class CSCancellationServiceTest {
         // Set up an account with two UALs that are removed at different times
         Shared_Solar_System__c sss1 = [SELECT Id, Utility_NMC_Tariff__r.Id FROM Shared_Solar_System__c WHERE Name = 'SSS1'];
         Account propAcct1 = [SELECT Id FROM Account WHERE Name = 'Prop Account 1'];
-        Product2 normalCSProduct = [SELECT Id FROM Product2 WHERE Name = 'BlueWave Community Solar'];
+        Product2 normalCSProduct = [SELECT Id FROM Product2 WHERE Name = 'Perch Community Solar'];
         Schedule_Z__c scheduleZ1 = [SELECT Id FROM Schedule_Z__c WHERE Name = '18-0515 Oxford Barrett St. P1'];
         Utility_Account_Log__c ual4 = new Utility_Account_Log__c(
             Name = '0000239',
@@ -1478,7 +1489,7 @@ public with sharing class CSCancellationServiceTest {
     @IsTest static void testOneAccountIsClosed() {
         Account propAcct1 = [SELECT Id FROM Account WHERE Name = 'Prop Account 1'];
         Shared_Solar_System__c sss1 = [SELECT Id FROM Shared_Solar_System__c WHERE Name = 'SSS1'];
-        Product2 normalCSProduct = [SELECT Id FROM Product2 WHERE Name = 'BlueWave Community Solar'];
+        Product2 normalCSProduct = [SELECT Id FROM Product2 WHERE Name = 'Perch Community Solar'];
 
         Opportunity opportunitytwo =
             new Opportunity(Name = 'Jordan Jordan',
@@ -1558,15 +1569,15 @@ public with sharing class CSCancellationServiceTest {
         update acctsToClose;
         for (Messaging.Email email : MessagingService.emailsSent) {
             Messaging.SingleEmailMessage sem = (Messaging.SingleEmailMessage) email;
-            if (sem.getToAddresses().contains('jpentalerib@bluewavesolar.com'))    /*this contact has an AmpRed client brand key */ {
+            if (sem.getToAddresses().contains('jpentalerib@perchenergy.com'))    /*this contact has an AmpRed client brand key */ {
                 System.assert(sem.getHtmlBody().contains('Amp'), 'Cancellation emails sent to customers assigned the AmpBlack or AmpRed branding should' +
-                    ' see Amp in their emails, not BlueWave');
+                    ' see Amp in their emails, not Perch');
                 System.assert(!sem.getHtmlBody().contains(System.Label.Company_Name + ' Community Solar'), 'Cancellation emails sent to customers assigned the AmpBlack' +
-                    ' or AmpRed branding should not see BlueWave Community Solar in their emails');
+                    ' or AmpRed branding should not see Perch Community Solar in their emails');
             } else {
-                System.assert(!sem.getHtmlBody().contains('Amp'), 'Cancellation emails sent to customers with BlueWave branding should not see Amp in their emails');
-                System.assert(sem.getHtmlBody().contains(System.Label.Company_Name + ' Community Solar'), 'Cancellation emails sent to customers assigned the BlueWave or Perch ' +
-                    ' branding should see BlueWave or Perch in their emails, not Amp');
+                System.assert(!sem.getHtmlBody().contains('Amp'), 'Cancellation emails sent to customers with Perch branding should not see Amp in their emails');
+                System.assert(sem.getHtmlBody().contains(System.Label.Company_Name + ' Community Solar'), 'Cancellation emails sent to customers assigned the Perch ' +
+                    ' branding should see Perch in their emails, not Amp');
             }
         }
 
@@ -1655,7 +1666,7 @@ public with sharing class CSCancellationServiceTest {
     public static void testConflictingCancellationParagraphs() {
         // We want to test the case where there is a single Account with multiple Opportunities assigned to products
         // with conflicting cancellation information (for instance, SMART and SREC).
-        Product2 publicCSProduct = [SELECT Id FROM Product2 WHERE Name = 'BlueWave Public Offtake CS' LIMIT 1];
+        Product2 publicCSProduct = [SELECT Id FROM Product2 WHERE Name = 'Perch Public Offtake CS' LIMIT 1];
 
         // First we need to set up a new opportunity and subscription
         Opportunity opportunity = [
