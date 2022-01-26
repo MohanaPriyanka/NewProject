@@ -636,6 +636,123 @@ Based on size of project (1MW), if the SSS falls into Class II or Class III cate
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Client_Acq_Available_Anchor_Capacity__c</fullName>
+        <externalId>false</externalId>
+        <formula>Client_Acq_Reserved_Anchor_Capacity__c - (Client_Acq_Committed_Anchor_Capacity__c + Client_Acq_Pending_Anchor_Capacity__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Client Acquired Anchor Capacity not yet committed or pending; Result of Reserved Anchor Capacity - (Committed and Pending Anchor Capacity)</inlineHelpText>
+        <label>Client Acq Available Anchor Capacity</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Client_Acq_Available_Small_CS_Capacity__c</fullName>
+        <externalId>false</externalId>
+        <formula>Client_Acq_Reserved_Small_CS_Capacity__c - (Client_Acq_Committed_Small_CS_Capacity__c + Client_Acq_Pending_Small_CS_Capacity__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Client Acquired Small CS Capacity not yet committed or pending; Result of Reserved Anchor Capacity - (Committed and Pending Anchor Capacity)</inlineHelpText>
+        <label>Client Acq Available Small CS Capacity</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Client_Acq_Committed_Anchor_Capacity__c</fullName>
+        <description>Set by the SystemCapacityRollupCalculator</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of all anchor subscriptions where the Opportunity&apos;s Partner is a Client Account</inlineHelpText>
+        <label>Client Acq Committed Anchor Capacity</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Client_Acq_Committed_Small_CS_Capacity__c</fullName>
+        <description>Set by SystemCapacityRollupCalculator</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of all Small CS Subscriptions where the Opportunity&apos;s Partner is not a Client Account</inlineHelpText>
+        <label>Client Acq Committed Small CS Capacity</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Client_Acq_Pending_Anchor_Capacity__c</fullName>
+        <description>Set by SystemCapacityRollupCalculator</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of New, Pending, or QC in Process Anchor subscriptions if the Opportunity&apos;s Partner is a Client Account</inlineHelpText>
+        <label>Client Acq Pending Anchor Capacity</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Client_Acq_Pending_Small_CS_Capacity__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of New, Pending, or QC in Process Small CS subscriptions, if the Opportunity&apos;s Partner is a Client Account</inlineHelpText>
+        <label>Client Acq Pending Small CS Capacity</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Client_Acq_Reserved_Anchor_Capacity__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Reserved capacity for Client Acquired Anchors, manually input via a Shared Solar System Order</inlineHelpText>
+        <label>Client Acq Reserved Anchor Capacity</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Client_Acq_Reserved_Small_CS_Capacity__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Reserved Client Acquired Small CS Capacity, manually input via a Shared Solar System Order</inlineHelpText>
+        <label>Client Acq Reserved Small CS Capacity</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Client_Acquisition_Contract__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <description>The field points to the same contract even if there is only one.</description>
@@ -1269,6 +1386,20 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <inlineHelpText>Sum of New, Pending, or QC in Process Small CS subscriptions</inlineHelpText>
         <label>Pending Small CS Capacity</label>
         <precision>11</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Perch_Acq_Reserved_Small_CS_Capacity__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Capacity reserved for Perch-acquired Small CS customers, manually input via a Shared Solar System Order</inlineHelpText>
+        <label>Perch Acq Reserved Small CS Capacity</label>
+        <precision>12</precision>
         <required>false</required>
         <scale>2</scale>
         <trackFeedHistory>false</trackFeedHistory>

@@ -7,14 +7,18 @@
  */
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class SubscriptionManagementService {
-    @TestVisible
-    private static UASSelector uasSelector = new UASSelector();
-    @TestVisible
-    private static SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
-    @TestVisible
-    private static SubscriptionOrderSelector soSelector = new SubscriptionOrderSelector();
-    @TestVisible
-    private static OpportunitiesSelector oppSelector = new OpportunitiesSelector();
+    @TestVisible private static UASSelector uasSelector = new UASSelector();
+    @TestVisible private static SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
+    @TestVisible private static SubscriptionOrderSelector soSelector = new SubscriptionOrderSelector();
+    @TestVisible private static OpportunitiesSelector oppSelector = new OpportunitiesSelector();
+    private static CapacityReservationOrderSelector croSelector = new CapacityReservationOrderSelector();
+    private static CapacityReserver capacityReserver = new CapacityReserver();
+    private static fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
+        new List<SObjectType>{
+            Shared_Solar_System__c.SObjectType,
+            Subscription_Order__c.SObjectType
+        }
+    );
 
     public void populateSubscriptionOrder(List<Subscription_Order__c> soList) {
         MultiMap subscriptionOrdersByUASId =
@@ -110,23 +114,21 @@ public without sharing class SubscriptionManagementService {
 
     @SuppressWarnings('PMD.ApexCRUDViolation')
     public void handleSharedSolarSystemOrders(List<Shared_Solar_System_Order__c> sssoList, Map<Id, Shared_Solar_System_Order__c> oldMap) {
-        List<Shared_Solar_System__c> sssToUpdate = new List<Shared_Solar_System__c>();
-        List<Subscription_Order__c> soListToInsert = new List<Subscription_Order__c>();
-        List<Shared_Solar_System_Order__c> approvedSSSOs = checkSSSOApproval(sssoList, oldMap);
+        List<Shared_Solar_System_Order__c> approvedSSSOs = getApprovedSSSOs(sssoList, oldMap);
+        MultiMap crosBySSSO = croSelector.getCapacityReservationOrdersBySSSO(approvedSSSOs);
         for (Shared_Solar_System_Order__c ssso : approvedSSSOs) {
-            Shared_Solar_System__c sss = updateSSSFromSSSO(ssso);
-            sssToUpdate.add(sss);
+            List<Capacity_Reservation_Order__c> capacityReservationOrders = new List<Capacity_Reservation_Order__c>();
+            CollectionUtil.toTypedList(crosBySSSO.getValues(ssso.Id), capacityReservationOrders);
+            uow.registerDirty(updateSSSFromSSSO(ssso, capacityReservationOrders));
             List<Utility_Account_Subscription__c> uasList = uasSelector.selectActiveUASBySSS(new Set<Id>{
                 ssso.Shared_Solar_System__c
             });
-            List<Subscription_Order__c> soList = createSystemChangeSubscriptionOrders(uasList, ssso, null);
-            soListToInsert.addAll(soList);
+            uow.registerNew(createSystemChangeSubscriptionOrders(uasList, ssso, null));
         }
-        update sssToUpdate;
-        insert soListToInsert;
+        uow.commitWork();
     }
 
-    public Shared_Solar_System__c updateSSSFromSSSO(Shared_Solar_System_Order__c ssso) {
+    public Shared_Solar_System__c updateSSSFromSSSO(Shared_Solar_System_Order__c ssso, List<Capacity_Reservation_Order__c> capacityReservationOrders) {
         Shared_Solar_System__c sssToUpdate = sssSelector.selectOne(ssso.Shared_Solar_System__c);
         sssToUpdate.Apex_Context__c = true;
         if (ssso.Total_System_Size_kW_DC__c != null && (ssso.Total_System_Size_kW_DC__c != sssToUpdate.Total_System_Size_kWh_DC__c)) {
@@ -135,6 +137,7 @@ public without sharing class SubscriptionManagementService {
         if (ssso.Yield__c != null && (ssso.Yield__c != sssToUpdate.Expected_Yield_kWh_kW__c)) {
             sssToUpdate.Expected_Yield_kWh_kW__c = ssso.Yield__c;
         }
+        capacityReserver.updateSystem(sssToUpdate, capacityReservationOrders);
         return sssToUpdate;
     }
 
@@ -155,13 +158,10 @@ public without sharing class SubscriptionManagementService {
         return soList;
     }
 
-    public List<Shared_Solar_System_Order__c> checkSSSOApproval(List<Shared_Solar_System_Order__c> sssoList, Map<Id, Shared_Solar_System_Order__c> oldMap) {
-        List<Shared_Solar_System_Order__c> approvedSSSOs = new List<Shared_Solar_System_Order__c>();
-        for (Shared_Solar_System_Order__c ssso : sssoList) {
-            if (ssso.Approval_Status__c == 'Approved' && oldMap.get(ssso.Id).Approval_Status__c != 'Approved') {
-                approvedSSSOs.add(ssso);
-            }
-        }
+    public List<Shared_Solar_System_Order__c> getApprovedSSSOs(List<Shared_Solar_System_Order__c> sssoList, Map<Id, Shared_Solar_System_Order__c> oldMap) {
+        List<Shared_Solar_System_Order__c> approvedSSSOs =
+            (List<Shared_Solar_System_Order__c>) new SObjectFilter(oldMap, sssoList, Shared_Solar_System_Order__c.Approval_Status__c, SObjectFilter.ANY_VALUE, 'Approved')
+                .get(SObjectFilter.SOBJECT_LIST);
         return approvedSSSOs;
     }
 
