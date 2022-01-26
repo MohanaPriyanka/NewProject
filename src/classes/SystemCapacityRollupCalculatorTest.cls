@@ -144,21 +144,21 @@ public without sharing class SystemCapacityRollupCalculatorTest {
 
         // Modify opp customer group to anchor
         sss = [
-            SELECT Id, Pending_Anchor_Capacity__c
+            SELECT Id, Client_Acq_Pending_Anchor_Capacity__c
             FROM Shared_Solar_System__c
             WHERE Name = 'SSS 2'
             LIMIT 1
         ];
-        System.assertEquals(0, sss.Pending_Anchor_Capacity__c, 'Invalid pending anchor capacity');
+        System.assertEquals(0, sss.Client_Acq_Pending_Anchor_Capacity__c, 'Invalid pending anchor capacity');
         opp.Customer_Group__c = 'Anchor';
         update opp;
         sss = [
-            SELECT Id, Pending_Anchor_Capacity__c
+            SELECT Id, Client_Acq_Pending_Anchor_Capacity__c
             FROM Shared_Solar_System__c
             WHERE Name = 'SSS 2'
             LIMIT 1
         ];
-        System.assertEquals(6.1536, sss.Pending_Anchor_Capacity__c, 'Pending anchor capacity should have updated from opp chg');
+        System.assertEquals(6.1536, sss.Client_Acq_Pending_Anchor_Capacity__c, 'Pending anchor capacity should have updated from opp chg');
     }
 
     @IsTest

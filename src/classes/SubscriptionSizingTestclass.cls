@@ -81,10 +81,6 @@ public with sharing class SubscriptionSizingTestclass {
             Sizing_Method__c = 'Project Ratio',
             ProductCode = 'CS - BlueWave - 10%',
             IsActive = True,
-            Lender_of_Record__c = 'BlueWave',
-            NMC_Discount__c = 10,
-            Annual_kWh_Maximum__c = 100000000,
-            NM_Rate_Floor__c = 0,
             Days_In_Bill_Period__c = 30,
             Monthly_Late_Fee__c = 1);
 
@@ -96,10 +92,6 @@ public with sharing class SubscriptionSizingTestclass {
             Sizing_Method__c = 'Rate Class Ratio',
             ProductCode = 'CS - BlueWave - 10%',
             IsActive = True,
-            Lender_of_Record__c = 'BlueWave',
-            NMC_Discount__c = 10,
-            Annual_kWh_Maximum__c = 100000000,
-            NM_Rate_Floor__c = 0,
             Days_In_Bill_Period__c = 30,
             Monthly_Late_Fee__c = 1);
 
@@ -121,6 +113,7 @@ public with sharing class SubscriptionSizingTestclass {
             Pending_Small_CS_Capacity__c = 10,
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 1082.88,
+            Perch_Acq_Reserved_Small_CS_Capacity__c = 1082.88,
             Total_System_Size_kW_AC__c  = 996,
             Utility__c = eversource.Id,
             Utility_NMC_Tariff__c = costSizingMethod.Id,
@@ -142,6 +135,7 @@ public with sharing class SubscriptionSizingTestclass {
             Pending_Small_CS_Capacity__c = 10,
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 5832,
+            Perch_Acq_Reserved_Small_CS_Capacity__c = 5832,
             Total_System_Size_kW_AC__c  = 996,
             Utility__c = eversource.Id,
             Utility_NMC_Tariff__c = kwhSizingMethodR1.Id,
@@ -163,6 +157,7 @@ public with sharing class SubscriptionSizingTestclass {
             Pending_Small_CS_Capacity__c = 10,
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 5832,
+            Perch_Acq_Reserved_Small_CS_Capacity__c = 5832,
             Total_System_Size_kW_AC__c  = 996,
             Utility__c = eversource.Id,
             Utility_NMC_Tariff__c = kwhSizingMethodR1.Id,

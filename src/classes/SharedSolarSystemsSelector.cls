@@ -179,13 +179,17 @@ public inherited sharing class SharedSolarSystemsSelector {
         return [
             SELECT Id, Name, Pending_Small_CS_Capacity__c, Capacity_Committed_kW_DC__c, Anchor_Capacity_Reserved__c, Reserved_Anchor_Capacity__c,
                 Stage__c, Utility__r.Average_Demand_Threshold__c,Pending_Demand_Capacity__c, Committed_Demand_Capacity__c,
-                Demand_Customer_System_Utilization__c,Pending_Anchor_Capacity__c, (
+                Demand_Customer_System_Utilization__c,Pending_Anchor_Capacity__c,
+                Client_Acq_Committed_Anchor_Capacity__c, Client_Acq_Pending_Anchor_Capacity__c,
+                Client_Acq_Committed_Small_CS_Capacity__c, Client_Acq_Pending_Small_CS_Capacity__c,
+            (
                 SELECT Id, Customer_Group__c, Opportunity__r.Customer_Sub_Group__c, Shared_Solar_System__r.Name,
                     Future_Customer_Subscription_KWDC_Rollup__c, Customer_Subscription_KW_DC__c, Opportunity_Stage__c,
-                    Utility_Account_Log__c, Utility_Account_Log__r.Average_Demand__c, Utility_Account_Log__r.Exclude_from_Demand_Capacity__c
+                    Utility_Account_Log__c, Utility_Account_Log__r.Average_Demand__c, Utility_Account_Log__r.Exclude_from_Demand_Capacity__c,
+                    Opportunity__r.Partner_Account__r.RecordType.Name, Opportunity__r.Partner_tag_lookup__r.Account__r.RecordType.Name
                 FROM Utility_Account_Subscriptions__r
                 WHERE Next_Schedule_Z_Status__c = 'Active Subscription'
-                AND (Future_Customer_Subscription_KWDC_Rollup__c != 0 OR Customer_Subscription_KW_DC__c != 0)
+                AND Future_Customer_Subscription_KWDC_Rollup__c != 0
             )
             FROM Shared_Solar_System__c
             WHERE Id IN :sssList
