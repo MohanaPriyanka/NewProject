@@ -183,7 +183,6 @@ public class CustomerCommunicationHandlerTest {
             State__c = 'MA',
             ProductCode = 'CS - BlueWave - 10%',
             IsActive = true,
-
             NMC_Discount__c = 10,
             Annual_kWh_Maximum__c = 100000000,
             NM_Rate_Floor__c = 0,
@@ -198,7 +197,6 @@ public class CustomerCommunicationHandlerTest {
             State__c = 'MA',
             ProductCode = 'CS - Bluewave - Public CS - 20%',
             IsActive = true,
-
             NMC_Discount__c = 20,
             Annual_kWh_Maximum__c = 63000,
             Customer_Subscription_Type__c = 'Electricity Cost ($)',

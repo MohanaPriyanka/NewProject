@@ -105,7 +105,6 @@ public with sharing class CapacityServiceTest {
             State__c = 'MA',
             ProductCode = 'CS - BlueWave - 10%',
             IsActive = true,
-
             NMC_Discount__c = 10,
             Annual_kWh_Maximum__c = 100000000,
             NM_Rate_Floor__c = 0,
