@@ -151,6 +151,7 @@ public with sharing class ZuoraReturnedPaymentService implements Queueable, Data
      * @return A case ready to be inserted
      */
     public Case insertCaseForReturns(Zuora__Payment__c zuoraPayment) {
+        String paymentURL = System.Url.getOrgDomainUrl().toExternalForm() + '/' + zuoraPayment.Id;
         Zuora__PaymentMethod__c paymentMethod =
             paymentMethodSelector.getSFRecordFromZuoraId(zuoraPayment.Zuora__PaymentMethodId__c);
         CaseFactory caseFactory = new CaseFactory();
@@ -159,9 +160,9 @@ public with sharing class ZuoraReturnedPaymentService implements Queueable, Data
         newCase.Priority = 'Medium';
         newCase.Product_Line__c = 'Community Solar';
         newCase.Category__c = 'Billing-Issue';
-        newCase.Description = 'This transaction was marked as returned. There may be followup required with the customer to resolve issues with their payment method.';
+        newCase.Description = 'This transaction was marked as returned. There may be followup required with the customer to resolve issues with their payment method. Payment Amount: ' + zuoraPayment.Zuora__Amount__c + '. Payment Record: ' + paymentURL;
         newCase.Origin = 'Other';
-        newCase.Case_Type__c = 'BlueWave';
+        newCase.Case_Type__c = 'Perch';
         newCase.Disable_Followup_Email__c = true;
         newCase.AccountId = zuoraPayment.Zuora__BillingAccount__r.Zuora__Account__c;
         newCase.ContactId = zuoraPayment.Zuora__BillingAccount__r.Zuora__Account__r.Send_Bills_Contact__c;
