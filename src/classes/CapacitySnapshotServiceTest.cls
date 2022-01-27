@@ -22,7 +22,7 @@ public with sharing class CapacitySnapshotServiceTest {
             Sizing_Method__c = 'Project Ratio',
             State__c = 'NY',
             IsActive = true,
-            Lender_of_Record__c = 'BlueWave',
+
             NMC_Discount__c = 10,
             Customer_Subscription_Type__c = 'kWh'
         );

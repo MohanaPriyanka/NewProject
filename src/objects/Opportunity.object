@@ -2098,18 +2098,6 @@ IF( Month(CloseDate) = 12, &apos;December&apos;, null))))))))))))</formula>
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Lender_of_Record__c</fullName>
-        <externalId>false</externalId>
-        <formula>TEXT(Product__r.Lender_of_Record__c)</formula>
-        <inlineHelpText>This pulls in the lender of record field on the Product.</inlineHelpText>
-        <label>Lender of Record</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Level_of_Interest__c</fullName>
         <externalId>false</externalId>
         <label>Level of Interest</label>

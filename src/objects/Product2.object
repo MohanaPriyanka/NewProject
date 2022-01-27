@@ -303,20 +303,6 @@
         <trackHistory>true</trackHistory>
     </fields>
     <fields>
-        <fullName>Lender_of_Record__c</fullName>
-        <description>The Lender that originates this loan, used to format loan application appropriately (e.g. showing Avidia logos)</description>
-        <externalId>false</externalId>
-        <label>Lender of Record</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetName>Lender</valueSetName>
-        </valueSet>
-    </fields>
-    <fields>
         <fullName>Max_Subscription_kW_AC_for_DC_calc__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>When populated, multiplied by the Conversion Ratio on SSS to populate Maximum Subscription Capacity (kW DC). Intended to be set to 25 kW AC for SMART projects.</inlineHelpText>
@@ -328,18 +314,6 @@
         <trackHistory>false</trackHistory>
         <type>Number</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Monthly_Late_Fee__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>4 Decimal Places. Overdue balance is multiplied by this number every month to calculate late fees</inlineHelpText>
-        <label>Monthly Late Fee Interest</label>
-        <precision>16</precision>
-        <required>false</required>
-        <scale>4</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Percent</type>
     </fields>
     <fields>
         <fullName>NMC_Discount__c</fullName>
@@ -884,7 +858,6 @@
     <listViews>
         <fullName>AllProducts</fullName>
         <columns>PRODUCT2.NAME</columns>
-        <columns>Lender_of_Record__c</columns>
         <columns>State__c</columns>
         <columns>PRODUCT2.CREATED_DATE</columns>
         <columns>PRODUCT2.LAST_UPDATE</columns>
@@ -902,7 +875,6 @@
         <columns>PRODUCT2.CUSTOMER_PRODUCT_ID</columns>
         <columns>NMC_Discount__c</columns>
         <columns>NM_Rate_Floor__c</columns>
-        <columns>Monthly_Late_Fee__c</columns>
         <filterScope>Everything</filterScope>
         <filters>
             <field>PRODUCT2.CREATED_DATE</field>
@@ -916,7 +888,6 @@
         <columns>PRODUCT2.CREATED_DATE</columns>
         <columns>PRODUCT2.ACTIVE</columns>
         <columns>PRODUCT2.NAME</columns>
-        <columns>Lender_of_Record__c</columns>
         <columns>State__c</columns>
         <columns>PRODUCT2.LAST_UPDATE</columns>
         <filterScope>Everything</filterScope>

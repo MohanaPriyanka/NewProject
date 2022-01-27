@@ -58,12 +58,10 @@ public class TestBillCreationForCancelledCustomers {
             State__c = 'MA',
             ProductCode = 'CS - BlueWave - 10%',
             IsActive = True,
-            Lender_of_Record__c = 'BlueWave',
             NMC_Discount__c = 10,
             Annual_kWh_Maximum__c = 100000000,
             Customer_Subscription_Type__c = 'Electricity Cost ($)',
-            NM_Rate_Floor__c = 0,
-            Monthly_Late_Fee__c = 1);
+            NM_Rate_Floor__c = 0);
         insert new List<Product2>{
             normalCSProduct
         };

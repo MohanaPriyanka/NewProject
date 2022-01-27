@@ -41,12 +41,10 @@ public class CSQualificationTestclass {
             Program__c = 'VDER - Community Solar',
             State__c = 'NY',
             IsActive = true,
-            Lender_of_Record__c = 'BlueWave',
             NMC_Discount__c = 10,
             Annual_kWh_Maximum__c = 100000000,
             NM_Rate_Floor__c = 0,
-            Days_in_Bill_Period__c = 20,
-            Monthly_Late_Fee__c = 1
+            Days_in_Bill_Period__c = 20
         );
         insert vderProduct;
 
