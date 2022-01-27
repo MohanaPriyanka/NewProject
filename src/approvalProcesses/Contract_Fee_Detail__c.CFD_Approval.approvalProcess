@@ -23,11 +23,7 @@
         <allowDelegate>false</allowDelegate>
         <assignedApprover>
             <approver>
-                <name>aisaacson@bluewavesolar.com</name>
-                <type>user</type>
-            </approver>
-            <approver>
-                <name>mreid@bluewavesolar.com</name>
+                <name>jpommerer@perchenergy.com</name>
                 <type>user</type>
             </approver>
             <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
