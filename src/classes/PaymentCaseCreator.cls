@@ -175,7 +175,7 @@ public without sharing class PaymentCaseCreator implements Schedulable, ZuoraDat
         newCase.Category__c = 'Billing-Payment';
         newCase.Sale_Status__c = 'Post-sale';
         newCase.Origin = 'Other';
-        newCase.Case_Type__c = 'BlueWave';
+        newCase.Case_Type__c = 'Perch';
         newCase.Disable_Followup_Email__c = true;
         newCase.AccountId = accountId;
 

@@ -115,7 +115,7 @@ public class CustomerCommunicationHandler implements Database.Batchable<SObject>
                 'Note this info on the case in the chatter' + ' / ' +
                 'If there is no reply leave a voice note';
         newCase.Origin = 'Other';
-        newCase.Case_Type__c = 'BlueWave';
+        newCase.Case_Type__c = 'Perch';
         newCase.Disable_Followup_Email__c = true;
         return newCase;
     }

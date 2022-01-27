@@ -226,7 +226,7 @@ public with sharing class ZuoraInvoiceService {
             'please use the \'Opt Out of Paper Billing\' checkbox. [Auto-generated]' ;
         newCase.Description = description;
         newCase.Origin = 'Other';
-        newCase.Case_Type__c = 'BlueWave';
+        newCase.Case_Type__c = 'Perch';
         newCase.Disable_Followup_Email__c = true;
         newCase.AccountId = invoice.Zuora__BillingAccount__r.Zuora__Account__c;
 
