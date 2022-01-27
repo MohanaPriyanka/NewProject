@@ -58,13 +58,11 @@ public class ProductEscalationTest {
             State__c = 'MA',
             ProductCode = 'CS - BlueWave - 10%',
             IsActive = True,
-            Lender_of_Record__c = 'BlueWave',
             Solar_Electricity_Rate__c = 0.14,
             Annual_kWh_Maximum__c = 100000000,
             Customer_Subscription_Type__c = 'Electricity Cost ($)',
             NM_Rate_Floor__c = 0,
-            Pricing_Structure__c = 'Use Solar Electric Rate',
-            Monthly_Late_Fee__c = 1);
+            Pricing_Structure__c = 'Use Solar Electric Rate');
         insert new List<Product2>{
             normalCSProduct
         };

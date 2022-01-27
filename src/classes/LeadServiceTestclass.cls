@@ -68,7 +68,6 @@ public class LeadServiceTestclass {
             Sizing_Method__c = 'Project Ratio',
             State__c = 'NY',
             IsActive = true,
-            Lender_of_Record__c = 'BlueWave',
             NMC_Discount__c = 10,
             Customer_Subscription_Type__c = 'kWh');
         insert csProduct;
@@ -82,12 +81,10 @@ public class LeadServiceTestclass {
             State__c = 'MA',
             ProductCode = 'CS - BlueWave - 10%',
             IsActive = true,
-            Lender_of_Record__c = 'BlueWave',
             NMC_Discount__c = 10,
             Annual_kWh_Maximum__c = 100000000,
             Customer_Subscription_Type__c = 'Electricity Cost ($)',
-            NM_Rate_Floor__c = 0,
-            Monthly_Late_Fee__c = 1);
+            NM_Rate_Floor__c = 0);
         insert csProduct2;
 
         Shared_Solar_System__c sss1 = new Shared_Solar_System__c(
@@ -488,7 +485,6 @@ public class LeadServiceTestclass {
             Sizing_Method__c = 'Project Ratio',
             State__c = 'NY',
             IsActive = true,
-            Lender_of_Record__c = 'BlueWave',
             NMC_Discount__c = 10,
             Customer_Subscription_Type__c = 'kWh',
             Parent_Product__c = leadGenericProduct.Id

@@ -79,12 +79,10 @@ public class MultipleMonthProductionUpdateTest {
             ProductCode = 'CS - BlueWave - 10%',
             Sizing_Method__c = 'Project Ratio',
             IsActive = True,
-            Lender_of_Record__c = 'BlueWave',
             NMC_Discount__c = 10,
             Annual_kWh_Maximum__c = 100000000,
             NM_Rate_Floor__c = 0,
-            Days_In_Bill_Period__c = 30,
-            Monthly_Late_Fee__c = 1);
+            Days_In_Bill_Period__c = 30);
 
         Product2 publicCSProduct = new Product2(  Name = 'BlueWave Public Offtake CS',
             Family = 'Community Solar',
@@ -93,12 +91,10 @@ public class MultipleMonthProductionUpdateTest {
             ProductCode = 'CS - Bluewave - Public CS - 20%',
             Sizing_Method__c = 'Project Ratio',
             IsActive = True,
-            Lender_of_Record__c = 'BlueWave',
             NMC_Discount__c = 20,
             Annual_kWh_Maximum__c = 63000,
             NM_Rate_Floor__c = 0.09,
-            Days_In_Bill_Period__c = 30,
-            Monthly_Late_Fee__c = 0.8333);
+            Days_In_Bill_Period__c = 30);
         insert new List<Product2>{normalCSProduct, publicCSProduct};
 
         Account parentAccount = new Account(name = 'Jon Snow',

@@ -2786,16 +2786,6 @@ https://success.salesforce.com/_ui/core/chatter/groups/GroupProfilePage?g=0F9300
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Lender_of_Record__c</fullName>
-        <externalId>false</externalId>
-        <formula>TEXT(Product__r.Lender_of_Record__c)</formula>
-        <label>Lender of Record</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>License_Number_Encrypted__c</fullName>
         <description>This is the new encrypted field for the drivers license number. If you need to see the full value, please contact your system admin. Approval from an executive may be required.</description>
         <externalId>false</externalId>

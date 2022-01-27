@@ -781,7 +781,7 @@ public class TransferSheetBillingTest {
                 '"Utility_Account_Log__r" : {"Name" : "07777", "Premise_Number__c" : "12-34-56-789"},' +
                 '"Opportunity__r" : {"Id":"0000000AAA","Name":"Oppty A",' +
                 '"Product__r" : {"NMC_Discount__c" : 12.00 ,"NM_Rate_Floor__c" : 0.0,"Solar_Electricity_Rate__c" : 0.13,' +
-                '"Pricing_Structure__c" : "Use Solar Electric Rate","Percent_Share_Decimal_Places__c" : 6.00},' +
+                '"Pricing_Structure__c" : "Use Solar Electric Rate"},' +
                 '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Number_of_Billed_Production_Periods__c" : 2, "Billing_Method__c" : "kWh"}, ' +
                 '"Account" : {"Name" : "Account One", "Account_Number__c" : "BW-00001"},' +
                 '"AccountId" : "0015400000SajzCAAA"}}}';
@@ -794,7 +794,7 @@ public class TransferSheetBillingTest {
                 '"Utility_Account_Log__r" : {"Name" : "23 23 224"},' +
                 '"Opportunity__r" : {"Id":"0000000BBB","Name":"Oppty B", "Product_Escalation_Schedule__c" : "a6o19000000CsuGAAS",' +
                 '"Product__r" : {"NMC_Discount__c" : 10.00 ,"NM_Rate_Floor__c" : 0.0,"Solar_Electricity_Rate__c" : 0.13,' +
-                '"Pricing_Structure__c" : "Fixed % Discount","Percent_Share_Decimal_Places__c" : 6.00},' +
+                '"Pricing_Structure__c" : "Fixed % Discount"},' +
                 '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Number_of_Billed_Production_Periods__c" : 2, "Billing_Method__c" : "NMC"}, ' +
                 '"Account" : {"Name" : "Account One", "Account_Number__c" : "BW-00001"},' +
                 '"AccountId" : "0015400000SajzCAAA"}}}';
@@ -807,7 +807,7 @@ public class TransferSheetBillingTest {
                 '"Utility_Account_Log__r" : {"Name" : "777222", "Premise_Number__c" : "223232"},' +
                 '"Opportunity__r" : {"Id":"0000000CCC","Name":"Oppty C",' +
                 '"Product__r" : {"NMC_Discount__c" : 10.00 ,"NM_Rate_Floor__c" : 0.0,"Solar_Electricity_Rate__c" : 0.13,' +
-                '"Pricing_Structure__c" : "Fixed % Discount","Percent_Share_Decimal_Places__c" : 6.00},' +
+                '"Pricing_Structure__c" : "Fixed % Discount"},' +
                 '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Number_of_Billed_Production_Periods__c" : 2, "Billing_Method__c" : "NMC"}, ' +
                 '"Account" : {"Name" : "Account One", "Account_Number__c" : "BW-00001"},' +
                 '"AccountId" : "0015400000SajzCAAA"}}}';
@@ -820,7 +820,7 @@ public class TransferSheetBillingTest {
                 '"Utility_Account_Log__r" : {"Name" : " 00 12 34 56789"},' +
                 '"Opportunity__r" : {"Id":"0000000DDD","Name":"Oppty D",' +
                 '"Product__r" : {"NMC_Discount__c" : 10.00 ,"NM_Rate_Floor__c" : 0.0,"Solar_Electricity_Rate__c" : 0.13,' +
-                '"Pricing_Structure__c" : "Use Solar Electric Rate","Percent_Share_Decimal_Places__c" : 6.00},' +
+                '"Pricing_Structure__c" : "Use Solar Electric Rate"},' +
                 '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Number_of_Billed_Production_Periods__c" : 2, "Billing_Method__c" : "kWh"}, ' +
                 '"Account" : {"Name" : "Account One", "Account_Number__c" : "BW-00001"},' +
                 '"AccountId" : "0015400000SajzCAAA"}}}';
@@ -833,7 +833,7 @@ public class TransferSheetBillingTest {
                 '"Utility_Account_Log__r" : {"Name" : "777888"},' +
                 '"Opportunity__r" : {"Id":"0000000EEE","Name":"Oppty E",' +
                 '"Product__r" : {"NMC_Discount__c" : 25.00 ,"NM_Rate_Floor__c" : 0.0,"Solar_Electricity_Rate__c" : 0.13,' +
-                '"Pricing_Structure__c" : "Fixed % Discount","Percent_Share_Decimal_Places__c" : 6.00},' +
+                '"Pricing_Structure__c" : "Fixed % Discount"},' +
                 '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Number_of_Billed_Production_Periods__c" : 2, "Billing_Method__c" : "NMC"}, ' +
                 '"Account" : {"Name" : "Account One", "Account_Number__c" : "BW-00001"},' +
                 '"AccountId" : "0015400000SajzCBBB"}}}';
@@ -869,7 +869,7 @@ public class TransferSheetBillingTest {
                 '"Utility_Account_Log__r" : {"Name" : "001519510481"},' +
                 '"Opportunity__r" : {"Id":"0000000AAA","Name":"Oppty A",' +
                 '"Product__r" : {"NMC_Discount__c" : 12.00 ,"NM_Rate_Floor__c" : 0.0,"Solar_Electricity_Rate__c" : 0.13,' +
-                '"Pricing_Structure__c" : "Use Solar Electric Rate","Percent_Share_Decimal_Places__c" : 6.00},' +
+                '"Pricing_Structure__c" : "Use Solar Electric Rate"},' +
                 '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Number_of_Billed_Production_Periods__c" : 2, "Billing_Method__c" : "kWh"}, ' +
                 '"Account" : {"Name" : "Account One", "Account_Number__c" : "BW-00001"},' +
                 '"AccountId" : "0015400000SajzCAAA"}}}';
@@ -882,7 +882,7 @@ public class TransferSheetBillingTest {
                 '"Utility_Account_Log__r" : {"Name" : "001519510482"},' +
                 '"Opportunity__r" : {"Id":"0000000BBB","Name":"Oppty B", "Product_Escalation_Schedule__c" : "a6o19000000CsuGAAS",' +
                 '"Product__r" : {"NMC_Discount__c" : 10.00 ,"NM_Rate_Floor__c" : 0.0,"Solar_Electricity_Rate__c" : 0.13,' +
-                '"Pricing_Structure__c" : "Fixed % Discount","Percent_Share_Decimal_Places__c" : 6.00},' +
+                '"Pricing_Structure__c" : "Fixed % Discount"},' +
                 '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Number_of_Billed_Production_Periods__c" : 2, "Billing_Method__c" : "NMC"}, ' +
                 '"Account" : {"Name" : "Account One", "Account_Number__c" : "BW-00001"},' +
                 '"AccountId" : "0015400000SajzCAAA"}}}';

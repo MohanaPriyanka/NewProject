@@ -76,12 +76,10 @@ public without sharing class CSOpportunityFactoryTest {
             State__c = 'MA',
             ProductCode = 'CS - BlueWave - 10%',
             IsActive = true,
-            Lender_of_Record__c = 'BlueWave',
             NMC_Discount__c = 10,
             Annual_kWh_Maximum__c = 100000000,
             NM_Rate_Floor__c = 0,
-            Customer_Subscription_Type__c = 'Electricity Cost ($)',
-            Monthly_Late_Fee__c = 1
+            Customer_Subscription_Type__c = 'Electricity Cost ($)'
         );
         insert csProduct;
 
@@ -253,12 +251,10 @@ public without sharing class CSOpportunityFactoryTest {
             State__c = 'MA',
             ProductCode = 'CS - BlueWave - 10%',
             IsActive = true,
-            Lender_of_Record__c = 'BlueWave',
             NMC_Discount__c = 10,
             Annual_kWh_Maximum__c = 100000000,
             NM_Rate_Floor__c = 0,
-            Customer_Subscription_Type__c = 'Electricity Cost ($)',
-            Monthly_Late_Fee__c = 1
+            Customer_Subscription_Type__c = 'Electricity Cost ($)'
         );
         insert csProduct;
 
@@ -431,12 +427,10 @@ public without sharing class CSOpportunityFactoryTest {
             State__c = 'MA',
             ProductCode = 'CS - BlueWave - 10%',
             IsActive = true,
-            Lender_of_Record__c = 'BlueWave',
             NMC_Discount__c = 10,
             Annual_kWh_Maximum__c = 100000000,
             NM_Rate_Floor__c = 0,
-            Customer_Subscription_Type__c = 'Electricity Cost ($)',
-            Monthly_Late_Fee__c = 1
+            Customer_Subscription_Type__c = 'Electricity Cost ($)'
         );
         insert csProduct;
 

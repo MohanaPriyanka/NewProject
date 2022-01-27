@@ -147,10 +147,6 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Monthly_Late_Fee__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>Annual_kWh_Maximum__c</field>
             </layoutItems>
             <layoutItems>

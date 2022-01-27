@@ -11401,11 +11401,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Lead.Lender_of_Record__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Lead.License_Number_Encrypted__c</field>
         <readable>true</readable>
@@ -20616,11 +20611,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Lender_of_Record__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Level_of_Interest__c</field>
         <readable>true</readable>
@@ -22407,17 +22397,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Product2.Lender_of_Record__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Product2.Max_Subscription_kW_AC_for_DC_calc__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Product2.Monthly_Late_Fee__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
