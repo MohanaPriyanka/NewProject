@@ -1,8 +1,21 @@
 @IsTest
-private with sharing class CreditReportPullerTest {
+public with sharing class CreditReportPullerTest {
     @IsTest
     private static void systemTest() {
         CreditReportPuller.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new MockedFeatureSelector());
+        // We need to create the user in LASERCA's protected custom setting
+        LASERCA.MappingUtil.createCreditAPILogin(
+            'CREDITAPI',
+            'experian',
+            true,
+            'bluewavesoft',
+            true,
+            true,
+            true,
+            true,
+            false,
+            false
+        );
         Lead testLead = new Lead(
             FirstName = 'Test',
             LastName = 'Testcase',
