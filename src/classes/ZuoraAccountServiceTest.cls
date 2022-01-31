@@ -136,8 +136,7 @@ public with sharing class ZuoraAccountServiceTest {
                                                   State__c = 'MA',
                                                   ProductCode = 'CS - BlueWave - 10%',
                                                   IsActive = true,
-                                                  Days_in_Bill_Period__c = 30,
-                                                  Monthly_Late_Fee__c = 1);
+                                                  Days_in_Bill_Period__c = 30);
 
         Product2 smartProduct = new Product2(  Name = 'SMART Community Solar',
                                                   Family = 'Community Solar',
@@ -146,8 +145,8 @@ public with sharing class ZuoraAccountServiceTest {
                                                   State__c = 'MA',
                                                   ProductCode = 'CS - Bluewave - Public CS - 20%',
                                                   IsActive = true,
-                                                  Days_in_Bill_Period__c = 30,
-                                                  Monthly_Late_Fee__c = 0.8333);
+                                                  Days_in_Bill_Period__c = 30);
+
         insert new List<Product2>{srecProduct, smartProduct};
 
 

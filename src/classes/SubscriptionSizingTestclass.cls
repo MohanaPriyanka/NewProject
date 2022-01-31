@@ -73,28 +73,26 @@ public with sharing class SubscriptionSizingTestclass {
         insert new List<Rate_Class__c> {rateClassR1, rateClassR2};
 
 
-        Product2 costProduct = new Product2( Name = 'BlueWave Community Solar',
+        Product2 costProduct = new Product2(
+            Name = 'BlueWave Community Solar',
             Family = 'Community Solar',
             Product_Type__c = 'Community Solar',
             State__c = 'MA',
             Customer_Subscription_Type__c = 'Electricity Cost ($)',
             Sizing_Method__c = 'Project Ratio',
             ProductCode = 'CS - BlueWave - 10%',
-            IsActive = True,
-            Days_In_Bill_Period__c = 30,
-            Monthly_Late_Fee__c = 1);
-
-        Product2 kwhProduct = new Product2( Name = 'BlueWave Community Solar',
+            IsActive = true,
+            Days_in_Bill_Period__c = 30);
+        Product2 kwhProduct = new Product2(
+            Name = 'BlueWave Community Solar',
             Family = 'Community Solar',
             Product_Type__c = 'Community Solar',
             State__c = 'MA',
             Customer_Subscription_Type__c = 'kWh',
             Sizing_Method__c = 'Rate Class Ratio',
             ProductCode = 'CS - BlueWave - 10%',
-            IsActive = True,
-            Days_In_Bill_Period__c = 30,
-            Monthly_Late_Fee__c = 1);
-
+            IsActive = true,
+            Days_in_Bill_Period__c = 30);
         insert new List<Product2>{costProduct, kwhProduct};
 
         //product tariffs --> to be used when testing sizing method flag being off

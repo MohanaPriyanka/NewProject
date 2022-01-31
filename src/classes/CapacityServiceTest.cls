@@ -93,8 +93,7 @@ public with sharing class CapacityServiceTest {
             State__c = 'MA',
             ProductCode = 'CS - BlueWave - 10%',
             IsActive = true,
-            Days_in_Bill_Period__c = 30,
-            Monthly_Late_Fee__c = 1);
+            Days_in_Bill_Period__c = 30);
 
         Product2 smartProduct = new Product2( Name = 'SMART Community Solar',
             Family = 'Community Solar',
@@ -103,8 +102,8 @@ public with sharing class CapacityServiceTest {
             State__c = 'MA',
             ProductCode = 'CS - BlueWave - 10%',
             IsActive = true,
-            Days_in_Bill_Period__c = 30,
-            Monthly_Late_Fee__c = 1);
+            Days_in_Bill_Period__c = 30);
+
 
         insert new List<Product2>{srecProduct, smartProduct};
 
@@ -322,8 +321,8 @@ public with sharing class CapacityServiceTest {
             State__c = 'MA',
             ProductCode = 'CS - BlueWave - 10%',
             IsActive = true,
-            Days_in_Bill_Period__c = 30,
-            Monthly_Late_Fee__c = 1);
+            Days_in_Bill_Period__c = 30);
+
         insert parentProduct;
         smartProduct.Parent_Product__c = parentProduct.Id;
         update smartProduct;

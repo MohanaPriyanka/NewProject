@@ -41,9 +41,7 @@ public class CSQualificationTestclass {
             Program__c = 'VDER - Community Solar',
             State__c = 'NY',
             IsActive = true,
-            Days_in_Bill_Period__c = 20,
-            Monthly_Late_Fee__c = 1
-        );
+            Days_in_Bill_Period__c = 20);
         insert vderProduct;
 
         Utility__c nyseg = new Utility__c(

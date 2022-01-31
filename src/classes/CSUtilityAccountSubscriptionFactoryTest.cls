@@ -46,8 +46,8 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             ProductCode = 'CS - BlueWave - 10%',
             Sizing_Method__c = 'Project Ratio',
             IsActive = true,
-            Customer_Subscription_Type__c = 'Electricity Cost ($)',
-            Monthly_Late_Fee__c = 1);
+            Customer_Subscription_Type__c = 'Electricity Cost ($)');
+
         Product2 kwhProduct = new Product2(Name = 'SMART Community Solar',
             Family = 'Community Solar',
             Product_Type__c = 'Community Solar',
@@ -55,9 +55,9 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             Customer_Subscription_Type__c = 'kWh',
             Sizing_Method__c = 'Rate Class Ratio',
             ProductCode = 'CS - BlueWave - 10%',
-            IsActive = True,
-            Days_In_Bill_Period__c = 30,
-            Monthly_Late_Fee__c = 1);
+            IsActive = true,
+            Days_in_Bill_Period__c = 30);
+
         insert new List<Product2>{
             costProduct, kwhProduct
         };
