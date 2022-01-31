@@ -5,7 +5,7 @@
 public with sharing class SimpleSignupFormControllerTest {
 
     @TestSetup
-    public static void testSetup() {
+    private static void testSetup() {
         ContentVersion cv = new ContentVersion(
             ContentLocation = 'S',
             VersionData = EncodingUtil.base64Decode('invoice body'),
@@ -21,7 +21,7 @@ public with sharing class SimpleSignupFormControllerTest {
         insert product;
         Lead lead = new Lead(
             FirstName = 'first',
-            LastName = 'last',
+            LastName = 'Testcase',
             Company = 'Company',
             Email = 'foo@bar.com',
             Product__c = product.Id,
@@ -401,6 +401,20 @@ public with sharing class SimpleSignupFormControllerTest {
 
     @IsTest
     private static void testUpdateLeadAndRunCreditCheck() {
+        CreditReportPuller.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new CreditReportPullerTest.MockedFeatureSelector());
+        // We need to create the user in LASERCA's protected custom setting
+        LASERCA.MappingUtil.createCreditAPILogin(
+            'CREDITAPI',
+            'experian',
+            true,
+            'bluewavesoft',
+            true,
+            true,
+            true,
+            true,
+            false,
+            false
+        );
         // Construct data
         Lead lead = [SELECT Id FROM Lead LIMIT 1];
         lead.LASERCA__Birthdate__c = Date.valueOf('1993-12-03');
