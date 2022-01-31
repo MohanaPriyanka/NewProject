@@ -93,9 +93,8 @@ public with sharing class CapacityServiceTest {
             State__c = 'MA',
             ProductCode = 'CS - BlueWave - 10%',
             IsActive = true,
-            NMC_Discount__c = 10,
-            Annual_kWh_Maximum__c = 100000000,
-            NM_Rate_Floor__c = 0,
+
+
             Days_in_Bill_Period__c = 30);
 
         Product2 smartProduct = new Product2( Name = 'SMART Community Solar',
@@ -105,10 +104,10 @@ public with sharing class CapacityServiceTest {
             State__c = 'MA',
             ProductCode = 'CS - BlueWave - 10%',
             IsActive = true,
-            NMC_Discount__c = 10,
-            Annual_kWh_Maximum__c = 100000000,
-            NM_Rate_Floor__c = 0,
+
             Days_in_Bill_Period__c = 30);
+
+
 
         insert new List<Product2>{srecProduct, smartProduct};
 
@@ -121,6 +120,7 @@ public with sharing class CapacityServiceTest {
             Pending_Small_CS_Capacity__c = 10,
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 1445.86,
+            Perch_Acq_Reserved_Small_CS_Capacity__c = 1445.86,
             Total_System_Size_kW_AC__c  = 996,
             Utility__c = eversource.Id,
             Credit_Score_Requirement__c = 300,
@@ -139,6 +139,7 @@ public with sharing class CapacityServiceTest {
             Pending_Small_CS_Capacity__c = 10,
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 1445.86,
+            Perch_Acq_Reserved_Small_CS_Capacity__c = 1445.86,
             Total_System_Size_kW_AC__c  = 996,
             Utility__c = eversource.Id,
             Credit_Score_Requirement__c = 300,
@@ -157,6 +158,7 @@ public with sharing class CapacityServiceTest {
             Pending_Small_CS_Capacity__c = 10,
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 1445.86,
+            Perch_Acq_Reserved_Small_CS_Capacity__c = 1445.86,
             Total_System_Size_kW_AC__c  = 996,
             Utility__c = eversource.Id,
             Credit_Score_Requirement__c = 300,
@@ -175,6 +177,7 @@ public with sharing class CapacityServiceTest {
             Pending_Small_CS_Capacity__c = 10,
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 1445.86,
+            Perch_Acq_Reserved_Small_CS_Capacity__c = 1445.86,
             Total_System_Size_kW_AC__c  = 996,
             Utility__c = nationalGrid.Id,
             Credit_Score_Requirement__c = 300,
@@ -322,10 +325,10 @@ public with sharing class CapacityServiceTest {
             State__c = 'MA',
             ProductCode = 'CS - BlueWave - 10%',
             IsActive = true,
-            NMC_Discount__c = 10,
-            Annual_kWh_Maximum__c = 100000000,
-            NM_Rate_Floor__c = 0,
+
             Days_in_Bill_Period__c = 30);
+
+
         insert parentProduct;
         smartProduct.Parent_Product__c = parentProduct.Id;
         update smartProduct;

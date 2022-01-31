@@ -14,12 +14,7 @@ public without sharing class SystemCapacityRollupCalculator {
     private Initializer initializer;
     private Set<Id> systemIds;
     private List<Shared_Solar_System__c> systems;
-    private List<Utility_Account_Subscription__c> pendingSmallCSCapacityList;
-    private List<Utility_Account_Subscription__c> committedSmallCSCapacityList;
-    private List<Utility_Account_Subscription__c> pendingAnchorCapacityList;
-    private List<Utility_Account_Subscription__c> committedAnchorCapacityList;
-    private List<Utility_Account_Subscription__c> pendingDemandCapacityList;
-    private List<Utility_Account_Subscription__c> committedDemandCapacityList;
+    private MultiMap uasesByCapacityType;
     private fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(new List<SObjectType>{
         Shared_Solar_System__c.SObjectType
     });
@@ -100,21 +95,20 @@ public without sharing class SystemCapacityRollupCalculator {
      * @param sssWithActiveUASes SSS with all necessary fields from selector, including UAS (subscriptions) and UAL fields
      */
     private void summarizeCapacityBySubscription(Shared_Solar_System__c sssWithActiveUASes) {
-        pendingSmallCSCapacityList = new List<Utility_Account_Subscription__c>();
-        committedSmallCSCapacityList = new List<Utility_Account_Subscription__c>();
-        pendingAnchorCapacityList = new List<Utility_Account_Subscription__c>();
-        committedAnchorCapacityList = new List<Utility_Account_Subscription__c>();
-        pendingDemandCapacityList = new List<Utility_Account_Subscription__c>();
-        committedDemandCapacityList = new List<Utility_Account_Subscription__c>();
+        uasesByCapacityType = MultiMap.newListInstance();
         for (Utility_Account_Subscription__c uas : sssWithActiveUASes.Utility_Account_Subscriptions__r) {
-            if (isAnchorOrPublicOfftake(uas)) {
-                addCapacityToCapacityList(uas, committedAnchorCapacityList, pendingAnchorCapacityList);
-            } else {
-                addCapacityToCapacityList(uas, committedSmallCSCapacityList, pendingSmallCSCapacityList);
-            }
+            addCapacityToCapacityList(uas);
             if (isDemandSubscription(sssWithActiveUASes, uas)) {
-                addCapacityToCapacityList(uas, committedDemandCapacityList, pendingDemandCapacityList);
+                addDemandCapacityToCapacityList(uas);
             }
+        }
+    }
+
+    private void addDemandCapacityToCapacityList(Utility_Account_Subscription__c uas) {
+        if (uas.Opportunity_Stage__c == 'Complete') {
+            uasesByCapacityType.putValue('Committed Demand', uas);
+        } else if (!isCancelledStatus(uas)) {
+            uasesByCapacityType.putValue('Pending Demand', uas);
         }
     }
 
@@ -135,28 +129,54 @@ public without sharing class SystemCapacityRollupCalculator {
      * @param sss Shared_Solar_System__c record in question
      */
     private void registerCapacityChanges(Shared_Solar_System__c sss) {
-        updateSystemField(sss, Shared_Solar_System__c.Pending_Small_CS_Capacity__c, sumCapacity(pendingSmallCSCapacityList));
-        updateSystemField(sss, Shared_Solar_System__c.Capacity_Committed_kW_DC__c, sumCapacity(committedSmallCSCapacityList));
-        updateSystemField(sss, Shared_Solar_System__c.Pending_Anchor_Capacity__c, sumCapacity(pendingAnchorCapacityList));
-        updateSystemField(sss, Shared_Solar_System__c.Anchor_Capacity_Reserved__c, sumCapacity(committedAnchorCapacityList));
-        updateSystemField(sss, Shared_Solar_System__c.Pending_Demand_Capacity__c, sumCapacity(pendingDemandCapacityList));
-        updateSystemField(sss, Shared_Solar_System__c.Committed_Demand_Capacity__c, sumCapacity(committedDemandCapacityList));
+        updateSystemField(sss, Shared_Solar_System__c.Pending_Small_CS_Capacity__c, sumCapacity(uasesByCapacityType.getValues('Pending Perch Small CS')));
+        updateSystemField(sss, Shared_Solar_System__c.Capacity_Committed_kW_DC__c, sumCapacity(uasesByCapacityType.getValues('Committed Perch Small CS')));
+        updateSystemField(sss, Shared_Solar_System__c.Pending_Anchor_Capacity__c, sumCapacity(uasesByCapacityType.getValues('Pending Perch Anchor')));
+        updateSystemField(sss, Shared_Solar_System__c.Anchor_Capacity_Reserved__c, sumCapacity(uasesByCapacityType.getValues('Committed Perch Anchor')));
+
+        updateSystemField(sss, Shared_Solar_System__c.Client_Acq_Pending_Small_CS_Capacity__c, sumCapacity(uasesByCapacityType.getValues('Pending Client Small CS')));
+        updateSystemField(sss, Shared_Solar_System__c.Client_Acq_Committed_Small_CS_Capacity__c, sumCapacity(uasesByCapacityType.getValues('Committed Client Small CS')));
+        updateSystemField(sss, Shared_Solar_System__c.Client_Acq_Pending_Anchor_Capacity__c, sumCapacity(uasesByCapacityType.getValues('Pending Client Anchor')));
+        updateSystemField(sss, Shared_Solar_System__c.Client_Acq_Committed_Anchor_Capacity__c, sumCapacity(uasesByCapacityType.getValues('Committed Client Anchor')));
+
+        updateSystemField(sss, Shared_Solar_System__c.Pending_Demand_Capacity__c, sumCapacity(uasesByCapacityType.getValues('Pending Demand')));
+        updateSystemField(sss, Shared_Solar_System__c.Committed_Demand_Capacity__c, sumCapacity(uasesByCapacityType.getValues('Committed Demand')));
     }
 
     /**
      * @description Determines if a subscription should be in the particular Pending or Committed bucket
      * @param uas Utility_Account_Subscription__c
-     * @param committedCapacityList Committed capacity list in question (e.g. Demand, Small CS, etc.)
-     * @param pendingCapacityList Pending capacity list in question (e.g. Demand, Small CS, etc.)
      */
-    private void addCapacityToCapacityList(
-        Utility_Account_Subscription__c uas, List<Utility_Account_Subscription__c> committedCapacityList,
-        List<Utility_Account_Subscription__c> pendingCapacityList) {
-        if (uas.Opportunity_Stage__c == 'Complete') {
-            committedCapacityList.add(uas);
-        } else if (!isCancelledStatus(uas)) {
-            pendingCapacityList.add(uas);
+    private void addCapacityToCapacityList(Utility_Account_Subscription__c uas) {
+        String capacityKey = getCapacityKey(uas);
+        if (!capacityKey.contains('Cancelled')) {
+            uasesByCapacityType.putValue(capacityKey, uas);
         }
+    }
+
+    private String getCapacityKey(Utility_Account_Subscription__c uas) {
+        String stageType;
+        String responsibleParty;
+        String customerType;
+        if (uas.Opportunity_Stage__c == 'Complete') {
+            stageType = 'Committed';
+        } else if (!isCancelledStatus(uas)) {
+            stageType = 'Pending';
+        } else {
+            stageType = 'Cancelled';
+        }
+        if (uas.Opportunity__r.Partner_Account__r.RecordType.Name == 'Client Account' ||
+            uas.Opportunity__r.Partner_tag_lookup__r.Account__r.RecordType.Name == 'Client Account') {
+            responsibleParty = 'Client';
+        } else {
+            responsibleParty = 'Perch';
+        }
+        if (uas.Customer_Group__c == 'Anchor' || uas.Opportunity__r.Customer_Sub_Group__c == 'Public Offtake') {
+            customerType = 'Anchor';
+        } else {
+            customerType = 'Small CS';
+        }
+        return stageType + ' ' + responsibleParty + ' ' + customerType;
     }
 
     /**
@@ -182,24 +202,17 @@ public without sharing class SystemCapacityRollupCalculator {
 
     /**
      * @description Summarizes capacity based on subscriptions
-     * @param uasList List of subscriptions for a particular Shared_Solar_System__c
+     * @param untypedUASList List of subscriptions for a particular Shared_Solar_System__c
      * @return Decimal (sum) value of Future_Customer_Subscription_KWDC_Rollup__c for all subscriptions in the list
      */
-    private Decimal sumCapacity(List<Utility_Account_Subscription__c> uasList) {
+    private Decimal sumCapacity(List<Object> untypedUASList) {
+        List<Utility_Account_Subscription__c> uasList = new List<Utility_Account_Subscription__c>();
+        CollectionUtil.toTypedList(untypedUASList, uasList);
         Decimal summarizedCapacity = 0;
         for (Utility_Account_Subscription__c uas : uasList) {
             summarizedCapacity += Util.nullToZero(uas.Future_Customer_Subscription_KWDC_Rollup__c);
         }
         return summarizedCapacity;
-    }
-
-    /**
-     * @description Determines if a subscription is for an Anchor or Public Offtake customer
-     * @param uas Utility_Account_Subscription__c
-     * @return Bool if subscription is Anchor/Public Offtake
-     */
-    private Boolean isAnchorOrPublicOfftake(Utility_Account_Subscription__c uas) {
-        return (uas.Customer_Group__c == 'Anchor' || uas.Opportunity__r.Customer_Sub_Group__c == 'Public Offtake');
     }
 
     /**

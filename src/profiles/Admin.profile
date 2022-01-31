@@ -935,6 +935,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>OpportunityCapacityRollupInitializer</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>OpportunityTriggerHandler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1236,6 +1240,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>SystemCapacityRollupCalculator</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SystemCapacityRollupCalculatorTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -23251,6 +23259,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Available_Demand_Capacity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Shared_Solar_System__c.Available_SMB_Underwriting_Method_Docs__c</field>
         <readable>true</readable>
@@ -23663,6 +23676,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Shared_Solar_System__c.Reserved_Anchor_Capacity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Reserved_Demand_Capacity_Pct__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Reserved_Demand_Capacity__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

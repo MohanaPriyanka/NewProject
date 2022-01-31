@@ -234,9 +234,9 @@
     <fields>
         <fullName>Anchor_CS_Capacity_Committed__c</fullName>
         <externalId>false</externalId>
-        <formula>Capacity_Committed_kW_DC__c +  Anchor_Capacity_Reserved__c</formula>
+        <formula>Capacity_Committed_kW_DC__c +  Anchor_Capacity_Reserved__c + Client_Acq_Committed_Anchor_Capacity__c + Client_Acq_Committed_Small_CS_Capacity__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Sum of all subscriptions (Anchor and Small CS)</inlineHelpText>
+        <inlineHelpText>Sum of all Perch and Client acquired subscriptions (Anchor and Small CS)</inlineHelpText>
         <label>Total Committed Capacity</label>
         <precision>18</precision>
         <required>false</required>
@@ -249,8 +249,8 @@
     <fields>
         <fullName>Anchor_Capacity_Reserved__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Sum of all Anchor Subscriptions</inlineHelpText>
-        <label>Committed Anchor Capacity</label>
+        <inlineHelpText>Sum of all Perch acquired Anchor Subscriptions, automatically calculated</inlineHelpText>
+        <label>Perch Acq Committed Anchor Capacity</label>
         <precision>12</precision>
         <required>false</required>
         <scale>2</scale>
@@ -404,8 +404,8 @@
         <externalId>false</externalId>
         <formula>Reserved_Anchor_Capacity__c - Anchor_Capacity_Reserved__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Anchor Capacity not yet committed; Result of Reserved Anchor Capacity - Committed Anchor Capacity</inlineHelpText>
-        <label>Available Anchor Capacity</label>
+        <inlineHelpText>Perch acquired Anchor Capacity not yet committed; Result of Reserved Anchor Capacity - Committed Anchor Capacity</inlineHelpText>
+        <label>Perch Acq Available Anchor Capacity</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
@@ -561,10 +561,10 @@
     <fields>
         <fullName>Capacity_Available_to_be_Reserved__c</fullName>
         <externalId>false</externalId>
-        <formula>Total_CS_Capacity_kW_DC_Formula__c - (Pending_Small_CS_Capacity__c + Capacity_Committed_kW_DC__c)</formula>
+        <formula>Perch_Acq_Reserved_Small_CS_Capacity__c - (Pending_Small_CS_Capacity__c + Capacity_Committed_kW_DC__c)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Small CS Capacity not yet committed or pending; Result of Reserved Small CS Capacity - (Committed and Pending Small CS Capacity)</inlineHelpText>
-        <label>Available Small CS Capacity</label>
+        <inlineHelpText>Perch acquired Small CS Capacity not yet committed or pending; Result of Reserved Small CS Capacity - (Committed and Pending Small CS Capacity)</inlineHelpText>
+        <label>Perch Acq Available Small CS Capacity</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
@@ -576,8 +576,8 @@
     <fields>
         <fullName>Capacity_Committed_kW_DC__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Sum of Complete Small CS Subscriptions</inlineHelpText>
-        <label>Committed Small CS Capacity</label>
+        <inlineHelpText>Sum of Perch acquired Complete Small CS Subscriptions, automatically calculated</inlineHelpText>
+        <label>Perch Acq Committed Small CS Capacity</label>
         <precision>8</precision>
         <required>false</required>
         <scale>2</scale>
@@ -1354,8 +1354,8 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
     <fields>
         <fullName>Pending_Anchor_Capacity__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Sum of New, Pending, or QC in Process Anchor subscriptions</inlineHelpText>
-        <label>Pending Anchor Capacity</label>
+        <inlineHelpText>Sum of New, Pending, or QC in Process Perch acquired Anchor subscriptions</inlineHelpText>
+        <label>Perch Acq Pending Anchor Capacity</label>
         <precision>11</precision>
         <required>false</required>
         <scale>2</scale>
@@ -1383,8 +1383,8 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
     <fields>
         <fullName>Pending_Small_CS_Capacity__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Sum of New, Pending, or QC in Process Small CS subscriptions</inlineHelpText>
-        <label>Pending Small CS Capacity</label>
+        <inlineHelpText>Sum of New, Pending, or QC in Process Perch Acq Small CS subscriptions, automatically calculated</inlineHelpText>
+        <label>Perch Acq Pending Small CS Capacity</label>
         <precision>11</precision>
         <required>false</required>
         <scale>2</scale>
@@ -1568,7 +1568,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
     <fields>
         <fullName>Reserved_Anchor_Capacity_Percent__c</fullName>
         <externalId>false</externalId>
-        <formula>Reserved_Anchor_Capacity__c /  Total_System_Size_kWh_DC__c</formula>
+        <formula>(Client_Acq_Reserved_Anchor_Capacity__c + Reserved_Anchor_Capacity__c )/  Total_System_Size_kWh_DC__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>Reserved Anchor Capacity / Total System Size, used for information only (to compare to contracts that might specify an Anchor %). Change the Reserved Anchor Capacity value or the Total System Size to change this percentage.</inlineHelpText>
         <label>Reserved Anchor Capacity %</label>
@@ -1582,8 +1582,8 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
     <fields>
         <fullName>Reserved_Anchor_Capacity__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Manual input for reserved anchor and public offtake capacity when under Onboarding or Acquisition stage</inlineHelpText>
-        <label>Reserved Anchor Capacity</label>
+        <inlineHelpText>Manual input for Perch acquired reserved anchor and public offtake capacity when under Onboarding or Acquisition stage</inlineHelpText>
+        <label>Perch Acq Reserved Anchor Capacity</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
@@ -1864,10 +1864,14 @@ Total_System_Size_kWh_DC__c
     <fields>
         <fullName>Total_CS_Capacity_kW_DC_Formula__c</fullName>
         <externalId>false</externalId>
-        <formula>Total_System_Size_kWh_DC__c - BLANKVALUE(Reserved_Anchor_Capacity__c, Anchor_Capacity_Reserved__c)</formula>
+        <formula>IF(Perch_Acq_Reserved_Small_CS_Capacity__c &gt; 0, 
+   Perch_Acq_Reserved_Small_CS_Capacity__c,
+   Total_System_Size_kWh_DC__c - BLANKVALUE(Reserved_Anchor_Capacity__c, Anchor_Capacity_Reserved__c))</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Capacity set aside for Small CS subscriptions (Total System Size - Reserved Anchor Capacity). If Reserved Anchor Capacity is blank, we use the Committed Anchor Capacity instead</inlineHelpText>
-        <label>Reserved Small CS Capacity</label>
+        <inlineHelpText>Replaced by Perch Acq Reserved Small CS Capacity.
+
+Capacity set aside for Small CS subscriptions (Total System Size - Reserved Anchor Capacity). If Reserved Anchor Capacity is blank, we use the Committed Anchor Capacity instead</inlineHelpText>
+        <label>XXXReserved Small CS Capacity</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
@@ -1879,9 +1883,9 @@ Total_System_Size_kWh_DC__c
     <fields>
         <fullName>Total_Capacity_Committed_Reserved__c</fullName>
         <externalId>false</externalId>
-        <formula>Capacity_Committed_kW_DC__c +  Pending_Small_CS_Capacity__c</formula>
+        <formula>Capacity_Committed_kW_DC__c +  Pending_Small_CS_Capacity__c + Client_Acq_Committed_Small_CS_Capacity__c + Client_Acq_Reserved_Small_CS_Capacity__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Committed Capacity + Reserved Capacity</inlineHelpText>
+        <inlineHelpText>For Small CS. Perch Committed Capacity + Perch Reserved Capacity + Client Committed + Client Reserved</inlineHelpText>
         <label>Total Capacity Committed/Reserved</label>
         <precision>18</precision>
         <required>false</required>

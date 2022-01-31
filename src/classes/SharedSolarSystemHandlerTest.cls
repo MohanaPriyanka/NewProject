@@ -65,9 +65,8 @@ public with sharing class SharedSolarSystemHandlerTest {
             State__c = 'MA',
             ProductCode = 'CS - BlueWave - 10%',
             IsActive = true,
-            NMC_Discount__c = 10,
-            Annual_kWh_Maximum__c = 100000000,
-            NM_Rate_Floor__c = 0,
+
+
             Days_in_Bill_Period__c = 20,
             Customer_Subscription_Type__c = 'kWh',
             Sizing_Method__c = 'Rate Class Ratio',
@@ -80,10 +79,10 @@ public with sharing class SharedSolarSystemHandlerTest {
             State__c = 'MA',
             ProductCode = 'CS - Bluewave - Public CS - 20%',
             IsActive = true,
-            NMC_Discount__c = 20,
-            Annual_kWh_Maximum__c = 63000,
-            NM_Rate_Floor__c = 0.09,
+
             Days_in_Bill_Period__c = 20);
+
+
         insert new List<Product2>{
             normalCSProduct, publicCSProduct
         };
@@ -100,6 +99,7 @@ public with sharing class SharedSolarSystemHandlerTest {
             Pending_Small_CS_Capacity__c = 10,
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 48,
+            Perch_Acq_Reserved_Small_CS_Capacity__c = 48,
             Total_System_Size_kW_AC__c = 80,
             Utility__c = eversource.Id,
             Credit_Score_Requirement__c = 300,
@@ -120,6 +120,7 @@ public with sharing class SharedSolarSystemHandlerTest {
             Pending_Small_CS_Capacity__c = 10,
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 32,
+            Perch_Acq_Reserved_Small_CS_Capacity__c = 32,
             Total_System_Size_kW_AC__c = 996,
             Utility__c = eversource.Id,
             Credit_Score_Requirement__c = 300,
@@ -139,6 +140,7 @@ public with sharing class SharedSolarSystemHandlerTest {
             Pending_Small_CS_Capacity__c = 10,
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 1445.86,
+            Perch_Acq_Reserved_Small_CS_Capacity__c = 1445.86,
             Total_System_Size_kW_AC__c = 996,
             Utility__c = eversource.Id,
             Credit_Score_Requirement__c = 300,
@@ -677,7 +679,7 @@ public with sharing class SharedSolarSystemHandlerTest {
     @IsTest
     public static void testMultipleUASes() {
         Shared_Solar_System__c originalSSS = [
-            SELECT Id, Capacity_Committed_kW_DC__c, Anchor_Capacity_Reserved__c
+            SELECT Id, Client_Acq_Committed_Small_CS_Capacity__c, Client_Acq_Committed_Anchor_Capacity__c
             FROM Shared_Solar_System__c
             WHERE Name = 'SSS 2'
             LIMIT 1
@@ -685,8 +687,8 @@ public with sharing class SharedSolarSystemHandlerTest {
         // 2 UASes:  6.1538 , 0.2308 = 6.3846
         // 1 Anchor: 23.0769
         // Subscription Orders use the rounded version of the subscription
-        System.assertEquals(6.384, originalSSS.Capacity_Committed_kW_DC__c);
-        System.assertEquals(23.0784, originalSSS.Anchor_Capacity_Reserved__c);
+        System.assertEquals(6.384, originalSSS.Client_Acq_Committed_Small_CS_Capacity__c);
+        System.assertEquals(23.0784, originalSSS.Client_Acq_Committed_Anchor_Capacity__c);
 
         Utility_Account_Subscription__c selectedUAS = [
             SELECT Utility_Account_Log__c,
@@ -713,14 +715,14 @@ public with sharing class SharedSolarSystemHandlerTest {
         new SharedSolarSystemHandler().execute(null);
         Test.stopTest();
         Shared_Solar_System__c sssUpdated = [
-            SELECT Id, Capacity_Committed_kW_DC__c, Anchor_Capacity_Reserved__c
+            SELECT Id, Client_Acq_Committed_Small_CS_Capacity__c, Client_Acq_Committed_Anchor_Capacity__c
             FROM Shared_Solar_System__c
             WHERE Name = 'SSS 2'
             LIMIT 1
         ];
 
-        System.assertEquals(9.4624, sssUpdated.Capacity_Committed_kW_DC__c);
-        System.assertEquals(23.0784, sssUpdated.Anchor_Capacity_Reserved__c);
+        System.assertEquals(9.4624, sssUpdated.Client_Acq_Committed_Small_CS_Capacity__c);
+        System.assertEquals(23.0784, sssUpdated.Client_Acq_Committed_Anchor_Capacity__c);
     }
     
     @IsTest
@@ -732,46 +734,47 @@ public with sharing class SharedSolarSystemHandlerTest {
             FROM Utility_Account_Subscription__c
             WHERE Opportunity__r.Shared_Solar_System__r.Name = 'SSS 2'
             AND Opportunity__r.Customer_Group__c != 'Anchor'
+            AND Opportunity__r.Partner_tag_lookup__r.Account__r.RecordType.Name = 'Client Account'
             ORDER BY Name
         ];
         System.assertEquals(6, uasList.size());
         Integer countComplete = 0;
-        Decimal sumComplete = 0;
+        Decimal sumCommitted = 0;
         Integer countReserved = 0;
-        Decimal sumReserved = 0;
+        Decimal sumPending = 0;
         Integer countOther = 0;
         Decimal sumOther = 0;
 
         for (Utility_Account_Subscription__c uas : uasList) {
             if (uas.Opportunity__r.StageName == 'Complete') {
                 countComplete += 1;
-                sumComplete += uas.Customer_Subscription_KW_DC__c;
+                sumCommitted += uas.Customer_Subscription_KW_DC__c;
             } else if (uas.Opportunity__r.StageName != 'Expired' && uas.Opportunity__r.StageName != 'Cancelled') {
                 countReserved += 1;
-                sumReserved += uas.Customer_Subscription_KW_DC__c;
+                sumPending += uas.Customer_Subscription_KW_DC__c;
             } else {
                 countOther += 1;
                 sumOther += uas.Customer_Subscription_KW_DC__c;
             }
         }
 
-        System.assertEquals(6.3840, sumComplete);
-        System.assertEquals(24.8608, sumReserved);
+        System.assertEquals(6.3840, sumCommitted);
+        System.assertEquals(24.8608, sumPending);
         System.assertEquals(9.5392, sumOther);
-        sumReserved = sumReserved.setScale(6);
+        sumPending = sumPending.setScale(6);
 
         System.assertEquals(4, countComplete + countReserved);
         Test.startTest();
         new SharedSolarSystemHandler().execute(null);
         Test.stopTest();
         Shared_Solar_System__c sssUpdated = [
-            SELECT Id, Capacity_Committed_kW_DC__c, Anchor_Capacity_Reserved__c, Pending_Small_CS_Capacity__c
+            SELECT Id, Client_Acq_Committed_Small_CS_Capacity__c, Client_Acq_Pending_Small_CS_Capacity__c
             FROM Shared_Solar_System__c
             WHERE Name = 'SSS 2'
             LIMIT 1
         ];
-        System.assertEquals(sumComplete, sssUpdated.Capacity_Committed_kW_DC__c);
-        System.assertEquals(sumReserved, sssUpdated.Pending_Small_CS_Capacity__c);
+        System.assertEquals(sumCommitted, sssUpdated.Client_Acq_Committed_Small_CS_Capacity__c);
+        System.assertEquals(sumPending, sssUpdated.Client_Acq_Pending_Small_CS_Capacity__c);
     }
     
     @IsTest
@@ -800,11 +803,12 @@ public with sharing class SharedSolarSystemHandlerTest {
         update sssList[0];
         List<Shared_Solar_System__c> checkSSS = [
             SELECT Name, Capacity_Committed_kW_DC__c, Stage__c, Anchor_Capacity_Reserved__c, Reserved_Anchor_Capacity__c,
+                Client_Acq_Committed_Anchor_Capacity__c, Client_Acq_Pending_Anchor_Capacity__c,
                 Capacity_Available_to_be_Reserved__c, Total_System_Size_kWh_DC__c, Pending_Anchor_Capacity__c, (
                 SELECT Future_Customer_Subscription_KWDC_Rollup__c, Opportunity_Stage__c
                 FROM Utility_Account_Subscriptions__r
-                WHERE Customer_Group__c = 'Anchor'
-                OR Opportunity__r.Customer_Sub_Group__c = 'Public Offtake'
+                WHERE (Customer_Group__c = 'Anchor' OR Opportunity__r.Customer_Sub_Group__c = 'Public Offtake')
+                AND Opportunity__r.Partner_tag_lookup__r.Account__r.RecordType.Name = 'Client Account'
             )
             FROM Shared_Solar_System__c
             ORDER BY Name
@@ -822,9 +826,9 @@ public with sharing class SharedSolarSystemHandlerTest {
             'Expected an anchor UAS for SSS2');
         System.assertEquals(checkSSS[1].Utility_Account_Subscriptions__r[0].Opportunity_Stage__c, 'Complete',
             'Expected a Complete opportunity to be counted toward Anchor_Capacity_Reserved (Committed Anchor Capacity)');
-        System.assertEquals(checkSSS[1].Utility_Account_Subscriptions__r[0].Future_Customer_Subscription_KWDC_Rollup__c, checkSSS[1].Anchor_Capacity_Reserved__c,
-            'Expected Anchor_Capacity_Reserved__c to be set to the UAS rollup');
-        System.assertEquals(0, checkSSS[1].Pending_Anchor_Capacity__c,
+        System.assertEquals(checkSSS[1].Utility_Account_Subscriptions__r[0].Future_Customer_Subscription_KWDC_Rollup__c, checkSSS[1].Client_Acq_Committed_Anchor_Capacity__c,
+            'Expected Client_Acq_Committed_Anchor_Capacity__c to be set to the UAS rollup');
+        System.assertEquals(0, checkSSS[1].Client_Acq_Pending_Anchor_Capacity__c,
             'Expected no capacity in Pending');
 
         checkSSS[0].Open__c = false;
@@ -837,15 +841,15 @@ public with sharing class SharedSolarSystemHandlerTest {
         String responseTwo = SharedSolarSystemHandler.updateStage(checkSSS[1].Id, 'Management');
         System.assertEquals('Success', responseTwo, checkSSS[1]);
         checkSSS = [
-            SELECT Name, Capacity_Committed_kW_DC__c, Stage__c, Anchor_Capacity_Reserved__c
+            SELECT Name, Capacity_Committed_kW_DC__c, Stage__c, Client_Acq_Committed_Anchor_Capacity__c
             FROM Shared_Solar_System__c
             ORDER BY Name
             LIMIT 2
         ];
         System.assertEquals('Management', checkSSS[0].Stage__c);
-        System.assertEquals(0, checkSSS[0].Anchor_Capacity_Reserved__c);
+        System.assertEquals(0, checkSSS[0].Client_Acq_Committed_Anchor_Capacity__c);
         System.assertEquals('Management', checkSSS[1].Stage__c);
-        System.assertEquals(23.0784, checkSSS[1].Anchor_Capacity_Reserved__c);
+        System.assertEquals(23.0784, checkSSS[1].Client_Acq_Committed_Anchor_Capacity__c);
     }
     
     @IsTest

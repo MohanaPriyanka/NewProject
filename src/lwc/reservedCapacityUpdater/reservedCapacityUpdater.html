@@ -1,0 +1,132 @@
+<!--
+ - Created by PeterYao_6fwtfg1 on 1/24/2022.
+ -->
+
+<!-- Reserved Capacity Updater -->
+<template>
+  <div>
+    New SSS Size: {newSSSSize}
+  </div>
+  <div>
+    <table class="slds-table slds-table_cell-buffer slds-table_bordered" aria-label="Example default base table of Opportunities">
+      <thead>
+      <tr class="slds-line-height_reset">
+        <th>
+          <div title="Capacity Type">Reserved Capacity Type</div>
+        </th>
+        <th>
+          <div class="slds-truncate" title="Current Value">Current Value</div>
+        </th>
+        <th>
+          <div class="slds-truncate" title="New Value">New Value</div>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+        <tr class="slds-hint-parent">
+          <th>
+            <div title="Client Acquired Anchor">Client Acquired Anchor</div>
+          </th>
+          <td>
+            <div title="Current">
+              {sssRecord.Client_Acq_Reserved_Anchor_Capacity__c}
+            </div>
+          </td>
+          <td>
+            <div title="New">
+              <lightning-input
+                name="clientAcquiredAnchor"
+                label="ClientAcquiredAnchor"
+                variant="label-hidden"
+                type="Number"
+                step=".01"
+                onchange={genericOnChange}
+                value={clientAcquiredAnchor}
+              ></lightning-input>
+            </div>
+          </td>
+        </tr>
+        <tr class="slds-hint-parent">
+          <th>
+            <div title="Client Acquired Anchor">Client Acquired Small CS</div>
+          </th>
+          <td>
+            <div title="Current">{sssRecord.Client_Acq_Reserved_Small_CS_Capacity__c}</div>
+          </td>
+          <td>
+            <div class="slds-truncate" title="New">
+              <lightning-input
+                name="clientAcquiredSmallCS"
+                label="ClientAcquiredSmallCS"
+                variant="label-hidden"
+                type="Number"
+                step=".01"
+                onchange={genericOnChange}
+                value={clientAcquiredSmallCS}
+              ></lightning-input>
+            </div>
+          </td>
+        </tr>
+        <tr class="slds-hint-parent">
+          <th>
+            <div title="Client Acquired Anchor">Perch Acquired Anchor</div>
+          </th>
+          <td>
+            <div title="Current">{sssRecord.Reserved_Anchor_Capacity__c}</div>
+          </td>
+          <td>
+            <div title="New">
+              <lightning-input
+                name="perchAcquiredAnchor"
+                label="PerchAcquiredAnchor"
+                variant="label-hidden"
+                type="Number"
+                step=".01"
+                onchange={genericOnChange}
+                value={perchAcquiredAnchor}
+              ></lightning-input>
+            </div>
+          </td>
+        </tr>
+        <tr class="slds-hint-parent">
+          <th>
+            <div title="Client Acquired Anchor">Perch Acquired Small CS</div>
+          </th>
+          <td>
+            <div title="Current">{sssRecord.Perch_Acq_Reserved_Small_CS_Capacity__c}</div>
+          </td>
+          <td>
+            <div title="New">
+              <lightning-input
+                name="perchAcquiredSmallCS"
+                label="PerchAcquiredSmallCS"
+                variant="label-hidden"
+                type="Number"
+                step=".01"
+                onchange={genericOnChange}
+                value={perchAcquiredSmallCS}
+              ></lightning-input>
+            </div>
+          </td>
+        </tr>
+        <tr class="slds-hint-parent">
+          <th>Total</th>
+          <td>{currentTotal}</td>
+          <td class={newTotalClass}>{newTotal} (Difference: {newTotalDifferenceFromNewSize})</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3">
+            <br/>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3" class="slds-text-align_right">
+            <lightning-button label="Next" variant="brand" onclick={handleNext} disabled={newReservedSumNotEqualToNewSize}></lightning-button>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</template>

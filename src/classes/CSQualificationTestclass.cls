@@ -41,11 +41,9 @@ public class CSQualificationTestclass {
             Program__c = 'VDER - Community Solar',
             State__c = 'NY',
             IsActive = true,
-            NMC_Discount__c = 10,
-            Annual_kWh_Maximum__c = 100000000,
-            NM_Rate_Floor__c = 0,
-            Days_in_Bill_Period__c = 20
-        );
+
+            Days_in_Bill_Period__c = 20);
+
         insert vderProduct;
 
         Utility__c nyseg = new Utility__c(
@@ -108,6 +106,7 @@ public class CSQualificationTestclass {
             Open__c = true,
             Pending_Small_CS_Capacity__c = 10,
             Total_System_Size_kWh_DC__c = 1445.86,
+            Perch_Acq_Reserved_Small_CS_Capacity__c = 1445.86,
             Total_System_Size_kW_AC__c = 996,
             Utility__c = nyseg.Id,
             Public__c = true,
