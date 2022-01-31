@@ -7,7 +7,7 @@
     "ActionColor" : "rgb(21, 227, 153)",
     "BorderColor" : "rgb(214, 225, 220)",
     "CardBackgroundColor" : "rgba(255, 255, 255, 0)",
-    "CompanyLogo" : "/file-asset/PerchCommunitySolarWhite1?v=1&height=300&width=300",
+    "CompanyLogo" : "/file-asset/PerchCommunitySolarWhite1?v=1&amp;height=300&amp;width=300",
     "DetailTextColor" : "rgb(105, 105, 105)",
     "ErrorFontColor" : "#ff9e9e",
     "HeaderFonts" : "Manrope-Regular",

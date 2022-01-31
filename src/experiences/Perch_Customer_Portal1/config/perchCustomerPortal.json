@@ -5,7 +5,7 @@
   "isProgressiveRenderingEnabled" : false,
   "loginAppPageId" : "f343f4f2-a48d-4766-b75b-fbeab261827e",
   "mainAppPageId" : "41c3239d-0aff-458c-8a72-49e9ba067b44",
-  "preferredDomain" : "none",
+  "preferredDomain" : "portal.perchenergy.com",
   "selfRegistrationRouteId" : "810556a8-00fe-42a2-a0ca-e559eaa453f4",
   "trustedSitesForScript" : [ {
     "id" : "4e1824a2-de9f-44b4-bc74-ee025d5adbc4",
