@@ -46,10 +46,10 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             ProductCode = 'CS - BlueWave - 10%',
             Sizing_Method__c = 'Project Ratio',
             IsActive = true,
-            NMC_Discount__c = 10,
-            Annual_kWh_Maximum__c = 100000000,
-            NM_Rate_Floor__c = 0,
+
             Customer_Subscription_Type__c = 'Electricity Cost ($)');
+
+
         Product2 kwhProduct = new Product2(Name = 'SMART Community Solar',
             Family = 'Community Solar',
             Product_Type__c = 'Community Solar',
@@ -57,11 +57,11 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             Customer_Subscription_Type__c = 'kWh',
             Sizing_Method__c = 'Rate Class Ratio',
             ProductCode = 'CS - BlueWave - 10%',
-            IsActive = True,
-            NMC_Discount__c = 10,
-            Annual_kWh_Maximum__c = 100000000,
-            NM_Rate_Floor__c = 0,
-            Days_In_Bill_Period__c = 30);
+
+            IsActive = true,
+            Days_in_Bill_Period__c = 30);
+
+
         insert new List<Product2>{
             costProduct, kwhProduct
         };
@@ -72,6 +72,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             Pending_Small_CS_Capacity__c = 0,
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 1445.86,
+            Perch_Acq_Reserved_Small_CS_Capacity__c = 1445.86,
             Total_System_Size_kW_AC__c = 996,
             System_Utility__c = 'Eversource',
             Credit_Score_Requirement__c = 700,
@@ -90,6 +91,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             Pending_Small_CS_Capacity__c = 0,
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 1445.86,
+            Perch_Acq_Reserved_Small_CS_Capacity__c = 1445.86,
             Total_System_Size_kW_AC__c = 996,
             System_Utility__c = 'Eversource',
             Credit_Score_Requirement__c = 700,
@@ -110,6 +112,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             Pending_Small_CS_Capacity__c = 10,
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 5832,
+            Perch_Acq_Reserved_Small_CS_Capacity__c = 5832,
             Total_System_Size_kW_AC__c = 996,
             Utility_NMC_Tariff__c = kwhSizingMethodR1.Id,
             Product__c = kwhProduct.Id,
@@ -128,6 +131,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             Pending_Small_CS_Capacity__c = 10,
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 5832,
+            Perch_Acq_Reserved_Small_CS_Capacity__c = 5832,
             Total_System_Size_kW_AC__c = 996,
             Utility_NMC_Tariff__c = kwhSizingMethodR1.Id,
             Product__c = kwhProduct.Id,

@@ -137,9 +137,7 @@ public with sharing class ZuoraAccountServiceTest {
                                                   ProductCode = 'CS - BlueWave - 10%',
                                                   IsActive = true,
 
-                                                  NMC_Discount__c = 10,
-                                                  Annual_kWh_Maximum__c = 100000000,
-                                                  NM_Rate_Floor__c = 0,
+
                                                   Days_in_Bill_Period__c = 30);
 
         Product2 smartProduct = new Product2(  Name = 'SMART Community Solar',
@@ -150,20 +148,21 @@ public with sharing class ZuoraAccountServiceTest {
                                                   ProductCode = 'CS - Bluewave - Public CS - 20%',
                                                   IsActive = true,
 
-                                                  NMC_Discount__c = 20,
-                                                  Annual_kWh_Maximum__c = 63000,
-                                                  NM_Rate_Floor__c = 0.09,
-                                                  Days_in_Bill_Period__c = 30   );
+                                                  Days_in_Bill_Period__c = 30);
+
+
         insert new List<Product2>{srecProduct, smartProduct};
 
 
-        Shared_Solar_System__c sss1 = new Shared_Solar_System__c(   Name = 'Oxford Barrett St. P1',
+        Shared_Solar_System__c sss1 = new Shared_Solar_System__c(
+            Name = 'Oxford Barrett St. P1',
                                                                     Service_Territory__c = 'SEMA',
                                                                     Service_Territories__c = 'SEMA',
                                                                     Open__c = true,
                                                                     Pending_Small_CS_Capacity__c = 10,
                                                                     Capacity_Committed_kW_DC__c = 0,
                                                                     Total_System_Size_kWh_DC__c = 1445.86,
+            Perch_Acq_Reserved_Small_CS_Capacity__c = 1445.86,
                                                                     Total_System_Size_kW_AC__c  = 996,
                                                                     Utility__c = eversource.Id,
                                                                     Credit_Score_Requirement__c = 300,
@@ -172,7 +171,8 @@ public with sharing class ZuoraAccountServiceTest {
                                                                     Assemblage_Count__c = 1,
                                                                     Product__c = smartProduct.Id,
                                                                     Maximum_Subscription_Capacity_kWDC__c = 25,
-                                                                    Available_SMB_Underwriting_Method_FICO__c = true);
+            Available_SMB_Underwriting_Method_FICO__c = true
+        );
         insert sss1;
 
         insert SharedSolarSystemsTest.getPartnerEligibilities(

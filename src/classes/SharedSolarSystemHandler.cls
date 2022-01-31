@@ -64,6 +64,7 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
         } catch (Exception e) {
             Logger.logNow('SharedSolarSystemHandler', 'execute', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
         }
+        Logger.logLater('SharedSolarSystemHandler', 'Limit Check', 'Check limits', Logger.FINE);
     }
 
     @AuraEnabled

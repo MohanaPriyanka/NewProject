@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>53.0</apiVersion>
+    <description>Reserved Capacity Updater</description>
+    <isExposed>true</isExposed>
+    <masterLabel>Reserved Capacity Updater</masterLabel>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="sssRecord" type="@salesforce/schema/Shared_Solar_System__c" label="Current SSS Object"
+                      description="Current SSS with existing capacity fields and anchor/small client requirements"/>
+            <property name="newSSSSize" type="String" label="New SSS Size"
+                      description="New total size for the system"/>
+            <property name="capacityReservationOrders" type="@salesforce/schema/Capacity_Reservation_Order__c[]"
+                      label= "Capacity Reservation Order list" description="Capacity Reservation Orders to make these updates"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

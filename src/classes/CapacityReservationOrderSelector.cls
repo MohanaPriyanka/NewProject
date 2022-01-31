@@ -1,5 +1,5 @@
 /**
- * Created by PeterYao_6fwtfg1 on 1/25/2022.
+ * Tested by: SubscriptionManagementServiceTest
  */
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class CapacityReservationOrderSelector {

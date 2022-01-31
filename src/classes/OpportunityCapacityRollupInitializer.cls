@@ -32,6 +32,10 @@ public without sharing class OpportunityCapacityRollupInitializer implements Sys
                 newOpp.Customer_Sub_Group__c != oldOpp.Customer_Sub_Group__c) {
                 systems.add(newOpp.Shared_Solar_System__c);
             }
+            if (newOpp.Partner_tag_lookup__c != oldOpp.Partner_tag_lookup__c ||
+                newOpp.Partner_Account__c != oldOpp.Partner_Account__c) {
+                systems.add(newOpp.Shared_Solar_System__c);
+            }
         }
         return systems;
     }

@@ -68,7 +68,10 @@ public class LeadServiceTestclass {
             Sizing_Method__c = 'Project Ratio',
             State__c = 'NY',
             IsActive = true,
-            NMC_Discount__c = 10,
+
+
+
+
             Customer_Subscription_Type__c = 'kWh');
         insert csProduct;
 
@@ -81,8 +84,10 @@ public class LeadServiceTestclass {
             State__c = 'MA',
             ProductCode = 'CS - BlueWave - 10%',
             IsActive = true,
-            NMC_Discount__c = 10,
-            Annual_kWh_Maximum__c = 100000000,
+
+
+
+
             Customer_Subscription_Type__c = 'Electricity Cost ($)',
             NM_Rate_Floor__c = 0);
         insert csProduct2;
@@ -94,6 +99,7 @@ public class LeadServiceTestclass {
             Pending_Small_CS_Capacity__c = 0,
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 1445.86,
+            Perch_Acq_Reserved_Small_CS_Capacity__c = 1445.86,
             Total_System_Size_kW_AC__c = 996,
             Utility__c = nyseg.Id,
             Utility_NMC_Tariff__c = kwhRate.Id,
@@ -114,6 +120,7 @@ public class LeadServiceTestclass {
             Pending_Small_CS_Capacity__c = 0,
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 1445.86,
+            Perch_Acq_Reserved_Small_CS_Capacity__c = 1445.86,
             Total_System_Size_kW_AC__c = 996,
             Utility__c = nationalGrid.Id,
             Credit_Score_Requirement__c = 200,
@@ -485,10 +492,10 @@ public class LeadServiceTestclass {
             Sizing_Method__c = 'Project Ratio',
             State__c = 'NY',
             IsActive = true,
-            NMC_Discount__c = 10,
+
+
             Customer_Subscription_Type__c = 'kWh',
-            Parent_Product__c = leadGenericProduct.Id
-        );
+            Parent_Product__c = leadGenericProduct.Id);
         insert projectSpecificProduct;
 
         Account a = new Account(

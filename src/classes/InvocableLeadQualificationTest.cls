@@ -58,6 +58,7 @@ public with sharing class InvocableLeadQualificationTest {
             Anchor_Capacity_Reserved__c = 10,
             Reserved_Anchor_Capacity__c = 10,
             Total_System_Size_kWh_DC__c = 500,
+            Perch_Acq_Reserved_Small_CS_Capacity__c = 500,
             Available_SMB_Underwriting_Method_Docs__c = true,
             Available_SMB_Underwriting_Method_FICO__c = true
         );
