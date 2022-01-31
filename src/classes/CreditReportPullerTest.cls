@@ -1,5 +1,5 @@
 @IsTest
-private with sharing class CreditReportPullerTest {
+public with sharing class CreditReportPullerTest {
     @IsTest
     private static void systemTest() {
         CreditReportPuller.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new MockedFeatureSelector());
