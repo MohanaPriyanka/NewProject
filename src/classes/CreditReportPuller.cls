@@ -19,6 +19,7 @@ public without sharing class CreditReportPuller {
      * @param oldLeadMap Trigger.oldMap
      */
     public void handleSoftPullCreditCheckedBeforeUpdate(List<Lead> newLeads, Map<Id, Lead> oldLeadMap) {
+        leadsWithSoftPullCreditReportChecked.clear();
         for (Lead newLead : newLeads) {
             if (oldLeadMap.get(newLead.Id).Soft_Pull_Credit_Report__c == false &&
                 newLead.Soft_Pull_Credit_Report__c == true) {

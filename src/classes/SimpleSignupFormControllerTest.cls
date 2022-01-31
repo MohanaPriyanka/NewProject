@@ -401,6 +401,19 @@ public with sharing class SimpleSignupFormControllerTest {
 
     @IsTest
     private static void testUpdateLeadAndRunCreditCheck() {
+        // We need to create the user in LASERCA's protected custom setting
+        LASERCA.MappingUtil.createCreditAPILogin(
+            'CREDITAPI',
+            'experian',
+            true,
+            'bluewavesoft',
+            true,
+            true,
+            true,
+            true,
+            false,
+            false
+        );
         // Construct data
         Lead lead = [SELECT Id FROM Lead LIMIT 1];
         lead.LASERCA__Birthdate__c = Date.valueOf('1993-12-03');
