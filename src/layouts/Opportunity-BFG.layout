@@ -41,17 +41,6 @@
                 <behavior>Edit</behavior>
                 <field>Comments__c</field>
             </layoutItems>
-            <layoutItems>
-                <emptySpace>true</emptySpace>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>BCS_Commission_Paid__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>BCS_Commission_Paid_P2__c</field>
-            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -59,12 +48,16 @@
                 <field>System_Size__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Community_Solar_State__c</field>
+                <behavior>Readonly</behavior>
+                <field>Total_Mgmt_Qty_kW__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Total_Acq_Qty_kW__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>UtilityMapper__c</field>
+                <field>Community_Solar_State__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
@@ -79,15 +72,12 @@
                 <field>Probability</field>
             </layoutItems>
             <layoutItems>
+                <behavior>Required</behavior>
+                <field>ForecastCategoryName</field>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>RecordTypeId</field>
-            </layoutItems>
-            <layoutItems>
-                <emptySpace>true</emptySpace>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Anticipated_First_Billing_Date__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
@@ -215,10 +205,7 @@
         <relatedList>RelatedContentNoteList</relatedList>
     </relatedLists>
     <relatedLists>
-        <fields>Product2</fields>
-        <fields>ServiceDate</fields>
-        <fields>Utility__c</fields>
-        <relatedList>RelatedLineItemList</relatedList>
+        <relatedList>RelatedFileList</relatedList>
     </relatedLists>
     <relatedLists>
         <fields>TASK.SUBJECT</fields>
@@ -260,14 +247,22 @@
         <relatedList>Shared_Solar_System__c.Client_Opportunity__c</relatedList>
     </relatedLists>
     <relatedLists>
-        <relatedList>RelatedNoteList</relatedList>
-    </relatedLists>
-    <relatedLists>
         <fields>CONTRACT.CONTRACT_NUMBER</fields>
         <fields>CONTRACT.NAME</fields>
         <fields>SALES.ACCOUNT.NAME</fields>
         <fields>CONTRACT.STATUS</fields>
         <relatedList>Contract.Opportunity__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>Product2</fields>
+        <fields>Quantity</fields>
+        <fields>UOM_Based_Price__c</fields>
+        <fields>TotalPrice</fields>
+        <fields>ServiceDate</fields>
+        <fields>Description</fields>
+        <fields>Program__c</fields>
+        <fields>Utility__c</fields>
+        <relatedList>RelatedLineItemList</relatedList>
     </relatedLists>
     <relatedObjects>AccountId</relatedObjects>
     <showEmailCheckbox>false</showEmailCheckbox>
