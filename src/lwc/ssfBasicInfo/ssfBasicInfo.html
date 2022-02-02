@@ -495,6 +495,17 @@
         <!-- OTHER INFO -->
         <h6>Other Info<span class="blue-text">&nbsp;&gt;</span></h6>
         <div class="form-section">
+            <p class="input-group slds-var-m-around_small">
+                <lightning-input
+                  class="slds-var-p-left_medium"
+                  type="checkbox"
+                  label="Replacement Capacity"
+                  variant="label-stacked"
+                  name="replacementCapacity"
+                  checked={restLead.replacementCapacity}
+                  onchange={replacementCapacityOnChange}>
+                </lightning-input>
+            </p>
             <p class="slds-var-m-around_small">
                 <lightning-input
                   name="referralName"

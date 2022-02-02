@@ -3981,6 +3981,15 @@ IF(AND(Risk_Level_Business_Type__c = &quot;Not Risky&quot;, VALUE(Number_of_Year
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Replacement_Capacity__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Replacement Capacity</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Retired__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>

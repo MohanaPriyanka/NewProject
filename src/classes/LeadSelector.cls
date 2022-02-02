@@ -39,6 +39,7 @@ public without sharing class LeadSelector {
         'Product_Line__c',
         'Referral_Name__c',
         'Referral_Email__c',
+        'Replacement_Capacity__c',
         'Status',
         'State',
         'Street',
@@ -159,6 +160,7 @@ public without sharing class LeadSelector {
                 Product__r.Disclosure_Form_Conga_Template__c,
                 Referral_Email__c,
                 Referral_Name__c,
+                Replacement_Capacity__c,
                 Sales_Person__c,
                 Selected_SSS_For_Conversion__c,
                 State,
@@ -317,7 +319,8 @@ public without sharing class LeadSelector {
                     Lead__r.Product__r.Customer_Subscription_Type__c, Name_on_Account__c, QC_Status__c,
                     Subsc_Annual_Cost_of_Electricity_Rollup__c, Subscribed_Annual_kWhs_Rollup__c,
                     Utility_NMC_Tariff__c, Utility_Rate_Class__c,
-                    Utility_Rate_Class__r.Utility_NMC_Tariff__r.Size_Ratio__c
+                    Utility_Rate_Class__r.Utility_NMC_Tariff__r.Size_Ratio__c,
+                    Utility_Rate_Class__r.Utility_NMC_Tariff__r.Value_of_Net_Metering_Credit__c
                 FROM Utility_Account_Logs__r
                 WHERE QC_Status__c != 'Unqualified'
                 ORDER BY Annual_Cost_of_Electricity__c, Annual_kWh__c DESC
