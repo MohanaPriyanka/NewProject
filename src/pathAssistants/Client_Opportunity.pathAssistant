@@ -13,11 +13,11 @@
         <picklistValueName>Complete</picklistValueName>
     </pathAssistantSteps>
     <pathAssistantSteps>
-        <info>&lt;ul&gt;&lt;li&gt;Keep BCS Deal Team in the loop on contracting status. &lt;/li&gt;&lt;li&gt;Comment on Client&amp;#39;s redlines and present comments to legal for appropriate updates.  &lt;/li&gt;&lt;li&gt;Prepare SSSs as deal moves closer to finish line. &lt;/li&gt;&lt;/ul&gt;</info>
+        <info>&lt;ul&gt;&lt;li&gt;Keep Perch Deal Team in the loop on contracting status. &lt;/li&gt;&lt;li&gt;Comment on Client&amp;#39;s redlines and present comments to legal for appropriate updates.  &lt;/li&gt;&lt;li&gt;Prepare SSSs as deal moves closer to finish line. &lt;/li&gt;&lt;/ul&gt;</info>
         <picklistValueName>Contract Pending</picklistValueName>
     </pathAssistantSteps>
     <pathAssistantSteps>
-        <info>&lt;ul&gt;&lt;li&gt;Keep BCS Deal Team in the loop on questions. &lt;/li&gt;&lt;li&gt;Prepare and send state specific customer acquisition and management agreements with pricing agreed upon at the time.  &lt;/li&gt;&lt;li&gt;Respond promptly to follow up communications. &lt;/li&gt;&lt;li&gt;Set up a face to face meeting, consider visiting their office. &lt;/li&gt;&lt;/ul&gt;</info>
+        <info>&lt;ul&gt;&lt;li&gt;Keep Perch Deal Team in the loop on questions. &lt;/li&gt;&lt;li&gt;Prepare and send state specific customer acquisition and management agreements with pricing agreed upon at the time.  &lt;/li&gt;&lt;li&gt;Respond promptly to follow up communications. &lt;/li&gt;&lt;li&gt;Set up a face to face meeting, consider visiting their office. &lt;/li&gt;&lt;/ul&gt;</info>
         <picklistValueName>Engaged in Proposal Details</picklistValueName>
     </pathAssistantSteps>
     <pathAssistantSteps>
@@ -25,7 +25,7 @@
         <picklistValueName>NDA Executed</picklistValueName>
     </pathAssistantSteps>
     <pathAssistantSteps>
-        <info>&lt;ul&gt;&lt;li&gt;Present BlueWave&amp;#39;s background if client is unfamiliar with BlueWave. &lt;/li&gt;&lt;li&gt;Gather background information such as point of contact, company history, development experience, how many assets to they own and in which markets.  &lt;/li&gt;&lt;li&gt;Do they develop, buy projects or both?&lt;/li&gt;&lt;li&gt;Are they new to community solar? &lt;/li&gt;&lt;li&gt;What is their appetite for CS and what is their prospective pipeline?  &lt;/li&gt;&lt;li&gt;Look at upcoming industry events and find a place to meet face to face.&lt;/li&gt;&lt;/ul&gt;</info>
+        <info>&lt;ul&gt;&lt;li&gt;Present Perch&amp;#39;s background if client is unfamiliar with Perch. &lt;/li&gt;&lt;li&gt;Gather background information such as point of contact, company history, development experience, how many assets to they own and in which markets.  &lt;/li&gt;&lt;li&gt;Do they develop, buy projects or both?&lt;/li&gt;&lt;li&gt;Are they new to community solar? &lt;/li&gt;&lt;li&gt;What is their appetite for CS and what is their prospective pipeline?  &lt;/li&gt;&lt;li&gt;Look at upcoming industry events and find a place to meet face to face.&lt;/li&gt;&lt;/ul&gt;</info>
         <picklistValueName>New</picklistValueName>
     </pathAssistantSteps>
     <pathAssistantSteps>

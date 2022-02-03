@@ -11,4 +11,19 @@
         <default>false</default>
         <label>kWh</label>
     </standardValue>
+    <standardValue>
+        <fullName>kW</fullName>
+        <default>false</default>
+        <label>kW</label>
+    </standardValue>
+    <standardValue>
+        <fullName>MW</fullName>
+        <default>false</default>
+        <label>MW</label>
+    </standardValue>
+    <standardValue>
+        <fullName>W</fullName>
+        <default>false</default>
+        <label>W</label>
+    </standardValue>
 </StandardValueSet>

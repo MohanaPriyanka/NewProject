@@ -210,15 +210,6 @@
         <won>false</won>
     </standardValue>
     <standardValue>
-        <fullName>Board Approval</fullName>
-        <default>false</default>
-        <label>Board Approval</label>
-        <closed>false</closed>
-        <forecastCategory>Pipeline</forecastCategory>
-        <probability>95</probability>
-        <won>false</won>
-    </standardValue>
-    <standardValue>
         <fullName>PPA/NMCPA Signed</fullName>
         <default>false</default>
         <label>PPA/NMCPA Signed</label>

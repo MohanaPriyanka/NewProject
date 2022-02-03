@@ -343,9 +343,10 @@
         <fullName>BW_Community_Solar_BCS</fullName>
         <fields>Name</fields>
         <fields>AccountId</fields>
-        <fields>UtilityMapper__c</fields>
-        <fields>Community_Solar_State__c</fields>
         <fields>NextStep</fields>
+        <fields>Type</fields>
+        <fields>Amount</fields>
+        <fields>Total_System_Size__c</fields>
         <label>BW Community Solar (BCS)</label>
     </compactLayouts>
     <compactLayouts>
@@ -4496,6 +4497,40 @@ IF(INCLUDES(Customer_Type__c, &quot;Private Affordable&quot;),&quot;Error&quot;,
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
+    </fields>
+    <fields>
+        <fullName>Total_Acq_Qty_kW__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Rollup of Opportunity Product quantities where Product Family = Acquisition</inlineHelpText>
+        <label>Total Acq Qty (kW)</label>
+        <summarizedField>OpportunityLineItem.Quantity</summarizedField>
+        <summaryFilterItems>
+            <field>OpportunityLineItem.Product_Family__c</field>
+            <operation>equals</operation>
+            <value>Acquisition</value>
+        </summaryFilterItems>
+        <summaryForeignKey>OpportunityLineItem.OpportunityId</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Total_Mgmt_Qty_kW__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Rollup of Opportunity Product quantities where Product Family = Management</inlineHelpText>
+        <label>Total Mgmt Qty (kW)</label>
+        <summarizedField>OpportunityLineItem.Quantity</summarizedField>
+        <summaryFilterItems>
+            <field>OpportunityLineItem.Product_Family__c</field>
+            <operation>equals</operation>
+            <value>Management</value>
+        </summaryFilterItems>
+        <summaryForeignKey>OpportunityLineItem.OpportunityId</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
     </fields>
     <fields>
         <fullName>Total_Subscribed_kW_DC__c</fullName>
