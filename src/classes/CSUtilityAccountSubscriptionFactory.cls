@@ -1,8 +1,12 @@
 /**
- * @description: Created by mstackhouse on 12/17/2018.
+ * @description : Created by mstackhouse on 12/17/2018.
  * Tested by: CSUtilityAccountSubscriptionFactoryTest
+ * Helper Class: CSUASFactoryHelper
  */
 public with sharing class CSUtilityAccountSubscriptionFactory {
+
+    private static final String CAPACITY = 'kWh';
+    private static final String COST = 'Electricity Cost ($)';
 
     @TestVisible
     private static Map<Id, SSSSubscription> sssSubscriptionMap = new Map<Id, SSSSubscription>();
@@ -15,103 +19,120 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
     public class SSSSubscription {
         public Shared_Solar_System__c sss;
         public String sizingMethod;
-        public Decimal maximumkWh;
+        public String customerSubscriptionType;
+        public Decimal maximumKWH;
         public Decimal maximumCost;
         public SSSSubscription(Shared_Solar_System__c sss) {
             this.sss = sss;
             this.sizingMethod = sss.Product__r.Sizing_Method__c;
-            this.maximumkWh = SharedSolarSystems.calculateMaximumkWh(sss);
+            this.customerSubscriptionType = sss.Product__r.Customer_Subscription_Type__c;
+            this.maximumKWH = SharedSolarSystems.calculateMaximumkWh(sss);
             this.maximumCost = sss.Maximum_Subscription_Cost__c;
         }
     }
 
     public static void generateSubscriptions(List<Utility_Account_Log__c> uals, List<Shared_Solar_System__c> sharedSolarSystems,
-        List<Opportunity> opportunities, fflib_SObjectUnitOfWork uow)
-    {
+        List<Opportunity> opportunities, fflib_SObjectUnitOfWork uow) {
         for (Shared_Solar_System__c sss : sharedSolarSystems) {
             sssSubscriptionMap.put(sss.Id, new SSSSubscription(sss));
         }
 
         for (Utility_Account_Log__c ual : uals) {
-            if (ual.Lead__r.Product__r.Customer_Subscription_Type__c == 'kWh') {
-                createUASbyCapacity(ual, opportunities, uow);
-            } else if (ual.Lead__r.Product__r.Customer_Subscription_Type__c == 'Electricity Cost ($)') {
-                createUASbyCost(ual, opportunities, uow);
+            try {
+                createUAS(ual, opportunities, uow);
+            } catch (Exception e) {
+                Logger.logNow('CSUtilityAccountSubscriptionFactory', 'generateSubscriptions', JSON.serialize(ual) + '\n' + e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
+                throw new Util.BWException();
             }
         }
     }
 
-    public static void createUASbyCapacity(Utility_Account_Log__c ual, List<Opportunity> opportunities, fflib_SObjectUnitOfWork uow) {
-        Integer uasNumberCounter = 1;
-        Decimal remainingUALCapacityToAllocate;
-        remainingUALCapacityToAllocate = ual.Annual_kWh__c;
-
-        for (Opportunity opp : opportunities) {
-            if (sssSubscriptionMap.containsKey((opp.Shared_Solar_System__c))) {
-                SSSSubscription sssSubscription = sssSubscriptionMap.get(opp.Shared_Solar_System__c);
-                Decimal sizeRatio = 1.0;
-
-                Decimal sssRemainingSubscriptionCapacity = sssSubscription.maximumkWh;
-                if (sssSubscription.sizingMethod == 'Rate Class Ratio' && ual.Utility_Rate_Class__r.Utility_NMC_Tariff__c != null) {
-                    sizeRatio = ual.Utility_Rate_Class__r.Utility_NMC_Tariff__r.Size_Ratio__c;
-                    sssRemainingSubscriptionCapacity = (sssRemainingSubscriptionCapacity / sizeRatio).setScale(2, RoundingMode.HALF_DOWN);
-                }
-                Decimal annualElectricityCapacityAssigned = Math.min(remainingUALCapacityToAllocate, sssRemainingSubscriptionCapacity);
-                if (annualElectricityCapacityAssigned > 0) {
-                    //Deduct the assigned value from the sss remaining subscription cost and then put it back into the map
-                    sssRemainingSubscriptionCapacity -= annualElectricityCapacityAssigned;
-                    if (sssSubscription.sizingMethod == 'Rate Class Ratio') {
-                        sssSubscription.maximumkWh = sssRemainingSubscriptionCapacity * sizeRatio;
-                    }
-                    sssSubscription.maximumkWh = sssRemainingSubscriptionCapacity;
-                    remainingUALCapacityToAllocate -= annualElectricityCapacityAssigned;
-                    Utility_Account_Subscription__c uas = new Utility_Account_Subscription__c(
-                        Name = ual.Name,
-                        Name_on_Account__c = ual.Name_on_Account__c,
-                        Opportunity__c = opp.Id,
-                        Utility_Account_Log__c = ual.Id,
-                        UAS_Number__c = uasNumberCounter
-                    );
-                    uow.registerNew(uas, Utility_Account_Subscription__c.Opportunity__c, opp);
-                    populateSizingMethod(ual, uas, sssSubscription);
-                    uasNumberCounter++;
-                    createSOByCapacity(uas, annualElectricityCapacityAssigned, uow);
-                }
+    @TestVisible
+    private static void createUAS(Utility_Account_Log__c ual, List<Opportunity> opportunities, fflib_SObjectUnitOfWork uow) {
+        CSUASFactoryHelper.UtilityAccountLogWrapper ualInfo = new CSUASFactoryHelper.UtilityAccountLogWrapper(ual);
+        for (Opportunity opportunity : opportunities) {
+            // Break loop if nothing left on UAL to allocate
+            if (ualInfo.remainingCapacity <= 0 && ualInfo.remainingCost <= 0) {
+                break;
             }
+            createUASFromOpportunity(ualInfo, opportunity, uow);
         }
     }
 
-    public static void createUASbyCost(Utility_Account_Log__c ual, List<Opportunity> opportunities, fflib_SObjectUnitOfWork uow) {
-        Integer uasNumberCounter = 1;
-        Decimal remainingUALCostToAllocate = ual.Annual_Cost_of_Electricity__c;
-
-        for (Opportunity opp : opportunities) {
-            if (sssSubscriptionMap.containsKey(opp.Shared_Solar_System__c)) {
-                SSSSubscription sssSubscription = sssSubscriptionMap.get(opp.Shared_Solar_System__c);
-                Decimal sssRemainingSubscriptionCost = sssSubscription.maximumCost;
-                Decimal annualElectricityCostAssigned = Math.min(remainingUALCostToAllocate, sssRemainingSubscriptionCost);
-                if (annualElectricityCostAssigned > 0) {
-                    //Deduct the assigned value from the sss remaining subscription cost and then put it back into the map
-                    sssRemainingSubscriptionCost -= annualElectricityCostAssigned;
-                    sssSubscription.maximumCost = sssRemainingSubscriptionCost;
-                    remainingUALCostToAllocate = remainingUALCostToAllocate - annualElectricityCostAssigned;
-                    Utility_Account_Subscription__c uas = new Utility_Account_Subscription__c(
-                        Name = ual.Name,
-                        Name_on_Account__c = ual.Name_on_Account__c,
-                        Opportunity__c = opp.Id,
-                        Annual_Cost_of_Electricity__c = ual.Annual_Cost_of_Electricity__c,
-                        Utility_Account_Log__c = ual.Id,
-                        UAS_Number__c = uasNumberCounter,
-                        calculated_annual_cost_of_electricity__c = annualElectricityCostAssigned
-                    );
-                    uow.registerNew(uas, Utility_Account_Subscription__c.Opportunity__c, opp);
-                    populateSizingMethod(ual, uas, sssSubscription);
-                    uasNumberCounter++;
-                    createSOByCost(uas, annualElectricityCostAssigned, uow);
-                }
-            }
+    private static void createUASFromOpportunity(CSUASFactoryHelper.UtilityAccountLogWrapper ualInfo, Opportunity opportunity, fflib_SObjectUnitOfWork uow) {
+        SSSSubscription sssSubscription = sssSubscriptionMap.get(opportunity.Shared_Solar_System__c);
+        if (sssSubscription == null) {
+            return;
+        }
+        // Use the lead's customer subscription type if it exists, otherwise use the opportunity/sss's (as in the case of a lead signed up to an MA Hybrid product)
+        String subscriptionType = ualInfo.subscriptionType == CAPACITY || ualInfo.subscriptionType == COST ? ualInfo.subscriptionType : sssSubscription.customerSubscriptionType;
+        if (subscriptionType == CAPACITY) {
+            createUASByCapacity(ualInfo, sssSubscription, opportunity, uow);
+        }
+        if (subscriptionType == COST) {
+            createUASbyCost(ualInfo, sssSubscription, opportunity, uow);
         }
     }
+
+    private static void createUASByCapacity(CSUASFactoryHelper.UtilityAccountLogWrapper ualInfo, SSSSubscription sssSubscription, Opportunity opportunity, fflib_SObjectUnitOfWork uow) {
+        Decimal sizeRatio = sssSubscription.sizingMethod == 'Rate Class Ratio' && ualInfo.sizingMethod.Size_Ratio__c != null ? ualInfo.sizingMethod.Size_Ratio__c : 1.0;
+        Decimal sssRemainingSubscriptionCapacity = (sssSubscription.maximumKWH / sizeRatio).setScale(2, RoundingMode.HALF_DOWN);
+        CSUASFactoryHelper.SubscriptionAllocation subscriptionAllocation = CSUASFactoryHelper.calculateAllocations(sssRemainingSubscriptionCapacity, ualInfo.remainingCapacity);
+        if (subscriptionAllocation == null) {
+            return;
+        }
+        // update the totals using our calculations
+        sssSubscription.maximumKWH = subscriptionAllocation.sssRemainingSubscriptionAmount * sizeRatio;
+        ualInfo.remainingCapacity = subscriptionAllocation.ualRemainingAllocation;
+        // keep the ual totals even by subtracting the same percentage from the ual remaining cost allocation
+        ualInfo.remainingCost -= (ualInfo.remainingCost * subscriptionAllocation.allocationPercentage);
+        Utility_Account_Subscription__c uas = createUASObject(ualInfo, opportunity.Id);
+        uow.registerNew(uas, Utility_Account_Subscription__c.Opportunity__c, opportunity);
+        populateSizingMethod(ualInfo, uas, sssSubscription);
+        ualInfo.uasNumberCount++;
+        createSOByCapacity(uas, subscriptionAllocation.annualAmountAssigned, uow);
+    }
+
+    private static void createUASbyCost(CSUASFactoryHelper.UtilityAccountLogWrapper ualInfo, SSSSubscription sssSubscription, Opportunity opportunity, fflib_SObjectUnitOfWork uow) {
+        CSUASFactoryHelper.SubscriptionAllocation subscriptionAllocation = CSUASFactoryHelper.calculateAllocations(sssSubscription.maximumCost, ualInfo.remainingCost);
+        if (subscriptionAllocation == null) {
+            return;
+        }
+        // update the totals using our calculations
+        sssSubscription.maximumCost = subscriptionAllocation.sssRemainingSubscriptionAmount;
+        ualInfo.remainingCost = subscriptionAllocation.ualRemainingAllocation;
+        // keep the ual totals even by subtracting the same percentage from the ual remaining capacity allocation
+        ualInfo.remainingCapacity -= (ualInfo.remainingCapacity * subscriptionAllocation.allocationPercentage);
+        Utility_Account_Subscription__c uas = createUASObject(ualInfo, opportunity.Id);
+        uas.calculated_annual_cost_of_electricity__c = subscriptionAllocation.annualAmountAssigned;
+        uas.Annual_Cost_of_Electricity__c = ualInfo.annualCostOfElectricity;
+        uow.registerNew(uas, Utility_Account_Subscription__c.Opportunity__c, opportunity);
+        populateSizingMethod(ualInfo, uas, sssSubscription);
+        ualInfo.uasNumberCount++;
+        createSOByCost(uas, subscriptionAllocation.annualAmountAssigned, uow);
+    }
+
+    private static Utility_Account_Subscription__c createUASObject(CSUASFactoryHelper.UtilityAccountLogWrapper ualInfo, Id opportunityId) {
+
+        Utility_Account_Subscription__c uas = new Utility_Account_Subscription__c(
+            Name = ualInfo.ual.Name,
+            Name_on_Account__c = ualInfo.ual.Name_on_Account__c,
+            Opportunity__c = opportunityId,
+            Utility_Account_Log__c = ualInfo.ual.Id,
+            UAS_Number__c = ualInfo.uasNumberCount
+        );
+
+        return uas;
+    }
+
+    private static void populateSizingMethod(CSUASFactoryHelper.UtilityAccountLogWrapper ualInfo, Utility_Account_Subscription__c uas, SSSSubscription sssSubscription) {
+        if (sssSubscription.sizingMethod == 'Rate Class Ratio' && ualInfo.ual.Utility_Rate_Class__c != null) {
+            uas.Sizing_Method__c = ualInfo.sizingMethod.Id;
+        } else {
+            uas.Sizing_Method__c = sssSubscription.sss.Utility_NMC_Tariff__c;
+        }
+    }
+
     @TestVisible
     private static void createSOByCapacity(Utility_Account_Subscription__c uas, Decimal annualElectricityCapacityAssigned, fflib_SObjectUnitOfWork uow) {
         Subscription_Order__c so = new Subscription_Order__c(
@@ -134,11 +155,4 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
         uow.registerNew(so, Subscription_Order__c.Utility_Account_Subscription__c, uas);
     }
 
-    private static void populateSizingMethod(Utility_Account_Log__c ual, Utility_Account_Subscription__c uas, SSSSubscription sssSubscription) {
-        if (sssSubscription.sizingMethod == 'Rate Class Ratio' && ual.Utility_Rate_Class__c != null) {
-            uas.Sizing_Method__c = ual.Utility_Rate_Class__r.Utility_NMC_Tariff__c;
-        } else {
-            uas.Sizing_Method__c = sssSubscription.sss.Utility_NMC_Tariff__c;
-        }
-    }
 }
