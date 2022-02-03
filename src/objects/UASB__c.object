@@ -258,34 +258,34 @@
         <fullName>Credits_on_Bill_Period__c</fullName>
         <externalId>false</externalId>
         <formula>CASE( 
-MONTH(Billing_Period_Start_Date__c), 
-1, &quot;February&quot;, 
-2, &quot;March&quot;, 
-3, &quot;April&quot;, 
-4, &quot;May&quot;, 
-5, &quot;June&quot;, 
-6, &quot;July&quot;, 
-7, &quot;August&quot;, 
-8, &quot;September&quot;, 
-9, &quot;October&quot;, 
-10, &quot;November&quot;, 
-11, &quot;December&quot;, 
-&quot;January&quot; 
+MONTH(Billing_Period_Start_Date__c),
+1, &quot;January&quot;,
+2, &quot;February&quot;,
+3, &quot;March&quot;,
+4, &quot;April&quot;,
+5, &quot;May&quot;,
+6, &quot;June&quot;,
+7, &quot;July&quot;,
+8, &quot;August&quot;,
+9, &quot;September&quot;,
+10, &quot;October&quot;,
+11, &quot;November&quot;,
+&quot;December&quot;
 )&amp;&quot; - &quot;&amp; 
 CASE( 
-MONTH(Billing_Period_End_Date__c), 
-1, &quot;February&quot;, 
-2, &quot;March&quot;, 
-3, &quot;April&quot;, 
-4, &quot;May&quot;, 
-5, &quot;June&quot;, 
-6, &quot;July&quot;, 
-7, &quot;August&quot;, 
-8, &quot;September&quot;, 
-9, &quot;October&quot;, 
-10, &quot;November&quot;, 
-11, &quot;December&quot;, 
-&quot;January&quot; 
+MONTH(Billing_Period_End_Date__c),
+1, &quot;January&quot;,
+2, &quot;February&quot;,
+3, &quot;March&quot;,
+4, &quot;April&quot;,
+5, &quot;May&quot;,
+6, &quot;June&quot;,
+7, &quot;July&quot;,
+8, &quot;August&quot;,
+9, &quot;September&quot;,
+10, &quot;October&quot;,
+11, &quot;November&quot;,
+&quot;December&quot;
 )</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Credits on Bill Period</label>
