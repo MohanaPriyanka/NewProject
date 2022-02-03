@@ -19,7 +19,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             Class__c = 'Class 1',
             Value_of_Net_Metering_Credit__c = 0.1137,
             Size_Ratio__c = 1.2,
-            Current_Billing_Rate__c = TRUE
+            Current_Billing_Rate__c = true
         );
         Utility_NMC_Tariff__c kwhSizingMethodR2 = new Utility_NMC_Tariff__c (
             Name = 'Eversource R2',
@@ -27,7 +27,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             Class__c = 'Class 2',
             Value_of_Net_Metering_Credit__c = 0.1137,
             Size_Ratio__c = 1.5,
-            Current_Billing_Rate__c = TRUE,
+            Current_Billing_Rate__c = true,
             Customer_Type__c = 'Residential'
         );
         insert new List<Utility_NMC_Tariff__c>{
@@ -44,12 +44,9 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             State__c = 'MA',
             ProductCode = 'CS - Perch - 10%',
             Sizing_Method__c = 'Project Ratio',
-            IsActive = true,
-            NMC_Discount__c = 10,
-            Annual_kWh_Maximum__c = 100000000,
-            NM_Rate_Floor__c = 0,
-            Monthly_Late_Fee__c = 1);
+            IsActive = true);
         insert maHybridProduct;
+
         Product2 costProduct = new Product2(Name = 'SREC Community Solar',
             Family = 'Community Solar',
             Product_Type__c = 'Community Solar',
@@ -58,12 +55,8 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             ProductCode = 'CS - Perch - 10%',
             Sizing_Method__c = 'Project Ratio',
             IsActive = true,
-
-
-            Customer_Subscription_Type__c = 'Electricity Cost ($)'),
-          	Parent_Product__c = maHybridProduct.Id);
-
-
+            Customer_Subscription_Type__c = 'Electricity Cost ($)',
+            Parent_Product__c = maHybridProduct.Id);
 
         Product2 kwhProduct = new Product2(Name = 'SMART Community Solar',
             Family = 'Community Solar',
@@ -71,14 +64,10 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             State__c = 'MA',
             Customer_Subscription_Type__c = 'kWh',
             Sizing_Method__c = 'Rate Class Ratio',
-
             ProductCode = 'CS - Perch - 10%',
-
             IsActive = true,
-            Days_in_Bill_Period__c = 30),
-          	Parent_Product__c = maHybridProduct.Id);
-
-
+            Days_in_Bill_Period__c = 30,
+            Parent_Product__c = maHybridProduct.Id);
 
         insert new List<Product2>{
             costProduct, kwhProduct
@@ -377,7 +366,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
         CSUtilityAccountSubscriptionFactory.createUAS(ual, opportunities, uow2);
         List<SObject> multipleUASes = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow2, 'Utility_Account_Subscription__c');
         List<SObject> multipleSOs = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow2, 'Utility_Account_Subscription__c');
-        //2 uasOrders for multipe 
+        //2 uasOrders for multipe
         System.assertEquals(2, multipleUASes.size());
         System.assertEquals(2, multipleSOs.size());
     }
@@ -460,7 +449,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
                 BWC_Project_Entity_Manual__c, NMC_Value__c,
                 Total_System_Size_kWh_DC__c, Utility__r.Number_of_Decimal_Places__c
             FROM Shared_Solar_System__c
-            WHERE Open__c = TRUE
+            WHERE Open__c = true
             AND Capacity_Available_to_be_Reserved__c > 0
             AND Product__r.Name = :product
         ];
