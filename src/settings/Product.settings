@@ -4,4 +4,5 @@
     <enableMySettings>true</enableMySettings>
     <enableQuantitySchedule>true</enableQuantitySchedule>
     <enableRevenueSchedule>true</enableRevenueSchedule>
+    <enableSecureGuestUserRecordAccess>true</enableSecureGuestUserRecordAccess>
 </ProductSettings>
