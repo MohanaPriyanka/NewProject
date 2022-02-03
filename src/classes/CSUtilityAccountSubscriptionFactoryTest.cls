@@ -19,7 +19,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             Class__c = 'Class 1',
             Value_of_Net_Metering_Credit__c = 0.1137,
             Size_Ratio__c = 1.2,
-            Current_Billing_Rate__c = TRUE
+            Current_Billing_Rate__c = true
         );
         Utility_NMC_Tariff__c kwhSizingMethodR2 = new Utility_NMC_Tariff__c (
             Name = 'Eversource R2',
@@ -27,7 +27,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             Class__c = 'Class 2',
             Value_of_Net_Metering_Credit__c = 0.1137,
             Size_Ratio__c = 1.5,
-            Current_Billing_Rate__c = TRUE,
+            Current_Billing_Rate__c = true,
             Customer_Type__c = 'Residential'
         );
         insert new List<Utility_NMC_Tariff__c>{
@@ -38,17 +38,25 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             Utility_NMC_Tariff__c = kwhSizingMethodR2.Id
         );
         insert rateClass;
+        Product2 maHybridProduct = new Product2(Name = 'Community Solar - MA Hybrid',
+            Family = 'Community Solar',
+            Product_Type__c = 'Community Solar',
+            State__c = 'MA',
+            ProductCode = 'CS - Perch - 10%',
+            Sizing_Method__c = 'Project Ratio',
+            IsActive = true);
+        insert maHybridProduct;
+
         Product2 costProduct = new Product2(Name = 'SREC Community Solar',
             Family = 'Community Solar',
             Product_Type__c = 'Community Solar',
             Program__c = 'SREC - Community Solar',
             State__c = 'MA',
-            ProductCode = 'CS - BlueWave - 10%',
+            ProductCode = 'CS - Perch - 10%',
             Sizing_Method__c = 'Project Ratio',
             IsActive = true,
-
-            Customer_Subscription_Type__c = 'Electricity Cost ($)');
-
+            Customer_Subscription_Type__c = 'Electricity Cost ($)',
+            Parent_Product__c = maHybridProduct.Id);
 
         Product2 kwhProduct = new Product2(Name = 'SMART Community Solar',
             Family = 'Community Solar',
@@ -56,11 +64,10 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             State__c = 'MA',
             Customer_Subscription_Type__c = 'kWh',
             Sizing_Method__c = 'Rate Class Ratio',
-            ProductCode = 'CS - BlueWave - 10%',
-
+            ProductCode = 'CS - Perch - 10%',
             IsActive = true,
-            Days_in_Bill_Period__c = 30);
-
+            Days_in_Bill_Period__c = 30,
+            Parent_Product__c = maHybridProduct.Id);
 
         insert new List<Product2>{
             costProduct, kwhProduct
@@ -186,8 +193,12 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
         uals.add(ual2);
         insert uals;
         uals = [
-            SELECT Id, Annual_Cost_of_Electricity__c, Lead__r.Product__r.Customer_Subscription_Type__c, Name,
-                Name_on_Account__c
+            SELECT Id,
+                Annual_Cost_of_Electricity__c,
+                Annual_kWh__c,
+                Lead__r.Product__r.Customer_Subscription_Type__c,Name,
+                Name_on_Account__c,
+                Utility_Rate_Class__r.Utility_NMC_Tariff__r.Value_of_Net_Metering_Credit__c
             FROM Utility_Account_Log__c
             WHERE Id IN :uals
         ];
@@ -214,8 +225,18 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
         );
         CSUtilityAccountSubscriptionFactory.generateSubscriptions(uals, sharedSolarSystems, opportunities, uow);
         List<SObject> generatedUASes = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow, 'Utility_Account_Subscription__c');
+        String uasJSON = JSON.serialize(generatedUASes);
+        List<Utility_Account_Subscription__c> uasList = (List<Utility_Account_Subscription__c>) JSON.deserialize(uasJSON, List<Utility_Account_Subscription__c>.class);
+        List<SObject> generatedSOs = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow, 'Subscription_Order__c');
+        String soJSON = JSON.serialize(generatedSOs);
+        List<Subscription_Order__c> soList = (List<Subscription_Order__c>) JSON.deserialize(soJSON, List<Subscription_Order__c>.class);
         // 2 opps (max = ual size)  = 2 subscriptions (one for each UAL)
-        System.assertEquals(2, generatedUASes.size());
+        System.assertEquals(2, uasList.size());
+        System.assertEquals(ual.Annual_Cost_of_Electricity__c, uasList[0].Annual_Cost_of_Electricity__c, 'UAS should be calculated using cost');
+        System.assertEquals(ual.Annual_Cost_of_Electricity__c, uasList[1].Annual_Cost_of_Electricity__c, 'UAS should be calculated using cost');
+        System.assertEquals(2, soList.size());
+        System.assertEquals(15000, soList[0].New_Annual_Cost__c);
+        System.assertEquals(15000, soList[1].New_Annual_Cost__c);
     }
     @IsTest
     public static void testCanGeneratedSubscriptionsBykWhForMultipleOpportunitiesAndUALs() {
@@ -267,7 +288,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
                 Shared_Solar_System__c = sss.Id
             ));
             ++counter;
-            setMaximumSubscriptionCapactity(sss, ual.Annual_kWh__c);
+            setMaximumSubscriptionCapacity(sss, ual.Annual_kWh__c);
         }
         update sharedSolarSystems;
         sharedSolarSystems = getSharedSolarSystems(kwhProduct.Name);
@@ -281,9 +302,13 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
         CSUtilityAccountSubscriptionFactory.generateSubscriptions(uals, sharedSolarSystems, opportunities, uow);
         List<SObject> generatedUASes = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow, 'Utility_Account_Subscription__c');
         List<SObject> generatedSOs = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow, 'Subscription_Order__c');
+        String soJSON = JSON.serialize(generatedSOs);
+        List<Subscription_Order__c> soList = (List<Subscription_Order__c>) JSON.deserialize(soJSON, List<Subscription_Order__c>.class);
         // 2 opps (max = ual size) = 2 subscriptions (one for each UAL)
         System.assertEquals(2, generatedUASes.size());
-        System.assertEquals(2, generatedSOs.size());
+        System.assertEquals(2, soList.size());
+        System.assertEquals(5000, soList[0].New_Annual_kWh__c, 'SO should use kWh');
+        System.assertEquals(5000, soList[1].New_Annual_kWh__c, 'SO should use kWh');
 
     }
 
@@ -325,7 +350,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
                 Subscription_Order__c.SObjectType
             }
         );
-        CSUtilityAccountSubscriptionFactory.createUASbyCost(ual, opportunities, uow1);
+        CSUtilityAccountSubscriptionFactory.createUAS(ual, opportunities, uow1);
         List<SObject> singleUASes = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow1, 'Utility_Account_Subscription__c');
         List<SObject> singleSOs = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow1, 'Subscription_Order__c');
         //1 uasOrder for single
@@ -338,10 +363,10 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
                 Subscription_Order__c.SObjectType
             }
         );
-        CSUtilityAccountSubscriptionFactory.createUASbyCost(ual, opportunities, uow2);
+        CSUtilityAccountSubscriptionFactory.createUAS(ual, opportunities, uow2);
         List<SObject> multipleUASes = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow2, 'Utility_Account_Subscription__c');
         List<SObject> multipleSOs = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow2, 'Utility_Account_Subscription__c');
-        //2 uasOrders for multipe 
+        //2 uasOrders for multipe
         System.assertEquals(2, multipleUASes.size());
         System.assertEquals(2, multipleSOs.size());
     }
@@ -368,12 +393,12 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             CSUtilityAccountSubscriptionFactory.SSSSubscription sssSubscription = new CSUtilityAccountSubscriptionFactory.SSSSubscription(sss);
             sssSubscription.sss = sss;
             // set the maximum cost to get 1 subscription
-            sssSubscription.maximumkWh = ual.Annual_kWh__c;
+            sssSubscription.maximumKWH = ual.Annual_kWh__c;
             sssSingleSubscriptionMap.put(sss.Id, sssSubscription);
             CSUtilityAccountSubscriptionFactory.SSSSubscription sssSubscription2 = new CSUtilityAccountSubscriptionFactory.SSSSubscription(sss);
             sssSubscription2.sss = sss;
             // set the maximum cost to get 2 subscriptions
-            sssSubscription2.maximumkWh = ual.Annual_kWh__c / 2;
+            sssSubscription2.maximumKWH = ual.Annual_kWh__c / 2;
             sssMultipleSubscriptionMap.put(sss.Id, sssSubscription2);
         }
         CSUtilityAccountSubscriptionFactory.sssSubscriptionMap = sssSingleSubscriptionMap;
@@ -383,7 +408,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
                 Subscription_Order__c.SObjectType
             }
         );
-        CSUtilityAccountSubscriptionFactory.createUASbyCapacity(ual, opportunities, uow1);
+        CSUtilityAccountSubscriptionFactory.createUAS(ual, opportunities, uow1);
         List<SObject> singleUASes = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow1, 'Utility_Account_Subscription__c');
         //1 uasOrder for single
         System.assertEquals(1, singleUASes.size());
@@ -394,10 +419,10 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
                 Subscription_Order__c.SObjectType
             }
         );
-        CSUtilityAccountSubscriptionFactory.createUASbyCapacity(ual, opportunities, uow2);
+        CSUtilityAccountSubscriptionFactory.createUAS(ual, opportunities, uow2);
         List<SObject> multipleUASes = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow2, 'Utility_Account_Subscription__c');
         List<SObject> multipleSOs = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow2, 'Utility_Account_Subscription__c');
-        //2 uasOrders for multipe 
+        //2 uasOrders for multiple
         System.assertEquals(2, multipleUASes.size());
         System.assertEquals(2, multipleSOs.size());
     }
@@ -406,7 +431,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
             SELECT Id, Name, Annual_Cost_of_Electricity__c, Name_on_Account__c, Lead__c,
                 Annual_kWh__c, Lead__r.Product__r.Customer_Subscription_Type__c,
                 Utility_NMC_Tariff__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Utility_NMC_Tariff__c,
-                Utility_Rate_Class__r.Utility_NMC_Tariff__r.Size_Ratio__c, Subsc_Annual_Cost_of_Electricity_Rollup__c,
+                Utility_Rate_Class__r.Utility_NMC_Tariff__r.Size_Ratio__c, Utility_Rate_Class__r.Utility_NMC_Tariff__r.Value_of_Net_Metering_Credit__c, Subsc_Annual_Cost_of_Electricity_Rollup__c,
                 Subscribed_Annual_kWhs_Rollup__c
             FROM Utility_Account_Log__c
             ORDER BY Annual_kWh__c DESC
@@ -424,12 +449,12 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
                 BWC_Project_Entity_Manual__c, NMC_Value__c,
                 Total_System_Size_kWh_DC__c, Utility__r.Number_of_Decimal_Places__c
             FROM Shared_Solar_System__c
-            WHERE Open__c = TRUE
+            WHERE Open__c = true
             AND Capacity_Available_to_be_Reserved__c > 0
             AND Product__r.Name = :product
         ];
     }
-    public static void setMaximumSubscriptionCapactity(Shared_Solar_System__c sss, Decimal maximumCapacity) {
+    public static void setMaximumSubscriptionCapacity(Shared_Solar_System__c sss, Decimal maximumCapacity) {
         sss.Expected_Yield_kWh_kW__c = maximumCapacity / sss.Maximum_Subscription_Capacity_kWDC__c;
     }
     @IsTest
@@ -439,7 +464,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
         System.assertEquals(32900, maximumCapacitykWh);
         Test.startTest();
         Shared_Solar_System__c sss = sssList[0];
-        setMaximumSubscriptionCapactity(sss, 40000);
+        setMaximumSubscriptionCapacity(sss, 40000);
         update sss;
         Test.stopTest();
         Shared_Solar_System__c sssAfterUpdate = [
@@ -501,7 +526,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
                 Subscription_Order__c.SObjectType
             }
         );
-        CSUtilityAccountSubscriptionFactory.createUASbyCapacity(ualList[0], opportunities, uow);
+        CSUtilityAccountSubscriptionFactory.createUAS(ualList[0], opportunities, uow);
         List<SObject> generatedUASes = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow, 'Utility_Account_Subscription__c');
         Utility_Account_Subscription__c single = (Utility_Account_Subscription__c) generatedUASes[0];
         System.assertEquals(sharedSolarSystems[0].Utility_NMC_Tariff__c, single.Sizing_Method__c,
@@ -557,7 +582,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
                 Subscription_Order__c.SObjectType
             }
         );
-        CSUtilityAccountSubscriptionFactory.createUASbyCapacity(ualList[0], opportunities, uow);
+        CSUtilityAccountSubscriptionFactory.createUAS(ualList[0], opportunities, uow);
         List<SObject> uasSingle = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow, 'Utility_Account_Subscription__c');
         Utility_Account_Subscription__c single = (Utility_Account_Subscription__c) uasSingle[0];
         System.assertEquals(1, uasSingle.size());
@@ -614,7 +639,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
                 Subscription_Order__c.SObjectType
             }
         );
-        CSUtilityAccountSubscriptionFactory.createUASbyCapacity(ualList[0], opportunities, uow);
+        CSUtilityAccountSubscriptionFactory.createUAS(ualList[0], opportunities, uow);
         List<SObject> uasMultiple = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow, 'Utility_Account_Subscription__c');
         System.assertEquals(2, uasMultiple.size());
         Utility_Account_Subscription__c uasMultiple0 = (Utility_Account_Subscription__c) uasMultiple[0];
@@ -766,7 +791,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
                 Subscription_Order__c.SObjectType
             }
         );
-        CSUtilityAccountSubscriptionFactory.createUASbyCapacity(ualList[0], opportunities, uow);
+        CSUtilityAccountSubscriptionFactory.createUAS(ualList[0], opportunities, uow);
         List<SObject> uasMultiple = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow, 'Utility_Account_Subscription__c');
         System.assertEquals(2, uasMultiple.size());
         Utility_Account_Subscription__c uasMultiple0 = (Utility_Account_Subscription__c) uasMultiple[0];
@@ -843,5 +868,106 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
     }
     private static void useMocks(Boolean featureOn) {
         FeatureService.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new FeatureServiceTest.MockCustomFeatureSelector(featureOn));
+    }
+    @IsTest
+    public static void testGenerateHybridSubscriptionsForMultipleOpportunitiesAndUALs() {
+        useMocks(false);
+        Product2 csProduct = [
+            SELECT Id, Name, Sizing_Method__c, Customer_Subscription_Type__c
+            FROM Product2
+            WHERE Name = 'Community Solar - MA Hybrid'
+            LIMIT 1
+        ];
+        Lead lead = new Lead(
+            FirstName = 'Test',
+            LastName = 'Testcase',
+            Email = 'test@test.com',
+            Electricity_Provider__c = 'Eversource',
+            Utility_1__c = 'Eversource',
+            Load_Zone__c = 'WCMA',
+            Company = 'Test',
+            Status = 'Qualified',
+            Product_line__c = 'Community Solar',
+            Product__c = csProduct.Id,
+            Custom_ID__c = 'partner',
+            System_Assignment__c = 'Automatic - Assignment Order'
+        );
+        insert lead;
+        List<Utility_Account_Log__c> uals = new List<Utility_Account_Log__c>();
+        Utility_Account_Log__c ual = new Utility_Account_Log__c(
+            Annual_Cost_of_Electricity__c = 369.6,
+            Annual_kWh__c = 2000,
+            Lead__c = lead.Id,
+            Name_on_Account__c = 'Jack Torrance',
+            Name = 'Account 1'
+        );
+        uals.add(ual);
+        Utility_Account_Log__c ual2 = new Utility_Account_Log__c(
+            Annual_Cost_of_Electricity__c = 369.6,
+            Annual_kWh__c = 2000,
+            Lead__c = lead.Id,
+            Name_on_Account__c = 'Jack Torrance',
+            Name = 'Account 2'
+        );
+        uals.add(ual2);
+        insert uals;
+        uals = [
+            SELECT Id,
+                Annual_Cost_of_Electricity__c,
+                Annual_kWh__c,
+                Lead__r.Product__r.Customer_Subscription_Type__c,Name,
+                Name_on_Account__c,
+                Utility_Rate_Class__r.Utility_NMC_Tariff__r.Value_of_Net_Metering_Credit__c
+            FROM Utility_Account_Log__c
+            WHERE Id IN :uals
+        ];
+        Integer counter = 1;
+        List<Opportunity> opportunities = new List<Opportunity>();
+        List<Shared_Solar_System__c> sharedSolarSystemList = new SharedSolarSystemsSelector().getSharedSolarSystemsForEnrollment();
+        for (Shared_Solar_System__c sss : sharedSolarSystemList) {
+            opportunities.add(new Opportunity(
+                Name = 'Opp ' + counter,
+                Shared_Solar_System__c = sss.Id
+            ));
+            ++counter;
+            if (sss.Product__r.Name == 'SREC Community Solar') {
+                // we want the max subscription cost on each CSUtilityAccountSubscriptionFactory.SSSSubscription to be 1/2 the UAL annual cost so that we get a UAS for each SSS
+                // the SSSSubscription uses the formula field sss.Maximum_Subscription_Cost__c to set the max subscription
+                // Maximum_Subscription_Cost__c is calculated using the formula Maximum_Subscription_Capacity_kWDC__c *  NMC_Value__c *  Expected_Yield_kWh_kW__c
+                // therefore we need to set sss.Expected_Yield_kWh_kW__c to the right value to get sss.Maximum_Subscription_Cost__c = (ual.Annual_Cost_of_Electricity__c / 2)
+                sss.Expected_Yield_kWh_kW__c = (ual.Annual_Cost_of_Electricity__c / 2) / (sss.Maximum_Subscription_Capacity_kWDC__c * sss.NMC_Value__c);
+            } else {
+                // we want the max subscription capacity on each CSUtilityAccountSubscriptionFactory.SSSSubscription to be 1/2 the UAL annual capacity so that we get a UAS for each SSS
+                // the SSSSubscription calculates the max capacity using sss.Maximum_Subscription_Capacity_kWDC__c * sss.Expected_Yield_kWh_kW__c for Rate Class Ratio products
+                // therefore we need to set sss.Expected_Yield_kWh_kW__c to the right value to get an SSSSubscription with max subscription = (ual.Annual_kWh__c / 2)
+                sss.Expected_Yield_kWh_kW__c = (ual.Annual_kWh__c / 2) / sss.Maximum_Subscription_Capacity_kWDC__c;
+            }
+        }
+        update sharedSolarSystemList;
+        sharedSolarSystemList = new SharedSolarSystemsSelector().getSharedSolarSystemsForEnrollment();
+        System.assertEquals(4, opportunities.size(), 'There should be an opportunity for each shared solar system');
+        fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
+            new List<Schema.SObjectType>{
+                Utility_Account_Subscription__c.SObjectType,
+                Subscription_Order__c.SObjectType
+            }
+        );
+        CSUtilityAccountSubscriptionFactory.generateSubscriptions(uals, sharedSolarSystemList, opportunities, uow);
+        List<SObject> generatedUASes = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow, 'Utility_Account_Subscription__c');
+        List<SObject> generatedSOs = FFLibHelperTest.getRegisterNewListFromUnitOfWork(uow, 'Subscription_Order__c');
+        String soJSON = JSON.serialize(generatedSOs);
+        List<Subscription_Order__c> soList = (List<Subscription_Order__c>) JSON.deserialize(soJSON, List<Subscription_Order__c>.class);
+        // 4 opps with max = 1/2 ual size => 4 subscriptions (2 for each ual)
+        // there should be UASs for a mix of both kWh and Electricity Cost ($)
+        System.assertEquals(opportunities.size(), generatedUASes.size(), 'There should be a uas for each opportunity');
+        System.assertEquals(4, soList.size());
+        System.assert(soList[0].New_Annual_Cost__c == 184.8 || soList[0].New_Annual_Cost__c == null, 'Each SO using cost should have a new annual cost of half one ual annual cost');
+        System.assert(soList[1].New_Annual_Cost__c == 184.8 || soList[1].New_Annual_Cost__c == null, 'Each SO using cost should have a new annual cost of half one ual annual cost');
+        System.assert(soList[2].New_Annual_Cost__c == 184.8 || soList[2].New_Annual_Cost__c == null, 'Each SO using cost should have a new annual cost of half one ual annual cost');
+        System.assert(soList[3].New_Annual_Cost__c == 184.8 || soList[3].New_Annual_Cost__c == null, 'Each SO using cost should have a new annual cost of half one ual annual cost');
+        System.assert(soList[0].New_Annual_kWh__c == 1000 || soList[0].New_Annual_kWh__c == null, 'Each SO using capacity should have a new annual capacity of half one ual annual capacity');
+        System.assert(soList[1].New_Annual_kWh__c == 1000 || soList[1].New_Annual_kWh__c == null, 'Each SO using capacity should have a new annual capacity of half one ual annual capacity');
+        System.assert(soList[2].New_Annual_kWh__c == 1000 || soList[2].New_Annual_kWh__c == null, 'Each SO using capacity should have a new annual capacity of half one ual annual capacity');
+        System.assert(soList[3].New_Annual_kWh__c == 1000 || soList[3].New_Annual_kWh__c == null, 'Each SO using capacity should have a new annual capacity of half one ual annual capacity');
     }
 }

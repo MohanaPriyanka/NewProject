@@ -11,6 +11,7 @@
             <targetReference>Set_Number_of_Qualifying_Systems</targetReference>
         </connector>
         <faultConnector>
+            <isGoTo>true</isGoTo>
             <targetReference>Assign_Error_Log_0_0</targetReference>
         </faultConnector>
         <flowTransactionModel>Automatic</flowTransactionModel>
@@ -36,6 +37,7 @@
             <targetReference>Lead_After_Qualification</targetReference>
         </connector>
         <faultConnector>
+            <isGoTo>true</isGoTo>
             <targetReference>Assign_Error_Log_0_0</targetReference>
         </faultConnector>
         <flowTransactionModel>Automatic</flowTransactionModel>
@@ -239,6 +241,7 @@
             </value>
         </assignmentItems>
         <connector>
+            <isGoTo>true</isGoTo>
             <targetReference>Add_Error_Log_to_List_0</targetReference>
         </connector>
     </assignments>
@@ -768,6 +771,7 @@
             <targetReference>Get_Lead</targetReference>
         </connector>
         <faultConnector>
+            <isGoTo>true</isGoTo>
             <targetReference>Assign_Error_Log_0_0</targetReference>
         </faultConnector>
         <inputReference>getLead</inputReference>
@@ -1105,21 +1109,6 @@
             <name>selectSystemsHeader</name>
             <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(0, 153, 255); font-size: 20px;&quot;&gt;SELECT SHARED SOLAR SYSTEMS&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>warningProduct</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;background-color: rgb(255, 255, 255); color: rgb(255, 15, 15);&quot;&gt;WARNING&lt;/b&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(255, 15, 15);&quot;&gt;: This lead is assigned a Parent Product. When selecting SSSes below, please only select project with the &lt;/span&gt;&lt;b style=&quot;background-color: rgb(255, 255, 255); color: rgb(255, 15, 15);&quot;&gt;SAME PRODUCT.&lt;/b&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(255, 15, 15);&quot;&gt; The customer&apos;s product will then be updated based off your selection. &lt;/span&gt;&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-            <visibilityRule>
-                <conditionLogic>and</conditionLogic>
-                <conditions>
-                    <leftValueReference>formulaShowProductWarning</leftValueReference>
-                    <operator>EqualTo</operator>
-                    <rightValue>
-                        <booleanValue>true</booleanValue>
-                    </rightValue>
-                </conditions>
-            </visibilityRule>
         </fields>
         <fields>
             <name>txtDatable</name>
