@@ -25,6 +25,7 @@ public with sharing class RestLeadTest {
         validResidentialLead.zipCode = '00000';
         validResidentialLead.productName = 'VDER';
         validResidentialLead.noPayment = false;
+        validResidentialLead.replacementCapacity = false;
 
         validPropertyAccount.billingStreet = '1 Billing Street';
         validPropertyAccount.billingCity = 'Billing City';

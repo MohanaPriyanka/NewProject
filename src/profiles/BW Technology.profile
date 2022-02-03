@@ -33551,6 +33551,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Replacement_Capacity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Reserved_System_Capacity_kW_DC2__c</field>
         <readable>true</readable>
