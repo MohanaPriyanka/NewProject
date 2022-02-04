@@ -204,7 +204,7 @@ public without sharing class RestLead {
             No_Payment__c = this.noPayment,
             Utility_relationship__c = this.utilityId,
             LASERCA__Birthdate__c = this.birthdate,
-            Replacement_Capacity__c = this.replacementCapacity
+            Replacement_Capacity__c = this.replacementCapacity == null ? false : this.replacementCapacity
         );
         // Since:
         // - all UALs should have the same zip code under a property account (enforced by the UI and business logic),
