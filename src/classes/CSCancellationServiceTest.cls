@@ -65,7 +65,7 @@ public with sharing class CSCancellationServiceTest {
         CustomerCommunicationHandlerTest.setDaysPastDue(System.today().addDays(-68), 10);
 
         Test.startTest();
-        CSCancellationService.handleOverdueAccounts();
+        CSCancellationAccountService.handleOverdueAccounts();
         Test.stopTest();
 
         List<Account> propertyAccounts = [
@@ -93,7 +93,7 @@ public with sharing class CSCancellationServiceTest {
         CustomerCommunicationHandlerTest.setDaysPastDue(System.today().addDays(-68), 10);
 
         Test.startTest();
-        CSCancellationService.handleOverdueAccounts();
+        CSCancellationAccountService.handleOverdueAccounts();
         Test.stopTest();
 
         List<Account> propertyAccounts = [
@@ -122,7 +122,7 @@ public with sharing class CSCancellationServiceTest {
 
         Test.startTest();
         MessagingService.onlyUseActiveTemplates = false;
-        CSCancellationService.handleOverdueAccounts();
+        CSCancellationAccountService.handleOverdueAccounts();
         Test.stopTest();
 
         List<Utility_Account_Subscription__c> uases = [
@@ -499,9 +499,9 @@ public with sharing class CSCancellationServiceTest {
     }
 
     @IsTest static void testNoOppsAreCancelled() {
-
+        CSCancellationOppService cancellationOppService = new CSCancellationOppService();
         Test.startTest();
-        CSCancellationService.cancelOpportunities(CSCancellationService.getOpportunitiesToCancel());
+        cancellationOppService.cancelOpportunities(cancellationOppService.getOpportunitiesToCancel());
         Test.stopTest();
 
         List<Opportunity> oppList = [
@@ -548,7 +548,7 @@ public with sharing class CSCancellationServiceTest {
                     Id = opportunity.Account.Id,
                     Cancellation_Reason__c = 'Other',
                     Cancellation_Request_Date__c = Date.today(),
-                    Cancelled_By__c = CSCancellationService.CANCELLED_BY_ID
+                    Cancelled_By__c = CSCancellationAccountService.CANCELLED_BY_ID
                 )
             );
         }
@@ -560,8 +560,9 @@ public with sharing class CSCancellationServiceTest {
             System.assert(Opportunities.isCancelledWaitlist(opportunityMap.get(opportunity.Id)));
         }
 
+        CSCancellationOppService cancellationOppService = new CSCancellationOppService();
         Test.startTest();
-        CSCancellationService.cancelOpportunities(CSCancellationService.getOpportunitiesToCancel());
+        cancellationOppService.cancelOpportunities(cancellationOppService.getOpportunitiesToCancel());
         Test.stopTest();
 
         oppList = [
@@ -610,7 +611,7 @@ public with sharing class CSCancellationServiceTest {
                     Id = opportunity.Account.Id,
                     Cancellation_Reason__c = 'Other',
                     Cancellation_Request_Date__c = Date.today(),
-                    Cancelled_By__c = CSCancellationService.CANCELLED_BY_ID
+                    Cancelled_By__c = CSCancellationAccountService.CANCELLED_BY_ID
                 )
             );
         }
@@ -623,8 +624,9 @@ public with sharing class CSCancellationServiceTest {
             System.assert(Opportunities.anyUASIsTransferring(opportunityMap.get(opportunity.Id)));
         }
 
+        CSCancellationOppService cancellationOppService = new CSCancellationOppService();
         Test.startTest();
-        CSCancellationService.cancelOpportunities(CSCancellationService.getOpportunitiesToCancel());
+        cancellationOppService.cancelOpportunities(cancellationOppService.getOpportunitiesToCancel());
         Test.stopTest();
 
         oppList = [
@@ -685,8 +687,9 @@ public with sharing class CSCancellationServiceTest {
         System.assertEquals(Date.newInstance(2018, 1, 1), uasbList[0].Date__c);
         System.assertEquals('Complete', uasbList[0].Opportunity__r.StageName);
 
+        CSCancellationOppService cancellationOppService = new CSCancellationOppService();
         Test.startTest();
-        CSCancellationService.cancelOpportunities(CSCancellationService.getOpportunitiesToCancel());
+        cancellationOppService.cancelOpportunities(cancellationOppService.getOpportunitiesToCancel());
         Test.stopTest();
 
         List<Opportunity> oppList = [
@@ -735,8 +738,9 @@ public with sharing class CSCancellationServiceTest {
         System.assertEquals(Date.newInstance(2018, 1, 1), uasbList[0].Date__c);
         System.assertEquals('Complete', uasbList[0].Opportunity__r.StageName);
 
+        CSCancellationOppService cancellationOppService = new CSCancellationOppService();
         Test.startTest();
-        CSCancellationService.cancelOpportunities(CSCancellationService.getOpportunitiesToCancel());
+        cancellationOppService.cancelOpportunities(cancellationOppService.getOpportunitiesToCancel());
         Test.stopTest();
 
         List<Opportunity> oppList = [
@@ -779,8 +783,9 @@ public with sharing class CSCancellationServiceTest {
         System.assertEquals(0, opportunityMap.size(), 'There shouldn\t be any opportunities selected, since they\'re all anchors');
         System.assertEquals('Complete', uasbList[0].Opportunity__r.StageName);
 
+        CSCancellationOppService cancellationOppService = new CSCancellationOppService();
         Test.startTest();
-        CSCancellationService.cancelOpportunities(CSCancellationService.getOpportunitiesToCancel());
+        cancellationOppService.cancelOpportunities(cancellationOppService.getOpportunitiesToCancel());
         Test.stopTest();
 
         List<Opportunity> oppList = [
@@ -858,7 +863,8 @@ public with sharing class CSCancellationServiceTest {
         System.assertEquals('Complete', uasbList[0].Opportunity__r.StageName);
         System.assertEquals('Complete', uasbList[2].Opportunity__r.StageName);
 
-        CSCancellationService.cancelOpportunities(CSCancellationService.getOpportunitiesToCancel());
+        CSCancellationOppService cancellationOppService = new CSCancellationOppService();
+        cancellationOppService.cancelOpportunities(cancellationOppService.getOpportunitiesToCancel());
         Test.stopTest();
 
         List<Opportunity> oppList = [
@@ -1461,7 +1467,7 @@ public with sharing class CSCancellationServiceTest {
 
         acctToUpdate.Cancellation_Reason__c = 'Customer Moved';
         acctToUpdate.Cancellation_Request_Date__c = System.today();
-        acctToUpdate.Cancelled_By__c = CSCancellationService.CANCELLED_BY_ID;
+        acctToUpdate.Cancelled_By__c = CSCancellationAccountService.CANCELLED_BY_ID;
 
         update acctToUpdate;
 
@@ -1493,7 +1499,7 @@ public with sharing class CSCancellationServiceTest {
 
         propAcct1.Cancellation_Reason__c = 'Customer Moved';
         propAcct1.Cancellation_Request_Date__c = System.today();
-        propAcct1.Cancelled_By__c = CSCancellationService.CANCELLED_BY_ID;
+        propAcct1.Cancelled_By__c = CSCancellationAccountService.CANCELLED_BY_ID;
 
         MessagingService.onlyUseActiveTemplates = false;
         update propAcct1;
@@ -1549,7 +1555,7 @@ public with sharing class CSCancellationServiceTest {
             acctIdList.add(acct.Id);
             acct.Cancellation_Reason__c = 'Customer Moved';
             acct.Cancellation_Request_Date__c = System.today();
-            acct.Cancelled_By__c = CSCancellationService.CANCELLED_BY_ID;
+            acct.Cancelled_By__c = CSCancellationAccountService.CANCELLED_BY_ID;
             if (acct.Name == 'Prop Account 2') {
                 acct.Client_Brand_Key__c = 'AmpRed';
             }
@@ -1610,7 +1616,7 @@ public with sharing class CSCancellationServiceTest {
 
         acct.Cancellation_Reason__c = 'Customer Moved';
         acct.Cancellation_Request_Date__c = today;
-        acct.Cancelled_By__c = CSCancellationService.CANCELLED_BY_ID;
+        acct.Cancelled_By__c = CSCancellationAccountService.CANCELLED_BY_ID;
 
         update acct;
 
@@ -1681,7 +1687,7 @@ public with sharing class CSCancellationServiceTest {
         TestSOCreator.createByCost(newUAS, 4000);
 
         Map<Account, Map<String, String>> accountCancellationTextMap =
-            CSCancellationService.accountToCancellationParagraphs(UASSelector.selectUASesByAccounts(new Set<Id>{
+            CSCancellationAccountService.accountToCancellationParagraphs(UASSelector.selectUASesByAccounts(new Set<Id>{
                 opportunity.AccountId
             }));
         System.assertEquals(1, accountCancellationTextMap.keySet().size());
@@ -1689,12 +1695,12 @@ public with sharing class CSCancellationServiceTest {
         List<Account> accounts = new List<Account>(accountCancellationTextMap.keySet());
         System.assertEquals(opportunity.AccountId, accounts[0].Id);
         System.assertEquals(
-            CSCancellationService.DEFAULT_CANCELLATION_PARAGRAPH_TWO,
-            accountCancellationTextMap.values()[0].get(CSCancellationService.CANCELLATION_PARAGRAPH_TWO_LABEL)
+            CSCancellationAccountService.DEFAULT_CANCELLATION_PARAGRAPH_TWO,
+            accountCancellationTextMap.values()[0].get(CSCancellationAccountService.CANCELLATION_PARAGRAPH_TWO_LABEL)
         );
         System.assertEquals(
-            CSCancellationService.DEFAULT_CANCELLATION_PARAGRAPH_THREE,
-            accountCancellationTextMap.values()[0].get(CSCancellationService.CANCELLATION_PARAGRAPH_THREE_LABEL)
+            CSCancellationAccountService.DEFAULT_CANCELLATION_PARAGRAPH_THREE,
+            accountCancellationTextMap.values()[0].get(CSCancellationAccountService.CANCELLATION_PARAGRAPH_THREE_LABEL)
         );
     }
 
@@ -1724,7 +1730,7 @@ public with sharing class CSCancellationServiceTest {
         insert newUAS;
 
         Map<Account, Map<String, String>> accountCancellationTextMap =
-            CSCancellationService.accountToCancellationParagraphs(UASSelector.selectUASesByAccounts(new Set<Id>{
+            CSCancellationAccountService.accountToCancellationParagraphs(UASSelector.selectUASesByAccounts(new Set<Id>{
                 opportunity.AccountId
             }));
         System.assertEquals(1, accountCancellationTextMap.keySet().size());
@@ -1735,11 +1741,11 @@ public with sharing class CSCancellationServiceTest {
         System.assertNotEquals(null, opportunity.Product__r.Cancellation_Paragraph_Three__c);
         System.assertEquals(
             opportunity.Product__r.Cancellation_Paragraph_Two__c,
-            accountCancellationTextMap.values()[0].get(CSCancellationService.CANCELLATION_PARAGRAPH_TWO_LABEL)
+            accountCancellationTextMap.values()[0].get(CSCancellationAccountService.CANCELLATION_PARAGRAPH_TWO_LABEL)
         );
         System.assertEquals(
             opportunity.Product__r.Cancellation_Paragraph_Three__c,
-            accountCancellationTextMap.values()[0].get(CSCancellationService.CANCELLATION_PARAGRAPH_THREE_LABEL)
+            accountCancellationTextMap.values()[0].get(CSCancellationAccountService.CANCELLATION_PARAGRAPH_THREE_LABEL)
         );
     }
 
@@ -1756,7 +1762,7 @@ public with sharing class CSCancellationServiceTest {
 
         Boolean exceptionCaught = false;
         try {
-            CSCancellationService.accountToCancellationParagraphs(UASSelector.selectUASesByAccounts(new Set<Id>{
+            CSCancellationAccountService.accountToCancellationParagraphs(UASSelector.selectUASesByAccounts(new Set<Id>{
                 opportunity.AccountId
             }));
         } catch (Exception bwe) {
@@ -1770,7 +1776,7 @@ public with sharing class CSCancellationServiceTest {
 
         exceptionCaught = false;
         try {
-            CSCancellationService.accountToCancellationParagraphs(UASSelector.selectUASesByAccounts(new Set<Id>{
+            CSCancellationAccountService.accountToCancellationParagraphs(UASSelector.selectUASesByAccounts(new Set<Id>{
                 opportunity.AccountId
             }));
         } catch (Util.BWException bwe) {
@@ -1884,13 +1890,18 @@ public with sharing class CSCancellationServiceTest {
     @IsTest
     private static void testInitiateCancellationApprovalProcess() {
         Account acc = [SELECT Id, Cancellation_Reason__c, Cancellation_Request_Date__c, Cancelled_By__c FROM Account LIMIT 1];
-        acc.Cancellation_Request_Date__c = date.today();
-        acc.Cancellation_Reason__c = 'Other';
-        acc.Cancelled_By__c = CSCancellationService.CANCELLED_BY_ID;
-
         update acc;
 
         Account updatedAcc = [SELECT Id, Cancellation_Reason_Approval_Status__c FROM Account WHERE Id = :acc.Id LIMIT 1];
+        System.assertEquals(null, updatedAcc.Cancellation_Reason_Approval_Status__c);
+
+        acc.Cancellation_Request_Date__c = Date.today();
+        acc.Cancellation_Reason__c = 'Other';
+        acc.Cancelled_By__c = CSCancellationAccountService.CANCELLED_BY_ID;
+
+        update acc;
+
+        updatedAcc = [SELECT Id, Cancellation_Reason_Approval_Status__c FROM Account WHERE Id = :acc.Id LIMIT 1];
         System.assertEquals('Pending Approval', updatedAcc.Cancellation_Reason_Approval_Status__c);
     }
 

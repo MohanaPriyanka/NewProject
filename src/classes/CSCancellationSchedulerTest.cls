@@ -61,11 +61,11 @@ private class CSCancellationSchedulerTest {
         cancellationScheduler.execute(null);
         Test.stopTest();
 
-        System.assertEquals(1, cancellationScheduler.overdueAccounts.size(),
+        System.assertEquals(1, cancellationScheduler.cancellationAccountService.overdueAccounts.size(),
             'There should be one overdue account, with opps set to cancelled, but not yet removed');
-        System.assertEquals(1, cancellationScheduler.cancelledOpportunities.size(), '' +
+        System.assertEquals(1, cancellationScheduler.cancellationOppService.cancelledOpportunities.size(), '' +
             'Expected the cancellation scheduler to find one opp to mark as cancelled');
-        System.assertEquals(1, cancellationScheduler.accountsRemovedFromAllProjects.size(),
+        System.assertEquals(1, cancellationScheduler.cancellationProjectRemover.accountsRemovedFromAllProjects.size(),
             'Expected the cancellation scheduler to find the account ready to be marked with Removed From Project');
         if (UserInfo.getUserEmail() != null) {
             System.assertEquals(3, MessagingService.emailsSent.size(),
@@ -106,27 +106,7 @@ private class CSCancellationSchedulerTest {
         Integer queriesAfterScheduler = Limits.getQueries();
         Test.stopTest();
 
-        System.assertEquals(1, queriesAfterScheduler,
-            'Expected to only run one query, to find the schedule for the current day');
-    }
-
-    @IsTest
-    private static void testInvocable() {
-        InvocableCSCanceller.CancellationStep step = new InvocableCSCanceller.CancellationStep(true, 'OverdueAccounts');
-        List<InvocableCSCanceller.CancellationStep> steps = new List<InvocableCSCanceller.CancellationStep>{step};
-        System.assertNotEquals(null, InvocableCSCanceller.cancelCS(steps), 'Expected output when previewing OverdueAccounts');
-        step.stepName = 'Opportunities';
-        System.assertNotEquals(null, InvocableCSCanceller.cancelCS(steps), 'Expected output when previewing Opportunities');
-        step.stepName = 'OverdueAccounts';
-        System.assertNotEquals(null, InvocableCSCanceller.cancelCS(steps), 'Expected output when previewing OverdueAccounts');
-        step.stepName = 'All';
-        System.assertNotEquals(null, InvocableCSCanceller.cancelCS(steps), 'Expected output when previewing all steps');
-        step.stepName = 'Foo';
-        try {
-            InvocableCSCanceller.cancelCS(steps);
-            System.assert(false, 'Expected to throw an exception when providing an invalid step name');
-        } catch (Exception e) {
-            System.assert(e.getMessage().contains('Unknown step'), e.getMessage() + '\n' + e.getStackTraceString());
-        }
+        System.assertEquals(2, queriesAfterScheduler,
+            'Expected to run two queries, to find the schedule for the current day and CSCancellationAccountService.CANCELLED_BY_ID');
     }
 }
