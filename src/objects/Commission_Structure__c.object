@@ -291,7 +291,7 @@
     <sharingModel>ReadWrite</sharingModel>
     <validationRules>
         <fullName>Protect_Active_Invoices</fullName>
-        <active>false</active>
+        <active>true</active>
         <errorConditionFormula>AND(
 OR(
 ISCHANGED( Cents_kW_DC_Up_Front__c ),
