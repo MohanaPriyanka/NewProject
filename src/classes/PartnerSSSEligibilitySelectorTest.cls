@@ -47,7 +47,8 @@ public with sharing class PartnerSSSEligibilitySelectorTest {
             Product__c = product1.Id,
             Cents_kW_DC_Up_Front__c = 0.10,
             Cents_kW_DC_First_Bill__c = 0.23,
-            Cents_kW_DC_First_Bill_Paid__c = 0.11
+            Cents_kW_DC_First_Bill_Paid__c = 0.11,
+            Type__c = 'Variable by kW'
         );
 
         Commission_Structure__c commissionTwo = new Commission_Structure__c(
@@ -56,7 +57,8 @@ public with sharing class PartnerSSSEligibilitySelectorTest {
             Partner_Account__c = partnerAccount2.Id,
             Product__c = product1.Id,
             Cents_kW_DC_Up_Front__c = 0.12,
-            Cents_kW_DC_First_Bill_Paid__c = 0.50
+            Cents_kW_DC_First_Bill_Paid__c = 0.50,
+            Type__c = 'Variable by kW'
         );
         insert new List<Commission_Structure__c>{commissionOne, commissionTwo};
 

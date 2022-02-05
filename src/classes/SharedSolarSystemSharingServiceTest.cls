@@ -80,7 +80,8 @@ private class SharedSolarSystemSharingServiceTest {
             Cents_kW_DC_Up_Front__c = 0.08,
             Cents_kW_DC_First_Bill_Paid__c = 0.02,
             Partner_Account__c = partnerAccountId,
-            Product__c = sharedSolarSystem.Product__c
+            Product__c = sharedSolarSystem.Product__c,
+            Type__c = 'Variable by kW'
         );
 
         insert commissionStructure;
@@ -214,7 +215,8 @@ private class SharedSolarSystemSharingServiceTest {
             Cents_kW_DC_Up_Front__c = 0.08,
             Cents_kW_DC_First_Bill_Paid__c = 0.02,
             Partner_Account__c = partnerAccounts[0].Id,
-            Product__c = sharedSolarSystems[0].Product__c
+            Product__c = sharedSolarSystems[0].Product__c,
+            Type__c = 'Variable by kW'
         );
         insert new List<Commission_Structure__c>{commissionStructure};
 
@@ -273,7 +275,8 @@ private class SharedSolarSystemSharingServiceTest {
             Cents_kW_DC_Up_Front__c = 0.08,
             Cents_kW_DC_First_Bill_Paid__c = 0.02,
             Partner_Account__c = partnerAccounts[0].Id,
-            Product__c = sharedSolarSystems[0].Product__c
+            Product__c = sharedSolarSystems[0].Product__c,
+            Type__c = 'Variable by kW'
         );
         Commission_Structure__c commissionStructure2 = new Commission_Structure__c(
             Name = 'Test Commission Structure',
@@ -281,7 +284,8 @@ private class SharedSolarSystemSharingServiceTest {
             Cents_kW_DC_Up_Front__c = 0.08,
             Cents_kW_DC_First_Bill_Paid__c = 0.02,
             Partner_Account__c = partnerAccounts[1].Id,
-            Product__c = sharedSolarSystems[1].Product__c
+            Product__c = sharedSolarSystems[1].Product__c,
+            Type__c = 'Variable by kW'
         );
 
         insert new List<Commission_Structure__c>{commissionStructure, commissionStructure2};

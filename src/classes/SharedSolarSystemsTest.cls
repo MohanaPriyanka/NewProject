@@ -328,7 +328,8 @@ public with sharing class SharedSolarSystemsTest {
                     Cents_kW_DC_Up_Front__c = 0.08,
                     Cents_kW_DC_First_Bill_Paid__c = 0.02,
                     Partner_Account__c = partner.Id,
-                    Product__c = product
+                    Product__c = product,
+                    Type__c = 'Variable by kW'
                 );
                 commissionStructureMap.put(mapKey, commissionStructure);
             }
