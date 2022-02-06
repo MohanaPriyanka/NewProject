@@ -230,8 +230,61 @@
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
     <layoutSections>
+        <customLabel>true</customLabel>
+        <detailHeading>true</detailHeading>
+        <editHeading>true</editHeading>
+        <label>Partner Commissions</label>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Contract_Close_Estimated_Commission__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>First_Bill_Sent_Estimated_Commission__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>First_Bill_Paid_Estimated_Commission__c</field>
+            </layoutItems>
+            <layoutItems>
+                <emptySpace>true</emptySpace>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Contract_Close_Commission__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>First_Bill_Sent_Commission__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>First_Bill_Paid_Commission__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Contract_Close_Commission_Amount__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>First_Bill_Sent_Commission_Amount__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>First_Bill_Paid_Commission_Amount__c</field>
+            </layoutItems>
+            <layoutItems>
+                <emptySpace>true</emptySpace>
+            </layoutItems>
+        </layoutColumns>
+        <style>TwoColumnsLeftToRight</style>
+    </layoutSections>
+    <layoutSections>
         <customLabel>false</customLabel>
-        <detailHeading>false</detailHeading>
+        <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
         <label>System Information</label>
         <layoutColumns>

@@ -271,7 +271,8 @@ public without sharing class CSRecordLoader implements Queueable {
                         Partner__c = partner.Partner__c,
                         Partner_Account__c = partner.Id,
                         Product__c = sss.Product__c,
-                        CreatedDate = csDataDate
+                        CreatedDate = csDataDate,
+                        Type__c = 'Variable by kW'
                     );
                     uow.registerNew(commissionStructure);
                     Partner_Shared_Solar_System_Eligibility__c eligibility =

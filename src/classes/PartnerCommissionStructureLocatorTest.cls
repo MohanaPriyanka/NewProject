@@ -55,7 +55,8 @@ public without sharing class PartnerCommissionStructureLocatorTest {
             Product__c = productId,
             Cents_kW_DC_Up_Front__c = 0.10,
             Cents_kW_DC_First_Bill__c = 0.23,
-            Cents_kW_DC_First_Bill_Paid__c = 0.11
+            Cents_kW_DC_First_Bill_Paid__c = 0.11,
+            Type__c = 'Variable by kW'
         );
         insert commissionOne;
 
@@ -87,7 +88,7 @@ public without sharing class PartnerCommissionStructureLocatorTest {
         Test.stopTest();
 
         // Verify Commission Structure stamped on INSERT
-        Opportunity opp = [SELECT Commission_Structure__c FROM Opportunity WHERE Id = :opportunity.Id];
+        Opportunity opp = [SELECT Commission_Structure__c FROM Opportunity WHERE Id =: opportunity.Id];
         System.assertEquals(commissionOne.Id, opp.Commission_Structure__c);
     }
 
@@ -106,7 +107,8 @@ public without sharing class PartnerCommissionStructureLocatorTest {
             Product__c = productId,
             Cents_kW_DC_Up_Front__c = 0.20,
             Cents_kW_DC_First_Bill__c = 0.43,
-            Cents_kW_DC_First_Bill_Paid__c = 0.13
+            Cents_kW_DC_First_Bill_Paid__c = 0.13,
+            Type__c = 'Variable by kW'
         );
         insert newCommissionStructure;
         Partner_Shared_Solar_System_Eligibility__c newPartnerEligibility =

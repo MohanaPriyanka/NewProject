@@ -229,7 +229,8 @@ public class PartnerCommissionHandlerTest {
             Product__c = opportunities[1].Product__c,
             Cents_kW_DC_Up_Front__c = 0.10,
             Cents_kW_DC_First_Bill__c = 0.23,
-            Cents_kW_DC_First_Bill_Paid__c = 0.11
+            Cents_kW_DC_First_Bill_Paid__c = 0.11,
+            Type__c = 'Variable by kW'
         );
         insert commissionOne;
 
@@ -246,7 +247,8 @@ public class PartnerCommissionHandlerTest {
             Product__c = opportunities[1].Product__c,
             Cents_kW_DC_Up_Front__c = 0.10,
             Cents_kW_DC_First_Bill__c = 0.23,
-            Cents_kW_DC_First_Bill_Paid__c = 0.11
+            Cents_kW_DC_First_Bill_Paid__c = 0.11,
+            Type__c = 'Variable by kW'
         );
         insert commissionTwo;
         Util.enableAllTriggers();
@@ -306,7 +308,8 @@ public class PartnerCommissionHandlerTest {
             Product__c = opportunities[0].Product__c,
             Cents_kW_DC_Up_Front__c = 0.10,
             Cents_kW_DC_First_Bill__c = 0.23,
-            Cents_kW_DC_First_Bill_Paid__c = 0.11
+            Cents_kW_DC_First_Bill_Paid__c = 0.11,
+            Type__c = 'Variable by kW'
         );
         insert commissionOne;
 
@@ -358,7 +361,8 @@ public class PartnerCommissionHandlerTest {
             Product__c = opportunities[0].Product__c,
             Cents_kW_DC_Up_Front__c = 0.10,
             Cents_kW_DC_First_Bill__c = 0.23,
-            Cents_kW_DC_First_Bill_Paid__c = 0.11
+            Cents_kW_DC_First_Bill_Paid__c = 0.11,
+            Type__c = 'Variable by kW'
         );
         insert commissionTwo;
 
@@ -404,7 +408,8 @@ public class PartnerCommissionHandlerTest {
             Product__c = opportunities[0].Product__c,
             Cents_kW_DC_Up_Front__c = 0.10,
             Cents_kW_DC_First_Bill__c = 0.23,
-            Cents_kW_DC_First_Bill_Paid__c = 0.11
+            Cents_kW_DC_First_Bill_Paid__c = 0.11,
+            Type__c = 'Variable by kW'
         );
         insert commissionOne;
 

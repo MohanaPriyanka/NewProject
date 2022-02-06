@@ -59,17 +59,20 @@ public with sharing class OpportunitiesSelectorTest {
 
         Commission_Structure__c onlyBill = new Commission_Structure__c(
             Cents_kW_DC_First_Bill_Paid__c = 0.07,
-            Cents_kW_DC_First_Bill__c = 0
+            Cents_kW_DC_First_Bill__c = 0,
+            Type__c = 'Variable by kW'
         );
         insert onlyBill;
         Commission_Structure__c onlyPayment = new Commission_Structure__c(
             Cents_kW_DC_First_Bill_Paid__c = 0,
-            Cents_kW_DC_First_Bill__c = 0.13
+            Cents_kW_DC_First_Bill__c = 0.13,
+            Type__c = 'Variable by kW'
         );
         insert onlyPayment;
         Commission_Structure__c both = new Commission_Structure__c(
             Cents_kW_DC_First_Bill_Paid__c = 0.07,
-            Cents_kW_DC_First_Bill__c = 0.13
+            Cents_kW_DC_First_Bill__c = 0.13,
+            Type__c = 'Variable by kW'
         );
         insert both;
 
