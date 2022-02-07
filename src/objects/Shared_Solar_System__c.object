@@ -651,6 +651,21 @@ Based on size of project (1MW), if the SSS falls into Class II or Class III cate
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Client_Acq_Available_LMI_Capacity__c</fullName>
+        <externalId>false</externalId>
+        <formula>Client_Acq_Reserved_LMI_Capacity__c - (Client_Acq_Committed_LMI_Capacity__c + Client_Acq_Pending_LMI_Capacity__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Client Acquired LMI Capacity not yet committed or pending; Result of Reserved LMI Capacity - (Committed and Pending LMI Capacity)</inlineHelpText>
+        <label>Client Acq Available LMI Capacity</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Client_Acq_Available_Small_CS_Capacity__c</fullName>
         <externalId>false</externalId>
         <formula>Client_Acq_Reserved_Small_CS_Capacity__c - (Client_Acq_Committed_Small_CS_Capacity__c + Client_Acq_Pending_Small_CS_Capacity__c)</formula>
@@ -671,6 +686,21 @@ Based on size of project (1MW), if the SSS falls into Class II or Class III cate
         <externalId>false</externalId>
         <inlineHelpText>Sum of all anchor subscriptions where the Opportunity&apos;s Partner is a Client Account</inlineHelpText>
         <label>Client Acq Committed Anchor Capacity</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Client_Acq_Committed_LMI_Capacity__c</fullName>
+        <description>Set by SystemCapacityRollupCalculator</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of all Small CS Subscriptions where the Opportunity&apos;s Stage is Complete, Partner is a Client, and Customer Sub-Group is LMI</inlineHelpText>
+        <label>Client Acq Committed LMI Capacity</label>
         <precision>12</precision>
         <required>false</required>
         <scale>2</scale>
@@ -711,6 +741,20 @@ Based on size of project (1MW), if the SSS falls into Class II or Class III cate
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Client_Acq_Pending_LMI_Capacity__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of New, Pending, or QC in Process Small CS subscriptions, if the Opportunity&apos;s Partner is a Client and Customer Sub-Group is LMI</inlineHelpText>
+        <label>Client Acq Pending LMI Capacity</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Client_Acq_Pending_Small_CS_Capacity__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Sum of New, Pending, or QC in Process Small CS subscriptions, if the Opportunity&apos;s Partner is a Client Account</inlineHelpText>
@@ -729,6 +773,20 @@ Based on size of project (1MW), if the SSS falls into Class II or Class III cate
         <externalId>false</externalId>
         <inlineHelpText>Reserved capacity for Client Acquired Anchors, manually input via a Shared Solar System Order</inlineHelpText>
         <label>Client Acq Reserved Anchor Capacity</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Client_Acq_Reserved_LMI_Capacity__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Reserved capacity for Client Acquired LMI customers, manually input via a Shared Solar System Order</inlineHelpText>
+        <label>Client Acq Reserved LMI Capacity</label>
         <precision>12</precision>
         <required>false</required>
         <scale>2</scale>
@@ -1170,6 +1228,17 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <visibleLines>25</visibleLines>
     </fields>
     <fields>
+        <fullName>LMI__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates this system accepts LMI customers</inlineHelpText>
+        <label>LMI</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Last_Sch_Z_Enacted_Date__c</fullName>
         <description>This field is populated with the maximum Date Enacted by Utility field on all related Allocation Schedule records. If it needs to be updated, please update the Allocation Schedule record.</description>
         <externalId>false</externalId>
@@ -1386,6 +1455,63 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <inlineHelpText>Sum of New, Pending, or QC in Process Perch Acq Small CS subscriptions, automatically calculated</inlineHelpText>
         <label>Perch Acq Pending Small CS Capacity</label>
         <precision>11</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Perch_Acq_Available_LMI_Capacity__c</fullName>
+        <externalId>false</externalId>
+        <formula>Perch_Acq_Reserved_LMI_Capacity__c - (Perch_Acq_Pending_LMI_Capacity__c + Perch_Acq_Committed_LMI_Capacity__c )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Perch acquired LMI Capacity not yet committed or pending; Result of Reserved LMI Capacity - (Committed and Pending LMI Capacity)</inlineHelpText>
+        <label>Perch Acq Available LMI Capacity</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Perch_Acq_Committed_LMI_Capacity__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of Perch acquired Complete LMI Subscriptions, automatically calculated</inlineHelpText>
+        <label>Perch Acq Committed LMI Capacity</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Perch_Acq_Pending_LMI_Capacity__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of New, Pending, or QC in Process Perch Acq LMI subscriptions, automatically calculated</inlineHelpText>
+        <label>Perch Acq Pending LMI Capacity</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Perch_Acq_Reserved_LMI_Capacity__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Capacity reserved for Perch-acquired LMI customers, manually input via a Shared Solar System Order</inlineHelpText>
+        <label>Perch Acq Reserved LMI Capacity</label>
+        <precision>12</precision>
         <required>false</required>
         <scale>2</scale>
         <trackFeedHistory>false</trackFeedHistory>

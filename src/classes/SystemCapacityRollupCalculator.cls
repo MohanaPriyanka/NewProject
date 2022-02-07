@@ -105,7 +105,7 @@ public without sharing class SystemCapacityRollupCalculator {
     }
 
     private void addDemandCapacityToCapacityList(Utility_Account_Subscription__c uas) {
-        if (uas.Opportunity_Stage__c == 'Complete') {
+        if (uas.Opportunity__r.StageName == 'Complete') {
             uasesByCapacityType.putValue('Committed Demand', uas);
         } else if (!isCancelledStatus(uas)) {
             uasesByCapacityType.putValue('Pending Demand', uas);
@@ -133,11 +133,15 @@ public without sharing class SystemCapacityRollupCalculator {
         updateSystemField(sss, Shared_Solar_System__c.Capacity_Committed_kW_DC__c, sumCapacity(uasesByCapacityType.getValues('Committed Perch Small CS')));
         updateSystemField(sss, Shared_Solar_System__c.Pending_Anchor_Capacity__c, sumCapacity(uasesByCapacityType.getValues('Pending Perch Anchor')));
         updateSystemField(sss, Shared_Solar_System__c.Anchor_Capacity_Reserved__c, sumCapacity(uasesByCapacityType.getValues('Committed Perch Anchor')));
+        updateSystemField(sss, Shared_Solar_System__c.Perch_Acq_Pending_LMI_Capacity__c, sumCapacity(uasesByCapacityType.getValues('Pending Perch LMI')));
+        updateSystemField(sss, Shared_Solar_System__c.Perch_Acq_Committed_LMI_Capacity__c, sumCapacity(uasesByCapacityType.getValues('Committed Perch LMI')));
 
         updateSystemField(sss, Shared_Solar_System__c.Client_Acq_Pending_Small_CS_Capacity__c, sumCapacity(uasesByCapacityType.getValues('Pending Client Small CS')));
         updateSystemField(sss, Shared_Solar_System__c.Client_Acq_Committed_Small_CS_Capacity__c, sumCapacity(uasesByCapacityType.getValues('Committed Client Small CS')));
         updateSystemField(sss, Shared_Solar_System__c.Client_Acq_Pending_Anchor_Capacity__c, sumCapacity(uasesByCapacityType.getValues('Pending Client Anchor')));
         updateSystemField(sss, Shared_Solar_System__c.Client_Acq_Committed_Anchor_Capacity__c, sumCapacity(uasesByCapacityType.getValues('Committed Client Anchor')));
+        updateSystemField(sss, Shared_Solar_System__c.Client_Acq_Pending_LMI_Capacity__c, sumCapacity(uasesByCapacityType.getValues('Pending Client LMI')));
+        updateSystemField(sss, Shared_Solar_System__c.Client_Acq_Committed_LMI_Capacity__c, sumCapacity(uasesByCapacityType.getValues('Committed Client LMI')));
 
         updateSystemField(sss, Shared_Solar_System__c.Pending_Demand_Capacity__c, sumCapacity(uasesByCapacityType.getValues('Pending Demand')));
         updateSystemField(sss, Shared_Solar_System__c.Committed_Demand_Capacity__c, sumCapacity(uasesByCapacityType.getValues('Committed Demand')));
@@ -154,11 +158,12 @@ public without sharing class SystemCapacityRollupCalculator {
         }
     }
 
+    @TestVisible
     private String getCapacityKey(Utility_Account_Subscription__c uas) {
         String stageType;
         String responsibleParty;
         String customerType;
-        if (uas.Opportunity_Stage__c == 'Complete') {
+        if (uas.Opportunity__r.StageName == 'Complete') {
             stageType = 'Committed';
         } else if (!isCancelledStatus(uas)) {
             stageType = 'Pending';
@@ -171,8 +176,10 @@ public without sharing class SystemCapacityRollupCalculator {
         } else {
             responsibleParty = 'Perch';
         }
-        if (uas.Customer_Group__c == 'Anchor' || uas.Opportunity__r.Customer_Sub_Group__c == 'Public Offtake') {
+        if (uas.Opportunity__r.Customer_Group__c == 'Anchor' || uas.Opportunity__r.Customer_Sub_Group__c == 'Public Offtake') {
             customerType = 'Anchor';
+        } else if (uas.Opportunity__r.Customer_Sub_Group__c == 'LMI') {
+            customerType = 'LMI';
         } else {
             customerType = 'Small CS';
         }
@@ -221,13 +228,13 @@ public without sharing class SystemCapacityRollupCalculator {
      * @return Bool if subscription is 'Cancelled'
      */
     private Boolean isCancelledStatus(Utility_Account_Subscription__c uas) {
-        return (uas.Opportunity_Stage__c == 'Expired'
-            || uas.Opportunity_Stage__c == 'Cancelled'
-            || uas.Opportunity_Stage__c == 'DUPLICATE'
-            || uas.Opportunity_Stage__c == 'Unqualified'
-            || uas.Opportunity_Stage__c == 'Rejected Contract'
-            || uas.Opportunity_Stage__c == 'Dead'
-            || uas.Opportunity_Stage__c == 'Lost'
+        return (uas.Opportunity__r.StageName == 'Expired'
+            || uas.Opportunity__r.StageName == 'Cancelled'
+            || uas.Opportunity__r.StageName == 'DUPLICATE'
+            || uas.Opportunity__r.StageName == 'Unqualified'
+            || uas.Opportunity__r.StageName == 'Rejected Contract'
+            || uas.Opportunity__r.StageName == 'Dead'
+            || uas.Opportunity__r.StageName == 'Lost'
         );
     }
 }
