@@ -160,7 +160,7 @@ public with sharing class ZuoraReturnedPaymentService implements Queueable, Data
         newCase.Priority = 'Medium';
         newCase.Product_Line__c = 'Community Solar';
         newCase.Category__c = 'Billing-Issue';
-        newCase.Description = 'This transaction was marked as returned. There may be followup required with the customer to resolve issues with their payment method. Payment Amount: ' + zuoraPayment.Zuora__Amount__c + '. Payment Record: ' + paymentURL;
+        newCase.Description = 'This transaction was marked as returned. There may be followup required with the customer to resolve issues with their payment method. Payment Amount: $' + zuoraPayment.Zuora__Amount__c + '. Payment Record: ' + paymentURL;
         newCase.Origin = 'Other';
         newCase.Case_Type__c = 'Perch';
         newCase.Disable_Followup_Email__c = true;
