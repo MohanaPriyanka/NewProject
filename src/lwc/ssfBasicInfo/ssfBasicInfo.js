@@ -162,6 +162,10 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         }
     }
 
+    replacementCapacityOnChange(event) {
+        this.restLead.replacementCapacity = event.target.checked;
+    }
+
     submit() {
         submitApplication(this, true);
     }

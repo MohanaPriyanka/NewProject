@@ -83,6 +83,7 @@ public without sharing class CSOpportunityFactory {
         opp.Referral_Email__c = lead.Referral_Email__c;
         opp.State_ab__c = lead.LASERCA__Home_State__c;
         opp.Underwriting_Criteria__c = lead.Underwriting_Criteria__c;
+        opp.Replacement_Capacity__c = lead.Replacement_Capacity__c;
         return opp;
     }
 }

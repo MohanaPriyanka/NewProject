@@ -200,7 +200,8 @@ public without sharing class CSOpportunityFactoryTest {
                 System_Assignment__c,
                 Utility__c,
                 OwnerId,
-                Underwriting_Criteria__c
+                Underwriting_Criteria__c,
+                Replacement_Capacity__c
             FROM Lead
             WHERE Id = :lead.Id
         ];
@@ -376,7 +377,8 @@ public without sharing class CSOpportunityFactoryTest {
                 System_Assignment__c,
                 Utility__c,
                 OwnerId,
-                Underwriting_Criteria__c
+                Underwriting_Criteria__c,
+                Replacement_Capacity__c
             FROM Lead
             WHERE Id = :lead.Id
         ];
@@ -551,7 +553,8 @@ public without sharing class CSOpportunityFactoryTest {
                 System_Assignment__c,
                 Utility__c,
                 OwnerId,
-                Underwriting_Criteria__c
+                Underwriting_Criteria__c,
+                Replacement_Capacity__c
             FROM Lead
             WHERE Id = :lead.Id
         ];

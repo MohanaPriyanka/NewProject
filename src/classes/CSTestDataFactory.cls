@@ -44,6 +44,7 @@ public with sharing class CSTestDataFactory {
         restLead.noPayment = collectPaymentInfo;
         restLead.underwritingCriteria = underwritingMethod;
         restLead.loadZone = 'SEMA';
+        restLead.replacementCapacity = false;
 
         RestLead.RestPropertyAccount restAccount = new RestLead.RestPropertyAccount();
         restAccount.billingStreet = 'Test billing street';

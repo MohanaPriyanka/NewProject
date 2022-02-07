@@ -3552,6 +3552,16 @@ IF(INCLUDES(Customer_Type__c, &quot;Private Affordable&quot;),&quot;Error&quot;,
         </valueSet>
     </fields>
     <fields>
+        <fullName>Replacement_Capacity__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Replacement Capacity</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Reserved_System_Capacity_kW_DC2__c</fullName>
         <externalId>false</externalId>
         <label>Reserved System Capacity (kW DC)</label>

@@ -212,7 +212,7 @@ public without sharing class PartnerCommissionService {
             String.valueOf(opp.Id) + ' (' + String.valueOf(opp.Name) + '). ' +
             'Please locate and apply the correct Commission Structure for this deal.';
         newCase.Origin = 'Other';
-        newCase.Case_Type__c = 'BlueWave';
+        newCase.Case_Type__c = 'Perch';
         newCase.Disable_Followup_Email__c = true;
         unitOfWork.registerNew(newCase);
     }
