@@ -21,7 +21,8 @@ public with sharing class ZuoraPaymentSelector {
                 Zuora__BillingAccount__r.Zuora__Account__r.Send_Bills_Contact__c,
                 Zuora__BillingAccount__r.Zuora__Account__r.Send_Bills_Contact__r.Email,
                 Zuora__BillingAccount__r.Zuora__Account__r.Send_Bills_Contact__r.Name,
-                Zuora__PaymentMethodId__c
+                Zuora__PaymentMethodId__c,
+                Zuora__Amount__c
             FROM Zuora__Payment__c
             WHERE Id IN :ids
         ];
