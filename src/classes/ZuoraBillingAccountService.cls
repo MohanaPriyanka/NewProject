@@ -134,19 +134,17 @@ public without sharing class ZuoraBillingAccountService implements Schedulable, 
     }
 
     private Boolean pastDueFieldChanged(Account propertyToUpdate, Zuora__CustomerAccount__c zuoraAccount) {
-        return propertyToUpdate.Total_Outstanding_Balance_Zuora__c != zuoraAccount.Zuora__Account__r.Total_Outstanding_Balance_Zuora__c ||
+        return propertyToUpdate.Total_Outstanding_Balance_Merge__c != zuoraAccount.Zuora__Account__r.Total_Outstanding_Balance_Merge__c ||
             propertyToUpdate.Max_Overdue_Due_Date_Zuora__c != zuoraAccount.Zuora__Account__r.Max_Overdue_Due_Date_Zuora__c ||
             propertyToUpdate.Last_Bill_Send_Date_New_Charges_Zuora__c != zuoraAccount.Zuora__Account__r.Last_Bill_Send_Date_New_Charges_Zuora__c;
     }
 
     private void setAccountPastDueFields(AccountSummary accountSummary, Account propertyToUpdate) {
         if (accountSummary != null) {
-            propertyToUpdate.Total_Outstanding_Balance_Zuora__c = accountSummary.TotalBalance;
             propertyToUpdate.Max_Overdue_Due_Date_Zuora__c = accountSummary.MinDueDate;
             propertyToUpdate.Last_Bill_Send_Date_New_Charges_Zuora__c = accountSummary.LastBillSendDate;
         } else {
             // No invoices or debit memos with a balance were returned for that account, so set to null:
-            propertyToUpdate.Total_Outstanding_Balance_Zuora__c = 0;
             propertyToUpdate.Max_Overdue_Due_Date_Zuora__c = null;
             propertyToUpdate.Last_Bill_Send_Date_New_Charges_Zuora__c = null;
         }
