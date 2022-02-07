@@ -12,19 +12,18 @@ public without sharing class CSCancellationAccountService {
     @TestVisible private static final String CANCELLATION_PARAGRAPH_TWO_LABEL = '{!Cancellation_Paragraph_Two__c}';
     @TestVisible private static final String DEFAULT_CANCELLATION_PARAGRAPH_TWO = '<br>Per our records, you have multiple subscriptions ' +
         'and the terms of service may vary for each. Your utility may process the cancellations at different times over ' +
-        'a period of months. During this time, you are responsible for all solar credits transferred to your account. Once ' +
-        'your all your subscriptions are removed and stop receiving credits you will be notified of the change via email.</br>';
+        'many months. During this time, you are responsible for all solar credits transferred to your account. We will ' +
+        'email you when the utility removes all your subscriptions and you stop receiving credits.</br>';
     @TestVisible private static final String CANCELLATION_PARAGRAPH_THREE_LABEL = '{!Cancellation_Paragraph_Three__c}';
     @TestVisible private static final String DEFAULT_CANCELLATION_PARAGRAPH_THREE = '<br><i>Please refer to your contract(s) for more ' +
         'details about the terms of service for each of your subscriptions including any applicable early termination fees.</i></br>';
 
     public String handleOverdueAccounts(Boolean preview) {
         String outputMessage = CSCancellationScheduler.ACCOUNT_OVERDUE_DESCRIPTION;
-        if (preview) {
-            overdueAccounts = AccountsSelector.selectCS67DaysPastDueWithAnchorOpps();
-        } else {
+        overdueAccounts = AccountsSelector.selectCS67DaysPastDueWithAnchorOpps();
+        if (!preview) {
             outputMessage = outputMessage.replace('will get', 'got');
-            overdueAccounts = handleOverdueAccounts();
+            handleOverdueAccounts(overdueAccounts);
         }
         for (Account account : overdueAccounts) {
             outputMessage += account.Id + ', ' + account.Name + ' ' + account.Days_Past_Due__c + '\n';
@@ -35,9 +34,8 @@ public without sharing class CSCancellationAccountService {
     // W-008422: Finds accounts that are overdue, and sets the Account's cancellation reason, comments, and request date,
     // which in turn triggers the cancellation process. We skip Anchor or Public Offtake accounts as well as those that
     // have an override checkbox checked.
-    @TestVisible private static List<Account> handleOverdueAccounts() {
+    @TestVisible private static void handleOverdueAccounts(List<Account> accountList) {
         List<Account> updatedAccounts = new List<Account>();
-        List<Account> accountList = AccountsSelector.selectCS67DaysPastDueWithAnchorOpps();
 
         for (Account acct : accountList) {
             if (acct.Opportunities.isEmpty()){
@@ -50,7 +48,6 @@ public without sharing class CSCancellationAccountService {
         }
 
         update updatedAccounts;
-        return updatedAccounts;
     }
 
     // W-008413: Called by the AccountTrigger after Property Accounts are updated with a Cancellation Request Date, to

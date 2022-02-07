@@ -8,11 +8,10 @@ public without sharing class CSCancellationOppService {
 
     public String handleOpportunities(Boolean preview) {
         String outputMessage = CSCancellationScheduler.OPPORTUNITY_CANCELLATION_DESCRIPTION;
-        if (preview) {
-            cancelledOpportunities = getOpportunitiesToCancel();
-        } else {
+        cancelledOpportunities = getOpportunitiesToCancel();
+        if (!preview) {
             outputMessage = outputMessage.replace('will get', 'got');
-            cancelledOpportunities = cancelOpportunities(getOpportunitiesToCancel());
+            cancelOpportunities(cancelledOpportunities);
         }
         for (Opportunity opportunity : cancelledOpportunities) {
             outputMessage += opportunity.Id + ', ' + opportunity.Name + '\n';
@@ -27,10 +26,9 @@ public without sharing class CSCancellationOppService {
     //
     // Once all opportunities under a property account are cancelled (or Duplicate, Expired, or Dead), another scheduled job
     // will send a termination letter
-    @TestVisible private List<Opportunity> cancelOpportunities(List<Opportunity> oppToCancelList) {
+    @TestVisible private void cancelOpportunities(List<Opportunity> oppToCancelList) {
         Opportunities opportunities = new Opportunities(oppToCancelList);
         opportunities.cancel();
-        return opportunities.records;
     }
 
     @TestVisible private List<Opportunity> getOpportunitiesToCancel() {

@@ -66,7 +66,7 @@ public without sharing class CSCancellationScheduler implements Schedulable{
     }
 
     @SuppressWarnings('PMD.ApexCRUDViolation')
-    private String cancel(Boolean preview, Autopay_Schedule__c schedule) {
+    private void cancel(Boolean preview, Autopay_Schedule__c schedule) {
         String outputMessage = '';
         outputMessage = cancellationAccountService.handleOverdueAccounts(preview);
 
@@ -93,6 +93,5 @@ public without sharing class CSCancellationScheduler implements Schedulable{
             mail.setSubject('CS Cancellation'+(preview?' Preview':'')+' Results');
             MessagingService.sendEmail(new List<Messaging.Email>{mail});
         }
-        return outputMessage;
     }
 }
