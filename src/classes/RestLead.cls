@@ -37,6 +37,7 @@ public without sharing class RestLead {
     public Integer numberOfContractDocs;    // used in SSF only
     public Datetime mostRecentContractGen;  // used in SSF only
     public Date birthdate;
+    public Boolean replacementCapacity;
 
     @TestVisible
     private static FeatureService featureService = new FeatureService();
@@ -73,6 +74,7 @@ public without sharing class RestLead {
         this.underwritingCriteria = lead.Underwriting_Criteria__c;
         this.noPayment = lead.No_Payment__c;
         this.birthdate = lead.LASERCA__Birthdate__c;
+        this.replacementCapacity = lead.Replacement_Capacity__c;
     }
 
     public void validateCreateFields() {
@@ -157,6 +159,7 @@ public without sharing class RestLead {
         if (fieldNames.contains('underwritingCriteria')) baseLead.Underwriting_Criteria__c = this.underwritingCriteria;
         if (fieldNames.contains('utilityId')) baseLead.Utility_relationship__c = this.utilityId;
         if (fieldNames.contains('birthdate')) baseLead.LASERCA__Birthdate__c = this.birthdate;
+        if (fieldNames.contains('replacementCapacity')) baseLead.Replacement_Capacity__c = this.replacementCapacity;
         updateDerivedFields(new RestLead(baseLead), baseLead);
 
         if (this.utilityId == null && this.eiaId != null) {
@@ -200,7 +203,8 @@ public without sharing class RestLead {
             Underwriting_Criteria__c = this.underwritingCriteria == null ? 'None' : this.underwritingCriteria,
             No_Payment__c = this.noPayment,
             Utility_relationship__c = this.utilityId,
-            LASERCA__Birthdate__c = this.birthdate
+            LASERCA__Birthdate__c = this.birthdate,
+            Replacement_Capacity__c = this.replacementCapacity == null ? false : this.replacementCapacity
         );
         // Since:
         // - all UALs should have the same zip code under a property account (enforced by the UI and business logic),

@@ -11794,6 +11794,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.Replacement_Capacity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Lead.Retired__c</field>
         <readable>true</readable>
@@ -21056,6 +21061,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Region__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Replacement_Capacity__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

@@ -93,6 +93,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Opportunity.Replacement_Capacity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Utility_Account_Log__c.Exclude_from_Demand_Capacity__c</field>
         <readable>true</readable>
     </fieldPermissions>
