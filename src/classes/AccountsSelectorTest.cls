@@ -110,8 +110,8 @@ public with sharing class AccountsSelectorTest {
         List<Account> queriedAccounts = selector.getAccountsById(new Set<Id>{accounts[0].Id, accounts[1].Id});
         System.assertEquals(2,queriedAccounts.size());
     }
-    
-    @IsTest public static void testSelectByBlueWaveId() {
+
+    @IsTest public static void testSelectByPerchId() {
         Account accountOne = new Account(
             Name = 'Test Account'
         );
@@ -123,7 +123,7 @@ public with sharing class AccountsSelectorTest {
             LIMIT 1
         ];
         AccountsSelector selector = new AccountsSelector();
-        Map<String,Account> acctMap = selector.selectByBlueWaveId(new Set<String>{acct.Account_Number__c});
+        Map<String,Account> acctMap = selector.selectByPerchId(new Set<String>{acct.Account_Number__c});
         System.assertEquals(accountOne.Id,acctMap.get(acct.Account_Number__c).Id);
     }
 
