@@ -317,7 +317,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         newCase.Priority = 'High';
         newCase.Description = message;
         newCase.Origin = 'Other';
-        newCase.Case_Type__c = 'BlueWave';
+        newCase.Case_Type__c = 'Perch';
         newCase.Disable_Followup_Email__c = true;
         newCase.External_Id__c = externalId;
         return newCase;

@@ -96,7 +96,7 @@ public without sharing class ZuoraBillEmailHandler implements Database.Batchable
         customerCareCase.AccountId = invoice.Zuora__BillingAccount__r.Zuora__Account__r.Id;
         customerCareCase.Category__c = 'Billing-Issue';
         customerCareCase.Origin = 'Other';
-        customerCareCase.Case_Type__c = 'BlueWave';
+        customerCareCase.Case_Type__c = 'Perch';
         customerCareCase.Disable_Followup_Email__c = true;
         customerCareCase.Description = 'Invoice ' + invoice.Name + ' (' + invoice.Id + ') had an error ' +
             'when emailing bills.';

@@ -161,7 +161,7 @@ public with sharing class ZuoraReturnedPaymentService implements Queueable, Data
         newCase.Category__c = 'Billing-Issue';
         newCase.Description = 'This transaction was marked as returned. There may be followup required with the customer to resolve issues with their payment method.';
         newCase.Origin = 'Other';
-        newCase.Case_Type__c = 'BlueWave';
+        newCase.Case_Type__c = 'Perch';
         newCase.Disable_Followup_Email__c = true;
         newCase.AccountId = zuoraPayment.Zuora__BillingAccount__r.Zuora__Account__c;
         newCase.ContactId = zuoraPayment.Zuora__BillingAccount__r.Zuora__Account__r.Send_Bills_Contact__c;

@@ -406,11 +406,6 @@
                     <label>Customer</label>
                 </value>
                 <value>
-                    <fullName>BlueWave</fullName>
-                    <default>false</default>
-                    <label>BlueWave</label>
-                </value>
-                <value>
                     <fullName>3rd Party</fullName>
                     <default>false</default>
                     <label>3rd Party</label>
@@ -419,6 +414,17 @@
                     <fullName>Vendor</fullName>
                     <default>false</default>
                     <label>Vendor</label>
+                </value>
+                <value>
+                    <fullName>Perch</fullName>
+                    <default>false</default>
+                    <label>Perch</label>
+                </value>
+                <value>
+                    <fullName>BlueWave</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>BlueWave</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -2542,6 +2548,25 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <businessProcess>Finance Case</businessProcess>
         <label>Asset Management Case</label>
         <picklistValues>
+            <picklist>Case_Type__c</picklist>
+            <values>
+                <fullName>3rd Party</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Perch</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Vendor</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Assignee_If_Different__c</picklist>
             <values>
                 <fullName>Alex Schulte</fullName>
@@ -2569,25 +2594,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
             <values>
                 <fullName>Trevor Lennox</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Case_Type__c</picklist>
-            <values>
-                <fullName>3rd Party</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>BlueWave</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer</fullName>
-                <default>true</default>
-            </values>
-            <values>
-                <fullName>Vendor</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -2789,6 +2795,25 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <businessProcess>Customer Care Case</businessProcess>
         <label>Case</label>
         <picklistValues>
+            <picklist>Case_Type__c</picklist>
+            <values>
+                <fullName>3rd Party</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Perch</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Vendor</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Assignee_If_Different__c</picklist>
             <values>
                 <fullName>Alex Schulte</fullName>
@@ -2816,25 +2841,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
             <values>
                 <fullName>Trevor Lennox</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Case_Type__c</picklist>
-            <values>
-                <fullName>3rd Party</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>BlueWave</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer</fullName>
-                <default>true</default>
-            </values>
-            <values>
-                <fullName>Vendor</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -3100,6 +3106,25 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <businessProcess>Customer Care Case</businessProcess>
         <label>Client Services</label>
         <picklistValues>
+            <picklist>Case_Type__c</picklist>
+            <values>
+                <fullName>3rd Party</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Perch</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Vendor</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Assignee_If_Different__c</picklist>
             <values>
                 <fullName>Alex Schulte</fullName>
@@ -3127,25 +3152,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
             <values>
                 <fullName>Trevor Lennox</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Case_Type__c</picklist>
-            <values>
-                <fullName>3rd Party</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>BlueWave</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer</fullName>
-                <default>true</default>
-            </values>
-            <values>
-                <fullName>Vendor</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -3575,6 +3581,25 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <businessProcess>Customer Care Case</businessProcess>
         <label>Customer Care</label>
         <picklistValues>
+            <picklist>Case_Type__c</picklist>
+            <values>
+                <fullName>3rd Party</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Perch</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Vendor</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Origin</picklist>
             <values>
                 <fullName>Chatter Answers</fullName>
@@ -3774,25 +3799,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Case_Type__c</picklist>
-            <values>
-                <fullName>3rd Party</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>BlueWave</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer</fullName>
-                <default>true</default>
-            </values>
-            <values>
-                <fullName>Vendor</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Primary_Complaint_Category__c</picklist>
             <values>
                 <fullName>Advertising%2Fmarketing</fullName>
@@ -3961,6 +3967,25 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <businessProcess>Finance Case</businessProcess>
         <label>Finance Case</label>
         <picklistValues>
+            <picklist>Case_Type__c</picklist>
+            <values>
+                <fullName>3rd Party</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Perch</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Vendor</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Assignee_If_Different__c</picklist>
             <values>
                 <fullName>Alex Schulte</fullName>
@@ -3988,25 +4013,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
             <values>
                 <fullName>Trevor Lennox</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Case_Type__c</picklist>
-            <values>
-                <fullName>3rd Party</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>BlueWave</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer</fullName>
-                <default>true</default>
-            </values>
-            <values>
-                <fullName>Vendor</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -4208,6 +4214,25 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <businessProcess>Customer Care Case</businessProcess>
         <label>Partner Care Case</label>
         <picklistValues>
+            <picklist>Case_Type__c</picklist>
+            <values>
+                <fullName>3rd Party</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Customer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Perch</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Vendor</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Category__c</picklist>
             <values>
                 <fullName>Commission Payments</fullName>
@@ -4302,25 +4327,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
             <values>
                 <fullName>Utility Account is Already Subscribed</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Case_Type__c</picklist>
-            <values>
-                <fullName>3rd Party</fullName>
-                <default>true</default>
-            </values>
-            <values>
-                <fullName>BlueWave</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Vendor</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -4562,6 +4568,25 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <businessProcess>Product Support</businessProcess>
         <label>Technology Support</label>
         <picklistValues>
+            <picklist>Case_Type__c</picklist>
+            <values>
+                <fullName>3rd Party</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Perch</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Vendor</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Resolution__c</picklist>
             <values>
                 <fullName>Bug</fullName>
@@ -4639,25 +4664,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
             <values>
                 <fullName>Trevor Lennox</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Case_Type__c</picklist>
-            <values>
-                <fullName>3rd Party</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>BlueWave</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer</fullName>
-                <default>true</default>
-            </values>
-            <values>
-                <fullName>Vendor</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
