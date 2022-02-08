@@ -5,12 +5,10 @@
  */
 
 public without sharing class CSCancellationScheduler implements Schedulable{
-    @TestVisible
-    private List<Account> overdueAccounts = new List<Account>();
-    @TestVisible
-    private List<Opportunity> cancelledOpportunities = new List<Opportunity>();
-    @TestVisible
-    private List<Account> accountsRemovedFromAllProjects = new List<Account>();
+    @TestVisible private CSCancellationAccountService cancellationAccountService = new CSCancellationAccountService();
+    @TestVisible private CSCancellationOppService cancellationOppService = new CSCancellationOppService();
+    @TestVisible private CSCancellationProjectRemover cancellationProjectRemover = new CSCancellationProjectRemover();
+
     public static final String ACCOUNT_OVERDUE_DESCRIPTION =
         'These accounts, if any, will get a Cancellation Reason of "Lack of Payment", a Cancellation ' +
             'Request Date of today, and an automated cancellation comment.\n' +
@@ -57,27 +55,26 @@ public without sharing class CSCancellationScheduler implements Schedulable{
         }
     }
 
-    public String handleAccountsAndOpportunities(Boolean preview, Autopay_Schedule__c schedule) {
+    private void handleAccountsAndOpportunities(Boolean preview, Autopay_Schedule__c schedule) {
         Savepoint sp = Database.setSavepoint();
         try {
-            return cancel(preview, schedule);
+            cancel(preview, schedule);
         } catch (Exception e) {
             Database.rollback(sp);
             Logger.logNow('CSCancellationScheduler', 'execute', e.getMessage() + e.getStackTraceString());
         }
-        return null;
     }
 
     @SuppressWarnings('PMD.ApexCRUDViolation')
-    private String cancel(Boolean preview, Autopay_Schedule__c schedule) {
+    private void cancel(Boolean preview, Autopay_Schedule__c schedule) {
         String outputMessage = '';
-        outputMessage = handleOverdueAccounts(preview);
+        outputMessage = cancellationAccountService.handleOverdueAccounts(preview);
 
         outputMessage += '\n\n';
-        outputMessage += handleOpportunities(preview);
+        outputMessage += cancellationOppService.handleOpportunities(preview);
 
         outputMessage += '\n\n';
-        outputMessage += handleAccountsToRemove(preview);
+        outputMessage += cancellationProjectRemover.handleAccountsToRemove(preview);
         outputMessage += '\n\n';
         outputMessage += 'Limits:\n' +
             Util.getCPULimit('CPU') + '\n' +
@@ -85,62 +82,16 @@ public without sharing class CSCancellationScheduler implements Schedulable{
             Util.getSOQLLimit('Queries') + '\n' +
             Util.getRowLimit('Rows');
 
-        if (schedule != null) {
-            schedule.Summary__c = outputMessage;
-            schedule.Time_Finished__c = System.now();
-            update schedule;
+        schedule.Summary__c = outputMessage;
+        schedule.Time_Finished__c = System.now();
+        update schedule;
 
-            if (schedule.Send_Results_To__r.Email != null) {
-                Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
-                mail.setPlainTextBody(outputMessage);
-                mail.setToAddresses(new List<String>{schedule.Send_Results_To__r.Email});
-                mail.setSubject('CS Cancellation'+(preview?' Preview':'')+' Results');
-                MessagingService.sendEmail(new List<Messaging.Email>{mail});
-            }
+        if (schedule.Send_Results_To__r.Email != null) {
+            Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+            mail.setPlainTextBody(outputMessage);
+            mail.setToAddresses(new List<String>{schedule.Send_Results_To__r.Email});
+            mail.setSubject('CS Cancellation'+(preview?' Preview':'')+' Results');
+            MessagingService.sendEmail(new List<Messaging.Email>{mail});
         }
-        return outputMessage;
-    }
-
-    public String handleOverdueAccounts(Boolean preview) {
-        String outputMessage = CSCancellationScheduler.ACCOUNT_OVERDUE_DESCRIPTION;
-        if (preview) {
-            overdueAccounts = AccountsSelector.selectCS67DaysPastDueWithAnchorOpps();
-        } else {
-            outputMessage = outputMessage.replace('will get', 'got');
-            overdueAccounts =
-                CSCancellationService.handleOverdueAccounts();
-        }
-        for (Account account : overdueAccounts) {
-            outputMessage += account.Id + ', ' + account.Name + ' ' + account.Days_Past_Due__c + '\n';
-        }
-        return outputMessage;
-    }
-
-    public String handleOpportunities(Boolean preview) {
-        String outputMessage = CSCancellationScheduler.OPPORTUNITY_CANCELLATION_DESCRIPTION;
-        if (preview) {
-            cancelledOpportunities = CSCancellationService.getOpportunitiesToCancel();
-        } else {
-            outputMessage = outputMessage.replace('will get', 'got');
-            cancelledOpportunities =
-                CSCancellationService.cancelOpportunities(CSCancellationService.getOpportunitiesToCancel());
-        }
-        for (Opportunity opportunity : cancelledOpportunities) {
-            outputMessage += opportunity.Id + ', ' + opportunity.Name + '\n';
-        }
-        return outputMessage;
-    }
-
-    public String handleAccountsToRemove(Boolean preview) {
-        String outputMessage = CSCancellationScheduler.ACCOUNT_REMOVAL_DESCRIPTION;
-        accountsRemovedFromAllProjects = CSCancellationProjectRemover.getAccountsRemovedFromAllProjectsWithUpdatedDate();
-        if (!preview) {
-            outputMessage = outputMessage.replace('will get', 'got');
-            accountsRemovedFromAllProjects = CSCancellationProjectRemover.processAccountsRemovedFromAllProjects(accountsRemovedFromAllProjects);
-        }
-        for (Account account : accountsRemovedFromAllProjects) {
-            outputMessage += account.Id + ', ' + account.Name + ' ' + account.Days_Past_Due__c + '\n';
-        }
-        return outputMessage;
     }
 }

@@ -5,6 +5,22 @@
  */
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public with sharing class CSCancellationProjectRemover {
+    @TestVisible
+    private List<Account> accountsRemovedFromAllProjects = new List<Account>();
+
+    public String handleAccountsToRemove(Boolean preview) {
+        String outputMessage = CSCancellationScheduler.ACCOUNT_REMOVAL_DESCRIPTION;
+        accountsRemovedFromAllProjects = CSCancellationProjectRemover.getAccountsRemovedFromAllProjectsWithUpdatedDate();
+        if (!preview) {
+            outputMessage = outputMessage.replace('will get', 'got');
+            accountsRemovedFromAllProjects = CSCancellationProjectRemover.processAccountsRemovedFromAllProjects(accountsRemovedFromAllProjects);
+        }
+        for (Account account : accountsRemovedFromAllProjects) {
+            outputMessage += account.Id + ', ' + account.Name + ' ' + account.Days_Past_Due__c + '\n';
+        }
+        return outputMessage;
+    }
+
     /**
      * @description Gets Accounts that have been removed from all projects, but not updated with a Date Removed From Project
      * @return List of Account, with Date Removed From Project set
@@ -102,7 +118,7 @@ public with sharing class CSCancellationProjectRemover {
                 try {
                     confirmationEmailMap.put(
                         acct.Id,
-                        CSCancellationService.createCSEmail(
+                        CSCancellationService.createCSCancellationEmail(
                             acct,
                             'CS_Project_Removal_Confirmation',
                             'Subscription Removal Confirmation',
