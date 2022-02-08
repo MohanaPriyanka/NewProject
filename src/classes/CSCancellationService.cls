@@ -1,5 +1,5 @@
 /**
-* Created by Sarah Renfro on 12/6/2018.
+* @description Created by Sarah Renfro on 12/6/2018.
 *
 * Description: Implements cancellation functionality as specified in the Automated Cancellation Process epic:
 * https://bluewavesolar.my.salesforce.com/a2g0a000000K7sX and Lucid chart:
@@ -17,139 +17,13 @@
 */
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class CSCancellationService {
-    @TestVisible
-    private static final Id CANCELLED_BY_ID = [SELECT Id FROM User WHERE LastName = 'API' LIMIT 1].Id;
-    private static final String AUTOMATED_CANCELLATION_COMMENT = 'Automated Cancellation';
-    @TestVisible
-    private static final String CANCELLATION_PARAGRAPH_TWO_LABEL = '{!Cancellation_Paragraph_Two__c}';
-    @TestVisible
-    private static final String DEFAULT_CANCELLATION_PARAGRAPH_TWO = '<br>Per our records, you have multiple subscriptions ' +
-        'and the terms of service may vary for each. Your utility may process the cancellations at different times over ' +
-        'a period of months. During this time, you are responsible for all solar credits transferred to your account. Once ' +
-        'your all your subscriptions are removed and stop receiving credits you will be notified of the change via email.</br>';
-    @TestVisible
-    private static final String CANCELLATION_PARAGRAPH_THREE_LABEL = '{!Cancellation_Paragraph_Three__c}';
-    @TestVisible
-    private static final String DEFAULT_CANCELLATION_PARAGRAPH_THREE = '<br><i>Please refer to your contract(s) for more ' +
-        'details about the terms of service for each of your subscriptions including any applicable early termination fees.</i></br>';
-
-    // W-008422: Finds accounts that are overdue, and sets the Account's cancellation reason, comments, and request date,
-    // which in turn triggers the cancellation process. We skip Anchor or Public Offtake accounts as well as those that
-    // have an override checkbox checked.
-    public static List<Account> handleOverdueAccounts() {
-        List<Account> updatedAccounts = new List<Account>();
-        List<Account> accountList = AccountsSelector.selectCS67DaysPastDueWithAnchorOpps();
-
-        for (Account acct : accountList) {
-            if (acct.Opportunities.isEmpty()){
-                acct.Cancellation_Reason__c = 'Lack of Payment';
-                acct.Cancellation_Request_Date__c = System.today();
-                acct.Cancelled_By__c = CANCELLED_BY_ID;
-                acct.Cancellation_Comments__c = AUTOMATED_CANCELLATION_COMMENT;
-                updatedAccounts.add(acct);
-            }
-        }
-
-        update updatedAccounts;
-        return updatedAccounts;
-    }
-
     // W-008413: Called by the AccountTrigger after Property Accounts are updated with a Cancellation Request Date, to
     // remove all UASes from the next schedule Z, and send the customer(s) an email confirming their cancellation request.
     public static void processSubscriptionCancellations(List<Utility_Account_Subscription__c> uasesToMarkInactive) {
-        UtilityAccountSubscriptions subscriptions = new UtilityAccountSubscriptions(uasesToMarkInactive);
-        subscriptions.removeFromNextScheduleZ();
-        fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
-            new List<SObjectType>{
-                Subscription_Order__c.SObjectType
-            }
-        );
-        subscriptions.registerSubscriptionOrdersToZeroOutUAS('Cancellation', uow);
-        uow.commitWork();
-        sendCancellationConfirmationEmails(uasesToMarkInactive);
+        new CSCancellationAccountService().processSubscriptionCancellations(uasesToMarkInactive);
     }
 
-    private static void sendCancellationConfirmationEmails(List<Utility_Account_Subscription__c> uasesCancelled) {
-        List<Messaging.SingleEmailMessage> cancellationEmails = new List<Messaging.SingleEmailMessage>();
-        Map<Account, Map<String, String>> accountToCancellationParagraphs = accountToCancellationParagraphs(uasesCancelled);
-
-        for (Account account : accountToCancellationParagraphs.keySet()) {
-            try {
-                cancellationEmails.add(
-                    createCSEmail(
-                        account,
-                        'CS_Cancellation_Request_Confirmation',
-                        'Cancellation Request Acknowledgement',
-                        accountToCancellationParagraphs.get(account)
-                    )
-                );
-            } catch (Util.BWException bwe) {
-                Logger.logLater('CSCancellationService', 'sendCancellationConfirmationEmails', bwe.getMessage());
-            }
-        }
-        sendCancellationEmails(cancellationEmails);
-        Logger.flushLogs();
-    }
-
-    @TestVisible
-    private static Map<Account, Map<String, String>> accountToCancellationParagraphs(List<Utility_Account_Subscription__c> uasesCancelled) {
-        Map<Account, Map<String, String>> accountIdToReplacementMap = new Map<Account, Map<String, String>>();
-        for (Utility_Account_Subscription__c uas : uasesCancelled) {
-            // We don't send cancellation confirmation for automatically cancelled accounts, so we skip them
-            if (uas.Utility_Account_Log__r.Account__r.Cancellation_Comments__c == AUTOMATED_CANCELLATION_COMMENT) {
-                continue;
-            }
-            if (uas.Opportunity__r.Product__r.Cancellation_Paragraph_Two__c == null) {
-                String text = 'While trying to cancel this account, we found product: ' + uas.Opportunity__r.Product__c +
-                    ' to have a missing Cancellation Paragraph Two. Please ask an administrator to update it.';
-                throw new Util.BWException(text);
-            }
-
-            Account account = uas.Utility_Account_Log__r.Account__r;
-            addAccountToReplacementMap(accountIdToReplacementMap, account);
-            resolveConflictingCancellationMessages(accountIdToReplacementMap, account, uas);
-        }
-
-        return accountIdToReplacementMap;
-    }
-
-
-    private static void addAccountToReplacementMap(Map<Account, Map<String, String>> accountIdToReplacementMap, Account account) {
-        if (accountIdToReplacementMap.containsKey(account)) {
-            return;
-        }
-        Map<String, String> replacements = new Map<String, String>{
-            CANCELLATION_PARAGRAPH_TWO_LABEL => '',
-            CANCELLATION_PARAGRAPH_THREE_LABEL => '',
-            '{!Contact.FirstName}' => account.Send_Bills_Contact__r.FirstName
-        };
-        if (account.Client_Brand_Key__c.contains('Amp')) {
-            replacements.put('{!$Label.Company_Name} Community Solar', 'Amp-{!$Label.Company_Name}');
-        }
-        accountIdToReplacementMap.put(account,replacements);
-    }
-
-
-    // If two opportunities have products with conflicting cancellation information, we should show a default cancellation message
-    private static void resolveConflictingCancellationMessages(Map<Account, Map<String, String>> accountIdToReplacementMap, Account account, Utility_Account_Subscription__c uas) {
-        Map<String, String> replacementMap = accountIdToReplacementMap.get(account);
-        if (replacementMap.get(CANCELLATION_PARAGRAPH_TWO_LABEL) == '') {
-            replacementMap.put(CANCELLATION_PARAGRAPH_TWO_LABEL, uas.Opportunity__r.Product__r.Cancellation_Paragraph_Two__c);
-        } else if (replacementMap.get(CANCELLATION_PARAGRAPH_TWO_LABEL) != uas.Opportunity__r.Product__r.Cancellation_Paragraph_Two__c) {
-            replacementMap.put(CANCELLATION_PARAGRAPH_TWO_LABEL, DEFAULT_CANCELLATION_PARAGRAPH_TWO);
-        }
-        if (replacementMap.get(CANCELLATION_PARAGRAPH_THREE_LABEL) == '') {
-            replacementMap.put(CANCELLATION_PARAGRAPH_THREE_LABEL, uas.Opportunity__r.Product__r.Cancellation_Paragraph_Three__c);
-        } else if (replacementMap.get(CANCELLATION_PARAGRAPH_THREE_LABEL) != uas.Opportunity__r.Product__r.Cancellation_Paragraph_Three__c) {
-            replacementMap.put(CANCELLATION_PARAGRAPH_THREE_LABEL, DEFAULT_CANCELLATION_PARAGRAPH_THREE);
-        }
-    }
-
-    private static Messaging.SingleEmailMessage createCSEmail(Account account, String template, String subject) {
-        return createCSEmail(account, template, subject, new Map<String, String>{'{!Contact.FirstName}' => account.Send_Bills_Contact__r.FirstName});
-    }
-
-    public static Messaging.SingleEmailMessage createCSEmail(Account account, String template, String subject, Map<String, String> replacements) {
+    public static Messaging.SingleEmailMessage createCSCancellationEmail(Account account, String template, String subject, Map<String, String> replacements) {
         Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
         mail.setOrgWideEmailAddressId(MessagingService.getCustomerCareEmail().Id);
         mail.setSubject(subject);
@@ -201,9 +75,6 @@ public without sharing class CSCancellationService {
 
     private static void createCaseToTransferOrTerminate(UtilityAccountSubscriptions subscriptionList) {
         String caseOwner = Util.getSystemPropertyString('Finaled_Case_Owner__c');
-        if (String.isBlank(caseOwner)) {
-            return;
-        }
         Map<Id, Case> accountToCaseMap = new Map<Id, Case>();
         for (Utility_Account_Subscription__c uas : subscriptionList.records) {
             if (!accountToCaseMap.containsKey(uas.Utility_Account_Log__r.Account__c)) {
@@ -228,53 +99,10 @@ public without sharing class CSCancellationService {
         insert accountToCaseMap.values();
     }
 
-    // W-008425: Called by the CSCancellationScheduler daily to mark Opportunities as cancelled if:
-    // 1. Opportunity Stage is Complete AND
-    // 2. All UASes are inactive and there are no SZSes for them (waitlist cancellation) OR
-    // 3. We've sent System Bills, but not for 45 days (15 days after we expect to send), so we're finished billing
-    //
-    // Once all opportunities under a property account are cancelled (or Duplicate, Expired, or Dead), another scheduled job
-    // will send a termination letter
-    public static List<Opportunity> cancelOpportunities(List<Opportunity> oppToCancelList) {
-        Opportunities opportunities = new Opportunities(oppToCancelList);
-        opportunities.cancel();
-        return opportunities.records;
-    }
-
-    public static List<Opportunity> getOpportunitiesToCancel() {
-        List<Opportunity> completeCSOpps = OpportunitiesSelector.selectAllCompleteCSWithUASesAndSystemBills();
-
-        List<Opportunity> oppsToCancel = new List<Opportunity>();
-        for (Opportunity opportunity : completeCSOpps) {
-            if (Opportunities.shouldCancel(opportunity)) {
-                oppsToCancel.add(opportunity);
-            }
-        }
-
-        return oppsToCancel;
-    }
-
-
     // W-008426: Called by the OpportunityTrigger to check to see if all CS opportunities are Cancelled, Expired, Duplicate,
     // or Dead. If so, we update the Account Status__c field and send the final termination letter email.
     public static List<Account> getAccountsToClose(Map<Id, Opportunity> newOppMap, Map<Id, Opportunity> oldOppMap) {
-        //get all accounts where opportunities are either Cancelled, DUPLICATE, Expired or Dead
-        Set<Id> accountIds = new Set<Id>();
-        List<Account> accountsToClose = new List<Account>();
-        for (Opportunity opp : newOppMap.values()) {
-            if (opp.Product_Line__c == 'Community Solar' &&
-                Opportunities.isActive(oldOppMap.get(opp.Id).StageName) && !Opportunities.isActive(opp.StageName)) {
-                accountIds.add(opp.AccountId);
-            }
-        }
-
-        List<Account> acctsToCheck = AccountsSelector.selectNotClosed(accountIds);
-        for (Account acct : acctsToCheck) {
-            if (new Opportunities(acct.Opportunities).allInactive()) {
-                accountsToClose.add(acct);
-            }
-        }
-        return accountsToClose;
+        return CSCancellationOppService.getAccountsToClose(newOppMap, oldOppMap);
     }
 
     public static void closeAccounts(List<Account> acctList) {
@@ -295,9 +123,12 @@ public without sharing class CSCancellationService {
             try {
                 terminationEmailMap.put(
                     account.Id,
-                    createCSEmail(account,
+                    createCSCancellationEmail(
+                        account,
                         'CS_Termination_Confirmation',
-                        'Account Closed Confirmation')
+                        'Account Closed Confirmation',
+                        new Map<String, String>{'{!Contact.FirstName}' => account.Send_Bills_Contact__r.FirstName}
+                    )
                 );
             } catch (Util.BWException bwe) {
                 Logger.logLater('CSCancellationService', 'sendTerminationConfirmationEmails', bwe.getMessage());
@@ -321,28 +152,21 @@ public without sharing class CSCancellationService {
         );
     }
 
+    /**
+     * @description W-023716: When Customer Ops marks an Account as cancelled, a manager needs to approve so that the
+     * cancellation process is smoother, streamlined, and able to be as accurate for reporting as possible
+     * @param oldMap Trigger.oldMap
+     * @param newMap Trigger.newMap
+     */
     public static void initiateCancellationApprovalProcess(Map<Id, Account> oldMap, Map<Id, Account> newMap) {
-        List<Account> cancelledAccounts = getCancelledAccounts(oldMap, newMap);
-
-        if(!cancelledAccounts.isEmpty()) {
-            setApprovalToPending(cancelledAccounts);
-        }
-    }
-
-    private static void setApprovalToPending(List<Account> cancelledAccounts) {
-        for(Account acc : cancelledAccounts) {
-            acc.Cancellation_Reason_Approval_Status__c = 'Pending Approval';
-        }
-    }
-
-    private static List<Account> getCancelledAccounts(Map<Id, Account> oldMap, Map<Id, Account> newMap) {
-        List<Account> cancelledAccounts = new List<Account>();
-        for (Id accountId : newMap.keySet()) {
-            if (oldMap.get(accountId).Cancellation_Request_Date__c == null &&
-                newMap.get(accountId).Cancellation_Request_Date__c != null) {
-                cancelledAccounts.add(newMap.get(accountId));
-            }
-        }
-        return cancelledAccounts;
+        List<Account> cancelledAccounts =
+            (List<Account>) new SObjectFilter(
+                oldMap,
+                newMap.values(),
+                Account.Cancellation_Request_Date__c,
+                null,
+                SObjectFilter.ANY_VALUE
+            ).get(SObjectFilter.SOBJECT_LIST);
+        CollectionUtil.setField(cancelledAccounts, Account.Cancellation_Reason_Approval_Status__c, 'Pending Approval');
     }
 }
