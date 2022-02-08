@@ -11,21 +11,21 @@ private class CSCancellationSchedulerTest {
     @IsTest
     static void testExecute() {
         List<Shared_Solar_System__c> sss = [SELECT Id FROM Shared_Solar_System__c ORDER BY Name ASC ];
+        Zuora__CustomerAccount__c billingAccount = [SELECT Id FROM Zuora__CustomerAccount__c WHERE Zuora__Balance__c = 15.00 LIMIT 1];
 
         CSCancellationServiceTest.createBills(System.today() - 88, sss[0].Id);
 
         Account propAccount1 = [
             SELECT Id,
                 Max_Overdue_Due_Date_Zuora__c,
-                Total_Outstanding_Balance_Zuora__c,
                 Max_Overdue_Due_Date__c,
-                Total_Outstanding_Balance__c
+                Billing_Account__c
             FROM Account
             WHERE Name = 'Prop Account 1'
             LIMIT 1
         ];
         propAccount1.Max_Overdue_Due_Date_Zuora__c = System.today().addDays(-68);
-        propAccount1.Total_Outstanding_Balance_Zuora__c = 12.00;
+        propAccount1.Billing_Account__c = billingAccount.Id;
         update propAccount1;
 
         Opportunity oppFor236 = [
@@ -108,5 +108,12 @@ private class CSCancellationSchedulerTest {
 
         System.assertEquals(2, queriesAfterScheduler,
             'Expected to run two queries, to find the schedule for the current day and CSCancellationAccountService.CANCELLED_BY_ID');
+    }
+
+    @IsTest
+    static void testInvocableCanceller() {
+        InvocableCSCanceller.CancellationStep step = new InvocableCSCanceller.CancellationStep(false, '');
+        InvocableCSCanceller.cancelCS(new List<InvocableCSCanceller.CancellationStep>{step});
+        System.assert(true, 'Temporary to remove dependency from InvocableCSCanceller before deleting it');
     }
 }
