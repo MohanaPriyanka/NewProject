@@ -2256,10 +2256,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>InvocableCSCanceller</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>InvocableCSFeeSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
