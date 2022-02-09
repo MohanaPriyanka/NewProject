@@ -84,7 +84,11 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Complete</fullName>
+            <fullName>Closed Lost</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Closed Won</fullName>
             <default>false</default>
         </values>
         <values>
@@ -93,10 +97,6 @@
         </values>
         <values>
             <fullName>Engaged in Proposal Details</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>NDA Executed</fullName>
             <default>false</default>
         </values>
         <values>
