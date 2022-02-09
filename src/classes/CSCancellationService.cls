@@ -20,7 +20,7 @@ public without sharing class CSCancellationService {
     // W-008413: Called by the AccountTrigger after Property Accounts are updated with a Cancellation Request Date, to
     // remove all UASes from the next schedule Z, and send the customer(s) an email confirming their cancellation request.
     public static void processSubscriptionCancellations(List<Utility_Account_Subscription__c> uasesToMarkInactive) {
-        new CSCancellationAccountService().processSubscriptionCancellations(uasesToMarkInactive);
+        CSCancellationAccountService.processSubscriptionCancellations(uasesToMarkInactive);
     }
 
     public static Messaging.SingleEmailMessage createCSCancellationEmail(Account account, String template, String subject, Map<String, String> replacements) {
