@@ -182,9 +182,11 @@ public inherited sharing class SharedSolarSystemsSelector {
                 Demand_Customer_System_Utilization__c,Pending_Anchor_Capacity__c,
                 Client_Acq_Committed_Anchor_Capacity__c, Client_Acq_Pending_Anchor_Capacity__c,
                 Client_Acq_Committed_Small_CS_Capacity__c, Client_Acq_Pending_Small_CS_Capacity__c,
+                Perch_Acq_Committed_LMI_Capacity__c, Perch_Acq_Pending_LMI_Capacity__c,
+                Client_Acq_Committed_LMI_Capacity__c, Client_Acq_Pending_LMI_Capacity__c,
             (
-                SELECT Id, Customer_Group__c, Opportunity__r.Customer_Sub_Group__c, Shared_Solar_System__r.Name,
-                    Future_Customer_Subscription_KWDC_Rollup__c, Customer_Subscription_KW_DC__c, Opportunity_Stage__c,
+                SELECT Id, Opportunity__r.Customer_Group__c, Opportunity__r.Customer_Sub_Group__c, Shared_Solar_System__r.Name,
+                    Future_Customer_Subscription_KWDC_Rollup__c, Customer_Subscription_KW_DC__c, Opportunity__r.StageName,
                     Utility_Account_Log__c, Utility_Account_Log__r.Average_Demand__c, Utility_Account_Log__r.Exclude_from_Demand_Capacity__c,
                     Opportunity__r.Partner_Account__r.RecordType.Name, Opportunity__r.Partner_tag_lookup__r.Account__r.RecordType.Name
                 FROM Utility_Account_Subscriptions__r

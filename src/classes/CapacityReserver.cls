@@ -18,10 +18,14 @@ public with sharing class CapacityReserver {
                 sss.Reserved_Anchor_Capacity__c = reservationOrder.New_Reserved_Capacity_kW_DC__c;
             } when 'Perch Small CS' {
                 sss.Perch_Acq_Reserved_Small_CS_Capacity__c = reservationOrder.New_Reserved_Capacity_kW_DC__c;
+            } when 'Perch LMI' {
+                sss.Perch_Acq_Reserved_LMI_Capacity__c = reservationOrder.New_Reserved_Capacity_kW_DC__c;
             } when 'Client Anchor' {
                 sss.Client_Acq_Reserved_Anchor_Capacity__c = reservationOrder.New_Reserved_Capacity_kW_DC__c;
             } when 'Client Small CS' {
                 sss.Client_Acq_Reserved_Small_CS_Capacity__c = reservationOrder.New_Reserved_Capacity_kW_DC__c;
+            } when 'Client LMI' {
+                sss.Client_Acq_Reserved_LMI_Capacity__c = reservationOrder.New_Reserved_Capacity_kW_DC__c;
             }
         }
     }

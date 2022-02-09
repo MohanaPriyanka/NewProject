@@ -292,4 +292,53 @@ public without sharing class SystemCapacityRollupCalculatorTest {
         System.assertEquals(0, sss.Pending_Demand_Capacity__c, 'Invalid pending demand capacity');
         System.assertEquals(29.4624, sss.Committed_Demand_Capacity__c, 'Invalid committed demand capacity');
     }
+
+    @IsTest
+    private static void testGetCapacityKey() {
+        sfab_FabricatedSObject fabbedUAS = new sfab_FabricatedSObject(Utility_Account_Subscription__c.class);
+        sfab_FabricatedSObject fabbedPartnerAccount = new sfab_FabricatedSObject(Account.class);
+        sfab_FabricatedSObject fabbedPartnerAccountRecordType = new sfab_FabricatedSObject(RecordType.class);
+        fabbedPartnerAccountRecordType.setField(RecordType.Name, 'Client Account');
+        fabbedPartnerAccount.setParent('RecordType', fabbedPartnerAccountRecordType);
+        sfab_FabricatedSObject fabbedOpportunity = new sfab_FabricatedSObject(Opportunity.class);
+        fabbedOpportunity.setParent('Partner_Account__r', fabbedPartnerAccount);
+        fabbedOpportunity.setField(Opportunity.Customer_Group__c, 'Residential');
+        fabbedOpportunity.setField(Opportunity.StageName, 'Complete');
+        fabbedUAS.setParent('Opportunity__r', fabbedOpportunity);
+        Utility_Account_Subscription__c uas = (Utility_Account_Subscription__c) fabbedUAS.toSObject();
+
+        SystemCapacityRollupCalculator calculator = new SystemCapacityRollupCalculator(new Set<Id>());
+        String key = calculator.getCapacityKey(uas);
+        System.assert(key.contains('Committed'), 'Expected key to contain Committed but for this uas: ' + JSON.serialize(uas) + ' was ' + key);
+        System.assert(key.contains('Client'), 'Expected key to contain Client but for this uas: ' + JSON.serialize(uas) + ' was ' + key);
+        System.assert(key.contains('Small CS'), 'Expected key to contain Small CS but for this uas: ' + JSON.serialize(uas) + ' was ' + key);
+
+        fabbedOpportunity.setField(Opportunity.StageName, 'Pending Perch Signature');
+        assertKey('Pending', calculator, fabbedUAS);
+
+        fabbedOpportunity.setField(Opportunity.StageName, 'QC In Process');
+        assertKey('Pending', calculator, fabbedUAS);
+
+        fabbedOpportunity.setField(Opportunity.StageName, 'Cancelled');
+        assertKey('Cancelled', calculator, fabbedUAS);
+
+        fabbedOpportunity.setField(Opportunity.StageName, 'Duplicate');
+        assertKey('Cancelled', calculator, fabbedUAS);
+
+        fabbedPartnerAccountRecordType.setField(RecordType.Name, 'Partner Account');
+        assertKey('Perch', calculator, fabbedUAS);
+
+        fabbedOpportunity.setField(Opportunity.Customer_Group__c, 'Anchor');
+        assertKey('Anchor', calculator, fabbedUAS);
+
+        fabbedOpportunity.setField(Opportunity.Customer_Group__c, 'Residential');
+        fabbedOpportunity.setField(Opportunity.Customer_Sub_Group__c, 'LMI');
+        assertKey('LMI', calculator, fabbedUAS);
+    }
+
+    private static void assertKey(String expectedKeyContents, SystemCapacityRollupCalculator calculator, sfab_FabricatedSObject fabbedUAS) {
+        Utility_Account_Subscription__c uas = (Utility_Account_Subscription__c) fabbedUAS.toSObject();
+        String key = calculator.getCapacityKey(uas);
+        System.assert(key.contains(expectedKeyContents), 'Expected key to contain Pending but for this uas: ' + JSON.serialize(uas) + ' was ' + key);
+    }
 }

@@ -15,22 +15,30 @@ export default class ReservedCapacityUpdater extends LightningElement {
     @track newTotalDifferenceFromNewSize;
     @track clientAcquiredAnchor;
     @track clientAcquiredSmallCS;
+    @track clientAcquiredLMI;
     @track perchAcquiredAnchor;
     @track perchAcquiredSmallCS;
+    @track perchAcquiredLMI;
     @track newReservedSumNotEqualToNewSize = true;
+    @track isLMI;
 
     connectedCallback() {
         this.clientAcquiredSmallCS = this.sssRecord.Client_Acq_Reserved_Small_CS_Capacity__c;
         this.clientAcquiredAnchor = this.sssRecord.Client_Acq_Reserved_Anchor_Capacity__c;
+        this.clientAcquiredLMI = this.sssRecord.Client_Acq_Reserved_LMI_Capacity__c;
         this.perchAcquiredSmallCS = this.sssRecord.Perch_Acq_Reserved_Small_CS_Capacity__c;
+        this.perchAcquiredLMI = this.sssRecord.Perch_Acq_Reserved_LMI_Capacity__c;
         this.perchAcquiredAnchor = this.sssRecord.Reserved_Anchor_Capacity__c;
+        this.isLMI = this.sssRecord.LMI__c;
         this.currentTotal =
             this.sssRecord.Client_Acq_Reserved_Anchor_Capacity__c +
             this.sssRecord.Client_Acq_Reserved_Small_CS_Capacity__c +
+            this.sssRecord.Client_Acq_Reserved_LMI_Capacity__c +
             this.sssRecord.Perch_Acq_Reserved_Small_CS_Capacity__c +
+            this.sssRecord.Perch_Acq_Reserved_LMI_Capacity__c +
             this.sssRecord.Reserved_Anchor_Capacity__c;
         if (!this.newSSSSize) {
-            this.newSSSSize = this.currentTotal;
+            this.newSSSSize = this.sssRecord.Total_System_Size_kWh_DC__c;
         }
         this.calculateNewTotal();
     }
@@ -45,7 +53,9 @@ export default class ReservedCapacityUpdater extends LightningElement {
         this.newTotal = this.round(
             +this.clientAcquiredAnchor +
             +this.clientAcquiredSmallCS +
+            +this.clientAcquiredLMI +
             +this.perchAcquiredAnchor +
+            +this.perchAcquiredLMI +
             +this.perchAcquiredSmallCS);
         this.newTotalDifferenceFromNewSize = this.round(this.newSSSSize - this.newTotal);
         if (this.newTotalDifferenceFromNewSize && this.newTotalDifferenceFromNewSize !== 0) {
@@ -76,6 +86,12 @@ export default class ReservedCapacityUpdater extends LightningElement {
             'Client',
             'Anchor'
         );
+        this.addCapacityReservationOrder (
+            this.sssRecord.Client_Acq_Reserved_LMI_Capacity__c,
+            this.clientAcquiredLMI,
+            'Client',
+            'LMI'
+        );
         this.addCapacityReservationOrder(
             this.sssRecord.Perch_Acq_Reserved_Small_CS_Capacity__c,
             this.perchAcquiredSmallCS,
@@ -87,6 +103,12 @@ export default class ReservedCapacityUpdater extends LightningElement {
             this.perchAcquiredAnchor,
             'Perch',
             'Anchor'
+        );
+        this.addCapacityReservationOrder (
+            this.sssRecord.Perch_Acq_Reserved_LMI_Capacity__c,
+            this.perchAcquiredLMI,
+            'Perch',
+            'LMI'
         );
     }
 
