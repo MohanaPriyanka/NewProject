@@ -283,6 +283,10 @@
         <queriedFields>Client_Acq_Reserved_Small_CS_Capacity__c</queriedFields>
         <queriedFields>Reserved_Anchor_Capacity__c</queriedFields>
         <queriedFields>Perch_Acq_Reserved_Small_CS_Capacity__c</queriedFields>
+        <queriedFields>Perch_Acq_Reserved_LMI_Capacity__c</queriedFields>
+        <queriedFields>Client_Acq_Reserved_LMI_Capacity__c</queriedFields>
+        <queriedFields>Total_System_Size_kWh_DC__c</queriedFields>
+        <queriedFields>LMI__c</queriedFields>
     </recordLookups>
     <runInMode>SystemModeWithoutSharing</runInMode>
     <screens>

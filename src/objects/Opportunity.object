@@ -1555,6 +1555,11 @@ IF( Month(CloseDate) = 12, &apos;December&apos;, null))))))))))))</formula>
                     <default>false</default>
                     <label>Public Offtake</label>
                 </value>
+                <value>
+                    <fullName>LMI</fullName>
+                    <default>false</default>
+                    <label>LMI</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
     </fields>
@@ -6570,6 +6575,17 @@ TEXT( Load_Zone_Utility_4__c  ) = &apos;Manual Lookup Required&apos;,
         <compactLayoutAssignment>CS_Layout</compactLayoutAssignment>
         <description>Record Type for all CS Customers</description>
         <label>Community Solar</label>
+        <picklistValues>
+            <picklist>Customer_Sub_Group__c</picklist>
+            <values>
+                <fullName>LMI</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Public Offtake</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Underwriting_Criteria__c</picklist>
             <values>
