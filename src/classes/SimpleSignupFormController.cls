@@ -229,7 +229,7 @@ public without sharing class SimpleSignupFormController {
         };
         ee.subjectLine = 'Continue Your Application for ' + Label.SSF_Company_Short_Name + ' Community Solar';
         MessagingService.ReplacementText url = new MessagingService.ReplacementText('{{{Recipient.Continue_Application_Link__c}}}', lead.Continue_Application_Link__c);
-        MessagingService.ReplacementText leadName = new MessagingService.ReplacementText('{{{Recipient.Name}}}', lead.Name);
+        MessagingService.ReplacementText leadName = new MessagingService.ReplacementText('{{{Recipient.Name}}}', lead.FirstName);
         ee.replacementTexts = new List<MessagingService.ReplacementText>{
             url, leadName
         };
