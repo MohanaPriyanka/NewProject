@@ -115,6 +115,6 @@ private class CSCancellationSchedulerTest {
         Test.stopTest();
 
         System.assertEquals(1, queriesAfterScheduler,
-            'Expected to run two queries, to find the schedule for the current day but not for CSCancellationAccountService.CANCELLED_BY_ID');
+            'Expected to find the schedule for the current day but not for CSCancellationAccountService.CANCELLED_BY_ID');
     }
 }
