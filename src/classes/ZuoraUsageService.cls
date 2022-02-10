@@ -21,6 +21,8 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         public Decimal UtilityCredit_Zcustom;
         public String CRM_Id_Zcustom;
         public String UOM = 'Dollars';
+        public Date BillingPeriodStartDate_Zcustom;
+        public Date BillingPeriodEndDate_Zcustom;
     }
 
     @SuppressWarnings('PMD.FieldNamingConventions')
@@ -106,6 +108,8 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         usage.SolarSavings_Zcustom = uasb.Savings__c;
         usage.UtilityCredit_Zcustom = Util.roundValue(uasb.Net_Metering_Credits_Allocated__c, 2, 'HALF_UP');
         usage.CRM_Id_Zcustom = uasb.Id;
+        usage.BillingPeriodStartDate_Zcustom = uasb.Billing_Period_Start_Date__c;
+        usage.BillingPeriodEndDate_Zcustom = uasb.Billing_Period_End_Date__c;
         return usage;
     }
 
@@ -141,6 +145,8 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         usage.SolarSavings_Zcustom = adjust.Discount__c;
         usage.UtilityCredit_Zcustom = Util.roundValue(adjust.Credits_Allocated__c, 2, 'HALF_UP');
         usage.CRM_Id_Zcustom = adjust.Id;
+        usage.BillingPeriodStartDate_Zcustom = adjust.Transfer__r.Date_of_Transfer__c;
+        usage.BillingPeriodEndDate_Zcustom = adjust.Transfer__r.Date_of_Transfer__c.addMonths(1);
         return usage;
     }
 
