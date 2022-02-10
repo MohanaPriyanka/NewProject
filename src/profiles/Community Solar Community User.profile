@@ -267,6 +267,11 @@
         <visible>true</visible>
     </applicationVisibilities>
     <applicationVisibilities>
+        <application>standard__LightningInstrumentation</application>
+        <default>false</default>
+        <visible>true</visible>
+    </applicationVisibilities>
+    <applicationVisibilities>
         <application>standard__LightningSales</application>
         <default>false</default>
         <visible>true</visible>
@@ -13655,6 +13660,34 @@
         <enabled>false</enabled>
     </classAccesses>
     <custom>true</custom>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>APXTConga4__CSF1_Custom_Permission</name>
+    </customPermissions>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>APXTConga4__Composer_Custom_Permission</name>
+    </customPermissions>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>copado__Edit_Quality_Gate_Step</name>
+    </customPermissions>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>copado__Enable_Vlocity_Integration</name>
+    </customPermissions>
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>diplopia__CloudAnswers_Potential_Duplicates_Admin</name>
+    </customPermissions>
+    <customSettingAccesses>
+        <enabled>true</enabled>
+        <name>DownloadFiles__MFDConfig__c</name>
+    </customSettingAccesses>
+    <customSettingAccesses>
+        <enabled>true</enabled>
+        <name>LASERCA__CBCNEW_Notification__c</name>
+    </customSettingAccesses>
     <description>We no longer assign users this profile by default since it uses a Plus Login license version. Instead, we use the Community Solar User profile. But we still need to maintain this profile since users can&apos;t be migrated across licensing levels.</description>
     <fieldPermissions>
         <editable>false</editable>
@@ -13664,6 +13697,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>API_Credential__c.Credential_Secret__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>APXTConga4__Composer_Host_Override__c.APXTConga4__Hostname__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -13699,6 +13737,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>APXTConga4__Composer_QuickMerge__c.APXTConga4__Weblink_Name__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>APXTConga4__Composer_Setting__mdt.APXTConga4__Enable_Key_Generation__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -13839,6 +13882,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>APXTConga4__Conga_Solution_Email_Template__c.APXTConga4__IsDefault__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>APXTConga4__Conga_Solution_Export_Environment__mdt.APXTConga4__Export_Endpoint__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>APXTConga4__Conga_Solution_Export_Setting__mdt.APXTConga4__Conga_Solution_Export_Environment__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -14138,6 +14191,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>APXTConga4__Connected_App_Setting__mdt.APXTConga4__Connected_App_Name_SF1__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>APXTConga4__Document_History_Detail__c.APXTConga4__Email_Address__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -14164,6 +14222,26 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>APXTConga4__Document_History__c.APXTConga4__Number_of_Views__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>APXTConga4__EventData__c.APXTConga4__Raw__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>APXTConga4__VersionedData__c.APXTConga4__Raw__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>APXT_BPM__Conductor_Region__mdt.APXT_BPM__Hostname__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>APXT_BPM__Conductor_Setting__mdt.APXT_BPM__Conductor_Region__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -14433,6 +14511,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.Cancellation_Reason_Approval_Status__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.Cancellation_Reason_External__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -14444,6 +14527,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Cancellation_Request_Date__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Cancelled_By__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -14544,11 +14632,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Credits_Allocated_UASB__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account.Customer_ID__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -14658,7 +14741,22 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.LASERCA__Applicant_Generation__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.LASERCA__Bypass_Duplicate_Detection__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.LASERCA__Co_Applicant_Generation__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.LASERCA__Credit_Report_Owning_User__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -14704,11 +14802,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Link_to_Client_Logo__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account.LiveText__Active__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -14827,6 +14920,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Payment_Gateway__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.Phone</field>
         <readable>true</readable>
@@ -14919,6 +15017,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Subcontractor__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Suppress_Collections__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -15659,6 +15762,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Asset.AssetServicedById</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Asset.ConsequenceOfFailure</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -16697,6 +16805,16 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>BusinessBrand.OrgId</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>BusinessBrand.ParentId</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>CS_Bill_Setting__c.Default_Bill_Message_for_Autopay__c</field>
         <readable>false</readable>
@@ -16919,6 +17037,36 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>CampaignMember.et4ae5__Activity__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Capacity_Reservation_Order__c.Customer_Type__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Capacity_Reservation_Order__c.New_Reserved_Capacity_kW_DC__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Capacity_Reservation_Order__c.Previous_Reserved_Capacity_kW_DC__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Capacity_Reservation_Order__c.Responsible_for_Capacity__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Capacity_Reservation_Order__c.Shared_Solar_System_Order__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Capacity_Reservation_Order__c.Shared_Solar_System__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -17513,6 +17661,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Client_Contract__c.Signed_Date__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Client_Health_Report__c.Accounting_Score__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -17693,6 +17846,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Client_Utility_Account_Subscription__c.Average_kW_Demand__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Client_Utility_Account_Subscription__c.CS_Account__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -17718,12 +17876,27 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Client_Utility_Account_Subscription__c.Customer_Billing_Address__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Client_Utility_Account_Subscription__c.Customer_Email__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Client_Utility_Account_Subscription__c.Customer_Group__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Client_Utility_Account_Subscription__c.Customer_Payment_Method__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Client_Utility_Account_Subscription__c.Customer_Phone_Number__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -17749,6 +17922,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Client_Utility_Account_Subscription__c.Entity_Assignment__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Client_Utility_Account_Subscription__c.Exclude_from_Demand_Capacity__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -17832,6 +18010,11 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Client_Utility_Account_Subscription__c.Shared_Solar_System__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Client_Utility_Account_Subscription__c.Transferring_Subsc_to_Another_UAS__c</field>
         <readable>false</readable>
@@ -17839,6 +18022,41 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Client_Utility_Account_Subscription__c.Utility_Account_Number__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>CommSubscription.DataUsePurposeId</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>CommSubscription.IsDefault</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>CommSubscriptionConsent.EffectiveToDate</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>CommSubscriptionTiming.Offset</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>CommSubscriptionTiming.PreferredTimeEnd</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>CommSubscriptionTiming.PreferredTimeStart</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>CommSubscriptionTiming.PreferredTimeZone</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -17927,6 +18145,16 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>CongaWorkflow__Workflow_Region__mdt.CongaWorkflow__Hostname__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>CongaWorkflow__Workflow_Setting__mdt.CongaWorkflow__Workflow_Region__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Consumption_Update__c.Date__c</field>
         <readable>true</readable>
@@ -17980,6 +18208,11 @@
         <editable>true</editable>
         <field>Contact.Additional_Email__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contact.Admin_User__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -18123,6 +18356,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Contact.LASERCA__Applicant_Generation__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Contact.LASERCA__Applicant_Id__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -18134,6 +18372,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Contact.LASERCA__Co_Applicant_DOB__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contact.LASERCA__Co_Applicant_Generation__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -18159,6 +18402,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Contact.LASERCA__Credit_Bureau__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contact.LASERCA__Credit_Report_Owning_User__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -18322,6 +18570,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Contact.SSF_Link__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Contact.Sales_Representative__c</field>
         <readable>true</readable>
@@ -18354,21 +18607,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Contact.et4ae5__Mobile_Country_Code__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Contact.inspire1__Chatter_Free_User_Id__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Contact.inspire1__Hourly_Rate__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Contact.inspire1__Working_Hours_per_Day__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -18648,7 +18886,27 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>ContentVersion.Added_to_Paper_Bill_Queue__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>ContentVersion.File_Category__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>ContentVersion.LetterStreamJob__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>ContentVersion.Mail_Type__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>ContentVersion.Ready_for_Paper_Bill_Queue__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -18699,6 +18957,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Contract.Assignment_Agreement__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract.Assignment_Cutoff_Date__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -18779,6 +19042,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Contract.Conga_Template__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract.Conga_UCB_Disclosure_Form__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -19188,6 +19456,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Contract_Fee_Detail__c.Deposit_Fee__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Contract_Fee_Detail__c.Fee_Summary__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -19333,6 +19606,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Customer.CustomerStatusType</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Customer.TotalLifeTimeValue</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Daily_Production_Update__c.Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -19439,6 +19722,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>DownloadFiles__Excluded_Object__c.DownloadFiles__External_Id__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>DownloadFiles__Excluded_Object__c.DownloadFiles__File_Name_Suffix__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -19853,6 +20141,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>EngagementChannelType.ContactPointType</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Entity__c.Address__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -20138,6 +20431,96 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Error_Log_Event__e.Class__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Error_Log_Event__e.Limits_CPU_Time_Max__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Error_Log_Event__e.Limits_CPU_Time_Used__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Error_Log_Event__e.Limits_DML_Rows_Max__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Error_Log_Event__e.Limits_DML_Rows_Used__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Error_Log_Event__e.Limits_DML_Statements_Max__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Error_Log_Event__e.Limits_DML_Statements_Used__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Error_Log_Event__e.Limits_Heap_Size_Max__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Error_Log_Event__e.Limits_Heap_Size_Used__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Error_Log_Event__e.Limits_SOQL_Queries_Max__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Error_Log_Event__e.Limits_SOQL_Queries_Used__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Error_Log_Event__e.Limits_SOQL_Query_Rows_Max__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Error_Log_Event__e.Limits_SOQL_Query_Rows_Used__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Error_Log_Event__e.Message__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Error_Log_Event__e.Method__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Error_Log_Event__e.Severity__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Error_Log_Event__e.Timestamp__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Error_Log_Event__e.User__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Error_Log__c.Class__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -20388,28 +20771,8 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Event.Loan_Partner_Sequence__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Event.Loan_Sale__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Event.Loan__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Event.Location</field>
         <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Event.MPM4_BASE__Project_Task_ID__c</field>
-        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -20515,106 +20878,6 @@
         <editable>true</editable>
         <field>Event.WhoId</field>
         <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Event.inspire1__Actual_Cost__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Event.inspire1__Actual_Effort__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Event.inspire1__AssignedTo__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Event.inspire1__Budgeted_Cost__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Event.inspire1__Custom_Start_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Event.inspire1__Done__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Event.inspire1__Hourly_Rate__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Event.inspire1__Inspire_Task__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Event.inspire1__Parent_Task__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Event.inspire1__Percent_Allocation__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Event.inspire1__Planned_Effort__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Event.inspire1__Project_Deleted__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Event.inspire1__Project_Name__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Event.inspire1__Ready_to_Start__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Event.inspire1__Resource_Name2__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Event.inspire1__Resource_Type__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Event.inspire1__Schedule_As__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Event.inspire1__sysContactTaskEmail__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Event.inspire1__sysFutureProjectEffort__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Event.inspire1__sysTemplateTask__c</field>
-        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -21053,6 +21316,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Invoice__c.Client_Invoice_Cutoff_Date__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Invoice__c.Date_QC_Complete__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -21064,6 +21332,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Invoice__c.Date_Rejected__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Invoice__c.Date_Sent__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -21253,6 +21526,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Journal_Entry__c.Reference_Id__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Journal_Entry__c.Returned_PaymentPart_Id__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -21403,7 +21681,17 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>LASERCA__Credit_Report_Log__c.File_Not_Scored__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>LASERCA__Credit_Report_Log__c.LASERCA__Account__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Credit_Report_Log__c.LASERCA__Applicant_Generation__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -21438,6 +21726,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>LASERCA__Credit_Report_Log__c.LASERCA__Co_Applicant_Generation__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>LASERCA__Credit_Report_Log__c.LASERCA__Co_Applicant_Last_Name__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -21458,7 +21751,57 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>LASERCA__Credit_Report_Log__c.LASERCA__Credit_Card_CVV_CVC__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Credit_Report_Log__c.LASERCA__Credit_Card_Expiration_Date__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Credit_Report_Log__c.LASERCA__Credit_Card_Number__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Credit_Report_Log__c.LASERCA__Credit_Card_Owner_City__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Credit_Report_Log__c.LASERCA__Credit_Card_Owner_First_Name__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Credit_Report_Log__c.LASERCA__Credit_Card_Owner_Last_Name__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Credit_Report_Log__c.LASERCA__Credit_Card_Owner_State__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Credit_Report_Log__c.LASERCA__Credit_Card_Owner_Street__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Credit_Report_Log__c.LASERCA__Credit_Card_Owner_ZIP__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>LASERCA__Credit_Report_Log__c.LASERCA__Credit_Report_Identifier__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Credit_Report_Log__c.LASERCA__Credit_Report_Owning_User__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -21518,6 +21861,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>LASERCA__Credit_Report_Log__c.LASERCA__Is_Credit_Card_Payment__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>LASERCA__Credit_Report_Log__c.LASERCA__Last_Name__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -21539,6 +21887,21 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>LASERCA__Credit_Report_Log__c.LASERCA__Middle_Name__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Credit_Report_Log__c.LASERCA__OFAC_Status_Checked__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Credit_Report_Log__c.LASERCA__OFAC_Status_Lookup_Field__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Credit_Report_Log__c.LASERCA__OFAC_Status__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -21943,6 +22306,26 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>LASERCA__LASER_Address__mdt.LASERCA__City__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__LASER_Address__mdt.LASERCA__Postal_Code__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__LASER_Address__mdt.LASERCA__State__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__LASER_Address__mdt.LASERCA__Street__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>LASERCA__Lien__c.LASERCA__Agency_County__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -22043,6 +22426,131 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>LASERCA__OFAC_Status__c.LASERCA__Account__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__OFAC_Status__c.LASERCA__Addresses__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__OFAC_Status__c.LASERCA__Alternative_Names__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__OFAC_Status__c.LASERCA__Citizenships__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__OFAC_Status__c.LASERCA__Contact__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__OFAC_Status__c.LASERCA__Dates_of_Birth__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__OFAC_Status__c.LASERCA__Entity_Number__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__OFAC_Status__c.LASERCA__Error_Message__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__OFAC_Status__c.LASERCA__Guideline__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__OFAC_Status__c.LASERCA__IDs__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__OFAC_Status__c.LASERCA__Is_Found__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__OFAC_Status__c.LASERCA__Lead__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__OFAC_Status__c.LASERCA__Nationalities__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__OFAC_Status__c.LASERCA__No_Match_Found__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__OFAC_Status__c.LASERCA__Opportunity__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__OFAC_Status__c.LASERCA__Personal_Credit_Report__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__OFAC_Status__c.LASERCA__Places_of_Birth__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__OFAC_Status__c.LASERCA__Programs__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__OFAC_Status__c.LASERCA__Pull_OFAC_Status__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__OFAC_Status__c.LASERCA__Security_Token__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__OFAC_Status__c.LASERCA__Source_Information_URL__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__OFAC_Status__c.LASERCA__Source_List_URL__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__OFAC_Status__c.LASERCA__Source__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__OFAC_Status__c.LASERCA__Sources_Used__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__OFAC_Status__c.LASERCA__Type__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>LASERCA__PCR_Scores__c.LASERCA__Co_Applicant_Score__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -22098,6 +22606,36 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Affected_Auto_Trade_Accounts__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Affected_Installment_Trade_Accounts__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Affected_Mortgage_Trade_Accounts__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Affected_Revolving_Trade_Accounts__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Affected_Student_Loan_Trade_Accounts__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__All_Affected_Trade_Accounts__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Applicant_Id_Field__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -22109,6 +22647,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Applicant_MLA__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Authorized_User_Accounts_Number__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -22149,6 +22692,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Charge_off_accounts__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Closed_Trade_Accounts__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -22204,6 +22752,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Co_Applicant_Experian_Score_Factor__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Co_Applicant_Indicator__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -22458,6 +23011,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Inquiries_Count_In_N_Last_Days__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Inquiry_Count__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -22539,6 +23097,26 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Installment_Balance__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Installment_Hst_Del_Count_30__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Installment_Hst_Del_Count_60__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Installment_Hst_Del_Count_90Plus__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Installment_Last_Delinquency__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -22653,7 +23231,37 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Mortgage_Hst_Del_Count_30__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Mortgage_Hst_Del_Count_60__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Mortgage_Hst_Del_Count_90Plus__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Mortgage_Last_Delinquency__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Most_Recent_Bankruptcy_Disposition_Date__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Most_recent_bankruptcy_date__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__N_Last_Days_For_Inquiries_Count__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -22674,6 +23282,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Now_Delinquent_or_Derogatory__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Number_Of_Serious_Derogatory_Tradelines__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -22738,12 +23351,37 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Open_Trade_Accounts__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Openaccountswithabalance__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Opportunity__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Other_Hst_Del_Count_30__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Other_Hst_Del_Count_60__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Other_Hst_Del_Count_90Plus__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Other_Last_Delinquency__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -22848,6 +23486,26 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Revolving_Hst_Del_Count_30__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Revolving_Hst_Del_Count_60__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Revolving_Hst_Del_Count_90Plus__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Revolving_Last_Delinquency__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Revolving_Payment_Formula__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -22933,6 +23591,21 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Total_Hst_Del_Count_30__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Total_Hst_Del_Count_60__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Total_Hst_Del_Count_90Plus__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Total_Open_Payments__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -22944,6 +23617,21 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Total_amount_in_satisfied_judgments__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Trade_Accounts_Affected_By_Disaster__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Trade_Accounts_In_Forbearance__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Trade_Accounts_With_Payment_Deferred__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -23428,7 +24116,27 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>LASERCA__Trade_Accounts__c.LASERCA__Is_30_days_late__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Trade_Accounts__c.LASERCA__Is_60_days_late__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Trade_Accounts__c.LASERCA__Is_90_or_more_days_late__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>LASERCA__Trade_Accounts__c.LASERCA__Last_Activity_Date__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Trade_Accounts__c.LASERCA__Late_Payments__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -23698,6 +24406,26 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Lead.Auto_QC_Error_Debug__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.Auto_QC_Failure_Details__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.Auto_QC_Failure_Reason__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.Auto_QC_Last_Runtime__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Lead.Automatic_Product_Assignment__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -23889,6 +24617,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Credit_Partner_Alert__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.Credit_Provider_Address__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.Credit_Provider__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -24188,6 +24926,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Lead.LASERCA__Applicant_Generation__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Lead.LASERCA__Applicant_Id__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -24213,6 +24956,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Lead.LASERCA__Co_Applicant_Generation__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Lead.LASERCA__Co_Applicant_Last_Name__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -24224,6 +24972,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.LASERCA__Credit_Bureau__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.LASERCA__Credit_Report_Owning_User__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -24739,6 +25492,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Referral_Name__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.Replacement_Capacity__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -25577,5713 +26335,28 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Expense__c.MPM4_BASE__Amount__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Expense__c.MPM4_BASE__Date_Incurred__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Expense__c.MPM4_BASE__Description__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Expense__c.MPM4_BASE__Incurred_By__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Log__c.MPM4_BASE__Actual_Resolution_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Log__c.MPM4_BASE__Assigned_To__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Log__c.MPM4_BASE__Detail__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Log__c.MPM4_BASE__Next_Steps__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Log__c.MPM4_BASE__Planned_Resolution_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Log__c.MPM4_BASE__Priority__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Log__c.MPM4_BASE__Program__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Log__c.MPM4_BASE__Project_Expense__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Log__c.MPM4_BASE__Project_Milestone__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Log__c.MPM4_BASE__Project_Task__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Log__c.MPM4_BASE__Project_Time__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Log__c.MPM4_BASE__Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Log__c.MPM4_BASE__Subject__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Log__c.MPM4_BASE__Type__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.ACA_Extended_IX_Deadline__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.ACA_Original_IX_Deadline__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.ACA_Review_due__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.ACA_interconnected__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.ALTA_Survey_Draft_Completion_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.ALTA_Survey_Draft_Completion_Anticipated__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.ALTA_Survey_Final_Completion_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.ALTA_Survey_Final_Completion_Anticipated__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.ANRAD_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.ANRAD_Submission_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.ANRAD_Submission_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Access_Easement_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Access_Easement_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Access_Easement_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Actual_COD_date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Actual_PTO_date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Allocated_size_kw_AC__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Allocation_Complete__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Application_Fee_paid__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Application_required__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Application_submitted__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Assignment_Consent_rec_d__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.BWC_Comments_resolved__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.BWC_temp_host__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Bid_Memo__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Blank_ISA_due__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Blank_ISA_received__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.COD__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Ch_61_A_B_NNE_Expected__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Ch_61_A_B_Notice_of_Intent_Filed__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Chapter_61A_NNE_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Chapter_61A_NNE_Anticipated_Date_120_da__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Combined_MW_DC_for_Table__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Complete_Standard_Process_Initial_Review__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Completion_Confirmation_due__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Completion_Confirmation_received__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.ConCom_Expected_Completion__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Conceptual_Design__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Conceptual_design_to_Engineer_CAD_PDF__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Construction_Start__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Consultant_Selection__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Curb_Cut_Permits__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Current_Estimated_Witness_Test_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Customer_construction_end_Mech_Comp__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Customer_construction_start__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.DS_Agreement_received_if_applicable__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.DS_Complete_if_applicable__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.DS_need_confirmed__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.DS_required__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Design_Approved__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Design_Complete__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Design_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Design_finalization_deadline__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Detailed_Study_Complete__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Detailed_Study_Confirmation__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Detailed_Study_Recieved__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Discovery_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Documents_updated__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Draft_SWPPP_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Draft_SWPPP_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Draft_Title_Commitment_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Draft_Title_Commitment_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Easement_Application_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Easement_Recorded__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Easement_Signed_by_Landowner__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Easement_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Engineer_Procure_Construct_EPC__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Estimated_COD_date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Estimated_PTO_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Estimated_Witness_test_date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Exec_SIS_Agr_Cal_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Exec_SIS_Agr_and_payment_invite_sent__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Exec_SIS_Agr_sent_to_UTY__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Exec_SIS_and_payment_due_to_UTY__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Execuatble_Easement_Sent_to_Land_Owner__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Executable_ISA_Requested__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Executable_ISA_by_BWC__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Executable_ISA_received_from_Utility__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Executable_IX_App_Recieved__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Executable_IX_received_Exhibit_C__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Executable_SIS_Agreement_Recieved__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Executed_Easement_Sent_to_Utility__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Executed_ISA_Cal_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Executed_ISA_Exhibit_E_to_Utility__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Executed_ISA_due_to_UTY__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Executed_ISA_invite_sent__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Executed_ISA_to_UTY__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Executed_ISA_to_Utility_No_declined__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Executed_SIS_Sent__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Executed_Title_Commitment_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Executed_Title_Commitment_Anticipated_Da__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Executive_Development_Budget_Approval__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Existing_Conditions_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Existing_Conditions_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Extension_Approved__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Extension_Fee__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Extension_fee_sent__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Extension_type_granted__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Extension_type_requested__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Extention_Granted__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.External_Title_Review_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.External_Title_Review_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Facility_ID__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Feeder_1_Designation__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Feeder_1_Most_Recent_Pre_App_Received__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Feeder_2_Designation__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Feeder_3_Designation__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Fire_Chief_EMS_Police_Approval__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.First_Engineering_Design_Change_paid__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Form_605_Issued_by_Utility_to_Verizon__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Form_605_issued_to_Telco__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Form_605_received_by_Telco__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Fully_Executed_ISA_Received_End_point__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Fully_Executed_ISA_received__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Fully_Executed_IX_App_Start_point__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Fully_executed_ISA_due__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Fully_executed_easement_received_by_Uty__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.GIS_URL__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Geotech_Report_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Geotech_Report_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Geotechnical_Consultant_Selection__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Gov_permits_and_approvals_deadline__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.HVP_Complete__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.HVP_needed__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.HVP_sent__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Host_Customer_Initial__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Host_Customer__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Host_established__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Host_finalized__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Hours_worked__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.INITIAL_UTILITY_SITE_VISIT_DATE__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.ISA_Expected_Received__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.ISA_Invoice_1_Paid__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.ISA_Invoiced_1_Received__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.ISA_Payment_1_Due__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.ISA_due_Cal_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.ISA_due_invite_sent__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.ISA_last_requested_from_UTY__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.ISA_request_deadline__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.IX_25_Cal_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.IX_75_Cal_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.IX_App_Confirmed_Complete__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.IX_App_Payment_Sent__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.IX_App_received__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.IX_App_submitted__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.IX_Application_Sent__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.IX_Construction__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.IX_U_2_75_Invoice_Amount__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.IX_app_executed_Exhibit_C__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.IX_payment_25_due__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.IX_payment_25_invite_sent__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.IX_payment_25_paid__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.IX_payment_75_due__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.IX_payment_75_invite_sent__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.IX_payment_75_paid__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Impact_Study_Completion__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Impact_Study_Invoice_Paid__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Impact_Study_Invoice_Received__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Impact_Study_Invoice_requested__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Impact_Study_cost__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Informal_AHJ_Review_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Informal_AHJ_Review_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Interim_notes__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Internal_Title_Review_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Investor__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Is_this_a_checkbox__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.LOA_Executed__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.LOA_Sent__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.LOA_Signed_Fully_Executed__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.LOA_first_sent__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.LOA_on_Deck__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Latest_Quarterly_Report_Complete__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Layout_Cut_sheets_One_line_received__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Layout_of_leased_parcels_pdf__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Lease_Execution_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Lease_Execution_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Lease_Expecte_Executed__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Lease_Legal_Description_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Lease_Legal_Description_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Lease_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Lien_Release_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Lien_Release_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Load_Zone__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Long_Lead_Items_Procured__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MEPA_Review_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MHC_Expected_Response_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Actual_Duration_Calc__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Actual_Duration__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Actual_Expense_From_Sub_Milestones__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Actual_Expense_From_Tasks__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Actual_Finish_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Actual_Hours_From_Sub_Milestones__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Actual_Hours_From_Tasks__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Actual_Start_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Actual_Weekday_Duration__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Additional_Information__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Alias__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Blocked_Tasks_in_Sub_Milestones__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Blocked_Tasks_in_Tasks__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Complete_Tasks_in_Sub_Milestones__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Complete_Tasks_in_Tasks__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Complete__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Deadline__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Description__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Duration__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Estimated_Expense_From_Sub_Milestones__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Estimated_Expense_From_Tasks__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Estimated_Hours_From_Sub_Milestones__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Estimated_Hours_From_Tasks__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Exclude_Weekend_Work__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Expense_Budget__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Expense_Budget_from_Sub_Milestones__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Gantt_Color__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Hours_Budget__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Hours_Budget_from_Sub_Milestones__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__ImportID__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Internal__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Kickoff__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Late_Tasks_in_Sub_Milestones__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Late_Tasks_in_Tasks_2__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Late_Tasks_in_Tasks__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Milestone_Unique_Number__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__NameClean__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Notes__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Notification_Email_Address__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Okay_to_Reparent__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Open_Late_Blocked_Tasks__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Open_Tasks_in_Sub_Milestones__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Open_Tasks_in_Tasks__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Open_vs_Complete_Tasks__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Parent_Milestone_Import_Id__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Parent_Milestone__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Predecessor_Milestone_Import_Id__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Predecessor_Milestone__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Project_Creation_Context__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Project_Deadline__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Project_Kickoff_Offset__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Project_Kickoff__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Project_Owner_Email__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Project_Owner__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Project__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Remote_Object_Context__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Task_Sync_Id__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Total_Actual_Expense__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Total_Actual_Hours__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Total_Blocked_Tasks__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Total_Complete_Tasks__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Total_Estimated_Expense__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Total_Estimated_Hours__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Total_Expense_Balance__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Total_Expense_Budget__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Total_Hours_Balance__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Total_Hours_Budget__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Total_Late_Tasks__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Total_Open_Tasks__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__Weekday_Duration__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MPM4_BASE__hide_delete_checkbox_on_mpp__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.MW_AC__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Mass_Historical_Comm_Submittal_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Mass_Historical_Commission_Approval__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Materials_procured__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Meter_Order_Placed_by_Utility_6_8_weeks__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.NHESP_Permit_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.NHESP_Permit_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.NHESP_Permit_Submission_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.NHESP_Permit_Submission_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.NHESP_Permit__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.NOI_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.NOI_Submission_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.NOI_Submission_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Net_Metering_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Next_Quarterly_Report_deadline__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Next_Step__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Notice_of_Assignment_of_Interest_to_UTY__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Number_of_Parcels__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.OOC_Appeals_Period_Expiration__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.ORAD_Approval_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Off_Taker__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Order_of_Conditions_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Order_of_Conditions_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Original_Estimated_Witness_Test_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Original_Mechanical_Completion_estimate__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Other_Easement_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Other_Easement_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Other_Easement_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Other_Permits_and_Approvals__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.PB_Application_Submission_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.PB_Application_Submission_Anticipated_Da__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.PB_ZBA_Appeals_Period_Expiration__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.PB_ZBA_Certificate_of_No_Appeal__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.PB_ZBA_Peer_Review__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.PPA_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.PTO_status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Permission_to_Construct_Letter_Received__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Permits_submitted__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Permitting_Consultant_Selection__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Permitting_Proposal_Memo__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Permitting_Submission_Plans_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Permitting_Submission_Plans_Anticipated__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Phase_I_ESA_Consultant_Selection__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Phase_I_ESA_Report_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Phase_I_ESA_Report_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Pilot__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Planning_ZBA_Expected_Completion__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Pole_Set_Confirmation_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Pole_Set_Owner__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Pole_location_drafted_Design_start__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Pole_location_staking_done__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Post_Closure_Use_Permit_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Post_Closure_Use_Permit_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Post_Closure_Use_Permit_Submission_Actua__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Post_Closure_Use_Permit_Submission_Antic__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Post_Closure_Use_Permit__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Pre_Application_report_received__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Primary_Meter_Ordered__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Primary_meter_delivery__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Property_Owner__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Public_Private__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.RDA_Approval_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.RDA_Approval_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.RDA_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.RDA_Submission_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.RDA_Submission_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Receipt_Confirmation_due__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Receipt_Confirmation_received__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Receive_Follow_on_Studies_Cost_Agreemen__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Receive_Follow_on_Studies_Cost_Agreement__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Receive_Owner_Operator_info_Legal_Info__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Recent_Activity__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Recloser_delivery__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Redirect_request_sent_NEPOOL__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Reservation_End_date_ACA_orig_deadline__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Reservation_Fee_Paid__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Reservation_Fee__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Reservation_Fee_deadline__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Reservation_Fee_sent__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Responsible__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Revised_Host__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Revision_needed__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Risks__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Rollback_Tax_Actual_Amount__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Rollback_Tax_Estimated_Amount__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.SIS_Agr_Cal_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.SIS_Agr_due__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.SIS_Agr_invite_sent__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.SIS_Agr_received__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.SIS_Cal_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.SIS_Compelete__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.SIS_Complete_doc_received__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.SIS_Payment_Received_by_Utility__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.SIS_complete_invite_sent__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.SIS_due__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.SIS_paid__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.SIS_received_from_UTY__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.SREC_1_MW_DC__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.SREC_2_MW_DC__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Schedule_Z_Executed__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Scout__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Screening_Memo_Cal_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Screening_Memo_Received__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Screening_Memo_due__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Screening_memo_invite_sent__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Shading_Analysis_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Site_Plan_Approval_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Site_Plan_Approval_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Site_Plan_Approval_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Site__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Site_plans_to_Telco__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Solar_Easement_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Solar_Easement_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Special_Permit_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Special_Permit_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Special_Permit_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.State_Wetland_Permitting__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.System_Upgrade_1_Invoice_received__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.System_Upgrade_1__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.System_Upgrade_1_due_25__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.System_Upgrade_1_invoice_due_date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.System_Upgrade_1_paid_Design_START__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.System_Upgrade_2_Invoice_received__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.System_Upgrade_2__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.System_Upgrade_2_due_75__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.System_Upgrade_2_paid__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.System_Upgrade_2_payment_sent__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Tax_Agreement_Execution_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Tax_Agreement_Execution_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Tax_Agreement_Financial_Model__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Tax_Agreement_Proposal_Sent_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Tax_Agreement_Proposal_Sent_Anticipated__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Teir__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Telco_Easement_App_and_Payment_Sent__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Telco_Easement_executed__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Telco_Easement_recorded__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Telco_Pole_set__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Tier_PM__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Tier__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Title_Review__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Total_MWDC__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Town__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.UTY_Construction_Complete__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.UTY_Construction_Scheduled_Start__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.UTY_Construction_Start__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.UTY_Construction_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.UTY_Engineer__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.UTY_ID__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.UTY_IX_duration_max_weeks__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.UTY_IX_duration_min_weeks__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.UTY_Right_of_Way__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.UTY_Site_Visit_Complete__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.UTY_Site_Visit_Scheduled__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.UTY_WR__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.UTY__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Utility_Construction_start__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Utility_Design_AND_Verizon_Construction__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Utility_Easement_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Utility_Easement_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Utility_Easement_Set__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Utility_Pole_work_complete__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Utility__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Uty_Easement_App_Sent__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Uty_Easement_Sent_to_Landowner__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.VZ_EDC_deposit_from_Investor__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.VZ_Engineer__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.VZ_Invoice_Paid__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.VZ_Invoice_Received__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.VZ_Upgrade__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.VZ_easement_Recorded__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.VZ_site_visit__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.VZ_upgrade_invoice_received__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.VZ_upgrade_payment_sent__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.VZ_work_order__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Variance_Approval_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Variance_Approval_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Variance_Approval_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.WT_Docs_received_by_UTY__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.WT_Documents_sent_to_UTY__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.WT_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.WT_fee_paid__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Wetlands_Flagging_Survey_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Wireless_Meters__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Wireless_Y_N__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Wireless_confirmation_date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Witness_test_day_1__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.Witness_test_day_2__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.X3rd_party_agreement_info_sent__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.X3rd_party_agreement_received__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.ZBA_Application_Submission_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Milestone__c.ZBA_Application_Submission_Anticipated_D__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Program__c.MPM4_BASE__Program_Health__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.ACA_Extended_IX_Deadline__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.ACA_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.ACA_interconnected__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.ALTA_Survey_Draft_Completion_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.ALTA_Survey_Final_Completion_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.ALTA_Survey_Final_Completion_Anticipated__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.ANRAD_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.ANRAD_Submission_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Above_Requested_Pre_App_Received__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Access_Easement_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Account_Last_Contact__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Actual_COD_date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Actual_FNTP__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Actual_Final_Completion__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Actual_PTO_date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Actual_Substantial_Completion__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Additional_SRECs__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Allocated_size_kw_AC__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Allocation_Complete__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Analyst__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Anchor_Offtake_Complete__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Annual_Lease_Rate_Escalator__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Annualized_Rent_Payment_MW_AC__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Anticipated_FNTP__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Anticipated_Substantial_Completion__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Application_Fee_paid__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Application_required__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Application_submitted__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Approx_CS_Customers_Served__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Aquifers_Constraints_Setbacks__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Army_Corps_of_Engineers_Wetland_Permitti__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Assignment_Consent_Received__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Azimuth__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.BWC_Internal_MW_Goal_Group__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.BWC_Project_Entity__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.BWC_temp_host__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Bid_Cost_Watt__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Bid_Cost__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Bifacials__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Billing_Firm__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Blank_ISA_Received__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Box_Link__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Building_Permit_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Building_Permit_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Ch_61_A_B_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Chapter_61A_NNE_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Chapter_61_61A_61B__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Civil_Engineer__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Close_Out_Documentation__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Con_Com_Stormwater_Permit_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Con_Com_Stormwater_Permit_App_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Con_Com_Stormwater_Permit_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Conceptual_Design_Complete__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Conservation_Commission_Site_App__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Construction_Completion__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Construction_Documents_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Construction_Documents_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Construction_Kick_off_Meeting__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Construction_Period_Rent_Due__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Contingency__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Contract_Cost_Watt__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Contract_Cost__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Country__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Crop_Type__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Cultivation_Plan__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Curb_Cut_Permits__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Current_Estimated_Witness_Test_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.DC_AC_Ratio__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.DEP_Actual_Completion__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.DEP_Permits_Needed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.DEP_Projected_Completion__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.DEP_Submission__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.DOER_Submission__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Date_First_Pre_App_Filed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Date_of_Most_Recent_Preapp_Filed__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Deed_on_File__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Definitive_Document_Execution__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Design_Engineering__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Design_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Detailed_Study_Due__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Detailed_Study_Paid__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Detailed_Study__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Draft_SWPPP_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Draft_SWPPP_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Draft_Title_Commitment_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Draft_Title_Commitment_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Dual_Use_Notes__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Due_Diligence_Stage__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Duration_Since_Pre_App_Request__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.EPC_Bid_Financial_Analysis__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.EPC_Contract_Negotiations__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.EPC_Costs__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.EPC_Selection_Memo__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.EPC__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.ESP_Contingent_Milestone_Pmt_Date_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.ESP_Contingent_Milestone_Pmt__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Easement_Reference_Documents_on_File__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Effective_Project_Assemblage_Name__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Effective_Site_Acq_Graduation_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Eighth_Option_Letter_Rec_Fully_Executed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Eighth_Option_Payment_Made__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Eighth_Option_Period_Ends__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Electrical_Engineer__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Electrical_Installed__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Electrical_Permit_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Electrical_Permit_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Estimated_Amounts_Note__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Estimated_Buildable_Area__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Estimated_COD_date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Estimated_Credit_Flow_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Estimated_PTO_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Estimated_Witness_test_date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Executed_Easement_Received_by_Utility__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Executed_SIS_Agreement_Sent_to_Utility__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Executed_Title_Commitment_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Executed_Title_Commitment_Anticipated_Da__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Existing_Conditions_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Existing_Conditions_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Expected_Yield__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Extension_Approved__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Extension_Fee__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Extension_fee_sent__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.External_Title_Review_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.FFA_Sent_to_Landowner__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Facility_ID__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Farming_Cost__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Farming_Type__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Fenced_Acreage__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Fifth_Option_Letter_Rec_Fully_Executed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Fifth_Option_Payment_Made__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Fifth_Option_Period_Ends__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Final_Cost_Watt__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Final_Cost__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Final_EPC_Bids_Received__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Final_EPC_Bids_Solicited__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Final_SWPPP_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Final_SWPPP_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Final_Yield_kWh_kWp_yr__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Financial_Close__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Fire_Chief_EMS_Police_Approval__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.First_Option_Deposit__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.First_Option_Duration_Months__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.First_Option_Period_Ends__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Floodplain_Constraints_Setbacks__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Forest_Acreage_To_Cut__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Fourth_Option_Letter_Rec_Fully_Executed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Fourth_Option_Payment_Made__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Fourth_Option_Period_Ends__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Fully_Executed_ISA_Received__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Geotech_Consultant__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Geotech_Report_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Geotech_Report_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Geotechnical_Consultant_Selection__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Groundwater_Special_Permit_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Groundwater_Special_Permit_App_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Groundwater_Special_Permit_Expiration__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.HVP_Complete__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.HVP_Needed__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.HVP_Sent__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Host_Customer__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.IC_Amount_Requested__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.IC_Meeting_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.IC_Notes__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.IC_Outcome__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.ISA_1__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.ISA_Agreement_Extension_Due_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.ISA_Due_to_Utility__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.ISA_Payment_Extension__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.ISA_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.IX_App_Completion_Confirmed__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.IX_App_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.IX_Application_Cost__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.IX_Application_Submitted__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.IX_Distance__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.IX_Duration__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.IX_Invoice_Requested__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.IX_Notes_Short__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.IX_Other_Holdback_Milestone_Pmt_Date_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.IX_Other_Holdback_Milestone_Pmt__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.IX_Payment_25_Cost__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.IX_Payment_25_Due__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.IX_Payment_25_Paid__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.IX_Payment_75_Cost__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.IX_Payment_75_Due__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.IX_Payment_75_Paid__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.IX_Project_Report__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.IX_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.IX_Type__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Impact_Study_Payment_Due__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Informal_AHJ_Review_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Initial_Fatal_Flaw_Screening__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Internal_Title_Review_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Internal_Wireless_Test_Completed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Internal_Wireless_Test_Sent_to_Utility__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Investor_Committed__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.LNTP_or_DSA__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.LOA_Drafted__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.LOA_First_Sent__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.LOA_Negotiation_Duration__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.LOA_Notes__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.LOA_Signed_Fully_Executed__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.LOA_in_Negotiation__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.LOD_Acreage__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.LOI_Executed__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.LOI_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Land_Value__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Last_Amendeded__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Layout_Cut_Sheets_One_Line_Received__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Lead_Developer__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Lead_Originated_By__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Lease_Amendment_Executed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Lease_Buy__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Lease_Execution_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Lease_Execution_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Lease_Legal_Description_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Lease_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Lease_Term_Years__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Lease_Terms__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Lien_Release_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Lien_Release_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Livestock_Acreage__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MC_Milestone_Pmt_Date_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MC_Milestone_Pmt__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MEPA_Review_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MIPA_Milestone_Pmt_Date_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MIPA_Milestone_Pmt__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Account__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Actual_Duration__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Actual_Finish_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Actual_Start_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Actual_Weekday_Duration__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Date_Rollup_Context__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Deadline__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Description__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Duration__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Exclude_Weekend_Work__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Gantt_Color__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__GoogleGanntUrl__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__ImportID__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Internal__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Kickoff__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__New_Project_Kickoff_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Next_Project_Milestone_Due_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Next_Project_Top_Milestone_Due_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Next_Project_Top_Milestone_Name__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Notes__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Number_of_Incomplete_Milestones__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Number_of_Incomplete_Top_Milestones__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Opportunity__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Predecessor_Project__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Program__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Project_Type__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__QueueID__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Remote_Object_Context__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Status_BudgetExpenseSummary__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Status_BudgetMiletoneEstimate__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Status_Image_HoursSummary__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Status_Image_OpenVComplete__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Status_Img_OpenLateBlocked__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Status_TasksOpenBlockedLate__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Status_TasksOpenComplete__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Task_Gant_Filter__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Total_Blocked_Task_Count__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Total_Complete_Task_Count__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Total_Expense_Budget__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Total_Expense_Budget_from_Milestones__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Total_Expense_Estimate__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Total_Expense_Incurred__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Total_Hours_Budget__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Total_Hours_Budget_from_Milestones__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Total_Hours_Estimate__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Total_Hours_Incurred__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Total_Late_Task_Count__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Total_Open_Task_Count__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Weekday_Duration__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__hide_delete_checkbox_on_mpp__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MWAC__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Mass_Historical_Commission_Approval__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Max_Building_Min_Openspace_Requirement__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Mechanical_Installed__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Modules_Installed__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Municipal_Completion__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Municipal_Submission__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.NHESP_Consultation_Complete__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.NHESP_Duration__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.NHESP_Habitat_Species__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.NHESP_Permit_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.NHESP_Permit_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.NHESP_Permit_Submission_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.NHESP_Permit__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.NMC_Class__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.NMC_Tariff__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.NM_Expiration_2_5_mo__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.NM_Extension_Requested__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.NM_Notes__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.NM_Program__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.NM_Reservation_Expiration__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.NM_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.NOI_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.NOI_Submission_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.NOI_Submission_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.NPDES_Permit_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.NPDES_Permit_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.NRPA_Actual_Completion__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.NRPA_Pathway_Tier__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.NRPA_Projected_Completion__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.NRPA_Submission__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.NTP_Milestone_Pmt_Date_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.NTP_Milestone_Pmt__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Net_Development_Fee_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Netsuite_Project_ID__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Next_Meeting__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Next_Option_Payment_Due__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Ninth_Option_Letter_Rec_Fully_Executed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Ninth_Option_Payment_Made__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Ninth_Option_Period_Ends__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Notes__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Notice_of_Assignment_of_Interest_Sent__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Number_of_Panels__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Number_of_Parcels__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Number_of_Permits_Required__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.OOC_Appeals_Period_Expiration__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.OOC_Duration__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.ORAD_Approval_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Offtake_Partner__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Offtake_Strategy_Detail__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Offtake_Strategy__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Oliver_GIS_Permalink__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Operation_Period_Rent_Due__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Option_Expiration_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Option_Period__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Order_of_Conditions_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Order_of_Conditions_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Order_of_Conditions_Expiration_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Other_Consultants__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Other_Easement_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Other_Value__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Ownership_Transfer__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.PB_Application_Submission_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.PB_ZBA_Appeals_Period_Expiration__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.PB_ZBA_Certificate_of_No_Appeal__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.PB_ZBA_Peer_Review__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.PCUP_Duration__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.PCUP_Expiration_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.POI_coordinates__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Panel_Wattage_kW__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Permits__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Permitting_Consultant_Selection__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Permitting_Counsel__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Permitting_Notes__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Phase_I_ESA_Consultant_Selection__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Phase_I_ESA_Report_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Phase_I_ESA_Report_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Planned_Final_Completion__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Planning_Board_Hearing__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Pole_Set_Confirmation_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Pollinator_Acreage__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Pollinator_Agreage__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Post_Closure_Use_Permit_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Post_Closure_Use_Permit_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Post_Closure_Use_Permit_Submission_Actua__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Post_Closure_Use_Permit__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Pre_App_Overdue__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Pre_App_Report_Received__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Pre_Determination_Application_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Pre_Determination_Approval__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Preliminary_Site_Visit_Photos__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Procurement_of_Long_Lead_Item_Mateirals__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Production_Test__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Project_Array_Type__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Project_Assemblage__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Project_Duration__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Project_Executive__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Project_Manager__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Project_Risks__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Project_Stage__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Project_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Project_Tier__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Property_Cards_on_File__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Public_Private__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.RDA_Approval_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.RDA_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.RFP_RFQ__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Racking_Modules_Assembled__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Reason_for_Project_Death__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Recommendation_to_Award_RTA_Approved__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Recommendation_to_Award_RTA__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Reservation_End_date_ACA_orig_deadline__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Reservation_Fee_Paid__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Reservation_Fee__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Reservation_Fee_deadline__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Risks__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Rollback_Tax_Actual_Amount__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Rollback_Tax_Estimated_Amount__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Row_Spacing__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.SC_Milestone_Pmt_Date_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.SC_Milestone_Pmt__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.SIS_Agreement_Extension_Due_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.SIS_Agreement_Received__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.SIS_Agreement_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.SIS_Cost__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.SIS_Due__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.SIS_Invoice_Paid__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.SIS_Payment_Due_to_Utility__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.SIS_Received_from_Utilty__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.SIS_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.SREC_1_Application_ID__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.SREC_1_DC_Capacity__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.SREC_1_Expiration_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.SREC_1_Market_Sector__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.SREC_1_Qualification__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.SREC_1_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.SREC_2_Application_ID__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.SREC_2_DC_Capacity__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.SREC_2_Expiraton_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.SREC_2_Market_Sector__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.SREC_2_Qualification_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.SREC_2_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.SREC_2_System_Name__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.SREC_Expiration__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.SREC_Factor__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.SREC_Market_Sector__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.SREC_Program__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.SREC_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Sale_Portfolio__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Same_Date_COD__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Same_Date_NTP__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Schedule_Z_Due_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Schedule_Z_Executed__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Scout_Payment_Outstanding__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Scout_Payment_Type__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Scout_Payment__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Scout__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Screening_Memo_Received__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Second_Option_Letter_Rec_Fully_Executed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Second_Option_Payment_Made__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Second_Option_Period_Ends__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Seventh_Option_Letter_Rec_Fully_Execute__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Seventh_Option_Payment_Made__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Seventh_Option_Period_Ends__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Shading_Analysis_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Site_Acq_Priority__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Site_Acquisition_Project_Name__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Site_Analysis_Complete__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Site_Coordinates__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Site_Deed_ID__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Site_Mobilization__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Site_Parcel_ID__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Site_Plan_Approval_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Site_Plan_Approval_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Site_Plan_Approval_Expiration_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Site_Plan_Approval_Extension_Granted__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Site_Plan_Approval_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Site_Preparation__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Site_Size__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Site_Zoning__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Sixth_Option_Letter_Rec_Fully_Executed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Sixth_Option_Payment_Made__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Sixth_Option_Period_Ends__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Solar_Bylaw_Setbacks__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Solar_Bylaw__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Solar_Easement_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Solar_Site_Plan_Review_Required__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Spacer__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Special_Permit_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Special_Permit_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Special_Permit_Duration__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Special_Permit_Expiration_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Special_Permit_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.State_Wetland_Permitting__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.State__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Street_Address__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Summary_of_Solar_Bylaw_Constraints__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Summary_of_Zoning_Constraints__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.System_Name__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.System_Type__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Task__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Tax_Agreement_Execution_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Tax_Agreement_Execution_Anticipated_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Tax_Agreement_Financial_Model__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Tax_Agreement_Negotiation__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Tax_Agreement_Proposal_Sent_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Tax_Agreement_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Tax_Rate_Mill_Rate__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Tax_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Telco_Easement_Application_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Telco_Pole_Set__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Telco_Upgrade_Cost__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Telco_Upgrade_Invoice_Received__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Telco_Upgrade_Payment_Sent__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Telco_Work_Order__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Tenth_Option_Letter_Rec_Fully_Executed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Tenth_Option_Payment_Made__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Tenth_Option_Period_Ends__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Term_Sheet_Execution__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Test_Results__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Third_Option_Letter_Rec_Fully_Executed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Third_Option_Payment_Made__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Third_Option_Period_Ends__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Tilt__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Time_of_Death__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Title_Research_Complete__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Today_date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Total_CS_Capacity__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Total_CS_Project_Capacity__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Total_MWDC__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Total_System_Size_kW_AC__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Total_Value__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Total_Vegetable_and_Livestock_Acreage__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Town_Link__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Town__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.UMass_CEC_Submission__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Uility_WR__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Utility_Case_Number__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Utility_Construction_Actual_Completion__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Utility_Construction_Actual_Start__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Utility_Construction_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Utility_Design_Complete__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Utility_Design_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Utility_Easement_App_Sent__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Utility_Easement_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Utility_Engineer__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Utility_PM__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Utility_Right_of_Way__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Utility_and_Load_Zone__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Variance_Approval_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Variance_Approval_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Vegetable_Acreage__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Verizon_Construction_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.WT_Documents_Sent_to_Utility__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.WT_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Weekly_Project_Meetings__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Wetlands_Constraints_Setbacks__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Wetlands_Consultant__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Wetlands_Flagging_Survey_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Wireless_Confirmation_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Wireless_Y_N__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Yield__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.ZBA_Application_Submission_Actual_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Zip_Code__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Zoning_Bylaw__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.kWh_Expectation__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.today_date1__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Resource__c.MPM4_BASE__Contact__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Resource__c.MPM4_BASE__Resource_Skill_Set__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Resource__c.MPM4_BASE__Resource_Teams__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Resource__c.MPM4_BASE__User__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.Approval_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.Assigner_Approved__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.Billing_Rate2__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.Date_of_Task_Completion__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.Department_Assigner__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.Department__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.Hours_worked__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Actual_Duration__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Actual_Finish_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Actual_Start_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Actual_Weekday_Duration__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Additional_Information__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Assigned_To__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Blocked_Reason__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Blocked__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Cancelled__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Class__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Complete__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__CreatedByTask__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Days_Late_Formula__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Days_Late__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Description__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Due_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Duration_In_Minutes__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Email_GUID__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Email_Template_ID__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__End_Date_Time__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__End_Time__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Estimated_Expense__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Estimated_Hours__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Exclude_Weekend_Work__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Expense_Balance__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Gantt_Color__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Hours_Balance__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Index_Helper__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Index__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Internal__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Last_Email_Received__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Milestone_Deadline__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Milestone_Grandparent__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Milestone_Import_ID__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Milestone_Kickoff__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Notes__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Notification_Email_Address__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Overall_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__OwnerId__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Percent_Complete__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Planned_Duration__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Predecessor_Task_Import_Id__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Predecessor_Task__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Priority__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__ProjectId__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__ProjectStatus__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Project_Lookup_Name__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Project_Lookup__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Project_Owner_Email__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Project_Owner__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Project__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Reminder_Time__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Reminder__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Remote_Object_Context__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Required_Skills__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Resource__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Short_ID__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Start_Date_Time__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Start_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Start_Time__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Sync_To__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Task_Number__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Task_Stage__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Total_Expense__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Total_Hours__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Weekday_Duration__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__hide_delete_checkbox_on_mpp__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.Manager_Approved__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.Task_Performed__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.Task_Type__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.Title__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.monetary_allocation__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Time__c.MPM4_BASE__Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Time__c.MPM4_BASE__Description__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Time__c.MPM4_BASE__Hours__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Time__c.MPM4_BASE__ImportID__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Time__c.MPM4_BASE__Incurred_By_Resource__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Time__c.MPM4_BASE__Incurred_By__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Risk__c.MPM4_BASE__Contingency_Plan__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Risk__c.MPM4_BASE__Mitigation_Plan__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Risk__c.MPM4_BASE__Next_Steps__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Risk__c.MPM4_BASE__Program__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Risk__c.MPM4_BASE__Project_Milestone__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Risk__c.MPM4_BASE__Project_Task__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Risk__c.MPM4_BASE__Project__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Risk__c.MPM4_BASE__Risk_Closed_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Risk__c.MPM4_BASE__Risk_Description__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Risk__c.MPM4_BASE__Risk_Impact__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Risk__c.MPM4_BASE__Risk_Name__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Risk__c.MPM4_BASE__Risk_Owner__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Risk__c.MPM4_BASE__Risk_Probability__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Risk__c.MPM4_BASE__Risk_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Risk__c.MPM4_BASE__Risk_Type__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__TH_TimeEntryLineItem__c.MPM4_BASE__Activity_ID__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__TH_TimeEntryLineItem__c.MPM4_BASE__Approve__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__TH_TimeEntryLineItem__c.MPM4_BASE__CreatedByEvent__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__TH_TimeEntryLineItem__c.MPM4_BASE__Deny__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__TH_TimeEntryLineItem__c.MPM4_BASE__Description__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__TH_TimeEntryLineItem__c.MPM4_BASE__IsReminderSet__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__TH_TimeEntryLineItem__c.MPM4_BASE__ObjectIdOfRecordToRecordTimeOn__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__TH_TimeEntryLineItem__c.MPM4_BASE__Related_Object_ID__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__TH_TimeEntryLineItem__c.MPM4_BASE__ReminderDateTime__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__TH_TimeEntryLineItem__c.MPM4_BASE__ShowAs__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__TH_TimeEntryLineItem__c.MPM4_BASE__Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__TH_TimeEntryLineItem__c.MPM4_BASE__Subject__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__TH_TimeEntryLineItem__c.MPM4_BASE__Time_Entry__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__TH_TimeEntryLineItem__c.MPM4_BASE__Time__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__TH_TimeEntryLineItem__c.MPM4_BASE__Week_Of__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__TH_TimeEntry__c.MPM4_BASE__Approve__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__TH_TimeEntry__c.MPM4_BASE__Case__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__TH_TimeEntry__c.MPM4_BASE__Comments__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__TH_TimeEntry__c.MPM4_BASE__Deny__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__TH_TimeEntry__c.MPM4_BASE__External_Reference__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__TH_TimeEntry__c.MPM4_BASE__Hours_Input__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__TH_TimeEntry__c.MPM4_BASE__Object_ID__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>false</editable>
-        <field>MPM4_BASE__TH_TimeEntry__c.MPM4_BASE__Status__c</field>
+        <field>MCAPI_Config__mdt.Autopay_Reminder_Journey_Id__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>MPM4_BASE__TH_TimeEntry__c.MPM4_BASE__Subject__c</field>
+        <field>MCAPI_Config__mdt.Callouts_Per_Transaction__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>MPM4_BASE__TH_Weekly_Comments__c.MPM4_BASE__Comment__c</field>
+        <field>MCAPI_Config__mdt.Change_in_COD_Email_Journey_Id__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>MPM4_BASE__TH_Weekly_Comments__c.MPM4_BASE__Time_Entry__c</field>
+        <field>MCAPI_Config__mdt.Credits_Flowing_Email_Journey_Id__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>MPM4_BASE__TH_Weekly_Comments__c.MPM4_BASE__Week_Of__c</field>
+        <field>MCAPI_Config__mdt.Sandbox_Publish_to_Prod__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -31415,6 +26488,11 @@
         <editable>true</editable>
         <field>Opportunity.AccountId</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Account_Days_Past_Due__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -31610,6 +26688,11 @@
         <editable>true</editable>
         <field>Opportunity.CampaignId</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Cancellation_Request_Date__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -31812,6 +26895,11 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Delinquency_Information__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Description</field>
         <readable>true</readable>
@@ -31933,6 +27021,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Opportunity.LASERCA__Applicant_Generation__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Opportunity.LASERCA__Bypass_Duplicate_Detection__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -31948,12 +27041,22 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Opportunity.LASERCA__Co_Applicant_Generation__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Opportunity.LASERCA__Co_Applicant_SSN_Encrypted__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.LASERCA__Co_applicant_Last_Name__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.LASERCA__Credit_Report_Owning_User__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -32437,6 +27540,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Replacement_Capacity__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Reserved_System_Capacity_kW_DC2__c</field>
         <readable>true</readable>
@@ -32612,6 +27720,11 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.System_Size__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Testing_Date__c</field>
         <readable>true</readable>
@@ -32624,6 +27737,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.TotalOpportunityQuantity</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Total_Acq_Qty_kW__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Total_Mgmt_Qty_kW__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -32808,6 +27931,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>OpportunityLineItem.LMI_Offtake__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>OpportunityLineItem.ListPrice</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -32815,6 +27943,16 @@
         <editable>false</editable>
         <field>OpportunityLineItem.ProductCode</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>OpportunityLineItem.Product_Family__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>OpportunityLineItem.Program__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -32830,6 +27968,21 @@
         <editable>false</editable>
         <field>OpportunityLineItem.TotalPrice</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>OpportunityLineItem.UCB__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>OpportunityLineItem.UOM_Based_Price__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>OpportunityLineItem.Unit_of_Measure__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -33653,6 +28806,41 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>PartyConsent.DoubleConsentCaptureDate</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>PartyConsent.EffectiveFrom</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>PartyConsent.EffectiveTo</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Portal_Login_Message__c.Audience__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Portal_Login_Message__c.End_Time__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Portal_Login_Message__c.Message__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Portal_Login_Message__c.Start_Time__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Portal_User_Activated__e.User_Id__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -33817,6 +29005,11 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Product2.Percent_Share_Decimal_Places__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Product2.Pricing_Structure__c</field>
         <readable>false</readable>
@@ -33870,6 +29063,11 @@
         <editable>true</editable>
         <field>Product2.StockKeepingUnit</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Product2.Utility_Account_Subscription_Type__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -34104,6 +29302,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Production__c.kWh_Transferred__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Program__c.State__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -34733,6 +29936,31 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Seller.ActiveFromDate</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Seller.ActiveToDate</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Seller.SalesAmount</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Seller.SellerTier</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Seller.SellerType</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Service_Territory__c.City__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -34755,6 +29983,11 @@
         <editable>false</editable>
         <field>Shared_Solar_System_Order__c.Date_Approved__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Shared_Solar_System_Order__c.Shared_Solar_System__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -34848,6 +30081,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Shared_Solar_System__c.Available_Demand_Capacity__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Available_SMB_Underwriting_Method_Docs__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -34908,6 +30146,66 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Shared_Solar_System__c.Client_Acq_Available_Anchor_Capacity__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Client_Acq_Available_LMI_Capacity__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Client_Acq_Available_Small_CS_Capacity__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Client_Acq_Committed_Anchor_Capacity__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Client_Acq_Committed_LMI_Capacity__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Client_Acq_Committed_Small_CS_Capacity__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Client_Acq_Pending_Anchor_Capacity__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Client_Acq_Pending_LMI_Capacity__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Client_Acq_Pending_Small_CS_Capacity__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Client_Acq_Reserved_Anchor_Capacity__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Client_Acq_Reserved_LMI_Capacity__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Client_Acq_Reserved_Small_CS_Capacity__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Client_Acquisition_Contract__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -34933,6 +30231,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Shared_Solar_System__c.Committed_Demand_Capacity__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Contract_Assignment_Entity__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -34954,6 +30257,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Customer_Assignment_Date__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Demand_Customer_System_Utilization__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -35053,6 +30361,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Shared_Solar_System__c.LMI__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Last_Sch_Z_Enacted_Date__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -35113,7 +30426,47 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Shared_Solar_System__c.Payment_Gateway_Name__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Pending_Anchor_Capacity__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Pending_Demand_Capacity__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Pending_Small_CS_Capacity__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Perch_Acq_Available_LMI_Capacity__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Perch_Acq_Committed_LMI_Capacity__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Perch_Acq_Pending_LMI_Capacity__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Perch_Acq_Reserved_LMI_Capacity__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Perch_Acq_Reserved_Small_CS_Capacity__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -35174,6 +30527,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Reserved_Anchor_Capacity__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Reserved_Demand_Capacity_Pct__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Reserved_Demand_Capacity__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -36158,6 +31521,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Subscription_Order__c.Client_Invoicing_Fee_Override__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Subscription_Order__c.Client_Invoicing_Fee__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -36169,6 +31537,21 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Subscription_Order__c.Comments__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Contract_Close_Commission_Amount__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Contract_Close_Commission__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Contract_Close_Estimated_Commission__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -36189,6 +31572,36 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Subscription_Order__c.Expected_Yield_kWh_kW__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.First_Bill_Paid_Commission_Amount__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.First_Bill_Paid_Commission__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.First_Bill_Paid_Estimated_Commission__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.First_Bill_Sent_Commission_Amount__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.First_Bill_Sent_Commission__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.First_Bill_Sent_Estimated_Commission__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -36748,12 +32161,32 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>System_Default__mdt.Credit_Login_Account_Username__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>System_Default__mdt.Credit_Provider__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>System_Default__mdt.Default_Build__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>System_Default__mdt.Default_Client_Brand_Key__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>System_Default__mdt.Default_Copado_Project_ID__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>System_Default__mdt.Test_Credit_Login_Account_Username__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -36888,26 +32321,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Task.Loan_Partner_Sequence__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Task.Loan_Sale__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Task.Loan__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Task.MPM4_BASE__Project_Task_ID__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Task.New_Customer_Outreach__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -37010,106 +32423,6 @@
         <editable>true</editable>
         <field>Task.WhoId</field>
         <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Task.inspire1__Actual_Cost__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Task.inspire1__Actual_Effort__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Task.inspire1__AssignedTo__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Task.inspire1__Budgeted_Cost__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Task.inspire1__Custom_Start_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Task.inspire1__Done__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Task.inspire1__Hourly_Rate__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Task.inspire1__Inspire_Task__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Task.inspire1__Parent_Task__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Task.inspire1__Percent_Allocation__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Task.inspire1__Planned_Effort__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Task.inspire1__Project_Deleted__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Task.inspire1__Project_Name__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Task.inspire1__Ready_to_Start__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Task.inspire1__Resource_Name2__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Task.inspire1__Resource_Type__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Task.inspire1__Schedule_As__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Task.inspire1__sysContactTaskEmail__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Task.inspire1__sysFutureProjectEffort__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Task.inspire1__sysTemplateTask__c</field>
-        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -37513,6 +32826,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>UASB__c.Early_Removal__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>UASB__c.Effective_Net_Metering_Rate__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -37743,17 +33061,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>User.LASERCA__Credit_Report_Owning_User__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>User.License_Type__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>User.MPM4_BASE__Start__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>User.MetaDataSearch__Recent_Searches__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -37929,46 +33242,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>User.et4ae5__ValidExactTargetUser__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>User.inspire1__Current_Task_Id__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>User.inspire1__Default_Portfolio_ID__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>User.inspire1__Hourly_Rate__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>User.inspire1__Inspire_Planner_User__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>User.inspire1__Timer_Initial_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>User.inspire1__Timer_Start_Time__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>User.inspire1__Timer_Time_Spent__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>User.inspire1__Working_Hours_per_Day__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -38173,6 +33446,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Utility_Account_Log__c.Auto_QC_Reject_Reason__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Utility_Account_Log__c.Average_Demand__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -38189,6 +33467,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Log__c.Date_Utility_Account_Cancelled__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Log__c.Exclude_from_Demand_Capacity__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -38439,6 +33722,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Date_Removed_from_Project__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Subscription__c.Early_Removal__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -39228,6 +34516,26 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Utility__c.Auto_QC_Maximum_Demand__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility__c.Auto_QC_Minimum_kWH__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility__c.Auto_Qualify_Convert_Active__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility__c.Average_Demand_Threshold__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Utility__c.Collect_Customer_POD_Number__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -39239,6 +34547,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility__c.Credits_Allocated_Rounding_Method__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility__c.Dual_Data__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility__c.EDI_Name_Override__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -39263,6 +34581,26 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Utility__c.POD_Id_Format__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility__c.POD_Id_Length__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility__c.POD_Id_Prefix__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility__c.POD_Id_Regex_Groups__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Utility__c.Service_Territory__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -39284,6 +34622,31 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility__c.Use_Glynt__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility__c.Use_Premise_Number_In_Transfer_QC__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility__c.Utility_Account_Number_Format__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility__c.Utility_Account_Number_Length__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility__c.Utility_Account_Number_Prefix__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility__c.Utility_Account_Number_Regex_Groups__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -40323,6 +35686,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Zuora__PaymentGateway__c.Remittance_Address__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Zuora__PaymentGateway__c.Zuora__EntityID__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -40778,8 +36146,23 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Zuora__Payment__c.Lockbox_Formula__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Zuora__Payment__c.Lockbox__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Zuora__Payment__c.Method__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Zuora__Payment__c.Payment_Gateway__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -41639,6 +37022,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Zuora__SubscriptionProductChargeHistory__c.Zuora__WeeklyBillCycleDay__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Zuora__SubscriptionProductCharge__c.ClientOwner__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Zuora__SubscriptionProductCharge__c.Project__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -43219,6 +38612,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>agf__ADM_Burndown_Item__c.agf__Work__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Cache_Metadata__mdt.agf__OrgCacheEnabled__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Cache_Metadata__mdt.agf__SessionCacheEnabled__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -45429,6 +40832,21 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>agf__ADM_Priority_Override__c.agf__Priority__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Product_Tag_Work_Metadata__c.agf__Product_Tag__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Product_Tag_Work_Metadata__c.agf__Record_Type__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Product_Tag_Work_Metadata__c.agf__Work_Metadata__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -47723,7 +43141,27 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>agf__ADM_User_Product_Tag__c.agf__Order__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_User_Product_Tag__c.agf__Product_Tag__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_User_Product_Tag__c.agf__User__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>agf__ADM_Valid_GUS_Value__c.agf__Type__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_WorkFieldsForRecordType__mdt.agf__Fields__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -47789,6 +43227,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>agf__ADM_Work_History__c.agf__Work__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Work_SLA_Response_Time__mdt.agf__Respects_Business_Hours__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -51593,6 +47036,51 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>copado__Copado_Setting__mdt.copado__Enabled__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>copado__Copado_Setting__mdt.copado__Text_Field__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>copado__Copado_Smart_Help__mdt.copado__Active__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>copado__Copado_Smart_Help__mdt.copado__Base_Page__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>copado__Copado_Smart_Help__mdt.copado__Help_Text_Url__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>copado__Copado_Smart_Help__mdt.copado__Help_Text__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>copado__Copado_Smart_Help__mdt.copado__Triggering_Action__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>copado__Copado_Smart_Help__mdt.copado__Triggering_Metadata_Items__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>copado__Copado_Smart_Help__mdt.copado__Triggering_Value__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>copado__Data_Set__c.copado__Data_Template__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -51619,6 +47107,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>copado__Data_Set__c.copado__Source_Org__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>copado__Data_Template_Setup__mdt.copado__API_Names__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -54168,6 +49661,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>copado__Streaming_Setting__mdt.copado__Enabled__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>copado__Streaming_Setting__mdt.copado__Timeout__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>copado__System_Property__c.copado__Environment__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -55008,6 +50511,131 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>datamask__DM_Object_Metadata__c.datamask__API_Name__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__DM_Object_Metadata__c.datamask__Feed_History_Deactivated__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__DM_Object_Metadata__c.datamask__Field_History_Deactivated__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__DM_Object_Metadata__c.datamask__Id__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__DM_Object_Metadata__c.datamask__Parent_Object__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__DM_Object_Metadata__c.datamask__Run_Log__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__DM_Object_Metadata__c.datamask__Status__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__DM_Object_Metadata__c.datamask__Type__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__DM_Object_Metadata__c.datamask__Version_Number__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__DataMask_Configuration__mdt.datamask__Active__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__DataMask_Configuration__mdt.datamask__Anonymize_Case_Comments__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__DataMask_Configuration__mdt.datamask__Created_By__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__DataMask_Configuration__mdt.datamask__Created_Date__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__DataMask_Configuration__mdt.datamask__Delete_Chatter__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__DataMask_Configuration__mdt.datamask__Delete_Email__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__DataMask_Configuration__mdt.datamask__Language__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__DataMask_Configuration__mdt.datamask__Last_Edit_By__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__DataMask_Configuration__mdt.datamask__Last_Edit__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__DataMask_Configuration__mdt.datamask__Last_Prepped_Date__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__DataMask_Configuration__mdt.datamask__Notes__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__DataMask_Configuration__mdt.datamask__Password__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__DataMask_Configuration__mdt.datamask__Sandbox_Name__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__DataMask_Configuration__mdt.datamask__Security_Token__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__DataMask_Configuration__mdt.datamask__Status__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__DataMask_Configuration__mdt.datamask__Username__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>datamask__Masking_Execution_Log__c.datamask__Configuration_Id__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -55064,6 +50692,201 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>datamask__Masking_Execution_Log__c.datamask__Type__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Masking_Field__mdt.datamask__API_Name__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Masking_Field__mdt.datamask__Active__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Masking_Field__mdt.datamask__Custom_Pattern__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Masking_Field__mdt.datamask__Custom__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Masking_Field__mdt.datamask__Date_Max__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Masking_Field__mdt.datamask__Date_Min__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Masking_Field__mdt.datamask__Field_Length__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Masking_Field__mdt.datamask__Field_Type__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Masking_Field__mdt.datamask__Masking_Category__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Masking_Field__mdt.datamask__Masking_Object__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Masking_Field__mdt.datamask__Masking_Type__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Masking_Field__mdt.datamask__Pattern_Data__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Masking_Field__mdt.datamask__Range_Max__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Masking_Field__mdt.datamask__Range_Min__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Masking_Field__mdt.datamask__Required__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Masking_Field__mdt.datamask__Unique__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Masking_Object__mdt.datamask__API_Name__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Masking_Object__mdt.datamask__Active__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Masking_Object__mdt.datamask__Batch_Data__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Masking_Object__mdt.datamask__Custom__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Masking_Object__mdt.datamask__DataMask_Configuration__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Masking_Object__mdt.datamask__Filter_Enabled__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Masking_Object__mdt.datamask__Last_Prepped_Date__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Masking_Object__mdt.datamask__Master_Object__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Masking_Object__mdt.datamask__Number_of_Fields__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Masking_Object__mdt.datamask__Raw_Filter_Data__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Masking_Object__mdt.datamask__Record_Count__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Masking_Object__mdt.datamask__Run_In_Poly__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Masking_Object__mdt.datamask__Run_In_Serial__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Masking_Object__mdt.datamask__Where_Criteria_LT__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Masking_Object__mdt.datamask__Where_Criteria__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Object_Metadata__mdt.datamask__API_Name__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Object_Metadata__mdt.datamask__Feed_History_Deactivated__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Object_Metadata__mdt.datamask__Field_History_Deactivated__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Object_Metadata__mdt.datamask__Id__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Object_Metadata__mdt.datamask__Masking_Object__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Object_Metadata__mdt.datamask__Status__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Object_Metadata__mdt.datamask__Type__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>datamask__Object_Metadata__mdt.datamask__Version_Number__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -57223,6 +53046,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>et4ae5__JB_CDC_Event__e.et4ae5__ChangeResults__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>et4ae5__JB_Event__e.et4ae5__FutureContext__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -57234,6 +53062,91 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>et4ae5__JB_Event__e.et4ae5__Payload__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>et4ae5__JB_Flow_Event__e.et4ae5__FutureContext__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>et4ae5__JB_Flow_Event__e.et4ae5__IdList__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>et4ae5__JB_Flow_Event__e.et4ae5__Payload__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>et4ae5__Journey__c.et4ae5__ChangeType__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>et4ae5__Journey__c.et4ae5__EntityName__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>et4ae5__Journey__c.et4ae5__EventDefinitionKey__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>et4ae5__Journey__c.et4ae5__Fields__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>et4ae5__Journey__c.et4ae5__FilterFields__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>et4ae5__Journey__c.et4ae5__OwnerMid__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>et4ae5__Journey__c.et4ae5__RecordId__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>et4ae5__MC_CDC_Journey__c.et4ae5__ChangeType__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>et4ae5__MC_CDC_Journey__c.et4ae5__EntityName__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>et4ae5__MC_CDC_Journey__c.et4ae5__EventDefinitionKey__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>et4ae5__MC_CDC_Journey__c.et4ae5__Fields__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>et4ae5__MC_CDC_Journey__c.et4ae5__FilterFields__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>et4ae5__MC_CDC_Journey__c.et4ae5__OwnerMid__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>et4ae5__MC_CDC_Journey__c.et4ae5__RecordId__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -58293,2616 +54206,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>inspire1__Project__c.ALTA_Consultant_Selection__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.ANRAD_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.ANRAD_Submission_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.ASO_Group_Study_Region__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Access_Easement_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Account_Last_Contact__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Additional_Reconductoring_Cost_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Additional_Substation_Upgrade_Estimate__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Analyst__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Asset_Registration_Complete__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Azimuth__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.BWC_Project_Entity__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Bid_Award__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Bid_Cost_Watt__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Bid_Cost__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Bid_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Bid_Due__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Bid_Set_Design_Engineering__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Bid_Yield_kWh_kWp_yr__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Bifacials__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Box_Link__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Building_Permit_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Building_Permit_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.CO2_Saved_per_Year_Tons__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.COD_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.COD_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Cars_Off_the_Road__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Certified_Mechanical_Completion_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Chapter_61_A_B_NNE_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Chapter_61_A_B_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Chapter_61_A_B__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Civil_Engineer__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Civil_Site_Engineer_Company__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Civil_Site_Engineer__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Con_Com_Stormwater_Permit_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Con_Com_Stormwater_Permit_Application__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Con_Com_Stormwater_Permit_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Conceptual_Design_Complete__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Consent_to_Assign_Counter_signed_Util__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Consent_to_Assignment_Fully_Executed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Consent_to_Assignment_Owner_Executed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Consent_to_Assignment_Sent__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Conservation_Commission_Site_App__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Construction_Completion__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Construction_Documents_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Construction_Documents_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Construction_Kick_off_Meeting__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Construction_Period_Rent_Due__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Contract_Cost_Watt__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Contract_Cost__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Contract_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Contract_System_Size_MWdc__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Contract_Yield__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Crop_Type__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Cultivation_Plan__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Curb_Cut_Permits__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Customer_Retail_Agreement_Sent__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.DC_AC_Ratio__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.DEP_Completion_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.DEP_Completion_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.DEP_In_Lieu_Compensation__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.DEP_Permits_Needed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.DEP_Submission__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.DOER_Submission__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Definitive_Document_Execution__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Design_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Direct_Transfer_Trip__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Distance_from_POI_to_3P_mi__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Distance_of_Substation_to_POI_mi__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Distribution_Construction_Business_Day__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Distribution_Construction_Complete_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Distribution_Construction_Complete_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Distribution_Construction_Started__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Draft_ALTA_Survey_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Draft_ALTA_Survey_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Draft_SWPPP_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Draft_SWPPP_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Draft_Title_Commitment_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Draft_Title_Commitment_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Dual_Use_Notes__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Dual_Use_Types__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Due_Diligence_Stage__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.EPC_Bid_Evaluation__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.EPC_Bid_Review_Meeting__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.EPC_Contract_Executed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.EPC_Costs__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.EPC_Name__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.ESP_Contingent_Milestone_Pmt_Date_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.ESP_Contingent_Milestone_Pmt__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Eighth_Option_Letter_Rec_Fully_Execute__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Eighth_Option_Payment_Made__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Eighth_Option_Period_Ends__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Electrical_Completion__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Electrical_Engineer_Company__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Electrical_Engineer_Construction__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Electrical_Engineer__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Electrical_Permit_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Electrical_Permit_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Energy_Generated__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Estimated_Buildable_Area_Acres__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Estimated_Costs_Source__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Executed_Title_Commitment_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Executed_Title_Commitment_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Existing_Conditions_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Expected_Yield__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.External_Title_Review_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.External_Title_Review_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.FERC_Jurisdiction__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Factoid_Report__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Farming_Cost__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Farming_Type__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Fatal_Flaw_Analysis_Complete__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Feeder_Voltage_kV__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Fenced_Acreage__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Fifth_Option_Letter_Rec_Fully_Executed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Fifth_Option_Payment_Made__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Fifth_Option_Period_Ends__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Final_ALTA_Survey_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Final_ALTA_Survey_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Final_Completion_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Final_Completion_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Final_Cost_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Final_Cost_Watt__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Final_Cost__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Final_EPC_Bids_Received__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Final_EPC_Bids_Solicited__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Final_Lease_Terms__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Final_NTP_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Final_NTP_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Final_SWPPP_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Final_System_Size_MWdc__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Final_Yield_kWh_kWp_yr__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Financial_Close__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Fire_Chief_EMS_Police_Approval__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.First_Option_Deposit__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.First_Option_Duration_Months__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.First_Option_Period_Ends__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Forest_Acreage_To_Cut__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Fourth_Option_Letter_Rec_Fully_Execute__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Fourth_Option_Payment_Made__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Fourth_Option_Period_Ends__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Geotech_Report_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Geotech_Report_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Geotechnical_Consultant_Selection__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Groundwater_Special_Permit_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Homes_Powered__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.IX_Notes_short__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.IX_Other_Holdback_Milestone_Pmt_Date_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.IX_Other_Holdback_Milestone_Pmt__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Informal_AHJ_Review_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Interconnection_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Internal_AAA_Executed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Internal_Title_Review_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Investor_Committed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Jobs_at_Peak__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.LOD_Acreage__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Landowner_Consent_Received_by_Utility__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Lease_Amendment_Executed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Lease_Execution_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Lease_Execution_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Lease_Legal_Description_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Lease_Negotiation_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Legal_Form_Sent__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Lien_Release_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Lien_Release_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Limited_NTP_or_DSA__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Livestock_Acreage__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Load_Zone__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.MASS_ACA_Application_Transferred__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.MC_Milestone_Pmt_Date_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.MC_Milestone_Pmt__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.MEPA_Review_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.MIPA_Milestone_Pmt_Date_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.MIPA_Milestone_Pmt__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Mass_Historical_Commission_Approval__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Mechanical_Completion_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Mechanical_Completion_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Meter_Installation_Complete__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Modules_Completion__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Municipal_Completion__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Municipal_Submission__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.NEPOOL_Application_Transferred__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.NHESP_Permit_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.NHESP_Permit_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.NHESP_Permit_Submission__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.NHESP_Permitting_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.NOI_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.NOI_Submission_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.NOI_Submission_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.NPDES_Permit_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.NPDES_Permit_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.NRPA_Completion_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.NRPA_Completion_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.NRPA_Pathway_Tier__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.NRPA_Submission__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.NTP_Milestone_Pmt_Date_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.NTP_Milestone_Pmt__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Net_Development_Fee_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Net_Metering_Form_Sent__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Netsuite_Project_ID__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Next_Meeting__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Next_Option_Payment_Due__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Ninth_Option_Letter_Rec_Fully_Executed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Ninth_Option_Payment_Made__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Ninth_Option_Period_Ends__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Notes_Short__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Number_of_Panels__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Number_of_Parcels__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.OOC_Appeals_Period_Expiration__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.ORAD_Approval_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Offtake_Partner__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Offtake_Strategy__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Old_Construction_ID__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Oliver_GIS_Permalink__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Operation_Period_Rent_Due__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Option_Expiration__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Option_Period__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Order_of_Conditions_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Order_of_Conditions_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Order_of_Conditions_Expiration__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Other_Consultants__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Other_Easement_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Ownership_Transfer__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.PB_ZBA_Appeals_Period_Expiration__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.PB_ZBA_Certificate_of_No_Appeal__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.PB_ZBA_Peer_Review__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.PCC_Equipment_Cost_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.PCUP_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.PCUP_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.PCUP_Expiration__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.PCUP_Submission_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.POI_Coordinates__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.POI_Pole_Number__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.POTS_Account_Number__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.POTS_Install_Complete__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.POTS_Install_Cost__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.POTS_Install_Paid__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.POTS_Line_Needed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.PTO_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.PTO_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Panel_Wattage_W__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Permits__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Permitting_Consultant_Selection__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Permitting_Counsel__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Permitting_Notes__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Phase_I_ESA_Consultant_Selection__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Phase_I_ESA_Report_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Phase_I_ESA_Report_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Planning_Board_Hearing__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Planning_Board_Submission_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Pole_Set_Confirmation__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Pollinator_Agreage__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Post_Closure_Use_Permit_PCUP_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Pre_Determination_Application_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Pre_Determination_Approval__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Pre_bid__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Production_Test__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Project_Assemblage__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Project_Executive__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Project_Footprint__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Project_Manager_Construction__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Project_Manager__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Project_Stage__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Project_Tier__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Projects_ahead_on_Feeder_count__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Projects_ahead_on_Substation_count__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.QA_QC_Civil_Site_Company__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.QA_QC_Civil_Site_Consultant__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.QA_QC_Civil_Site_Inspector__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.QA_QC_Electrical_Company__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.QA_QC_Electrical_Consultant__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.QA_QC_Electrical_Inspector__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.RDA_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.RTU_Line_Needed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Racking_Completion__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Reason_for_Project_Death__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Recloser_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Recommendation_to_Award_RTA_Approved__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Recommendation_to_Award_RTA__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Request_Date_of_Most_Recent_Preapp__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Required_Certification_of_MC_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Required_Certification_of_MC_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Rollback_Tax_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Rollback_Tax_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Row_Spacing__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.SC_Milestone_Pmt_Date_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.SC_Milestone_Pmt__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.SMART_Application_Transferred__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.SREC_Application_Transferred__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Sale_Portfolio__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Scout_Contact__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Scout_Payment_Outstanding__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Scout_Payment_Type__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Scout_Payment__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Second_Option_Letter_Rec_Fully_Execute__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Second_Option_Payment_Made__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Second_Option_Period_Ends__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Seventh_Option_Letter_Rec_Fully_Execut__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Seventh_Option_Payment_Made__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Seventh_Option_Period_Ends__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Shading_Analysis_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Site_Acq_Notes__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Site_Analysis_Complete__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Site_Analysis_Sent_to_Landowner__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Site_Control_First_Sent__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Site_Control_Fully_Executed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Site_Control_Negotiation_Duration__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Site_Control_Notes__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Site_Control_Type__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Site_Coordinates__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Site_Engineer__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Site_Information_Source__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Site_Mobilization__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Site_Parcel_ID__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Site_Plan_Approval_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Site_Plan_Approval_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Site_Plan_Approval_Expiration__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Site_Plan_Approval_Extension_Granted__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Site_Plan_Approval_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Site_Preparation__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Site_Visit_Photos__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Sixth_Option_Letter_Rec_Fully_Executed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Sixth_Option_Payment_Made__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Sixth_Option_Period_Ends__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Solar_Bylaw__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Solar_Easement_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Special_Permit_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Special_Permit_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Special_Permit_Expiration__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Special_Permit_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.State_Wetland_Permitting_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.State__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Street_Address__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Substantial_Completion_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Substantial_Completion_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Substation_3V0__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Superintendent_Construction_Manager__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.System_Technology_Type__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.System_Type__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Tax_Agreement_Execution_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Tax_Agreement_Execution_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Tax_Agreement_Financial_Model__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Tax_Agreement_Negotiation__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Tax_Agreement_Proposal_Sent_to_Town__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Tax_Agreement_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Telco_Construction_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Telco_Easement_Application_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Telco_Invoice_Paid__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Telco_Invoice_Received__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Telecom_Co_Contact__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Tenth_Option_Letter_Rec_Fully_Executed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Tenth_Option_Payment_Made__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Tenth_Option_Period_Ends__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Term_Sheet_Execution__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Third_Option_Letter_Rec_Fully_Executed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Third_Option_Payment_Made__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Third_Option_Period_Ends__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Tilt__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Total_System_Size_kW_AC__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Total_System_Size_kW_DC__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Total_Vegetable_and_Livestock_Acreage__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Town_Link__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Transmission_Upgrade_Cost_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.UMass_CEC_Submission__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.USACE_In_Lieu_Compensation__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.USACE_Wetland_Permit_Completed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.USACE_Wetland_Permit_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.USACE_Wetland_Permit_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.USACE_Wetland_Permit_Submitted__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Utility__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Utility_and_Load_Zone__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Variance_Approval_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Variance_Approval_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Vegetable_Acreage__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Wetlands_Consultant__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Wetlands_Flagging_Survey_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Wireless_Test_Form_Sent__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Wireless_Test_Taken_By__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Witness_Test_Checklist_Sent__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Witness_Test_Completion_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Witness_Test_Completion_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Witness_Test_Cost_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Witness_Test_Passed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Witness_Test_Procedure_Sent__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Witness_Test_Scheduled_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Witness_Test_Scheduled_Est__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.X1_P_to_3_P_Cost_Estimate__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.ZBA_Application_Submission_Act__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Zip_Code__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.Zoning_Bylaw__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>inspire1__Project__c.kWh_Expectation__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Order_History__c.printsf__Amount_of_Total__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Order_History__c.printsf__Amount_on_Account__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Order_History__c.printsf__Amount_on_Credit_Card__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Order_History__c.printsf__Cart_Number__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Order_History__c.printsf__Collateral_ID__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Order_History__c.printsf__Collateral_Name__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Order_History__c.printsf__Collateral_Template__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Order_History__c.printsf__Date_Completed__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Order_History__c.printsf__Date_Submitted__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Order_History__c.printsf__Order_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Order_History__c.printsf__Order_Type__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Order_History__c.printsf__Ordered_By__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Order_History__c.printsf__Ordered_For__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Order_History__c.printsf__Piece_Count__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Order_History__c.printsf__PrintSF_Owner__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Order_History__c.printsf__Product_Type_ID__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Order_History__c.printsf__Product_Type_Name__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Order_History__c.printsf__Program_Type_ID__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Order_History__c.printsf__Program_Type_Name__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Order_History__c.printsf__Release_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Order_History__c.printsf__Ship_Method__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>printsf__Collateral_Order_History__c.printsf__Template_Thumbnail_Image_Small__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>printsf__Collateral_Order_History__c.printsf__Track__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Order_History__c.printsf__Tracking_Number__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>printsf__Collateral_Order_History__c.printsf__Tracking_URL__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Send_History__c.Account__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>printsf__Collateral_Send_History__c.Property_Account__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Send_History__c.printsf__Addressee__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Send_History__c.printsf__Campaign__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Send_History__c.printsf__City__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>printsf__Collateral_Send_History__c.printsf__Collateral_Name__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>printsf__Collateral_Send_History__c.printsf__Collateral_Template__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Send_History__c.printsf__Contact__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Send_History__c.printsf__Country__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>printsf__Collateral_Send_History__c.printsf__Date_Completed__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Send_History__c.printsf__Date_Delivered__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Send_History__c.printsf__Date_Last_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>printsf__Collateral_Send_History__c.printsf__Date_Mailed_Plus_5__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>printsf__Collateral_Send_History__c.printsf__Date_Submitted__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Send_History__c.printsf__Delivery_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Send_History__c.printsf__Delivery_Tracking_URL__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Send_History__c.printsf__Error_Code__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Send_History__c.printsf__Error_Message__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Send_History__c.printsf__Lead__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Send_History__c.printsf__NCOA_Result_Description__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Send_History__c.printsf__NCOA_Result__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Send_History__c.printsf__Opportunity__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>printsf__Collateral_Send_History__c.printsf__Order_Number__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>printsf__Collateral_Send_History__c.printsf__Order_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>printsf__Collateral_Send_History__c.printsf__Order_Type__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>printsf__Collateral_Send_History__c.printsf__Ordered_For__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Send_History__c.printsf__Recipient_ID__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>printsf__Collateral_Send_History__c.printsf__Release_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Send_History__c.printsf__State__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Send_History__c.printsf__Street__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>printsf__Collateral_Send_History__c.printsf__TrackLink__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Send_History__c.printsf__Tracking_Number__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Send_History__c.printsf__Zip_Code__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Template__c.printsf__Active__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Template__c.printsf__Description__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Template__c.printsf__Display_Pricing__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Template__c.printsf__Fulfill_1_to_1__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Template__c.printsf__Fulfill_1_to_Many__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Template__c.printsf__Fulfill_Bulk_Copies__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Template__c.printsf__Fulfill_as_PDF__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Template__c.printsf__ID_Number__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Template__c.printsf__Last_Sync__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Template__c.printsf__Minimum_Mail_Count__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Template__c.printsf__Minimum_Ship_Count__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Template__c.printsf__Predefined_Sets__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>printsf__Collateral_Template__c.printsf__Thumbnail_Image_Large__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>printsf__Collateral_Template__c.printsf__Thumbnail_Image_Small__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Template__c.printsf__Thumbnail_Large_URL__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>printsf__Collateral_Template__c.printsf__Thumbnail_URL_Small__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__Badge__c.trailheadapp__Archived__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__Badge__c.trailheadapp__Badge_Icon__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__Badge__c.trailheadapp__Built_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__Badge__c.trailheadapp__Created_At__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>trailheadapp__Badge__c.trailheadapp__External_Id__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__Badge__c.trailheadapp__Level__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__Badge__c.trailheadapp__Products__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__Badge__c.trailheadapp__Roles__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__Badge__c.trailheadapp__Tags__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__Badge__c.trailheadapp__Total_Badges_Awarded__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__Badge__c.trailheadapp__Total_Badges_In_Progress__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__Badge__c.trailheadapp__Type__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__Trail__c.trailheadapp__Archived__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__Trail__c.trailheadapp__Badge_Icon__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__Trail__c.trailheadapp__Created_At__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>trailheadapp__Trail__c.trailheadapp__External_Id__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__Trail__c.trailheadapp__Level__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__Trail__c.trailheadapp__Products__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__Trail__c.trailheadapp__Roles__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__Trail__c.trailheadapp__Tags__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__Trailhead_User_Data__c.trailheadapp__Avatar__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__Trailhead_User_Data__c.trailheadapp__Profile_URL__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__Trailhead_User_Data__c.trailheadapp__Profile_Visibility__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__Trailhead_User_Data__c.trailheadapp__Rank__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__Trailhead_User_Data__c.trailheadapp__Total_Points__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__Trailhead_User_Data__c.trailheadapp__User__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__Trailmix_Assignment__c.trailheadapp__Due_At__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__Trailmix_Assignment__c.trailheadapp__Due_Datetime__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__Trailmix_Assignment__c.trailheadapp__Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__Trailmix_Assignment__c.trailheadapp__User__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__Trailmix__c.trailheadapp__Archived__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__Trailmix__c.trailheadapp__Created_At__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>trailheadapp__Trailmix__c.trailheadapp__Creator_TH_SFID__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__Trailmix__c.trailheadapp__Description__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__Trailmix__c.trailheadapp__Featured__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__Trailmix__c.trailheadapp__Updated_At__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__User_Badge__c.Power_of_One__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__User_Badge__c.trailheadapp__Archived__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__User_Badge__c.trailheadapp__Assigned_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__User_Badge__c.trailheadapp__Assigned_to_Complete__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__User_Badge__c.trailheadapp__Badge_Icon__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__User_Badge__c.trailheadapp__Due_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__User_Badge__c.trailheadapp__External_ID__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__User_Badge__c.trailheadapp__Finished_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__User_Badge__c.trailheadapp__First_Attempted_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__User_Badge__c.trailheadapp__Last_Attempted_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__User_Badge__c.trailheadapp__Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__User_Badge__c.trailheadapp__URL__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__User_Badge__c.trailheadapp__User__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__User_Trailmix__c.trailheadapp__Assigned_At__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__User_Trailmix__c.trailheadapp__Completed_At__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__User_Trailmix__c.trailheadapp__Due_At__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__User_Trailmix__c.trailheadapp__External_Id__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__User_Trailmix__c.trailheadapp__First_Attempted_At__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__User_Trailmix__c.trailheadapp__Last_Attempted_At__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__User_Trailmix__c.trailheadapp__Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>trailheadapp__User_Trailmix__c.trailheadapp__User__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>zqu__CommunicationProfile__c.Client_Brand_Key__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -61079,6 +54382,9 @@
         <recordType>BlueWave_Surveys__c.Transformer_Award_Survey</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>BusinessBrand-Business Brand Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>CS_Bill_Setting__c-CS Bill Setting Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -61091,7 +54397,13 @@
         <layout>CampaignMember-Campaign Member Page Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>CampaignMemberStatus-Campaign Member Status Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Campaign_Inventory_Log__c-Campaign Inventory Log Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Capacity_Reservation_Order__c-Capacity Reservation Order Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Capacity_Snapshot__c-Capacity Snapshot Layout</layout>
@@ -61218,12 +54530,12 @@
         <recordType>Contact.Bank_Contact</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Contact-Contact - Community Solar</layout>
-        <recordType>Contact.Community_Solar_Contact</recordType>
+        <layout>Contact-Bank Contact Layout</layout>
+        <recordType>Contact.Contact_Co_Applicant</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Contact-Contact - RL DOER Co-Applicant</layout>
-        <recordType>Contact.Contact_Co_Applicant</recordType>
+        <layout>Contact-Contact - Community Solar</layout>
+        <recordType>Contact.Community_Solar_Contact</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Contact-Contact Layout</layout>
@@ -61284,6 +54596,9 @@
         <layout>Custom_File_Upload_Share__c-Custom File Upload Share Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Customer-Customer Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Daily_Production_Update__c-Daily Production Update Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -61300,6 +54615,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>DuplicateRecordSet-Duplicate Record Set Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>EDI_Error_Mapping__mdt-EDI Error Mapping Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Easement__c-Interconnection Easement Layout</layout>
@@ -61426,12 +54744,12 @@
         <recordType>Lead.BFG_Community_Solar</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Lead-BFG - Community Solar %28Residential%29</layout>
-        <recordType>Lead.Utility_Duke_Energy</recordType>
+        <layout>Lead-BFG</layout>
+        <recordType>Lead.BFG_Solar_Loan</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Lead-BFG - Standard Solar Loan</layout>
-        <recordType>Lead.BFG_Solar_Loan</recordType>
+        <layout>Lead-BFG - Community Solar - Residential</layout>
+        <recordType>Lead.Utility_Duke_Energy</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-Lead Layout</layout>
@@ -61536,6 +54854,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Location-Location Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>MCAPI_Config__mdt-MCAPI Config Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>MPM4_BASE__Milestone1_Milestone__c-Construction Milestone</layout>
@@ -61652,7 +54973,15 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-BFG</layout>
+        <recordType>Opportunity.BFG_Solar_Loan</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Opportunity-BFG</layout>
         <recordType>Opportunity.BW_Community_Solar_BCS</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Opportunity-BFG</layout>
+        <recordType>Opportunity.Business_Development</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-BFG</layout>
@@ -61664,23 +54993,15 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-BFG</layout>
+        <recordType>Opportunity.Distribution_Partners</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Opportunity-BFG</layout>
         <recordType>Opportunity.Finance</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-BFG</layout>
         <recordType>Opportunity.Marketing</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Opportunity-Business Development</layout>
-        <recordType>Opportunity.Business_Development</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Opportunity-Distribution Partner</layout>
-        <recordType>Opportunity.Distribution_Partners</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Opportunity-Solar Loan</layout>
-        <recordType>Opportunity.BFG_Solar_Loan</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>OpportunityContactRole-Opportunity Contact Role Layout</layout>
@@ -61731,6 +55052,9 @@
         <layout>Partner__c-Partner Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Portal_Login_Message__c-Portal Login Message Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Portfolio__c-Portfolio Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -61764,6 +55088,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Production__c-Production Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Program__c-Program Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Project_Application__c-Interconnection Application Layout</layout>
@@ -61815,6 +55142,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>ScorecardMetric-Scorecard Metric Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Seller-Seller Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Service_Territory__c-Service Territory Layout</layout>
@@ -62064,6 +55394,13 @@
         <layout>inspire1__Project__c-inspire1__Inspire Project v1%2E75 Layout</layout>
         <recordType>inspire1__Project__c.Other_Project</recordType>
     </layoutAssignments>
+    <loginFlows>
+        <flow>Portal_Login_Flow</flow>
+        <flowType>UI</flowType>
+        <friendlyName>CS Community User Flow</friendlyName>
+        <uiLoginFlowType>VisualWorkflow</uiLoginFlowType>
+        <useLightningRuntime>true</useLightningRuntime>
+    </loginFlows>
     <objectPermissions>
         <allowCreate>false</allowCreate>
         <allowDelete>false</allowDelete>
@@ -62106,6 +55443,15 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>APXTConga4__Composer_Host_Override__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>APXTConga4__Composer_QuickMerge__ChangeEvent</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -62116,6 +55462,15 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>APXTConga4__Composer_QuickMerge__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>APXTConga4__Composer_Setting__mdt</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -62143,6 +55498,15 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>APXTConga4__Conga_Composer_Settings__ChangeEvent</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>APXTConga4__Conga_Composer_Settings__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -62215,6 +55579,24 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>APXTConga4__Conga_Solution_Email_Template__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>APXTConga4__Conga_Solution_Export_Environment__mdt</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>APXTConga4__Conga_Solution_Export_Setting__mdt</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -62322,6 +55704,15 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>APXTConga4__Conga_Solutions_Settings__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>APXTConga4__Conga_Template__ChangeEvent</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -62340,6 +55731,15 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>APXTConga4__Connected_App_Setting__mdt</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>APXTConga4__Document_History_Detail__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -62350,6 +55750,42 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>APXTConga4__Document_History__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>APXTConga4__EventData__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>APXTConga4__VersionedData__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>APXT_BPM__Conductor_Region__mdt</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>APXT_BPM__Conductor_Setting__mdt</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -62457,6 +55893,42 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>ActiveScratchOrg</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>ActivityMetric</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>ActivityMetricRollup</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Adder_Extension__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>Adjustment_Application__ChangeEvent</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -62485,6 +55957,15 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>AppAnalyticsQueryRequest</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Application_Status_Change__e</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -62655,6 +56136,15 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>BW_Address__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>Bank__ChangeEvent</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -62745,7 +56235,25 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>BusinessBrand</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>CSCLP_Settings__ChangeEvent</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>CSCLP_Settings__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -62835,6 +56343,15 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>Capacity_Reservation_Order__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>Capacity_Snapshot__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -62907,6 +56424,15 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>Case_Round_Robin_Queue_Ids__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>Case_Round_Robin_Queue_Member__ChangeEvent</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -62935,6 +56461,15 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Case_Round_Robin_Queue__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Case__hd</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -63141,6 +56676,15 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>ClickToDial__ConfigurationManager__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>Client_Allocation_Schedule_Subscription__ChangeEvent</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -63240,6 +56784,42 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>CommSubscription</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>CommSubscriptionChannelType</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>CommSubscriptionConsent</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>CommSubscriptionTiming</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>Commission_Payment__ChangeEvent</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -63268,6 +56848,24 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Commission_Structure__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>CongaWorkflow__Workflow_Region__mdt</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>CongaWorkflow__Workflow_Setting__mdt</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -63456,7 +57054,25 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>Custom_Feature_Enablement__mdt</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>Custom_File_Upload_Share__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Customer</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -63537,6 +57153,15 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>DelegatedAccount</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>Disbursal__ChangeEvent</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -63564,6 +57189,15 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>DownloadFiles__MFDConfig__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>DuplicateRecordItem</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -63574,6 +57208,24 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>DuplicateRecordSet</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>EDI_Error_Mapping__mdt</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Easement__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -63601,6 +57253,15 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Energy_Usage_Update__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>EngagementChannelType</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -63637,6 +57298,15 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Equipment__ChangeEvent</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Error_Log_Event__e</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -63762,6 +57432,15 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>Field_Trip__Logistics__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>Field_Trip__Object_Analysis__ChangeEvent</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -63811,6 +57490,15 @@
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Glynt_Configuration__mdt</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>false</allowDelete>
         <allowEdit>false</allowEdit>
@@ -63835,6 +57523,15 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Image</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Incentive__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -63904,6 +57601,15 @@
         <allowCreate>false</allowCreate>
         <allowDelete>false</allowDelete>
         <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Knowledge__ka</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Knowledge__kav</object>
@@ -63925,6 +57631,15 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>LASERCA__Address_Information__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>LASERCA__CBCNEW_Notification__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -64023,6 +57738,15 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>LASERCA__Error_Email__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>LASERCA__Inquiries__ChangeEvent</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -64042,6 +57766,15 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>LASERCA__Judgment__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>LASERCA__LASER_Address__mdt</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -64096,6 +57829,15 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>LASERCA__MappingObjects__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>LASERCA__OFAC_Status__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -64177,6 +57919,15 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>LASERCA__Score_Model__ChangeEvent</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>LASERCA__Score_Model__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -64294,6 +58045,15 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>LetterStream_Settings__ChangeEvent</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>LetterStream_Settings__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -65067,6 +58827,15 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>MCAPI_Config__mdt</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>MCEC_Report_Data__ChangeEvent</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -65409,6 +59178,15 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>Median_Income__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>MetaDataSearch__Config_Manager__ChangeEvent</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -65446,6 +59224,15 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Milestone__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>NamespaceRegistry</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -65715,6 +59502,15 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>Partner_Data_Model_Setting__mdt</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>Partner_Health__ChangeEvent</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -65787,6 +59583,15 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>PartyConsent</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>PendingServiceRouting</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -65805,6 +59610,24 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>Portal_Login_Message__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Portal_User_Activated__e</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>Portfolio__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -65815,6 +59638,15 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Pricebook2</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>ProcessException</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -65958,6 +59790,24 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>Program__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Project_Application__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>Project_Assemblage__ChangeEvent</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -66022,6 +59872,15 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>PromptAction</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>PromptError</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -66138,6 +59997,24 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>Related_Contract_Parties__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Req_Perm_Set__mdt</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>Request_for_Information__ChangeEvent</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -66174,7 +60051,25 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>RoundRobin__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>SLPortal_Settings__ChangeEvent</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>SLPortal_Settings__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -66238,6 +60133,24 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Schedule_Z__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>ScratchOrgInfo</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Seller</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -66354,6 +60267,15 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>State_Incentives__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>State_Registration__ChangeEvent</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -66390,6 +60312,15 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>Study__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>Submittals__ChangeEvent</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -66400,6 +60331,24 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Submittals__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Subscription_Change_Event__e</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Subscription_Order_Change_Event__e</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -66570,7 +60519,34 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>System_Default__mdt</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>System_Properties__ChangeEvent</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>System_Properties__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>System_Settings__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -66984,6 +60960,15 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>Zuora_Account_Create_Event__e</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>Zuora_Contact__ChangeEvent</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -67002,6 +60987,15 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>Zuora_Custom_Setting__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>Zuora_Data_Query__ChangeEvent</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -67012,6 +61006,15 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Zuora_Data_Query__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Zuora_Setting__mdt</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -67165,6 +61168,15 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Zuora__MigrationSettings__ChangeEvent</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Zuora__MigrationSettings__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -67614,6 +61626,15 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>Zuora__ZuoraConfig__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>agf__ADM_Acceptance_Criterion__ChangeEvent</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -67750,6 +61771,15 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>agf__ADM_Burndown_Item__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>agf__ADM_Cache_Metadata__mdt</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -68280,6 +62310,15 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>agf__ADM_Product_Tag_Work_Metadata__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>agf__ADM_Product_Tag__ChangeEvent</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -68317,6 +62356,15 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>agf__ADM_Release_Calendar__ChangeEvent</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>agf__ADM_Release_Calendar__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -68829,6 +62877,15 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>agf__ADM_User_Product_Tag__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>agf__ADM_Valid_GUS_Value__ChangeEvent</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -68839,6 +62896,15 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>agf__ADM_Valid_GUS_Value__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>agf__ADM_WorkFieldsForRecordType__mdt</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -68901,6 +62967,15 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>agf__ADM_Work_SLA_Response_Time__mdt</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>agf__ADM_Work_Status__ChangeEvent</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -68947,6 +63022,15 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>agf__ADM_Work__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>agf__ADM_Work__c_hd</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -69531,6 +63615,15 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>copado__Change_Management_Settings__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>copado__Compliance_Finding__ChangeEvent</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -69711,7 +63804,34 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>copado__Copado_Setting__mdt</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>copado__Copado_Smart_Help__mdt</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>copado__Data_Set__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>copado__Data_Template_Setup__mdt</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -70026,6 +64146,15 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>copado__Git_Operation_Restriction__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>copado__Git_Org_Commit__ChangeEvent</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -70198,6 +64327,15 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>copado__Personal_Settings__ChangeEvent</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>copado__Personal_Settings__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -70755,6 +64893,15 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>copado__Streaming_Setting__mdt</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>copado__System_Property__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -71025,7 +65172,61 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>datamask__DM_Object_Metadata__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>datamask__DataMask_Configuration__mdt</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>datamask__Masking_Configuration__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>datamask__Masking_Execution_Log__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>datamask__Masking_Field__mdt</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>datamask__Masking_Object__mdt</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>datamask__Object_Metadata__mdt</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -71277,7 +65478,25 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>et4ae5__ET4AEConfig__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>et4ae5__ET4AE_Config__ChangeEvent</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>et4ae5__ET4AE_Config__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -71340,7 +65559,43 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>et4ae5__JB_CDC_Event__e</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>et4ae5__JB_Event__e</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>et4ae5__JB_Flow_Event__e</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>et4ae5__Journey__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>et4ae5__MC_CDC_Journey__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -71502,7 +65757,25 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>flowmagic__FlowPicklistConfiguration__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>init_vals__ChangeEvent</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>init_vals__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -72808,6 +67081,10 @@
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
+        <apexPage>APXTConga4__Composer_Test</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
         <apexPage>APXTConga4__Conga_Composer</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
@@ -73161,6 +67438,10 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>LASERCA__GetCreditData</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>LASERCA__PCR_HstDelinquencies</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
@@ -75900,6 +70181,14 @@
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
+        <apexPage>zqu__QuoteStudio</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>zqu__QuoteStudioSettings</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
         <apexPage>zqu__QuoteTemplates</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
@@ -77274,6 +71563,10 @@
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>APXTConga4__Composer_Test</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>APXTConga4__CongaMerge</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
@@ -77574,6 +71867,10 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>LASERCA__Support</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>Lease_Dimensions_Import</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
@@ -77754,6 +72051,10 @@
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>Portal_Login_Message__c</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>Portfolio__c</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
@@ -77763,6 +72064,10 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>Production__c</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Program__c</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
@@ -78342,6 +72647,10 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>et4ae5__Configuration__c</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>et4ae5__ExactTargetPhoenix</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
@@ -78422,6 +72731,10 @@
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>standard-ActiveScratchOrg</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>standard-AppLauncher</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
@@ -78446,6 +72759,10 @@
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>standard-BusinessBrand</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>standard-Campaign</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
@@ -78466,7 +72783,27 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>standard-CmsAuthorHome</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>standard-CollaborationGroup</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>standard-CommSubscription</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>standard-CommSubscriptionChannelType</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>standard-CommSubscriptionConsent</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>standard-CommSubscriptionTiming</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
@@ -78490,6 +72827,10 @@
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>standard-ContentNote</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>standard-ContentSearch</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
@@ -78499,6 +72840,10 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>standard-Contract</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>standard-Customer</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
@@ -78514,6 +72859,18 @@
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>standard-DelegatedAccount</tab>
+        <visibility>DefaultOff</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>standard-DeleteEvent</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>standard-DiscoveryForAccounts</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>standard-Document</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
@@ -78522,11 +72879,31 @@
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>standard-EmailTemplate</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>standard-EngagementChannelType</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>standard-EnhancedLetterhead</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>standard-Event</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>standard-Feed</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>standard-File</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>standard-FlowInterview</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
@@ -78558,6 +72935,14 @@
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>standard-LightningInstrumentation</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>standard-LightningQuickText</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>standard-ListEmail</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
@@ -78583,6 +72968,22 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>standard-Macro</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>standard-NamespaceRegistry</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>standard-News</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>standard-OmniSupervisorLightning</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>standard-OnlineSalesHome</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
@@ -78614,7 +73015,19 @@
         <visibility>DefaultOff</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>standard-PartyConsent</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>standard-Pricebook2</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>standard-ProcessException</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>standard-ProcessInstanceWorkitem</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
@@ -78650,6 +73063,14 @@
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>standard-ScratchOrgInfo</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>standard-Seller</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>standard-SocialPersona</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
@@ -78672,6 +73093,10 @@
     <tabVisibilities>
         <tab>standard-Task</tab>
         <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>standard-Today</tab>
+        <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>standard-UserProfile</tab>
@@ -78791,32 +73216,380 @@
     </tabVisibilities>
     <userLicense>Customer Community Plus Login</userLicense>
     <userPermissions>
+        <enabled>false</enabled>
+        <name>AICreateInsightObjects</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>AIViewInsightObjects</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>AccessCMC</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>AccessContentBuilder</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>AccountSwitcherUser</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ActivateContract</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ActivateOrder</name>
+    </userPermissions>
+    <userPermissions>
         <enabled>true</enabled>
         <name>ActivitiesAccess</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>AddAnalyticsRemoteConnections</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>AddDirectMessageMembers</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>AddWaveNotificationRecipients</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>AdminAnalyticsUser</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>AllowEmailIC</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
         <name>AllowUniversalSearch</name>
     </userPermissions>
     <userPermissions>
+        <enabled>false</enabled>
+        <name>AllowViewEditConvertedLeads</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>AllowViewKnowledge</name>
+    </userPermissions>
+    <userPermissions>
         <enabled>true</enabled>
         <name>ApexRestServices</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ApiEnabled</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ApiUserOnly</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ArchiveArticles</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>AssignPermissionSets</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
         <name>AssignTopics</name>
     </userPermissions>
     <userPermissions>
+        <enabled>false</enabled>
+        <name>AssignUserToSkill</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>AuthorApex</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>AutomaticActivityCapture</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>B2BMarketingAnalyticsUser</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>BotManageBots</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>BotManageBotsTrainingData</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>BulkApiHardDelete</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>BulkMacrosAllowed</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>BypassEmailApproval</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>CampaignInfluence2</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>CanApproveFeedPost</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>CanEditDataPrepRecipe</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>CanEditPrompts</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>CanInsertFeedSystemFields</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>CanManageMaps</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>CanUseNewDashboardBuilder</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>CanVerifyComment</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>CaseWrapUpUser</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ChangeDashboardColors</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ChatterComposeUiCodesnippet</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ChatterEditOwnPost</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ChatterEditOwnRecordPost</name>
+    </userPermissions>
+    <userPermissions>
         <enabled>true</enabled>
         <name>ChatterEnabledForUser</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ChatterFileLink</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ChatterInternalUser</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ChatterInviteExternalUsers</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
         <name>ChatterOwnGroups</name>
     </userPermissions>
     <userPermissions>
+        <enabled>false</enabled>
+        <name>CloseConversations</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ConfigCustomRecs</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ConnectOrgToEnvironmentHub</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ConsentApiUpdate</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ContentAdministrator</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ContentHubUser</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ContentWorkspaces</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ConvertLeads</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>CreateAuditFields</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>CreateCustomizeDashboards</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>CreateCustomizeFilters</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>CreateCustomizeReports</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>CreateDashboardFolders</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>CreateLtngTempFolder</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>CreateLtngTempInPub</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>CreateReportFolders</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>CreateReportInLightning</name>
+    </userPermissions>
+    <userPermissions>
         <enabled>true</enabled>
         <name>CreateTopics</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>CreateWorkBadgeDefinition</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>CreateWorkspaces</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>CustomMobileAppsAccess</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>CustomSidebarOnAllPages</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>CustomizeApplication</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>DataExport</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>DeferSharingCalculations</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>DelegatedPortalUserAdmin</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>DelegatedTwoFactor</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>DeleteActivatedContract</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>DeleteTopics</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>DistributeFromPersWksp</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>EditASEFields</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>EditActivatedOrders</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>EditBrandTemplates</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>EditCaseComments</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>EditEvent</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>EditHtmlTemplates</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>EditIQFields</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>EditKnowledge</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>EditMyDashboards</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>EditMyReports</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>EditOppLineItemUnitPrice</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>EditPublicDocuments</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>EditPublicFilters</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>EditPublicTemplates</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>EditReadonlyFields</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -78827,27 +73600,815 @@
         <name>EditTopics</name>
     </userPermissions>
     <userPermissions>
+        <enabled>false</enabled>
+        <name>EditTranslation</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>EinsteinArticleRecUser</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>EmailMass</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>EmailSingle</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>EnableCommunityAppLauncher</name>
+    </userPermissions>
+    <userPermissions>
         <enabled>true</enabled>
         <name>EnableNotifications</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ExportReport</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>FSCComprehensiveUserAccess</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>FeedPinning</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ForceTwoFactor</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>GiveRecognitionBadge</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>GovernNetworks</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>HasUnlimitedNBAExecutions</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>HeadlessCMSAccess</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>HideReadByList</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>IdentityConnect</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>IdentityEnabled</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ImportCustomObjects</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ImportLeads</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ImportPersonal</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>InboundMigrationToolsUser</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>InsightsAppAdmin</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>InsightsAppDashboardEditor</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>InsightsAppEltEditor</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>InsightsAppUploadUser</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>InsightsAppUser</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>InsightsCreateApplication</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>IsotopeAccess</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>IsotopeCToCUser</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>IsotopeLEX</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>LMEndMessagingSessionUserPerm</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>LMOutboundMessagingUserPerm</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>LearningManager</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>LightningConsoleAllowedForUser</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>LightningExperienceUser</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ListEmailSend</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>LtngPromoReserved01UserPerm</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageAnalyticSnapshots</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageAuthProviders</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageBusinessHourHolidays</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageC360AConnections</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageCMS</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageCallCenters</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageCases</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageCategories</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageCertificates</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageChatterMessages</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageContentPermissions</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageContentProperties</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageContentTypes</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageCssUsers</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageCustomPermissions</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageCustomReportTypes</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageDashbdsInPubFolders</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageDataCategories</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageDataIntegrations</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageEmailClientConfig</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageExchangeConfig</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageExternalConnections</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageHealthCheck</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageHubConnections</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageInteraction</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageInternalUsers</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageIpAddresses</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageKnowledge</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageKnowledgeImportExport</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageLeads</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageLearningReporting</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageLoginAccessPolicies</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageMobile</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageNetworks</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManagePartners</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManagePasswordPolicies</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageProfilesPermissionsets</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManagePropositions</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManagePvtRptsAndDashbds</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageQuotas</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageRecommendationStrategies</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageReleaseUpdates</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageRemoteAccess</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageReportsInPubFolders</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageRoles</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageSandboxes</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageSearchPromotionRules</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageSessionPermissionSets</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageSharing</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageSolutions</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageSubscriptions</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageSurveys</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageSynonyms</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageTemplatedApp</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageTrustMeasures</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageTwoFactor</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageUnlistedGroups</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ManageUsers</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>MassInlineEdit</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>MergeTopics</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>MicrosoftTeamsUser</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ModerateChatter</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ModerateNetworkFeeds</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ModerateNetworkFiles</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ModerateNetworkMessages</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ModerateNetworkUsers</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ModifyAllData</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ModifyDataClassification</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ModifyMetadata</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>NativeWebviewScrolling</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>NewReportBuilder</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>OutboundMigrationToolsUser</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>OverrideForecasts</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>Packaging2</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>Packaging2Delete</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>Packaging2PromoteVersion</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
         <name>PasswordNeverExpires</name>
     </userPermissions>
     <userPermissions>
+        <enabled>false</enabled>
+        <name>PortalSuperUser</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>PreventClassicExperience</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>PrivacyDataAccess</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>PublishArticles</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>PublishTranslation</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>QueryAllFiles</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>QuipMetricsAccess</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>QuipUserEngagementMetrics</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>RecordVisibilityAPI</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>RemoveDirectMessageMembers</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ResetPasswords</name>
+    </userPermissions>
+    <userPermissions>
         <enabled>true</enabled>
         <name>RunFlow</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>RunReports</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>SalesConsole</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>SalesforceIQInbox</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>SandboxTestingInCommunityApp</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ScheduleJob</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ScheduleReports</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
         <name>SelectFilesFromSalesforce</name>
     </userPermissions>
     <userPermissions>
+        <enabled>false</enabled>
+        <name>SendAnnouncementEmails</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>SendCustomNotifications</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>SendSitRequests</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ShareInternalArticles</name>
+    </userPermissions>
+    <userPermissions>
         <enabled>true</enabled>
         <name>ShowCompanyNameAsUserBadge</name>
     </userPermissions>
     <userPermissions>
+        <enabled>false</enabled>
+        <name>SkipIdentityConfirmation</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>SocialInsightsLogoAdmin</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>SolutionImport</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>StdAutomaticActivityCapture</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>SubmitForTranslation</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>SubmitMacrosAllowed</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>SubscribeDashboardRolesGrps</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>SubscribeDashboardToOtherUsers</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>SubscribeReportRolesGrps</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>SubscribeReportToOtherUsers</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>SubscribeReportsRunAsUser</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>SubscribeToLightningDashboards</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>SubscribeToLightningReports</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>TraceXdsQueries</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>TransactionalEmailSend</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>TransferAnyCase</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>TransferAnyEntity</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>TransferAnyLead</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>TwoFactorApi</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>UpdateWithInactiveOwner</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>UseAnyApiClient</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>UseAssistantDialog</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>UseMySearch</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>UseQuerySuggestions</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>UseSubscriptionEmails</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>UseTeamReassignWizards</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>UseTemplatedApp</name>
+    </userPermissions>
+    <userPermissions>
         <enabled>true</enabled>
         <name>UseWebLink</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>VideoConferenceZoomUser</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ViewAllActivities</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ViewAllCustomSettings</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ViewAllData</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ViewAllForecasts</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ViewAllForeignKeyNames</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ViewAllProfiles</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ViewAllUsers</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ViewAnomalyEvents</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ViewArchivedArticles</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ViewCaseInteraction</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ViewContent</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ViewCustomerSentiment</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ViewDataAssessment</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ViewDataCategories</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ViewDataLeakageEvents</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ViewDeveloperName</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ViewDraftArticles</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ViewEncryptedData</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ViewEventLogFiles</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ViewGlobalHeader</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ViewHealthCheck</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ViewHelpLink</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ViewMyTeamsDashboards</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ViewOnlyEmbeddedAppUser</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ViewPlatformEvents</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ViewPrivateStaticResources</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ViewPublicDashboards</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ViewPublicReports</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ViewRestrictionAndScopingRules</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ViewRoles</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ViewSetup</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ViewTrustMeasures</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>ViewUserPII</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>WaveManagePrivateAssetsUser</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>WaveTabularDownload</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>false</enabled>
+        <name>WaveTrendReports</name>
     </userPermissions>
 </Profile>
