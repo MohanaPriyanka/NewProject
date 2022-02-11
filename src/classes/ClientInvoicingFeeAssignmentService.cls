@@ -3,12 +3,12 @@
   Tested By: ClientInvoicingFeeAssignmentServiceTest, ClientInvoicingFeeWaiveServiceTest
  */
 public without sharing class ClientInvoicingFeeAssignmentService {
+    @TestVisible private static FeatureService featureService = new FeatureService();
     @TestVisible private static SubscriptionOrderSelector subscriptionOrderSelector = new SubscriptionOrderSelector();
     private List<SubscriptionOrder> subOrdersAsFeeQualifications = new List<SubscriptionOrder>();
     private Set<Id> subscriptionOrderIds;
     private List<Subscription_Order__c> queriedSOs;
-    @TestVisible
-    private fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
+    @TestVisible private fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
         new List<SObjectType> {
             Subscription_Order__c.SObjectType
         }
@@ -30,12 +30,25 @@ public without sharing class ClientInvoicingFeeAssignmentService {
         }
     }
 
+    public static void setSubOrderContractFeeDetail(Set<Id> subscriptionOrderIds) {
+        try {
+            if (featureService.isEnabled('Assign_CFDs_in_Future')) {
+                setSubOrderContractFeeDetailInFuture(subscriptionOrderIds);
+            } else {
+                ClientInvoicingFeeAssignmentService feeJob = new ClientInvoicingFeeAssignmentService(subscriptionOrderIds);
+                feeJob.setSubOrderContractFeeDetail();
+            }
+        } catch (Exception e) {
+            Logger.logNow('ClientInvoicingFeeAssignmentService', 'setSubOrderContractFeeDetail', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
+        }
+    }
+
     /**
      * @description Future method to assign CFDs and generate CIMs outside of the SO approval transaction
      * @param subscriptionOrderIds Set of Subscription Order Ids to assign
      */
     @Future
-    public static void setSubOrderContractFeeDetailInFuture(Set<Id> subscriptionOrderIds){
+    private static void setSubOrderContractFeeDetailInFuture(Set<Id> subscriptionOrderIds){
         try {
             ClientInvoicingFeeAssignmentService feeJob = new ClientInvoicingFeeAssignmentService(subscriptionOrderIds);
             feeJob.setSubOrderContractFeeDetail();

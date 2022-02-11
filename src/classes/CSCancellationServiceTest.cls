@@ -68,11 +68,24 @@ public with sharing class CSCancellationServiceTest {
     @IsTest static void testOverdueAccounts() {
         //Set up delinquent customers
         CustomerCommunicationHandlerTest.setDaysPastDue(System.today().addDays(-68), 10);
+        FeatureService.Mock mockFeatureService = new FeatureService.Mock(
+            new Map<String, Boolean>{
+                'Assign_CFDs_in_Future' => false
+            });
+        ClientInvoicingFeeAssignmentService.featureService = (FeatureService) Test.createStub(FeatureService.class, mockFeatureService);
+        Autopay_Schedule__c cancellationSchedule = [SELECT Id, Summary__c FROM Autopay_Schedule__c LIMIT 1];
 
         Test.startTest();
-        CSCancellationAccountService.handleOverdueAccounts(AccountsSelector.selectCS67DaysPastDueWithAnchorOpps());
+        Database.executeBatch(new CSCancellationAccountService(false, cancellationSchedule));
         Test.stopTest();
 
+        List<Error_Log__c> errorLogs = [
+            SELECT Message__c
+            FROM Error_Log__c
+            WHERE Severity__c = :Logger.ERROR
+            AND Class__c = 'ClientInvoicingFeeAssignmentService'
+        ];
+        System.assertEquals(0, errorLogs.size(), errorLogs);
         List<Account> propertyAccounts = [
             SELECT Id, Cancellation_Request_Date__c, Cancellation_Comments__c, Cancellation_Reason__c
             FROM Account
