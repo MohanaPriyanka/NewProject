@@ -308,7 +308,9 @@ public class ZuoraUsageServiceTest {
         ZuoraUsageService.featureService = (FeatureService) Test.createStub(FeatureService.class, new FeatureService.Mock(true));
         String adjustmentJSON = '{"Id":"a0p3I000002ziVXQAY","Name":"Production Test Project D",' +
             '"Utility_Account_Subscription__c":"a1d3I000000HP95QAG","Client__c":"0013I00000I77klQAB","Adjustment_Amount__c":120.00,' +
+            '"Transfer__c":"a905b0000000XQOAA2",' +
             '"Adjustment_Type__c":"Production","Discount__c":-20.00,"Credits_Allocated__c":100.00,' +
+            '"Transfer__r":{"Id":"a905b0000000XQOAA2", "Date_of_Transfer__c":"2022-01-01"},' +
             '"Utility_Account_Subscription__r":{"Id":"a1d3I000000HP95QAG","Opportunity__c":"0063I000002Y9OtQAK","Utility_Account_Log__c":"a1b3I000000Hk6eQAC",' +
             '"Opportunity__r":{"Id":"0063I000002Y9OtQAK","Shared_Solar_System__c":"a1J3I0000003QoNUAU","AccountId":"0013I00000I77l7QAB",' +
             '"Shared_Solar_System__r":{"Id":"a1J3I0000003QoNUAU","Utility__c":"a1M3I0000009HazUAE","Name":"Project D Dee St","Unique_ID__c":"SSS-000009",' +
@@ -318,5 +320,6 @@ public class ZuoraUsageServiceTest {
         ZuoraUsageService.ZuoraUsage zuoraUsage = ZuoraUsageService.convertAdjustToUsage(billAdjustment, System.today());
         System.assertEquals('A-S00029335', zuoraUsage.SubscriptionNumber);
         System.assertEquals('C-00048346', zuoraUsage.ChargeNumber);
+        System.assertEquals(Date.newInstance(2022, 01, 01), zuoraUsage.BillingPeriodStartDate_Zcustom);
     }
 }

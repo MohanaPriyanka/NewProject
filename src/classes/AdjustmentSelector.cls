@@ -26,7 +26,8 @@ public without sharing class AdjustmentSelector {
                 'Adjustment_Type__c, ' +
                 'Discount__c, ' +
                 'Credits_Allocated__c, ' +
-                'Zuora_Id__c ' +
+                'Zuora_Id__c, ' +
+                'Transfer__r.Date_of_Transfer__c ' +
                 'FROM Bill_Adjustment__c ' +
                 'WHERE Zuora_Id__c = null ' +
                 'AND Approval_Status__c = \'Approved\' ' +
@@ -86,8 +87,8 @@ public without sharing class AdjustmentSelector {
         return new List<Bill_Adjustment__c>([
             SELECT Id, Externally_Serviced__c, Transfer__c, Credits_Allocated__c
             FROM Bill_Adjustment__c
-            WHERE Externally_Serviced__c = true
-            AND Ready_for_Production_Detail__c = true
+            WHERE Externally_Serviced__c = TRUE
+            AND Ready_for_Production_Detail__c = TRUE
             LIMIT :batchSize
         ]);
     }
