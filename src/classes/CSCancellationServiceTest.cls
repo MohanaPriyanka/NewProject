@@ -7,6 +7,11 @@ public with sharing class CSCancellationServiceTest {
 
     @TestSetup public static void testSetup() {
         CustomerCommunicationHandlerTest.setupData();
+        Autopay_Schedule__c schedule = new Autopay_Schedule__c(
+            Run_Date__c = System.today(),
+            Send_Results_To__c = UserInfo.getUserId()
+        );
+        insert schedule;
     }
 
     public static void createBills(Date billDate, Id sssID) {
@@ -63,11 +68,24 @@ public with sharing class CSCancellationServiceTest {
     @IsTest static void testOverdueAccounts() {
         //Set up delinquent customers
         CustomerCommunicationHandlerTest.setDaysPastDue(System.today().addDays(-68), 10);
+        FeatureService.Mock mockFeatureService = new FeatureService.Mock(
+            new Map<String, Boolean>{
+                'Assign_CFDs_in_Future' => false
+            });
+        ClientInvoicingFeeAssignmentService.featureService = (FeatureService) Test.createStub(FeatureService.class, mockFeatureService);
+        Autopay_Schedule__c cancellationSchedule = [SELECT Id, Summary__c FROM Autopay_Schedule__c LIMIT 1];
 
         Test.startTest();
-        CSCancellationAccountService.handleOverdueAccounts(AccountsSelector.selectCS67DaysPastDueWithAnchorOpps());
+        Database.executeBatch(new CSCancellationAccountService(false, cancellationSchedule));
         Test.stopTest();
 
+        List<Error_Log__c> errorLogs = [
+            SELECT Message__c
+            FROM Error_Log__c
+            WHERE Severity__c = :Logger.ERROR
+            AND Class__c = 'ClientInvoicingFeeAssignmentService'
+        ];
+        System.assertEquals(0, errorLogs.size(), errorLogs);
         List<Account> propertyAccounts = [
             SELECT Id, Cancellation_Request_Date__c, Cancellation_Comments__c, Cancellation_Reason__c
             FROM Account
@@ -510,9 +528,10 @@ public with sharing class CSCancellationServiceTest {
     }
 
     @IsTest static void testNoOppsAreCancelled() {
-        CSCancellationOppService cancellationOppService = new CSCancellationOppService();
+        Autopay_Schedule__c cancellationSchedule = [SELECT Id, Summary__c FROM Autopay_Schedule__c LIMIT 1];
+        CSCancellationOppService cancellationOppService = new CSCancellationOppService(false, cancellationSchedule);
         Test.startTest();
-        cancellationOppService.cancelOpportunities(cancellationOppService.getOpportunitiesToCancel());
+        Database.executeBatch(cancellationOppService);
         Test.stopTest();
 
         List<Opportunity> oppList = [
@@ -571,9 +590,10 @@ public with sharing class CSCancellationServiceTest {
             System.assert(Opportunities.isCancelledWaitlist(opportunityMap.get(opportunity.Id)));
         }
 
-        CSCancellationOppService cancellationOppService = new CSCancellationOppService();
+        Autopay_Schedule__c cancellationSchedule = [SELECT Id, Summary__c FROM Autopay_Schedule__c LIMIT 1];
+        CSCancellationOppService cancellationOppService = new CSCancellationOppService(false, cancellationSchedule);
         Test.startTest();
-        cancellationOppService.cancelOpportunities(cancellationOppService.getOpportunitiesToCancel());
+        Database.executeBatch(cancellationOppService);
         Test.stopTest();
 
         oppList = [
@@ -635,9 +655,10 @@ public with sharing class CSCancellationServiceTest {
             System.assert(Opportunities.anyUASIsTransferring(opportunityMap.get(opportunity.Id)));
         }
 
-        CSCancellationOppService cancellationOppService = new CSCancellationOppService();
+        Autopay_Schedule__c cancellationSchedule = [SELECT Id, Summary__c FROM Autopay_Schedule__c LIMIT 1];
+        CSCancellationOppService cancellationOppService = new CSCancellationOppService(false, cancellationSchedule);
         Test.startTest();
-        cancellationOppService.cancelOpportunities(cancellationOppService.getOpportunitiesToCancel());
+        Database.executeBatch(cancellationOppService);
         Test.stopTest();
 
         oppList = [
@@ -698,9 +719,10 @@ public with sharing class CSCancellationServiceTest {
         System.assertEquals(Date.newInstance(2018, 1, 1), uasbList[0].Date__c);
         System.assertEquals('Complete', uasbList[0].Opportunity__r.StageName);
 
-        CSCancellationOppService cancellationOppService = new CSCancellationOppService();
+        Autopay_Schedule__c cancellationSchedule = [SELECT Id, Summary__c FROM Autopay_Schedule__c LIMIT 1];
+        CSCancellationOppService cancellationOppService = new CSCancellationOppService(false, cancellationSchedule);
         Test.startTest();
-        cancellationOppService.cancelOpportunities(cancellationOppService.getOpportunitiesToCancel());
+        Database.executeBatch(cancellationOppService);
         Test.stopTest();
 
         List<Opportunity> oppList = [
@@ -749,9 +771,10 @@ public with sharing class CSCancellationServiceTest {
         System.assertEquals(Date.newInstance(2018, 1, 1), uasbList[0].Date__c);
         System.assertEquals('Complete', uasbList[0].Opportunity__r.StageName);
 
-        CSCancellationOppService cancellationOppService = new CSCancellationOppService();
+        Autopay_Schedule__c cancellationSchedule = [SELECT Id, Summary__c FROM Autopay_Schedule__c LIMIT 1];
+        CSCancellationOppService cancellationOppService = new CSCancellationOppService(false, cancellationSchedule);
         Test.startTest();
-        cancellationOppService.cancelOpportunities(cancellationOppService.getOpportunitiesToCancel());
+        Database.executeBatch(cancellationOppService);
         Test.stopTest();
 
         List<Opportunity> oppList = [
@@ -794,9 +817,10 @@ public with sharing class CSCancellationServiceTest {
         System.assertEquals(0, opportunityMap.size(), 'There shouldn\t be any opportunities selected, since they\'re all anchors');
         System.assertEquals('Complete', uasbList[0].Opportunity__r.StageName);
 
-        CSCancellationOppService cancellationOppService = new CSCancellationOppService();
+        Autopay_Schedule__c cancellationSchedule = [SELECT Id, Summary__c FROM Autopay_Schedule__c LIMIT 1];
+        CSCancellationOppService cancellationOppService = new CSCancellationOppService(false, cancellationSchedule);
         Test.startTest();
-        cancellationOppService.cancelOpportunities(cancellationOppService.getOpportunitiesToCancel());
+        Database.executeBatch(cancellationOppService);
         Test.stopTest();
 
         List<Opportunity> oppList = [
@@ -874,8 +898,9 @@ public with sharing class CSCancellationServiceTest {
         System.assertEquals('Complete', uasbList[0].Opportunity__r.StageName);
         System.assertEquals('Complete', uasbList[2].Opportunity__r.StageName);
 
-        CSCancellationOppService cancellationOppService = new CSCancellationOppService();
-        cancellationOppService.cancelOpportunities(cancellationOppService.getOpportunitiesToCancel());
+        Autopay_Schedule__c cancellationSchedule = [SELECT Id, Summary__c FROM Autopay_Schedule__c LIMIT 1];
+        CSCancellationOppService cancellationOppService = new CSCancellationOppService(false, cancellationSchedule);
+        Database.executeBatch(cancellationOppService);
         Test.stopTest();
 
         List<Opportunity> oppList = [
@@ -969,7 +994,8 @@ public with sharing class CSCancellationServiceTest {
 
     @IsTest static void testNoAccountIsUpdated() {
         Test.startTest();
-        CSCancellationProjectRemover.processAccountsRemovedFromAllProjects(CSCancellationProjectRemover.getAccountsRemovedFromAllProjectsWithUpdatedDate());
+        Autopay_Schedule__c cancellationSchedule = [SELECT Id, Summary__c, Send_Results_To__r.Email FROM Autopay_Schedule__c LIMIT 1];
+        Database.executeBatch(new CSCancellationProjectRemover(false, cancellationSchedule));
         Test.stopTest();
 
         List<Account> propAccts = [
@@ -1099,7 +1125,10 @@ public with sharing class CSCancellationServiceTest {
         opportunities[0].StageName = 'Cancelled';
         update opportunities[0];
 
-        CSCancellationProjectRemover.processAccountsRemovedFromAllProjects(CSCancellationProjectRemover.getAccountsRemovedFromAllProjectsWithUpdatedDate());
+        Test.startTest();
+        Autopay_Schedule__c cancellationSchedule = [SELECT Id, Summary__c, Send_Results_To__r.Email FROM Autopay_Schedule__c LIMIT 1];
+        Database.executeBatch(new CSCancellationProjectRemover(false, cancellationSchedule));
+        Test.stopTest();
 
         propAccts = [
             SELECT Id, Name, Date_Removed_from_Project__c, (SELECT Id, Account__c FROM Utility_Account_Logs__r)
@@ -1115,9 +1144,6 @@ public with sharing class CSCancellationServiceTest {
         System.assertEquals(twentyDaysAgo, propAccts[0].Date_Removed_from_Project__c);
         System.assertEquals(null, propAccts[1].Date_Removed_from_Project__c);
         System.assertEquals(null, propAccts[2].Date_Removed_from_Project__c);
-        System.debug(LoggingLevel.ERROR, JSON.serialize(MessagingService.emailsSent));
-        Util.printSOQLLimit('a');
-        Util.printCPULimit('b');
     }
 
     @IsTest static void testAccountMissingScheduleZsNotUpdated() {
@@ -1616,7 +1642,7 @@ public with sharing class CSCancellationServiceTest {
         Shared_Solar_System__c sss1 = [SELECT Id FROM Shared_Solar_System__c WHERE Name = 'SSS1'];
         createBills(today - 46, sss1.Id);
 
-        Autopay_Schedule__c schedule = new Autopay_Schedule__c(Run_Date__c = System.today());
+        Autopay_Schedule__c schedule = new Autopay_Schedule__c(Run_Date__c = System.today(), Send_Results_To__c = null);
         insert schedule;
         Test.startTest();
         Account acct = [
@@ -1646,8 +1672,9 @@ public with sharing class CSCancellationServiceTest {
         ual.Utility_Account_Subscriptions__r[0].Transferring_Subsc_to_Another_UAS__c = false;
         update ual.Utility_Account_Subscriptions__r[0];
 
-        CSCancellationScheduler cscs = new CSCancellationScheduler();
-        cscs.execute(null);
+        Autopay_Schedule__c cancellationSchedule = [SELECT Id, Summary__c FROM Autopay_Schedule__c LIMIT 1];
+        CSCancellationOppService cancellationOppService = new CSCancellationOppService(false, cancellationSchedule);
+        Database.executeBatch(cancellationOppService);
         Test.stopTest();
 
         acct = [

@@ -2272,10 +2272,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>InvocableCSCanceller</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>InvocableMergeHelper</apexClass>
         <enabled>false</enabled>
     </classAccesses>

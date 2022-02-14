@@ -115,12 +115,11 @@ public inherited sharing class Opportunities {
         return false;
     }
 
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     public void cancel() {
         for (Opportunity opp : records) {
             opp.StageName = 'Cancelled';
         }
-        if (!records.isEmpty()) {
-            Database.executeBatch(new GenericBatchDMLOperation(records, 'Update'));
-        }
+        update records;
     }
 }

@@ -259,10 +259,11 @@ public with sharing class ClientInvoiceGeneratorTest {
                 Contract.SObjectType
             }
         );
-        Test.stopTest();
 
         // Tests InvocableClientInvoiceLineItemGenerator.generateLineItem
         InvocableClientInvoiceLineItemGenerator.generateLineItem(lineItemRequests);
+        Test.stopTest();
+
         invoiceLineItems = [SELECT Id FROM Invoice_Line_Item__c WHERE Invoice__c = :invoice.Id];
         System.assertEquals(3, invoiceLineItems.size(),
             'Unexpected invoice line items left after deleting one invoice line item (via flow)');
@@ -386,6 +387,7 @@ public with sharing class ClientInvoiceGeneratorTest {
         System.assertEquals(false, invoiceLineItems[0].Nets_to_Zero__c, 'Since there is only one invoice line item, ' +
             'and it does not net to zero with anything else, Nets_To_Zero__c should not be checked');
 
+        Test.startTest();
         ClientInvoiceGenerator.uow = new fflib_SObjectUnitOfWork(
             new List<SObjectType> {
                 Invoice__c.SObjectType,
@@ -410,6 +412,7 @@ public with sharing class ClientInvoiceGeneratorTest {
         System.assertEquals(1, invoiceLineItems.size(), 'There should be one line item for the change SO');
         System.assertEquals(false, invoiceLineItems[0].Nets_to_Zero__c, 'Since there is only one invoice line item, ' +
             'and it does not net to zero with anything else, Nets_To_Zero__c should not be checked');
+        Test.stopTest();
     }
 
     private static Subscription_Order__c getSO(String utilityAccountNumber, Id sssId, Decimal clientInvoicingFee) {
