@@ -5,10 +5,10 @@
  */
 
 @SuppressWarnings('PMD.ApexCRUDViolation')
-public without sharing class CSCancellationAccountService {
-    @TestVisible private List<Account> overdueAccounts = new List<Account>();
+public without sharing class CSCancellationAccountService implements Database.Batchable<Account>, Database.Stateful {
+    @TestVisible private List<Account> overdueAccountsProcessed = new List<Account>();
     @TestVisible private static final Id CANCELLED_BY_ID = [SELECT Id FROM User WHERE LastName = 'API' LIMIT 1].Id;
-    public static final String AUTOMATED_CANCELLATION_COMMENT = 'Automated Cancellation';
+    @TestVisible private static final String AUTOMATED_CANCELLATION_COMMENT = 'Automated Cancellation';
     @TestVisible private static final String CANCELLATION_PARAGRAPH_TWO_LABEL = '{!Cancellation_Paragraph_Two__c}';
     @TestVisible private static final String DEFAULT_CANCELLATION_PARAGRAPH_TWO = '<br>Per our records, you have multiple subscriptions ' +
         'and the terms of service may vary for each. Your utility may process the cancellations at different times over ' +
@@ -17,42 +17,83 @@ public without sharing class CSCancellationAccountService {
     @TestVisible private static final String CANCELLATION_PARAGRAPH_THREE_LABEL = '{!Cancellation_Paragraph_Three__c}';
     @TestVisible private static final String DEFAULT_CANCELLATION_PARAGRAPH_THREE = '<br><i>Please refer to your contract(s) for more ' +
         'details about the terms of service for each of your subscriptions including any applicable early termination fees.</i></br>';
+    public static final String ACCOUNT_OVERDUE_DESCRIPTION =
+        'These accounts, if any, will get a Cancellation Reason of "Lack of Payment", a Cancellation ' +
+            'Request Date of today, and an automated cancellation comment.\n' +
+            'Salesforce will subsequently email the customer of their cancellation.\n' +
+            'To exclude accounts, check the Override Delinquency Removal checkbox on the account' +
+            '\n-------------';
+    private Boolean preview;
+    private Autopay_Schedule__c cancellationSchedule;
 
-    public String handleOverdueAccounts(Boolean preview) {
-        String outputMessage = CSCancellationScheduler.ACCOUNT_OVERDUE_DESCRIPTION;
-        overdueAccounts = AccountsSelector.selectCS67DaysPastDueWithAnchorOpps();
+    public CSCancellationAccountService(Boolean preview, Autopay_Schedule__c cancellationSchedule) {
+        this.preview = preview;
+        this.cancellationSchedule = cancellationSchedule;
+    }
+
+    public List<Account> start(Database.BatchableContext context) {
+        List<Account> overdueAccounts = AccountsSelector.selectCS67DaysPastDueWithAnchorOpps();
+        Logger.logNow(
+            'CSCancellationAccountService',
+            'start',
+            'Logging in case this transaction is close to limits',
+            Logger.FINE
+        );
+        return overdueAccounts;
+    }
+
+    public void execute(Database.BatchableContext context, List<Account> scopedOverdueAccounts) {
+        if (!preview) {
+            handleOverdueAccounts(scopedOverdueAccounts);
+        }
+        overdueAccountsProcessed.addAll(scopedOverdueAccounts);
+        Logger.logNow(
+            'CSCancellationAccountService',
+            'execute',
+            'Logging in case this transaction is close to limits',
+            Logger.FINE
+        );
+    }
+
+    public void finish(Database.BatchableContext context) {
+        String outputMessage = ACCOUNT_OVERDUE_DESCRIPTION;
         if (!preview) {
             outputMessage = outputMessage.replace('will get', 'got');
-            handleOverdueAccounts(overdueAccounts);
         }
-        for (Account account : overdueAccounts) {
-            outputMessage += account.Id + ', ' + account.Name + ' ' + account.Days_Past_Due__c + '\n';
+        for (Account account : overdueAccountsProcessed) {
+            outputMessage += '\n' + account.Id + ', ' + account.Name + ' ' + account.Days_Past_Due__c;
         }
-        return outputMessage;
+        cancellationSchedule.Summary__c = outputMessage;
+        update cancellationSchedule;
+        if (!Test.isRunningTest()) {
+            Database.executeBatch(new CSCancellationOppService(preview, cancellationSchedule));
+        }
     }
 
     // W-008422: Finds accounts that are overdue, and sets the Account's cancellation reason, comments, and request date,
     // which in turn triggers the cancellation process. We skip Anchor or Public Offtake accounts as well as those that
     // have an override checkbox checked.
     @TestVisible private static void handleOverdueAccounts(List<Account> accountList) {
-        List<Account> updatedAccounts = new List<Account>();
-
-        for (Account acct : accountList) {
-            if (acct.Opportunities.isEmpty()){
-                acct.Cancellation_Reason__c = 'Lack of Payment';
-                acct.Cancellation_Request_Date__c = System.today();
-                acct.Cancelled_By__c = CANCELLED_BY_ID;
-                acct.Cancellation_Comments__c = AUTOMATED_CANCELLATION_COMMENT;
-                updatedAccounts.add(acct);
+        try {
+            List<Account> updatedAccounts = new List<Account>();
+            for (Account acct : accountList) {
+                if (acct.Opportunities.isEmpty()){
+                    acct.Cancellation_Reason__c = 'Lack of Payment';
+                    acct.Cancellation_Request_Date__c = System.today();
+                    acct.Cancelled_By__c = CANCELLED_BY_ID;
+                    acct.Cancellation_Comments__c = AUTOMATED_CANCELLATION_COMMENT;
+                    updatedAccounts.add(acct);
+                }
             }
+            update updatedAccounts;
+        } catch (Exception e) {
+            Logger.logNow('CSCancellationAccountService', 'handleOverdueAccounts', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
         }
-
-        update updatedAccounts;
     }
 
     // W-008413: Called by the AccountTrigger after Property Accounts are updated with a Cancellation Request Date, to
     // remove all UASes from the next schedule Z, and send the customer(s) an email confirming their cancellation request.
-    public void processSubscriptionCancellations(List<Utility_Account_Subscription__c> uasesToMarkInactive) {
+    public static void processSubscriptionCancellations(List<Utility_Account_Subscription__c> uasesToMarkInactive) {
         UtilityAccountSubscriptions subscriptions = new UtilityAccountSubscriptions(uasesToMarkInactive);
         subscriptions.removeFromNextScheduleZ();
         fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
@@ -139,4 +180,5 @@ public without sharing class CSCancellationAccountService {
             replacementMap.put(CANCELLATION_PARAGRAPH_THREE_LABEL, DEFAULT_CANCELLATION_PARAGRAPH_THREE);
         }
     }
+
 }

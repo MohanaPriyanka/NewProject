@@ -4,28 +4,75 @@
  * Tested By: CSCancellationServiceTest
  */
 @SuppressWarnings('PMD.ApexCRUDViolation')
-public with sharing class CSCancellationProjectRemover {
-    @TestVisible
-    private List<Account> accountsRemovedFromAllProjects = new List<Account>();
+public with sharing class CSCancellationProjectRemover implements Database.Batchable<Account>, Database.Stateful {
+    private static final String ACCOUNT_REMOVAL_DESCRIPTION =
+        'These accounts, if any, will get marked with a Date Removed From Last Project because all of' +
+            ' their opportunities have a Date Removed From Project, and subsequently be emailed that they are off all' +
+            ' projects.' +
+            '\n-------------';
+    @TestVisible private List<Account> accountsProcessed = new List<Account>();
+    private Boolean preview;
+    private Autopay_Schedule__c cancellationSchedule;
 
-    public String handleAccountsToRemove(Boolean preview) {
-        String outputMessage = CSCancellationScheduler.ACCOUNT_REMOVAL_DESCRIPTION;
-        accountsRemovedFromAllProjects = CSCancellationProjectRemover.getAccountsRemovedFromAllProjectsWithUpdatedDate();
+    public CSCancellationProjectRemover(Boolean preview, Autopay_Schedule__c cancellationSchedule) {
+        this.preview = preview;
+        this.cancellationSchedule = cancellationSchedule;
+    }
+
+    public List<Account> start(Database.BatchableContext context) {
+        List<Account> accountsRemovedFromAllProjects = CSCancellationProjectRemover.getAccountsRemovedFromAllProjectsWithUpdatedDate();
+        Logger.logNow(
+            'CSCancellationProjectRemover',
+            'start',
+            'Logging in case this transaction is close to limits',
+            Logger.FINE
+        );
+        return accountsRemovedFromAllProjects;
+    }
+
+    public void execute(Database.BatchableContext context, List<Account> scopedAccountsRemovedFromAllProjects) {
+        if (!preview) {
+            try {
+                CSCancellationProjectRemover.processAccountsRemovedFromAllProjects(scopedAccountsRemovedFromAllProjects);
+            } catch (Exception e) {
+                Logger.logNow('CSCancellationProjectRemover', 'execute', e.getMessage() + '\n\n' + e.getStackTraceString(), Logger.ERROR);
+            }
+        }
+        accountsProcessed.addAll(scopedAccountsRemovedFromAllProjects);
+        Logger.logNow(
+            'CSCancellationProjectRemover',
+            'execute',
+            'Logging in case this transaction is close to limits',
+            Logger.FINE
+        );
+    }
+
+    public void finish(Database.BatchableContext context) {
+        String outputMessage = '\n\n' + ACCOUNT_REMOVAL_DESCRIPTION;
         if (!preview) {
             outputMessage = outputMessage.replace('will get', 'got');
-            accountsRemovedFromAllProjects = CSCancellationProjectRemover.processAccountsRemovedFromAllProjects(accountsRemovedFromAllProjects);
         }
-        for (Account account : accountsRemovedFromAllProjects) {
-            outputMessage += account.Id + ', ' + account.Name + ' ' + account.Days_Past_Due__c + '\n';
+        for (Account account : accountsProcessed) {
+            outputMessage += '\n' + account.Id + ', ' + account.Name + ' ' + account.Days_Past_Due__c;
         }
-        return outputMessage;
+        cancellationSchedule.Summary__c += outputMessage;
+        cancellationSchedule.Time_Finished__c = System.now();
+        update cancellationSchedule;
+        if (cancellationSchedule.Send_Results_To__r.Email != null) {
+            Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+            mail.setPlainTextBody(cancellationSchedule.Summary__c);
+            mail.setToAddresses(new List<String>{cancellationSchedule.Send_Results_To__r.Email});
+            mail.setSubject('CS Cancellation'+(preview?' Preview':'')+' Results');
+            MessagingService.sendEmail(new List<Messaging.Email>{mail});
+        }
     }
 
     /**
      * @description Gets Accounts that have been removed from all projects, but not updated with a Date Removed From Project
      * @return List of Account, with Date Removed From Project set
      */
-    public static List<Account> getAccountsRemovedFromAllProjectsWithUpdatedDate() {
+    @TestVisible
+    private static List<Account> getAccountsRemovedFromAllProjectsWithUpdatedDate() {
         List<Account> csAccounts = AccountsSelector.selectCSNotRemoved();
         return getAccountsWithDateRemovedSet(csAccounts);
     }
@@ -102,7 +149,8 @@ public with sharing class CSCancellationProjectRemover {
      * @param acctsReadyForCancellation List of Accounts with Date Removed from Project set, but not committed
      * @return List of Accounts, with Date Removed from Project set
      */
-    public static List<Account> processAccountsRemovedFromAllProjects(List<Account> acctsReadyForCancellation) {
+    @TestVisible
+    private static List<Account> processAccountsRemovedFromAllProjects(List<Account> acctsReadyForCancellation) {
         Map<Id, Messaging.SingleEmailMessage> confirmationEmailMap = new Map<Id, Messaging.SingleEmailMessage>();
         Set<Id> accountIds = CollectionUtil.getIdSet(acctsReadyForCancellation);
         Map<Id, Account> accountIdToAccountWithUALs = new Map<Id, Account>(AccountsSelector.selectAccountsWithUALs(accountIds));

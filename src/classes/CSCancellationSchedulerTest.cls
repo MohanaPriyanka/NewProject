@@ -19,7 +19,9 @@ private class CSCancellationSchedulerTest {
             SELECT Id,
                 Max_Overdue_Due_Date_Zuora__c,
                 Max_Overdue_Due_Date__c,
-                Billing_Account__c
+                Billing_Account__c,
+                Cancellation_Reason__c,
+                Cancellation_Request_Date__c
             FROM Account
             WHERE Name = 'Prop Account 1'
             LIMIT 1
@@ -27,6 +29,8 @@ private class CSCancellationSchedulerTest {
         propAccount1.Max_Overdue_Due_Date_Zuora__c = System.today().addDays(-68);
         propAccount1.Billing_Account__c = billingAccount.Id;
         update propAccount1;
+
+        System.assertEquals(null, propAccount1.Cancellation_Request_Date__c, 'Expected Property Account to not be cancelled');
 
         Opportunity oppFor236 = [
             SELECT Id, AccountId, StageName, (SELECT Id, Utility_Account_Log__c FROM Utility_Account_Subscriptions__r)
@@ -61,20 +65,23 @@ private class CSCancellationSchedulerTest {
         cancellationScheduler.execute(null);
         Test.stopTest();
 
-        System.assertEquals(1, cancellationScheduler.cancellationAccountService.overdueAccounts.size(),
-            'There should be one overdue account, with opps set to cancelled, but not yet removed');
-        System.assertEquals(1, cancellationScheduler.cancellationOppService.cancelledOpportunities.size(), '' +
-            'Expected the cancellation scheduler to find one opp to mark as cancelled');
-        System.assertEquals(1, cancellationScheduler.cancellationProjectRemover.accountsRemovedFromAllProjects.size(),
-            'Expected the cancellation scheduler to find the account ready to be marked with Removed From Project');
-        if (UserInfo.getUserEmail() != null) {
-            System.assertEquals(3, MessagingService.emailsSent.size(),
-                'Expected to send a Subscription Removal Confirmation, an Account Closed Confirmation, and a CS Cancellation Result summary');
-        }
+        propAccount1 = [
+            SELECT Id,
+                Cancellation_Comments__c,
+                Cancellation_Request_Date__c
+            FROM Account
+            WHERE Name = 'Prop Account 1'
+            LIMIT 1
+        ];
+
+        System.assertEquals(System.today(), propAccount1.Cancellation_Request_Date__c,
+            'The Property Account should have been marked cancelled today');
+        System.assertEquals(CSCancellationAccountService.AUTOMATED_CANCELLATION_COMMENT, propAccount1.Cancellation_Comments__c,
+            'The Property Account should have a comment about an automated cancellation');
 
         schedule = [SELECT Id, Summary__c FROM Autopay_Schedule__c WHERE Id = :schedule.Id];
-        System.assert(schedule.Summary__c.contains(CSCancellationScheduler.ACCOUNT_OVERDUE_DESCRIPTION.replace('will get', 'got')),
-            'Expected a non-preview summary to be written to the schedule');
+        System.assert(schedule.Summary__c.contains(CSCancellationAccountService.ACCOUNT_OVERDUE_DESCRIPTION.replace('will get', 'got')),
+            'Expected a non-preview summary to be written to the schedule but got: ' + schedule.Summary__c);
     }
 
     @IsTest
@@ -95,7 +102,8 @@ private class CSCancellationSchedulerTest {
         Test.stopTest();
 
         schedule = [SELECT Id, Summary__c FROM Autopay_Schedule__c WHERE Id = :schedule.Id];
-        System.assert(schedule.Summary__c.contains(CSCancellationScheduler.ACCOUNT_OVERDUE_DESCRIPTION), 'Expected a preview summary to be written');
+        System.assert(schedule.Summary__c.contains(CSCancellationAccountService.ACCOUNT_OVERDUE_DESCRIPTION),
+            'Expected a preview summary to be written but got: ' + schedule.Summary__c);
     }
 
     @IsTest
@@ -106,14 +114,7 @@ private class CSCancellationSchedulerTest {
         Integer queriesAfterScheduler = Limits.getQueries();
         Test.stopTest();
 
-        System.assertEquals(2, queriesAfterScheduler,
-            'Expected to run two queries, to find the schedule for the current day and CSCancellationAccountService.CANCELLED_BY_ID');
-    }
-
-    @IsTest
-    static void testInvocableCanceller() {
-        InvocableCSCanceller.CancellationStep step = new InvocableCSCanceller.CancellationStep(false, '');
-        InvocableCSCanceller.cancelCS(new List<InvocableCSCanceller.CancellationStep>{step});
-        System.assert(true, 'Temporary to remove dependency from InvocableCSCanceller before deleting it');
+        System.assertEquals(1, queriesAfterScheduler,
+            'Expected to find the schedule for the current day but not for CSCancellationAccountService.CANCELLED_BY_ID');
     }
 }

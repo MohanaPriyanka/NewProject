@@ -75,7 +75,7 @@ public without sharing class SubscriptionManagementService {
 
         try {
             publishSubscriptionOrderChangeEvents(sOrdersToApprove);
-            ClientInvoicingFeeAssignmentService.setSubOrderContractFeeDetailInFuture(soMap.keySet());
+            ClientInvoicingFeeAssignmentService.setSubOrderContractFeeDetail(soMap.keySet());
         } catch (Exception e) {
             Logger.logNow(
                 'SubscriptionManagementService',

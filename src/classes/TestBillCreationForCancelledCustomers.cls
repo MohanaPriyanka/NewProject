@@ -462,17 +462,6 @@ public class TestBillCreationForCancelledCustomers {
         BillGenerationServiceTest.generateBills(new List<Id>{
             bpA1.Id, bpB1.Id
         });
-
-        List<UASB__c> uasbList = [
-            SELECT Utility_Account_Subscription__r.Name, Shared_Solar_System__c,
-                Utility_Account_Subscription__r.Name_on_Account_From_Log__c,
-                Production_Update__r.Name, Credits_on_Bill_Period__c,
-                Utility_Account_Subscription__r.Next_Schedule_Z_Status__c,
-                Net_Metering_Credits_Allocated__c, Discounted_Bill__c,
-                Subscription_Production_kWh__c
-            FROM UASB__c
-        ];
-
         Test.stopTest();
     }
 
