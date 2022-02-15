@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Profile xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Perch Standard</fullName>
     <applicationVisibilities>
         <application>APXTConga4__CongaMerge</application>
         <default>false</default>
@@ -82,11 +81,6 @@
         <visible>false</visible>
     </applicationVisibilities>
     <applicationVisibilities>
-        <application>Profile2PermSet__Profiles_to_Permission_Sets</application>
-        <default>false</default>
-        <visible>false</visible>
-    </applicationVisibilities>
-    <applicationVisibilities>
         <application>Service_Cloud_Console</application>
         <default>false</default>
         <visible>false</visible>
@@ -113,16 +107,6 @@
     </applicationVisibilities>
     <applicationVisibilities>
         <application>agf__Agile_Accelerator_LEX</application>
-        <default>false</default>
-        <visible>false</visible>
-    </applicationVisibilities>
-    <applicationVisibilities>
-        <application>analyticsengine__Analytics_Delivery_Engine</application>
-        <default>false</default>
-        <visible>false</visible>
-    </applicationVisibilities>
-    <applicationVisibilities>
-        <application>analyticsengine__Analytics_Delivery_Engine_Classic</application>
         <default>false</default>
         <visible>false</visible>
     </applicationVisibilities>
@@ -2821,14 +2805,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>LREngine</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LREngineTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>LeadConvertDetail</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3238,114 +3214,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ProductionToBillServiceTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Profile2PermSet__constants</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Profile2PermSet__dmlManager</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Profile2PermSet__permAnalyzer</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Profile2PermSet__permAnalyzerTestData</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Profile2PermSet__permissionManager</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Profile2PermSet__permissionSetGroupsList</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Profile2PermSet__profileConverter</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Profile2PermSet__psgAgregatedPermissions</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Profile2PermSet__report</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Profile2PermSet__reportByPermissionDependency</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Profile2PermSet__reportByPermissionSet</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Profile2PermSet__reportByUser</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Profile2PermSet__responseData</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Profile2PermSet__strike_lookupController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Profile2PermSet__strike_tst_lookupController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Profile2PermSet__strike_utilities</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Profile2PermSet__tst_permAnalyzer</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Profile2PermSet__tst_permissionManager</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Profile2PermSet__tst_permissionSetGroups</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Profile2PermSet__tst_profileCoverter</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Profile2PermSet__tst_report</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Profile2PermSet__tst_reportByPermissionDependency</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Profile2PermSet__tst_reportByPermissionSet</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Profile2PermSet__tst_reportByUser</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Profile2PermSet__tst_userMode</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Profile2PermSet__userMode</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>Profile2PermSet__utilities</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -6606,102 +6474,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>agf__Sample_Email2GUS</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>analyticsengine__AdminCtrl</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>analyticsengine__AdminCtrlTests</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>analyticsengine__AuthManager</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>analyticsengine__AuthManagerTests</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>analyticsengine__AuthService</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>analyticsengine__AuthServiceTests</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>analyticsengine__CommonUtil</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>analyticsengine__CommonUtilTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>analyticsengine__ConditionsHelper</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>analyticsengine__DateUtil</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>analyticsengine__DateUtilTests</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>analyticsengine__FeatureAccessException</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>analyticsengine__FeatureConsoleAPI</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>analyticsengine__Intercom</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>analyticsengine__IntercomTests</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>analyticsengine__MockHttpResponseGenerator</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>analyticsengine__ReportExport</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>analyticsengine__ReportExportService</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>analyticsengine__ReportExportServiceTests</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>analyticsengine__ReportExportTests</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>analyticsengine__ReportScheduler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>analyticsengine__ReportSchedulerTests</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>analyticsengine__ReportSenderInstallHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>analyticsengine__ReportSenderInstallHandlerTests</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -11445,18 +11217,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>et4ae5__BusinessUnitsManager</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>et4ae5__BusinessUnitsRequest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>et4ae5__BusinessUnitsResponse</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>et4ae5__Business_UnitHelper</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -12382,10 +12142,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>et4ae5__Test_Automated_SendHelper</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>et4ae5__Test_BusinessUnitsManager</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -17049,10 +16805,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <custom>false</custom>
-    <externalDataSourceAccesses>
-        <enabled>false</enabled>
-        <externalDataSource>Raw_Feeder_Data</externalDataSource>
-    </externalDataSourceAccesses>
     <fieldPermissions>
         <editable>false</editable>
         <field>API_Credential__c.Credential_Id__c</field>
@@ -20535,11 +20287,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Case.ClosedOnCreate</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Case.Complaint_Description__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -20926,36 +20673,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Case_Round_Robin_Queue__c.Total_Unique_Queue_Members__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Case__hd.Priority__hpr</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Case__hd.Priority__hst</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Case__hd.Status__hpr</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Case__hd.Status__hst</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Case__hd.Type__hpr</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Case__hd.Type__hst</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -22045,11 +21762,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>ContactPointConsent.ContactPointTypeConsentId</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>ContactPointConsent.DataUsePurposeId</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -23025,21 +22737,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>DataUsePurpose.IsMaintainablePerContactPoint</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>DataUsePurpose.IsMaintainablePerParty</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>DataUsePurpose.IsMaintainablePerType</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>DataUsePurpose.LegalBasisId</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -23081,46 +22778,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Default_Utility_Fee__c.Utility__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>DownloadFiles__Excluded_Object__c.DownloadFiles__External_Id__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>DownloadFiles__Excluded_Object__c.DownloadFiles__File_Name_Suffix__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>DownloadFiles__Excluded_Object__c.DownloadFiles__Folder_Name__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>DownloadFiles__Excluded_Object__c.DownloadFiles__From_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>DownloadFiles__Excluded_Object__c.DownloadFiles__IsExcluded__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>DownloadFiles__Excluded_Object__c.DownloadFiles__Object_API_Name__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>DownloadFiles__Excluded_Object__c.DownloadFiles__Object_Label__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>DownloadFiles__Excluded_Object__c.DownloadFiles__To_Date__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -24441,11 +24098,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Glynt_Configuration__mdt.Production__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Idea.Attachment</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -29531,11 +29183,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>LiveChatTranscript.LeadId</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>LiveChatTranscript.Lifecycle</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -47705,36 +47352,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>agf__ADM_Work__c_hd.agf__Column__c_hpr</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>agf__ADM_Work__c_hd.agf__Column__c_hst</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>agf__ADM_Work__c_hd.agf__Sprint__c_hpr</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>agf__ADM_Work__c_hd.agf__Sprint__c_hst</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>agf__ADM_Work__c_hd.agf__Status__c_hpr</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>agf__ADM_Work__c_hd.agf__Status__c_hst</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>agf__Environments_Order__c.agf__Actual_Delivery_Date__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -49531,91 +49148,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>agf__eRelease_Request__c.agf__eRelease_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>analyticsengine__App_Secret__mdt.analyticsengine__Value__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>analyticsengine__Setting__c.analyticsengine__Active__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>analyticsengine__Setting__c.analyticsengine__Day_of_Week__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>analyticsengine__Setting__c.analyticsengine__Email_Body__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>analyticsengine__Setting__c.analyticsengine__End_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>analyticsengine__Setting__c.analyticsengine__Folder_Name__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>analyticsengine__Setting__c.analyticsengine__Frequency_Type__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>analyticsengine__Setting__c.analyticsengine__Frequency__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>analyticsengine__Setting__c.analyticsengine__From_Address__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>analyticsengine__Setting__c.analyticsengine__Last_Run__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>analyticsengine__Setting__c.analyticsengine__Preferred_Time__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>analyticsengine__Setting__c.analyticsengine__Report_Id__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>analyticsengine__Setting__c.analyticsengine__Settings__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>analyticsengine__Setting__c.analyticsengine__Start_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>analyticsengine__Setting__c.analyticsengine__To_Address_1__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>analyticsengine__Setting__c.analyticsengine__To_Address__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>analyticsengine__Setting__c.analyticsengine__Type__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -62466,9 +61998,6 @@
         <layout>Case_Round_Robin_Queue__c-Case Round Robin Queue Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Case__hd-Case Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>ChannelProgram-Channel Program Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -62594,9 +62123,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>DelegatedAccount-External Managed Account Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>DownloadFiles__Excluded_Object__c-DownloadFiles__Supported Object Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>DuplicateRecordItem-Duplicate Record Item Layout</layout>
@@ -63819,9 +63345,6 @@
         <recordType>agf__ADM_Work__c.agf__User_Story</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>agf__ADM_Work__c_hd-agf__Work Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>agf__Environments_Order__c-agf__Environment Order Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -63916,12 +63439,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>agf__eRelease_Request__c-agf__eRelease Request Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>analyticsengine__App_Secret__mdt-analyticsengine__App Secret Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>analyticsengine__Setting__c-analyticsengine__Setting Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>copado__Apex_Test_Result__c-copado__Apex Test Layout</layout>
@@ -64761,15 +64278,6 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
-        <object>AIInsightReason</object>
-        <viewAllRecords>false</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>false</allowCreate>
-        <allowDelete>false</allowDelete>
-        <allowEdit>false</allowEdit>
-        <allowRead>false</allowRead>
-        <modifyAllRecords>false</modifyAllRecords>
         <object>AIRecordInsight</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -65095,15 +64603,6 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>BSST__c</object>
-        <viewAllRecords>false</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>false</allowCreate>
-        <allowDelete>false</allowDelete>
-        <allowEdit>false</allowEdit>
-        <allowRead>false</allowRead>
-        <modifyAllRecords>false</modifyAllRecords>
-        <object>BackgroundOperation</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -66229,15 +65728,6 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Pricebook2</object>
-        <viewAllRecords>false</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>false</allowCreate>
-        <allowDelete>false</allowDelete>
-        <allowEdit>false</allowEdit>
-        <allowRead>false</allowRead>
-        <modifyAllRecords>false</modifyAllRecords>
-        <object>PrivacyConsent</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -68020,15 +67510,6 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>agf__eRelease_Request__c</object>
-        <viewAllRecords>false</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>false</allowCreate>
-        <allowDelete>false</allowDelete>
-        <allowEdit>false</allowEdit>
-        <allowRead>false</allowRead>
-        <modifyAllRecords>false</modifyAllRecords>
-        <object>analyticsengine__Setting__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -70762,18 +70243,6 @@
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
-        <apexPage>analyticsengine__AddRemoteSite</apexPage>
-        <enabled>false</enabled>
-    </pageAccesses>
-    <pageAccesses>
-        <apexPage>analyticsengine__Admin</apexPage>
-        <enabled>false</enabled>
-    </pageAccesses>
-    <pageAccesses>
-        <apexPage>analyticsengine__Intercom</apexPage>
-        <enabled>false</enabled>
-    </pageAccesses>
-    <pageAccesses>
         <apexPage>copado__AddCCHRuleCriteria</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
@@ -72606,16 +72075,6 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
-        <recordType>Idea.InternalIdeasIdeaRecordType</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>Idea.Record_type_for_community_09aj0000000VvbjAAC_entity_Idea</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
         <recordType>Incentive__c.Federal</recordType>
         <visible>false</visible>
     </recordTypeVisibilities>
@@ -73693,22 +73152,6 @@
         <visibility>DefaultOff</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>Profile2PermSet__Converter</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Profile2PermSet__Manage</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Profile2PermSet__Permissions_Analyzer</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>Profile2PermSet__Report</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
         <tab>Program__c</tab>
         <visibility>DefaultOff</visibility>
     </tabVisibilities>
@@ -73999,14 +73442,6 @@
     <tabVisibilities>
         <tab>agf__eRelease_Request__c</tab>
         <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>analyticsengine__Analytics_Delivery_Engine</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>analyticsengine__Analytics_Delivery_Engine_Classic</tab>
-        <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>copado__Account_Summary</tab>
@@ -74449,10 +73884,6 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>standard-FlowOrchestrationWorkItem</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
         <tab>standard-Forecasting3</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
@@ -74614,10 +74045,6 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>standard-UserProfile</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
-        <tab>standard-WaveHome</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>

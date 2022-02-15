@@ -10651,41 +10651,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>DownloadFiles__Excluded_Object__c.DownloadFiles__External_Id__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>DownloadFiles__Excluded_Object__c.DownloadFiles__Folder_Name__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>DownloadFiles__Excluded_Object__c.DownloadFiles__From_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>DownloadFiles__Excluded_Object__c.DownloadFiles__IsExcluded__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>DownloadFiles__Excluded_Object__c.DownloadFiles__Object_API_Name__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>DownloadFiles__Excluded_Object__c.DownloadFiles__Object_Label__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>DownloadFiles__Excluded_Object__c.DownloadFiles__To_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Energy_Usage_Update__c.Adjustments__c</field>
         <readable>true</readable>
     </fieldPermissions>
