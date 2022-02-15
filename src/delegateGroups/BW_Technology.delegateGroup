@@ -3,6 +3,7 @@
     <groups>Partner Portal Users</groups>
     <label>BW Technology</label>
     <loginAccess>true</loginAccess>
+    <permissionSets>CS Basic</permissionSets>
     <permissionSets>Manage Call Centers</permissionSets>
     <permissionSets>Trailhead Tracker</permissionSets>
     <permissionSets>Send Emails</permissionSets>
@@ -119,6 +120,7 @@
     <permissionSets>Salesforce Console User</permissionSets>
     <permissionSets>CS Servicing Visibility</permissionSets>
     <permissionSets>Report Access</permissionSets>
+    <profiles>Perch Standard</profiles>
     <profiles>IT Support</profiles>
     <profiles>CS Client Partner Login</profiles>
     <profiles>CS Client Partner Login_GSRP</profiles>
