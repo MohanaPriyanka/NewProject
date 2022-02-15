@@ -22,11 +22,11 @@
     </applicationVisibilities>
     <applicationVisibilities>
         <application>LASERCA__Laser_Credit_Access</application>
-        <visible>true</visible>
+        <visible>false</visible>
     </applicationVisibilities>
     <applicationVisibilities>
         <application>Loans</application>
-        <visible>true</visible>
+        <visible>false</visible>
     </applicationVisibilities>
     <applicationVisibilities>
         <application>MyApp</application>
@@ -34,7 +34,7 @@
     </applicationVisibilities>
     <applicationVisibilities>
         <application>Operator</application>
-        <visible>true</visible>
+        <visible>false</visible>
     </applicationVisibilities>
     <applicationVisibilities>
         <application>Service_Cloud_Console</application>
@@ -46,23 +46,23 @@
     </applicationVisibilities>
     <applicationVisibilities>
         <application>Vivint_Solar</application>
-        <visible>true</visible>
+        <visible>false</visible>
     </applicationVisibilities>
     <applicationVisibilities>
         <application>copado__Copado_Console</application>
-        <visible>true</visible>
+        <visible>false</visible>
     </applicationVisibilities>
     <applicationVisibilities>
         <application>datamask__DataMask</application>
-        <visible>true</visible>
+        <visible>false</visible>
     </applicationVisibilities>
     <applicationVisibilities>
         <application>dsfs__DocuSign_For_Salesforce</application>
-        <visible>true</visible>
+        <visible>false</visible>
     </applicationVisibilities>
     <applicationVisibilities>
         <application>flowmagic__Flow_Magic_Editor</application>
-        <visible>true</visible>
+        <visible>false</visible>
     </applicationVisibilities>
     <applicationVisibilities>
         <application>standard__AllTabSet</application>
@@ -86,7 +86,7 @@
     </applicationVisibilities>
     <applicationVisibilities>
         <application>standard__Optimizer</application>
-        <visible>true</visible>
+        <visible>false</visible>
     </applicationVisibilities>
     <applicationVisibilities>
         <application>standard__Sales</application>
