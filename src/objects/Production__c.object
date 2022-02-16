@@ -551,17 +551,6 @@
     <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <validationRules>
-        <fullName>Client_Account_Edit_Permissions</fullName>
-        <active>true</active>
-        <description>Only Internal users with access to the Client Account field are able to edit after creation.</description>
-        <errorConditionFormula>AND(
-   ISCHANGED( Client_Account__c), 
-   NOT(CONTAINS($User.Email, &quot;@perchenergy&quot;))
-)</errorConditionFormula>
-        <errorDisplayField>Client_Account__c</errorDisplayField>
-        <errorMessage>Only Internal BFG users can edit Client Account.</errorMessage>
-    </validationRules>
-    <validationRules>
         <fullName>Require_Billing_Method_to_Create_Record</fullName>
         <active>true</active>
         <description>The Billing Method field on SSS should be populated for a Production record to be created.</description>
