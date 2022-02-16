@@ -3,6 +3,8 @@
     <groups>Partner Portal Users</groups>
     <label>BW Technology</label>
     <loginAccess>true</loginAccess>
+    <permissionSets>CS Basic</permissionSets>
+    <permissionSets>Edit All</permissionSets>
     <permissionSets>Manage Call Centers</permissionSets>
     <permissionSets>Trailhead Tracker</permissionSets>
     <permissionSets>Send Emails</permissionSets>
@@ -103,8 +105,6 @@
     <permissionSets>Import Custom Objects</permissionSets>
     <permissionSets>Standard Einstein Activity Capture</permissionSets>
     <permissionSets>Knowledge Manager</permissionSets>
-    <permissionSets>CS Basic</permissionSets>
-    <permissionSets>External CS Management</permissionSets>
     <permissionSets>LASER Credit Access Site Guest User</permissionSets>
     <permissionSets>LASER Credit Access User</permissionSets>
     <permissionSets>CS Subscription Admin</permissionSets>
@@ -121,10 +121,10 @@
     <permissionSets>Salesforce Console User</permissionSets>
     <permissionSets>CS Servicing Visibility</permissionSets>
     <permissionSets>Report Access</permissionSets>
+    <profiles>Perch Standard</profiles>
     <profiles>IT Support</profiles>
     <profiles>CS Client Partner Login</profiles>
     <profiles>CS Client Partner Login_GSRP</profiles>
-    <profiles>Perch Standard</profiles>
     <profiles>Community Solar User</profiles>
     <profiles>BFG Standard User</profiles>
     <profiles>External BFG User</profiles>
