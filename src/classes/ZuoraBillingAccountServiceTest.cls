@@ -4,25 +4,55 @@ public with sharing class ZuoraBillingAccountServiceTest {
         ZuoraAPIHelperTest.testSetup();
 
         Integer i;
-        List<Account> accountsToInsert = new List<Account>();
+        List<Account> propertyAccountsToInsert = new List<Account>();
+        List<Account> parentAccountsToInsert = new List<Account>();
         List<Zuora__CustomerAccount__c> zAccountsToInsert = new List<Zuora__CustomerAccount__c>();
+        List<Case> collectionCasesToInsert = new List<Case>();
+
+        for (i = 0; i < 10; i++) {
+            Account newSFAccount = new Account(
+                Name = 'Parent Account Name' + String.valueOf(i)
+            );
+            parentAccountsToInsert.add(newSFAccount);
+        }
+        insert parentAccountsToInsert;
 
 
 
         for (i = 0; i < 10; i++) {
             Account newSFAccount = new Account(
-                Name = 'Account Name' + String.valueOf(i),
+                Name = 'Prop Account Name' + String.valueOf(i),
                 Recurring_Billing__c = false,
-                Max_Overdue_Due_Date_Zuora__c = Date.newInstance(2017,09,20)
+                Max_Overdue_Due_Date_Zuora__c = Date.newInstance(2017,09,20),
+                Parent_Account__c = parentAccountsToInsert[i].Id
             );
-            accountsToInsert.add(newSFAccount);
+            propertyAccountsToInsert.add(newSFAccount);
         }
-        insert accountsToInsert;
 
-        for (i = 0; i < 10; i++) {
+        Account extraPropAccount1 = new Account(
+            Name = 'Prop Account Name11',
+            Recurring_Billing__c = false,
+            Max_Overdue_Due_Date_Zuora__c = Date.newInstance(2017,09,20),
+            Parent_Account__c = parentAccountsToInsert[0].Id
+        );
+
+        propertyAccountsToInsert.add(extraPropAccount1);
+
+        Account extraPropAccount2 = new Account(
+            Name = 'Prop Account Name12',
+            Recurring_Billing__c = false,
+            Max_Overdue_Due_Date_Zuora__c = Date.newInstance(2017,09,20),
+            Parent_Account__c = parentAccountsToInsert[1].Id
+        );
+
+        propertyAccountsToInsert.add(extraPropAccount2);
+
+        insert propertyAccountsToInsert;
+
+        for (i = 0; i < 12; i++) {
             Zuora__CustomerAccount__c newAccount = new Zuora__CustomerAccount__c(
-                Name = 'Account Name' + String.valueOf(i),
-                Zuora__Account__c = accountsToInsert[i].Id,
+                Name = 'Billing Account Name' + String.valueOf(i),
+                Zuora__Account__c = propertyAccountsToInsert[i].Id,
                 Zuora__Zuora_Id__c = '2c92c0f86b78f56c016b7b0048' + String.valueOf(i),
                 Zuora__AutoPay__c = false,
                 Zuora__Balance__c = 500
@@ -30,6 +60,16 @@ public with sharing class ZuoraBillingAccountServiceTest {
             zAccountsToInsert.add(newAccount);
         }
         insert zAccountsToInsert;
+
+        for (i = 0; i < 10; i++) {
+            Case collectionsCase = (ZuoraBillingAccountService.caseFactory).getCase('Collections');
+            collectionsCase.Subject = 'Collections Case ' + String.valueOf(i);
+            collectionsCase.AccountId = parentAccountsToInsert[i].Id;
+
+            collectionCasesToInsert.add(collectionsCase);
+        }
+        insert collectionCasesToInsert;
+
     }
 
     @IsTest public static void testDisableTrigger() {
@@ -314,9 +354,9 @@ public with sharing class ZuoraBillingAccountServiceTest {
 
     @IsTest public static void testSetBillingAccount() {
         List<Account> accounts = [
-            SELECT Id, Billing_Account__c, (SELECT Id FROM Zuora__R00N40000001kyLcEAI__r) FROM Account
+            SELECT Id, Billing_Account__c, (SELECT Id FROM Zuora__R00N40000001kyLcEAI__r) FROM Account WHERE Parent_Account__c != NULL
         ];
-        System.assertEquals(10, accounts.size(), 'Expected 10 accounts inserted by test setup');
+        System.assertEquals(12, accounts.size(), 'Expected 12 accounts inserted by test setup');
         for (Account account : accounts) {
             System.assertEquals(1, account.Zuora__R00N40000001kyLcEAI__r.size(), 'Expected one billing account for each account');
             System.assertEquals(account.Zuora__R00N40000001kyLcEAI__r[0].Id, account.Billing_Account__c, 'Expected Billing Account on Account to be set');
@@ -445,6 +485,134 @@ public with sharing class ZuoraBillingAccountServiceTest {
             billingAccountService.unsetSuppressCollections(propertyAccount).Suppress_Collections__c,
             'A property with an overdue date of last week is overdue, so Suppress Collections Permanently should stay set'
         );
+    }
+
+    @IsTest public static void testCollectionsCaseClosedMultiProp(){
+        Set<Id> parentAccountIds = new Set<Id>();
+
+        List<Zuora__CustomerAccount__c> oldAccounts = [
+            SELECT Id, Name,
+                Zuora__Zuora_Id__c, Zuora__Account__r.Parent_Account__c
+            FROM Zuora__CustomerAccount__c
+            ORDER BY Id
+            LIMIT 12
+        ];
+
+        for (Zuora__CustomerAccount__c acc : oldAccounts) {
+            parentAccountIds.add(acc.Zuora__Account__r.Parent_Account__c);
+        }
+
+        List<Account> parentAccounts = [SELECT Id, Name, (SELECT Id, Status, Type, Resolution__c FROM Cases) FROM Account WHERE Id IN :parentAccountIds ORDER BY Name];
+
+        for (Account account : parentAccounts) {
+            System.assertEquals(1, account.Cases.size(), 'Expected one case for each account');
+            System.assertEquals('New', account.Cases[0].Status, 'Expected case to be open');
+            System.assertEquals('Collections', account.Cases[0].Type, 'Expected case type to be collections');
+        }
+
+        Set<Id> accountIdSet = new Set<Id>{
+            oldAccounts[0].Id,
+            oldAccounts[1].Id,
+            oldAccounts[2].Id,
+            oldAccounts[3].Id,
+            oldAccounts[10].Id,
+            oldAccounts[11].Id
+        };
+
+        String expectedResponse =
+            '{"MemoBalance":100.110000,"MemoDueDate":"2016-09-18",' +
+                '"LastBillSendDate":"2019-09-20",' +
+                '"InvoiceBalance":196.220000,"InvoiceDueDate":"2019-10-20",' +
+                '"AccountId":"' + oldAccounts[2].Zuora__Zuora_Id__c + '"}' +
+                '{"MemoBalance":120.000000,"MemoDueDate":"2018-07-15",' +
+                '"LastBillSendDate":"2019-06-20",' +
+                '"InvoiceBalance":100.000000,"InvoiceDueDate":"2018-07-14",' +
+                '"AccountId":"' + oldAccounts[10].Zuora__Zuora_Id__c + '"}';
+        expectedResponse = new ZuoraDataQueryAsyncService().convertDataQueryResponseToJSON(expectedResponse);
+
+        Test.startTest();
+        ZuoraDataQueryService.ProcessingParameter finishMethod = new ZuoraDataQueryService.ProcessingParameter();
+        finishMethod.className = 'ZuoraBillingAccountService';
+        finishMethod.methodName = 'updateDaysPastDue';
+        finishMethod.recordIds = accountIdSet;
+        ZuoraDataQueryService.handlePostQueryJob(expectedResponse,finishMethod);
+        Test.stopTest();
+
+        List<Account> updatedParentAccounts = [SELECT Id, Name, (SELECT Id, Status, Resolution__c FROM Cases), (SELECT Id, Name, Max_Overdue_Due_Date_Merge__c FROM Accounts__r ORDER BY Name) FROM Account WHERE Id IN :parentAccountIds ORDER BY Id];
+
+        List<Case> parentAccount0Cases = updatedParentAccounts[0].Cases;
+        List<Account> parentAccount0PropAcc = updatedParentAccounts[0].Accounts__r;
+
+        System.assertEquals(2, parentAccount0PropAcc.size(), 'Expected two child property accounts');
+        System.assertEquals(null, parentAccount0PropAcc[0].Max_Overdue_Due_Date_Merge__c, 'Expected child property account to have no overdue date');
+        System.assertNotEquals(null, parentAccount0PropAcc[1].Max_Overdue_Due_Date_Merge__c, 'Expected child property account to have an overdue date');
+        System.assertEquals(1, parentAccount0Cases.size(), 'Expected 1 case');
+        System.assertEquals('New', parentAccount0Cases[0].Status, 'Expected case to still be open because one child prop is still overdue');
+
+
+        List<Case> parentAccount1Cases = updatedParentAccounts[1].Cases;
+        List<Account> parentAccount1PropAcc = updatedParentAccounts[1].Accounts__r;
+
+        System.assertEquals(2, parentAccount1PropAcc.size(), 'Expected two child property accounts');
+        System.assertEquals(null, parentAccount1PropAcc[0].Max_Overdue_Due_Date_Merge__c, 'Expected child property account to have no overdue date');
+        System.assertEquals(null, parentAccount1PropAcc[1].Max_Overdue_Due_Date_Merge__c, 'Expected child property account to have no overdue date');
+        System.assertEquals(1, parentAccount1Cases.size(), 'Expected 1 case');
+        System.assertEquals('Closed', parentAccount1Cases[0].Status, 'Expected case to be closed');
+    }
+
+    @IsTest public static void testCollectionsCaseClosedNoChange(){
+        Zuora__CustomerAccount__c oldAccount = [
+            SELECT Id, Name,
+                Zuora__Zuora_Id__c, Zuora__Account__r.Parent_Account__c, Zuora__Balance__c, Zuora__Account__c
+            FROM Zuora__CustomerAccount__c
+            WHERE Name = 'Billing Account Name3'
+            LIMIT 1
+        ];
+
+        Account propAccount = [
+            SELECT Id, Name,
+                Max_Overdue_Due_Date_Zuora__c, Last_Bill_Send_Date_New_Charges_Zuora__c
+            FROM Account
+            WHERE Id = :oldAccount.Zuora__Account__c
+            LIMIT 1
+        ];
+
+        propAccount.Max_Overdue_Due_Date_Zuora__c = null;
+        propAccount.Last_Bill_Send_Date_New_Charges_Zuora__c = null;
+
+        update propAccount;
+
+        Account parentAccount = [SELECT Id, Name, (SELECT Id, Status, Type, Resolution__c FROM Cases) FROM Account WHERE Id = :oldAccount.Zuora__Account__r.Parent_Account__c LIMIT 1];
+
+        System.assertEquals(1, parentAccount.Cases.size(), 'Expected one case');
+        System.assertEquals('New', parentAccount.Cases[0].Status, 'Expected case to be open');
+        System.assertEquals('Collections', parentAccount.Cases[0].Type, 'Expected case type to be collections');
+
+        Set<Id> accountIdSet = new Set<Id>{
+            oldAccount.Id
+        };
+
+        String expectedResponse = '';
+        expectedResponse = new ZuoraDataQueryAsyncService().convertDataQueryResponseToJSON(expectedResponse);
+
+        Test.startTest();
+        ZuoraDataQueryService.ProcessingParameter finishMethod = new ZuoraDataQueryService.ProcessingParameter();
+        finishMethod.className = 'ZuoraBillingAccountService';
+        finishMethod.methodName = 'updateDaysPastDue';
+        finishMethod.recordIds = accountIdSet;
+        ZuoraDataQueryService.handlePostQueryJob(expectedResponse,finishMethod);
+        Test.stopTest();
+
+        Account updatedParentAccount = [SELECT Id, Name, (SELECT Id, Status, Resolution__c FROM Cases), (SELECT Id, Name, Max_Overdue_Due_Date_Merge__c, Last_Bill_Send_Date_New_Charges_Zuora__c FROM Accounts__r ORDER BY Name) FROM Account WHERE Id = :parentAccount.Id LIMIT 1];
+        List<Account> childAccounts = updatedParentAccount.Accounts__r;
+        List<Case> childCases = updatedParentAccount.Cases;
+
+        System.assertEquals(1, childAccounts.size(), 'Expected one child property account');
+        System.assertEquals(null, childAccounts[0].Max_Overdue_Due_Date_Merge__c, 'Expected child property account to have no overdue date');
+        System.assertEquals(null, childAccounts[0].Last_Bill_Send_Date_New_Charges_Zuora__c, 'Expected child property account to have no last bill send date');
+        System.assertEquals(1, childCases.size(), 'Expected 1 case');
+        System.assertEquals('New', childCases[0].Status, 'Expected case to be open since there was no change to the account');
+
     }
 
     private class MockZuoraAccountSelector implements StubProvider {

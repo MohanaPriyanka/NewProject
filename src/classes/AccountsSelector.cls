@@ -244,4 +244,12 @@ public without sharing class AccountsSelector {
             WHERE Id = :parentAccountIds
         ]);
     }
+
+    public List<Account> selectParentAccountWithPropertyAccounts(Set<Id> parentAccountIds) {
+        return new List<Account>([
+            SELECT Id, (SELECT Id, Max_Overdue_Due_Date_Zuora__c, Total_Outstanding_Balance_Merge__c, Days_Past_Due__c FROM Accounts__r)
+            FROM Account
+            WHERE Id IN :parentAccountIds
+        ]);
+    }
 }

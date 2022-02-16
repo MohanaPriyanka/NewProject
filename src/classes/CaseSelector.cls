@@ -39,4 +39,12 @@ public without sharing class CaseSelector {
             WHERE Lead_Lookup__c IN : leadIds AND Category__c = 'QC' AND Status != 'Closed'
         ];
     }
+
+    public List<Case> openCollectionCasesForAccounts(Set<Id> accountIds) {
+        return [
+            SELECT Id, Subject, Status, Resolution__c
+            FROM Case
+            WHERE Status != 'Closed' AND Type = 'Collections' AND AccountId IN :accountIds
+        ];
+    }
 }

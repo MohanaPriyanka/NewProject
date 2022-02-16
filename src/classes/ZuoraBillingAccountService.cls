@@ -5,7 +5,9 @@
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class ZuoraBillingAccountService implements Schedulable, ZuoraDataQueryService.Processor {
     @TestVisible private static ZuoraAccountSelector zuoraAcctSelector = new ZuoraAccountSelector();
-    private static CaseFactory caseFactory = new CaseFactory();
+    @TestVisible private static CaseFactory caseFactory = new CaseFactory();
+    private static AccountsSelector accountsSelector = new AccountsSelector();
+    @TestVisible private static CaseSelector caseSelector = new CaseSelector();
     @TestVisible private static fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
         new List<SObjectType>{
             Case.SObjectType
@@ -89,6 +91,7 @@ public without sharing class ZuoraBillingAccountService implements Schedulable, 
     private void updateDaysPastDue(String queryResponse) {
         List<Account> accountsToUpdate = new List<Account>();
         Map<String, AccountSummary> zuoraIdToAccountSummary = summarizeBalanceQueryResult(queryResponse);
+        Set<Id> currentParentAccountIds = new Set<Id>();
         List<Zuora__CustomerAccount__c> zuoraBillingAccounts = zuoraAcctSelector.getAllBillingAccounts();
         for (Zuora__CustomerAccount__c zuoraAccount : zuoraBillingAccounts) {
             String zuoraId = zuoraAccount.Zuora__Zuora_Id__c;
@@ -96,20 +99,29 @@ public without sharing class ZuoraBillingAccountService implements Schedulable, 
                 Id = zuoraAccount.Zuora__Account__r.Id,
                 Suppress_Collections__c = zuoraAccount.Zuora__Account__r.Suppress_Collections__c
             );
+
             AccountSummary accountSummary = zuoraIdToAccountSummary.get(zuoraId);
             setAccountPastDueFields(accountSummary, propertyToUpdate);
             registerPropertyForUpdate(propertyToUpdate, zuoraAccount, accountsToUpdate);
             unsetSuppressCollections(propertyToUpdate);
+
+            if(pastDueFieldChanged(propertyToUpdate, zuoraAccount) && noLongerPastDue(propertyToUpdate)) {
+                currentParentAccountIds.add(zuoraAccount.Zuora__Account__r.Parent_Account__c);
+            }
+
             if (inBadDebtGracePeriod(zuoraAccount) &&
                 noLongerPastDue(propertyToUpdate)) {
                 uow.registerNew(getCaseToReactivateCustomer(zuoraAccount));
             }
         }
+
         if (accountsToUpdate.size() > 200) {
             Database.executeBatch(new GenericBatchDMLOperation(accountsToUpdate, 'Update'));
         } else {
             Util.updateSObjs(accountsToUpdate);
         }
+
+        closeOpenCollectionCasesForCurrentAccounts(currentParentAccountIds); // Close out open cases before creating new cases to Reactivate certain customers
         uow.commitWork();
     }
 
@@ -134,8 +146,7 @@ public without sharing class ZuoraBillingAccountService implements Schedulable, 
     }
 
     private Boolean pastDueFieldChanged(Account propertyToUpdate, Zuora__CustomerAccount__c zuoraAccount) {
-        return propertyToUpdate.Total_Outstanding_Balance_Merge__c != zuoraAccount.Zuora__Account__r.Total_Outstanding_Balance_Merge__c ||
-            propertyToUpdate.Max_Overdue_Due_Date_Zuora__c != zuoraAccount.Zuora__Account__r.Max_Overdue_Due_Date_Zuora__c ||
+        return propertyToUpdate.Max_Overdue_Due_Date_Zuora__c != zuoraAccount.Zuora__Account__r.Max_Overdue_Due_Date_Zuora__c ||
             propertyToUpdate.Last_Bill_Send_Date_New_Charges_Zuora__c != zuoraAccount.Zuora__Account__r.Last_Bill_Send_Date_New_Charges_Zuora__c;
     }
 
@@ -148,6 +159,35 @@ public without sharing class ZuoraBillingAccountService implements Schedulable, 
             propertyToUpdate.Max_Overdue_Due_Date_Zuora__c = null;
             propertyToUpdate.Last_Bill_Send_Date_New_Charges_Zuora__c = null;
         }
+    }
+
+    private Boolean allPropertyAccountsAreCurrent(List<Account> childPropertyAccounts) {
+        Boolean allCurrent = true;
+        for (Account acc : childPropertyAccounts) {
+            if (acc.Max_Overdue_Due_Date_Zuora__c != null) {
+                allCurrent = false;
+            }
+        }
+        return allCurrent;
+    }
+
+    private void closeOpenCollectionCasesForCurrentAccounts(Set<Id> parentAccountIds) {
+        Set<Id> currentParentAccountIds = new Set<Id>();
+        List<Account> parentAccWithAllChildAcc = accountsSelector.selectParentAccountWithPropertyAccounts(parentAccountIds);
+
+        for (Account parent : parentAccWithAllChildAcc) {
+            if (allPropertyAccountsAreCurrent(parent.Accounts__r)) {
+                currentParentAccountIds.add(parent.Id);
+            }
+        }
+
+        List<Case> relatedCollectionsCases = caseSelector.openCollectionCasesForAccounts(currentParentAccountIds);
+
+        for (Case collectionsCase : relatedCollectionsCases) {
+            collectionsCase.Resolution__c = 'No Longer Past Due';
+            collectionsCase.Status = 'Closed';
+        }
+        update relatedCollectionsCases;
     }
 
     private Boolean noLongerPastDue(Account propertyToUpdate) {
@@ -165,7 +205,7 @@ public without sharing class ZuoraBillingAccountService implements Schedulable, 
         collectionsCase.Priority = 'Medium';
         collectionsCase.Product_Line__c = 'Community Solar';
         collectionsCase.Origin = 'Other';
-        collectionsCase.Case_Type__c = 'Perch';
+        collectionsCase.Case_Type__c = 'BlueWave';
         collectionsCase.Disable_Followup_Email__c = true;
         return collectionsCase;
     }
