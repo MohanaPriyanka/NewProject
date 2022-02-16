@@ -1909,6 +1909,28 @@ IF( Month(CloseDate) = 12, &apos;December&apos;, null))))))))))))</formula>
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>First_Bill_Paid_Date__c</fullName>
+        <description>Datetime when Salesforce recognizes that the first bill has been marked paid (in part or in full) by Zuora. Used for Partner Commission generation. Implemented in W-024076.</description>
+        <externalId>false</externalId>
+        <label>First Bill Paid Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>First_Bill_Sent_Date__c</fullName>
+        <description>Datetime when Salesforce recognizes that the first bill has been sent by Zuora. Used for Partner Commission generation. Implemented in W-024076.</description>
+        <externalId>false</externalId>
+        <label>First Bill Sent Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
         <fullName>Follow_Up_Contact__c</fullName>
         <externalId>false</externalId>
         <label>Follow-Up Contact</label>
