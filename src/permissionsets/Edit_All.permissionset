@@ -2206,11 +2206,11 @@
     </classAccesses>
     <classAccesses>
         <apexClass>PermissionsSelector</apexClass>
-        <enabled>true</enabled>
+        <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>PermissionsSelectorTest</apexClass>
-        <enabled>true</enabled>
+        <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>PortalLoginHistoryController</apexClass>
