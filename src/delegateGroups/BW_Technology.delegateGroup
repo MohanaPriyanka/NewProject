@@ -4,6 +4,7 @@
     <label>BW Technology</label>
     <loginAccess>true</loginAccess>
     <permissionSets>CS Basic</permissionSets>
+    <permissionSets>Edit All</permissionSets>
     <permissionSets>Manage Call Centers</permissionSets>
     <permissionSets>Trailhead Tracker</permissionSets>
     <permissionSets>Send Emails</permissionSets>
