@@ -63,10 +63,11 @@ public inherited sharing class JournalEntrySelector {
 
     public List<Journal_Entry__c> getCommissionableEntriesFromToday() {
         return [
-            SELECT Customer_Lookup__c, Project__c, Date__c, Object_Type__c
+            SELECT Customer_Lookup__c, Project__c, Date__c, Object_Type__c, Customer_Account__c
             FROM Journal_Entry__c
             WHERE CreatedDate = TODAY
             AND (Object_Type__c = 'InvoiceItem' OR Object_Type__c = 'PaymentPart')
+            ORDER BY Date__c ASC
         ];
     }
 }
