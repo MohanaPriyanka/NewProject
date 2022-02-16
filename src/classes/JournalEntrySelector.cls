@@ -14,18 +14,19 @@ public inherited sharing class JournalEntrySelector {
         return journalEntries;
     }
 
-    public List<AggregateResult> getCommissionEntriesByAccount(Set<String> accountNumber) {
-        List<AggregateResult> entries = [
-            SELECT Customer_Account__c,
-                Object_Type__c,
-                Project__c
+    public List<AggregateResultProxy> getCommissionEntriesByAccount(Set<String> accountNumber) {
+        List<AggregateResultProxy> groupedResultProxies = new List<AggregateResultProxy>();
+        for (AggregateResult result : [
+            SELECT Customer_Account__c,Object_Type__c,Project__c
             FROM Journal_Entry__c
             WHERE Customer_Account__c IN :accountNumber
             AND (Object_Type__c = 'InvoiceItem' OR Object_Type__c = 'PaymentPart')
             AND Amount__c != 0
             GROUP BY Customer_Account__c, Object_Type__c, Project__c
-        ];
-        return entries;
+        ]) {
+            groupedResultProxies.add(new AggregateResultProxy().withAggregateResult(result));
+        }
+        return groupedResultProxies;
     }
 
     public List<Journal_Entry__c> getSFJournalEntriesFromExternalId(Set<String> externalIds) {
@@ -62,7 +63,7 @@ public inherited sharing class JournalEntrySelector {
 
     public List<Journal_Entry__c> getCommissionableEntriesFromToday() {
         return [
-            SELECT Customer_Lookup__c
+            SELECT Customer_Lookup__c, Project__c, Date__c, Object_Type__c
             FROM Journal_Entry__c
             WHERE CreatedDate = TODAY
             AND (Object_Type__c = 'InvoiceItem' OR Object_Type__c = 'PaymentPart')

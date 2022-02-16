@@ -277,4 +277,18 @@ public with sharing class UtilTest {
         ];
         System.assertEquals(2,newAccounts.size());
     }
+
+    @IsTest
+    private static void testRetrieveFromMap() {
+        Account acc = new Account(Id = '0010a00001gQ1IEAA0', Name = 'Daniel Goldberg');
+        Map<Id, Account> accountMap = new Map<Id, Account>();
+        accountMap.put(acc.Id, acc);
+
+        Account accFromUtility = (Account) Util.retrieveOrCreateFromMap(acc.Id, accountMap);
+        System.assertEquals(acc, accFromUtility, 'Object retrieved by Util should point to the same reference');
+
+        Account accFromUtilityNotFound = (Account) Util.retrieveOrCreateFromMap('0010a00001gQ2IEAA0', accountMap);
+        System.assert(accFromUtilityNotFound != null, 'Account not in map should still return new Account record');
+        System.assertEquals(null, accFromUtilityNotFound.Name, 'This Account was not in the map and should have no data');
+    }
 }

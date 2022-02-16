@@ -9,6 +9,7 @@ public with sharing class BillPeriodService {
 
     private Set<Id> verifiedBillPeriods = new Set<Id>();
     public Map<Id, Bill_Period__c> completedBillPeriods = new Map<Id, Bill_Period__c>();
+    @TestVisible private OpportunityCommissionableDateSetter oppDateSetter;
 
     @TestVisible private static ProductionService productionService = new ProductionService();
     @TestVisible private static UASBSelector uasbSelector = new UASBSelector();
@@ -179,6 +180,9 @@ public with sharing class BillPeriodService {
         firstBillPaid.opportunitiesToRun = opportunitiesForFirstBillPaid;
         firstBillPaid.typeOfCommission = PartnerCommissionService.CommissionType.FIRSTBILLPAID;
         commissionService.calculateCommissionRecords(firstBillPaid, uow);
+
+        oppDateSetter = new OpportunityCommissionableDateSetter(uasbs);
+        oppDateSetter.executeForUCB();
 
         uow.commitWork();
         return opportunityIdsGettingBilled;
