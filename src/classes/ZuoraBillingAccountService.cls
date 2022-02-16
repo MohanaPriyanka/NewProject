@@ -205,7 +205,7 @@ public without sharing class ZuoraBillingAccountService implements Schedulable, 
         collectionsCase.Priority = 'Medium';
         collectionsCase.Product_Line__c = 'Community Solar';
         collectionsCase.Origin = 'Other';
-        collectionsCase.Case_Type__c = 'BlueWave';
+        collectionsCase.Case_Type__c = 'Perch';
         collectionsCase.Disable_Followup_Email__c = true;
         return collectionsCase;
     }
