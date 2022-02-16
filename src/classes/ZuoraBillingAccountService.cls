@@ -164,7 +164,7 @@ public without sharing class ZuoraBillingAccountService implements Schedulable, 
     private Boolean allPropertyAccountsAreCurrent(List<Account> childPropertyAccounts) {
         Boolean allCurrent = true;
         for (Account acc : childPropertyAccounts) {
-            if (acc.Max_Overdue_Due_Date_Zuora__c != null) {
+            if (acc.Days_Past_Due__c > 0) {
                 allCurrent = false;
             }
         }

@@ -44,7 +44,7 @@ public without sharing class CaseSelector {
         return [
             SELECT Id, Subject, Status, Resolution__c
             FROM Case
-            WHERE Status != 'Closed' AND Type = 'Collections' AND AccountId IN :accountIds
+            WHERE Status != 'Closed' AND Type = 'Collections' AND Subject LIKE 'Collections Call:%' AND AccountId IN :accountIds
         ];
     }
 }
