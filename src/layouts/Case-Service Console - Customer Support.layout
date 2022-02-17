@@ -168,6 +168,10 @@
                 <field>Case_Type__c</field>
             </layoutItems>
             <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Type</field>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Required</behavior>
                 <field>Origin</field>
             </layoutItems>
@@ -322,6 +326,21 @@
     <platformActionList>
         <actionListContext>Record</actionListContext>
         <platformActionListItems>
+            <actionName>MergeCase</actionName>
+            <actionType>StandardButton</actionType>
+            <sortOrder>8</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Case.Log_a_Call</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>9</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Share_with_Client</actionName>
+            <actionType>CustomButton</actionType>
+            <sortOrder>10</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
             <actionName>FeedItem.TextPost</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>0</sortOrder>
@@ -347,6 +366,11 @@
             <sortOrder>4</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
+            <actionName>Update_CasePartnerPortal</actionName>
+            <actionType>CustomButton</actionType>
+            <sortOrder>11</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
             <actionName>Case.Edit_Case</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>5</sortOrder>
@@ -360,26 +384,6 @@
             <actionName>Case.Create_Work_Request</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>7</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
-            <actionName>MergeCase</actionName>
-            <actionType>StandardButton</actionType>
-            <sortOrder>8</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
-            <actionName>Case.Log_a_Call</actionName>
-            <actionType>QuickAction</actionType>
-            <sortOrder>9</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
-            <actionName>Share_with_Client</actionName>
-            <actionType>CustomButton</actionType>
-            <sortOrder>10</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
-            <actionName>Update_CasePartnerPortal</actionName>
-            <actionType>CustomButton</actionType>
-            <sortOrder>11</sortOrder>
         </platformActionListItems>
     </platformActionList>
     <quickActionList>

@@ -77,6 +77,7 @@ public without sharing class CaseFactory implements Queueable {
                 // Collections uses the customer care record type
                 newCase.RecordTypeId = recordTypeMap.get('Customer_Care').Id;
                 newCase.OwnerId = groupMap.get('Collections').Id;
+                newCase.Type = 'Collections';
             } when 'Customer_QC' {
                 newCase.RecordTypeId = recordTypeMap.get('Customer_Care').Id;
                 newCase.OwnerId = groupMap.get('Customer_QC').Id;
