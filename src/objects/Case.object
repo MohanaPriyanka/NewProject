@@ -1597,6 +1597,11 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
                     <label>No Longer an Issue</label>
                 </value>
                 <value>
+                    <fullName>No Longer Past Due</fullName>
+                    <default>false</default>
+                    <label>No Longer Past Due</label>
+                </value>
+                <value>
                     <fullName>Not a support case</fullName>
                     <default>false</default>
                     <label>Not a support case</label>
@@ -3581,6 +3586,33 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <businessProcess>Customer Care Case</businessProcess>
         <label>Customer Care</label>
         <picklistValues>
+            <picklist>Resolution__c</picklist>
+            <values>
+                <fullName>Duplicate</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No Longer Past Due</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not a support case</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Resolved by external team</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Resolved with KB article</fullName>
+                <default>true</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Case_Type__c</picklist>
             <values>
                 <fullName>3rd Party</fullName>
@@ -3909,29 +3941,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             <values>
                 <fullName>User didn%27t attend training</fullName>
                 <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Resolution__c</picklist>
-            <values>
-                <fullName>Duplicate</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Not a support case</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Resolved by external team</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Resolved with KB article</fullName>
-                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>

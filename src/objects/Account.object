@@ -1673,7 +1673,7 @@ MAX(TODAY()-Max_Overdue_Due_Date_Merge__c,0),
     <fields>
         <fullName>Max_Overdue_Due_Date_Merge__c</fullName>
         <externalId>false</externalId>
-        <formula>IF($CustomMetadata.Zuora_Setting__mdt.Production.Zuora_Is_Live__c, Max_Overdue_Due_Date_Zuora__c, Max_Overdue_Due_Date__c)</formula>
+        <formula>Max_Overdue_Due_Date_Zuora__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Max Overdue Due Date</label>
         <required>false</required>
