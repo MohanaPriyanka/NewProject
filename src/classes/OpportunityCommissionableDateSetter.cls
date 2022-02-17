@@ -2,6 +2,7 @@
  * @description Created by jeffparlin on 2/11/22. Sets fields on Opportunity related to Partner Commission checkpoints.
  * Tested By: OppCommissionableDateSetterTest, BillPeriodServiceTest
  */
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class OpportunityCommissionableDateSetter {
 
     private static final String FIRST_BILL_SENT_JOURNAL_TYPE = 'InvoiceItem';
@@ -37,6 +38,7 @@ public without sharing class OpportunityCommissionableDateSetter {
             retrieveEligibleOpportunities();
             generateOppUpdateList();
             update opportunitiesToUpdate;
+            Logger.flushLogs();
         } catch (Exception e) {
             String message = 'Error encountered when setting Opportunity First Bill dates for Accounts: ' + accountIds
                 + '\n\n' + e.getMessage() + '\n\n' + e.getStackTraceString();
@@ -115,12 +117,24 @@ public without sharing class OpportunityCommissionableDateSetter {
         Map<Id,Opportunity> oppsToUpdate = new Map<Id,Opportunity>();
         for (Opportunity firstBillSentOpp : firstBillSentOpps) {
             Opportunity opp = (Opportunity) Util.retrieveOrCreateFromMap(firstBillSentOpp.Id, oppsToUpdate);
-            opp.First_Bill_Sent_Date__c = acctToJournalEntryMap.get(getMapKey(firstBillSentOpp)).firstBillSentDate;
+            JournalSummary journalSummary = acctToJournalEntryMap.get(getMapKey(firstBillSentOpp));
+            if (journalSummary == null || journalSummary?.firstBillSentDate == null) {
+                Logger.logLater('OpportunityCommissionableDateSetter', 'GenerateOppUpdateList (firstBillSent)',
+                    'Could not find a JE for this Opp: ' + firstBillSentOpp.Id, Logger.ERROR);
+                continue;
+            }
+            opp.First_Bill_Sent_Date__c = journalSummary.firstBillSentDate;
             oppsToUpdate.put(opp.Id, opp);
         }
         for (Opportunity firstBillPaidOpp : firstBillPaidOpps) {
             Opportunity opp = (Opportunity) Util.retrieveOrCreateFromMap(firstBillPaidOpp.Id, oppsToUpdate);
-            opp.First_Bill_Paid_Date__c = acctToJournalEntryMap.get(getMapKey(firstBillPaidOpp)).firstBillPaidDate;
+            JournalSummary journalSummary = acctToJournalEntryMap.get(getMapKey(firstBillPaidOpp));
+            if (journalSummary == null || journalSummary?.firstBillPaidDate == null) {
+                Logger.logLater('OpportunityCommissionableDateSetter', 'GenerateOppUpdateList (firstBillPaid)',
+                    'Could not find a JE for this Opp: ' + firstBillPaidOpp.Id, Logger.ERROR);
+                continue;
+            }
+            opp.First_Bill_Paid_Date__c = journalSummary.firstBillPaidDate;
             oppsToUpdate.put(opp.Id, opp);
         }
         opportunitiesToUpdate = oppsToUpdate.values();
