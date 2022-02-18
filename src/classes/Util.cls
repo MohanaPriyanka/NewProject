@@ -391,4 +391,18 @@ public without sharing class Util {
         }
         return false;
     }
+
+    /**
+     * @description Retrieves the SObject entry in the map if found, otherwise returns a new SObject with Id
+     * @param sobjectId SObject Id to retrieve from map
+     * @param sobjectMap Map of Id to SObject
+     * @return SObject that is in the specified map, OR a new SObject with all SObject data
+     */
+    public static SObject retrieveOrCreateFromMap(Id sobjectId, Map<Id, SObject> sobjectMap) {
+        SObject obj = sobjectMap.get(sobjectId);
+        if (obj == null) {
+            return sobjectId.getSobjectType().newSObject(sobjectId);
+        }
+        return obj;
+    }
 }

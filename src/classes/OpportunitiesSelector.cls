@@ -2,7 +2,7 @@
  * @description : Can extend fflib_SObjectSelector
  * Test: OpportunitiesSelectorTest
  **/
-@SuppressWarnings('PMD.ApexCRUDViolation, PMD.ApexDoc')
+@SuppressWarnings('PMD.ApexCRUDViolation, PMD.ApexDoc PMD.ApexSOQLInjection')
 public without sharing class OpportunitiesSelector {
     private static String fieldsToGenerateCommissions = 'Id, \n' +
         'Name, \n' +
@@ -106,32 +106,52 @@ public without sharing class OpportunitiesSelector {
             'AND Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c != 0 \n';
     }
 
-    @SuppressWarnings('PMD.ApexSOQLInjection')
     public List<Opportunity> selectWithoutFirstInvoiceCommission(Set<Id> accountIds) {
         String query = firstBillSentCommissionQueryString() +
             'AND AccountId IN :accountIds';
         return Database.query(query);
     }
 
-    @SuppressWarnings('PMD.ApexSOQLInjection')
     public List<Opportunity> selectWithoutFirstPaymentCommission(Set<Id> accountIds) {
         String query = firstBillPaidCommissionQueryString() +
             'AND AccountId IN :accountIds';
         return Database.query(query);
     }
 
-    @SuppressWarnings('PMD.ApexSOQLInjection')
     public List<Opportunity> selectWithoutFirstInvoiceCommissionByOpp(Set<Id> opportunityIds) {
         String query = firstBillSentCommissionQueryString() +
             'AND Id IN :opportunityIds';
         return Database.query(query);
     }
 
-    @SuppressWarnings('PMD.ApexSOQLInjection')
     public List<Opportunity> selectWithoutFirstPaymentCommissionByOpp(Set<Id> opportunityIds) {
         String query = firstBillPaidCommissionQueryString() +
             'AND Id IN :opportunityIds';
         return Database.query(query);
+    }
+
+    public List<Opportunity> selectWithoutFirstBillSentStamped(Set<Id> accountIds) {
+        return [
+            SELECT Id, Name, AccountId, Account.Account_Number__c, Shared_Solar_System__r.Unique_ID__c,
+                Shared_Solar_System__r.Name
+            FROM Opportunity
+            WHERE StageName = 'Complete'
+            AND First_Bill_Sent_Date__c = NULL
+            AND Id NOT IN (SELECT Opportunity__c FROM Commission_Payment__c WHERE Commission_Type__c = 'First Bill Sent')
+            AND AccountId IN :accountIds
+        ];
+    }
+
+    public List<Opportunity> selectWithoutFirstBillPaidStamped(Set<Id> accountIds) {
+        return [
+            SELECT Id, Name, AccountId, Account.Account_Number__c, Shared_Solar_System__r.Unique_ID__c,
+                Shared_Solar_System__r.Name
+            FROM Opportunity
+            WHERE StageName = 'Complete'
+            AND First_Bill_Paid_Date__c = NULL
+            AND Id NOT IN (SELECT Opportunity__c FROM Commission_Payment__c WHERE Commission_Type__c = 'First Bill Paid')
+            AND AccountId IN :accountIds
+        ];
     }
 
     public List<Opportunity> selectByIdWithCommissionPayment(Set<Id> opportunityIds) {

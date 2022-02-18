@@ -304,7 +304,9 @@ private class BillPeriodServiceTest {
             },
             new FFLibHelperTest.MockDML()
         );
-        Set<Id> oppIdsGettingBilled = new BillPeriodService().handleUCBTransfers(new List<Transfer__c>());
+        BillPeriodService service = new BillPeriodService();
+
+        Set<Id> oppIdsGettingBilled = service.handleUCBTransfers(new List<Transfer__c>());
         System.assertEquals(1, oppIdsGettingBilled.size(),
             'Expected one UCB opportunity to be used to look for opps that need to a commission paid');
         List<SObject> updatedObjects = FFLibHelperTest.getRegisterDirtyListFromUnitOfWork(BillPeriodService.uow, 'Account');
@@ -328,6 +330,10 @@ private class BillPeriodServiceTest {
         updatedObjects = FFLibHelperTest.getRegisterDirtyListFromUnitOfWork(BillPeriodService.uow, 'Account');
         System.assertEquals(0, updatedObjects.size(),
             'Expected no accounts to be registered for update, since they already had a First CS Bill Date');
+
+        System.assert(service.oppDateSetter.opportunitiesToUpdate[0].First_Bill_Paid_Date__c != null &&
+            service.oppDateSetter.opportunitiesToUpdate[0].First_Bill_Sent_Date__c != null,
+            'Service should have executed OpportunityCommissionableDateSetter to attempt update on an Opportunity');
     }
 
     public class MockUASBSelector extends MockProvider {

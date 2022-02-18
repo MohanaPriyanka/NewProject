@@ -112,7 +112,9 @@ public without sharing class UASBSelector {
                 Utility_Account_Subscription__c,
                 Utility_Account_Subscription__r.Opportunity__c,
                 Utility_Account_Subscription__r.Opportunity__r.AccountId,
-                Utility_Account_Subscription__r.Opportunity__r.Account.First_CS_Bill_Date__c
+                Utility_Account_Subscription__r.Opportunity__r.Account.First_CS_Bill_Date__c,
+                Utility_Account_Subscription__r.Opportunity__r.First_Bill_Sent_Date__c,
+                Utility_Account_Subscription__r.Opportunity__r.First_Bill_Paid_Date__c
             FROM UASB__c
             WHERE Transfer__c IN :transfers
             AND Shared_Solar_System__r.UCB__c = TRUE

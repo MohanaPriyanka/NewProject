@@ -24,22 +24,22 @@ public without sharing class PartnerCommissionHandler implements GenericBatchDML
 
     public class PendingBillCommission {
         @TestVisible
-        private List<Opportunity> firstBillOpps;
+        private List<Opportunity> firstBillSentOpps;
         @TestVisible
-        private List<Opportunity> firstPaymentOpps;
+        private List<Opportunity> firstBillPaidOpps;
         public PendingBillCommission() {
-            this.firstBillOpps = new List<Opportunity>();
-            this.firstPaymentOpps = new List<Opportunity>();
+            this.firstBillSentOpps = new List<Opportunity>();
+            this.firstBillPaidOpps = new List<Opportunity>();
         }
     }
 
     public static void upsertCommissions(Set<Id> accountIds) {
         try {
             PartnerCommissionHandler service = new PartnerCommissionHandler();
-            PendingBillCommission oppsToUpdate = service.findUninvoicedCommission(accountIds);
-            callPartnerCommissionService(oppsToUpdate.firstBillOpps, PartnerCommissionService.CommissionType.FIRSTBILLSENT);
-            callPartnerCommissionService(oppsToUpdate.firstPaymentOpps, PartnerCommissionService.CommissionType.FIRSTBILLPAID);
-        } catch (Exception excep){
+            PendingBillCommission commissions = service.findUninvoicedCommission(accountIds);
+            callPartnerCommissionService(commissions.firstBillSentOpps, PartnerCommissionService.CommissionType.FIRSTBILLSENT);
+            callPartnerCommissionService(commissions.firstBillPaidOpps, PartnerCommissionService.CommissionType.FIRSTBILLPAID);
+        } catch (Exception excep) {
             Logger.logNow(
                 'PartnerCommissionHandler',
                 'updatePendingCommission',
@@ -54,11 +54,12 @@ public without sharing class PartnerCommissionHandler implements GenericBatchDML
         Set<String> accountsToCheck = getOpportunitiesWithoutCommission(accountIds);
         if (accountsToCheck.size() > 0) {
             setJournalEntryMap(accountsToCheck);
-            addEligibleOppToPending(oppsWithoutInvoiceCommission, 'InvoiceItem', oppsPendingCommission.firstBillOpps);
-            addEligibleOppToPending(oppsWithoutPaymentCommission, 'PaymentPart', oppsPendingCommission.firstPaymentOpps);
+            addEligibleOppToPending(oppsWithoutInvoiceCommission, 'InvoiceItem', oppsPendingCommission.firstBillSentOpps);
+            addEligibleOppToPending(oppsWithoutPaymentCommission, 'PaymentPart', oppsPendingCommission.firstBillPaidOpps);
         }
         return oppsPendingCommission;
     }
+
     private void addEligibleOppToPending(List<Opportunity> oppsWithoutCommission, String journalType, List<Opportunity> opportunitiesToCommission) {
         for (Opportunity opp : oppsWithoutCommission) {
             String accountAndProjectKey = opp.Account.Account_Number__c + opp.Shared_Solar_System__r.Unique_ID__c;
@@ -90,13 +91,14 @@ public without sharing class PartnerCommissionHandler implements GenericBatchDML
 
     @TestVisible
     private void setJournalEntryMap(Set<String> accountsToCheck) {
-        List<AggregateResult> journalEntries = glSelector.getCommissionEntriesByAccount(accountsToCheck);
+        List<AggregateResultProxy> journalEntries = glSelector.getCommissionEntriesByAccount(accountsToCheck);
         String accountAndProjectKey;
 
-        for (AggregateResult aggResult : journalEntries){
-            String accountNumber = (String) aggResult.get('Customer_Account__c');
-            String objectType = (String) aggResult.get('Object_Type__c');
-            String sssId =  (String) aggResult.get('Project__c');
+        for (AggregateResultProxy groupedResultProxies : journalEntries) {
+            Map<String,Object> result = groupedResultProxies.getValuesByAlias();
+            String accountNumber = (String) result.get('Customer_Account__c');
+            String objectType = (String) result.get('Object_Type__c');
+            String sssId =  (String) result.get('Project__c');
             accountAndProjectKey = accountNumber + sssId;
 
             if (acctToJournalEntryMap.containsKey(accountAndProjectKey)){
@@ -199,6 +201,7 @@ public without sharing class PartnerCommissionHandler implements GenericBatchDML
         List<Journal_Entry__c> commissionableJournalEntries = glSelector.getCommissionableEntriesFromToday();
         Set<Object> multiMapKeys = CollectionUtil.multiMapByField(commissionableJournalEntries, Journal_Entry__c.Customer_Lookup__c).keySet();
         accountIdsFromJournalEntries = CollectionUtil.toIds(multiMapKeys);
+        new OpportunityCommissionableDateSetter(accountIdsFromJournalEntries).execute();
         upsertCommissions(accountIdsFromJournalEntries);
         return accountIdsFromJournalEntries;
     }
