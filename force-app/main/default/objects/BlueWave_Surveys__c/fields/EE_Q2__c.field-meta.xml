@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>EE_Q2__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Questions 2-14 : On a five-point scale, where 5 means strongly agree and 1 means strongly disagree, please rate your level of agreement with the following items.
+2. I know what is expected of me at work.</inlineHelpText>
+    <label>EE_Q2</label>
+    <precision>1</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

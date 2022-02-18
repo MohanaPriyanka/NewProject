@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>Glynt_Amount_Due__c</fullName>
+    <description>Amount due on utility bill processed by Glynt (e.g. Maine CMP)</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Amount due on utility bill processed by Glynt (e.g. Maine CMP)</inlineHelpText>
+    <label>Amount Due</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

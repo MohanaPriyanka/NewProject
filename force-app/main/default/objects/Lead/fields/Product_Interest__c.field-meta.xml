@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Product_Interest__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Maps product interest from website lead generation form</inlineHelpText>
+    <label>Product Interest</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        
+            <restricted>true</restricted>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>Signing up for community solar</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Signing up for community solar</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Solar for my commercial property</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Solar for my commercial property</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Financing my solar system</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Financing my solar system</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Providing solar financing</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Providing solar financing</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Selling community solar</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Selling community solar</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Community Solar services</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Community solar services</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Developing a solar farm</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Developing a solar farm</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Joining the BlueWave team</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Joining the BlueWave team</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Something else...</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Something else...</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Community Solar sales</fullName>
+                
+                    <default>false</default>
+                
+                    <isActive>false</isActive>
+                
+                    <label>Community Solar sales</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Developing Solar</fullName>
+                
+                    <default>false</default>
+                
+                    <isActive>false</isActive>
+                
+                    <label>Developing Solar</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Providing rooftop solar financing</fullName>
+                
+                    <default>false</default>
+                
+                    <isActive>false</isActive>
+                
+                    <label>Providing rooftop solar financing</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Solar for my business</fullName>
+                
+                    <default>false</default>
+                
+                    <isActive>false</isActive>
+                
+                    <label>Solar for my business</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Solar for my home</fullName>
+                
+                    <default>false</default>
+                
+                    <isActive>false</isActive>
+                
+                    <label>Solar for my home</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Solar for my land</fullName>
+                
+                    <default>false</default>
+                
+                    <isActive>false</isActive>
+                
+                    <label>Solar for my land</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Solar project development</fullName>
+                
+                    <default>false</default>
+                
+                    <isActive>false</isActive>
+                
+                    <label>Solar project development</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Something else</fullName>
+                
+                    <default>false</default>
+                
+                    <isActive>false</isActive>
+                
+                    <label>Something else</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+    <visibleLines>4</visibleLines>
+</CustomField>

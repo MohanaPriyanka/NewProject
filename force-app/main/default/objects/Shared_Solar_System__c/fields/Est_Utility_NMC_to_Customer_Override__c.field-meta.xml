@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>Est_Utility_NMC_to_Customer_Override__c</fullName>
+    <description>If this field is filled in, it will override the formula in the Est Utility NMC to Customer Date field on the shared solar system record.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>If this field is filled in, it will override the formula in the Est Utility NMC to Customer Date field on the shared solar system record.</inlineHelpText>
+    <label>Est First Credit Transfer to Customer</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

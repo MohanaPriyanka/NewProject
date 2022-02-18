@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Customer_Group__c</fullName>
+    <externalId>false</externalId>
+    <label>Customer Group</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>Residential</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Residential</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Non-Residential</fullName>
+                
+                    <default>true</default>
+                
+                    <label>Non-Residential</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Anchor</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Anchor</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Business</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Business</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

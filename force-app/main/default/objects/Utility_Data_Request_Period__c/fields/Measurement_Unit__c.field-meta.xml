@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Measurement_Unit__c</fullName>
+    <description>AJ=Adjusted Kilowatt Demand
+HH=Hundred Cubic Feet (CCF)
+K1=Kilowatt Demand/kW
+K2=Kilovolt Amperes Reactive Demand/kVAR
+K3=Kilovolt Amperes Reactive Hour/kVARh
+K4=Kilovolt Amperes/kVA
+KH=Kilowatt Hour/kWh
+TD=Therms TZ=Thousand Cubic Feet (MCF)</description>
+    <externalId>false</externalId>
+    <inlineHelpText>AJ=Adjusted Kilowatt Demand
+HH=Hundred Cubic Feet (CCF)
+K1=Kilowatt Demand/kW
+K2=Kilovolt Amperes Reactive Demand/kVAR
+K3=Kilovolt Amperes Reactive Hour/kVARh
+K4=Kilovolt Amperes/kVA
+KH=Kilowatt Hour/kWh
+TD=Therms TZ=Thousand Cubic Feet (MCF)</inlineHelpText>
+    <label>Measurement Unit</label>
+    <length>255</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

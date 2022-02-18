@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LASERCA__Request_Credit_Bureau__c</fullName>
+    <deprecated>false</deprecated>
+    <externalId>false</externalId>
+    <inlineHelpText>Select the credit Bureaus for the request. Caution, you must have access to the bureau (s) requested.</inlineHelpText>
+    <label>Request Credit Bureau</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        
+            <restricted>true</restricted>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>Experian</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Experian</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Equifax</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Equifax</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Transunion</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Transunion</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+    <visibleLines>4</visibleLines>
+</CustomField>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Customer_Subscription_KW_DC_STATIC__c</fullName>
+    <description>Customer Subscription value at point of sale. This field is not dynamic and is populated based on a workflow.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Used for billing. Populated when Opportunity Stage Name is Pending BW Signature through a process builder. Once the Opp stage is set to Complete the Opp then aggregates this instead of the dynamic.</inlineHelpText>
+    <label>XXCurrent Customer Subscription (kW DC)</label>
+    <precision>9</precision>
+    <required>false</required>
+    <scale>4</scale>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

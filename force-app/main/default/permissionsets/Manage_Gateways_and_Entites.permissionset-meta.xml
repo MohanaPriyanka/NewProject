@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    
+    <description>Gives edit and create access to Gateways and entities. Created for Accounting to manage the CS Gateway / Entity management process.</description>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.Address__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.Client_Account__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.DC_Annual_Report__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.DC_ID_Number__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.DC_Registration__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.DE_Certificate_of_Good_Standing__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.DE_File_Number__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.DE_Formation__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.DE_Taxes_Paid__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.DOS_ID__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.DUNS_Number__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.Deposit_to_Account__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.EIN_Request_Date__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.EIN__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.Email__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.Entity_Owner__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.FL_Annual_Report__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.FL_Document_Number__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.FL_Foreign_Registration__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.Latest_MA_Annual_Report__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.MA_Certificate_of_Good_Standing__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.MA_ID_Number__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.MA_Login__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.MA_Pin__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.MA_Registration__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.MD_Annual_Report__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.MD_ID_Number__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.MD_Registration__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.MN_File_Number__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.MN_Foreign_Registration__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.Merchant_Security_Key__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.NC_Annual_Report__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.NC_Certificate_of_Good_Standing__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.NC_Foreign_Registration__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.NC_SOSID__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.NJ_Annual_Report__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.NJ_ID__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.NJ_Registration__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.NY_Biennial_Report__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.NY_Foreign_Registration__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.Name_on_Deposit_Bank_Account__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.Operating_Agreement__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.Phone_Number__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.RI_Annual_Report__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.RI_Foreign_Registration__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.RI_Login__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.RI_PIN__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.SC_Certificate_of_Good_Standing__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.SC_Foreign_Registration__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <fieldPermissions>
+        
+        <editable>true</editable>
+        
+        <field>Entity__c.Send_Checks_Address__c</field>
+        
+        <readable>true</readable>
+        
+    </fieldPermissions>
+    
+    <hasActivationRequired>false</hasActivationRequired>
+    
+    <label>Manage Gateways and Entites</label>
+    
+    <objectPermissions>
+        
+        <allowCreate>true</allowCreate>
+        
+        <allowDelete>false</allowDelete>
+        
+        <allowEdit>true</allowEdit>
+        
+        <allowRead>true</allowRead>
+        
+        <modifyAllRecords>false</modifyAllRecords>
+        
+        <object>Entity__c</object>
+        
+        <viewAllRecords>true</viewAllRecords>
+        
+    </objectPermissions>
+    
+    <recordTypeVisibilities>
+        
+        <recordType>Entity__c.BWC_Business_Entity</recordType>
+        
+        <visible>true</visible>
+        
+    </recordTypeVisibilities>
+    
+    <recordTypeVisibilities>
+        
+        <recordType>Entity__c.BWC_Project_Entity</recordType>
+        
+        <visible>true</visible>
+        
+    </recordTypeVisibilities>
+    
+    <tabSettings>
+        
+        <tab>Entity__c</tab>
+        
+        <visibility>Visible</visibility>
+        
+    </tabSettings>
+    
+</PermissionSet>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Application_Source_Phase_1__c</fullName>
+    <description>This shows the phase I source in which this customer&apos;s application was processed.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This shows the phase I source in which this customer&apos;s application was processed.</inlineHelpText>
+    <label>Application Source (Phase 1)</label>
+    <length>100</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

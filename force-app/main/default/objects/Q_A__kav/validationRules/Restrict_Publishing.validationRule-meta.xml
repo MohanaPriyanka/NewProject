@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Restrict_Publishing</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND( 
+OR( 
+IsVisibleInCsp=true, 
+IsVisibleInPrm=true, 
+IsVisibleInPkb=true), 
+$User.ProfileId !=&apos;00ej0000000tMiv&apos;)</errorConditionFormula>
+    <errorMessage>You do not have permission to publish articles externally. Please contact your Salesforce Administrator.</errorMessage>
+</ValidationRule>

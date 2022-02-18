@@ -1,0 +1,866 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    
+    <actionCalls>
+        
+        <name>Copy_Addendums</name>
+        
+        <label>Copy Addendums</label>
+        
+        <locationX>50</locationX>
+        
+        <locationY>1454</locationY>
+        
+        <actionName>ClientFileCopierService</actionName>
+        
+        <actionType>apex</actionType>
+        
+        <connector>
+            
+            <targetReference>Set_Batch_Ids_Addendums</targetReference>
+            
+        </connector>
+        
+        <faultConnector>
+            
+            <isGoTo>true</isGoTo>
+            
+            <targetReference>Fault</targetReference>
+            
+        </faultConnector>
+        
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        
+        <inputParameters>
+            
+            <name>deleteExisting</name>
+            
+            <value>
+                
+                <booleanValue>false</booleanValue>
+                
+            </value>
+            
+        </inputParameters>
+        
+        <inputParameters>
+            
+            <name>documentType</name>
+            
+            <value>
+                
+                <elementReference>AddendumType</elementReference>
+                
+            </value>
+            
+        </inputParameters>
+        
+        <inputParameters>
+            
+            <name>parentSobjectId</name>
+            
+            <value>
+                
+                <elementReference>recordId</elementReference>
+                
+            </value>
+            
+        </inputParameters>
+        
+        <outputParameters>
+            
+            <assignToReference>Text_From_Copy_Addendums</assignToReference>
+            
+            <name>output</name>
+            
+        </outputParameters>
+        
+    </actionCalls>
+    
+    <actionCalls>
+        
+        <name>Copy_Agreements</name>
+        
+        <label>Copy Agreements</label>
+        
+        <locationX>50</locationX>
+        
+        <locationY>998</locationY>
+        
+        <actionName>ClientFileCopierService</actionName>
+        
+        <actionType>apex</actionType>
+        
+        <connector>
+            
+            <targetReference>Set_Batch_Ids_Agreement</targetReference>
+            
+        </connector>
+        
+        <faultConnector>
+            
+            <isGoTo>true</isGoTo>
+            
+            <targetReference>Fault</targetReference>
+            
+        </faultConnector>
+        
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        
+        <inputParameters>
+            
+            <name>deleteExisting</name>
+            
+            <value>
+                
+                <booleanValue>false</booleanValue>
+                
+            </value>
+            
+        </inputParameters>
+        
+        <inputParameters>
+            
+            <name>documentType</name>
+            
+            <value>
+                
+                <elementReference>AgreementsType</elementReference>
+                
+            </value>
+            
+        </inputParameters>
+        
+        <inputParameters>
+            
+            <name>parentSobjectId</name>
+            
+            <value>
+                
+                <elementReference>recordId</elementReference>
+                
+            </value>
+            
+        </inputParameters>
+        
+        <outputParameters>
+            
+            <assignToReference>Text_from_Copy_Agreements</assignToReference>
+            
+            <name>output</name>
+            
+        </outputParameters>
+        
+    </actionCalls>
+    
+    <actionCalls>
+        
+        <name>Copy_Disclosures</name>
+        
+        <label>Copy Disclosures</label>
+        
+        <locationX>50</locationX>
+        
+        <locationY>398</locationY>
+        
+        <actionName>ClientFileCopierService</actionName>
+        
+        <actionType>apex</actionType>
+        
+        <connector>
+            
+            <targetReference>Set_Batch_Ids</targetReference>
+            
+        </connector>
+        
+        <faultConnector>
+            
+            <targetReference>Fault</targetReference>
+            
+        </faultConnector>
+        
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        
+        <inputParameters>
+            
+            <name>deleteExisting</name>
+            
+            <value>
+                
+                <booleanValue>false</booleanValue>
+                
+            </value>
+            
+        </inputParameters>
+        
+        <inputParameters>
+            
+            <name>documentType</name>
+            
+            <value>
+                
+                <elementReference>DisclosureFormType</elementReference>
+                
+            </value>
+            
+        </inputParameters>
+        
+        <inputParameters>
+            
+            <name>parentSobjectId</name>
+            
+            <value>
+                
+                <elementReference>recordId</elementReference>
+                
+            </value>
+            
+        </inputParameters>
+        
+        <outputParameters>
+            
+            <assignToReference>Text_From_Copy_Disclosures</assignToReference>
+            
+            <name>output</name>
+            
+        </outputParameters>
+        
+    </actionCalls>
+    
+    <apiVersion>51.0</apiVersion>
+    
+    <assignments>
+        
+        <name>Set_Batch_Ids</name>
+        
+        <label>Set Batch Ids</label>
+        
+        <locationX>50</locationX>
+        
+        <locationY>518</locationY>
+        
+        <assignmentItems>
+            
+            <assignToReference>batchIds</assignToReference>
+            
+            <operator>Add</operator>
+            
+            <value>
+                
+                <elementReference>Text_From_Copy_Disclosures</elementReference>
+                
+            </value>
+            
+        </assignmentItems>
+        
+        <connector>
+            
+            <targetReference>Agreements_Selected</targetReference>
+            
+        </connector>
+        
+    </assignments>
+    
+    <assignments>
+        
+        <name>Set_Batch_Ids_Addendums</name>
+        
+        <label>Set Batch Ids</label>
+        
+        <locationX>50</locationX>
+        
+        <locationY>1574</locationY>
+        
+        <assignmentItems>
+            
+            <assignToReference>batchIds</assignToReference>
+            
+            <operator>Add</operator>
+            
+            <value>
+                
+                <elementReference>Text_From_Copy_Addendums</elementReference>
+                
+            </value>
+            
+        </assignmentItems>
+        
+        <connector>
+            
+            <targetReference>Complete_Screen</targetReference>
+            
+        </connector>
+        
+    </assignments>
+    
+    <assignments>
+        
+        <name>Set_Batch_Ids_Agreement</name>
+        
+        <label>Set Batch Ids</label>
+        
+        <locationX>50</locationX>
+        
+        <locationY>1118</locationY>
+        
+        <assignmentItems>
+            
+            <assignToReference>batchIds</assignToReference>
+            
+            <operator>Add</operator>
+            
+            <value>
+                
+                <elementReference>Text_from_Copy_Agreements</elementReference>
+                
+            </value>
+            
+        </assignmentItems>
+        
+        <connector>
+            
+            <targetReference>Addendums_Selected</targetReference>
+            
+        </connector>
+        
+    </assignments>
+    
+    <constants>
+        
+        <name>AddendumType</name>
+        
+        <dataType>String</dataType>
+        
+        <value>
+            
+            <stringValue>Customer Addendum</stringValue>
+            
+        </value>
+        
+    </constants>
+    
+    <constants>
+        
+        <name>AgreementsType</name>
+        
+        <dataType>String</dataType>
+        
+        <value>
+            
+            <stringValue>Customer Agreement</stringValue>
+            
+        </value>
+        
+    </constants>
+    
+    <constants>
+        
+        <name>CreditReportType</name>
+        
+        <dataType>String</dataType>
+        
+        <value>
+            
+            <stringValue>Customer Credit Report</stringValue>
+            
+        </value>
+        
+    </constants>
+    
+    <constants>
+        
+        <name>DisclosureFormType</name>
+        
+        <dataType>String</dataType>
+        
+        <value>
+            
+            <stringValue>Customer Disclosure Form</stringValue>
+            
+        </value>
+        
+    </constants>
+    
+    <decisions>
+        
+        <name>Addendums_Selected</name>
+        
+        <label>Addendums Selected</label>
+        
+        <locationX>314</locationX>
+        
+        <locationY>1334</locationY>
+        
+        <defaultConnector>
+            
+            <targetReference>Complete_Screen</targetReference>
+            
+        </defaultConnector>
+        
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        
+        <rules>
+            
+            <name>Addendums_Selected_Path</name>
+            
+            <conditionLogic>and</conditionLogic>
+            
+            <conditions>
+                
+                <leftValueReference>choice_Customer_Addendums</leftValueReference>
+                
+                <operator>EqualTo</operator>
+                
+                <rightValue>
+                    
+                    <booleanValue>true</booleanValue>
+                    
+                </rightValue>
+                
+            </conditions>
+            
+            <connector>
+                
+                <targetReference>Copy_Addendums</targetReference>
+                
+            </connector>
+            
+            <label>Addendums Selected</label>
+            
+        </rules>
+        
+    </decisions>
+    
+    <decisions>
+        
+        <name>Agreements_Selected</name>
+        
+        <label>Agreements Selected</label>
+        
+        <locationX>314</locationX>
+        
+        <locationY>878</locationY>
+        
+        <defaultConnector>
+            
+            <targetReference>Addendums_Selected</targetReference>
+            
+        </defaultConnector>
+        
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        
+        <rules>
+            
+            <name>Agreements_Selected_Path</name>
+            
+            <conditionLogic>and</conditionLogic>
+            
+            <conditions>
+                
+                <leftValueReference>choice_Customer_Agreements</leftValueReference>
+                
+                <operator>EqualTo</operator>
+                
+                <rightValue>
+                    
+                    <booleanValue>true</booleanValue>
+                    
+                </rightValue>
+                
+            </conditions>
+            
+            <connector>
+                
+                <targetReference>Copy_Agreements</targetReference>
+                
+            </connector>
+            
+            <label>Agreements Selected</label>
+            
+        </rules>
+        
+    </decisions>
+    
+    <decisions>
+        
+        <name>Disclosure_Decision</name>
+        
+        <label>Disclosure Decision</label>
+        
+        <locationX>314</locationX>
+        
+        <locationY>278</locationY>
+        
+        <defaultConnector>
+            
+            <targetReference>Agreements_Selected</targetReference>
+            
+        </defaultConnector>
+        
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        
+        <rules>
+            
+            <name>Disclosures_Selected</name>
+            
+            <conditionLogic>and</conditionLogic>
+            
+            <conditions>
+                
+                <leftValueReference>choice_Customer_Disclosure_Forms</leftValueReference>
+                
+                <operator>EqualTo</operator>
+                
+                <rightValue>
+                    
+                    <booleanValue>true</booleanValue>
+                    
+                </rightValue>
+                
+            </conditions>
+            
+            <connector>
+                
+                <targetReference>Copy_Disclosures</targetReference>
+                
+            </connector>
+            
+            <label>Disclosures Selected</label>
+            
+        </rules>
+        
+    </decisions>
+    
+    <description>Copies client files related to Allocation Schedule</description>
+    
+    <interviewLabel>Client File Download (Assignment Agreement) {!$Flow.CurrentDateTime}</interviewLabel>
+    
+    <label>Client File Download (Allocation Schedule)</label>
+    
+    <processMetadataValues>
+        
+        <name>BuilderType</name>
+        
+        <value>
+            
+            <stringValue>LightningFlowBuilder</stringValue>
+            
+        </value>
+        
+    </processMetadataValues>
+    
+    <processMetadataValues>
+        
+        <name>CanvasMode</name>
+        
+        <value>
+            
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+            
+        </value>
+        
+    </processMetadataValues>
+    
+    <processMetadataValues>
+        
+        <name>OriginBuilderType</name>
+        
+        <value>
+            
+            <stringValue>LightningFlowBuilder</stringValue>
+            
+        </value>
+        
+    </processMetadataValues>
+    
+    <processType>Flow</processType>
+    
+    <screens>
+        
+        <name>Complete_Screen</name>
+        
+        <label>Complete Screen</label>
+        
+        <locationX>314</locationX>
+        
+        <locationY>1790</locationY>
+        
+        <allowBack>false</allowBack>
+        
+        <allowFinish>true</allowFinish>
+        
+        <allowPause>false</allowPause>
+        
+        <fields>
+            
+            <name>LoadingResults</name>
+            
+            <extensionName>c:bluewaveBatchResult</extensionName>
+            
+            <fieldType>ComponentInstance</fieldType>
+            
+            <inputParameters>
+                
+                <name>batchIds</name>
+                
+                <value>
+                    
+                    <elementReference>batchIds</elementReference>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputParameters>
+                
+                <name>queriesSentMax</name>
+                
+                <value>
+                    
+                    <numberValue>50.0</numberValue>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputParameters>
+                
+                <name>successMessage</name>
+                
+                <value>
+                    
+                    <stringValue>Client files are ready for download. You may close this window.</stringValue>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            
+            <isRequired>true</isRequired>
+            
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+            
+        </fields>
+        
+        <showFooter>true</showFooter>
+        
+        <showHeader>true</showHeader>
+        
+    </screens>
+    
+    <screens>
+        
+        <name>Fault</name>
+        
+        <label>Fault</label>
+        
+        <locationX>314</locationX>
+        
+        <locationY>518</locationY>
+        
+        <allowBack>true</allowBack>
+        
+        <allowFinish>true</allowFinish>
+        
+        <allowPause>true</allowPause>
+        
+        <fields>
+            
+            <name>fault_text</name>
+            
+            <fieldText>&lt;pre class=&quot;ql-syntax&quot; spellcheck=&quot;false&quot;&gt;{!$Flow.FaultMessage}
+&lt;/pre&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            
+            <fieldType>DisplayText</fieldType>
+            
+        </fields>
+        
+        <showFooter>true</showFooter>
+        
+        <showHeader>true</showHeader>
+        
+    </screens>
+    
+    <screens>
+        
+        <name>Type_Selection</name>
+        
+        <label>Type Selection</label>
+        
+        <locationX>314</locationX>
+        
+        <locationY>158</locationY>
+        
+        <allowBack>false</allowBack>
+        
+        <allowFinish>true</allowFinish>
+        
+        <allowPause>false</allowPause>
+        
+        <connector>
+            
+            <targetReference>Disclosure_Decision</targetReference>
+            
+        </connector>
+        
+        <fields>
+            
+            <name>TypeSelectionText</name>
+            
+            <fieldText>&lt;p&gt;&lt;b style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;Please select which documents related to this Allocation Schedule you would like to copy:&lt;/b&gt;&lt;/p&gt;</fieldText>
+            
+            <fieldType>DisplayText</fieldType>
+            
+        </fields>
+        
+        <fields>
+            
+            <name>choice_Customer_Agreements</name>
+            
+            <dataType>Boolean</dataType>
+            
+            <fieldText>Customer Agreements</fieldText>
+            
+            <fieldType>InputField</fieldType>
+            
+            <isRequired>true</isRequired>
+            
+        </fields>
+        
+        <fields>
+            
+            <name>choice_Customer_Disclosure_Forms</name>
+            
+            <dataType>Boolean</dataType>
+            
+            <fieldText>Customer Disclosure Forms</fieldText>
+            
+            <fieldType>InputField</fieldType>
+            
+            <isRequired>true</isRequired>
+            
+        </fields>
+        
+        <fields>
+            
+            <name>choice_Customer_Addendums</name>
+            
+            <dataType>Boolean</dataType>
+            
+            <fieldText>Customer Addendums</fieldText>
+            
+            <fieldType>InputField</fieldType>
+            
+            <isRequired>true</isRequired>
+            
+        </fields>
+        
+        <showFooter>true</showFooter>
+        
+        <showHeader>true</showHeader>
+        
+    </screens>
+    
+    <start>
+        
+        <locationX>188</locationX>
+        
+        <locationY>0</locationY>
+        
+        <connector>
+            
+            <targetReference>Type_Selection</targetReference>
+            
+        </connector>
+        
+    </start>
+    
+    <status>Active</status>
+    
+    <variables>
+        
+        <name>batchIds</name>
+        
+        <dataType>String</dataType>
+        
+        <isCollection>true</isCollection>
+        
+        <isInput>false</isInput>
+        
+        <isOutput>false</isOutput>
+        
+    </variables>
+    
+    <variables>
+        
+        <name>recordId</name>
+        
+        <dataType>String</dataType>
+        
+        <isCollection>false</isCollection>
+        
+        <isInput>true</isInput>
+        
+        <isOutput>true</isOutput>
+        
+    </variables>
+    
+    <variables>
+        
+        <name>Text_From_Copy_Addendums</name>
+        
+        <dataType>String</dataType>
+        
+        <isCollection>false</isCollection>
+        
+        <isInput>false</isInput>
+        
+        <isOutput>false</isOutput>
+        
+    </variables>
+    
+    <variables>
+        
+        <name>Text_from_Copy_Agreements</name>
+        
+        <dataType>String</dataType>
+        
+        <isCollection>false</isCollection>
+        
+        <isInput>false</isInput>
+        
+        <isOutput>false</isOutput>
+        
+    </variables>
+    
+    <variables>
+        
+        <name>Text_From_Copy_Disclosures</name>
+        
+        <dataType>String</dataType>
+        
+        <isCollection>false</isCollection>
+        
+        <isInput>false</isInput>
+        
+        <isOutput>false</isOutput>
+        
+    </variables>
+    
+    <variables>
+        
+        <name>Text_from_Credit_Report</name>
+        
+        <dataType>String</dataType>
+        
+        <isCollection>false</isCollection>
+        
+        <isInput>false</isInput>
+        
+        <isOutput>false</isOutput>
+        
+    </variables>
+    
+</Flow>

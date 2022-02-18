@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__External_Id__c</fullName>
+    <caseSensitive>true</caseSensitive>
+    <deprecated>false</deprecated>
+    <description>This field holds the Zuora object ID, and is used as external ID for data synchronization between Salesforce and Zuora.</description>
+    <externalId>true</externalId>
+    <inlineHelpText>This field holds the Zuora object ID, and is used as external ID for data synchronization between Salesforce and Zuora.</inlineHelpText>
+    <label>External Id</label>
+    <length>255</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>true</unique>
+</CustomField>

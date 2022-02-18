@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>UAL_Is_Required</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND (ISNEW(), ISBLANK( Utility_Account_Log__c ))</errorConditionFormula>
+    <errorDisplayField>Utility_Account_Log__c</errorDisplayField>
+    <errorMessage>A Utility Account Log is required to process the UDR when complete.</errorMessage>
+</ValidationRule>

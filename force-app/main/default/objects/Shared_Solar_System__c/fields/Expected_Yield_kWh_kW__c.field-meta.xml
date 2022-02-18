@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>Expected_Yield_kWh_kW__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>How much energy (kWh) is produced for every kW of project capacity. If yield increases, every kW of the project will produce more energy, and need more CS offtakers to use that capacity</inlineHelpText>
+    <label>Expected Yield (kWh/kW)</label>
+    <precision>12</precision>
+    <required>false</required>
+    <scale>4</scale>
+    <trackFeedHistory>true</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

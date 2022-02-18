@@ -1,0 +1,2001 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ReportType xmlns="http://soap.sforce.com/2006/04/metadata">
+    
+    <baseObject>Utility_Account_Subscription__c</baseObject>
+    
+    <category>other</category>
+    
+    <deployed>true</deployed>
+    
+    <description>Utility Account Subscriptions Report Type</description>
+    
+    <label>Utility Account Subscriptions (Custom)</label>
+    
+    <sections>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Subscribed_Annual_Cost_of_Electricity__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Auto_Unround__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>calculated_annual_cost_of_electricity__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Calculated_Customer_Subscription_kW_DC__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Calculated_NMC_Alloaction_kWh__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>CreatedBy</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>CreatedDate</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Customer_Subscription_KW_DC_STATIC__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Share_of_System__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Annual_Cost_of_Electricity__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Full_Anticipated_NMC_Allocation_kWh__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Customer_Subscription_KW_DC__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>LastModifiedBy</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>LastModifiedDate</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Maximum_Annual_Cost__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Maximum_NMC_Allocation__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Max_Subscription_Capacity__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Name_on_Account__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Unlock_Password__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Net_Metering_Credit_Rate__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Subscribed_NMC_Allocation_kWh__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Partner__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Annual_Cost_Future_Rollup__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Name_on_Account_From_Log__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Shared_Solar_System_Name__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Utility__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Annual_kWh_Subscription_Future_Rollup__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Most_Recent_Enacted_ALSS__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>SSS_Id__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Future_Share_of_System_Rollup__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Project_Co_Assignment_Date__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Trigger_Tester__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Next_Schedule_Z_Status__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Conga_Future_Share__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Customer_Group__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>UAS_Number__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Shared_Solar_System__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Future_Share_of_System__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Conga_Current_Share__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity_Stage__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Update_Dummy__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Entity_Assignment__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Service_Address_From_Log__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Utility_Account_Log__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>RecordType</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Custom_Deduction_Order__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>true</checkedByDefault>
+            
+            <field>Name</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Id</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Date_Removed_from_Project__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Finaled__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Project_Company__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.NMC_Tariff__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.NMC_Tariff__c.Value_of_Net_Metering_Credit__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Account.Id</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Account.Name</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Annual_kWh_Subscription_Current__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Annual_kwh_subscription_future__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Annual_Cost_of_Electricity_Current__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Subscription_Comment_c__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Subscription_Type__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Transferring_Subsc_to_Another_UAS__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Reason_for_Cancellation__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Sizing_Method__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Date_Client_Invoice_Sent__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Utility_Account_Log__c.Premise_Number__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Id</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Account.Account_Number__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Utility_Account_Log__c.Id</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Utility_Account_Log__c.Account__c.Date_Cancellation_Email_Sent__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Customer_Group__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Utility_Account_Log__c.Annual_Cost_of_Electricity__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Utility_Account_Log__c.Subscribed_Annual_Cost_of_Electricity__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Utility_Account_Log__c.Subscribed_Annual_kWhs__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Comments__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Contact_Email__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Contact_Name__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Parent_Account__c.Additional_Contact__c.Contatct_ID_18_digit__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Shared_Solar_System__c.Client_Account__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Account.Send_Bills_Contact__c.Contatct_ID_18_digit__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Shared_Solar_System__c.Project_Location_and_Customer_Allocation__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.CloseDate</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Contract_Close_Date__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.System_Size__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Shared_Solar_System__c.Total_CS_Capacity__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Shared_Solar_System__c.Total_CS_Capacity_kW_DC_Formula__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Shared_Solar_System__c.Total_System_Size_kWh_DC__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Utility_Account_Log__c.Account__c.Send_Bills_Contact__c.Email</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Utility_Account_Log__c.Account__c.Send_Bills_Contact__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Shared_Solar_System__c.Estimated_COD_Date_Manual__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Shared_Solar_System__c.Name</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Shared_Solar_System__c.Address__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Shared_Solar_System__c.City__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Shared_Solar_System__c.State__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Shared_Solar_System__c.Zip_Code__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Personal_Credit_Report2__c.LASERCA__Credit_Score__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Personal_Credit_Report2__c.Id</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Account.Cancellation_Request_Date__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Account.Cancellation_Reason__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Account.Cancellation_Fees_Paid__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Account.Cancellation_Comments__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Account.Cancellation_Explanation__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Account.Cancellation_Fees_Invoiced__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Utility_Account_Log__c.Date_Utility_Account_Cancelled__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Account.Count_of_CS_Opportunities__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Account.Status__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Account.Last_Bill_Send_Date__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Account.Last_Bill_Send_Date_New_Charges__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Account.Power_of_One__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Utility_Account_Log__c.Account__c.Parent</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Utility_Account_Log__c.Account__c.Parent_Account__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Utility_Account_Log__c.Account__c.Parent_Account_Name__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Product__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Product_Line__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Account.BillingAddress</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Account.BillingCity</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Account.BillingCountryCode</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Account.BillingStateCode</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Account.BillingStreet</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Account.BillingPostalCode</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Utility_Account_Log__c.Utility_lookup__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Utility_Account_Log__c.Service_Address__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Utility_Account_Log__c.Service_City__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Utility_Account_Log__c.Service_Zip_Code__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Utility_Account_Log__c.Annual_kWh__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Customer_Phone__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Email__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Product__c.NMC_Discount__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.LoadZone__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Utility_Account_Log__c.Lead__c.Personal_Credit_Report__c.LASERCA__Credit_Score__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>kW_Allocation__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Utility_Account_Log__c.Utility_Rate_Class__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Most_Recent_Enacted_ALSS__c.Percent_Share__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Most_Recent_Enacted_ALSS__c.kW_Allocation__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Most_Recent_Enacted_ALSS__c.Schedule_Z__c.Date_Enacted_by_Utility__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Most_Recent_Enacted_ALSS__c.Schedule_Z__c.Date_Replaced_with_Newly_Enacted_Sch_Z__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Utility_Account_Log__c.Account__c.Send_Bills_Contact__c.FirstName</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Personal_Credit_Report2__c.Credit_Score_Integer__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Shared_Solar_System__c.BWC_Project_Entity_Manual__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Account.Recurring_Billing__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Personal_Credit_Report2__c.LASERCA__Credit_Score_TransUnion__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Personal_Credit_Report2__c.LASERCA__Credit_Score_Median__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Partner_Email__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Partner_tag2__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.PartnerAccount</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.CreatedDate</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Utility_Account_Log__c.Service_State__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Account</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Account.First_CS_Bill_Date__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Shared_Solar_System__c.Product__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Shared_Solar_System__c.Product__c.Name</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Shared_Solar_System__c.Stage__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Shared_Solar_System__c.Waitlist__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Shared_Solar_System__c.Waitlist__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Shared_Solar_System__c.Stage__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Utility_Account_Log__c.Account__c.Account_Temperature__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Account.Account_Temperature__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Default_Payment_Method_Type__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Assignment_Agreement__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Assignment_Agreement__c.Account</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Assignment_Agreement__c.Account.Name</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Assignment_Agreement__c.Status</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Assignment_Agreement__c.CustomerSignedDate</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Assignment_Agreement__c.CompanySignedDate</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Assignment_Agreement__c.Date_Invoiced__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Assignment_Agreement__c.Name</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Assigned_to_Client__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Assignment_Agreement__c.ContractNumber</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Assignment_Agreement__c.CreatedDate</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Assignment_Agreement__c.CreatedBy</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Shared_Solar_System__c.System_Utility__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Shared_Solar_System__c.Utility__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Shared_Solar_System__c.Utility__c.Name</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Utility_Account_Log__c.RNY__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Utility_Account_Log__c.NYPA__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Sizing_Method__c.Size_Ratio__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Utility_Account_Log__c.Comments_About_Sizings__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Lead__c.Underwriting_Criteria__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Shared_Solar_System__c.Actual_PTO_Date_MANUAL__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Shared_Solar_System__c.Client_Account__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Shared_Solar_System__c.Client_Account__c.Client_Brand_Key__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Account.Date_Cancellation_Email_Sent__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Contract.Assignment_Agreement__c.Assignment_Agreement__c.ContractNumber</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Contract.Assignment_Agreement__c.Assignment_Agreement__c.Name</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Contract.Assignment_Agreement__c.Assignment_Agreement__c.Status</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Contract.Assignment_Agreement__c.Assignment_Agreement__c.Account</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Contract.Assignment_Agreement__c.Assignment_Agreement__c.BlueWave_Entity__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Contract</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Contract.Assignment_Agreement__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Contract.ContractNumber</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Shared_Solar_System__c.Name</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Shared_Solar_System_Name__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Shared_Solar_System__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Account.Zuora_Id__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.CS_Capacity_Allocated__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.Cancellation_Request_Date__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Opportunity__c.StageName</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <columns>
+            
+            <checkedByDefault>false</checkedByDefault>
+            
+            <field>Utility_Account_Log__c.Name_on_Account__c</field>
+            
+            <table>Utility_Account_Subscription__c</table>
+            
+        </columns>
+        
+        <masterLabel>Utility Account Subscriptions</masterLabel>
+        
+    </sections>
+    
+</ReportType>

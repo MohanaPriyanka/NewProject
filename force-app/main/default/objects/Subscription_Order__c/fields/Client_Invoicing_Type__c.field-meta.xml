@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Client_Invoicing_Type__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF( Utility_Account_Subscription__r.Shared_Solar_System__r.Waitlist__c, &quot;Waitlist&quot;,
+    IF( 
+        AND(
+            ISBLANK(Utility_Account_Subscription__r.Opportunity__r.Contract.Assignment_Agreement__c ),  
+            ISBLANK(Client_Assignment_Agreement__c )
+        )
+        ||
+        (AND(
+            NOT(ISBLANK(Utility_Account_Subscription__r.Opportunity__r.Contract.Assignment_Agreement__c )),  
+            NOT(ISBLANK(Client_Assignment_Agreement__c ))
+            )
+        ),
+        CASE(
+            TEXT(Type__c),
+            &quot;Initial&quot;, &quot;Initial&quot;,
+            &quot;Resize&quot;, &quot;Initial&quot;,
+            &quot;Transfer&quot;,&quot;Initial&quot;,
+            &quot;Shared Solar System Update&quot;,&quot;Shared Solar System Update&quot;,
+            &quot;Cancellation&quot;,&quot;Cancellation&quot;,
+            &quot;Error&quot;
+        ),
+        IF(
+            AND(
+                NOT(ISBLANK(Utility_Account_Subscription__r.Opportunity__r.Contract.Assignment_Agreement__c )),  
+                ISBLANK(Client_Assignment_Agreement__c )
+                )
+            ,
+            CASE(
+                TEXT(Type__c),
+                &quot;Initial&quot;, &quot;Resize&quot;,
+                &quot;Resize&quot;, &quot;Resize&quot;,
+                &quot;Transfer&quot;,&quot;Transfer&quot;,
+                &quot;Shared Solar System Update&quot;,&quot;Shared Solar System Update&quot;,
+                &quot;Cancellation&quot;,&quot;Cancellation&quot;,
+                &quot;Error&quot;
+            ),
+            &quot;Error&quot;
+        )
+    )
+)</formula>
+    <inlineHelpText>How the SO is used for client invoicing. Based on the Type, Assignment Agreement and Customer Contract Assignment Agreement, and SSS Waitlist fields</inlineHelpText>
+    <label>Client Invoicing Type</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

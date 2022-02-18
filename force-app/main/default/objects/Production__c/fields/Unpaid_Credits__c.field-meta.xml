@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Unpaid_Credits__c</fullName>
+    <externalId>false</externalId>
+    <formula>Credits_Billed__c - Credits_Paid__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Unpaid Credits. Credits Billed - Credits Paid. Billed amounts that have not yet been paid</inlineHelpText>
+    <label>Uncollected</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

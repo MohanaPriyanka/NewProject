@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__Status__c</fullName>
+    <deprecated>false</deprecated>
+    <description>The status of the payment in the Zuora system. The value depends on the type of payment.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The status of the payment in the Zuora system. The value depends on the type of payment.</inlineHelpText>
+    <label>Status</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>Canceled</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Canceled</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Error</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Error</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Processing</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Processing</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Processed</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Processed</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Posted</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Posted</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Voided</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Voided</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Cancelled</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Cancelled</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

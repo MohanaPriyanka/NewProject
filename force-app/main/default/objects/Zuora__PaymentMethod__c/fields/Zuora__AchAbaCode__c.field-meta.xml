@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__AchAbaCode__c</fullName>
+    <deprecated>false</deprecated>
+    <description>This is the nine-digit routing number or ABA number used by banks.
+This field is required only when defining an ACH payment method.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This is the nine-digit routing number or ABA number used by banks.
+This field is required only when defining an ACH payment method.</inlineHelpText>
+    <label>Ach Aba Code</label>
+    <length>9</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

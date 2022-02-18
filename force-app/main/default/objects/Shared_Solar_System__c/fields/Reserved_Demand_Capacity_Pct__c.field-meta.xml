@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>Reserved_Demand_Capacity_Pct__c</fullName>
+    <description>W-023397</description>
+    <externalId>false</externalId>
+    <formula>Reserved_Demand_Capacity__c / Total_System_Size_kWh_DC__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Reserved Demand Capacity / Total System Size, used for information only. Typically this should not exceed 40%. Change the Reserved Demand Capacity value or the Total System Size to change this percentage.</inlineHelpText>
+    <label>Reserved Demand Capacity %</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Percent</type>
+</CustomField>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Required_Commission_Structure</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+ISBLANK( Commission_Structure__c ), 
+NOT( Partner_Name__c = &apos;BlueWave Inside Sales&apos;),
+NOT( Partner_Name__c = &apos;BlueWave Test Partner&apos;),
+NOT( Partner_Name__c = &apos;Perch Inside Sales&apos;),
+NOT( Partner_Name__c = &apos;Perch Test Partner&apos;),
+NOT( Partner_Name__c = &apos;Placeholder Partner&apos;),
+NOT( $Profile.Name = &apos;System Administrator&apos;)
+)</errorConditionFormula>
+    <errorMessage>Commission Structure is required.</errorMessage>
+</ValidationRule>

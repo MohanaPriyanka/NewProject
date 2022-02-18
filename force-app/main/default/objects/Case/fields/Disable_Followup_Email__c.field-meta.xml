@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Disable_Followup_Email__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Checking this box will stop the automated email that goes out when a customer care or partner support case is closed that contains the survey.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Checking this box will stop the automated email that goes out when a customer care or partner support case is closed that contains the survey.</inlineHelpText>
+    <label>Disable Followup Email</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

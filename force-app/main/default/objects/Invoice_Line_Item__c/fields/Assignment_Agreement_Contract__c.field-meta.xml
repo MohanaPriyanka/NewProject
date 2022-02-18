@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Assignment_Agreement_Contract__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
+    <inlineHelpText>Assignment Agreement, set by the Generate Invoice flow, if this Invoice Line Item is applicable to an assignment.</inlineHelpText>
+    <label>Assignment Agreement Contract</label>
+    <referenceTo>Contract</referenceTo>
+    <relationshipLabel>Invoice Line Items</relationshipLabel>
+    <relationshipName>Invoice_Line_Items</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

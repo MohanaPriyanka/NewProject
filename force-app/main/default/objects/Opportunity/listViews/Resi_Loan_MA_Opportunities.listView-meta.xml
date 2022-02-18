@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Resi_Loan_MA_Opportunities</fullName>
+    <columns>OPPORTUNITY.CREATED_DATE</columns>
+    <columns>Contract_Close_Date__c</columns>
+    <columns>OPPORTUNITY.CLOSE_DATE</columns>
+    <columns>OPPORTUNITY.NAME</columns>
+    <columns>OPPORTUNITY.STAGE_NAME</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>Partner_tag2__c</columns>
+    <columns>Comments__c</columns>
+    <columns>Application_Type__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        
+            <field>State__c</field>
+        
+            <operation>equals</operation>
+        
+            <value>Massachusetts</value>
+        
+        </filters>
+    <filters>
+        
+            <field>Product_Line__c</field>
+        
+            <operation>equals</operation>
+        
+            <value>Residential Loan</value>
+        
+        </filters>
+    <filters>
+        
+            <field>OPPORTUNITY.NAME</field>
+        
+            <operation>notContain</operation>
+        
+            <value>Testcase,testcase,TEstcase</value>
+        
+        </filters>
+    <label>Resi Loan - MA Opportunities</label>
+    <sharedTo>
+        
+            <group>BFG</group>
+        
+            <group>BWC</group>
+        
+            <group>BWCMA_Executive_Team</group>
+        
+        </sharedTo>
+</ListView>

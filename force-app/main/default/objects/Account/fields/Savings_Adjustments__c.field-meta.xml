@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Savings_Adjustments__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Rollup summary of savings from adjustments linked to this account</inlineHelpText>
+    <label>Savings Adjustments</label>
+    <summarizedField>Bill_Adjustment__c.Discount__c</summarizedField>
+    <summaryForeignKey>Bill_Adjustment__c.Account__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <type>Summary</type>
+</CustomField>

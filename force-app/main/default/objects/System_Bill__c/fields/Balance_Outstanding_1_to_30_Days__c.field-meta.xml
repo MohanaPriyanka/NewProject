@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Balance_Outstanding_1_to_30_Days__c</fullName>
+    <description>For AR Aging Report.</description>
+    <externalId>false</externalId>
+    <formula>IF(AND(Days_Past_Due__c&gt;0,Days_Past_Due__c&lt;31),Total_Balance_Net_Late_Payments__c ,0)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>For AR Aging Report.</inlineHelpText>
+    <label>Balance Outstanding 1 to 30 Days</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

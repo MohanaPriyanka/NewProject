@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Partner_Update_Report</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <hasMenubar>false</hasMenubar>
+    <hasScrollbars>true</hasScrollbars>
+    <hasToolbar>false</hasToolbar>
+    <height>600</height>
+    <isResizable>true</isResizable>
+    <linkType>url</linkType>
+    <masterLabel>Partner Update Report</masterLabel>
+    <openType>newWindow</openType>
+    <position>none</position>
+    <protected>false</protected>
+    <showsLocation>false</showsLocation>
+    <showsStatus>false</showsStatus>
+    <url>/apex/APXTConga4__Conga_Composer?serverUrl={!API.Partner_Server_URL_370}&amp;id={!Partner__c.Id}
+&amp;QueryId=[QC]a270a000001dI6z,[Opps]a270a000001EiFY, [DQLead]a270a000001EkT5, [Referrals]a270a000001EpbL, [Expired]a270a000000N74w, [Complete]a270a000000N75f
+&amp;TemplateId=a2F0a000001ZXvg
+&amp;EmailCC={!Partner__c.Additional_CC_Email__c}
+&amp;emailfromid=0D20a000000PBPX</url>
+</WebLink>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>Update_Capacity_Report</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <height>600</height>
+    <linkType>url</linkType>
+    <masterLabel>Update Capacity Report</masterLabel>
+    <openType>sidebar</openType>
+    <protected>false</protected>
+    <url>&quot;/00Oj00000048bbR?pv0={!Shared_Solar_System__c.Name}</url>
+</WebLink>

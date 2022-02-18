@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>UAB_Cannot_Be_Edited_After_Published</fullName>
+    <active>true</active>
+    <description>The only time UABs should be edited is when bills are run, after they are sent out we should not allow them to be edited.</description>
+    <errorConditionFormula>Account_Bill__r.Published__c = TRUE</errorConditionFormula>
+    <errorMessage>UAB cannot be edited after bill is marked as Published</errorMessage>
+</ValidationRule>

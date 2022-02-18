@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Contract__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
+    <inlineHelpText>The Client Contract related to the Shared Solar System. Required to be a Contract with the Client Contract record type.</inlineHelpText>
+    <label>Contract</label>
+    <lookupFilter>
+        
+            <active>true</active>
+        
+            <errorMessage>The Contract needs to be a Client Contract record type</errorMessage>
+        
+            <filterItems>
+            
+                <field>Contract.RecordType.Name</field>
+            
+                <operation>equals</operation>
+            
+                <value>Client Contract</value>
+            
+            </filterItems>
+        
+            <isOptional>false</isOptional>
+        
+        </lookupFilter>
+    <referenceTo>Contract</referenceTo>
+    <relationshipName>Client_Contract_Junctions</relationshipName>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

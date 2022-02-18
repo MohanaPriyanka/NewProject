@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cancellation_Paragraph_Three__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>CSCancellationService pulls into the cancellation confirmation email when the customer cancels. Intended to have termination language, and can be left blank. If not blank, the email template assumes the text starts and ends with &lt;br&gt; and &lt;/br&gt;.</inlineHelpText>
+    <label>Cancellation Paragraph Three</label>
+    <length>32768</length>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

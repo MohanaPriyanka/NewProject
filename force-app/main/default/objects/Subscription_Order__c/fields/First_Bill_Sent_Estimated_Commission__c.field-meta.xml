@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>First_Bill_Sent_Estimated_Commission__c</fullName>
+    <externalId>false</externalId>
+    <formula>CASE(Utility_Account_Subscription__r.Opportunity__r.Commission_Structure__r.Type__c,
+ &quot;Variable by kW&quot;, 
+  Utility_Account_Subscription__r.Opportunity__r.Commission_Structure__r.Cents_kW_DC_First_Bill__c * 1000 * Approved_Change_in_Subscription__c,
+ &quot;Fixed by Annual kWh&quot;,
+  IF(ISPICKVAL(Type__c, &quot;Initial&quot;), 0, 0),
+ 0
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Estimated Commission owed to partner on First Bill Sent based on Approved Change in Subscription and Commission Rate specified on deal Commission Structure</inlineHelpText>
+    <label>First Bill Sent Estimated Commission</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

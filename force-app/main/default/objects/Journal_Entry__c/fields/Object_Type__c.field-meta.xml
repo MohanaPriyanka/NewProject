@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Object_Type__c</fullName>
+    <externalId>false</externalId>
+    <label>Object Type</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <restricted>true</restricted>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>InvoiceItem</fullName>
+                
+                    <default>false</default>
+                
+                    <label>InvoiceItem</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>CreditMemo</fullName>
+                
+                    <default>false</default>
+                
+                    <label>CreditMemo</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>DebitMemo</fullName>
+                
+                    <default>false</default>
+                
+                    <label>DebitMemo</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>PaymentPart</fullName>
+                
+                    <default>false</default>
+                
+                    <label>PaymentPart</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

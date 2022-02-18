@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IX_Application_Receipt_Confirmed__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Enter date IX Application Receipt is confirmed</inlineHelpText>
+    <label>IX Application Receipt Confirmed</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

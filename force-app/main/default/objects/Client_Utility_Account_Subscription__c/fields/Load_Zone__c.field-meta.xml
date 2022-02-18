@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Load_Zone__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF( INCLUDES(Utility_Account_Subscription__r.Shared_Solar_System__r.Service_Territories__c , &quot;NEMA&quot;), &quot;NEMA; &quot;,&quot;&quot;)
+&amp;
+IF( INCLUDES(Utility_Account_Subscription__r.Shared_Solar_System__r.Service_Territories__c , &quot;SEMA&quot;), &quot;SEMA; &quot;,&quot;&quot;)
+&amp;
+IF( INCLUDES(Utility_Account_Subscription__r.Shared_Solar_System__r.Service_Territories__c , &quot;WCMA&quot;), &quot;WCMA; &quot;,&quot;&quot;)
+&amp;
+IF( INCLUDES(Utility_Account_Subscription__r.Shared_Solar_System__r.Service_Territories__c , &quot;MN&quot;), &quot;MN; &quot;,&quot;&quot;)
+&amp;
+IF( INCLUDES(Utility_Account_Subscription__r.Shared_Solar_System__r.Service_Territories__c , &quot;Capital&quot;), &quot;Capital; &quot;,&quot;&quot;)
+&amp;
+IF( INCLUDES(Utility_Account_Subscription__r.Shared_Solar_System__r.Service_Territories__c , &quot;Hudson Valley&quot;), &quot;Hudson Valley; &quot;,&quot;&quot;)
+&amp;
+IF( INCLUDES(Utility_Account_Subscription__r.Shared_Solar_System__r.Service_Territories__c , &quot;Mohawk Valley&quot;), &quot;Mohawk Valley; &quot;,&quot;&quot;)
+&amp;
+IF( INCLUDES(Utility_Account_Subscription__r.Shared_Solar_System__r.Service_Territories__c , &quot;Central&quot;), &quot;Central; &quot;,&quot;&quot;)
+&amp;
+IF( INCLUDES(Utility_Account_Subscription__r.Shared_Solar_System__r.Service_Territories__c , &quot;Genesee&quot;), &quot;Genesee; &quot;,&quot;&quot;)
+&amp;
+IF( INCLUDES(Utility_Account_Subscription__r.Shared_Solar_System__r.Service_Territories__c , &quot;Dunwoodie&quot;), &quot;Dunwoodie; &quot;,&quot;&quot;)
+&amp;
+IF( INCLUDES(Utility_Account_Subscription__r.Shared_Solar_System__r.Service_Territories__c , &quot;N.Y.C&quot;), &quot;N.Y.C; &quot;,&quot;&quot;)
+&amp;
+IF( INCLUDES(Utility_Account_Subscription__r.Shared_Solar_System__r.Service_Territories__c , &quot;Millwood&quot;), &quot;Millwood; &quot;,&quot;&quot;)
+&amp;
+IF( INCLUDES(Utility_Account_Subscription__r.Shared_Solar_System__r.Service_Territories__c , &quot;Long Island&quot;), &quot;Long Island; &quot;,&quot;&quot;)
+&amp;
+IF( INCLUDES(Utility_Account_Subscription__r.Shared_Solar_System__r.Service_Territories__c , &quot;North&quot;), &quot;North; &quot;,&quot;&quot;)
+&amp;
+IF( INCLUDES(Utility_Account_Subscription__r.Shared_Solar_System__r.Service_Territories__c , &quot;West&quot;), &quot;West; &quot;,&quot;&quot;)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Load Zone</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

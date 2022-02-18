@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cannot_Update_Address_to_Blank</fullName>
+    <active>true</active>
+    <errorConditionFormula>OR(
+AND(ISCHANGED(BillingCity),OR(ISBLANK(BillingCity),ISNULL(BillingCity))),
+AND(ISCHANGED( BillingState ),OR(ISBLANK(BillingState ),ISNULL(BillingState))),
+AND(ISCHANGED(BillingStreet ),OR(ISBLANK(BillingStreet ),ISNULL(BillingStreet ))),
+AND(ISCHANGED(BillingPostalCode ),OR(ISBLANK(BillingPostalCode),ISNULL(BillingPostalCode)))
+)</errorConditionFormula>
+    <errorMessage>Account address cannot be updated to blank</errorMessage>
+</ValidationRule>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>kWDC_Offtake__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Latest best estimate on Opportunity size in kWDC (kWh x %offset / solar yield)</inlineHelpText>
+    <label>kWDC Offtake</label>
+    <precision>17</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

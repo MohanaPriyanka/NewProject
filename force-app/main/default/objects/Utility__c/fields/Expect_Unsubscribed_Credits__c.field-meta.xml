@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Expect_Unsubscribed_Credits__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>When this field is set to true, the Transfer Data Entry Flow will direct the user to create unsubscribed transfer records</description>
+    <externalId>false</externalId>
+    <inlineHelpText>When this field is set to true, the Transfer Data Entry Flow will direct the user to create unsubscribed transfer records</inlineHelpText>
+    <label>Expect Unsubscribed Credits</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

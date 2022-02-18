@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Utility__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>The utility that the rate class is for.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The utility that the rate class is for.</inlineHelpText>
+    <label>Utility</label>
+    <referenceTo>Utility__c</referenceTo>
+    <relationshipLabel>Rate Classes</relationshipLabel>
+    <relationshipName>Rate_Classes</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

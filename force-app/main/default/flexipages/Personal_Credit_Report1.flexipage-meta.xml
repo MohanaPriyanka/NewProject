@@ -1,0 +1,2523 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FlexiPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    
+    <flexiPageRegions>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>collapsed</name>
+                    
+                    <value>false</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>enableActionsConfiguration</name>
+                    
+                    <value>false</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>hideChatterActions</name>
+                    
+                    <value>false</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>numVisibleActions</name>
+                    
+                    <value>3</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>force:highlightsPanel</componentName>
+                
+                <identifier>force_highlightsPanel</identifier>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <name>header</name>
+        
+        <type>Region</type>
+        
+    </flexiPageRegions>
+    
+    <flexiPageRegions>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldItem>Record.LASERCA__Credit_Score__c</fieldItem>
+                
+                <identifier>RecordLASERCA_Credit_Score_cField1</identifier>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>required</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.Name</fieldItem>
+                
+                <identifier>RecordNameField</identifier>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>none</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.LASERCA__Credit_Report_First_Issued_Date__c</fieldItem>
+                
+                <identifier>RecordLASERCA__Credit_Report_First_Issued_Date__cField</identifier>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>none</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.LASERCA__File_Number__c</fieldItem>
+                
+                <identifier>RecordLASERCA__File_Number__cField</identifier>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>none</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.LASERCA__Oldest_Trade_Line__c</fieldItem>
+                
+                <identifier>RecordLASERCA__Oldest_Trade_Line__cField</identifier>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>none</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.LASERCA__Inquiry_Count__c</fieldItem>
+                
+                <identifier>RecordLASERCA__Inquiry_Count__cField</identifier>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldItem>Record.LASERCA__Experian_Indicator__c</fieldItem>
+                
+                <identifier>RecordLASERCA_Experian_Indicator_cField1</identifier>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <name>Facet-28e1c08e-72be-4652-a108-9349b2cdc7f2</name>
+        
+        <type>Facet</type>
+        
+    </flexiPageRegions>
+    
+    <flexiPageRegions>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>none</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.LASERCA__Date_of_Credit_Report__c</fieldItem>
+                
+                <identifier>RecordLASERCA__Date_of_Credit_Report__cField</identifier>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldItem>Record.LASERCA__Date_of_Birth__c</fieldItem>
+                
+                <identifier>RecordLASERCA__Date_of_Birth__cField</identifier>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>none</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.LASERCA__Ranking__c</fieldItem>
+                
+                <identifier>RecordLASERCA__Ranking__cField</identifier>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldItem>Record.LASERCA__Credit_Score_Median__c</fieldItem>
+                
+                <identifier>RecordLASERCA__Credit_Score_Median__cField</identifier>
+                
+                <visibilityRule>
+                    
+                    <booleanFilter>1 AND 2 AND 3</booleanFilter>
+                    
+                    <criteria>
+                        
+                        <leftValue>{!Record.LASERCA__Experian_Indicator__c}</leftValue>
+                        
+                        <operator>EQUAL</operator>
+                        
+                        <rightValue>true</rightValue>
+                        
+                    </criteria>
+                    
+                    <criteria>
+                        
+                        <leftValue>{!Record.LASERCA__Equifax_Indicator__c}</leftValue>
+                        
+                        <operator>EQUAL</operator>
+                        
+                        <rightValue>true</rightValue>
+                        
+                    </criteria>
+                    
+                    <criteria>
+                        
+                        <leftValue>{!Record.LASERCA__TransUnion_Indicator__c}</leftValue>
+                        
+                        <operator>EQUAL</operator>
+                        
+                        <rightValue>true</rightValue>
+                        
+                    </criteria>
+                    
+                </visibilityRule>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>none</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.LASERCA__Lead__c</fieldItem>
+                
+                <identifier>RecordLASERCA__Lead__cField</identifier>
+                
+                <visibilityRule>
+                    
+                    <criteria>
+                        
+                        <leftValue>{!Record.LASERCA__Lead__r.FirstName}</leftValue>
+                        
+                        <operator>NE</operator>
+                        
+                    </criteria>
+                    
+                </visibilityRule>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>none</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.LASERCA__Opportunity__c</fieldItem>
+                
+                <identifier>RecordLASERCA__Opportunity__cField</identifier>
+                
+                <visibilityRule>
+                    
+                    <criteria>
+                        
+                        <leftValue>{!Record.LASERCA__Opportunity__r.Name}</leftValue>
+                        
+                        <operator>NE</operator>
+                        
+                    </criteria>
+                    
+                </visibilityRule>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>none</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.LASERCA__Contact__c</fieldItem>
+                
+                <identifier>RecordLASERCA__Contact__cField</identifier>
+                
+                <visibilityRule>
+                    
+                    <criteria>
+                        
+                        <leftValue>{!Record.LASERCA__Contact__r.FirstName}</leftValue>
+                        
+                        <operator>NE</operator>
+                        
+                    </criteria>
+                    
+                </visibilityRule>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>none</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.LASERCA__Account__c</fieldItem>
+                
+                <identifier>RecordLASERCA__Account__cField</identifier>
+                
+                <visibilityRule>
+                    
+                    <criteria>
+                        
+                        <leftValue>{!Record.LASERCA__Account__r.Name}</leftValue>
+                        
+                        <operator>NE</operator>
+                        
+                    </criteria>
+                    
+                </visibilityRule>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <name>Facet-9a414bae-1ec8-4fa5-8204-c5889fefffef</name>
+        
+        <type>Facet</type>
+        
+    </flexiPageRegions>
+    
+    <flexiPageRegions>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>body</name>
+                    
+                    <value>Facet-28e1c08e-72be-4652-a108-9349b2cdc7f2</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>flexipage:column</componentName>
+                
+                <identifier>flexipage_column</identifier>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>body</name>
+                    
+                    <value>Facet-9a414bae-1ec8-4fa5-8204-c5889fefffef</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>flexipage:column</componentName>
+                
+                <identifier>flexipage_column2</identifier>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <name>Facet-6bc05233-20f1-4425-8218-9af1551a491b</name>
+        
+        <type>Facet</type>
+        
+    </flexiPageRegions>
+    
+    <flexiPageRegions>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>readonly</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.LASERCA__Credit_Score_Experian__c</fieldItem>
+                
+                <identifier>RecordLASERCA__Credit_Score_Experian__cField</identifier>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>none</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.LASERCA__Experian_Score_Factor__c</fieldItem>
+                
+                <identifier>RecordLASERCA__Experian_Score_Factor__cField</identifier>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>none</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.LASERCA__Experian_Alert_Message__c</fieldItem>
+                
+                <identifier>RecordLASERCA__Experian_Alert_Message__cField</identifier>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>none</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.LASERCA__Experian_SSN__c</fieldItem>
+                
+                <identifier>RecordLASERCA__Experian_SSN__cField</identifier>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <name>Facet-20cbd55b-3b3d-496a-bc51-d99ed577c77e</name>
+        
+        <type>Facet</type>
+        
+    </flexiPageRegions>
+    
+    <flexiPageRegions>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>none</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.LASERCA__Co_Applicant_Credit_Score_Experian__c</fieldItem>
+                
+                <identifier>RecordLASERCA__Co_Applicant_Credit_Score_Experian__cField</identifier>
+                
+                <visibilityRule>
+                    
+                    <criteria>
+                        
+                        <leftValue>{!Record.LASERCA__Co_Applicant_Indicator__c}</leftValue>
+                        
+                        <operator>EQUAL</operator>
+                        
+                        <rightValue>true</rightValue>
+                        
+                    </criteria>
+                    
+                </visibilityRule>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>none</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.LASERCA__Co_Applicant_Experian_Score_Factor__c</fieldItem>
+                
+                <identifier>RecordLASERCA__Co_Applicant_Experian_Score_Factor__cField</identifier>
+                
+                <visibilityRule>
+                    
+                    <criteria>
+                        
+                        <leftValue>{!Record.LASERCA__Co_Applicant_Indicator__c}</leftValue>
+                        
+                        <operator>EQUAL</operator>
+                        
+                        <rightValue>true</rightValue>
+                        
+                    </criteria>
+                    
+                </visibilityRule>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>none</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.LASERCA__Co_Applicant_Experian_Alert_Message__c</fieldItem>
+                
+                <identifier>RecordLASERCA__Co_Applicant_Experian_Alert_Message__cField</identifier>
+                
+                <visibilityRule>
+                    
+                    <criteria>
+                        
+                        <leftValue>{!Record.LASERCA__Co_Applicant_Indicator__c}</leftValue>
+                        
+                        <operator>EQUAL</operator>
+                        
+                        <rightValue>true</rightValue>
+                        
+                    </criteria>
+                    
+                </visibilityRule>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <name>Facet-2a1804a9-be86-4f08-bb2e-0bdeebcb4bf0</name>
+        
+        <type>Facet</type>
+        
+    </flexiPageRegions>
+    
+    <flexiPageRegions>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>body</name>
+                    
+                    <value>Facet-20cbd55b-3b3d-496a-bc51-d99ed577c77e</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>flexipage:column</componentName>
+                
+                <identifier>flexipage_column11</identifier>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>body</name>
+                    
+                    <value>Facet-2a1804a9-be86-4f08-bb2e-0bdeebcb4bf0</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>flexipage:column</componentName>
+                
+                <identifier>flexipage_column12</identifier>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <name>Facet-40a249b9-ea65-4659-9096-081912503c4b</name>
+        
+        <type>Facet</type>
+        
+    </flexiPageRegions>
+    
+    <flexiPageRegions>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>none</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.LASERCA__Credit_Score_Equifax__c</fieldItem>
+                
+                <identifier>RecordLASERCA__Credit_Score_Equifax__cField</identifier>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>none</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.LASERCA__Equifax_Score_Factor__c</fieldItem>
+                
+                <identifier>RecordLASERCA__Equifax_Score_Factor__cField</identifier>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>none</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.LASERCA__Equifax_Alert_Message__c</fieldItem>
+                
+                <identifier>RecordLASERCA__Equifax_Alert_Message__cField</identifier>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>none</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.LASERCA__Equifax_SSN__c</fieldItem>
+                
+                <identifier>RecordLASERCA__Equifax_SSN__cField</identifier>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <name>Facet-524fb567-bdf0-4624-90a1-90d864ec366d</name>
+        
+        <type>Facet</type>
+        
+    </flexiPageRegions>
+    
+    <flexiPageRegions>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>none</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.LASERCA__Co_Applicant_Credit_Score_Equifax__c</fieldItem>
+                
+                <identifier>RecordLASERCA__Co_Applicant_Credit_Score_Equifax__cField</identifier>
+                
+                <visibilityRule>
+                    
+                    <criteria>
+                        
+                        <leftValue>{!Record.LASERCA__Co_Applicant_Indicator__c}</leftValue>
+                        
+                        <operator>EQUAL</operator>
+                        
+                        <rightValue>true</rightValue>
+                        
+                    </criteria>
+                    
+                </visibilityRule>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>none</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.LASERCA__Co_Applicant_Equifax_Score_Factor__c</fieldItem>
+                
+                <identifier>RecordLASERCA__Co_Applicant_Equifax_Score_Factor__cField</identifier>
+                
+                <visibilityRule>
+                    
+                    <criteria>
+                        
+                        <leftValue>{!Record.LASERCA__Co_Applicant_Indicator__c}</leftValue>
+                        
+                        <operator>EQUAL</operator>
+                        
+                        <rightValue>true</rightValue>
+                        
+                    </criteria>
+                    
+                </visibilityRule>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>none</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.LASERCA__Co_Applicant_Equifax_Alert_Message__c</fieldItem>
+                
+                <identifier>RecordLASERCA__Co_Applicant_Equifax_Alert_Message__cField</identifier>
+                
+                <visibilityRule>
+                    
+                    <criteria>
+                        
+                        <leftValue>{!Record.LASERCA__Co_Applicant_Indicator__c}</leftValue>
+                        
+                        <operator>EQUAL</operator>
+                        
+                        <rightValue>true</rightValue>
+                        
+                    </criteria>
+                    
+                </visibilityRule>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <name>Facet-84f9af1a-d93c-4e75-943a-1d97ad25262e</name>
+        
+        <type>Facet</type>
+        
+    </flexiPageRegions>
+    
+    <flexiPageRegions>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>body</name>
+                    
+                    <value>Facet-524fb567-bdf0-4624-90a1-90d864ec366d</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>flexipage:column</componentName>
+                
+                <identifier>flexipage_column13</identifier>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>body</name>
+                    
+                    <value>Facet-84f9af1a-d93c-4e75-943a-1d97ad25262e</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>flexipage:column</componentName>
+                
+                <identifier>flexipage_column14</identifier>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <name>Facet-1386c8fe-837c-4dd4-822f-aebd23b0ab53</name>
+        
+        <type>Facet</type>
+        
+    </flexiPageRegions>
+    
+    <flexiPageRegions>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>none</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.LASERCA__Credit_Score_TransUnion__c</fieldItem>
+                
+                <identifier>RecordLASERCA__Credit_Score_TransUnion__cField</identifier>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>none</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.LASERCA__TransUnion_Score_Factor__c</fieldItem>
+                
+                <identifier>RecordLASERCA__TransUnion_Score_Factor__cField</identifier>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>none</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.LASERCA__TransUnion_Alert_Message__c</fieldItem>
+                
+                <identifier>RecordLASERCA__TransUnion_Alert_Message__cField</identifier>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>none</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.LASERCA__TransUnion_SSN__c</fieldItem>
+                
+                <identifier>RecordLASERCA__TransUnion_SSN__cField</identifier>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <name>Facet-bc607c6f-fe9a-4756-9be1-de8692a4ab96</name>
+        
+        <type>Facet</type>
+        
+    </flexiPageRegions>
+    
+    <flexiPageRegions>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>none</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.LASERCA__Co_Applicant_Credit_Score_TransUnion__c</fieldItem>
+                
+                <identifier>RecordLASERCA__Co_Applicant_Credit_Score_TransUnion__cField</identifier>
+                
+                <visibilityRule>
+                    
+                    <criteria>
+                        
+                        <leftValue>{!Record.LASERCA__Co_Applicant_Indicator__c}</leftValue>
+                        
+                        <operator>EQUAL</operator>
+                        
+                        <rightValue>true</rightValue>
+                        
+                    </criteria>
+                    
+                </visibilityRule>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>none</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.LASERCA__Co_Applicant_TransUnion_Score_Factor__c</fieldItem>
+                
+                <identifier>RecordLASERCA__Co_Applicant_TransUnion_Score_Factor__cField</identifier>
+                
+                <visibilityRule>
+                    
+                    <criteria>
+                        
+                        <leftValue>{!Record.LASERCA__Co_Applicant_Indicator__c}</leftValue>
+                        
+                        <operator>EQUAL</operator>
+                        
+                        <rightValue>true</rightValue>
+                        
+                    </criteria>
+                    
+                </visibilityRule>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>none</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.LASERCA__Co_Applicant_TransUnion_Alert_Message__c</fieldItem>
+                
+                <identifier>RecordLASERCA__Co_Applicant_TransUnion_Alert_Message__cField</identifier>
+                
+                <visibilityRule>
+                    
+                    <criteria>
+                        
+                        <leftValue>{!Record.LASERCA__Co_Applicant_Indicator__c}</leftValue>
+                        
+                        <operator>EQUAL</operator>
+                        
+                        <rightValue>true</rightValue>
+                        
+                    </criteria>
+                    
+                </visibilityRule>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <name>Facet-90484a43-45fc-4965-80af-f7fb0b90995c</name>
+        
+        <type>Facet</type>
+        
+    </flexiPageRegions>
+    
+    <flexiPageRegions>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>body</name>
+                    
+                    <value>Facet-bc607c6f-fe9a-4756-9be1-de8692a4ab96</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>flexipage:column</componentName>
+                
+                <identifier>flexipage_column15</identifier>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>body</name>
+                    
+                    <value>Facet-90484a43-45fc-4965-80af-f7fb0b90995c</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>flexipage:column</componentName>
+                
+                <identifier>flexipage_column16</identifier>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <name>Facet-58468f8a-0ea5-499f-b5ce-6ddec1a9c89a</name>
+        
+        <type>Facet</type>
+        
+    </flexiPageRegions>
+    
+    <flexiPageRegions>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>readonly</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.CreatedById</fieldItem>
+                
+                <identifier>RecordCreatedByIdField</identifier>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <name>Facet-cdbe1a8b-8c58-4614-a9be-45d96f5a7f59</name>
+        
+        <type>Facet</type>
+        
+    </flexiPageRegions>
+    
+    <flexiPageRegions>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>none</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.OwnerId</fieldItem>
+                
+                <identifier>RecordOwnerIdField</identifier>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <fieldInstance>
+                
+                <fieldInstanceProperties>
+                    
+                    <name>uiBehavior</name>
+                    
+                    <value>readonly</value>
+                    
+                </fieldInstanceProperties>
+                
+                <fieldItem>Record.LastModifiedById</fieldItem>
+                
+                <identifier>RecordLastModifiedByIdField</identifier>
+                
+            </fieldInstance>
+            
+        </itemInstances>
+        
+        <name>Facet-7037c643-3573-4d5e-ac1c-afbbf03ea617</name>
+        
+        <type>Facet</type>
+        
+    </flexiPageRegions>
+    
+    <flexiPageRegions>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>body</name>
+                    
+                    <value>Facet-cdbe1a8b-8c58-4614-a9be-45d96f5a7f59</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>flexipage:column</componentName>
+                
+                <identifier>flexipage_column17</identifier>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>body</name>
+                    
+                    <value>Facet-7037c643-3573-4d5e-ac1c-afbbf03ea617</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>flexipage:column</componentName>
+                
+                <identifier>flexipage_column18</identifier>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <name>Facet-0c5a3f8b-51d1-4682-979f-552fccc27932</name>
+        
+        <type>Facet</type>
+        
+    </flexiPageRegions>
+    
+    <flexiPageRegions>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>columns</name>
+                    
+                    <value>Facet-6bc05233-20f1-4425-8218-9af1551a491b</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>label</name>
+                    
+                    <value>Credit Report Detail</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>flexipage:fieldSection</componentName>
+                
+                <identifier>flexipage_fieldSection</identifier>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>columns</name>
+                    
+                    <value>Facet-40a249b9-ea65-4659-9096-081912503c4b</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>label</name>
+                    
+                    <value>Applicant Experian Credit Score Factors</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>flexipage:fieldSection</componentName>
+                
+                <identifier>flexipage_fieldSection6</identifier>
+                
+                <visibilityRule>
+                    
+                    <criteria>
+                        
+                        <leftValue>{!Record.LASERCA__Experian_Indicator__c}</leftValue>
+                        
+                        <operator>EQUAL</operator>
+                        
+                        <rightValue>true</rightValue>
+                        
+                    </criteria>
+                    
+                </visibilityRule>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>columns</name>
+                    
+                    <value>Facet-1386c8fe-837c-4dd4-822f-aebd23b0ab53</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>label</name>
+                    
+                    <value>Applicant Equifax Credit Score Factors</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>flexipage:fieldSection</componentName>
+                
+                <identifier>flexipage_fieldSection7</identifier>
+                
+                <visibilityRule>
+                    
+                    <criteria>
+                        
+                        <leftValue>{!Record.LASERCA__Equifax_Indicator__c}</leftValue>
+                        
+                        <operator>EQUAL</operator>
+                        
+                        <rightValue>true</rightValue>
+                        
+                    </criteria>
+                    
+                </visibilityRule>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>columns</name>
+                    
+                    <value>Facet-58468f8a-0ea5-499f-b5ce-6ddec1a9c89a</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>label</name>
+                    
+                    <value>Applicant TransUnion Credit Score Factors</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>flexipage:fieldSection</componentName>
+                
+                <identifier>flexipage_fieldSection8</identifier>
+                
+                <visibilityRule>
+                    
+                    <criteria>
+                        
+                        <leftValue>{!Record.LASERCA__TransUnion_Indicator__c}</leftValue>
+                        
+                        <operator>EQUAL</operator>
+                        
+                        <rightValue>true</rightValue>
+                        
+                    </criteria>
+                    
+                </visibilityRule>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>columns</name>
+                    
+                    <value>Facet-0c5a3f8b-51d1-4682-979f-552fccc27932</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>label</name>
+                    
+                    <value>System Information</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>flexipage:fieldSection</componentName>
+                
+                <identifier>flexipage_fieldSection9</identifier>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>height</name>
+                    
+                    <value>200</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>label</name>
+                    
+                    <value>Trade Summary</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>pageName</name>
+                    
+                    <value>LASERCA__PCR_TradeSummary</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>showLabel</name>
+                    
+                    <value>true</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>flexipage:visualforcePage</componentName>
+                
+                <identifier>flexipage_visualforcePage</identifier>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>height</name>
+                    
+                    <value>300</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>label</name>
+                    
+                    <value>Payment Patterns</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>pageName</name>
+                    
+                    <value>LASERCA__PCR_PaymentPattern</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>showLabel</name>
+                    
+                    <value>true</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>flexipage:visualforcePage</componentName>
+                
+                <identifier>flexipage_visualforcePage2</identifier>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <name>Facet-631486c3-be84-4d6b-8959-0bb46f686657</name>
+        
+        <type>Facet</type>
+        
+    </flexiPageRegions>
+    
+    <flexiPageRegions>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>parentFieldApiName</name>
+                    
+                    <value>LASERCA__Personal_Credit_Report__c.Id</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>relatedListApiName</name>
+                    
+                    <value>LASERCA__Address_Information__r</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>relatedListComponentOverride</name>
+                    
+                    <value>NONE</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>rowsToDisplay</name>
+                    
+                    <value>10</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>showActionBar</name>
+                    
+                    <value>true</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>force:relatedListSingleContainer</componentName>
+                
+                <identifier>force_relatedListSingleContainer</identifier>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>parentFieldApiName</name>
+                    
+                    <value>LASERCA__Personal_Credit_Report__c.Id</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>relatedListApiName</name>
+                    
+                    <value>LASERCA__Trade_Accounts__r</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>relatedListComponentOverride</name>
+                    
+                    <value>NONE</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>rowsToDisplay</name>
+                    
+                    <value>10</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>showActionBar</name>
+                    
+                    <value>true</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>force:relatedListSingleContainer</componentName>
+                
+                <identifier>force_relatedListSingleContainer2</identifier>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>parentFieldApiName</name>
+                    
+                    <value>LASERCA__Personal_Credit_Report__c.Id</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>relatedListApiName</name>
+                    
+                    <value>LASERCA__Inquiries__r</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>relatedListComponentOverride</name>
+                    
+                    <value>NONE</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>rowsToDisplay</name>
+                    
+                    <value>10</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>showActionBar</name>
+                    
+                    <value>true</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>force:relatedListSingleContainer</componentName>
+                
+                <identifier>force_relatedListSingleContainer3</identifier>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>parentFieldApiName</name>
+                    
+                    <value>LASERCA__Personal_Credit_Report__c.Id</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>relatedListApiName</name>
+                    
+                    <value>LASERCA__Public_Records__r</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>relatedListComponentOverride</name>
+                    
+                    <value>NONE</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>rowsToDisplay</name>
+                    
+                    <value>10</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>showActionBar</name>
+                    
+                    <value>true</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>force:relatedListSingleContainer</componentName>
+                
+                <identifier>force_relatedListSingleContainer4</identifier>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>parentFieldApiName</name>
+                    
+                    <value>LASERCA__Personal_Credit_Report__c.Id</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>relatedListApiName</name>
+                    
+                    <value>LASERCA__Regulatory_Products__r</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>relatedListComponentOverride</name>
+                    
+                    <value>NONE</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>rowsToDisplay</name>
+                    
+                    <value>10</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>showActionBar</name>
+                    
+                    <value>true</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>force:relatedListSingleContainer</componentName>
+                
+                <identifier>force_relatedListSingleContainer5</identifier>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>parentFieldApiName</name>
+                    
+                    <value>LASERCA__Personal_Credit_Report__c.Id</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>relatedListApiName</name>
+                    
+                    <value>LASERCA__Employments__r</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>relatedListComponentOverride</name>
+                    
+                    <value>NONE</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>rowsToDisplay</name>
+                    
+                    <value>10</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>showActionBar</name>
+                    
+                    <value>true</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>force:relatedListSingleContainer</componentName>
+                
+                <identifier>force_relatedListSingleContainer6</identifier>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>parentFieldApiName</name>
+                    
+                    <value>LASERCA__Personal_Credit_Report__c.Id</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>relatedListApiName</name>
+                    
+                    <value>LASERCA__Credit_Report_Logs__r</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>relatedListComponentOverride</name>
+                    
+                    <value>NONE</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>rowsToDisplay</name>
+                    
+                    <value>10</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>showActionBar</name>
+                    
+                    <value>true</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>force:relatedListSingleContainer</componentName>
+                
+                <identifier>force_relatedListSingleContainer7</identifier>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>parentFieldApiName</name>
+                    
+                    <value>LASERCA__Personal_Credit_Report__c.Id</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>relatedListApiName</name>
+                    
+                    <value>AttachedContentDocuments</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>relatedListComponentOverride</name>
+                    
+                    <value>NONE</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>rowsToDisplay</name>
+                    
+                    <value>10</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>showActionBar</name>
+                    
+                    <value>true</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>force:relatedListSingleContainer</componentName>
+                
+                <identifier>force_relatedListSingleContainer8</identifier>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>parentFieldApiName</name>
+                    
+                    <value>LASERCA__Personal_Credit_Report__c.Id</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>relatedListApiName</name>
+                    
+                    <value>CombinedAttachments</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>relatedListComponentOverride</name>
+                    
+                    <value>NONE</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>rowsToDisplay</name>
+                    
+                    <value>10</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>showActionBar</name>
+                    
+                    <value>true</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>force:relatedListSingleContainer</componentName>
+                
+                <identifier>force_relatedListSingleContainer9</identifier>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>parentFieldApiName</name>
+                    
+                    <value>LASERCA__Personal_Credit_Report__c.Id</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>relatedListApiName</name>
+                    
+                    <value>LASERCA__OFAC_Statuses__r</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>relatedListComponentOverride</name>
+                    
+                    <value>NONE</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>rowsToDisplay</name>
+                    
+                    <value>10</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>showActionBar</name>
+                    
+                    <value>true</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>force:relatedListSingleContainer</componentName>
+                
+                <identifier>force_relatedListSingleContainer10</identifier>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>parentFieldApiName</name>
+                    
+                    <value>LASERCA__Personal_Credit_Report__c.Id</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>relatedListApiName</name>
+                    
+                    <value>LASERCA__Liens__r</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>relatedListComponentOverride</name>
+                    
+                    <value>NONE</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>rowsToDisplay</name>
+                    
+                    <value>10</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>showActionBar</name>
+                    
+                    <value>true</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>force:relatedListSingleContainer</componentName>
+                
+                <identifier>force_relatedListSingleContainer11</identifier>
+                
+                <visibilityRule>
+                    
+                    <criteria>
+                        
+                        <leftValue>{!Record.LASERCA__Provider__c}</leftValue>
+                        
+                        <operator>EQUAL</operator>
+                        
+                        <rightValue>CBCNEW</rightValue>
+                        
+                    </criteria>
+                    
+                </visibilityRule>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>parentFieldApiName</name>
+                    
+                    <value>LASERCA__Personal_Credit_Report__c.Id</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>relatedListApiName</name>
+                    
+                    <value>LASERCA__Judgments__r</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>relatedListComponentOverride</name>
+                    
+                    <value>NONE</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>rowsToDisplay</name>
+                    
+                    <value>10</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>showActionBar</name>
+                    
+                    <value>true</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>force:relatedListSingleContainer</componentName>
+                
+                <identifier>force_relatedListSingleContainer12</identifier>
+                
+                <visibilityRule>
+                    
+                    <criteria>
+                        
+                        <leftValue>{!Record.LASERCA__Provider__c}</leftValue>
+                        
+                        <operator>EQUAL</operator>
+                        
+                        <rightValue>CBCNEW</rightValue>
+                        
+                    </criteria>
+                    
+                </visibilityRule>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>parentFieldApiName</name>
+                    
+                    <value>LASERCA__Personal_Credit_Report__c.Id</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>relatedListApiName</name>
+                    
+                    <value>LASERCA__Collections__r</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>relatedListComponentOverride</name>
+                    
+                    <value>NONE</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>rowsToDisplay</name>
+                    
+                    <value>10</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>showActionBar</name>
+                    
+                    <value>true</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>force:relatedListSingleContainer</componentName>
+                
+                <identifier>force_relatedListSingleContainer13</identifier>
+                
+                <visibilityRule>
+                    
+                    <criteria>
+                        
+                        <leftValue>{!Record.LASERCA__Provider__c}</leftValue>
+                        
+                        <operator>EQUAL</operator>
+                        
+                        <rightValue>CBCNEW</rightValue>
+                        
+                    </criteria>
+                    
+                </visibilityRule>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <name>Facet-4af5bf2f-d408-494b-a17a-7a0d9dd8450f</name>
+        
+        <type>Facet</type>
+        
+    </flexiPageRegions>
+    
+    <flexiPageRegions>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>active</name>
+                    
+                    <value>true</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>body</name>
+                    
+                    <value>Facet-631486c3-be84-4d6b-8959-0bb46f686657</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>title</name>
+                    
+                    <value>Standard.Tab.detail</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>flexipage:tab</componentName>
+                
+                <identifier>detailTab</identifier>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>body</name>
+                    
+                    <value>Facet-4af5bf2f-d408-494b-a17a-7a0d9dd8450f</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>title</name>
+                    
+                    <value>Standard.Tab.relatedLists</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>flexipage:tab</componentName>
+                
+                <identifier>relatedListsTab</identifier>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <name>Facet-cd87fb72-6518-4d1a-a346-088e9b5b4529</name>
+        
+        <type>Facet</type>
+        
+    </flexiPageRegions>
+    
+    <flexiPageRegions>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>tabs</name>
+                    
+                    <value>Facet-cd87fb72-6518-4d1a-a346-088e9b5b4529</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>flexipage:tabset</componentName>
+                
+                <identifier>flexipage_tabset</identifier>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentName>force:recordDetailPanelMobile</componentName>
+                
+                <identifier>force_recordDetailPanelMobile</identifier>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <name>main</name>
+        
+        <type>Region</type>
+        
+    </flexiPageRegions>
+    
+    <flexiPageRegions>
+        
+        <itemInstances>
+            
+            <componentInstance>
+                
+                <componentInstanceProperties>
+                    
+                    <name>parentFieldApiName</name>
+                    
+                    <value>LASERCA__Personal_Credit_Report__c.Id</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>relatedListApiName</name>
+                    
+                    <value>AttachedContentDocuments</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>relatedListComponentOverride</name>
+                    
+                    <value>NONE</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>rowsToDisplay</name>
+                    
+                    <value>10</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentInstanceProperties>
+                    
+                    <name>showActionBar</name>
+                    
+                    <value>true</value>
+                    
+                </componentInstanceProperties>
+                
+                <componentName>force:relatedListSingleContainer</componentName>
+                
+                <identifier>force_relatedListSingleContainer1</identifier>
+                
+            </componentInstance>
+            
+        </itemInstances>
+        
+        <name>sidebar</name>
+        
+        <type>Region</type>
+        
+    </flexiPageRegions>
+    
+    <masterLabel>Personal Credit Report</masterLabel>
+    
+    <sobjectType>LASERCA__Personal_Credit_Report__c</sobjectType>
+    
+    <template>
+        
+        <name>flexipage:recordHomeTemplateDesktop</name>
+        
+    </template>
+    
+    <type>RecordPage</type>
+    
+</FlexiPage>

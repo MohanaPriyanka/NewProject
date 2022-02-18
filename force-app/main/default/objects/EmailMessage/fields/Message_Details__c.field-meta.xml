@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Message_Details__c</fullName>
+    <description>Used in the SSS update flow to track details related to the email send</description>
+    <externalId>false</externalId>
+    <label>Message Details</label>
+    <length>1000</length>
+    <type>Html</type>
+    <visibleLines>10</visibleLines>
+</CustomField>

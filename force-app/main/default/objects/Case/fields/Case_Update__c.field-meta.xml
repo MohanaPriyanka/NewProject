@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Case_Update__c</fullName>
+    <description>Formerly Case Update (API Name is still Case_Update).  Please use chatter for case-specific updates.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Formerly Case Update (API Name is still Case_Update).  Please use chatter for case-specific updates.</inlineHelpText>
+    <label>Next Steps</label>
+    <length>32768</length>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

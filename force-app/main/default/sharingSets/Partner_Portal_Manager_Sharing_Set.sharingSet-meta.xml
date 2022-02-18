@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<SharingSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    
+    <accessMappings>
+        
+        <accessLevel>Read</accessLevel>
+        
+        <object>Account</object>
+        
+        <objectField>Id</objectField>
+        
+        <userField>Account</userField>
+        
+    </accessMappings>
+    
+    <accessMappings>
+        
+        <accessLevel>Edit</accessLevel>
+        
+        <object>Case</object>
+        
+        <objectField>Account</objectField>
+        
+        <userField>Account</userField>
+        
+    </accessMappings>
+    
+    <accessMappings>
+        
+        <accessLevel>Read</accessLevel>
+        
+        <object>Commission_Structure__c</object>
+        
+        <objectField>Partner_Account__c</objectField>
+        
+        <userField>Account</userField>
+        
+    </accessMappings>
+    
+    <accessMappings>
+        
+        <accessLevel>Read</accessLevel>
+        
+        <object>Contact</object>
+        
+        <objectField>Account</objectField>
+        
+        <userField>Account</userField>
+        
+    </accessMappings>
+    
+    <accessMappings>
+        
+        <accessLevel>Read</accessLevel>
+        
+        <object>Invoice__c</object>
+        
+        <objectField>Account__c</objectField>
+        
+        <userField>Account</userField>
+        
+    </accessMappings>
+    
+    <accessMappings>
+        
+        <accessLevel>Read</accessLevel>
+        
+        <object>Lead</object>
+        
+        <objectField>Partner_Account__c</objectField>
+        
+        <userField>Account</userField>
+        
+    </accessMappings>
+    
+    <accessMappings>
+        
+        <accessLevel>Read</accessLevel>
+        
+        <object>Opportunity</object>
+        
+        <objectField>Partner_Account__c</objectField>
+        
+        <userField>Account</userField>
+        
+    </accessMappings>
+    
+    <accessMappings>
+        
+        <accessLevel>Read</accessLevel>
+        
+        <object>Utility_Account_Log__c</object>
+        
+        <objectField>Lead__c.Partner_Account__c</objectField>
+        
+        <userField>Account</userField>
+        
+    </accessMappings>
+    
+    <description>Community Sharing Set for the Manager Users Portal Partner.</description>
+    
+    <name>Partner Portal Manager Sharing Set</name>
+    
+    <profiles>partner portal community manager</profiles>
+    
+    <profiles>partner portal community manager user</profiles>
+    
+</SharingSet>

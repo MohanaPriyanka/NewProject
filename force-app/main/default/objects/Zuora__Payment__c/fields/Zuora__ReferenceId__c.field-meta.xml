@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__ReferenceId__c</fullName>
+    <deprecated>false</deprecated>
+    <description>The transaction ID returned by the payment gateway. Use this field to reconcile payments between your gateway and Zuora Payments.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The transaction ID returned by the payment gateway. Use this field to reconcile payments between your gateway and Zuora Payments.</inlineHelpText>
+    <label>Reference ID</label>
+    <length>60</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

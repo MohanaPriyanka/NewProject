@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    
+    <apiVersion>49.0</apiVersion>
+    
+    <assignments>
+        
+        <name>assign_to_list</name>
+        
+        <label>assign to list</label>
+        
+        <locationX>443</locationX>
+        
+        <locationY>285</locationY>
+        
+        <assignmentItems>
+            
+            <assignToReference>systembillupdatelist</assignToReference>
+            
+            <operator>Add</operator>
+            
+            <value>
+                
+                <elementReference>systembillloopvar</elementReference>
+                
+            </value>
+            
+        </assignmentItems>
+        
+        <connector>
+            
+            <targetReference>System_Bill_Loop</targetReference>
+            
+        </connector>
+        
+    </assignments>
+    
+    <assignments>
+        
+        <name>waive_late_fees</name>
+        
+        <label>waive late fees</label>
+        
+        <locationX>449</locationX>
+        
+        <locationY>149</locationY>
+        
+        <assignmentItems>
+            
+            <assignToReference>systembillloopvar.Waive_Late_Fees__c</assignToReference>
+            
+            <operator>Assign</operator>
+            
+            <value>
+                
+                <booleanValue>true</booleanValue>
+                
+            </value>
+            
+        </assignmentItems>
+        
+        <connector>
+            
+            <targetReference>assign_to_list</targetReference>
+            
+        </connector>
+        
+    </assignments>
+    
+    <interviewLabel>Waive Late Fee Flow {!$Flow.CurrentDateTime}</interviewLabel>
+    
+    <label>Waive Late Fee Flow</label>
+    
+    <loops>
+        
+        <name>System_Bill_Loop</name>
+        
+        <label>System Bill Loop</label>
+        
+        <locationX>195</locationX>
+        
+        <locationY>149</locationY>
+        
+        <assignNextValueToReference>systembillloopvar</assignNextValueToReference>
+        
+        <collectionReference>systembilllist</collectionReference>
+        
+        <iterationOrder>Asc</iterationOrder>
+        
+        <nextValueConnector>
+            
+            <targetReference>waive_late_fees</targetReference>
+            
+        </nextValueConnector>
+        
+        <noMoreValuesConnector>
+            
+            <targetReference>update_system_bill_list</targetReference>
+            
+        </noMoreValuesConnector>
+        
+    </loops>
+    
+    <processType>Flow</processType>
+    
+    <recordLookups>
+        
+        <name>System_Bill_Lookup</name>
+        
+        <label>System Bill Lookup</label>
+        
+        <locationX>195</locationX>
+        
+        <locationY>45</locationY>
+        
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        
+        <connector>
+            
+            <targetReference>System_Bill_Loop</targetReference>
+            
+        </connector>
+        
+        <filterLogic>and</filterLogic>
+        
+        <filters>
+            
+            <field>Account_Bill__c</field>
+            
+            <operator>EqualTo</operator>
+            
+            <value>
+                
+                <elementReference>accountbillid</elementReference>
+                
+            </value>
+            
+        </filters>
+        
+        <object>System_Bill__c</object>
+        
+        <outputReference>systembilllist</outputReference>
+        
+        <queriedFields>Id</queriedFields>
+        
+        <queriedFields>Account_Bill__c</queriedFields>
+        
+        <queriedFields>Waive_Late_Fees__c</queriedFields>
+        
+    </recordLookups>
+    
+    <recordUpdates>
+        
+        <name>update_system_bill_list</name>
+        
+        <label>update system bill list</label>
+        
+        <locationX>197</locationX>
+        
+        <locationY>303</locationY>
+        
+        <connector>
+            
+            <targetReference>finish</targetReference>
+            
+        </connector>
+        
+        <inputReference>systembillupdatelist</inputReference>
+        
+    </recordUpdates>
+    
+    <screens>
+        
+        <name>finish</name>
+        
+        <label>finish</label>
+        
+        <locationX>199</locationX>
+        
+        <locationY>401</locationY>
+        
+        <allowBack>true</allowBack>
+        
+        <allowFinish>true</allowFinish>
+        
+        <allowPause>true</allowPause>
+        
+        <fields>
+            
+            <name>finished</name>
+            
+            <fieldText>Late Fees have been waived.</fieldText>
+            
+            <fieldType>DisplayText</fieldType>
+            
+        </fields>
+        
+        <showFooter>true</showFooter>
+        
+        <showHeader>true</showHeader>
+        
+    </screens>
+    
+    <startElementReference>System_Bill_Lookup</startElementReference>
+    
+    <status>Active</status>
+    
+    <variables>
+        
+        <name>accountbillid</name>
+        
+        <dataType>String</dataType>
+        
+        <isCollection>false</isCollection>
+        
+        <isInput>true</isInput>
+        
+        <isOutput>true</isOutput>
+        
+    </variables>
+    
+    <variables>
+        
+        <name>systembilllist</name>
+        
+        <dataType>SObject</dataType>
+        
+        <isCollection>true</isCollection>
+        
+        <isInput>true</isInput>
+        
+        <isOutput>true</isOutput>
+        
+        <objectType>System_Bill__c</objectType>
+        
+    </variables>
+    
+    <variables>
+        
+        <name>systembillloopvar</name>
+        
+        <dataType>SObject</dataType>
+        
+        <isCollection>false</isCollection>
+        
+        <isInput>true</isInput>
+        
+        <isOutput>true</isOutput>
+        
+        <objectType>System_Bill__c</objectType>
+        
+    </variables>
+    
+    <variables>
+        
+        <name>systembillupdatelist</name>
+        
+        <dataType>SObject</dataType>
+        
+        <isCollection>true</isCollection>
+        
+        <isInput>true</isInput>
+        
+        <isOutput>true</isOutput>
+        
+        <objectType>System_Bill__c</objectType>
+        
+    </variables>
+    
+</Flow>

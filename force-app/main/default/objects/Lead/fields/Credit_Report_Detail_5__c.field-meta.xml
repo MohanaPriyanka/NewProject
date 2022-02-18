@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Credit_Report_Detail_5__c</fullName>
+    <businessStatus>Active</businessStatus>
+    <description>Set by LoanUnderwriting.updateManualCreditDecline when the adverse notice is sent to the lead or co-applicant through the Lead buttons or Loan Underwriting VF page.
+
+This field can be changed to a formula consistent with the other factors if LASERCA adds the fifth code.</description>
+    <externalId>false</externalId>
+    <label>Credit Report Detail 5</label>
+    <length>255</length>
+    <required>false</required>
+    <securityClassification>Restricted</securityClassification>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

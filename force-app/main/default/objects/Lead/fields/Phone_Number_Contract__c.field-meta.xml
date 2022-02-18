@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Phone_Number_Contract__c</fullName>
+    <description>This field is used in the SSF Conga template. It returns the business phone if they are non resi, and mobile phone if resi.</description>
+    <externalId>false</externalId>
+    <formula>CASE(Customer_type__c,
+&quot;Residential&quot;,MobilePhone, 
+&quot;Non-Residential&quot;,Business_Phone__c,
+MobilePhone
+)</formula>
+    <inlineHelpText>This field is used in the SSF Conga template. It returns the business phone if they are non resi, and mobile phone if resi.</inlineHelpText>
+    <label>Phone Number (Contract)</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>No_Credit_Check</fullName>
+    <active>true</active>
+    <description>If the Underwriting Method is not FICO, you cannot perform a soft credit pull.</description>
+    <errorConditionFormula>AND(
+
+Soft_Pull_Credit_Report__c=true,
+
+ISPICKVAL(Underwriting_Criteria__c,&quot;FICO&quot;)=false
+
+)</errorConditionFormula>
+    <errorMessage>In order to complete a soft credit pull, the Underwriting Criteria needs to be set to FICO. This means the customer has consented to have a soft credit pull completed.</errorMessage>
+</ValidationRule>

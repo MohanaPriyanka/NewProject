@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Number_of_Days_to_Enact_ALS__c</fullName>
+    <externalId>false</externalId>
+    <formula>Date_Enacted_by_Utility__c-Date_Submitted_to_Utility__c</formula>
+    <inlineHelpText>Calculates the number of days from day submitted to day enacted.</inlineHelpText>
+    <label>Number of Days to Enact ALS</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>Percent_of_Total_Account_Bill__c</fullName>
+    <externalId>false</externalId>
+    <formula>Discounted_Bill__c/ CS_Billing_Log__r.Account_Bill__r.Due_This_Month__c</formula>
+    <label>Percent of Total Account Bill</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>8</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>CDG_Host_Account__c</fullName>
+    <description>This is the Community Distributed Generation Host Account name that is used for NY Allocation Schedules. It is only needed for NY Shared Solar Systems.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This is the Community Distributed Generation Host Account name that is used for NY Allocation Schedules. It is only needed for NY Shared Solar Systems</inlineHelpText>
+    <label>CDG Host Account</label>
+    <length>50</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

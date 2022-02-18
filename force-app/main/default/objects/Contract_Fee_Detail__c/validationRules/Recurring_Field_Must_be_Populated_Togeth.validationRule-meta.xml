@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Recurring_Field_Must_be_Populated_Togeth</fullName>
+    <active>true</active>
+    <errorConditionFormula>OR(
+AND( 
+ISPICKVAL(Management_Fee_Type__c,&quot;Recurring&quot;),
+ISPICKVAL(Recurring_Frequency__c,&quot;&quot;)
+),
+AND( 
+NOT(ISPICKVAL(Management_Fee_Type__c,&quot;Recurring&quot;)),
+NOT(ISPICKVAL(Recurring_Frequency__c,&quot;&quot;))
+)
+)</errorConditionFormula>
+    <errorDisplayField>Management_Fee_Type__c</errorDisplayField>
+    <errorMessage>If this fee is recurring, you must populate the recurring frequency field. You can&apos;t populate recurring frequency without also setting the fee type to recurring</errorMessage>
+</ValidationRule>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>Client_Management_Contract__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>The field points to the same contract even if there is only one.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Set automatically when a Client Contract is effective, and used for Client Invoicing. It could be the same as the Client Acquisition Contract.</inlineHelpText>
+    <label>Client Management Contract</label>
+    <referenceTo>Contract</referenceTo>
+    <relationshipLabel>Client Management Contract</relationshipLabel>
+    <relationshipName>Shared_Solar_Systems1</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

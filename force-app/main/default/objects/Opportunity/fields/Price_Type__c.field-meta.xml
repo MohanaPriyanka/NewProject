@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Price_Type__c</fullName>
+    <externalId>false</externalId>
+    <label>Price Type</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>NMCPA</fullName>
+                
+                    <default>false</default>
+                
+                    <label>NMCPA</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>PPA</fullName>
+                
+                    <default>false</default>
+                
+                    <label>PPA</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Lease</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Lease</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>PILOT</fullName>
+                
+                    <default>false</default>
+                
+                    <label>PILOT</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+    <visibleLines>4</visibleLines>
+</CustomField>

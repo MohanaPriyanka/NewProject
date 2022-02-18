@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Previous_kw_DC_Subscription__c</fullName>
+    <description>This is the kw dc subscription on the related UAS at the time to subscription order was created.</description>
+    <externalId>false</externalId>
+    <label>Previous kw DC Subscription</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>6</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

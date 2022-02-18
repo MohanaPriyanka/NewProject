@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Customer_Care_Case__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Select this checkbox to be able to create a new customer care case linked to this task</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Select this checkbox to be able to create a new customer care case linked to this task</inlineHelpText>
+    <label>Customer Care Case</label>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Current_Amount_Due_by_Entity</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Check Balance by Entity</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/30.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/24.0/apex.js&quot;)}
+{!REQUIRESCRIPT(&apos;//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js&apos;)} 
+
+var query = &quot;select Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Name Entity, MAX(Date__c) BillDate, SUM(Carry_Over_Balance__c) Total from System_Bill__c where Account_Bill__c = &apos;{!Account_Bill__c.Account_Bill_ID__c}&apos; group by Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Name&quot;
+
+
+var result = sforce.connection.query(query); 
+var records = result.getArray(&quot;records&quot;); 
+
+records= jQuery.map(records, function(n, i){
+  return [[n.Entity, n.Total].join(&quot;: $&quot;)];
+});
+
+alert(&apos;This is the current amount this Account has due per this bill:\n\n&apos; + records.join(&quot;\n\n&quot;));</url>
+</WebLink>

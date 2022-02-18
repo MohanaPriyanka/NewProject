@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IX_Application_Deemed_Complete_Est__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Enter the estimated date that IX Application will be complete</inlineHelpText>
+    <label>IX Application Deemed Complete Est</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

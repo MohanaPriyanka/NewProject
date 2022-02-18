@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Enforce_Unique_Names</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(IF(
+VLOOKUP($ObjectType.Paper_Check__c.Fields.Name, $ObjectType.Paper_Check__c.Fields.Name,  Name )= Name,true,false), ISNEW()=true)</errorConditionFormula>
+    <errorMessage>Checks must have a unique BlueWave Account number and Check number.</errorMessage>
+</ValidationRule>

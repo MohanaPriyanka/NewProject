@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Conga_Signed_Contract__c</fullName>
+    <externalId>false</externalId>
+    <formula>&quot;&amp;id=&quot; + Id +
+&quot;&amp;templateid=&quot; + Conga_Signed_Template__c +
+&quot;&amp;queryid=[CustSig]a270a0000020p7JAAQ?pv0=&quot; + Id + &quot;,[Tariff]a275b0000021MZGAA2?pv1=&quot; + Lead__r.Id + &quot;,[BizSig]a270a0000020p7KAAQ?pv0=&quot; + Id + &quot;,[UAL]a270a0000020p7HAAQ?pv1=&quot; + Lead__r.Id + &quot;,[Billing]a275b0000021FNKAA2?pv1=&quot; + Lead__r.Id + &quot;,[Biz]a270a0000020p7IAAQ?pv1=&quot; + Lead__r.Id + &quot;,[Lead]a270a0000020p7LAAQ?pv1=&quot; + Lead__r.Id + &quot;,[ResiSig]a270a0000020pb3AAA?pv0=&quot; + Id + &quot;,[NonGuarantor]a270a00000211ExAAI?pv0&quot; + Id + &quot;,[SSS]a270a00000211EsAAI?pv2=&quot; + Lead__r.Utility_relationship__r.Id +
+&quot;&amp;sc0=1&quot; +
+&quot;&amp;sc1=SalesforceFile&quot; +
+&quot;&amp;APDF=0&quot; +
+&quot;&amp;contentnetworkid=0DB0a000000L0ryGAC&quot; +
+&quot;&amp;contentsharetype=V&quot; +
+&quot;&amp;contentvisibility=AllUsers&quot; +
+&quot;&amp;defaultpdf=1&quot; +
+&quot;&amp;UF0=1&quot; +
+&quot;&amp;MFTS0=Generate_Signed_Version__c&quot; +
+&quot;&amp;MFTSValue0=false&quot; +
+&quot;&amp;EmailTemplateId=00X0a000000j4jB&quot; +
+&quot;&amp;EmailToId=&quot; + Lead__r.Id +
+&quot;&amp;EmailRelatedToId=&quot; + Lead__r.Id +
+&quot;&amp;emailfromid=&quot;+IF(ISPICKVAL($CustomMetadata.System_Default__mdt.System_Defaults.Default_Client_Brand_Key__c,&quot;BluewaveLogo&quot;),&quot;0D20a0000004K0P&quot;,&quot;0D25b000000L6gKCAS&quot;) +
+&quot;&amp;qmode=SendEmail&quot; +
+&quot;&amp;ContentWorkspaceId=0585b000000aDRHAA2&quot; +
+&quot;&amp;ContentCustomFieldName=Signing_Status__c&quot; +
+&quot;&amp;ContentCustomFieldValue=Signed&quot;</formula>
+    <label>Conga Signed Contract</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

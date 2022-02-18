@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Customer_Billing_Communications__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Required customer communications, see detail field for more specifics</inlineHelpText>
+    <label>Customer Billing Communications</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>Monthly Statement</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Monthly Statement</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Payment Receipt</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Payment Receipt</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Project Assignment</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Project Assignment</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Termination</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Termination</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Schedule Z Filing</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Schedule Z Filing</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Upcoming Bill</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Upcoming Bill</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Collections</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Collections</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Autopay Sign-Up</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Autopay Sign-Up</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Other, see detail</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Other, see detail</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+    <visibleLines>5</visibleLines>
+</CustomField>

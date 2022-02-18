@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Class__c</fullName>
+    <externalId>false</externalId>
+    <label>Class</label>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>Class 2</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Class 2</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Class 3</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Class 3</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

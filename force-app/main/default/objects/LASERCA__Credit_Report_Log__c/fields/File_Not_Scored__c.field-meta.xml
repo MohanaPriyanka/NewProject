@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>File_Not_Scored__c</fullName>
+    <description>Makes it easier for the CreditReportLogTrigger to handle SC3 - FILE NOT SCORED BECAUSE SUBJECT DOES NOT HAVE SUFFICIENT CREDIT</description>
+    <externalId>false</externalId>
+    <formula>IF(ISBLANK(LASERCA__Personal_Credit_Report__c ), FALSE,
+   IF(ISBLANK(LASERCA__Personal_Credit_Report__r.LASERCA__Credit_Score__c), 
+      TRUE,
+      FALSE
+   )
+)</formula>
+    <inlineHelpText>TRUE, if there is a PCR but has no Credit Score.</inlineHelpText>
+    <label>File Not Scored</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

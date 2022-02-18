@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Payment_Gateway__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Used by AccountReconciliationService.reconcileZuoraWithSFDC</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Default payment gateway used for customers subscribed to this client&apos;s systems.</inlineHelpText>
+    <label>Payment Gateway</label>
+    <referenceTo>Zuora__PaymentGateway__c</referenceTo>
+    <relationshipLabel>Accounts</relationshipLabel>
+    <relationshipName>Accounts</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

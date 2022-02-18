@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Not_Retired__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>This checkbox serves as the false value to the Retired checkbox. It allows the CAP UI to show blank checkboxes without having to default to false.</description>
+    <externalId>false</externalId>
+    <label>XXXNot Retired</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

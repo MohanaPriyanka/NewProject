@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__TaxExemptEffectiveDate__c</fullName>
+    <deprecated>false</deprecated>
+    <description>The date when the the customer&apos;s tax exemption starts.</description>
+    <externalId>false</externalId>
+    <label>Tax Exempt Effective Date</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

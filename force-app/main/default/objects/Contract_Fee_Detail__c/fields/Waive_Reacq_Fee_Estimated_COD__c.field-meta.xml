@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Waive_Reacq_Fee_Estimated_COD__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Only used for the &quot;Project: Estimated COD or Customer: Assignment Date&quot; Initial Period Milestone option. Should match the date in the contract and distinct from the SSS&apos;s Estimated COD which can change.</inlineHelpText>
+    <label>Waive Reacq Fee: Estimated COD</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>No_Payment__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>W-019782</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Default unchecked; checked if the likely-assigned SSS does not require payment information (e.g. UCB product). If checked, this lead CANNOT be put on a SSS that requires capture of payment info.</inlineHelpText>
+    <label>Not Requesting Payment Info</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

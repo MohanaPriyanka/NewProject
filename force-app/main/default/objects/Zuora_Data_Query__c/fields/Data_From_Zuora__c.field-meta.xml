@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Data_From_Zuora__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Link_To_File__c contains the actual data, this should really only be used for small data sets or as a preview</inlineHelpText>
+    <label>Data From Zuora</label>
+    <length>131072</length>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

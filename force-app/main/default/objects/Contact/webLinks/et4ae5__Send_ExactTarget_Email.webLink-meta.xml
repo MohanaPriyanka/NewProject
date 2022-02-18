@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>et4ae5__Send_ExactTarget_Email</fullName>
+    <availability>online</availability>
+    <displayType>link</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Send Marketing Cloud Email</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/28.0/connection.js&quot;)}
+{!REQUIRESCRIPT(&quot;/soap/ajax/28.0/apex.js&quot;)}
+var bAccessable; 
+try{
+     bAccessable = sforce.apex.execute(&quot;et4ae5.SObjectHelperJS&quot;,&quot;isFieldAccessible&quot;,{sSObject:&quot;Contact&quot;, sField:&quot;HasOptedOutOfEmail&quot;});
+}catch (e) {
+     bAccessable = false;
+}
+
+if(bAccessable == &quot;true&quot;){
+     var sHasOptedOutOfEmail = &quot;&quot; + {!Contact.HasOptedOutOfEmail} + &quot;&quot;;
+     if(sHasOptedOutOfEmail == &quot;1&quot;){
+          alert(&quot;{!$Label.et4ae5__ctoptedout}&quot;);
+     }else{
+          try{
+               var urlPrefix=sforce.apex.execute(&quot;et4ae5/jsButtonMethods&quot;,&quot;namespace&quot;, {});
+               var theUrl=&quot;https://&quot;+urlPrefix+&quot;/apex/singleSendETEmail?contactId={!CASESAFEID(Contact.Id)}&quot;;
+               parent.location.href = theUrl;
+          }catch (e){
+               var theUrl=&quot;/apex/singleSendETEmail?contactId={!CASESAFEID(Contact.Id)}&quot;;
+               parent.location.href = theUrl;
+          }
+     }
+}else{
+     alert(&quot;{!$Label.et4ae5__ctoptedoutaccess}&quot;);
+}</url>
+</WebLink>

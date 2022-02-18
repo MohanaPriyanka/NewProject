@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>QC_Measures_Complete</fullName>
+    <active>false</active>
+    <description>Checks to see that the Income Verification, Partner Verification, and MCEC Technical Verification boxes have been complete for DOER Loan records.</description>
+    <errorConditionFormula>AND(IsConverted, 
+
+PRIORVALUE(DOER_Solar_Loan__c )= TRUE,
+
+OR(
+
+PRIORVALUE(Technical_Approval_Verified__c )= FALSE,
+PRIORVALUE(Income_Verified__c)= FALSE,
+PRIORVALUE(Is_there_a_Partner_Record__c )= FALSE))</errorConditionFormula>
+    <errorMessage>Income Verification, Partner Verification, and MCEC Technical Verification Boxes must be checked</errorMessage>
+</ValidationRule>

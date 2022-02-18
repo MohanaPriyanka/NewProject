@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>Client_Acq_Available_LMI_Capacity__c</fullName>
+    <externalId>false</externalId>
+    <formula>Client_Acq_Reserved_LMI_Capacity__c - (Client_Acq_Committed_LMI_Capacity__c + Client_Acq_Pending_LMI_Capacity__c)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Client Acquired LMI Capacity not yet committed or pending; Result of Reserved LMI Capacity - (Committed and Pending LMI Capacity)</inlineHelpText>
+    <label>Client Acq Available LMI Capacity</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

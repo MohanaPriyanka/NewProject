@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Max_Overdue_Due_Date_Zuora__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Zuora Data : Due date of oldest invoice or debit memo with a balance</inlineHelpText>
+    <label>Max Overdue Due Date Zuora</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Date</type>
+</CustomField>

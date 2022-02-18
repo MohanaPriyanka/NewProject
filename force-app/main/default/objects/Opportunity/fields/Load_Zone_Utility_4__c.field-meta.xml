@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Load_Zone_Utility_4__c</fullName>
+    <externalId>false</externalId>
+    <label>Load Zone &amp; Utility</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>NEMA Eversource</fullName>
+                
+                    <default>false</default>
+                
+                    <label>NEMA Eversource</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>NEMA Municipal Electric Department</fullName>
+                
+                    <default>false</default>
+                
+                    <label>NEMA Municipal Electric Department</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>NEMA National Grid</fullName>
+                
+                    <default>false</default>
+                
+                    <label>NEMA National Grid</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>NEMA/SEMA Eversource</fullName>
+                
+                    <default>false</default>
+                
+                    <label>NEMA/SEMA Eversource</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>NEMA/WCMA Municipal Electric Department</fullName>
+                
+                    <default>false</default>
+                
+                    <label>NEMA/WCMA Municipal Electric Department</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>NEMA/WCMA National Grid</fullName>
+                
+                    <default>false</default>
+                
+                    <label>NEMA/WCMA National Grid</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>SEMA Eversource</fullName>
+                
+                    <default>false</default>
+                
+                    <label>SEMA Eversource</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>SEMA Municipal Electric Department</fullName>
+                
+                    <default>false</default>
+                
+                    <label>SEMA Municipal Electric Department</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>SEMA National Grid</fullName>
+                
+                    <default>false</default>
+                
+                    <label>SEMA National Grid</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>SEMA National Grid/Eversource</fullName>
+                
+                    <default>false</default>
+                
+                    <label>SEMA National Grid/Eversource</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>SEMA/WCMA National Grid</fullName>
+                
+                    <default>false</default>
+                
+                    <label>SEMA/WCMA National Grid</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>WCMA Eversource</fullName>
+                
+                    <default>false</default>
+                
+                    <label>WCMA Eversource</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>WCMA Eversource / Municipal Electric Department</fullName>
+                
+                    <default>false</default>
+                
+                    <label>WCMA Eversource / Municipal Electric Department</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>WCMA Municipal Electric Department</fullName>
+                
+                    <default>false</default>
+                
+                    <label>WCMA Municipal Electric Department</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>WCMA National Grid</fullName>
+                
+                    <default>false</default>
+                
+                    <label>WCMA National Grid</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>WCMA Unitil</fullName>
+                
+                    <default>false</default>
+                
+                    <label>WCMA Unitil</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Manual Lookup Required</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Manual Lookup Required</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Bahamas Electricity Corporation</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Bahamas Electricity Corporation</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Grand Bahama Power Company</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Grand Bahama Power Company</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Orange and Rockland Utilities</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Orange and Rockland Utilities</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Central Hudson Gas &amp; Electric</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Central Hudson Gas &amp; Electric</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Green Mountain Power</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Green Mountain Power</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

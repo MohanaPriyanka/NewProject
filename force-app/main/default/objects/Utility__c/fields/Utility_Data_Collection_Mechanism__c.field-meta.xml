@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Utility_Data_Collection_Mechanism__c</fullName>
+    <externalId>false</externalId>
+    <label>Utility Data Collection Mechanism</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <restricted>true</restricted>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>File Upload</fullName>
+                
+                    <default>true</default>
+                
+                    <label>File Upload</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>EDI</fullName>
+                
+                    <default>false</default>
+                
+                    <label>EDI</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

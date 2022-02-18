@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MA_RS_Installers</fullName>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>ACCOUNT.PHONE1</columns>
+    <columns>ACCOUNT.TYPE</columns>
+    <columns>ACCOUNT.ADDRESS2_STATE_CODE</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        
+            <field>ACCOUNT.RECORDTYPE</field>
+        
+            <operation>equals</operation>
+        
+            <value>Account.Partner_Account</value>
+        
+        </filters>
+    <filters>
+        
+            <field>State_Market__c</field>
+        
+            <operation>includes</operation>
+        
+            <value>MA</value>
+        
+        </filters>
+    <label>Massachusetts Installers</label>
+    <sharedTo>
+        
+            <group>Sales_Account_Views</group>
+        
+        </sharedTo>
+</ListView>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Conga_Review_Contract__c</fullName>
+    <externalId>false</externalId>
+    <formula>&quot;&amp;id=&quot; + Id +
+&quot;&amp;templateid=&quot; + Conga_Template__c +
+&quot;&amp;queryid=[UAL]a270a0000020p7HAAQ?pv1=&quot; + Lead__r.Id + &quot;,[Tariff]{!Environment.Conga_Query_Contract_METariff}?pv1=&quot; + Lead__r.Id + &quot;,[Biz]a270a0000020p7IAAQ?pv1=&quot; + Lead__r.Id + &quot;,[Lead]a270a0000020p7LAAQ?pv1=&quot; + Lead__r.Id + &quot;,[Billing]a275b0000021FNKAA2?pv1=&quot; + Lead__r.Id + &quot;,[SSS]a270a00000211EsAAI?pv2=&quot; + Lead__r.Utility_relationship__r.Id +
+&quot;&amp;sc0=1&quot; +
+&quot;&amp;sc1=SalesforceFile&quot; +
+&quot;&amp;APDF=0&quot; +
+&quot;&amp;contentnetworkid=0DB0a000000L0ryGAC&quot; +
+&quot;&amp;contentsharetype=V&quot; +
+&quot;&amp;contentvisibility=AllUsers&quot; +
+&quot;&amp;defaultpdf=1&quot; +
+&quot;&amp;qmode=SalesforceFile&quot; +
+&quot;&amp;UF0=1&quot; +
+&quot;&amp;MFTS0=Generate_Review_Version__c&quot; +
+&quot;&amp;MFTSValue0=false&quot; +
+&quot;&amp;ContentWorkspaceId=0585b000000aDRHAA2&quot; +
+&quot;&amp;ContentCustomFieldName=Signing_Status__c&quot; +
+&quot;&amp;ContentCustomFieldValue=Review&quot;</formula>
+    <inlineHelpText>This contains the parameter for the conga trigger that runs when the review version of the contract is generated.</inlineHelpText>
+    <label>Conga Review Contract</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__Age_Bucket__c</fullName>
+    <deprecated>false</deprecated>
+    <description>Age Buckets for Aging Reports</description>
+    <externalId>false</externalId>
+    <formula>IF(Zuora__Balance2__c &lt;= 0, NULL,
+            IF(TODAY() - Zuora__DueDate__c &lt;= 0, &quot;On Time&quot;,
+            IF(TODAY() - Zuora__DueDate__c &lt;= 30, &quot;1-30&quot;,
+            IF(TODAY() - Zuora__DueDate__c &lt;= 60, &quot;31-60&quot;,
+            IF(TODAY() - Zuora__DueDate__c &lt;= 90, &quot;61-90&quot;, &quot;91-&quot;)))))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Age Buckets for Aging Reports</inlineHelpText>
+    <label>Age Bucket</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

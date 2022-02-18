@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Segment__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(
+ISPICKVAL(Object_Type__c, &quot;InvoiceItem&quot;),
+&quot;Credits Billed&quot;,
+IF(
+ISPICKVAL(Object_Type__c, &quot;PaymentPart&quot;),
+&quot;Customer Collections&quot;,
+CASE(Reason_Code__c, 
+&quot;Production&quot;,&quot;Credits Billed&quot;,
+&quot;Refund&quot;,&quot;Customer Collections&quot;,
+Reason_Code__c)
+)
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>New Charges, Customer Payment or Adjustment Type</inlineHelpText>
+    <label>Segment</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

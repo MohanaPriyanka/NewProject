@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Solar_Loan</fullName>
+    <active>true</active>
+    <description>Personal Credit Reports for Solar Loan Customers</description>
+    <label>Solar Loan</label>
+    <picklistValues>
+        
+            <picklist>Adverse_Credit_Notice_1__c</picklist>
+        
+            <values>
+            
+                <fullName>Bankruptcy</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Collection action or judgment in credit history</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Delinquent credit obligations %28past or present with others%29</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Excessive credit obligations in relation to income</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Excessive number of recent inquiries on credit bureau report</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Foreclosure or repossession in credit history</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Garnishment or attachment in credit history</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Insufficient income for amount of credit requested</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Insufficient length of employment</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Insufficient length of residence</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Insufficient number of credit references provided%3A If you have established credit under another name%2C you may still qualify for credit by calling this office and providing us with additional information%2E</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Limited credit experience</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>No credit file</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Other - Credit Score is below program minimum</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Poor credit performance with us</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Temporary or irregular employment</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Temporary residence</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Unable to verify credit employment</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Unable to verify credit income</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Unable to verify credit references</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Unable to verify credit residence</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>We do not grant credit to any applicant on the terms and conditions you have requested</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <picklist>Adverse_Credit_Notice_2__c</picklist>
+        
+            <values>
+            
+                <fullName>Bankruptcy</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Collection action or judgment in credit history</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Delinquent credit obligations %28past or present with others%29</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Excessive credit obligations in relation to income</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Excessive number of recent inquiries on credit bureau report</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Foreclosure or repossession in credit history</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Garnishment or attachment in credit history</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Insufficient income for amount of credit requested</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Insufficient length of employment</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Insufficient length of residence</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Insufficient number of credit references provided%3A If you have established credit under another name%2C you may still qualify for credit by calling this office and providing us with additional information%2E</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Limited credit experience</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>No credit file</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Other - Credit Score is below program minimum</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Poor credit performance with us</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Temporary or irregular employment</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Temporary residence</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Unable to verify credit employment</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Unable to verify credit income</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Unable to verify credit references</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Unable to verify credit residence</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>We do not grant credit to any applicant on the terms and conditions you have requested</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <picklist>Adverse_Credit_Notice_3__c</picklist>
+        
+            <values>
+            
+                <fullName>Bankruptcy</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Collection action or judgment in credit history</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Delinquent credit obligations %28past or present with others%29</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Excessive credit obligations in relation to income</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Excessive number of recent inquiries on credit bureau report</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Foreclosure or repossession in credit history</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Garnishment or attachment in credit history</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Insufficient income for amount of credit requested</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Insufficient length of employment</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Insufficient length of residence</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Insufficient number of credit references provided%3A If you have established credit under another name%2C you may still qualify for credit by calling this office and providing us with additional information%2E</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Limited credit experience</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>No credit file</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Other - Credit Score is below program minimum</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Poor credit performance with us</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Temporary or irregular employment</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Temporary residence</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Unable to verify credit employment</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Unable to verify credit income</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Unable to verify credit references</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Unable to verify credit residence</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>We do not grant credit to any applicant on the terms and conditions you have requested</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+        </picklistValues>
+</RecordType>

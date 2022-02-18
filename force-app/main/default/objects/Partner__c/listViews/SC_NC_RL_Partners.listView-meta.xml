@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SC_NC_RL_Partners</fullName>
+    <columns>NAME</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        
+            <field>State__c</field>
+        
+            <operation>equals</operation>
+        
+            <value>SC,NC,FL</value>
+        
+        </filters>
+    <filters>
+        
+            <field>OWNER.LAST_NAME</field>
+        
+            <operation>equals</operation>
+        
+            <value>Otis,Zou,Sheaff,Griswold,Wells</value>
+        
+        </filters>
+    <label>SC/NC RL Partners</label>
+</ListView>

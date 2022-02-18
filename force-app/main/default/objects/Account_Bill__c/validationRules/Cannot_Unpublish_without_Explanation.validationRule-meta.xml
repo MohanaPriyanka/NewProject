@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cannot_Unpublish_without_Explanation</fullName>
+    <active>true</active>
+    <errorConditionFormula>IF(
+AND(
+PRIORVALUE(Published__c),
+OR(
+NOT(ISCHANGED(Reason_For_Unpublish__c)),
+LEN(Reason_For_Unpublish__c)&lt;15
+),
+!Published__c
+)
+,TRUE,FALSE)</errorConditionFormula>
+    <errorMessage>Please enter a reason for unpublishing this bill before continuing (&gt;15 characters)</errorMessage>
+</ValidationRule>

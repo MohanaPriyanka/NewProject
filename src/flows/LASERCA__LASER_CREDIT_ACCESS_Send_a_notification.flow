@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>49.0</apiVersion>
-    <description>Sends a general notification</description>
-    <label>LASER CREDIT ACCESS - Send a notification</label>
-    <processType>AutoLaunchedFlow</processType>
-</Flow>

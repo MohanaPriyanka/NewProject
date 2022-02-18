@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>UCB_Null_Validation</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISPICKVAL(Type__c, &quot;UCB&quot;),
+OR( 
+ISBLANK(End_Date__c), 
+ISBLANK(Start_Date__c), 
+ISBLANK(TEXT(Method_for_UCB_Utility_Admin__c)), ISBLANK(Utility_Admin_Fee__c)) 
+)</errorConditionFormula>
+    <errorMessage>This UCB Default Utility Fee object needs to have a non-null End Date, Start Date, Utility Admin Fee, and Method for UCB Utility Admin.</errorMessage>
+</ValidationRule>

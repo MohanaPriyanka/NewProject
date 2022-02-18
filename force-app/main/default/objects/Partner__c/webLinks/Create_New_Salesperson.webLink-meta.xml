@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Create_New_Salesperson</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <height>600</height>
+    <linkType>url</linkType>
+    <masterLabel>Create New Salesperson</masterLabel>
+    <openType>sidebar</openType>
+    <protected>false</protected>
+    <url>{!$Site.BaseUrl}/flow/Partial_Partner_Setup?PartnerName={!Partner__c.Name}&amp;PartnerID={!Partner__c.Id}&amp;retURL={!$Site.BaseUrl}/{!Partner__c.Id}</url>
+</WebLink>

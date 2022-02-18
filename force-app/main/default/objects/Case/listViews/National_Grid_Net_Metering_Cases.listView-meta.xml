@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>National_Grid_Net_Metering_Cases</fullName>
+    <columns>CASES.CASE_NUMBER</columns>
+    <columns>CASES.SUBJECT</columns>
+    <columns>CASES.CREATED_DATE</columns>
+    <columns>CORE.USERS.ALIAS</columns>
+    <columns>CASES.STATUS</columns>
+    <columns>Deadline__c</columns>
+    <columns>Case_Detail__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        
+            <field>CASES.REASON</field>
+        
+            <operation>equals</operation>
+        
+            <value>Billing</value>
+        
+        </filters>
+    <filters>
+        
+            <field>ACCOUNT.NAME</field>
+        
+            <operation>notContain</operation>
+        
+            <value>test</value>
+        
+        </filters>
+    <filters>
+        
+            <field>CASES.STATUS</field>
+        
+            <operation>equals</operation>
+        
+            <value>On Hold,Escalated,New,In Progress</value>
+        
+        </filters>
+    <filters>
+        
+            <field>CASES.RECORDTYPE</field>
+        
+            <operation>equals</operation>
+        
+            <value>Case.Case</value>
+        
+        </filters>
+    <label>Utility Net Metering Cases</label>
+    <sharedTo>
+        
+            <group>BFG</group>
+        
+        </sharedTo>
+</ListView>

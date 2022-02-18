@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Region__c</fullName>
+    <externalId>false</externalId>
+    <label>Region</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>MA</fullName>
+                
+                    <default>false</default>
+                
+                    <label>MA</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>NY</fullName>
+                
+                    <default>false</default>
+                
+                    <label>NY</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>VT</fullName>
+                
+                    <default>false</default>
+                
+                    <label>VT</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>NH</fullName>
+                
+                    <default>false</default>
+                
+                    <label>NH</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>SC</fullName>
+                
+                    <default>false</default>
+                
+                    <label>SC</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>SA</fullName>
+                
+                    <default>false</default>
+                
+                    <label>SA</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

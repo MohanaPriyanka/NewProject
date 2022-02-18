@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Anchor_Underwriting_Criteria_Populated</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+ISPICKVAL(Customer_Group__c,&quot;Anchor&quot;),
+ISPICKVAL(StageName,&quot;Complete&quot;),
+ISPICKVAL(Underwriting_Criteria__c,&quot;&quot;)
+)</errorConditionFormula>
+    <errorDisplayField>Underwriting_Criteria__c</errorDisplayField>
+    <errorMessage>For anchor opportunities, you must set the Underwriting Criteria field to Investment Grade or Financial Review before setting the stage to Complete</errorMessage>
+</ValidationRule>

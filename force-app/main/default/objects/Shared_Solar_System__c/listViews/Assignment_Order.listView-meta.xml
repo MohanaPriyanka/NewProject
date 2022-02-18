@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>Assignment_Order</fullName>
+    <columns>NAME</columns>
+    <columns>Open__c</columns>
+    <columns>Assignment_Order__c</columns>
+    <columns>Service_Territory__c</columns>
+    <columns>System_Utility__c</columns>
+    <columns>Credit_Score_Requirement__c</columns>
+    <columns>Class__c</columns>
+    <columns>Expected_Yield_kWh_kW__c</columns>
+    <columns>Capacity_Available_to_be_Reserved__c</columns>
+    <columns>BWC_Project_Entity_Manual__c</columns>
+    <columns>UPDATEDBY_USER</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        
+            <field>NAME</field>
+        
+            <operation>notContain</operation>
+        
+            <value>Holder</value>
+        
+        </filters>
+    <filters>
+        
+            <field>NAME</field>
+        
+            <operation>notContain</operation>
+        
+            <value>P1</value>
+        
+        </filters>
+    <filters>
+        
+            <field>NAME</field>
+        
+            <operation>notContain</operation>
+        
+            <value>P2</value>
+        
+        </filters>
+    <filters>
+        
+            <field>Open__c</field>
+        
+            <operation>equals</operation>
+        
+            <value>1</value>
+        
+        </filters>
+    <label>Assignment Order</label>
+</ListView>

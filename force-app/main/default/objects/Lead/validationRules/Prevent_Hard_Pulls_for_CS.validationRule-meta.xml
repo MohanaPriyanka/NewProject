@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Prevent_Hard_Pulls_for_CS</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+ Product_line__c =&quot;Community Solar&quot;,
+ISCHANGED( LASERCA__Pull_Credit_Report__c )=true,
+LASERCA__Pull_Credit_Report__c=true)</errorConditionFormula>
+    <errorMessage>You cannot do a hard credit pull on a Community Solar application.</errorMessage>
+</ValidationRule>

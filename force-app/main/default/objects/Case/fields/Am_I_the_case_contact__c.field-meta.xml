@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Am_I_the_case_contact__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(ISBLANK(Contact.Email), $User.Email = SuppliedEmail , $User.Email = Contact.Email)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Checks to see if logged in user&apos;s email address matches case contact email address, if case contact is blank, checks Web Email address</inlineHelpText>
+    <label>Am I the case contact?</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

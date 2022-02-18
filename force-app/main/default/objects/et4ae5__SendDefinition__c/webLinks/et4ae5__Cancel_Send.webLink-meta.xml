@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>et4ae5__Cancel_Send</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Cancel Send</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/19.0/connection.js&quot;)} {!REQUIRESCRIPT(&quot;/soap/ajax/15.0/apex.js&quot;)} sforce.apex.execute(&quot;et4ae5/trackingWebServices&quot;,&quot;cancelSendDef&quot;,
+      {sendDefId:&quot;{!CASESAFEID( et4ae5__SendDefinition__c.Id )}&quot;}); var urlPrefix = sforce.apex.execute(&quot;et4ae5/jsButtonMethods&quot;,&quot;namespace&quot;,
+      {}); var theUrl = &quot;/{!et4ae5__SendDefinition__c.Id}&quot;; parent.location.href = theUrl;</url>
+</WebLink>

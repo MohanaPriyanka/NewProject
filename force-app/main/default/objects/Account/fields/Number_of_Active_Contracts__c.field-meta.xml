@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Number_of_Active_Contracts__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>The number of active client contracts for this account, updated when Contracts are added or removed, to assist with Client reporting</inlineHelpText>
+    <label>Number of Active Client Contracts</label>
+    <precision>2</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

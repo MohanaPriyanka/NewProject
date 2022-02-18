@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Continue_Application_Link__c</fullName>
+    <description>A generic URL field that can be set by a UI to provide a link specific to this lead</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Stores URL to visit an application as this lead</inlineHelpText>
+    <label>Continue Application Link</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Url</type>
+</CustomField>

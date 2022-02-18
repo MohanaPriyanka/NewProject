@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>UCB_Rate_Only_For_Management_CFD</fullName>
+    <active>true</active>
+    <errorConditionFormula>UCB_Rate__c == TRUE &amp;&amp; Management_Fee__c == FALSE</errorConditionFormula>
+    <errorMessage>UCB Rate cannot be checked if the Contract Fee Detail is not a Management type (indicated by the Management_Fee__c checkbox)</errorMessage>
+</ValidationRule>

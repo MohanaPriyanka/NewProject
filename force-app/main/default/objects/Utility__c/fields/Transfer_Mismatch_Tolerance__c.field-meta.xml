@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Transfer_Mismatch_Tolerance__c</fullName>
+    <description>The dollar variance allowed in the transfer sheet QC to still produce a Match</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The dollar variance allowed in the transfer sheet QC to still produce a Match</inlineHelpText>
+    <label>Transfer Mismatch Tolerance</label>
+    <precision>4</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

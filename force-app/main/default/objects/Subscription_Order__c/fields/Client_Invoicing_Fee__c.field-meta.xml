@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Client_Invoicing_Fee__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(OR(Contract_Fee_Detail__r.Acquisition_Sizing_Type_Downsizing__c,
+      Approved_Change_in_Subscription__c &gt; 0),
+   Potential_Client_Invoicing_Fee__c,
+   IF(Include_Downsizing_in_AA_Invoice__c,
+      Potential_Client_Invoicing_Fee__c,
+      NULL))</formula>
+    <inlineHelpText>The fee (or credit) to charge the client for this Subscription Order. Can be offset by related Client Invoicing Memos.</inlineHelpText>
+    <label>Client Invoicing Fee</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

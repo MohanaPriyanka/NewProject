@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>BFG_MA_Solar_Loan_Co_Applicant</fullName>
+    <active>true</active>
+    <businessProcess>Residential Loan</businessProcess>
+    <label>BFG - MA Solar Loan (Co-Applicant)</label>
+    <picklistValues>
+        
+            <picklist>Underwriting_Criteria__c</picklist>
+        
+            <values>
+            
+                <fullName>FICO</fullName>
+            
+                <default>true</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Financial Review</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Investment-Grade</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>None</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Past Payment History</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <picklist>Customer_Group__c</picklist>
+        
+            <values>
+            
+                <fullName>Residential</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+        </picklistValues>
+</RecordType>

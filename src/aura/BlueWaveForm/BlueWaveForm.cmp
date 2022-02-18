@@ -1,3 +1,0 @@
-<aura:component extensible="true" abstract="true" extends="c:BlueWaveParent">
-  <div>{!v.body}</div>	
-</aura:component>

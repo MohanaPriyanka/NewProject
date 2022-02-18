@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Disable_Emails__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>If checked, this opportunity will not receive workflow email alerts</description>
+    <externalId>false</externalId>
+    <inlineHelpText>** IF CHECKED, DONT UNCHECK. Only use if a record is going to stay in disable emails. Double check workflow rules if you want to check and then uncheck.</inlineHelpText>
+    <label>Disable Emails</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MW_Under_Management__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Sum of Projects that are currently billing (where we expect utilization to be close to 100%)</inlineHelpText>
+    <label>MW Under Management</label>
+    <precision>3</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <description>Recipient of errors when requesting the credit report</description>
+    <enableFeeds>false</enableFeeds>
+    <label>LASER Error Email</label>
+    <visibility>Public</visibility>
+</CustomObject>

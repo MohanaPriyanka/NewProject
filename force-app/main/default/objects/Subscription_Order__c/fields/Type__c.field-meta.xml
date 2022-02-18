@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Type__c</fullName>
+    <externalId>false</externalId>
+    <label>Type</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <restricted>true</restricted>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>Transfer</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Transfer</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Cancellation</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Cancellation</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Shared Solar System Update</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Shared Solar System Update</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Resize</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Resize</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Initial</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Initial</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

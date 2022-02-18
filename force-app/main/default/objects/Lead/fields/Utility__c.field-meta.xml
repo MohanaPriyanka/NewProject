@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Utility__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(INCLUDES(  Utility_1__c , &quot;Eversource&quot;), &quot;Eversource&quot;, 
+IF(INCLUDES(  Utility_1__c , &quot;National Grid&quot;), &quot;National Grid&quot;,
+IF(INCLUDES(  Utility_1__c , &quot;Unitil&quot;), &quot;Unitil&quot;,
+IF(INCLUDES(  Utility_1__c , &quot;Municipal Electric Department&quot;), &quot;Municipal Electric Department&quot;,
+IF(INCLUDES(  Utility_1__c , &quot;Duke Energy&quot;), &quot;Duke Energy&quot;, 
+IF(INCLUDES(  Utility_1__c , &quot;SCE&amp;G&quot;), &quot;SCE&amp;G&quot;, 
+ &quot;Other&quot;))))))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>XXXXX Utility</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

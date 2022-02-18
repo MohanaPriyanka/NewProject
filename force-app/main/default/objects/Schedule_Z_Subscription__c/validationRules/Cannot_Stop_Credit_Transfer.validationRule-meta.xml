@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cannot_Stop_Credit_Transfer</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(Stop_Credit_Transfer__c,
+    NOT(Utility_Account_Subscription__r.Finaled__c),
+    NOT(Utility_Account_Subscription__r.Early_Removal__c))</errorConditionFormula>
+    <errorDisplayField>Stop_Credit_Transfer__c</errorDisplayField>
+    <errorMessage>You cannot stop a credit transfer unless the UAS is finaled (by setting the Date Utility Account Cancelled on the UAL) or the UAS is marked for Early Removal.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Flag__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(LASER_Credit_Score__c = null, IMAGE(&quot;/resource/1563473582000/Panda_Icon&quot;, &quot;panda&quot;), &quot;&quot;)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Displays panda icon if no PCR was returned for this lead. Please update customer info and pull credit again</inlineHelpText>
+    <label>Flag</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

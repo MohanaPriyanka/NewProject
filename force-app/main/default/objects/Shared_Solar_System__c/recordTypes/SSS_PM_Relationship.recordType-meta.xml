@@ -1,0 +1,661 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>SSS_PM_Relationship</fullName>
+    <active>false</active>
+    <label>SSS PM Relationship</label>
+    <picklistValues>
+        
+            <picklist>Client_Brand_Key__c</picklist>
+        
+            <values>
+            
+                <fullName>AmpBlack</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>AmpRed</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>BluewaveLogo</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Perch</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <picklist>RiskCalc_Minimum__c</picklist>
+        
+            <values>
+            
+                <fullName>A1</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>A2</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>A3</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Aa1</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Aa2</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Aa3</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Aaa</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>B1</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>B2</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>B3</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Ba1</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Ba2</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Ba3</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Baa1</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Baa2</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Baa3</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>C</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Ca</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Caa1</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Caa2</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <picklist>Service_Territories__c</picklist>
+        
+            <values>
+            
+                <fullName>Bangor Hydro</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Capital</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Central</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Dunwoodie</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Genesee</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Hudson Valley</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Long Island</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>MN</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Maine</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Maine Public Service</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Millwood</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Mohawk Valley</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>N%2EY%2EC</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>NEMA</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>North</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>SEMA</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>WCMA</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>West</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <picklist>Assignment_Order__c</picklist>
+        
+            <values>
+            
+                <fullName>1</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>10</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>2</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>3</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>4</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>5</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>6</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>7</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>8</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>9</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <picklist>Billing_Anchors__c</picklist>
+        
+            <values>
+            
+                <fullName>BlueWave</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>RadianGen</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <picklist>Billing_Method__c</picklist>
+        
+            <values>
+            
+                <fullName>NMC</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>kWh</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <picklist>CS_Services_Type__c</picklist>
+        
+            <values>
+            
+                <fullName>Acquisition %26 Management</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Management Only</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <picklist>Picklist__c</picklist>
+        
+            <values>
+            
+                <fullName>AMP</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Ameresco</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>BlueWave</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>NextSun</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Norton Development</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <picklist>SSS_Update__c</picklist>
+        
+            <values>
+            
+                <fullName>1</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>2</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <picklist>Service_Territory__c</picklist>
+        
+            <values>
+            
+                <fullName>Duke Energy Carolinas %28DEC%29</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Duke Energy Progress %28DEP%29</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>NEMA</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>SEMA</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>WCMA</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <picklist>Stage__c</picklist>
+        
+            <values>
+            
+                <fullName>Acquisition</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Inactive</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Management</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Onboarding</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Pending</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+        </picklistValues>
+</RecordType>

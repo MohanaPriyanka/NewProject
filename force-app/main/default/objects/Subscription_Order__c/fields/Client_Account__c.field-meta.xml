@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Client_Account__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>This is the Client Account that was on the related Shared Solar System at the time the Subscription Order was created.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This is the Client Account that was on the related Shared Solar System at the time the Subscription Order was created.</inlineHelpText>
+    <label>Client Account</label>
+    <referenceTo>Account</referenceTo>
+    <relationshipLabel>Subscription Orders</relationshipLabel>
+    <relationshipName>Subscription_Orders</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

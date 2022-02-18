@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Utility_Account_Subscription_Editable</fullName>
+    <active>true</active>
+    <label>Utility Account Subscription Editable</label>
+    <picklistValues>
+        
+            <picklist>Next_Schedule_Z_Status__c</picklist>
+        
+            <values>
+            
+                <fullName>Active Subscription</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Inactive Subscription</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+        </picklistValues>
+</RecordType>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Credits_Transferred__c</fullName>
+    <description>Rollup of parts with Type = &quot;Transfer&quot; and &quot;Reduce for Allocation&quot; checkbox = false.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Rollup of parts with Type = &quot;Transfer&quot; and &quot;Reduce for Allocation&quot; checkbox = false.</inlineHelpText>
+    <label>Credits Transferred</label>
+    <summarizedField>Transfer_Part__c.Amount__c</summarizedField>
+    <summaryFilterItems>
+        
+            <field>Transfer_Part__c.Reduce_Available_for_Allocation__c</field>
+        
+            <operation>equals</operation>
+        
+            <value>False</value>
+        
+        </summaryFilterItems>
+    <summaryFilterItems>
+        
+            <field>Transfer_Part__c.Type__c</field>
+        
+            <operation>equals</operation>
+        
+            <value>Transfer</value>
+        
+        </summaryFilterItems>
+    <summaryForeignKey>Transfer_Part__c.Production__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

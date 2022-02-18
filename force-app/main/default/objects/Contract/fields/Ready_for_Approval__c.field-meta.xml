@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Ready_for_Approval__c</fullName>
+    <description>This is a formula field that will be fulfilled only when all fields for Contract Approvals are filled out.</description>
+    <externalId>false</externalId>
+    <formula>AND(
+    NOT(ISBLANK(TEXT(Contract_Type__c))),
+    NOT(ISBLANK(Project_Value__c)),
+    NOT(ISBLANK(Other_Party__c)),
+    NOT(ISBLANK(State_Applications__c)),
+    NOT(ISBLANK(Risk__c)),
+    NOT(ISBLANK(TEXT(Team_Submitted_By__c))),
+    NOT(ISBLANK(Direct_Manager__c)),
+    NOT(ISBLANK(Link_to_Box_Drive__c))          
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>All fields in the Contract Approvals section need to be filled out before this record is Ready for Approval.</inlineHelpText>
+    <label>Ready for Approval</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__BankStreetNumber__c</fullName>
+    <deprecated>false</deprecated>
+    <description>The number for the street address of the bank used for Direct Debit.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The number for the street address of the bank used for Direct Debit.</inlineHelpText>
+    <label>Bank Street Number</label>
+    <length>10</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

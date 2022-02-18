@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        
+        <field>Opportunity$Name</field>
+        
+    </columns>
+    <columns>
+        
+        <aggregateTypes>Sum</aggregateTypes>
+        
+        <field>Opportunity$CS_Capacity_Allocated__c</field>
+        
+    </columns>
+    <columns>
+        
+        <field>Opportunity$Shared_Solar_System_Name__c</field>
+        
+    </columns>
+    <columns>
+        
+        <field>Opportunity$Product_XXX__c</field>
+        
+    </columns>
+    <columns>
+        
+        <field>Opportunity$CreatedDate</field>
+        
+    </columns>
+    <columns>
+        
+        <field>Opportunity$Contract_Close_Date__c</field>
+        
+    </columns>
+    <columns>
+        
+        <field>Opportunity$Email__c</field>
+        
+    </columns>
+    <columns>
+        
+        <field>Opportunity$UtilityMapper__c</field>
+        
+    </columns>
+    <filter>
+        
+        <criteriaItems>
+            
+            <column>Opportunity$StageName</column>
+            
+            <columnToColumn>false</columnToColumn>
+            
+            <isUnlocked>false</isUnlocked>
+            
+            <operator>equals</operator>
+            
+            <value>Complete</value>
+            
+        </criteriaItems>
+        
+    </filter>
+    <format>Tabular</format>
+    <name>Complete Applications</name>
+    <params>
+        
+        <name>co</name>
+        
+        <value>1</value>
+        
+    </params>
+    <reportType>Opportunities_Custom__c</reportType>
+    <roleHierarchyFilter>CEO</roleHierarchyFilter>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <sortColumn>Opportunity$CreatedDate</sortColumn>
+    <sortOrder>Desc</sortOrder>
+    <timeFrameFilter>
+        
+        <dateColumn>Opportunity$CreatedDate</dateColumn>
+        
+        <interval>INTERVAL_CUSTOM</interval>
+        
+    </timeFrameFilter>
+</Report>

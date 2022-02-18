@@ -1,0 +1,13 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" controller="CAPController" access="global" extends="c:CAPParent">
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <aura:attribute name="leadId" type="String"/>
+  <aura:attribute name="email" type="String"/>
+  <c:LightningErrorHandler/>
+  <c:CAPStart supressWaiting="true" leadId="{!v.leadId}" leadEmail="{!v.email}" page="Login"/>
+  <c:CAPPersonalInfo supressWaiting="true"/>
+  <c:CAPCreditCheck supressWaiting="true"/>
+  <c:CAPIncomeDoc supressWaiting="true"/>
+  <c:CAPConsents supressWaiting="true"/>
+  <c:CAPComplete supressWaiting="true"/>
+  <c:CAPDocRequest supressWaiting="true"/>
+</aura:component>

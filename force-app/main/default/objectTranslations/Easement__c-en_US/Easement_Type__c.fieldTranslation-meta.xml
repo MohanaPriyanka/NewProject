@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label/>
+    <name>Easement_Type__c</name>
+    <picklistValues>
+        
+            <masterLabel>Aerial</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>DOT</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Environmental</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Land Owner</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>ROW</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Transmission Corridor</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+</CustomFieldTranslation>

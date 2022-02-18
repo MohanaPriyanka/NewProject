@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Do_not_populate_acq_fee_fields_if_mgmt</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+Management_Fee__c,
+OR(
+Acquisition_Cust_Group_Anchor__c,
+Acquisition_Cust_Group_Residential__c, 
+Acquisition_Sizing_Type_Downsizing__c,  
+Acquisition_Sizing_Type_Upsizing__c,  
+Acquisition_Channels_BCS_Acquired__c,  
+Acquisition_Channels_Non_BCS_Acquired__c  
+)
+)</errorConditionFormula>
+    <errorDisplayField>Management_Fee__c</errorDisplayField>
+    <errorMessage>If this is an management fee, do not populate acquisition fee fields</errorMessage>
+</ValidationRule>

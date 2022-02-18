@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LASERCA__Now_Delinquent__c</fullName>
+    <deprecated>false</deprecated>
+    <externalId>false</externalId>
+    <label>Now Delinquent</label>
+    <summaryFilterItems>
+        
+            <field>LASERCA__Trade_Accounts__c.LASERCA__Status__c</field>
+        
+            <operation>equals</operation>
+        
+            <value>Now Delinquent</value>
+        
+        </summaryFilterItems>
+    <summaryForeignKey>LASERCA__Trade_Accounts__c.LASERCA__Personal_Credit_Report__c</summaryForeignKey>
+    <summaryOperation>count</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

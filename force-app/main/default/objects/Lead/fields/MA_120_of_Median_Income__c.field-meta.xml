@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MA_120_of_Median_Income__c</fullName>
+    <description>This is 120% of the median income - used to define class I or class II Income Based loan support</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Hidden Field, used for calculation</inlineHelpText>
+    <label>MA 120% of Median Income</label>
+    <precision>9</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <securityClassification>Restricted</securityClassification>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>Acquisition_Credit_Score_Requir_Required</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+ISPICKVAL(Stage__c,&quot;Acquisition&quot;),
+NOT( Do_Not_Underwrite__c ),
+OR (
+Credit_Score_Requirement__c = 0,
+ISBLANK(Credit_Score_Requirement__c)
+)
+)
+|| 
+AND(
+ISPICKVAL(Stage__c,&quot;Acquisition&quot;),
+Do_Not_Underwrite__c,
+NOT(ISBLANK(Credit_Score_Requirement__c))
+)</errorConditionFormula>
+    <errorDisplayField>Credit_Score_Requirement__c</errorDisplayField>
+    <errorMessage>When in the &quot;Acquisition&quot; stage, a Shared Solar System must have a &quot;Minimum FICO Requirement&quot; or be set to &quot;Do Not Underwrite&quot;. It cannot be both.</errorMessage>
+</ValidationRule>

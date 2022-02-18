@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Default_Application__c</fullName>
+    <description>Allows the default application in the Solar Loan Portal to be toggled.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Allows the default application in the Solar Loan Portal to be toggled.</inlineHelpText>
+    <label>Default Application</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <restricted>true</restricted>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>BlueWave Solar Loan</fullName>
+                
+                    <default>false</default>
+                
+                    <label>BlueWave Solar Loan</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Massachusetts Solar Loan Program</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Massachusetts Solar Loan Program</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

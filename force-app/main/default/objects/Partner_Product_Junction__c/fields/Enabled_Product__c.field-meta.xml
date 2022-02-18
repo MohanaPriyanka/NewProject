@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Enabled_Product__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Can&apos;t be a master/detail fro some reason:
+https://success.salesforce.com/answers?id=906300000004AH9AAM</description>
+    <externalId>false</externalId>
+    <label>Enabled Product</label>
+    <referenceTo>Product2</referenceTo>
+    <relationshipLabel>Partner Product Junctions</relationshipLabel>
+    <relationshipName>Partner_Product_Junctions</relationshipName>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

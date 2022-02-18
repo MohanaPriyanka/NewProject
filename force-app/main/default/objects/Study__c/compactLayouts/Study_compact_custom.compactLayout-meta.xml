@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Study_compact_custom</fullName>
+    <fields>Study_Type__c</fields>
+    <fields>Name</fields>
+    <fields>Study_Cost__c</fields>
+    <fields>Date_Report_Received__c</fields>
+    <fields>Study_Begins_Est__c</fields>
+    <fields>Study_Begins_Act__c</fields>
+    <fields>Utility_Completed_Study__c</fields>
+    <fields>Extension_Payment_Due__c</fields>
+    <fields>Extension_Payment_Sent__c</fields>
+    <label>Study compact custom</label>
+</CompactLayout>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>First_Response_Age__c</fullName>
+    <description>Note - I&apos;m reasonably certain the help text is correct, but I might be missing something.</description>
+    <externalId>false</externalId>
+    <formula>IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-CreatedDate 
+- 
+IF(MOD( DATEVALUE(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)) - DATE(1900,1,7), 7)=0,(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-DATETIMEVALUE(TEXT(DATEVALUE(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)))&amp;&quot; 4:00:00&quot;))-1,0) 
+- 
+IF(MOD( DATEVALUE(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)) - DATE(1900,1,7), 7)=6,(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-DATETIMEVALUE(TEXT(DATEVALUE(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)))&amp;&quot; 4:00:00&quot;)),0) 
+- 
+IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-CreatedDate &gt; 1,IF(FLOOR((IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c) - CreatedDate) / 7) &gt;= 1,FLOOR((IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c) - CreatedDate) / 7) * 2,IF((MOD( DATEVALUE(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)) - DATE(1900,1,7), 7) - MOD( DATEVALUE(CreatedDate) - DATE(1900,1,7), 7)) &lt;= 0,2,0)),0)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>First Response Time - Date/Time Opened; excluding weekend days</inlineHelpText>
+    <label>First Response Age</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__PaypalType__c</fullName>
+    <deprecated>false</deprecated>
+    <description>Specifies which PayPal gateway, either PayFlow Pro (Express Checkout) or Adaptive Payments.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Specifies which PayPal gateway, either PayFlow Pro (Express Checkout) or Adaptive Payments.</inlineHelpText>
+    <label>Paypal Type</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>ExpressCheckout</fullName>
+                
+                    <default>false</default>
+                
+                    <label>ExpressCheckout</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>AdaptivePayments</fullName>
+                
+                    <default>false</default>
+                
+                    <label>AdaptivePayments</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

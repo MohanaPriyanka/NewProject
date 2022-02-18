@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Open_Partner_Care_Cases1</fullName>
+    <columns>CASES.CASE_NUMBER</columns>
+    <columns>NAME</columns>
+    <columns>CASES.SUBJECT</columns>
+    <columns>CORE.USERS.ALIAS</columns>
+    <columns>Category__c</columns>
+    <columns>CASES.CREATED_DATE</columns>
+    <columns>Resolution__c</columns>
+    <columns>CASES.CLOSED_DATE</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        
+            <field>CASES.RECORDTYPE</field>
+        
+            <operation>equals</operation>
+        
+            <value>Case.Partner_Care_Case,Case.Customer_Care</value>
+        
+        </filters>
+    <filters>
+        
+            <field>CASES.STATUS</field>
+        
+            <operation>equals</operation>
+        
+            <value>Closed</value>
+        
+        </filters>
+    <label>Support Ops - Closed Support Cases</label>
+</ListView>

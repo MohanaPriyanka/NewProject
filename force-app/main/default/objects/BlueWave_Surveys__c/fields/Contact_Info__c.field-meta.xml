@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Contact_Info__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Would you like to provide additional feedback as we develop the portal further? If so, please tell us the best way to contact you.</inlineHelpText>
+    <label>Contact Info</label>
+    <length>600</length>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

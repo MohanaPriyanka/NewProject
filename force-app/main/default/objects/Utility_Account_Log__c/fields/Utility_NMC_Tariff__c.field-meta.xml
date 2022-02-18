@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Utility_NMC_Tariff__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
+    <label>Utility NMC Tariff</label>
+    <referenceTo>Utility_NMC_Tariff__c</referenceTo>
+    <relationshipLabel>Utility Account Logs</relationshipLabel>
+    <relationshipName>Utility_Account_Logs</relationshipName>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

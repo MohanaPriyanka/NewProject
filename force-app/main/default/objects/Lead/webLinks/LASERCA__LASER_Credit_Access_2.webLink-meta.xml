@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LASERCA__LASER_Credit_Access_2</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>LASER Credit Access 2</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>if(confirm(&apos;You are about to run a personal credit report. Are you sure you want to proceed?&apos;)){
+window.location.href = &apos;/apex/CreditAPILeads?id={!Lead.Id}&amp;createTask=true&apos;;
+}</url>
+</WebLink>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        
+        <field>CUST_NAME</field>
+        
+    </columns>
+    <columns>
+        
+        <field>Shared_Solar_System__c.Total_CS_Capacity_kW_DC_Formula__c</field>
+        
+    </columns>
+    <columns>
+        
+        <field>Shared_Solar_System__c.Total_Capacity_Committed_Reserved__c</field>
+        
+    </columns>
+    <columns>
+        
+        <aggregateTypes>Sum</aggregateTypes>
+        
+        <field>Shared_Solar_System__c.Pending_Small_CS_Capacity__c</field>
+        
+    </columns>
+    <columns>
+        
+        <field>Shared_Solar_System__c.Anchor_Capacity_Reserved__c</field>
+        
+    </columns>
+    <columns>
+        
+        <field>Shared_Solar_System__c.Anchor_CS_Capacity_Committed__c</field>
+        
+    </columns>
+    <columns>
+        
+        <field>Shared_Solar_System__c.Project_Capacity_Available_kW_DC__c</field>
+        
+    </columns>
+    <columns>
+        
+        <field>Shared_Solar_System__c.Capacity_Committed_kW_DC__c</field>
+        
+    </columns>
+    <columns>
+        
+        <field>Shared_Solar_System__c.Capacity_Available_to_be_Reserved__c</field>
+        
+    </columns>
+    <columns>
+        
+        <field>Shared_Solar_System__c.Utility__c</field>
+        
+    </columns>
+    <columns>
+        
+        <aggregateTypes>Sum</aggregateTypes>
+        
+        <field>Shared_Solar_System__c.NMC_Value__c</field>
+        
+    </columns>
+    <format>Tabular</format>
+    <name>SSS - PTO next 4 months</name>
+    <params>
+        
+        <name>co</name>
+        
+        <value>1</value>
+        
+    </params>
+    <reportType>CustomEntity$Shared_Solar_System__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        
+        <dateColumn>Shared_Solar_System__c.Actual_COD_Date__c</dateColumn>
+        
+        <interval>INTERVAL_CUSTOM</interval>
+        
+    </timeFrameFilter>
+</Report>

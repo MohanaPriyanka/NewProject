@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__AppliedInvoiceAmount__c</fullName>
+    <deprecated>false</deprecated>
+    <description>The amount of the payment to apply to an invoice.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The amount of the payment to apply to an invoice.</inlineHelpText>
+    <label>Applied Invoice Amount</label>
+    <summarizedField>Zuora__PaymentInvoice__c.Zuora__ApplyAmount__c</summarizedField>
+    <summaryForeignKey>Zuora__PaymentInvoice__c.Zuora__Payment__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>49.0</apiVersion>
-    <description>Simple Signup Form Agreements - Consumer Version</description>
-    <isExposed>false</isExposed>
-    <masterLabel>Simple Signup Form Agreements - Consumer Version</masterLabel>
-</LightningComponentBundle>

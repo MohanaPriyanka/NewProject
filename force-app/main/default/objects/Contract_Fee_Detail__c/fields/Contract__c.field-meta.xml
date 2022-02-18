@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Contract__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>The related Client Contract</inlineHelpText>
+    <label>Contract</label>
+    <lookupFilter>
+        
+            <active>true</active>
+        
+            <errorMessage>Contract Fee Detail must be related to a contract with the record type = Client Contract</errorMessage>
+        
+            <filterItems>
+            
+                <field>Contract.RecordTypeId</field>
+            
+                <operation>equals</operation>
+            
+                <value>Client Contract</value>
+            
+            </filterItems>
+        
+            <isOptional>false</isOptional>
+        
+        </lookupFilter>
+    <referenceTo>Contract</referenceTo>
+    <relationshipLabel>Contract Fee Detail</relationshipLabel>
+    <relationshipName>Contract_Fee_Detail</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>BFG</fullName>
+    <active>true</active>
+    <businessProcess>BlueWave Capital</businessProcess>
+    <label>BFG</label>
+    <picklistValues>
+        
+            <picklist>Underwriting_Criteria__c</picklist>
+        
+            <values>
+            
+                <fullName>FICO</fullName>
+            
+                <default>true</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Financial Review</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Investment-Grade</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>None</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Past Payment History</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <picklist>Customer_Group__c</picklist>
+        
+            <values>
+            
+                <fullName>Non-Residential</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Residential</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <picklist>ForecastCategoryName</picklist>
+        
+            <values>
+            
+                <fullName>Best Case</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Closed</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Commit</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Omitted</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Pipeline</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <picklist>Type</picklist>
+        
+            <values>
+            
+                <fullName>CS Acquisition</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>CS Acquisition%2FManagement</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>CS Management</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Existing Business</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Loan Sales</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Loan Sales%2FWarehouse</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>New Business</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Other</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Warehouse</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <picklist>LeadSource</picklist>
+        
+            <values>
+            
+                <fullName>Other</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Partner</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Third-Party</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Website</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+        </picklistValues>
+</RecordType>

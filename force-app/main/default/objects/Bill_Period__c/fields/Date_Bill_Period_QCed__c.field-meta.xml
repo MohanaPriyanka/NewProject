@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Date_Bill_Period_QCed__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Date Bill Period&apos;s Transfer records were confirmed by Ops</inlineHelpText>
+    <label>Date Bill Period QCed</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

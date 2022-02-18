@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>Committed_Demand_Capacity__c</fullName>
+    <description>Sum of Complete &quot;Demand&quot; subscriptions (determined when a UAL&apos;s Average Demand exceeds the Average Demand Threshold specified on the Utility record)</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Sum of Complete &quot;Demand&quot; subscriptions (determined when a UAL&apos;s Average Demand exceeds the Average Demand Threshold specified on the Utility record)</inlineHelpText>
+    <label>Committed Demand Capacity</label>
+    <precision>13</precision>
+    <required>false</required>
+    <scale>4</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

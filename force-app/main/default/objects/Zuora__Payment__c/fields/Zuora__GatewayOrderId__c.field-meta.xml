@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__GatewayOrderId__c</fullName>
+    <deprecated>false</deprecated>
+    <description>The ID of the gateway order, which is the merchant-specified natural key value.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The ID of the gateway order, which is the merchant-specified natural key value.</inlineHelpText>
+    <label>Gateway Order ID</label>
+    <length>70</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

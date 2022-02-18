@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Applied_to_Production_Starting__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Manual entry provided by utility. It is the start of the production period to which the Allocation Schedule is applied</inlineHelpText>
+    <label>Applied to Production Starting</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Delinquency_Information__c</fullName>
+    <description>Used in the partner portal to display delinquency information on reports. This is an alternative to sharing accounts with partners.</description>
+    <externalId>false</externalId>
+    <formula>&quot;Contact Name: &quot;&amp; Account.Send_Bills_Contact__r.FirstName &amp;&quot; &quot;&amp; Account.Send_Bills_Contact__r.LastName &amp; BR() &amp;
+&quot;Contact Email: &quot; &amp; Account.Send_Bills_Contact__r.Email &amp;BR()&amp;
+&quot;Contact Phone: &quot; &amp; Account.Send_Bills_Contact__r.Phone &amp;BR()&amp;
+&quot;Contact Mobile: &quot; &amp; Account.Send_Bills_Contact__r.MobilePhone &amp;BR()&amp;
+&quot;Autopay: &quot; &amp;  IF(Account.Recurring_Billing__c,&quot;Yes&quot;,&quot;No&quot;) &amp; BR() &amp;
+&quot;Account Balance: $&quot; &amp;  TEXT(Account.Account_Balance__c) &amp; BR() &amp;
+&quot;Account Number: &quot; &amp;  Account.Account_Number__c</formula>
+    <label>Delinquency Information</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

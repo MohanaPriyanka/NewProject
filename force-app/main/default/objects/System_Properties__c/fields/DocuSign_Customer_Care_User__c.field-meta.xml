@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DocuSign_Customer_Care_User__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>The DocuSign user that the DocuSign user will send documents on behalf of. It should be customercare@bluewavesolar.com in production, but could be different if pointed to a developer sandbox.</inlineHelpText>
+    <label>DocuSign Customer Care User</label>
+    <length>255</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

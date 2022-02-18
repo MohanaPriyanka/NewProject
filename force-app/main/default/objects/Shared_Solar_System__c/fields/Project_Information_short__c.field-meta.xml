@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>Project_Information_short__c</fullName>
+    <description>This is the information that is displayed within the Project carousel in the Customer Portal, and is meant to be a short blurb to give info at a glance. Character count is purposefully kept smaller than the full information field.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This is the information that is displayed within the Project carousel in the Customer Portal, and is meant to be a short blurb to give info at a glance.</inlineHelpText>
+    <label>Project Information (short)</label>
+    <length>250</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

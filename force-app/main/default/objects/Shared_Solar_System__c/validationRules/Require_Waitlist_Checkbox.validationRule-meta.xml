@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>Require_Waitlist_Checkbox</fullName>
+    <active>true</active>
+    <description>If the shared solar system&apos;s name contains Waitlist, you must also check the &quot;Waitlist&quot; checkbox</description>
+    <errorConditionFormula>AND(
+CONTAINS(Name, &quot;Waitlist&quot;),
+NOT(Waitlist__c)
+)</errorConditionFormula>
+    <errorMessage>If the shared solar system&apos;s name contains Waitlist, you must also check the &quot;Waitlist&quot; checkbox</errorMessage>
+</ValidationRule>

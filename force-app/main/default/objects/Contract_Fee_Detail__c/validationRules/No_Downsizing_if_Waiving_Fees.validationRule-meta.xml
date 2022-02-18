@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>No_Downsizing_if_Waiving_Fees</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND( Acquisition_Sizing_Type_Downsizing__c , 
+     OR( Waive_Reacq_Fee_In_Initial_Period__c ,  
+         Waive_Reacq_Fee_After_Initial_Period__c ))</errorConditionFormula>
+    <errorMessage>Selecting Downsizing AND enabling one of the Fee Waive options will give the client double credit for cancellations (credit for the downsizing to 0 and a waived reacq fee). Check with Biz Apps to do this.</errorMessage>
+</ValidationRule>

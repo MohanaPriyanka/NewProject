@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Incentive_Type__c</fullName>
+    <externalId>false</externalId>
+    <label>Incentive Type</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <restricted>true</restricted>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>Federal</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Federal</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>MA ACA</fullName>
+                
+                    <default>false</default>
+                
+                    <label>MA ACA</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>MA SMART</fullName>
+                
+                    <default>false</default>
+                
+                    <label>MA SMART</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>NEPOOL</fullName>
+                
+                    <default>false</default>
+                
+                    <label>NEPOOL</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Netmetering</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Netmetering</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Renewble Energy Credits</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Renewble Energy Credits</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>SREC</fullName>
+                
+                    <default>false</default>
+                
+                    <label>SREC</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

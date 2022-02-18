@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>Preview_Next_Schedule_Z</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <linkType>url</linkType>
+    <masterLabel>Preview Next Allocation Schedule</masterLabel>
+    <openType>replace</openType>
+    <protected>false</protected>
+    <url>/lightning/r/Report/00Oj0000004i4Un/view?fv2={!Shared_Solar_System__c.Name}</url>
+</WebLink>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Address_Update__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Checked if the UAL address info was different from the most recent UDR address info.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Checked if the UAL address info was different from the most recent UDR address info.</inlineHelpText>
+    <label>Address Update</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

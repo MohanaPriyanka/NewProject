@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Collect_POD_ID_Checked_For_Dual_Data</fullName>
+    <active>true</active>
+    <description>Collect Customer POD ID must be checked every time both the account number and POD ID have to be sent.</description>
+    <errorConditionFormula>IF(Dual_Data__c, 
+    NOT(Collect_Customer_POD_Number__c), 
+    FALSE)</errorConditionFormula>
+    <errorMessage>Collect Customer POD Number should be checked every time both the account number and POD Number are to be sent.</errorMessage>
+</ValidationRule>

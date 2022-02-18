@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>EDI_Name_Override__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Override field for the Utility Name that is sent in outbound EDI requests</inlineHelpText>
+    <label>EDI Name Override</label>
+    <length>50</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Valid_for_Period__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Time period for which this tariff is valid.</inlineHelpText>
+    <label>Valid for Period</label>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <restricted>true</restricted>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>NGRID November to April</fullName>
+                
+                    <default>false</default>
+                
+                    <label>NGRID November to April</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>NGRID May to October</fullName>
+                
+                    <default>false</default>
+                
+                    <label>NGRID May to October</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Eversource January to June</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Eversource January to June</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Eversource July to December</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Eversource July to December</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

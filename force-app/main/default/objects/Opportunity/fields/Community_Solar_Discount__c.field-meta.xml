@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Community_Solar_Discount__c</fullName>
+    <defaultValue>10</defaultValue>
+    <description>This is the discount given to community solar subscribers.  Default value is 10%.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This is the discount given to community solar subscribers.  Default value is 10%.</inlineHelpText>
+    <label>Community Solar Discount</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Percent</type>
+</CustomField>

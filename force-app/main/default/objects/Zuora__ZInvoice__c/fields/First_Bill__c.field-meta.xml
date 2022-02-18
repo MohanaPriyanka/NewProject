@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>First_Bill__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Indicates first bill on the account. All first bills receive a snail mail and email copy of their first bill.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Indicates first bill on the account. All first bills receive a snail mail and email copy of their first bill.</inlineHelpText>
+    <label>First Bill</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

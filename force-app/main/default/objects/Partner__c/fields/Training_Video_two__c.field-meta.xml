@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Training_Video_two__c</fullName>
+    <externalId>false</externalId>
+    <formula>HYPERLINK(&quot;https://www.useloom.com/share/ffedb4c0eef711e6b739413e95536ce0&quot;, &quot;Click here to view this video&quot;)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>How to Process an Application</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Shared_Solar_System__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>The SSS record that the order is for.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This is the Shared Solar System that will be updated once the order is approved.</inlineHelpText>
+    <label>Shared Solar System</label>
+    <referenceTo>Shared_Solar_System__c</referenceTo>
+    <relationshipLabel>Shared Solar System Orders</relationshipLabel>
+    <relationshipName>Shared_Solar_System_Orders</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

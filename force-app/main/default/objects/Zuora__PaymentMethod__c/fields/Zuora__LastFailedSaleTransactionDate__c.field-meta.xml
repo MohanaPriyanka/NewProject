@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__LastFailedSaleTransactionDate__c</fullName>
+    <deprecated>false</deprecated>
+    <description>The is the date of the last failed attempt at collecting payment with this payment method.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The is the date of the last failed attempt at collecting payment with this payment method.</inlineHelpText>
+    <label>Last Failed Sale Transaction Date</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>DateTime</type>
+</CustomField>

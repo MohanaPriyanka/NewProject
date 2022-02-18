@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Layout xmlns="http://soap.sforce.com/2006/04/metadata">
+    
+    <customButtons>Zuora__View_Invoice_PDF</customButtons>
+    
+    <excludeButtons>Clone</excludeButtons>
+    
+    <excludeButtons>Delete</excludeButtons>
+    
+    <excludeButtons>Edit</excludeButtons>
+    
+    <excludeButtons>Share</excludeButtons>
+    
+    <excludeButtons>Submit</excludeButtons>
+    
+    <layoutSections>
+        
+        <customLabel>true</customLabel>
+        
+        <detailHeading>true</detailHeading>
+        
+        <editHeading>true</editHeading>
+        
+        <label>General Information</label>
+        
+        <layoutColumns>
+            
+            <layoutItems>
+                
+                <behavior>Required</behavior>
+                
+                <field>Name</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>Zuora__Zuora_Id__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>Zuora__Status__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <emptySpace>true</emptySpace>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>Zuora__InvoiceDate__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>Downloaded_Date__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>Zuora__DueDate__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Readonly</behavior>
+                
+                <field>Zuora__Age_Bucket__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>First_Bill__c</field>
+                
+            </layoutItems>
+            
+        </layoutColumns>
+        
+        <layoutColumns>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>Zuora__Account__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>Zuora__BillingAccount__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>Zuora__Payment_Term__c</field>
+                
+            </layoutItems>
+            
+        </layoutColumns>
+        
+        <style>TwoColumnsLeftToRight</style>
+        
+    </layoutSections>
+    
+    <layoutSections>
+        
+        <customLabel>true</customLabel>
+        
+        <detailHeading>true</detailHeading>
+        
+        <editHeading>true</editHeading>
+        
+        <label>Bill Send Process</label>
+        
+        <layoutColumns>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>Ready_for_Email_Send__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>Ready_for_Paper_Bill_Queue__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>Content_Document_Id__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>LetterStream_Insert__c</field>
+                
+            </layoutItems>
+            
+        </layoutColumns>
+        
+        <layoutColumns>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>Email_Sent__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>Added_to_Paper_Bill_Queue__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>LetterStreamJob__c</field>
+                
+            </layoutItems>
+            
+        </layoutColumns>
+        
+        <style>TwoColumnsLeftToRight</style>
+        
+    </layoutSections>
+    
+    <layoutSections>
+        
+        <customLabel>true</customLabel>
+        
+        <detailHeading>true</detailHeading>
+        
+        <editHeading>true</editHeading>
+        
+        <label>Balance</label>
+        
+        <layoutColumns>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>Zuora__Balance2__c</field>
+                
+            </layoutItems>
+            
+        </layoutColumns>
+        
+        <layoutColumns>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>Zuora__TotalAmount__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>Zuora__PaymentAmount__c</field>
+                
+            </layoutItems>
+            
+        </layoutColumns>
+        
+        <style>TwoColumnsLeftToRight</style>
+        
+    </layoutSections>
+    
+    <layoutSections>
+        
+        <customLabel>true</customLabel>
+        
+        <detailHeading>false</detailHeading>
+        
+        <editHeading>false</editHeading>
+        
+        <label>Fields</label>
+        
+        <layoutColumns>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>Zuora__Description__c</field>
+                
+            </layoutItems>
+            
+        </layoutColumns>
+        
+        <layoutColumns/>
+        
+        <style>TwoColumnsLeftToRight</style>
+        
+    </layoutSections>
+    
+    <layoutSections>
+        
+        <customLabel>true</customLabel>
+        
+        <detailHeading>true</detailHeading>
+        
+        <editHeading>false</editHeading>
+        
+        <label>Custom Links</label>
+        
+        <layoutColumns/>
+        
+        <layoutColumns/>
+        
+        <layoutColumns/>
+        
+        <style>CustomLinks</style>
+        
+    </layoutSections>
+    
+    <relatedLists>
+        
+        <fields>TASK.SUBJECT</fields>
+        
+        <fields>TASK.WHO_NAME</fields>
+        
+        <fields>ACTIVITY.TASK</fields>
+        
+        <fields>TASK.DUE_DATE</fields>
+        
+        <fields>CORE.USERS.FULL_NAME</fields>
+        
+        <fields>TASK.LAST_UPDATE</fields>
+        
+        <relatedList>RelatedHistoryList</relatedList>
+        
+    </relatedLists>
+    
+    <relatedLists>
+        
+        <excludeButtons>New</excludeButtons>
+        
+        <fields>Zuora__Payment__c</fields>
+        
+        <fields>Zuora__ApplyAmount__c</fields>
+        
+        <fields>Zuora__RefundAmount__c</fields>
+        
+        <relatedList>Zuora__PaymentInvoice__c.Zuora__Invoice__c</relatedList>
+        
+        <sortField>Zuora__Payment__c</sortField>
+        
+        <sortOrder>Asc</sortOrder>
+        
+    </relatedLists>
+    
+    <relatedLists>
+        
+        <relatedList>RelatedNoteList</relatedList>
+        
+    </relatedLists>
+    
+    <relatedLists>
+        
+        <relatedList>RelatedFileList</relatedList>
+        
+    </relatedLists>
+    
+    <showEmailCheckbox>false</showEmailCheckbox>
+    
+    <showHighlightsPanel>true</showHighlightsPanel>
+    
+    <showInteractionLogPanel>true</showInteractionLogPanel>
+    
+    <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
+    
+    <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
+    
+    <summaryLayout>
+        
+        <masterLabel>00hS00000011G5p</masterLabel>
+        
+        <sizeX>4</sizeX>
+        
+        <sizeY>0</sizeY>
+        
+        <summaryLayoutStyle>Default</summaryLayoutStyle>
+        
+    </summaryLayout>
+    
+</Layout>

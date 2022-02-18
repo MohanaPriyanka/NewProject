@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Annual_Electricity_Cost_Method__c</fullName>
+    <externalId>false</externalId>
+    <label>Subscription Method</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>Enter the data manually</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Enter the data manually</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Utility Account Log Calculator (Default)</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Utility Account Log Calculator (Default)</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

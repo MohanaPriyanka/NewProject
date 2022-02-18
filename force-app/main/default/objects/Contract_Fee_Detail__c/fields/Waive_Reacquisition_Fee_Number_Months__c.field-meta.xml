@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Waive_Reacquisition_Fee_Number_Months__c</fullName>
+    <defaultValue>0</defaultValue>
+    <externalId>false</externalId>
+    <inlineHelpText>Must be populated at same time as field Waive Reacq Fee:Initial Period Milestone. The milestone + # of Months defines the end of the initial period, allowing us to waive fees before or after that initial period. Could be 0 but not blank.</inlineHelpText>
+    <label>Waive Reacq Fee: # of Months</label>
+    <precision>3</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

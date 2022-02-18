@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Default_Credit_Value_for_kWh_Projects</fullName>
+    <active>true</active>
+    <description>If Billing Method = kWh, Default Credit Value must be populated</description>
+    <errorConditionFormula>AND(CONTAINS( Billing_Method__c, &quot;kWh&quot;), ISBLANK( Default_Credit_Value__c ))</errorConditionFormula>
+    <errorMessage>The Default Credit Value must be filled out for kWh Transfers</errorMessage>
+</ValidationRule>

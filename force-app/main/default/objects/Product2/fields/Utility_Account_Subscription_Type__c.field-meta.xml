@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Utility_Account_Subscription_Type__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Determines whether a utility account will be able to be subscribed to more than one system. Most NY utility accounts are only allowed to be subscribed to a single system.</inlineHelpText>
+    <label>Utility Account Subscription Type</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <restricted>true</restricted>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>Multiple subscriptions per Utility Account</fullName>
+                
+                    <default>true</default>
+                
+                    <label>Multiple subscriptions per Utility Account</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Single subscription per Utility Account</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Single subscription per Utility Account</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

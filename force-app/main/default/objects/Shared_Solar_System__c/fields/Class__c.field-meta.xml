@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>Class__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF ( OR( 
+
+Name = &quot;Oxford Barrett St. P2&quot;, Name = &quot;Oxford Barrett St. P1&quot;), &quot;Class 2&quot;,
+
+IF(AND(   Total_System_Size_kW_AC__c &gt; 60, Total_System_Size_kW_AC__c &lt;= 1000), &quot;Class 2&quot;, 
+
+IF ( Total_System_Size_kW_AC__c &gt; 1000, &quot;Class 3&quot;, null)))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>MA Specific
+Based on size of project (1MW), if the SSS falls into Class II or Class III categories</inlineHelpText>
+    <label>System Class</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

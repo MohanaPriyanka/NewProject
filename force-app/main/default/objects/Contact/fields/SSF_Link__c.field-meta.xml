@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SSF_Link__c</fullName>
+    <description>SSF link for partner contacts. Contact must have a partner lookup and a sales rep for the link to generate</description>
+    <externalId>false</externalId>
+    <formula>IF(( NOT( ISBLANK(Sales_Representative__c) ) &amp;&amp; NOT( ISBLANK(Partner_Lookup__c) )), HYPERLINK(&quot;https://bluewavememberportal.force.com/apply/s/switch?salesrepID=&quot;&amp;Sales_Representative__c&amp;&quot;&amp;partnerId=&quot;&amp;Partner_Lookup__c, &quot;SSF Rep/Partner Link&quot;,
+&quot;_blank&quot;),NULL)</formula>
+    <inlineHelpText>SSF link for partner contacts</inlineHelpText>
+    <label>SSF Link</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

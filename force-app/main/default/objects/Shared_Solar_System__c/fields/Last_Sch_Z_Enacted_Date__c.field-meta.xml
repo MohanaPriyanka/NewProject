@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>Last_Sch_Z_Enacted_Date__c</fullName>
+    <description>This field is populated with the maximum Date Enacted by Utility field on all related Allocation Schedule records. If it needs to be updated, please update the Allocation Schedule record.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This field is populated with the maximum Date Enacted by Utility field on all related Allocation Schedule records. If it needs to be updated, please update the Allocation Schedule record.</inlineHelpText>
+    <label>Last Allocation Schedule Enacted Date</label>
+    <summarizedField>Schedule_Z__c.Date_Enacted_by_Utility__c</summarizedField>
+    <summaryForeignKey>Schedule_Z__c.Shared_Solar_System__c</summaryForeignKey>
+    <summaryOperation>max</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

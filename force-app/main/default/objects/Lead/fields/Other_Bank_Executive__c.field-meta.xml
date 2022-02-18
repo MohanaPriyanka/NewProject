@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Other_Bank_Executive__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Is borrower or co-borrower an executive officer or director of another institution?</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Reg O Question. Is borrower or co-borrower an executive officer or director of another institution?</inlineHelpText>
+    <label>Other Bank Executive?</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

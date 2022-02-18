@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Specify_Public_Offtake_or_Not</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND (OR (Acquisition_Type_Acquisition__c,
+         Acquisition_Type_Reacquisition__c ),
+     NOT(Acquisition_Cust_Group_Public_Offtake__c ),
+     NOT(Acquisition_Cust_Group_Not_Specified__c))</errorConditionFormula>
+    <errorDisplayField>Acquisition_Cust_Group_Not_Specified__c</errorDisplayField>
+    <errorMessage>For Acquisition and Reacquisition CFDs, specify whether it should apply to Public Offtake or customers without a Customer Sub-Group (specified on the Opportunity), or both</errorMessage>
+</ValidationRule>

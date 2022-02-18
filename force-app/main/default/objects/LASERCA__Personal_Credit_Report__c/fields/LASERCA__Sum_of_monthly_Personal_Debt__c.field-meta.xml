@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LASERCA__Sum_of_monthly_Personal_Debt__c</fullName>
+    <deprecated>false</deprecated>
+    <externalId>false</externalId>
+    <label>Sum of Monthly Personal Debt</label>
+    <summarizedField>LASERCA__Trade_Accounts__c.LASERCA__Monthly_Payment__c</summarizedField>
+    <summaryForeignKey>LASERCA__Trade_Accounts__c.LASERCA__Personal_Credit_Report__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

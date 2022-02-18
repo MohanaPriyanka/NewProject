@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Protect_Active_Invoices</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+OR(
+ISCHANGED( Cents_kW_DC_Up_Front__c ),
+ISCHANGED( Cents_kW_DC_First_Bill_Paid__c ) ,
+ISCHANGED( Cents_kW_DC_First_Bill__c ),
+ISCHANGED( Type__c ),
+ISCHANGED(Product__c)),
+ISNEW()=false)</errorConditionFormula>
+    <errorMessage>You can&apos;t edit commission structures once they&apos;ve been created!</errorMessage>
+</ValidationRule>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Ready_only_For_Schedule_Z</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISCHANGED(Schedule_Z_Id__c) , Schedule_Z_Id__c != NULL)</errorConditionFormula>
+    <errorMessage>Cannot Change Schedule Z Id</errorMessage>
+</ValidationRule>

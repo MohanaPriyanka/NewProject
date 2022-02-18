@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__PaymentMethod_Type__c</fullName>
+    <deprecated>false</deprecated>
+    <externalId>false</externalId>
+    <formula>IF (  ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__Type__c, &quot;ACH&quot;), &quot;ACH&quot;,
+   IF ( ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__Type__c, &quot;BankTransfer&quot;), &quot;Bank Transfer&quot;, 
+       IF ( ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__Type__c, &quot;Cash&quot;), &quot;Cash&quot;,     
+         IF ( ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__Type__c, &quot;Check&quot;), &quot;Check&quot;, 
+           IF ( ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__Type__c, &quot;CreditCard&quot;), &quot;Credit Card&quot;, 
+                IF ( ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__Type__c, &quot;CreditCardReferenceTransaction&quot;), &quot;Credit Card  Reference Transaction&quot;, 
+                    IF ( ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__Type__c, &quot;DebitCard&quot;), &quot;Debit Card&quot;, 
+                       IF ( ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__Type__c, &quot;Other&quot;), &quot;Other&quot;, 
+                                IF ( ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__Type__c, &quot;PayPal&quot;), &quot;PayPal&quot;, 
+                                   IF ( ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__Type__c, &quot;WireTransfer&quot;), &quot;Wire Transfer&quot;,  &quot;&quot;
+                                     )
+                                )
+                         )
+                     )
+                )
+         )
+    )
+  )
+))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Payment Method Type</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>First_Date_Production_Billed__c</fullName>
+    <description>First date the production period is billed via a main transfer - from Bill Period Date</description>
+    <externalId>false</externalId>
+    <inlineHelpText>First date the production period is billed via a main transfer</inlineHelpText>
+    <label>First Date Production Billed</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

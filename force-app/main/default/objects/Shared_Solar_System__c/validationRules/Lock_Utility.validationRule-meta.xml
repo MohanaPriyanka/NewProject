@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>Lock_Utility</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+
+ $CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true,
+
+ISCHANGED( Utility__c ),/*utility is being changed*/
+
+OR(
+ISPICKVAL(Stage__c,&quot;Management&quot;),
+ISPICKVAL(Stage__c,&quot;Acquisition&quot;)
+) /*and it&apos;s being change to either Management or Acquisition*/
+)</errorConditionFormula>
+    <errorMessage>You cannot change the Utility on this shared solar system at this time. Please contact the Business Applications if this is needed.</errorMessage>
+</ValidationRule>

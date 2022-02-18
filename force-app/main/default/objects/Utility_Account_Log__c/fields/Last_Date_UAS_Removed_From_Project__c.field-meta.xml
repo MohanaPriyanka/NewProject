@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Last_Date_UAS_Removed_From_Project__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Finds the latest Date Removed From Project across UASes. Doesn&apos;t mean that all UASes have been removed.</inlineHelpText>
+    <label>Last Date UAS Removed From Project</label>
+    <summarizedField>Utility_Account_Subscription__c.Date_Removed_from_Project__c</summarizedField>
+    <summaryForeignKey>Utility_Account_Subscription__c.Utility_Account_Log__c</summaryForeignKey>
+    <summaryOperation>max</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

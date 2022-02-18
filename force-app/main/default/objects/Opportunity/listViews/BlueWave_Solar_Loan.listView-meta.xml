@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>BlueWave_Solar_Loan</fullName>
+    <columns>OPPORTUNITY.NAME</columns>
+    <columns>OPPORTUNITY.STAGE_NAME</columns>
+    <columns>OPPORTUNITY.CREATED_DATE</columns>
+    <columns>Community_Solar_State__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        
+            <field>Product_Line__c</field>
+        
+            <operation>equals</operation>
+        
+            <value>Residential Loan</value>
+        
+        </filters>
+    <filters>
+        
+            <field>DOER_Solar_Loan__c</field>
+        
+            <operation>equals</operation>
+        
+            <value>0</value>
+        
+        </filters>
+    <label>BlueWave Solar Loan</label>
+    <sharedTo>
+        
+            <group>Avidia_Lending</group>
+        
+        </sharedTo>
+</ListView>

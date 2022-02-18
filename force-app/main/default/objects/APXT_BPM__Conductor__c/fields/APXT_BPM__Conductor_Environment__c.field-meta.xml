@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>APXT_BPM__Conductor_Environment__c</fullName>
+    <deprecated>false</deprecated>
+    <description>ONLY USED BY CONGA SUPPORT
+
+* Recommended to remove from page layout when not in use *</description>
+    <externalId>false</externalId>
+    <label>Conductor Environment</label>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>prod-</fullName>
+                
+                    <default>true</default>
+                
+                    <label>prod-</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>staging-</fullName>
+                
+                    <default>false</default>
+                
+                    <label>staging-</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>beta-</fullName>
+                
+                    <default>false</default>
+                
+                    <label>beta-</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

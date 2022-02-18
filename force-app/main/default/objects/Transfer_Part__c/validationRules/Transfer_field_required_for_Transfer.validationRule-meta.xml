@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Transfer_field_required_for_Transfer</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND( 
+ISPICKVAL(Type__c, &quot;Transfer&quot;), 
+(ISBLANK(Transfer__c)) 
+)</errorConditionFormula>
+    <errorMessage>Transfer field cannot be blank if your Type is selected as Transfer.</errorMessage>
+</ValidationRule>

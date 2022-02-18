@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SpecialTerms</fullName>
+    <description>Identify any special contract terms which are additional to terms set out in other contracts of this type or just anything that may be beyond the normal scope.</description>
+    <inlineHelpText>Identify any special contract terms which are additional to terms set out in other contracts of this type or just anything that may be beyond the normal scope.</inlineHelpText>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+</CustomField>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>et4ae5__ExactTarget_Resubscribe</fullName>
+    <availability>online</availability>
+    <displayType>link</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Marketing Cloud Resubscribe</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/19.0/connection.js&quot;)}
+      {!REQUIRESCRIPT(&quot;/soap/ajax/15.0/apex.js&quot;)}
+      var didResub;
+      try
+      {
+      didResub=sforce.apex.execute(&quot;et4ae5/jsButtonMethods&quot;,&quot;performResub&quot;, {subscriberKey:&quot;{!CASESAFEID(Contact.Id)}&quot;,objectType:&quot;contact&quot;});
+      }
+      catch (e)
+      {
+      didResub=sforce.apex.execute(&quot;jsButtonMethods&quot;,&quot;performResub&quot;, {subscriberKey:&quot;{!CASESAFEID(Contact.Id)}&quot;,objectType:&quot;contact&quot;});
+      }
+      if (didResub==&quot;connection error&quot;)
+      {
+      alert(&quot;{!$Label.et4ae5__msg0047}&quot;);
+      }
+      else if (didResub==&quot;not found&quot;)
+      {
+      alert(&quot;{!$Label.et4ae5__msg0085}&quot;);
+      }
+      else if (didResub==&quot;other error&quot;)
+      {
+      alert(&quot;{!$Label.et4ae5__msg0086}&quot;);
+      }
+      else if (didResub==&quot;not integrated&quot;)
+      {
+      alert(&quot;{!$Label.et4ae5__msg0087}&quot;);
+      }
+      else if (didResub==&quot;success&quot;)
+      {
+      alert(&quot;{!Contact.Name} {!$Label.et4ae5__wasresublegacy}&quot;);
+      }
+      else
+      {
+      alert(didResub);
+      }
+      var theUrl=&quot;/{!Contact.Id}&quot;;
+      parent.location.href=theUrl;</url>
+</WebLink>

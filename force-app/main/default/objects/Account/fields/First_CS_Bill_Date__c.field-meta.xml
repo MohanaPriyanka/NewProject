@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>First_CS_Bill_Date__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Set when new invoices are downloaded from Zuora for attrition tracking and subscription length analysis</inlineHelpText>
+    <label>First Bill Date</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Date</type>
+</CustomField>

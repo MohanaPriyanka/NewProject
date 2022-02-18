@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Conga_CS_Disclosure__c</fullName>
+    <externalId>false</externalId>
+    <formula>&quot;&amp;solmgr=1&quot; + 
+&quot;&amp;id=&quot; + Id +
+&quot;&amp;templateid=&quot; + IF(CampaignId =&quot;7010a000002uNgS&quot;,&quot;a2F0a000001ZWou&quot;,IF(CampaignId =&quot;7010a000002uNgX&quot;,&quot;a2F0a000001ZWop&quot;,&quot;a2F0a000001ZWoz&quot;)) + 
+&quot;&amp;ofn=&quot; + Contact.Account.Name + &quot; CS Disclosure Form&quot; + 
+&quot;&amp;contactid=&quot; + Contact.Id +
+&quot;&amp;sc0=1&quot; + 
+&quot;&amp;sc1=SalesforceFile&quot; + 
+&quot;&amp;UF0=1&quot;</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Conga CS Disclosure</label>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

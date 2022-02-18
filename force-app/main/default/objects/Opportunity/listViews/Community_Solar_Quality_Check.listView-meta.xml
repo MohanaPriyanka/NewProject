@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Community_Solar_Quality_Check</fullName>
+    <columns>OPPORTUNITY.NAME</columns>
+    <columns>CS_Capacity_Allocated__c</columns>
+    <columns>Shared_Solar_System__c</columns>
+    <columns>Partner_tag_lookup__c</columns>
+    <columns>Utility_Bill_Received__c</columns>
+    <columns>Personal_Credit_Report_Reviewed__c</columns>
+    <columns>Comments__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        
+            <field>Product_Line__c</field>
+        
+            <operation>equals</operation>
+        
+            <value>Community Solar</value>
+        
+        </filters>
+    <filters>
+        
+            <field>OPPORTUNITY.STAGE_NAME</field>
+        
+            <operation>equals</operation>
+        
+            <value>QC In Process</value>
+        
+        </filters>
+    <label>Community Solar - Quality Check</label>
+    <sharedTo>
+        
+            <group>BFG</group>
+        
+        </sharedTo>
+</ListView>

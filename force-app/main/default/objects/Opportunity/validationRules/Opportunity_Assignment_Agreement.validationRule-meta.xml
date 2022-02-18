@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Opportunity_Assignment_Agreement</fullName>
+    <active>true</active>
+    <description>We should not change a customer&apos;s assignment agreement after it has been set</description>
+    <errorConditionFormula>AND(
+ISCHANGED(Assignment_Agreement__c),
+OR(
+PRIORVALUE(Assigned_to_Client__c),
+Assigned_to_Client__c
+)
+)</errorConditionFormula>
+    <errorDisplayField>Assignment_Agreement__c</errorDisplayField>
+    <errorMessage>We should not change a customer&apos;s assignment agreement after it has been set, unless the assignment agreement has status = Draft</errorMessage>
+</ValidationRule>

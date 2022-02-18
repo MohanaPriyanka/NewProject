@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Transferred_From__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>This is the lookup to the Subscription Transfer that is used to relate the newly created UAS to the Subscription Transfer that created it.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This should be populated when a new UAS is created from a Subscription Transfer.  There should usually be one UAS created by a single Subscription Transfer unless a UAS is being split into multiple new UASs.</inlineHelpText>
+    <label>Transferred From</label>
+    <referenceTo>Subscription_Transfer__c</referenceTo>
+    <relationshipLabel>Transferred to UASs</relationshipLabel>
+    <relationshipName>Utility_Account_Subscriptions1</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

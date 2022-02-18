@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Lead_QC_Complete__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>This is checked as part of Sales&apos; QC of CS leads.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This is checked as part of Sales&apos; QC of CS leads.</inlineHelpText>
+    <label>Lead QC Complete</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

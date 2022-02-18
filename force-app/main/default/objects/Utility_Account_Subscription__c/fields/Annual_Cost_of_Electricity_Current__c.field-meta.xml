@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Annual_Cost_of_Electricity_Current__c</fullName>
+    <description>Used in SREC contracts. This is based off of the NMC value on the Opportunity. It shows how many dollars are included in the Current Customer Subscription kW DC.</description>
+    <externalId>false</externalId>
+    <formula>Customer_Subscription_KW_DC_STATIC__c * 
+IF(
+$CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true,
+
+Shared_Solar_System__r.Expected_Yield_kWh_kW__c* Shared_Solar_System__r.NMC_Value__c,
+
+Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c* Opportunity__r.Shared_Solar_System__r.NMC_Value__c
+)</formula>
+    <inlineHelpText>Used in SREC contracts. This is based off of the NMC value on the Opportunity. It shows how many dollars are included in the Current Customer Subscription kW DC.</inlineHelpText>
+    <label>Annual Cost of Electricity (Current)</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

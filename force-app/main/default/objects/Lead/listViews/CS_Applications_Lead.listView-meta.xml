@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CS_Applications_Lead</fullName>
+    <filterScope>Queue</filterScope>
+    <label>BlueWave</label>
+    <queue>CS_Applications</queue>
+    <sharedTo>
+        
+            <group>BFG</group>
+        
+            <group>BWC</group>
+        
+            <group>BWCMA_Executive_Team</group>
+        
+            <group>BWC_Site_Acq</group>
+        
+            <group>Executives</group>
+        
+            <group>External_BFG</group>
+        
+            <group>Founders</group>
+        
+            <group>Project_Management</group>
+        
+        </sharedTo>
+</ListView>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All</fullName>
+    <columns>NAME</columns>
+    <columns>CREATED_DATE</columns>
+    <columns>Utility_Account_Subscription__c</columns>
+    <columns>Adjustment_Amount__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        
+            <field>NAME</field>
+        
+            <operation>contains</operation>
+        
+            <value>Jeffrey Bernier</value>
+        
+        </filters>
+    <label>Jeffery Bernier</label>
+</ListView>

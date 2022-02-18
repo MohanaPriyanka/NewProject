@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Generate_Bills</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Generate Bills</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/27.0/connection.js&quot;)} 
+
+var objCase = new sforce.SObject(&apos;Energy_Usage_Update__c&apos;); 
+
+if({! 
+    OR ( 
+    ISBLANK( Energy_Usage_Update__c.Billing_Period_Start_Date__c ), 
+    ISBLANK( Energy_Usage_Update__c.Billing_Period_End_Date__c ),
+    ISBLANK( Energy_Usage_Update__c.Date__c ), 
+    ISBLANK( Energy_Usage_Update__c.Net_Metering_Rate_Applied__c ), 
+    ISBLANK( Energy_Usage_Update__c.Production__c ), 
+    ISBLANK( Energy_Usage_Update__c.Total_System_NMCs__c ),
+    ISBLANK( Energy_Usage_Update__c.Schedule_Z__c)
+    )
+}){ 
+    alert(&quot;BLANK VALUES: All Fields in the Top Section are Required&quot;);
+} else if({!Energy_Usage_Update__c.Generate_Bills__c}){ 
+    alert(&quot;Bills Have Already Been Generated&quot;);
+} else if({!Energy_Usage_Update__c.Billing_Method__c == null}){
+    alert(&quot;The Billing Method field is blank.  Please ensure this field on the Shared Solar System has a value assigned&quot;);
+} else if({!Energy_Usage_Update__c.Billing_Method__c == &quot;kWh&quot;}){ 
+    var nmcBox = confirm(&quot;Check the Billing Methods field  UNLESS this is an XCel Minnesota Project. Hit okay to confirm this is for MN, cancel to go back.&quot;);
+    if(!nmcBox) {
+        document.location.reload(true); 
+    } else {
+        var yes = confirm(&quot;Are you sure you want to generate bills?&quot;) 
+        if(!yes) { 
+            document.location.reload(true); 
+        } else { 
+            objCase.Id = &apos;{!Energy_Usage_Update__c.Id}&apos;; 
+            objCase.Generate_Bills__c = true; 
+            var result = sforce.connection.update([objCase]); 
+            alert(&apos;Bills are being generated, this may take a few minutes&apos;);
+        }
+    }
+} else { 
+    var otheryes = confirm(&quot;Are you sure you want to generate bills?&quot;);
+    if(!otheryes) { 
+        document.location.reload(true); 
+    } else { 
+        objCase.Id = &apos;{!Energy_Usage_Update__c.Id}&apos;; 
+        objCase.Generate_Bills__c = true; 
+        var otherResult = sforce.connection.update([objCase]); 
+        alert(&apos;Bills are being generated, this may take a few minutes&apos;);
+    }
+}</url>
+</WebLink>

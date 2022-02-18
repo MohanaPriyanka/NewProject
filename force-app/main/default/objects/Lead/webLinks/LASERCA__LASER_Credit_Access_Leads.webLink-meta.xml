@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LASERCA__LASER_Credit_Access_Leads</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <height>600</height>
+    <linkType>page</linkType>
+    <masterLabel>LASER Credit Access</masterLabel>
+    <openType>sidebar</openType>
+    <page>LASERCA__CreditAPILeads</page>
+    <protected>false</protected>
+</WebLink>

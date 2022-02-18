@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Number_of_Non_Cancelled_UASes__c</fullName>
+    <externalId>false</externalId>
+    <label>Number of Non-Cancelled UASes</label>
+    <summaryFilterItems>
+        
+            <field>Utility_Account_Subscription__c.Current_Schedule_Z_Status__c</field>
+        
+            <operation>notEqual</operation>
+        
+            <value>Cancelled</value>
+        
+        </summaryFilterItems>
+    <summaryForeignKey>Utility_Account_Subscription__c.Utility_Account_Log__c</summaryForeignKey>
+    <summaryOperation>count</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

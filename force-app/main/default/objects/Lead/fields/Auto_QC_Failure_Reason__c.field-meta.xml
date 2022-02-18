@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Auto_QC_Failure_Reason__c</fullName>
+    <description>Failure encountered during Auto Lead Qualification &amp; Conversion. See CSLeadsConverter / CSLeadConversionValidator.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Failure encountered during Auto Lead Qualification &amp; Conversion</inlineHelpText>
+    <label>Auto QC Failure Reason</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <restricted>true</restricted>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>Conversion Failure</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Conversion Failure</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Lead Already Converted</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Lead Already Converted</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Testcase Lead</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Testcase Lead</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Application Incomplete</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Application Incomplete</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Invalid Email</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Invalid Email</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Incomplete UALs</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Incomplete UALs</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>No Qualified Systems Found</fullName>
+                
+                    <default>false</default>
+                
+                    <label>No Qualified Systems Found</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>System Product Mismatch</fullName>
+                
+                    <default>false</default>
+                
+                    <label>System Product Mismatch</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Auto QC Turned Off</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Auto QC Turned Off</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Multiple Issues</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Multiple Issues</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>No Demand Capacity Available</fullName>
+                
+                    <default>false</default>
+                
+                    <label>No Demand Capacity Available</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Unresolved Split Load Zone</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Unresolved Split Load Zone</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

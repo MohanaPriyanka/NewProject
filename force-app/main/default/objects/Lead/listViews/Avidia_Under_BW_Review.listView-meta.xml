@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Avidia_Under_BW_Review</fullName>
+    <columns>FULL_NAME</columns>
+    <columns>LEAD.COMPANY</columns>
+    <columns>LEAD.STATE_CODE</columns>
+    <columns>LEAD.EMAIL</columns>
+    <columns>LEAD.STATUS</columns>
+    <columns>LEAD.CREATED_DATE</columns>
+    <columns>CORE.USERS.ALIAS</columns>
+    <columns>Comments__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        
+            <field>Lender_of_Record__c</field>
+        
+            <operation>equals</operation>
+        
+            <value>Avidia</value>
+        
+        </filters>
+    <filters>
+        
+            <field>LEAD.STATUS</field>
+        
+            <operation>equals</operation>
+        
+            <value>Under BlueWave Review</value>
+        
+        </filters>
+    <filters>
+        
+            <field>LEAD.LAST_NAME</field>
+        
+            <operation>notContain</operation>
+        
+            <value>testcase,Test</value>
+        
+        </filters>
+    <label>Avidia - Under BW Review</label>
+</ListView>

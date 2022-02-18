@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LASERCA__Closed_account_with_zero_balance__c</fullName>
+    <deprecated>false</deprecated>
+    <externalId>false</externalId>
+    <label>Closed account with zero balance</label>
+    <summaryFilterItems>
+        
+            <field>LASERCA__Trade_Accounts__c.LASERCA__Account_Status_Type__c</field>
+        
+            <operation>equals</operation>
+        
+            <value>Closed</value>
+        
+        </summaryFilterItems>
+    <summaryFilterItems>
+        
+            <field>LASERCA__Trade_Accounts__c.LASERCA__Account_Balance__c</field>
+        
+            <operation>equals</operation>
+        
+            <value>0</value>
+        
+        </summaryFilterItems>
+    <summaryForeignKey>LASERCA__Trade_Accounts__c.LASERCA__Personal_Credit_Report__c</summaryForeignKey>
+    <summaryOperation>count</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

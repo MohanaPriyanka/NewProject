@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Objective_QC__c</fullName>
+    <externalId>false</externalId>
+    <formula>Partner_Account__r.Paperwork__c +
+Partner_Account__r.Conversion_Rate__c +
+Partner_Account__r.GC_CS_License__c +
+Partner_Account__r.Electrical_License__c +
+Partner_Account__r.NABCEP_Cert__c +
+Partner_Account__r.TPF_Paid__c +
+Partner_Account__r.Install_Issues__c +
+Partner_Account__r.FICO__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Objective measures from the Partner&apos;s Account (Paperwork, Conversion Rate, GC CS License, Electrical License, NABCEP Cert, TPF Paid, Install Issues, FICO)</inlineHelpText>
+    <label>Objective QC</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

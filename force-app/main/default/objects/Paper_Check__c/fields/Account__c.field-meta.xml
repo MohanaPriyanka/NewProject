@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Account__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <externalId>false</externalId>
+    <inlineHelpText>This is the Property Account to which the check is applied.</inlineHelpText>
+    <label>Account</label>
+    <lookupFilter>
+        
+            <active>true</active>
+        
+            <errorMessage>Paper checks can only be logged to Property Accounts.</errorMessage>
+        
+            <filterItems>
+            
+                <field>Account.RecordTypeId</field>
+            
+                <operation>equals</operation>
+            
+                <value>Property</value>
+            
+            </filterItems>
+        
+            <isOptional>false</isOptional>
+        
+        </lookupFilter>
+    <referenceTo>Account</referenceTo>
+    <relationshipLabel>Paper Checks</relationshipLabel>
+    <relationshipName>Paper_Checks</relationshipName>
+    <required>true</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

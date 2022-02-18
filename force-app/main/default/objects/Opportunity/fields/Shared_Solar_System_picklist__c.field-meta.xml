@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Shared_Solar_System_picklist__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Choose the Shared Solar System you would like this Customer to be a part of. This selection tool only works if the Project Assignment Field is set to &quot;Manual&quot;.</inlineHelpText>
+    <label>System List</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <controllingField>Service_Territory__c</controllingField>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>Spartanburg - Central Ave.</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Spartanburg - Central Ave.</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Oxford Clara Barton</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Oxford Clara Barton</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Fairhaven Mill Rd.</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Fairhaven Mill Rd.</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Oxford Barrett St. SR-1</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Oxford Barrett St. SR-1</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Oxford Barrett St. SR-2</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Oxford Barrett St. SR-2</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Oxford Barrett St. SR-3</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Oxford Barrett St. SR-3</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Oxford Barrett St. SR-4</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Oxford Barrett St. SR-4</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Oxford Barrett St. FR-2</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Oxford Barrett St. FR-2</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Oxford Barrett St. FR-3</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Oxford Barrett St. FR-3</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Oxford Barrett St. FR-4</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Oxford Barrett St. FR-4</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Oxford Barrett St. FR-5</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Oxford Barrett St. FR-5</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Oxford Barrett St. FR-6</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Oxford Barrett St. FR-6</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+            <valueSettings>
+            
+                <controllingFieldValue>Duke Energy Carolinas (DEC)</controllingFieldValue>
+            
+                <valueName>Spartanburg - Central Ave.</valueName>
+            
+            </valueSettings>
+        
+            <valueSettings>
+            
+                <controllingFieldValue>SEMA</controllingFieldValue>
+            
+                <valueName>Fairhaven Mill Rd.</valueName>
+            
+            </valueSettings>
+        
+            <valueSettings>
+            
+                <controllingFieldValue>WCMA</controllingFieldValue>
+            
+                <valueName>Oxford Clara Barton</valueName>
+            
+            </valueSettings>
+        
+            <valueSettings>
+            
+                <controllingFieldValue>WCMA</controllingFieldValue>
+            
+                <valueName>Oxford Barrett St. SR-1</valueName>
+            
+            </valueSettings>
+        
+            <valueSettings>
+            
+                <controllingFieldValue>WCMA</controllingFieldValue>
+            
+                <valueName>Oxford Barrett St. SR-2</valueName>
+            
+            </valueSettings>
+        
+            <valueSettings>
+            
+                <controllingFieldValue>WCMA</controllingFieldValue>
+            
+                <valueName>Oxford Barrett St. SR-3</valueName>
+            
+            </valueSettings>
+        
+            <valueSettings>
+            
+                <controllingFieldValue>WCMA</controllingFieldValue>
+            
+                <valueName>Oxford Barrett St. SR-4</valueName>
+            
+            </valueSettings>
+        
+            <valueSettings>
+            
+                <controllingFieldValue>WCMA</controllingFieldValue>
+            
+                <valueName>Oxford Barrett St. FR-2</valueName>
+            
+            </valueSettings>
+        
+            <valueSettings>
+            
+                <controllingFieldValue>WCMA</controllingFieldValue>
+            
+                <valueName>Oxford Barrett St. FR-3</valueName>
+            
+            </valueSettings>
+        
+            <valueSettings>
+            
+                <controllingFieldValue>WCMA</controllingFieldValue>
+            
+                <valueName>Oxford Barrett St. FR-4</valueName>
+            
+            </valueSettings>
+        
+            <valueSettings>
+            
+                <controllingFieldValue>WCMA</controllingFieldValue>
+            
+                <valueName>Oxford Barrett St. FR-5</valueName>
+            
+            </valueSettings>
+        
+            <valueSettings>
+            
+                <controllingFieldValue>WCMA</controllingFieldValue>
+            
+                <valueName>Oxford Barrett St. FR-6</valueName>
+            
+            </valueSettings>
+        
+        </valueSet>
+</CustomField>

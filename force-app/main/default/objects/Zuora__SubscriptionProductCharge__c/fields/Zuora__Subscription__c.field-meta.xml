@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__Subscription__c</fullName>
+    <deleteConstraint>Cascade</deleteConstraint>
+    <deprecated>false</deprecated>
+    <externalId>false</externalId>
+    <label>Subscription</label>
+    <referenceTo>Zuora__Subscription__c</referenceTo>
+    <relationshipLabel>Subscription Product &amp; Charges</relationshipLabel>
+    <relationshipName>Subscription_Product_Charges</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__CreditBalance__c</fullName>
+    <defaultValue>0.000000000</defaultValue>
+    <deprecated>false</deprecated>
+    <description>Credit balance of Billing Account field in Zuora</description>
+    <externalId>false</externalId>
+    <label>Credit Balance( Deprecated )</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>9</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

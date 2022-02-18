@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<DuplicateRule xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    
+    <actionOnInsert>Allow</actionOnInsert>
+    
+    <actionOnUpdate>Allow</actionOnUpdate>
+    
+    <alertText xsi:nil="true"/>
+    
+    <description xsi:nil="true"/>
+    
+    <duplicateRuleFilter>
+        
+        <booleanFilter>1 OR 2</booleanFilter>
+        
+        <duplicateRuleFilterItems>
+            
+            <field>LeadSource</field>
+            
+            <operation>equals</operation>
+            
+            <value>CSAP</value>
+            
+            <sortOrder>1</sortOrder>
+            
+            <table>Lead</table>
+            
+        </duplicateRuleFilterItems>
+        
+        <duplicateRuleFilterItems>
+            
+            <field>LeadSource</field>
+            
+            <operation>equals</operation>
+            
+            <value>Switch</value>
+            
+            <sortOrder>2</sortOrder>
+            
+            <table>Lead</table>
+            
+        </duplicateRuleFilterItems>
+        
+    </duplicateRuleFilter>
+    
+    <duplicateRuleMatchRules>
+        
+        <matchRuleSObjectType>Lead</matchRuleSObjectType>
+        
+        <matchingRule>Lead_Duplicate_Rule</matchingRule>
+        
+        <objectMapping xsi:nil="true"/>
+        
+    </duplicateRuleMatchRules>
+    
+    <isActive>true</isActive>
+    
+    <masterLabel>Lead Duplicate Rule</masterLabel>
+    
+    <operationsOnInsert>Report</operationsOnInsert>
+    
+    <operationsOnUpdate>Report</operationsOnUpdate>
+    
+    <securityOption>BypassSharingRules</securityOption>
+    
+    <sortOrder>1</sortOrder>
+    
+</DuplicateRule>

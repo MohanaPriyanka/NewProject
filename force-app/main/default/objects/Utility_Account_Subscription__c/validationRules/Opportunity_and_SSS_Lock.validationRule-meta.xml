@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Opportunity_and_SSS_Lock</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+
+ISNEW()=false, /*does not apply to new records*/
+
+OR(
+   AND( ISCHANGED(Shared_Solar_System__c)=true,
+        NOT(PRIORVALUE(Shared_Solar_System__c)=&quot;&quot;) /*prevent SSS changes once populated*/
+),
+   AND( ISCHANGED( Opportunity__c )=true,
+        NOT(PRIORVALUE(Opportunity__c)=&quot;&quot;) /*prevent opp changes once populated*/
+)
+)
+)</errorConditionFormula>
+    <errorMessage>The Shared Solar System and Opportunity on a Utility Account Subscription cannot be changed. If you are trying to change the Shared Solar System, do so on the Opportunity.</errorMessage>
+</ValidationRule>

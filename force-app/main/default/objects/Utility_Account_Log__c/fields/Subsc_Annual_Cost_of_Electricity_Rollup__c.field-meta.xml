@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Subsc_Annual_Cost_of_Electricity_Rollup__c</fullName>
+    <description>Used for SREC CS Product sizing. It&apos;s the sum of the Future Annual Cost of Electricity (rollup) field on all related Utility Account Subscriptions.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Used for SREC CS Product sizing. It&apos;s the sum of the Future Annual Cost of Electricity (rollup) field on all related Utility Account Subscriptions.</inlineHelpText>
+    <label>Subscribed Annual Cost of Electricity</label>
+    <summarizedField>Utility_Account_Subscription__c.Annual_Cost_Future_Rollup__c</summarizedField>
+    <summaryFilterItems>
+        
+            <field>Utility_Account_Subscription__c.Next_Schedule_Z_Status__c</field>
+        
+            <operation>equals</operation>
+        
+            <value>Active Subscription</value>
+        
+        </summaryFilterItems>
+    <summaryForeignKey>Utility_Account_Subscription__c.Utility_Account_Log__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

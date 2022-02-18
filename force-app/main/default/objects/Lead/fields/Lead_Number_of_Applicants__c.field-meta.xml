@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Lead_Number_of_Applicants__c</fullName>
+    <description>Numerical Expression of individual vs joint applications.  Required for MCEC reporting.</description>
+    <externalId>false</externalId>
+    <formula>if( Application_Type__c = &quot;Joint&quot;,2,1)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Lead Number of Applicants</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

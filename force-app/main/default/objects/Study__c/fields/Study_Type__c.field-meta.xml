@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Study_Type__c</fullName>
+    <externalId>false</externalId>
+    <label>Study Type</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <restricted>true</restricted>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>20-50BD Review</fullName>
+                
+                    <default>false</default>
+                
+                    <label>20-50BD Review</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>ASO Study</fullName>
+                
+                    <default>false</default>
+                
+                    <label>ASO Study</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Combined (Feasibility +SIS)</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Combined (Feasibility +SIS)</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Detailed</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Detailed</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Diligence Report</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Diligence Report</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Facility</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Facility</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Feasibility</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Feasibility</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Group Study</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Group Study</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Restudy</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Restudy</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Screening</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Screening</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Supplemental</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Supplemental</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>System Impact</fullName>
+                
+                    <default>false</default>
+                
+                    <label>System Impact</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Transmission Study</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Transmission Study</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

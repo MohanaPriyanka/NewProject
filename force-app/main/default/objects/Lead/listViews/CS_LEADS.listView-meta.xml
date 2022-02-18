@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CS_LEADS</fullName>
+    <columns>FULL_NAME</columns>
+    <columns>Partner_Name__c</columns>
+    <columns>LEAD.COMPANY</columns>
+    <columns>LEAD.STATE_CODE</columns>
+    <columns>LEAD.EMAIL</columns>
+    <columns>LEAD.PHONE</columns>
+    <columns>LEAD.STATUS</columns>
+    <columns>Comments__c</columns>
+    <columns>LEAD.CREATED_DATE</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        
+            <field>Product_line__c</field>
+        
+            <operation>equals</operation>
+        
+            <value>Community Solar</value>
+        
+        </filters>
+    <filters>
+        
+            <field>Unfinished_Lead__c</field>
+        
+            <operation>equals</operation>
+        
+            <value>0</value>
+        
+        </filters>
+    <filters>
+        
+            <field>LEAD.STATUS</field>
+        
+            <operation>contains</operation>
+        
+            <value>waitlist,expired,unqualified,Contacted,Declined,Cancelled</value>
+        
+        </filters>
+    <filters>
+        
+            <field>LEAD.LAST_NAME</field>
+        
+            <operation>notContain</operation>
+        
+            <value>test</value>
+        
+        </filters>
+    <filters>
+        
+            <field>FULL_NAME</field>
+        
+            <operation>notContain</operation>
+        
+            <value>test</value>
+        
+        </filters>
+    <label>CS LEADS</label>
+    <sharedTo>
+        
+            <group>BFG</group>
+        
+        </sharedTo>
+</ListView>

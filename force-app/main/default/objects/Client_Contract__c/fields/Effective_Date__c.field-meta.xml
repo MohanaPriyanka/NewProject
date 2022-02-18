@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Effective_Date__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>At the beginning of this day, the system will automatically populate the Shared Solar System with the related Contract according to the CS Services Type to be used for Client Invoicing.</inlineHelpText>
+    <label>Effective Date</label>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

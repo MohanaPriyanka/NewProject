@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Rate_Class__c</fullName>
+    <description>Utility rate code as found in the tariff. (This code can be used to retrieve rates from a utility&apos;s web site.)</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Utility rate code as found in the tariff. (This code can be used to retrieve rates from a utility&apos;s web site.)</inlineHelpText>
+    <label>Rate Class Name</label>
+    <length>30</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

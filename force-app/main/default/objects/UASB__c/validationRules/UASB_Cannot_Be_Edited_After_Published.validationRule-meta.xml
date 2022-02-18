@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>UASB_Cannot_Be_Edited_After_Published</fullName>
+    <active>false</active>
+    <description>UASB Cannot Be Edited after Bill is Pushed to Zuora</description>
+    <errorConditionFormula>AND(
+NOT(ISBLANK(Zuora_Id__c)),
+NOT(ISCHANGED(Account__c)),
+NOT(ISCHANGED(Transfer__c))
+)</errorConditionFormula>
+    <errorMessage>UASB Cannot Be Edited after Bill is Pushed to Zuora</errorMessage>
+</ValidationRule>

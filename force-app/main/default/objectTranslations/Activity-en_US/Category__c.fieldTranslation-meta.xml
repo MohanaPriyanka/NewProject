@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label/>
+    <name>Category__c</name>
+    <picklistValues>
+        
+            <masterLabel>Accounting - ERP System Implementation</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Accounting - Executive Request</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Accounting - Financial Tracking &amp; Reporting</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Accounting - HR Policy</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Accounting - IT Support</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Accounting - Legacy Clean-up</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Business Development - Community Solar</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Business Development - Executive Request</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Business Development - Large offtake &amp; anchor</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Business Development - Residential Loan</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Executive - Business Development</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Executive - Corporate Finance &amp; Accounting</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Executive - Development</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Executive - External Affairs</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Executive - General Executive</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Executive - Operations</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Executive - Project &amp; Platform Finance</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>External Affairs - B-Corp</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>External Affairs - Community Service</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>External Affairs - Conferences/Events</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>External Affairs - Executive Request</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>External Affairs - Government / Regulatory Affairs</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>External Affairs - Newsletters</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>External Affairs - Press Releases</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>External Affairs - Social Media</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>External Affairs - Team Support</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Marketing</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Operations</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Operations - Business Operations</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Operations - Executive Request</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Operations - Product Engineering</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Operations - Product Marketing</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Other</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Partnership Relations</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Product Team</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Project Finance - 1603 Compliance / Loan Support</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Project Finance - BlueWave Capital Raising</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Project Finance - BlueWave Solar Loan Sales Process</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Project Finance - Corporate Finance</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Project Finance - Debt Capital Markets / Structured Transactions</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Project Finance - Equity Capital Markets / Strategic Partnerships</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Project Finance - Executive Request</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Project Finance - Offtake Sales</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Project Finance - Platform Finance</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Project Finance - Strategic Capital Raise</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Project Management - Asset Management</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Project Management - Construction</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Project Management - Executive Request</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Project Management - Interconnection</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Project Management - Project Development</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Project Management - Site Acquisition</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Project Management - Site Acquisition - Engagement</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Sales Operations - Executive Request</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Sales Operations - Innovation</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Sales Operations - Partner Support</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Sales Operations - Project Management</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Sales Operations - Quality Control</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+</CustomFieldTranslation>

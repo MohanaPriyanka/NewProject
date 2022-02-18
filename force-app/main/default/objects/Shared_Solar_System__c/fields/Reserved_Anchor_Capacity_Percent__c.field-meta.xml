@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>Reserved_Anchor_Capacity_Percent__c</fullName>
+    <externalId>false</externalId>
+    <formula>(Client_Acq_Reserved_Anchor_Capacity__c + Reserved_Anchor_Capacity__c )/  Total_System_Size_kWh_DC__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Reserved Anchor Capacity / Total System Size, used for information only (to compare to contracts that might specify an Anchor %). Change the Reserved Anchor Capacity value or the Total System Size to change this percentage.</inlineHelpText>
+    <label>Reserved Anchor Capacity %</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Percent</type>
+</CustomField>

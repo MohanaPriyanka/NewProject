@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Due_Date_SB__c</fullName>
+    <externalId>false</externalId>
+    <label>Due Date</label>
+    <summarizedField>System_Bill__c.Bill_Due_Date__c</summarizedField>
+    <summaryFilterItems>
+        
+            <field>System_Bill__c.Bill_Due_Date__c</field>
+        
+            <operation>notEqual</operation>
+        
+            <value/>
+        
+        </summaryFilterItems>
+    <summaryForeignKey>System_Bill__c.Account_Bill__c</summaryForeignKey>
+    <summaryOperation>min</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

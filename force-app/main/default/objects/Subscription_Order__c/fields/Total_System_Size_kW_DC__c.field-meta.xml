@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Total_System_Size_kW_DC__c</fullName>
+    <description>This is the Total System Size kW DC on the related shared solar system at the time the subscription order was created.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This is the Total System Size kW DC on the related shared solar system at the time the subscription order was created.</inlineHelpText>
+    <label>Total System Size kW DC</label>
+    <precision>8</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

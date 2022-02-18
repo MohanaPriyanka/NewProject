@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CS_Capacity_Allocated__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Sum of Future Customer Subscription (KW DC) on Utility Account Subscriptions when Opportunity is set to Complete. Used in Docusign.</inlineHelpText>
+    <label>Customer Subscription kW DC at Complete</label>
+    <precision>9</precision>
+    <required>false</required>
+    <scale>4</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

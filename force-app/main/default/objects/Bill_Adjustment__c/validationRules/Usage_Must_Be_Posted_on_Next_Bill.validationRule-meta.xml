@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Usage_Must_Be_Posted_on_Next_Bill</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+ISPICKVAL(Adjustment_Type__c, &quot;Production&quot;),
+Adjustment_Amount__c &gt; 0,
+ISPICKVAL(Effective__c, &quot;Post When Approved&quot;)
+)</errorConditionFormula>
+    <errorMessage>Positive Production Adjustments must have Effective = Post on Next Bill</errorMessage>
+</ValidationRule>

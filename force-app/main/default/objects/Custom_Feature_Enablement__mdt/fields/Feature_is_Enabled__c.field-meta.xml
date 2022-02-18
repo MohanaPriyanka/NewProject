@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Feature_is_Enabled__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Field is set to TRUE to enable the feature.</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>Field is set to TRUE to enable the feature.</inlineHelpText>
+    <label>Feature is Enabled?</label>
+    <type>Checkbox</type>
+</CustomField>

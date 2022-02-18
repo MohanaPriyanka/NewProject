@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<StandardValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    
+    <sorted>false</sorted>
+    
+    <standardValue>
+        
+        <fullName>Website</fullName>
+        
+        <default>false</default>
+        
+        <label>Website</label>
+        
+    </standardValue>
+    
+    <standardValue>
+        
+        <fullName>Other</fullName>
+        
+        <default>false</default>
+        
+        <label>Other</label>
+        
+    </standardValue>
+    
+    <standardValue>
+        
+        <fullName>Partner</fullName>
+        
+        <default>false</default>
+        
+        <label>Partner</label>
+        
+    </standardValue>
+    
+    <standardValue>
+        
+        <fullName>Switch</fullName>
+        
+        <default>false</default>
+        
+        <label>Switch</label>
+        
+    </standardValue>
+    
+    <standardValue>
+        
+        <fullName>CSAP</fullName>
+        
+        <default>false</default>
+        
+        <label>CSAP</label>
+        
+    </standardValue>
+    
+    <standardValue>
+        
+        <fullName>Third-Party</fullName>
+        
+        <default>false</default>
+        
+        <label>Third-Party</label>
+        
+    </standardValue>
+    
+</StandardValueSet>

@@ -1,0 +1,591 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Layout xmlns="http://soap.sforce.com/2006/04/metadata">
+    
+    <excludeButtons>Clone</excludeButtons>
+    
+    <excludeButtons>Delete</excludeButtons>
+    
+    <excludeButtons>Share</excludeButtons>
+    
+    <excludeButtons>Submit</excludeButtons>
+    
+    <layoutSections>
+        
+        <customLabel>false</customLabel>
+        
+        <detailHeading>false</detailHeading>
+        
+        <editHeading>true</editHeading>
+        
+        <label>Information</label>
+        
+        <layoutColumns>
+            
+            <layoutItems>
+                
+                <behavior>Required</behavior>
+                
+                <field>Name</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>Credits_Allocated_Rounding_Method__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>UASB_Number_of_Decimals__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>Number_of_Decimal_Places__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>Comments__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>Expect_Unsubscribed_Credits__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>Host_Account_Bill_Transfer_Month__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Required</behavior>
+                
+                <field>Average_Demand_Threshold__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>Dual_Data__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>Auto_Qualify_Convert_Active__c</field>
+                
+            </layoutItems>
+            
+        </layoutColumns>
+        
+        <layoutColumns>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>Account__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>Utility_Data_Collection_Mechanism__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>Use_Glynt__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>EDI_Name_Override__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>Collect_Customer_POD_Number__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>Use_Premise_Number_In_Transfer_QC__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>Transfer_Mismatch_Tolerance__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Required</behavior>
+                
+                <field>Auto_QC_Minimum_kWH__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Required</behavior>
+                
+                <field>Auto_QC_Maximum_Demand__c</field>
+                
+            </layoutItems>
+            
+        </layoutColumns>
+        
+        <style>TwoColumnsTopToBottom</style>
+        
+    </layoutSections>
+    
+    <layoutSections>
+        
+        <customLabel>false</customLabel>
+        
+        <detailHeading>false</detailHeading>
+        
+        <editHeading>true</editHeading>
+        
+        <label>System Information</label>
+        
+        <layoutColumns>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>EIA_ID__c</field>
+                
+            </layoutItems>
+            
+        </layoutColumns>
+        
+        <layoutColumns/>
+        
+        <style>TwoColumnsTopToBottom</style>
+        
+    </layoutSections>
+    
+    <layoutSections>
+        
+        <customLabel>true</customLabel>
+        
+        <detailHeading>false</detailHeading>
+        
+        <editHeading>true</editHeading>
+        
+        <label>Custom Links</label>
+        
+        <layoutColumns/>
+        
+        <layoutColumns/>
+        
+        <layoutColumns/>
+        
+        <style>CustomLinks</style>
+        
+    </layoutSections>
+    
+    <layoutSections>
+        
+        <customLabel>true</customLabel>
+        
+        <detailHeading>true</detailHeading>
+        
+        <editHeading>true</editHeading>
+        
+        <label>Account Number Format Fields</label>
+        
+        <layoutColumns>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>Utility_Account_Number_Regex_Groups__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>Utility_Account_Number_Format__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>Utility_Account_Number_Prefix__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>Utility_Account_Number_Length__c</field>
+                
+            </layoutItems>
+            
+        </layoutColumns>
+        
+        <layoutColumns>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>POD_Id_Regex_Groups__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>POD_Id_Format__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>POD_Id_Prefix__c</field>
+                
+            </layoutItems>
+            
+            <layoutItems>
+                
+                <behavior>Edit</behavior>
+                
+                <field>POD_Id_Length__c</field>
+                
+            </layoutItems>
+            
+        </layoutColumns>
+        
+        <style>TwoColumnsTopToBottom</style>
+        
+    </layoutSections>
+    
+    <platformActionList>
+        
+        <actionListContext>Record</actionListContext>
+        
+        <platformActionListItems>
+            
+            <actionName>Edit</actionName>
+            
+            <actionType>StandardButton</actionType>
+            
+            <sortOrder>0</sortOrder>
+            
+        </platformActionListItems>
+        
+        <platformActionListItems>
+            
+            <actionName>FeedItem.LinkPost</actionName>
+            
+            <actionType>QuickAction</actionType>
+            
+            <sortOrder>1</sortOrder>
+            
+        </platformActionListItems>
+        
+        <platformActionListItems>
+            
+            <actionName>FeedItem.QuestionPost</actionName>
+            
+            <actionType>QuickAction</actionType>
+            
+            <sortOrder>2</sortOrder>
+            
+        </platformActionListItems>
+        
+        <platformActionListItems>
+            
+            <actionName>FeedItem.RypplePost</actionName>
+            
+            <actionType>QuickAction</actionType>
+            
+            <sortOrder>3</sortOrder>
+            
+        </platformActionListItems>
+        
+        <platformActionListItems>
+            
+            <actionName>FeedItem.ContentPost</actionName>
+            
+            <actionType>QuickAction</actionType>
+            
+            <sortOrder>4</sortOrder>
+            
+        </platformActionListItems>
+        
+        <platformActionListItems>
+            
+            <actionName>Event</actionName>
+            
+            <actionType>QuickAction</actionType>
+            
+            <sortOrder>5</sortOrder>
+            
+        </platformActionListItems>
+        
+        <platformActionListItems>
+            
+            <actionName>FeedItem.TextPost</actionName>
+            
+            <actionType>QuickAction</actionType>
+            
+            <sortOrder>6</sortOrder>
+            
+        </platformActionListItems>
+        
+        <platformActionListItems>
+            
+            <actionName>ChangeOwnerOne</actionName>
+            
+            <actionType>StandardButton</actionType>
+            
+            <sortOrder>7</sortOrder>
+            
+        </platformActionListItems>
+        
+        <platformActionListItems>
+            
+            <actionName>Submit</actionName>
+            
+            <actionType>StandardButton</actionType>
+            
+            <sortOrder>8</sortOrder>
+            
+        </platformActionListItems>
+        
+        <platformActionListItems>
+            
+            <actionName>ChangeRecordType</actionName>
+            
+            <actionType>StandardButton</actionType>
+            
+            <sortOrder>9</sortOrder>
+            
+        </platformActionListItems>
+        
+        <platformActionListItems>
+            
+            <actionName>PrintableView</actionName>
+            
+            <actionType>StandardButton</actionType>
+            
+            <sortOrder>10</sortOrder>
+            
+        </platformActionListItems>
+        
+    </platformActionList>
+    
+    <quickActionList>
+        
+        <quickActionListItems>
+            
+            <quickActionName>FeedItem.TextPost</quickActionName>
+            
+        </quickActionListItems>
+        
+        <quickActionListItems>
+            
+            <quickActionName>FeedItem.ContentPost</quickActionName>
+            
+        </quickActionListItems>
+        
+        <quickActionListItems>
+            
+            <quickActionName>FeedItem.MobileSmartActions</quickActionName>
+            
+        </quickActionListItems>
+        
+        <quickActionListItems>
+            
+            <quickActionName>FeedItem.RypplePost</quickActionName>
+            
+        </quickActionListItems>
+        
+        <quickActionListItems>
+            
+            <quickActionName>FeedItem.LinkPost</quickActionName>
+            
+        </quickActionListItems>
+        
+        <quickActionListItems>
+            
+            <quickActionName>FeedItem.PollPost</quickActionName>
+            
+        </quickActionListItems>
+        
+        <quickActionListItems>
+            
+            <quickActionName>FeedItem.QuestionPost</quickActionName>
+            
+        </quickActionListItems>
+        
+        <quickActionListItems>
+            
+            <quickActionName>FeedItem.ContentNote</quickActionName>
+            
+        </quickActionListItems>
+        
+    </quickActionList>
+    
+    <relatedLists>
+        
+        <fields>NAME</fields>
+        
+        <fields>Service_Territory__c</fields>
+        
+        <fields>Reserved_Capacity_kW_DC__c</fields>
+        
+        <fields>Project_Capacity_Available_kW_DC__c</fields>
+        
+        <relatedList>Shared_Solar_System__c.Utility__c</relatedList>
+        
+    </relatedLists>
+    
+    <relatedLists>
+        
+        <fields>NAME</fields>
+        
+        <fields>Load_U__c.LZ__c</fields>
+        
+        <fields>Load_U__c.NAME</fields>
+        
+        <relatedList>ZipCode_Utility_Junction__c.Utility__c</relatedList>
+        
+    </relatedLists>
+    
+    <relatedLists>
+        
+        <fields>NAME</fields>
+        
+        <relatedList>Rate_Class__c.Utility__c</relatedList>
+        
+    </relatedLists>
+    
+    <relatedLists>
+        
+        <fields>NAME</fields>
+        
+        <relatedList>Meter_Reading_Schedule__c.Utility_lookup__c</relatedList>
+        
+    </relatedLists>
+    
+    <relatedLists>
+        
+        <fields>Product2</fields>
+        
+        <fields>Quantity</fields>
+        
+        <fields>UnitPrice</fields>
+        
+        <fields>ServiceDate</fields>
+        
+        <fields>Description</fields>
+        
+        <fields>HasSchedule</fields>
+        
+        <relatedList>OpportunityLineItem.Utility__c</relatedList>
+        
+    </relatedLists>
+    
+    <relatedLists>
+        
+        <relatedList>RelatedFileList</relatedList>
+        
+    </relatedLists>
+    
+    <relatedLists>
+        
+        <fields>NAME</fields>
+        
+        <fields>Description__c</fields>
+        
+        <fields>Amount__c</fields>
+        
+        <fields>Amount_kWh__c</fields>
+        
+        <relatedList>Default_Utility_Fee__c.Utility__c</relatedList>
+        
+    </relatedLists>
+    
+    <showEmailCheckbox>false</showEmailCheckbox>
+    
+    <showHighlightsPanel>false</showHighlightsPanel>
+    
+    <showInteractionLogPanel>false</showInteractionLogPanel>
+    
+    <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
+    
+    <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
+    
+    <summaryLayout>
+        
+        <masterLabel>00hj0000006nDpJ</masterLabel>
+        
+        <sizeX>4</sizeX>
+        
+        <sizeY>0</sizeY>
+        
+        <summaryLayoutStyle>Default</summaryLayoutStyle>
+        
+    </summaryLayout>
+    
+</Layout>

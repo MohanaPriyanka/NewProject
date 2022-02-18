@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Suppress_Collections__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>If populated, suppresses collection cases, emails and letters. A blank value means collections automation will happen as normal. If suppressed until no longer past due, the morning Days Past Due automation will blank this picklist out when this account is no longer past due.</inlineHelpText>
+    <label>Suppress Collections</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <restricted>true</restricted>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>Suppress collections until no longer past due</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Suppress collections until no longer past due</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Suppress collections forever</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Suppress collections forever</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

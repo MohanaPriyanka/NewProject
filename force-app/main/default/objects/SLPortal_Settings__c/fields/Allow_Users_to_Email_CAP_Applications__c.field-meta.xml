@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Allow_Users_to_Email_CAP_Applications__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>By checking this box, installers will be able to send applicants applications using the CAP methodology instead of Form Assembly.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>By checking this box, installers will be able to send applicants applications using the CAP methodology instead of Form Assembly.</inlineHelpText>
+    <label>Allow Users to Email CAP Applications</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Phone_or_emal__c</fullName>
+    <description>Would you like to be contacted by phone or email?</description>
+    <externalId>false</externalId>
+    <label>Phone or email?</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>Phone</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Phone</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Email</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Email</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

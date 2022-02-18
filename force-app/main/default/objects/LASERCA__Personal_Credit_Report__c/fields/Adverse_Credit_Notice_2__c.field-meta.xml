@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Adverse_Credit_Notice_2__c</fullName>
+    <externalId>false</externalId>
+    <label>Adverse Credit Notice (2)</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>No credit file</fullName>
+                
+                    <default>false</default>
+                
+                    <label>No credit file</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Limited credit experience</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Limited credit experience</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Collection action or judgment in credit history</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Collection action or judgment in credit history</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Garnishment or attachment in credit history</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Garnishment or attachment in credit history</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Foreclosure or repossession in credit history</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Foreclosure or repossession in credit history</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Delinquent credit obligations (past or present with others)</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Delinquent credit obligations (past or present with others)</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Bankruptcy</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Bankruptcy</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Excessive number of recent inquiries on credit bureau report</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Excessive number of recent inquiries on credit bureau report</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Poor credit performance with us</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Poor credit performance with us</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Temporary or irregular employment</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Temporary or irregular employment</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Insufficient length of employment</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Insufficient length of employment</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Insufficient income for amount of credit requested</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Insufficient income for amount of credit requested</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Excessive credit obligations in relation to income</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Excessive credit obligations in relation to income</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Temporary residence</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Temporary residence</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Insufficient length of residence</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Insufficient length of residence</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Unable to verify credit references</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Unable to verify credit references</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Unable to verify credit employment</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Unable to verify credit employment</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Unable to verify credit income</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Unable to verify credit income</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Unable to verify credit residence</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Unable to verify credit residence</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>We do not grant credit to any applicant on the terms and conditions you have requested</fullName>
+                
+                    <default>false</default>
+                
+                    <label>We do not grant credit to any applicant on the terms and conditions you have requested</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Other - Credit Score is below program minimum</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Other - Credit Score is below program minimum</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Insufficient number of credit references provided: If you have established credit under another name, you may still qualify for credit by calling this office and providing us with additional information.</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Insufficient number of credit references provided: If you have established credit under another name, you may still qualify for credit by calling this office and providing us with additional information.</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

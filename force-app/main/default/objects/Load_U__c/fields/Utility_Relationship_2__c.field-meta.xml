@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Utility_Relationship_2__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
+    <inlineHelpText>Lookup to utility object. If in split load zone, this field must be populated. Customer will have ability to choose between this field and Utility_Relationship_1 in the CSAP</inlineHelpText>
+    <label>Utility Relationship 2</label>
+    <referenceTo>Utility__c</referenceTo>
+    <relationshipLabel>Load Zones &amp; Utilities (Utility Relationship 2)</relationshipLabel>
+    <relationshipName>Load_Zones_Utilities2_del</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

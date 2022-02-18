@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Transfer_for_Production_Adjustment</fullName>
+    <active>true</active>
+    <description>The Transfer lookup must be populated when Bill Adjustment has the type &quot;Production&quot; or if the credits allocated are greater than 0.</description>
+    <errorConditionFormula>AND(ISBLANK( Transfer__c ),
+OR(
+ISPICKVAL( Adjustment_Type__c, &quot;Production&quot; ), (Credits_Allocated__c &gt; 0)
+))</errorConditionFormula>
+    <errorMessage>The Transfer lookup must be populated when Bill Adjustment has the type &quot;Production&quot; or if the credits allocated are greater than 0.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Autopay_Conditional_Text__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF( Contact.Account.Recurring_Billing__c, &quot;Since you&apos;re already signed up for Autopay, your payments will automatically be collected on the first of each month - no action required!&quot;, &quot;Want a quick and easy way to pay your bill each month? Sign up for Autopay, and your payments will automatically be collected on the first of each month - no action required!&quot;)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Autopay Conditional Text</label>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

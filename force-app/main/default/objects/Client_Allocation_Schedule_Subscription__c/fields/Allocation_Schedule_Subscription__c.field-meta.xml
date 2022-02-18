@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Allocation_Schedule_Subscription__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <externalId>false</externalId>
+    <inlineHelpText>Related to Allocation Schedule Subscription object, populated via code</inlineHelpText>
+    <label>Allocation Schedule Subscription</label>
+    <referenceTo>Schedule_Z_Subscription__c</referenceTo>
+    <relationshipLabel>Client Allocation Schedule Subscriptions</relationshipLabel>
+    <relationshipName>Client_Allocation_Schedule_Subscriptions</relationshipName>
+    <required>true</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

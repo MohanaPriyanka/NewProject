@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Reconciliation_Status__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>This is populated by Accounting when the invoice in Salesforce is reconciled with the invoice in Netsuite.</inlineHelpText>
+    <label>Reconciliation Status</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <restricted>true</restricted>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>Approved</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Approved</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Issues found</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Issues found</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

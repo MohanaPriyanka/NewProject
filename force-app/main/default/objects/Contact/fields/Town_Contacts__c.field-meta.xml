@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Town_Contacts__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
+    <label>Town Contacts</label>
+    <lookupFilter>
+        
+            <active>true</active>
+        
+            <filterItems>
+            
+                <field>$Source.RecordTypeId</field>
+            
+                <operation>equals</operation>
+            
+                <value>Project Management Contact</value>
+            
+            </filterItems>
+        
+            <isOptional>false</isOptional>
+        
+        </lookupFilter>
+    <referenceTo>Town__c</referenceTo>
+    <relationshipLabel>Contacts</relationshipLabel>
+    <relationshipName>Contacts</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

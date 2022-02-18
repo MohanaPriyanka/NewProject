@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ZipCode__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
+    <inlineHelpText>Lookup to the &quot;Load Zone &amp; Utility&quot; object which maps the zipcode to a load zone and utility</inlineHelpText>
+    <label>ZIP Code</label>
+    <referenceTo>Load_U__c</referenceTo>
+    <relationshipLabel>Leads (ZIP Code)</relationshipLabel>
+    <relationshipName>ZIPLeads</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

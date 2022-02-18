@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Objections__c</fullName>
+    <description>This field is used by Sales to convey why they think a lead wasn&apos;t interested in a product.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This field is used by Sales to convey why they think a lead wasn&apos;t interested in a product.</inlineHelpText>
+    <label>Objections</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        
+            <restricted>true</restricted>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>Credit check</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Credit check</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Lack of savings</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Lack of savings</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Double bill</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Double bill</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Length of contract</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Length of contract</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Autopay</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Autopay</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Termination period</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Termination period</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Not convinced of env. benefits</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Not convinced of env. benefits</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Distrust/Misunderstanding</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Distrust/Misunderstanding</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Too busy</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Too busy</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Wait Time</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Wait Time</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Go off the grid</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Go off the grid</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+    <visibleLines>4</visibleLines>
+</CustomField>

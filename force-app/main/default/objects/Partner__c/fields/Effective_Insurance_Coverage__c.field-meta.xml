@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Effective_Insurance_Coverage__c</fullName>
+    <description>Day that partner needs to update/send us new insurance policy</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Day that partner needs to update/send us new insurance policy</inlineHelpText>
+    <label>Proof of Insurance (Expiration Date)</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

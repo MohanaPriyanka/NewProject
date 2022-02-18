@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>Group__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>This will group the values by 1 (Default), 2 (of 4), 3 (of 4), 4 (of 4) to sum the values of each</inlineHelpText>
+    <label>Group</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <restricted>true</restricted>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>1 (Default)</fullName>
+                
+                    <default>true</default>
+                
+                    <label>1 (Default)</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>2</fullName>
+                
+                    <default>false</default>
+                
+                    <label>2</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>3</fullName>
+                
+                    <default>false</default>
+                
+                    <label>3</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>4</fullName>
+                
+                    <default>false</default>
+                
+                    <label>4</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

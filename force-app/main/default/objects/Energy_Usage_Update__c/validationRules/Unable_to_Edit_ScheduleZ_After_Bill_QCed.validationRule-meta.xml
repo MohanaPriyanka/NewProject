@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Unable_to_Edit_ScheduleZ_After_Bill_QCed</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISCHANGED( Schedule_Z__c  ), OR( 
+ISPICKVAL(  Bill_Status__c, &quot;Bills QCed&quot;),ISPICKVAL(Bill_Status__c, &quot;Credit Transfers QCed&quot;),ISPICKVAL(Bill_Status__c,&quot;Ready to Generate&quot;), ISPICKVAL(Bill_Status__c,&quot;Email Bills Sent&quot;),ISPICKVAL(Bill_Status__c,&quot;Letter Bills Sent&quot;),ISPICKVAL(Bill_Status__c,&quot;Autopay QCed&quot;),ISPICKVAL(Bill_Status__c,&quot;Not Billing this Month&quot;)
+))</errorConditionFormula>
+    <errorMessage>You cannot edit Schedule Z field after the Bills have been QCed.</errorMessage>
+</ValidationRule>

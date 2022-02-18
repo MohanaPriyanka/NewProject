@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>New_Customer_Care_Case</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <height>600</height>
+    <linkType>url</linkType>
+    <masterLabel>New Customer Care Case</masterLabel>
+    <openType>sidebar</openType>
+    <protected>false</protected>
+    <url>/500/e? 
+&amp;RecordType=012j00000000HA8 
+&amp;ent=Case 
+&amp;cas14=Customer Care Case 
+&amp;cas3_lkid={!Contact.Id} 
+&amp;cas3_lkold={!Contact.Name} 
+&amp;00Nj000000BVAYr={!Contact.Name} is having issue with 
+&amp;cas11=Phone
+&amp;00Nj000000BiMdn=&quot;Customer Care&quot;</url>
+</WebLink>

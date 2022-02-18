@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>CS_Services_Type__c</fullName>
+    <description>Should use the CS Services Type global picklist, but can&apos;t because it&apos;s already created.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Differentiates between projects where Perch is contracted to acquire customers and projects where customers are acquired by another party. Set automatically when a new related Client Contract record is effective</inlineHelpText>
+    <label>CS Services Type</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>Acquisition &amp; Management</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Acquisition &amp; Management</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Management Only</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Management Only</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

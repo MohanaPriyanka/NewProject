@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LASERCA__Co_Applicant_Credit_Score_Median__c</fullName>
+    <deprecated>false</deprecated>
+    <externalId>false</externalId>
+    <formula>If (
+	ISBLANK( LASERCA__Co_Applicant_Credit_Score_Equifax__c ) || 
+	ISBLANK( LASERCA__Co_Applicant_Credit_Score_Experian__c ) || 
+	ISBLANK( LASERCA__Co_Applicant_Credit_Score_TransUnion__c ),
+			(
+					MIN(VALUE(BLANKVALUE(LASERCA__Co_Applicant_Credit_Score_Equifax__c, &apos;10000&apos;)), 
+					VALUE(BLANKVALUE(LASERCA__Co_Applicant_Credit_Score_Experian__c, &apos;10000&apos;)), 
+					VALUE(BLANKVALUE(LASERCA__Co_Applicant_Credit_Score_TransUnion__c, &apos;10000&apos;)))
+			),
+
+	MAX(MIN(VALUE(LASERCA__Co_Applicant_Credit_Score_Experian__c),VALUE(LASERCA__Co_Applicant_Credit_Score_TransUnion__c)), MIN(MAX(VALUE(LASERCA__Co_Applicant_Credit_Score_Experian__c),VALUE(LASERCA__Co_Applicant_Credit_Score_TransUnion__c)),VALUE(LASERCA__Co_Applicant_Credit_Score_Equifax__c)))
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Co-Applicant Credit Score (Median)</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

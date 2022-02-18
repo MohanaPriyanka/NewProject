@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Externally_Serviced_UASB__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
+    <label>Externally Serviced UASB</label>
+    <lookupFilter>
+        
+            <active>true</active>
+        
+            <errorMessage>UASB must be externally serviced</errorMessage>
+        
+            <filterItems>
+            
+                <field>UASB__c.Externally_Serviced__c</field>
+            
+                <operation>equals</operation>
+            
+                <value>True</value>
+            
+            </filterItems>
+        
+            <isOptional>false</isOptional>
+        
+        </lookupFilter>
+    <referenceTo>UASB__c</referenceTo>
+    <relationshipLabel>Production Detail</relationshipLabel>
+    <relationshipName>Production_Detail</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Type_of_Avidia_Service_Provider__c</fullName>
+    <externalId>false</externalId>
+    <label>Type of Avidia Service Provider</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <restricted>true</restricted>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>Real Estate Appraiser</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Real Estate Appraiser</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Attorney</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Attorney</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Accountant</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Accountant</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Consultant</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Consultant</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>None of the above</fullName>
+                
+                    <default>false</default>
+                
+                    <label>None of the above</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

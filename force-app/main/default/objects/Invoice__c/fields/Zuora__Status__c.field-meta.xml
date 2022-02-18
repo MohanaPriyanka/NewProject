@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__Status__c</fullName>
+    <deprecated>false</deprecated>
+    <description>The status of the invoice in the system. This status is not the status of the payment of the invoice, just the status of the invoice itself.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The status of the invoice in the system. This status is not the status of the payment of the invoice, just the status of the invoice itself.</inlineHelpText>
+    <label>Status</label>
+    <length>32</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

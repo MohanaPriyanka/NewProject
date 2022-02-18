@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Require_Entity_to_Create_Prod_update</fullName>
+    <active>true</active>
+    <description>A SSS must have an associated entity to create a production update</description>
+    <errorConditionFormula>IsBlank(Shared_Solar_System__r.BWC_Project_Entity_Manual__c)</errorConditionFormula>
+    <errorMessage>A SSS must have an associated entity to create a production update</errorMessage>
+</ValidationRule>

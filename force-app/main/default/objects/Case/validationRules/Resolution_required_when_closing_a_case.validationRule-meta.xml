@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Resolution_required_when_closing_a_case</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+ISBLANK(TEXT(Resolution__c) ),
+OR(
+   RecordTypeId = &apos;0120a0000004dlv&apos;, /* Product Support */
+   RecordTypeId = &apos;012j00000000HA8&apos;), /* Customer Care */
+AND(
+    TEXT(Status) = &apos;Closed&apos;,
+   ISCHANGED(Status)
+)
+)</errorConditionFormula>
+    <errorDisplayField>Resolution__c</errorDisplayField>
+    <errorMessage>Resolution is required before closing the case.</errorMessage>
+</ValidationRule>

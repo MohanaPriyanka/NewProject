@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cancellation_Fee_Amount__c</fullName>
+    <defaultValue>0</defaultValue>
+    <description>This is the total cancellation fee per contract for a single CS share. If it $0, it means there is no cancellation fee.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This is the total cancellation fee per contract for a single CS share. If it $0, it means there is no cancellation fee.</inlineHelpText>
+    <label>Cancellation Fee Amount</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Currency</type>
+</CustomField>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Adjustable_Rate_Products</fullName>
+    <columns>PRODUCT2.NAME</columns>
+    <columns>PRODUCT2.CUSTOMER_PRODUCT_ID</columns>
+    <columns>PRODUCT2.ACTIVE</columns>
+    <columns>State__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        
+            <field>Months_in_Set_Rate_Period__c</field>
+        
+            <operation>greaterThan</operation>
+        
+            <value>0</value>
+        
+        </filters>
+    <label>Adjustable Rate Products</label>
+</ListView>

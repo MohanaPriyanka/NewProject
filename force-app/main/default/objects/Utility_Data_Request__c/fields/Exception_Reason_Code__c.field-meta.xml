@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>Exception_Reason_Code__c</fullName>
+    <description>Ex: A13=Other A76=Account not found or invalid
+A80=Service, Commodity or Billing Option Not Available
+A91=Acct does not have service requested. See ESGData Dictionary for full list.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Ex: A13=Other A76=Account not found or invalid
+A80=Service, Commodity or Billing Option Not Available
+A91=Acct does not have service requested. See ESGData Dictionary for full list.</inlineHelpText>
+    <label>Exception Reason Code</label>
+    <length>255</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

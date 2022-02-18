@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Reports_Shared_to_Portal__c</fullName>
+    <description>Holds JSON of Map&lt;String, List&lt;String&gt;&gt;</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Set by the ReportFolderAuditor that holds all report folders and reports shared to external users</inlineHelpText>
+    <label>Reports Shared to Portal</label>
+    <length>131072</length>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

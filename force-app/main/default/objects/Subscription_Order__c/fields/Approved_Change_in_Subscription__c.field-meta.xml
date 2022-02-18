@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Approved_Change_in_Subscription__c</fullName>
+    <description>This is the rounded net change in kW DC. When SO is approved, field is stamped with &apos;Calculated Change in Subscription kW DC.&apos; If Type = &apos;SSS Update,&apos; field is stamped with value of &apos;System Change in kW Subscription&apos; - &apos;Previous kW Subscription. It&apos;s important to have a static value for tracking purposes, and to use in rollup summary fields.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This is the rounded net change in kW DC. When SO is approved, field is stamped with &apos;Calculated Change in Subscription kW DC.&apos; If Type = &apos;SSS Update,&apos; field is stamped with value of &apos;System Change in kW Subscription&apos; - &apos;Previous kW Subscription.</inlineHelpText>
+    <label>Approved Change in Subscription (KW DC)</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>6</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

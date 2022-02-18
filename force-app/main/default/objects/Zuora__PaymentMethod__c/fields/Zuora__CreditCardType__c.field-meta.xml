@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__CreditCardType__c</fullName>
+    <deprecated>false</deprecated>
+    <description>The type of credit or debit card that is being billed.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The type of credit or debit card that is being billed.</inlineHelpText>
+    <label>Credit Card Type</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>AmericanExpress</fullName>
+                
+                    <default>false</default>
+                
+                    <label>AmericanExpress</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Discover</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Discover</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>MasterCard</fullName>
+                
+                    <default>false</default>
+                
+                    <label>MasterCard</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Visa</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Visa</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>Customer_Info_Report</fullName>
+    <availability>online</availability>
+    <description>Allocation Schedule with FICO and Property Type</description>
+    <displayType>button</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <height>600</height>
+    <linkType>url</linkType>
+    <masterLabel>Customer Info Report</masterLabel>
+    <openType>sidebar</openType>
+    <protected>false</protected>
+    <url>/00Oj0000000QGIY?pv2={!Shared_Solar_System__c.Name}</url>
+</WebLink>

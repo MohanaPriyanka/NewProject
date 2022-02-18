@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Returned_PaymentPart_Id__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Set by the ZuoraGLService. Relateds a debit memo to a PaymentPartItem so the P2B process can create (-) Production Details to reduce Credits Paid for same Production period</inlineHelpText>
+    <label>Returned Payment Part Id</label>
+    <length>200</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

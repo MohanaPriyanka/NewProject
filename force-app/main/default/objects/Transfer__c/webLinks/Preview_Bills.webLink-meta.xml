@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Preview_Bills</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <height>600</height>
+    <linkType>url</linkType>
+    <masterLabel>Preview Bills</masterLabel>
+    <openType>noSidebar</openType>
+    <protected>false</protected>
+    <url>/apex/ShowUASes?
+transfer={!Transfer__c.Id}
+&amp;transferName={!Transfer__c.Name}
+&amp;totalNMCs={!TEXT(Transfer__c.Transfer_Amount__c)}</url>
+</WebLink>

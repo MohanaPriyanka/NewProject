@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Do_not_populate_mgmt_fee_fields_if_acq</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+OR(
+ Acquisition_Type_Acquisition__c ,
+ Acquisition_Type_Reacquisition__c 
+),
+OR(
+Project_Capacity_Group_Anchor__c, Project_Capacity_Group_Non_Anchor__c,  Project_Type_Acquisition_Management__c,  Project_Type_Management_Only__c,
+NOT(ISPICKVAL(Management_Fee_Trigger__c,&quot;&quot;)),
+NOT(ISPICKVAL(Management_Fee_Type__c,&quot;&quot;))
+)
+)</errorConditionFormula>
+    <errorDisplayField>Acquisition_Type_Acquisition__c</errorDisplayField>
+    <errorMessage>If this is an acquisition fee, do not populate management fee fields</errorMessage>
+</ValidationRule>

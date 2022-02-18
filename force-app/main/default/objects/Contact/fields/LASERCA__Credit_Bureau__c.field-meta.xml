@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LASERCA__Credit_Bureau__c</fullName>
+    <deprecated>false</deprecated>
+    <externalId>false</externalId>
+    <label>**Deprecated</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>Equifax</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Equifax</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>TransUnion</fullName>
+                
+                    <default>false</default>
+                
+                    <label>TransUnion</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Experian</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Experian</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

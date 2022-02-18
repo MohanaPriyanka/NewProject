@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_of_Financials__c</fullName>
+    <externalId>false</externalId>
+    <label>Status of Financials</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <restricted>true</restricted>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>Not Requested</fullName>
+                
+                    <default>true</default>
+                
+                    <label>Not Requested</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Requested</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Requested</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Received</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Received</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Approved</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Approved</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Declined</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Declined</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Conga_CS_Client_Report__c</fullName>
+    <externalId>false</externalId>
+    <formula>&quot;&amp;solmgr=1 &quot; + 
+&quot;&amp;id=&quot; + Id + &quot; &quot; + 
+&quot;&amp;queryid=[ARA]a270a000001ElEG,[TRN]a270a000001Elgw&quot; + 
+&quot;&amp;templateid=a2F0a000001RC0x&quot; + 
+&quot;&amp;ofn=&quot; + TEXT(Year(TODAY())) + &quot;-&quot; + TEXT(MONTH(TODAY())) + &quot;-&quot; + TEXT(Day(TODAY())) + &quot; \&quot;-\&quot; &quot; + Name + &quot; \&quot;CS Reporting Package\&quot;&quot; + 
+&quot;&amp;sc0=1&quot; + 
+&quot;&amp;sc1=Attachments&quot; + 
+&quot;&amp;attachmentparentid=&quot; + Id +
+&quot;&amp;qmode=Attachments&quot;</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Conga CS Client Report</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Committed_Utilization_Remediation__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Details, formula, exceptions methodology for calculating fees.</inlineHelpText>
+    <label>Utilization Adjustment Methodology</label>
+    <length>32768</length>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Html</type>
+    <visibleLines>25</visibleLines>
+</CustomField>

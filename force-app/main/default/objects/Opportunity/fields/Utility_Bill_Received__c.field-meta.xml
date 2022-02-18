@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Utility_Bill_Received__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Check box to indicate if utility bill has been uploaded to Salesforce</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Check box when utility bill has been uploaded to Salesforce</inlineHelpText>
+    <label>Utility Bill Received</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

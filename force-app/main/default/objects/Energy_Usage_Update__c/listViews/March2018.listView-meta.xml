@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>March2018</fullName>
+    <columns>NAME</columns>
+    <columns>Billing_Period_Start_Date__c</columns>
+    <columns>Billing_Period_End_Date__c</columns>
+    <columns>Bill_Status__c</columns>
+    <columns>Generate_Bills__c</columns>
+    <columns>Date__c</columns>
+    <columns>Due_Date__c</columns>
+    <columns>Bill_Date__c</columns>
+    <columns>Total_System_NMCs__c</columns>
+    <columns>Production__c</columns>
+    <columns>Size_off_NMCs__c</columns>
+    <columns>Net_Metering_Rate_Applied__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        
+            <field>Date__c</field>
+        
+            <operation>equals</operation>
+        
+            <value>5/15/2018</value>
+        
+        </filters>
+    <filters>
+        
+            <field>RECORDTYPE</field>
+        
+            <operation>equals</operation>
+        
+            <value>Energy_Usage_Update__c.Production_Update_CS</value>
+        
+        </filters>
+    <label>March 2018</label>
+</ListView>

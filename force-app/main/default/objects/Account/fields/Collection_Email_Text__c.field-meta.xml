@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Collection_Email_Text__c</fullName>
+    <description>This text is used in the collection email templates.</description>
+    <externalId>false</externalId>
+    <formula>IF(Days_Past_Due__c &lt;=30, 
+&quot;As a reminder, there are no fees for one time OR recurring auto-payments made through our portal!&quot;,
+&quot;Per your community solar agreement, &quot; &amp; $Label.Company_Name &amp; &quot; reserves the right to cancel your agreement at any point after your account becomes ten days past due.&quot;)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Collection Email Text</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

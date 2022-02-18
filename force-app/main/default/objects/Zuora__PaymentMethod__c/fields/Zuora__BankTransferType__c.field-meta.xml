@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__BankTransferType__c</fullName>
+    <deprecated>false</deprecated>
+    <description>This is specifies the type of DirectDebit that is being used. The value of this field is dependent on the country of the user.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This is specifies the type of DirectDebit that is being used. The value of this field is dependent on the country of the user.</inlineHelpText>
+    <label>Bank Transfer Type</label>
+    <length>255</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

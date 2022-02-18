@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Rate_Subclass__c</fullName>
+    <description>This segment must be sent if a rate subclass is applicable. Provides further clarification of the Utility Rate Service Class. Prior to 11/2/2015 O&amp;R would send the Capacity Obligation in this field.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This segment must be sent if a rate subclass is applicable. Provides further clarification of the Utility Rate Service Class. Prior to 11/2/2015 O&amp;R would send the Capacity Obligation in this field.</inlineHelpText>
+    <label>Rate Subclass</label>
+    <length>30</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

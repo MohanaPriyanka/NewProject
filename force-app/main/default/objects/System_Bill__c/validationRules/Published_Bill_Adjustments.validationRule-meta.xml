@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Published_Bill_Adjustments</fullName>
+    <active>true</active>
+    <description>Cannot update Adjustments on an already published bill.</description>
+    <errorConditionFormula>AND(
+ISCHANGED(Adjustments__c), 
+Account_Bill__r.Published__c)</errorConditionFormula>
+    <errorMessage>Cannot update Adjustments on an already published bill.</errorMessage>
+</ValidationRule>

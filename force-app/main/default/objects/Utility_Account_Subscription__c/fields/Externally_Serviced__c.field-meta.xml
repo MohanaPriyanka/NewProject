@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Externally_Serviced__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF (  
+ ISPICKVAL( Externally_Serviced_Override__c , &quot;&quot;),
+
+IF (  
+ AND( 
+  OR (
+    ISPICKVAL(Opportunity__r.Customer_Sub_Group__c, &quot;Public Offtake&quot;),
+    ISPICKVAL(Opportunity__r.Customer_Group__c, &quot;Anchor&quot;)
+  ),
+   
+   IF(
+     $CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true,
+      AND(
+       NOT(ISPICKVAL(Shared_Solar_System__r.Billing_Anchors__c, &quot;&quot;)),
+       NOT(ISPICKVAL(Shared_Solar_System__r.Billing_Anchors__c, &quot;BlueWave&quot;))
+          ),
+
+   AND(
+    NOT(ISPICKVAL(Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c, &quot;&quot;)),
+    NOT(ISPICKVAL(Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c, &quot;BlueWave&quot;))
+  )
+      )
+ ),
+TRUE, FALSE),
+
+IF (
+ ISPICKVAL( Externally_Serviced_Override__c , &quot;Externally Serviced&quot;), true, false)
+
+)</formula>
+    <inlineHelpText>Checked if subscription is billed by RadianGen</inlineHelpText>
+    <label>Externally Serviced</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Project_Application_Compact_Custom</fullName>
+    <fields>Name</fields>
+    <fields>App_ID_W0__c</fields>
+    <fields>App_Iteration__c</fields>
+    <fields>Application_Fee__c</fields>
+    <fields>IX_Application_Submitted__c</fields>
+    <fields>IX_Application_Deemed_Complete_Est__c</fields>
+    <fields>IX_Application_Deemed_Complete_Act__c</fields>
+    <fields>IX_Application_Receipt_Confirmed__c</fields>
+    <label>Project Application Compact Custom</label>
+</CompactLayout>

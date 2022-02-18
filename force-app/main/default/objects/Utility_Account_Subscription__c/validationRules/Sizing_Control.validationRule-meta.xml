@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sizing_Control</fullName>
+    <active>true</active>
+    <description>This validation rule prevents a user from filling in the wrong sizing fields (kWh or Cost) on the UAS.</description>
+    <errorConditionFormula>OR(
+AND(
+Subscription_Type__c=&quot;kWh&quot;,
+ISCHANGED(Annual_Cost_Future_Rollup__c)=true,
+ISBLANK(Annual_Cost_Future_Rollup__c)=false)
+,
+AND(
+Subscription_Type__c=&quot;Electricity Cost ($)&quot;,
+ISCHANGED(Annual_kWh_Subscription_Future_Rollup__c)=true,
+ISBLANK(Annual_kWh_Subscription_Future_Rollup__c)=false)
+)</errorConditionFormula>
+    <errorMessage>You&apos;re using the wrong sizing fields. Look at the Subscription Type field. If it&apos;s kWh, use the Annual kWh sizing fields. If it&apos;s Electricity Cost ($), use the Annual Cost sizing fields. The subscription type is set by the Product on the Opportunity.</errorMessage>
+</ValidationRule>

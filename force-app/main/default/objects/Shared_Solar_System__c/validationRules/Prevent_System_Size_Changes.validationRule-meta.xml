@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>Prevent_System_Size_Changes</fullName>
+    <active>true</active>
+    <description>Prevents updates to yield or system size once project is in onboarding, acq or management. Update should go through the SSSO approval process.</description>
+    <errorConditionFormula>AND(
+ $CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true,
+
+OR(
+ISCHANGED( Expected_Yield_kWh_kW__c ),
+ISCHANGED( Total_System_Size_kWh_DC__c)
+),/*either yield or system size dc are changed*/
+
+OR(
+ISPICKVAL(Stage__c,&quot;Management&quot;),
+ISPICKVAL(Stage__c,&quot;Acquisition&quot;),
+ISPICKVAL(Stage__c,&quot;Onboarding&quot;)
+), /*and it&apos;s being change to either Management, Acquisition, or Onboarding*/
+
+ Apex_Context__c=false /*and the update is not being done in apex*/
+)</errorConditionFormula>
+    <errorMessage>To change the system Yield or Size (kW DC), please submit a Shared Solar System Order with the &quot;New Shared Solar System Order&quot; button.</errorMessage>
+</ValidationRule>

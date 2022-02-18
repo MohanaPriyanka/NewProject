@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>Host_Account_Name__c</fullName>
+    <description>This is the Account Name used in the NY Allocation Schedule template in Conga. It is currently only needed for NY Shared Solar System Records.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This is the Account Name used in the NY Allocation Schedule template in Conga. It is currently only needed for NY Shared Solar System Records.</inlineHelpText>
+    <label>Host Account Name</label>
+    <length>50</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

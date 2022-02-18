@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>Capacity_Committed_kW_DC__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Sum of Perch acquired Complete Small CS Subscriptions, automatically calculated</inlineHelpText>
+    <label>Perch Acq Committed Small CS Capacity</label>
+    <precision>8</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

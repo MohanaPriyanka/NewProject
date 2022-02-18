@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Annual_Electricity_Cost__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Enter Annual Electricity Cost of the total kWh being sized. If Residential Solar is already installed please enter cost of excess uncovered kWh. If not, please enter total annual cost of electricity.</inlineHelpText>
+    <label>Annual Electricity Cost ($)</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

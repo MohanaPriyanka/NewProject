@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Used to request an update to Lead.Partner_Application_Status__c for the associated records</description>
+    <eventType>HighVolume</eventType>
+    <label>Application Status Change</label>
+    <pluralLabel>Application Status Changes</pluralLabel>
+    <publishBehavior>PublishAfterCommit</publishBehavior>
+</CustomObject>

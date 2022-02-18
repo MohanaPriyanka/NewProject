@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Client_Brand_Key__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Set before an opportunity is inserted, or if the Account, SSS, or Stage is updated on the opportunity. Also set if the Client Brand Key on a SSS is updated.</inlineHelpText>
+    <label>Client Brand Key</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <restricted>true</restricted>
+        
+            <valueSetName>Client_Logo_Filenames</valueSetName>
+        
+        </valueSet>
+</CustomField>

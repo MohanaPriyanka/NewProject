@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Most_Recent_Enacted_Percent_Share__c</fullName>
+    <description>This percentage formula field pulls Percent Share data from the UAS&apos;s most recently enacted ALSS.</description>
+    <externalId>false</externalId>
+    <formula>Utility_Account_Subscription__r.Most_Recent_Enacted_ALSS__r.Percent_Share__c</formula>
+    <inlineHelpText>This percentage formula field pulls Percent Share data from the UAS&apos;s most recently enacted ALSS.</inlineHelpText>
+    <label>Most Recent Enacted Percent Share</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>4</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Percent</type>
+</CustomField>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Utility__c</fullName>
+    <externalId>false</externalId>
+    <label>Utility</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <restricted>true</restricted>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>National Grid</fullName>
+                
+                    <default>false</default>
+                
+                    <label>National Grid</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Eversource</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Eversource</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Eversource/Muni</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Eversource/Muni</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Eversource/NGRID</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Eversource/NGRID</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Municipal/NGRID</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Municipal/NGRID</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Municipal</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Municipal</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Green Mountain Power</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Green Mountain Power</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Orange &amp; Rockland</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Orange &amp; Rockland</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>PSE&amp;G</fullName>
+                
+                    <default>false</default>
+                
+                    <label>PSE&amp;G</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>SCE&amp;G</fullName>
+                
+                    <default>false</default>
+                
+                    <label>SCE&amp;G</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Unitil</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Unitil</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Green Mountain</fullName>
+                
+                    <default>false</default>
+                
+                    <isActive>false</isActive>
+                
+                    <label>Green Mountain</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

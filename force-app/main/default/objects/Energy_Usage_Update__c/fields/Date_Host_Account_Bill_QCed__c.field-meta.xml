@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Date_Host_Account_Bill_QCed__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Bill Status change stamps this date</inlineHelpText>
+    <label>Date: Host Account Bill QCed</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

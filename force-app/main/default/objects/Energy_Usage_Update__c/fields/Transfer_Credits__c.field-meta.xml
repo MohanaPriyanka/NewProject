@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Transfer_Credits__c</fullName>
+    <description>Total transfers of the host account during this billing cycle. This field should be +/- 2-3% of last month&apos;s Total NMC</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Total transfers of the host account during this billing cycle. This field should be +/- 2-3% of last month&apos;s Total NMC</inlineHelpText>
+    <label>Transfer off Host Account Bill</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

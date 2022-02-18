@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Billing_City_Upper_Case__c</fullName>
+    <description>This field is used for the GeoJSON map in Wave Analytics. The JSON file compares customer records to each town on the map. Each town&apos;s identifier is case sensitive. Therefore, all records need an all uppercase city in order for the date to be illustrated correctly - Cole Swain</description>
+    <externalId>false</externalId>
+    <formula>UPPER(City__c)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>This field is used for the GeoJSON map in Wave Analytics. The JSON file compares customer records to each town on the map. Each town&apos;s identifier is case sensitive. Alll records need an all uppercase city in order for the date to be illustrated correctly.</inlineHelpText>
+    <label>Billing City (Upper Case)</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

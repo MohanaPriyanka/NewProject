@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<PathAssistant xmlns="http://soap.sforce.com/2006/04/metadata">
+    
+    <active>true</active>
+    
+    <entityName>Lead</entityName>
+    
+    <fieldName>Partner_Application_Status__c</fieldName>
+    
+    <masterLabel>Partner Portal Application Status (Biz)</masterLabel>
+    
+    <pathAssistantSteps>
+        
+        <info>&lt;table class=&quot;ql-table-blob&quot; border=&quot;0&quot; style=&quot;font-size: 13px; width: 549pt;&quot; width=&quot;732&quot;&gt;&lt;tbody style=&quot;font-size: 13px;&quot;&gt;&lt;tr height=&quot;20&quot; style=&quot;font-size: 13px; height: 15pt;&quot;&gt;&lt;td colspan=&quot;1&quot; rowspan=&quot;1&quot; width=&quot;732&quot; height=&quot;20&quot; style=&quot;font-size: 13px; height: 15pt; width: 549pt;&quot;&gt;BlueWave has sent additional contract(s) for the customer to sign.&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</info>
+        
+        <picklistValueName>Additional Signature Required</picklistValueName>
+        
+    </pathAssistantSteps>
+    
+    <pathAssistantSteps>
+        
+        <info>&lt;p&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;Application has been started with a customer.&lt;/span&gt;&lt;/p&gt;</info>
+        
+        <picklistValueName>Application Started</picklistValueName>
+        
+    </pathAssistantSteps>
+    
+    <pathAssistantSteps>
+        
+        <info>&lt;p&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;BlueWave has requested additional information before the application can be finalized.&lt;/span&gt;&lt;/p&gt;</info>
+        
+        <picklistValueName>Awaiting Information Requested</picklistValueName>
+        
+    </pathAssistantSteps>
+    
+    <pathAssistantSteps>
+        
+        <info>&lt;p&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;BlueWave has set up the customer&amp;#39;s account.&lt;/span&gt;&lt;/p&gt;</info>
+        
+        <picklistValueName>Complete</picklistValueName>
+        
+    </pathAssistantSteps>
+    
+    <pathAssistantSteps>
+        
+        <info>&lt;p&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;BlueWave is reviewing the application.&lt;/span&gt;&lt;/p&gt;</info>
+        
+        <picklistValueName>Under Review</picklistValueName>
+        
+    </pathAssistantSteps>
+    
+    <recordTypeName>BFG_Community_Solar_Business</recordTypeName>
+    
+</PathAssistant>

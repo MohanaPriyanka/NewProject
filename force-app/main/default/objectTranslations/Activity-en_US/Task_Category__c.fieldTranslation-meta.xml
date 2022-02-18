@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <help/>
+    <label/>
+    <name>Task_Category__c</name>
+    <picklistValues>
+        
+            <masterLabel>Billing</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Cancellation</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Fairhaven and Clara Barton Call-a-thon</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Fairhaven and Clara Barton Fiasco</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>General CS</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>How much will I save</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>How to Pay Bill</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Payment Plan</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Portal Log In</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Subscription Size Change</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>When will I see credits on my account</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+</CustomFieldTranslation>

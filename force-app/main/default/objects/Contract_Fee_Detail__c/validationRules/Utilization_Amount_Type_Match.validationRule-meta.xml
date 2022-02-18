@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Utilization_Amount_Type_Match</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISPICKVAL(Utilization_Adjustment_Type__c, &quot;Amount ($)&quot;),ISBLANK(Utilization_Adjustment_Amount__c))</errorConditionFormula>
+    <errorMessage>If you selected Amount for the Utilization Adjustment Type, then you need to fill out the &apos;Utilization Adjustment Amount&apos; field.</errorMessage>
+</ValidationRule>

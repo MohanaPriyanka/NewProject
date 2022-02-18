@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>kW_Allocation__c</fullName>
+    <description>This field multiplies the Future Share of System by the System Size in kw DC. This is different from the other kw DC field we have because it uses the rounded (determined by utility) share of system.</description>
+    <externalId>false</externalId>
+    <formula>Percent_Share__c *  Schedule_Z__r.Shared_Solar_System__r.Total_System_Size_kWh_DC__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>kW size based on % subscription on allocation schedule</inlineHelpText>
+    <label>kW Allocation</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>6</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

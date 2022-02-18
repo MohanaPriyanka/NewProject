@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Utility_1__c</fullName>
+    <externalId>false</externalId>
+    <label>XXXXX Utility</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>National Grid</fullName>
+                
+                    <default>false</default>
+                
+                    <label>National Grid</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Eversource</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Eversource</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>WMECO</fullName>
+                
+                    <default>false</default>
+                
+                    <label>WMECO</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>MLP</fullName>
+                
+                    <default>false</default>
+                
+                    <label>MLP</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Duke Energy</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Duke Energy</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>SCE&amp;G</fullName>
+                
+                    <default>false</default>
+                
+                    <label>SCE&amp;G</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>National Grid/Eversource</fullName>
+                
+                    <default>false</default>
+                
+                    <label>National Grid/Eversource</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Eversource / MLP</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Eversource / MLP</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+    <visibleLines>4</visibleLines>
+</CustomField>

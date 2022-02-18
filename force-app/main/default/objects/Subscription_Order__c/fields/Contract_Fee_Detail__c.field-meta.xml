@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Contract_Fee_Detail__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
+    <inlineHelpText>Acquisition rate charged to client for this change</inlineHelpText>
+    <label>Contract Fee Detail</label>
+    <referenceTo>Contract_Fee_Detail__c</referenceTo>
+    <relationshipLabel>Subscription Orders</relationshipLabel>
+    <relationshipName>Subscription_Orders</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

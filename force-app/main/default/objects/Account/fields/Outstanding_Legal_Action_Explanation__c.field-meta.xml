@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Outstanding_Legal_Action_Explanation__c</fullName>
+    <description>Are there any outstanding judgements or legal actions pending against the company or its owner(s)?</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Are there any outstanding judgements or legal actions pending against the company or its owner(s)?</inlineHelpText>
+    <label>Outstanding Legal Action Explanation</label>
+    <length>32768</length>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

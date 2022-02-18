@@ -1,0 +1,2213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    
+    <labels>
+        
+        <fullName>AmpBlack_Main_Logo</fullName>
+        
+        <categories>branding</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>AmpBlack_Main_Logo</shortDescription>
+        
+        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/00d4add9-44a0-4208-b8d0-ebb8ea9745ea.png</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>AmpRed_Main_Logo</fullName>
+        
+        <categories>branding, email</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>AmpRed Main Logo</shortDescription>
+        
+        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/60cf472c-2978-4666-9866-8902b0376120.png</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>Client_Portal_URL</fullName>
+        
+        <categories>branding, email</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Client Portal URL</shortDescription>
+        
+        <value>https://portal.perchenergy.com/clientportal</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>Co_Signer_PI_Next</fullName>
+        
+        <categories>Customer Application Portal</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Next</shortDescription>
+        
+        <value>Next, we need to gather your co-signer&apos;s personal information:</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>Company_Default_Farm_Image</fullName>
+        
+        <categories>branding</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Company Default Farm Image</shortDescription>
+        
+        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/e9c45853-427b-49b9-af46-59e1505321ca.png</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>Company_Email_Icon</fullName>
+        
+        <categories>branding, email</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Company_Email_Icon</shortDescription>
+        
+        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/218aabc5-cde0-4a54-84e2-2f0a7cf50c96.png</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>Company_Facebook</fullName>
+        
+        <categories>branding, email</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Company_Facebook</shortDescription>
+        
+        <value>https://www.facebook.com/perch.energy/</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>Company_Instagram</fullName>
+        
+        <categories>branding, email</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Company_Instagram</shortDescription>
+        
+        <value>https://www.instagram.com/perch.energy/?hl=en</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>Company_LinkedIn</fullName>
+        
+        <categories>branding, email</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Company_LinkedIn</shortDescription>
+        
+        <value>https://www.linkedin.com/company/perchenergy</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>Company_Main_Logo</fullName>
+        
+        <categories>branding, email</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Company_Main_Logo</shortDescription>
+        
+        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/509a186e-a0d6-477a-a287-fe206321ada4.png</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>Company_Name</fullName>
+        
+        <categories>branding, email</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Company Name</shortDescription>
+        
+        <value>Perch</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>Company_Name_Customer_Acquisition</fullName>
+        
+        <categories>branding</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Company Name Customer Acquisition</shortDescription>
+        
+        <value>BCS Customer Acquisition, LLC</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>Company_Name_Customer_Management</fullName>
+        
+        <categories>branding</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Company Name Customer Management</shortDescription>
+        
+        <value>BCS Customer Management, LLC</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>Company_Temp_Website</fullName>
+        
+        <categories>Branding</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Company Temp Website</shortDescription>
+        
+        <value>communitysolar.perchenergy.com</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>Company_Website</fullName>
+        
+        <categories>branding</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Company_Website</shortDescription>
+        
+        <value>https://communitysolar.perchenergy.com/</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>Customer_Acquisition</fullName>
+        
+        <categories>branding, email</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Customer Acquisition</shortDescription>
+        
+        <value>BCS Customer Acquisition, LLC</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>Customer_Management</fullName>
+        
+        <categories>branding, email</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Customer Management,</shortDescription>
+        
+        <value>BCS Customer Management, LLC</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>Customer_Member_Portal_URL</fullName>
+        
+        <categories>branding, email</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Customer_Member_Portal_URL</shortDescription>
+        
+        <value>https://portal.perchenergy.com/customerportal/</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>Enrollment_Portal_URL</fullName>
+        
+        <categories>branding, email</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Enrollment Portal URL</shortDescription>
+        
+        <value>https://portal.perchenergy.com/apply</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>Internal_Classic_Salesforce_URL</fullName>
+        
+        <categories>branding</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Internal_Classic_Salesforce_URL</shortDescription>
+        
+        <value>https://perchenergy.my.salesforce.com/</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>Internal_Lightning_Salesforce_URL</fullName>
+        
+        <categories>branding</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Internal_Lightning_Salesforce_URL</shortDescription>
+        
+        <value>https://perchenergy.lightning.force.com/</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>LA_Chat_ExtendedHeader_ChatStateHeaderGreeting_04I540000008OIA_1979875</fullName>
+        
+        <categories>Snap-ins</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>LA_Chat_ExtendedHeader_ChatStateHeaderGreeting_04I540000008OIA_1979875</shortDescription>
+        
+        <value>Thanks for chatting with us!</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>LA_Chat_FileTransfer_SelectNewFile_04I540000008OIA_4719185</fullName>
+        
+        <categories>Snap-ins</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>LA_Chat_FileTransfer_SelectNewFile_04I540000008OIA_4719185</shortDescription>
+        
+        <value>Uh oh - the file you&apos;re trying to upload is too big! Please select a file under 5mb.</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>LA_OfflineSupport_CloseConfirmation_ConfirmationDialogBo_04I540000008OIA_6810088</fullName>
+        
+        <categories>Snap-ins</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>LA_OfflineSupport_CloseConfirmation_ConfirmationDialogBo_04I540000008OIA_6810088</shortDescription>
+        
+        <value>We logged your Support Case! You&apos;ll hear back from us soon!</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>LA_OfflineSupport_CloseConfirmation_ConfirmationDialogTi_04I540000008OIA_4289172</fullName>
+        
+        <categories>Snap-ins</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>LA_OfflineSupport_CloseConfirmation_ConfirmationDialogTi_04I540000008OIA_4289172</shortDescription>
+        
+        <value>Success</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>Length_With_Employer</fullName>
+        
+        <categories>Customer Application Portal</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Asks how long the applicant has been with their employer.</shortDescription>
+        
+        <value>Have you been with your employer for more than one year?</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>Partner_Portal_URL</fullName>
+        
+        <categories>branding, email</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Partner Portal URL</shortDescription>
+        
+        <value>https://portal.perchenergy.com/partnerportal</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_Cancellation_Contact_Info</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF Cancellation Contact Info</shortDescription>
+        
+        <value>This authorization will remain in effect until all amounts I owe to Perch Community Solar Acquisition, LLC, or an assignee in connection with the community solar agreement have been paid in full or this authorization is cancelled in writing by providing notice of cancellation to Perch Community Solar, LLC, or its designee, by email at customercare@perchenergy.com, by mail at P.O. Box 170718, Boston, MA 02117, or online at https://portal.perchenergy.com/customerportal.  I understand and agree that Perch Community Solar, LLC, must receive written notice of any changes in the account information or termination of this authorization at least three (3) business days prior to the next billing date.</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_Company_Address_1</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF Company Address 1</shortDescription>
+        
+        <value>P.O. Box 170718</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_Company_Address_2</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF Company Address 2</shortDescription>
+        
+        <value>Boston, MA 02117</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_Company_Logo</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF Company Logo Path</shortDescription>
+        
+        <value>PerchLogo_White.png</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_Company_Name_Customer_Management</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF Company Name Customer Management</shortDescription>
+        
+        <value>BCS Customer Management, LLC</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_Company_Privacy_Policy_Link</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF Company Privacy Policy Link</shortDescription>
+        
+        <value>https://communitysolar.perchenergy.com/privacy-policy</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_Company_Short_Name</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF Company Shortname</shortDescription>
+        
+        <value>Perch</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_Company_Website</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF Company Website</shortDescription>
+        
+        <value>https://communitysolar.perchenergy.com</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_Company_and_Servicers</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF Company and Servicers</shortDescription>
+        
+        <value>Perch Community Solar Acquisition, LLC, or its servicer(s), or an assignee or such assignee’s servicer(s), including but not limited to Perch Community Solar, LLC</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_Customer_Member_Portal_URL</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF Customer Member Portal URL</shortDescription>
+        
+        <value>https://portal.perchenergy.com/customerportal</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_Email_Customer_Care</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF Email Customer Care</shortDescription>
+        
+        <value>customercare@perchenergy.com</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_Email_Partner_Support</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF Email Partner Support</shortDescription>
+        
+        <value>partnersupport@perchenergy.com</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_Esign_URL</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF Esign URL</shortDescription>
+        
+        <value>https://image.email.perchenergy.com/lib/fe3511717064057d761d72/m/1/8b3e7e4e-c305-465b-996e-c0c5829d47ac.pdf</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_FAQ1_Answer</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF FAQ1 - Answer</shortDescription>
+        
+        <value>A community member like you enjoys saving money and cares about supporting the development of clean energy, so they sign up to support a project. With their support, our partners can build a community solar farm in your region. Once the solar farm is operational, the power it generates is sent to the local utility for distribution on the grid. Then, the member receives credits on their electric bill and they pay for those credits at a reduced rate.</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_FAQ1_Question</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF FAQ1 - Question</shortDescription>
+        
+        <value>How does Community Solar work?</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_FAQ2_Answer</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF FAQ2 - Answer</shortDescription>
+        
+        <value>With a Perch Community Solar membership, you save money while supporting the development of solar energy. By signing up, you will receive bill credits that reduce your monthly electric bill and you’ll enjoy peace of mind knowing that support contributes to job growth and cleaner electric generation in your area.</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_FAQ2_Question</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF FAQ2 - Question</shortDescription>
+        
+        <value>What are the benefits of a Perch Community Solar membership?</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_FAQ3_Answer</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF FAQ3 - Answer</shortDescription>
+        
+        <value>Community Solar is a state incentivized program that makes it possible for homeowners, renters, and businesses to support solar without needing to install their own solar panels.</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_FAQ3_Question</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF FAQ3 - Question</shortDescription>
+        
+        <value>How is community solar different from rooftop solar?</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_FAQ4_Answer</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF FAQ4 - Answer</shortDescription>
+        
+        <value>Depending on the project and your location, you can expect to save somewhere between 5%-10% on electricity throughout the year. While you will save on your electric bill every month that credits are applied, the amount of savings will vary. Savings are generally higher during the summer months when solar production is at its peak and lower during the winter months when the sun shines less. Of course, variations in how much energy you use will also affect how much you save.</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_FAQ4_Question</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF FAQ4 - Question</shortDescription>
+        
+        <value>How much can I save with a Perch Community Solar membership?</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_FAQ5_Answer</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF FAQ5 - Answer</shortDescription>
+        
+        <value>If you move within your utility territory, it’s simple: you can take your membership with you. If you move to a new utility territory, you can cancel free of charge. However, we ask for 90 days’ notice.</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_FAQ5_Question</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF FAQ5 - Question</shortDescription>
+        
+        <value>What if I have to move or cancel?</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_FAQ6_Answer</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF FAQ6 - Answer</shortDescription>
+        
+        <value>We help people protect the planet by making cleaner energy options more accessible, more affordable and more equitable for all. Perch has managed more than 135 MW of projects, providing community solar access to thousands of customers, both through our own solar farms and through farms developed by others.</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_FAQ6_Question</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF FAQ6 - Question</shortDescription>
+        
+        <value>Who is Perch Energy?</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_Facebook_Icon</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF Facebook Icon</shortDescription>
+        
+        <value>facebook.min.svg</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_Facebook_Link</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF Facebook Link</shortDescription>
+        
+        <value>https://www.facebook.com/perch.energy/</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_Inside_Sales_Phone</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF Inside Sales Phone</shortDescription>
+        
+        <value>(617) 681-4119</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_Linkedin_Icon</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF Linkedin Icon</shortDescription>
+        
+        <value>linkedin.min.svg</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_Linkedin_Link</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF Linkedin Link</shortDescription>
+        
+        <value>https://www.linkedin.com/company/perchenergy</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_Resource_Center_Link</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF Resource Center Link</shortDescription>
+        
+        <value>https://communitysolar.perchenergy.com/bw-resources/solar-101</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_Support_Email</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF Support Email</shortDescription>
+        
+        <value>partnersupport@perchenergy.com</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_WaitingRoom1_Text</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF_WaitingRoom1_Text</shortDescription>
+        
+        <value>The oldest manmade satellite has been in orbit since 1958 and is powered by solar.</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_WaitingRoom1_Url</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF_WaitingRoom1_Url</shortDescription>
+        
+        <value>https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1958-002B</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_WaitingRoom2_Text</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF_WaitingRoom2_Text</shortDescription>
+        
+        <value>In one hour, more energy from the sun falls on the Earth than is used by everyone around the world in an entire year.</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_WaitingRoom2_Url</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF_WaitingRoom2_Url</shortDescription>
+        
+        <value>https://www.uwsp.edu/cnr-ap/KEEP/Documents/Activities/Energy%20Fact%20Sheets/FactsAboutSolarElectricity.pdf</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_WaitingRoom3_Text</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF_WaitingRoom3_Text</shortDescription>
+        
+        <value>When there’s a huge solar spill, it&apos;s just called a sunny day.</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>SSF_WaitingRoom3_Url</fullName>
+        
+        <categories>branding, ssf</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SSF_WaitingRoom3_Url</shortDescription>
+        
+        <value>https://communitysolar.perchenergy.com</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>email_anchorsupport</fullName>
+        
+        <categories>branding, email</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Anchor Support Email address</shortDescription>
+        
+        <value>anchorsupport@perchenergy.com</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>email_clientservices</fullName>
+        
+        <categories>branding, email</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Client Services Email address</shortDescription>
+        
+        <value>clientservices@perchenergy.com</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>email_customercare</fullName>
+        
+        <categories>branding, email</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Customer Care Email address</shortDescription>
+        
+        <value>customercare@perchenergy.com</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>email_fin_ops</fullName>
+        
+        <categories>branding, email</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>FinOps Email address</shortDescription>
+        
+        <value>finops@bluewavesolar.com</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>email_partnersupport</fullName>
+        
+        <categories>branding, email</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Partner Support Email Address</shortDescription>
+        
+        <value>partnersupport@perchenergy.com</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fbc_AccessLevel</fullName>
+        
+        <categories>labels</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>AccessLevel</shortDescription>
+        
+        <value>Access Level</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fbc_Back</fullName>
+        
+        <categories>Buttons,Filters,Title</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Back</shortDescription>
+        
+        <value>Back</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fbc_ButtonIsNotSupportedMessage</fullName>
+        
+        <categories>messages</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>ButtonIsNotSupportedMessage</shortDescription>
+        
+        <value>Following buttons are note supported:</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fbc_ConditionLogicHelpText</fullName>
+        
+        <categories>labels</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>ConditionLogicHelpText</shortDescription>
+        
+        <value>Use parentheses, AND, OR, and NOT to customize the logic. For example, if you enter “(1 AND 2 AND 3) OR 4”, the flow evaluates whether the first three conditions are true or only the fourth condition is true.</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fbc_Delete</fullName>
+        
+        <categories>labels, buttons</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Delete</shortDescription>
+        
+        <value>Delete</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fbc_FieldIsNotSupportedMessage</fullName>
+        
+        <categories>messages</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>FieldIsNotSupportedMessage</shortDescription>
+        
+        <value>Following fields are not supported:</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fbc_For</fullName>
+        
+        <categories>Buttons</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>For</shortDescription>
+        
+        <value>For</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fbc_LackingPermissions</fullName>
+        
+        <categories>messages</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>LackingPermissions</shortDescription>
+        
+        <value>You don\&apos;t have the proper permissions for ths action</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fbc_ManagerEmptyMessage</fullName>
+        
+        <categories>messages</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>ManagerEmptyMessage</shortDescription>
+        
+        <value>&quot;Manager APEX Class&quot; can not be empty</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fbc_MultipleGroupsForRole</fullName>
+        
+        <categories>messages</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>MultipleGroupsForRole</shortDescription>
+        
+        <value>There are multiple groups for that role</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fbc_Name</fullName>
+        
+        <categories>quicklinks, Labels</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Name</shortDescription>
+        
+        <value>Name</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fbc_NonePicklistValueLabel</fullName>
+        
+        <categories>messages</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>NonePicklistValueLabel</shortDescription>
+        
+        <value>-- None --</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fbc_OWDReadWrite</fullName>
+        
+        <categories>messages</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>OWDReadWrite</shortDescription>
+        
+        <value>Sharing Settings must be private or public read/write to enable manual sharing</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fbc_OwnerAdminModify</fullName>
+        
+        <categories>messages</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>OwnerAdminModify</shortDescription>
+        
+        <value>Only the record owner or administrators can modify permissions</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fbc_PublicGroups</fullName>
+        
+        <categories>labels</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>PublicGroups</shortDescription>
+        
+        <value>Public Groups</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fbc_Queues</fullName>
+        
+        <categories>labels</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Queues</shortDescription>
+        
+        <value>Queues</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fbc_Read</fullName>
+        
+        <categories>labels, buttons</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Read</shortDescription>
+        
+        <value>Read</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fbc_ReadWrite</fullName>
+        
+        <categories>labels, buttons</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>ReadWrite</shortDescription>
+        
+        <value>Read / Write</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fbc_Reason</fullName>
+        
+        <categories>labels</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Reason</shortDescription>
+        
+        <value>Reason</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fbc_RelatedUsers</fullName>
+        
+        <categories>labels</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>RelatedUsers</shortDescription>
+        
+        <value>Related Users</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fbc_Roles</fullName>
+        
+        <categories>labels</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Roles</shortDescription>
+        
+        <value>Roles</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fbc_Search</fullName>
+        
+        <categories>Actions,Buttons,quicklinks</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Search in</shortDescription>
+        
+        <value>Search in</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fbc_SearchFor</fullName>
+        
+        <categories>labels</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SearchFor</shortDescription>
+        
+        <value>For</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fbc_SetAccessLevel</fullName>
+        
+        <categories>labels</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SetAccessLevel</shortDescription>
+        
+        <value>Set Access Level</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fbc_SupportedAddCapabilitiesEmptyMessage</fullName>
+        
+        <categories>messages</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SupportedAddCapabilitiesEmptyMessage</shortDescription>
+        
+        <value>&quot;Add Capabilities&quot; can not be empty</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fbc_SupportedButtonsEmptyMessage</fullName>
+        
+        <categories>messages</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SupportedButtonsEmptyMessage</shortDescription>
+        
+        <value>&quot;Supported Buttons&quot; can not be empty</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fbc_SupportedEditCapabilitiesEmptyMessage</fullName>
+        
+        <categories>messages</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SupportedEditCapabilitiesEmptyMessage</shortDescription>
+        
+        <value>&quot;Edit Capabilities&quot; can not be empty</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fbc_TooManyResultsMessage</fullName>
+        
+        <categories>messages</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>TooManyResultsMessage</shortDescription>
+        
+        <value>Your search found more than 200 results.  Keep typing to make it more specific</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fbc_Type</fullName>
+        
+        <categories>Buttons,Filters,Title</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Type</shortDescription>
+        
+        <value>Type</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fbc_UserOrGroup</fullName>
+        
+        <categories>labels</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>UserOrGroup</shortDescription>
+        
+        <value>User Or Group</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fbc_Users</fullName>
+        
+        <categories>labels</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Users</shortDescription>
+        
+        <value>Users</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fsc_AccessLevel</fullName>
+        
+        <categories>labels</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>AccessLevel</shortDescription>
+        
+        <value>Access Level</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fsc_Back</fullName>
+        
+        <categories>Buttons,Filters,Title</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Back</shortDescription>
+        
+        <value>Back</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fsc_ButtonIsNotSupportedMessage</fullName>
+        
+        <categories>messages</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>ButtonIsNotSupportedMessage</shortDescription>
+        
+        <value>Following buttons are note supported:</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fsc_ConditionLogicHelpText</fullName>
+        
+        <categories>labels</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>ConditionLogicHelpText</shortDescription>
+        
+        <value>Use parentheses, AND, OR, and NOT to customize the logic. For example, if you enter “(1 AND 2 AND 3) OR 4”, the flow evaluates whether the first three conditions are true or only the fourth condition is true.</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fsc_Delete</fullName>
+        
+        <categories>labels, buttons</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Delete</shortDescription>
+        
+        <value>Delete</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fsc_FieldIsNotSupportedMessage</fullName>
+        
+        <categories>messages</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>FieldIsNotSupportedMessage</shortDescription>
+        
+        <value>Following fields are not supported:</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fsc_For</fullName>
+        
+        <categories>Buttons</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>For</shortDescription>
+        
+        <value>For</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fsc_LackingPermissions</fullName>
+        
+        <categories>messages</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>LackingPermissions</shortDescription>
+        
+        <value>You don\&apos;t have the proper permissions for ths action</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fsc_ManagerEmptyMessage</fullName>
+        
+        <categories>messages</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>ManagerEmptyMessage</shortDescription>
+        
+        <value>&quot;Manager APEX Class&quot; can not be empty</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fsc_MultipleGroupsForRole</fullName>
+        
+        <categories>messages</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>MultipleGroupsForRole</shortDescription>
+        
+        <value>There are multiple groups for that role</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fsc_Name</fullName>
+        
+        <categories>quicklinks, Labels</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Name</shortDescription>
+        
+        <value>Name</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fsc_NonePicklistValueLabel</fullName>
+        
+        <categories>messages</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>NonePicklistValueLabel</shortDescription>
+        
+        <value>-- None --</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fsc_OWDReadWrite</fullName>
+        
+        <categories>messages</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>OWDReadWrite</shortDescription>
+        
+        <value>Sharing Settings must be private or public read/write to enable manual sharing</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fsc_OwnerAdminModify</fullName>
+        
+        <categories>messages</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>OwnerAdminModify</shortDescription>
+        
+        <value>Only the record owner or administrators can modify permissions</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fsc_PublicGroups</fullName>
+        
+        <categories>labels</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>PublicGroups</shortDescription>
+        
+        <value>Public Groups</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fsc_Queues</fullName>
+        
+        <categories>labels</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Queues</shortDescription>
+        
+        <value>Queues</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fsc_Read</fullName>
+        
+        <categories>labels, buttons</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Read</shortDescription>
+        
+        <value>Read</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fsc_ReadWrite</fullName>
+        
+        <categories>labels, buttons</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>ReadWrite</shortDescription>
+        
+        <value>Read / Write</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fsc_Reason</fullName>
+        
+        <categories>labels</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Reason</shortDescription>
+        
+        <value>Reason</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fsc_RelatedUsers</fullName>
+        
+        <categories>labels</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>RelatedUsers</shortDescription>
+        
+        <value>Related Users</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fsc_Roles</fullName>
+        
+        <categories>labels</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Roles</shortDescription>
+        
+        <value>Roles</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fsc_Search</fullName>
+        
+        <categories>Actions,Buttons,quicklinks</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Search in</shortDescription>
+        
+        <value>Search in</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fsc_SearchFor</fullName>
+        
+        <categories>labels</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SearchFor</shortDescription>
+        
+        <value>For</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fsc_SetAccessLevel</fullName>
+        
+        <categories>labels</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SetAccessLevel</shortDescription>
+        
+        <value>Set Access Level</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fsc_SupportedAddCapabilitiesEmptyMessage</fullName>
+        
+        <categories>messages</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SupportedAddCapabilitiesEmptyMessage</shortDescription>
+        
+        <value>&quot;Add Capabilities&quot; can not be empty</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fsc_SupportedButtonsEmptyMessage</fullName>
+        
+        <categories>messages</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SupportedButtonsEmptyMessage</shortDescription>
+        
+        <value>&quot;Supported Buttons&quot; can not be empty</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fsc_SupportedEditCapabilitiesEmptyMessage</fullName>
+        
+        <categories>messages</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>SupportedEditCapabilitiesEmptyMessage</shortDescription>
+        
+        <value>&quot;Edit Capabilities&quot; can not be empty</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fsc_TooManyResultsMessage</fullName>
+        
+        <categories>messages</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>TooManyResultsMessage</shortDescription>
+        
+        <value>Your search found more than 200 results.  Keep typing to make it more specific</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fsc_Type</fullName>
+        
+        <categories>Buttons,Filters,Title</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Type</shortDescription>
+        
+        <value>Type</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fsc_UserOrGroup</fullName>
+        
+        <categories>labels</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>UserOrGroup</shortDescription>
+        
+        <value>User Or Group</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>fsc_Users</fullName>
+        
+        <categories>labels</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Users</shortDescription>
+        
+        <value>Users</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>phone_clientservices</fullName>
+        
+        <categories>branding</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>phone_clientservices</shortDescription>
+        
+        <value>(617) 681-4406</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>phone_customercare</fullName>
+        
+        <categories>branding</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Customer Care Phone</shortDescription>
+        
+        <value>(888) 893-3633</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>phone_insidesales</fullName>
+        
+        <categories>branding</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>phone_insidesales</shortDescription>
+        
+        <value>(617) 681-4119</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>phone_partnersupport</fullName>
+        
+        <categories>branding</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Partner Support Phone</shortDescription>
+        
+        <value>(888) 997-2432</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>sremailNoSearchResultsMessage</fullName>
+        
+        <categories>messages</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>NoSearchResultsMessage</shortDescription>
+        
+        <value>No results found</value>
+        
+    </labels>
+    
+    <labels>
+        
+        <fullName>sremailSearchMembers</fullName>
+        
+        <categories>Actions,Buttons,quicklinks</categories>
+        
+        <language>en_US</language>
+        
+        <protected>false</protected>
+        
+        <shortDescription>Search existing Flow resources</shortDescription>
+        
+        <value>Search existing Flow resources</value>
+        
+    </labels>
+    
+</CustomLabels>

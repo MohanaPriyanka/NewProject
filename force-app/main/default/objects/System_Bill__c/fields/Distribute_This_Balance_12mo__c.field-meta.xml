@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Distribute_This_Balance_12mo__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>As of Jan 2019, if we initiate new payment plans with late fees, we&apos;ll likely not handle them correctly (see Richard Ruff)</description>
+    <externalId>false</externalId>
+    <inlineHelpText>As of Jan 2019, we don&apos;t allow new Payment Plans.</inlineHelpText>
+    <label>Distribute as Payment Plan? (12 months)</label>
+    <trackFeedHistory>true</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

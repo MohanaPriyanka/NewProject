@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Load_Profile_Description__c</fullName>
+    <description>Load profile codes must be sent when the service is electric. Load profile definitions are accessible from the utility&apos;s website</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Load profile codes must be sent when the service is electric. Load profile definitions are accessible from the utility&apos;s website</inlineHelpText>
+    <label>Load Profile Description</label>
+    <length>30</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

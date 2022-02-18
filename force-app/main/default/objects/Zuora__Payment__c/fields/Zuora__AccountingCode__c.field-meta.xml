@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__AccountingCode__c</fullName>
+    <deprecated>false</deprecated>
+    <description>The accounting code for the payment. Accounting codes group transactions that contain similar accounting attributes.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The accounting code for the payment. Accounting codes group transactions that contain similar accounting attributes.</inlineHelpText>
+    <label>Accounting Code</label>
+    <length>100</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    
+    <apiVersion>53.0</apiVersion>
+    
+    <assignments>
+        
+        <name>Set_Initial_Values</name>
+        
+        <label>Set Initial Values</label>
+        
+        <locationX>176</locationX>
+        
+        <locationY>311</locationY>
+        
+        <assignmentItems>
+            
+            <assignToReference>$Record.UnitPrice</assignToReference>
+            
+            <operator>Assign</operator>
+            
+            <value>
+                
+                <elementReference>ffSellingPrice</elementReference>
+                
+            </value>
+            
+        </assignmentItems>
+        
+        <assignmentItems>
+            
+            <assignToReference>$Record.Product_Family__c</assignToReference>
+            
+            <operator>Assign</operator>
+            
+            <value>
+                
+                <elementReference>$Record.Product2.Family</elementReference>
+                
+            </value>
+            
+        </assignmentItems>
+        
+    </assignments>
+    
+    <formulas>
+        
+        <name>ffSellingPrice</name>
+        
+        <dataType>Currency</dataType>
+        
+        <expression>{!$Record.UOM_Based_Price__c} *
+CASE({!$Record.Product2.QuantityUnitOfMeasure},
+&apos;W&apos;,1000,
+&apos;MW&apos;,0.001,
+1)</expression>
+        
+        <scale>6</scale>
+        
+    </formulas>
+    
+    <interviewLabel>Before Save: Opportuntiy Product {!$Flow.CurrentDateTime}</interviewLabel>
+    
+    <label>Opportunity Product: Before Save</label>
+    
+    <processMetadataValues>
+        
+        <name>BuilderType</name>
+        
+        <value>
+            
+            <stringValue>LightningFlowBuilder</stringValue>
+            
+        </value>
+        
+    </processMetadataValues>
+    
+    <processMetadataValues>
+        
+        <name>CanvasMode</name>
+        
+        <value>
+            
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+            
+        </value>
+        
+    </processMetadataValues>
+    
+    <processMetadataValues>
+        
+        <name>OriginBuilderType</name>
+        
+        <value>
+            
+            <stringValue>LightningFlowBuilder</stringValue>
+            
+        </value>
+        
+    </processMetadataValues>
+    
+    <processType>AutoLaunchedFlow</processType>
+    
+    <start>
+        
+        <locationX>50</locationX>
+        
+        <locationY>0</locationY>
+        
+        <connector>
+            
+            <targetReference>Set_Initial_Values</targetReference>
+            
+        </connector>
+        
+        <filterLogic>or</filterLogic>
+        
+        <filters>
+            
+            <field>Unit_of_Measure__c</field>
+            
+            <operator>EqualTo</operator>
+            
+            <value>
+                
+                <stringValue>W</stringValue>
+                
+            </value>
+            
+        </filters>
+        
+        <filters>
+            
+            <field>Unit_of_Measure__c</field>
+            
+            <operator>EqualTo</operator>
+            
+            <value>
+                
+                <stringValue>kWh</stringValue>
+                
+            </value>
+            
+        </filters>
+        
+        <filters>
+            
+            <field>Unit_of_Measure__c</field>
+            
+            <operator>EqualTo</operator>
+            
+            <value>
+                
+                <stringValue>MW</stringValue>
+                
+            </value>
+            
+        </filters>
+        
+        <object>OpportunityLineItem</object>
+        
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        
+        <triggerType>RecordBeforeSave</triggerType>
+        
+    </start>
+    
+    <status>Active</status>
+    
+</Flow>

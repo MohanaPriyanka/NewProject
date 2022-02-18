@@ -1,0 +1,3289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    
+    <actionCalls>
+        
+        <name>Get_Qualifying_Systems</name>
+        
+        <label>Get Qualifying Systems</label>
+        
+        <locationX>2294</locationX>
+        
+        <locationY>878</locationY>
+        
+        <actionName>InvocableQualifiedSSSSelector</actionName>
+        
+        <actionType>apex</actionType>
+        
+        <connector>
+            
+            <targetReference>Set_Number_of_Qualifying_Systems</targetReference>
+            
+        </connector>
+        
+        <faultConnector>
+            
+            <isGoTo>true</isGoTo>
+            
+            <targetReference>Assign_Error_Log_0_0</targetReference>
+            
+        </faultConnector>
+        
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        
+        <inputParameters>
+            
+            <name>leadsFromFlow</name>
+            
+            <value>
+                
+                <elementReference>Get_Lead</elementReference>
+                
+            </value>
+            
+        </inputParameters>
+        
+        <outputParameters>
+            
+            <assignToReference>orderedSSSList</assignToReference>
+            
+            <name>output</name>
+            
+        </outputParameters>
+        
+    </actionCalls>
+    
+    <actionCalls>
+        
+        <name>leadQualificationCheck</name>
+        
+        <label>Run Lead Qualification</label>
+        
+        <locationX>2294</locationX>
+        
+        <locationY>1238</locationY>
+        
+        <actionName>InvocableLeadQualification</actionName>
+        
+        <actionType>apex</actionType>
+        
+        <connector>
+            
+            <targetReference>Lead_After_Qualification</targetReference>
+            
+        </connector>
+        
+        <faultConnector>
+            
+            <isGoTo>true</isGoTo>
+            
+            <targetReference>Assign_Error_Log_0_0</targetReference>
+            
+        </faultConnector>
+        
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        
+        <inputParameters>
+            
+            <name>leadIds</name>
+            
+            <value>
+                
+                <elementReference>getLead.Id</elementReference>
+                
+            </value>
+            
+        </inputParameters>
+        
+    </actionCalls>
+    
+    <actionCalls>
+        
+        <name>Run_Lead_Conversion</name>
+        
+        <label>Run Lead Conversion</label>
+        
+        <locationX>1370</locationX>
+        
+        <locationY>2054</locationY>
+        
+        <actionName>CSLeadsConverter</actionName>
+        
+        <actionType>apex</actionType>
+        
+        <connector>
+            
+            <targetReference>Determine_Results</targetReference>
+            
+        </connector>
+        
+        <faultConnector>
+            
+            <targetReference>Assign_Error_Log_0_0</targetReference>
+            
+        </faultConnector>
+        
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        
+        <inputParameters>
+            
+            <name>leadId</name>
+            
+            <value>
+                
+                <elementReference>recordId</elementReference>
+                
+            </value>
+            
+        </inputParameters>
+        
+        <inputParameters>
+            
+            <name>selectedProductId</name>
+            
+            <value>
+                
+                <elementReference>currentProduct</elementReference>
+                
+            </value>
+            
+        </inputParameters>
+        
+        <inputParameters>
+            
+            <name>selectedSystemIds</name>
+            
+            <value>
+                
+                <elementReference>selectedSystemIds</elementReference>
+                
+            </value>
+            
+        </inputParameters>
+        
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+        
+    </actionCalls>
+    
+    <actionCalls>
+        
+        <name>Update_Screen_Before_Error_0</name>
+        
+        <label>Update Screen</label>
+        
+        <locationX>314</locationX>
+        
+        <locationY>2654</locationY>
+        
+        <actionName>c:UpdateScreen</actionName>
+        
+        <actionType>component</actionType>
+        
+        <connector>
+            
+            <targetReference>scrError_0</targetReference>
+            
+        </connector>
+        
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        
+        <inputParameters>
+            
+            <name>recordId</name>
+            
+            <value>
+                
+                <elementReference>recordId</elementReference>
+                
+            </value>
+            
+        </inputParameters>
+        
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+        
+    </actionCalls>
+    
+    <actionCalls>
+        
+        <name>Update_Screen_GetLead_0</name>
+        
+        <label>Update Screen</label>
+        
+        <locationX>2162</locationX>
+        
+        <locationY>2294</locationY>
+        
+        <actionName>c:UpdateScreen</actionName>
+        
+        <actionType>component</actionType>
+        
+        <connector>
+            
+            <targetReference>scrFinish_0</targetReference>
+            
+        </connector>
+        
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        
+        <inputParameters>
+            
+            <name>recordId</name>
+            
+            <value>
+                
+                <elementReference>recordId</elementReference>
+                
+            </value>
+            
+        </inputParameters>
+        
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+        
+    </actionCalls>
+    
+    <actionCalls>
+        
+        <name>updateScreenUnqualified</name>
+        
+        <label>Update Screen</label>
+        
+        <locationX>2954</locationX>
+        
+        <locationY>1718</locationY>
+        
+        <actionName>c:UpdateScreen</actionName>
+        
+        <actionType>component</actionType>
+        
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        
+        <inputParameters>
+            
+            <name>recordId</name>
+            
+            <value>
+                
+                <elementReference>recordId</elementReference>
+                
+            </value>
+            
+        </inputParameters>
+        
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+        
+    </actionCalls>
+    
+    <apiVersion>52.0</apiVersion>
+    
+    <assignments>
+        
+        <name>Add_Error_Log_to_List_0</name>
+        
+        <label>Add Error Log to List</label>
+        
+        <locationX>314</locationX>
+        
+        <locationY>2414</locationY>
+        
+        <assignmentItems>
+            
+            <assignToReference>sovc_ErrorLogs</assignToReference>
+            
+            <operator>Add</operator>
+            
+            <value>
+                
+                <elementReference>sov_ErrorLog</elementReference>
+                
+            </value>
+            
+        </assignmentItems>
+        
+        <connector>
+            
+            <targetReference>Log_Errors_0</targetReference>
+            
+        </connector>
+        
+    </assignments>
+    
+    <assignments>
+        
+        <description>Adds selected system into Id collection for use with LeadConvertDetail/CSLeadsConverter</description>
+        
+        <name>Add_Selected_System_Id_to_List</name>
+        
+        <label>Add Selected System Id to List</label>
+        
+        <locationX>1458</locationX>
+        
+        <locationY>1838</locationY>
+        
+        <assignmentItems>
+            
+            <assignToReference>selectedSystemIds</assignToReference>
+            
+            <operator>Add</operator>
+            
+            <value>
+                
+                <elementReference>Loop_Thru_Selected_Systems.Id</elementReference>
+                
+            </value>
+            
+        </assignmentItems>
+        
+        <connector>
+            
+            <targetReference>Loop_Thru_Selected_Systems</targetReference>
+            
+        </connector>
+        
+    </assignments>
+    
+    <assignments>
+        
+        <name>Assign_Error_Log_0</name>
+        
+        <label>Assign Error Log</label>
+        
+        <locationX>314</locationX>
+        
+        <locationY>2294</locationY>
+        
+        <assignmentItems>
+            
+            <assignToReference>sov_ErrorLog.Severity__c</assignToReference>
+            
+            <operator>Assign</operator>
+            
+            <value>
+                
+                <stringValue>Error</stringValue>
+                
+            </value>
+            
+        </assignmentItems>
+        
+        <assignmentItems>
+            
+            <assignToReference>sov_ErrorLog.Timestamp__c</assignToReference>
+            
+            <operator>Assign</operator>
+            
+            <value>
+                
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+                
+            </value>
+            
+        </assignmentItems>
+        
+        <assignmentItems>
+            
+            <assignToReference>sov_ErrorLog.User__c</assignToReference>
+            
+            <operator>Assign</operator>
+            
+            <value>
+                
+                <elementReference>formula_RunningUserId</elementReference>
+                
+            </value>
+            
+        </assignmentItems>
+        
+        <assignmentItems>
+            
+            <assignToReference>sov_ErrorLog.Message__c</assignToReference>
+            
+            <operator>Assign</operator>
+            
+            <value>
+                
+                <elementReference>apexConversionErrorMessage</elementReference>
+                
+            </value>
+            
+        </assignmentItems>
+        
+        <connector>
+            
+            <targetReference>Add_Error_Log_to_List_0</targetReference>
+            
+        </connector>
+        
+    </assignments>
+    
+    <assignments>
+        
+        <name>Assign_Error_Log_0_0</name>
+        
+        <label>Assign Error Log</label>
+        
+        <locationX>2690</locationX>
+        
+        <locationY>2174</locationY>
+        
+        <assignmentItems>
+            
+            <assignToReference>sov_ErrorLog.Severity__c</assignToReference>
+            
+            <operator>Assign</operator>
+            
+            <value>
+                
+                <stringValue>Error</stringValue>
+                
+            </value>
+            
+        </assignmentItems>
+        
+        <assignmentItems>
+            
+            <assignToReference>sov_ErrorLog.Timestamp__c</assignToReference>
+            
+            <operator>Assign</operator>
+            
+            <value>
+                
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+                
+            </value>
+            
+        </assignmentItems>
+        
+        <assignmentItems>
+            
+            <assignToReference>sov_ErrorLog.User__c</assignToReference>
+            
+            <operator>Assign</operator>
+            
+            <value>
+                
+                <elementReference>formula_RunningUserId</elementReference>
+                
+            </value>
+            
+        </assignmentItems>
+        
+        <assignmentItems>
+            
+            <assignToReference>sov_ErrorLog.Message__c</assignToReference>
+            
+            <operator>Assign</operator>
+            
+            <value>
+                
+                <elementReference>errorMessage</elementReference>
+                
+            </value>
+            
+        </assignmentItems>
+        
+        <connector>
+            
+            <isGoTo>true</isGoTo>
+            
+            <targetReference>Add_Error_Log_to_List_0</targetReference>
+            
+        </connector>
+        
+    </assignments>
+    
+    <assignments>
+        
+        <name>assignLeadFields</name>
+        
+        <label>Assign Lead Fields</label>
+        
+        <locationX>2294</locationX>
+        
+        <locationY>518</locationY>
+        
+        <assignmentItems>
+            
+            <assignToReference>getLead.Moody_s_Risk_Calc__c</assignToReference>
+            
+            <operator>Assign</operator>
+            
+            <value>
+                
+                <elementReference>updateMoodys</elementReference>
+                
+            </value>
+            
+        </assignmentItems>
+        
+        <assignmentItems>
+            
+            <assignToReference>getLead.Utility_relationship__c</assignToReference>
+            
+            <operator>Assign</operator>
+            
+            <value>
+                
+                <elementReference>updateUtility.recordId</elementReference>
+                
+            </value>
+            
+        </assignmentItems>
+        
+        <assignmentItems>
+            
+            <assignToReference>getLead.LoadZone__c</assignToReference>
+            
+            <operator>Assign</operator>
+            
+            <value>
+                
+                <elementReference>updateLoadZone</elementReference>
+                
+            </value>
+            
+        </assignmentItems>
+        
+        <assignmentItems>
+            
+            <assignToReference>getLead.Product__c</assignToReference>
+            
+            <operator>Assign</operator>
+            
+            <value>
+                
+                <elementReference>updateProduct.recordId</elementReference>
+                
+            </value>
+            
+        </assignmentItems>
+        
+        <assignmentItems>
+            
+            <assignToReference>getLead.Selected_SSS_For_Conversion__c</assignToReference>
+            
+            <operator>Assign</operator>
+            
+        </assignmentItems>
+        
+        <connector>
+            
+            <targetReference>updateLeadRecord</targetReference>
+            
+        </connector>
+        
+    </assignments>
+    
+    <assignments>
+        
+        <name>Set_Number_of_Qualifying_Systems</name>
+        
+        <label>Set Number of Qualifying Systems</label>
+        
+        <locationX>2294</locationX>
+        
+        <locationY>998</locationY>
+        
+        <assignmentItems>
+            
+            <assignToReference>numberOfQualifyingSystemsForLead</assignToReference>
+            
+            <operator>AssignCount</operator>
+            
+            <value>
+                
+                <elementReference>orderedSSSList</elementReference>
+                
+            </value>
+            
+        </assignmentItems>
+        
+        <connector>
+            
+            <targetReference>Qualification_Preview</targetReference>
+            
+        </connector>
+        
+    </assignments>
+    
+    <choices>
+        
+        <name>choice_LoadZone</name>
+        
+        <choiceText>Load Zone</choiceText>
+        
+        <dataType>String</dataType>
+        
+        <value>
+            
+            <stringValue>Load Zone</stringValue>
+            
+        </value>
+        
+    </choices>
+    
+    <choices>
+        
+        <name>choice_Moodys</name>
+        
+        <choiceText>Moody&apos;s Risk Calc</choiceText>
+        
+        <dataType>String</dataType>
+        
+        <value>
+            
+            <stringValue>Moody&apos;s Risk Calc</stringValue>
+            
+        </value>
+        
+    </choices>
+    
+    <choices>
+        
+        <name>choice_None</name>
+        
+        <choiceText>None</choiceText>
+        
+        <dataType>String</dataType>
+        
+        <value>
+            
+            <stringValue>None</stringValue>
+            
+        </value>
+        
+    </choices>
+    
+    <choices>
+        
+        <name>choice_ParcelZip</name>
+        
+        <choiceText>Parcel Zip</choiceText>
+        
+        <dataType>String</dataType>
+        
+        <value>
+            
+            <stringValue>Parcel Zip</stringValue>
+            
+        </value>
+        
+    </choices>
+    
+    <choices>
+        
+        <name>choice_Product</name>
+        
+        <choiceText>Product</choiceText>
+        
+        <dataType>String</dataType>
+        
+        <value>
+            
+            <stringValue>Product</stringValue>
+            
+        </value>
+        
+    </choices>
+    
+    <choices>
+        
+        <name>choice_Utility</name>
+        
+        <choiceText>Utility</choiceText>
+        
+        <dataType>String</dataType>
+        
+        <value>
+            
+            <stringValue>Utility</stringValue>
+            
+        </value>
+        
+    </choices>
+    
+    <choices>
+        
+        <name>currentMoodys</name>
+        
+        <choiceText>{!getLead.Moody_s_Risk_Calc__c} (current)</choiceText>
+        
+        <dataType>String</dataType>
+        
+        <value>
+            
+            <elementReference>getLead.Moody_s_Risk_Calc__c</elementReference>
+            
+        </value>
+        
+    </choices>
+    
+    <decisions>
+        
+        <name>Check_Qualification</name>
+        
+        <label>Check Lead Status</label>
+        
+        <locationX>2294</locationX>
+        
+        <locationY>1478</locationY>
+        
+        <defaultConnector>
+            
+            <targetReference>showLeadStatusInvalid</targetReference>
+            
+        </defaultConnector>
+        
+        <defaultConnectorLabel>Any Other Lead Status</defaultConnectorLabel>
+        
+        <rules>
+            
+            <name>Qualified</name>
+            
+            <conditionLogic>and</conditionLogic>
+            
+            <conditions>
+                
+                <leftValueReference>Lead_After_Qualification.Status</leftValueReference>
+                
+                <operator>EqualTo</operator>
+                
+                <rightValue>
+                    
+                    <stringValue>Qualified</stringValue>
+                    
+                </rightValue>
+                
+            </conditions>
+            
+            <connector>
+                
+                <targetReference>scrQualifiedLead</targetReference>
+                
+            </connector>
+            
+            <label>Qualified</label>
+            
+        </rules>
+        
+        <rules>
+            
+            <name>Not_Qualified</name>
+            
+            <conditionLogic>and</conditionLogic>
+            
+            <conditions>
+                
+                <leftValueReference>Lead_After_Qualification.Status</leftValueReference>
+                
+                <operator>EqualTo</operator>
+                
+                <rightValue>
+                    
+                    <stringValue>Unqualified</stringValue>
+                    
+                </rightValue>
+                
+            </conditions>
+            
+            <connector>
+                
+                <targetReference>showLeadStatus</targetReference>
+                
+            </connector>
+            
+            <label>Not Qualified</label>
+            
+        </rules>
+        
+    </decisions>
+    
+    <decisions>
+        
+        <name>Determine_Results</name>
+        
+        <label>Determine Results</label>
+        
+        <locationX>1370</locationX>
+        
+        <locationY>2174</locationY>
+        
+        <defaultConnector>
+            
+            <targetReference>scrError_0_0</targetReference>
+            
+        </defaultConnector>
+        
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        
+        <rules>
+            
+            <name>Conversion_Failure</name>
+            
+            <conditionLogic>and</conditionLogic>
+            
+            <conditions>
+                
+                <leftValueReference>Run_Lead_Conversion.error</leftValueReference>
+                
+                <operator>EqualTo</operator>
+                
+                <rightValue>
+                    
+                    <stringValue>Conversion Failure</stringValue>
+                    
+                </rightValue>
+                
+            </conditions>
+            
+            <connector>
+                
+                <targetReference>Assign_Error_Log_0</targetReference>
+                
+            </connector>
+            
+            <label>Conversion Failure</label>
+            
+        </rules>
+        
+        <rules>
+            
+            <name>Testcase_Lead</name>
+            
+            <conditionLogic>and</conditionLogic>
+            
+            <conditions>
+                
+                <leftValueReference>Run_Lead_Conversion.error</leftValueReference>
+                
+                <operator>EqualTo</operator>
+                
+                <rightValue>
+                    
+                    <stringValue>Testcase Lead</stringValue>
+                    
+                </rightValue>
+                
+            </conditions>
+            
+            <connector>
+                
+                <targetReference>testLeadScr</targetReference>
+                
+            </connector>
+            
+            <label>Testcase Lead</label>
+            
+        </rules>
+        
+        <rules>
+            
+            <name>Application_Incomplete</name>
+            
+            <conditionLogic>and</conditionLogic>
+            
+            <conditions>
+                
+                <leftValueReference>Run_Lead_Conversion.error</leftValueReference>
+                
+                <operator>EqualTo</operator>
+                
+                <rightValue>
+                    
+                    <stringValue>Application Incomplete</stringValue>
+                    
+                </rightValue>
+                
+            </conditions>
+            
+            <connector>
+                
+                <targetReference>appIncompleteScr</targetReference>
+                
+            </connector>
+            
+            <label>Application Incomplete</label>
+            
+        </rules>
+        
+        <rules>
+            
+            <name>Incomplete_UALs</name>
+            
+            <conditionLogic>and</conditionLogic>
+            
+            <conditions>
+                
+                <leftValueReference>Run_Lead_Conversion.error</leftValueReference>
+                
+                <operator>EqualTo</operator>
+                
+                <rightValue>
+                    
+                    <stringValue>Incomplete UALs</stringValue>
+                    
+                </rightValue>
+                
+            </conditions>
+            
+            <connector>
+                
+                <targetReference>Get_UALs_For_Incomplete</targetReference>
+                
+            </connector>
+            
+            <label>Incomplete UALs</label>
+            
+        </rules>
+        
+        <rules>
+            
+            <name>Invalid_Email</name>
+            
+            <conditionLogic>and</conditionLogic>
+            
+            <conditions>
+                
+                <leftValueReference>Run_Lead_Conversion.error</leftValueReference>
+                
+                <operator>EqualTo</operator>
+                
+                <rightValue>
+                    
+                    <stringValue>Invalid Email</stringValue>
+                    
+                </rightValue>
+                
+            </conditions>
+            
+            <connector>
+                
+                <targetReference>invalidEmailScr</targetReference>
+                
+            </connector>
+            
+            <label>Invalid Email</label>
+            
+        </rules>
+        
+        <rules>
+            
+            <name>System_Product_Mismatch</name>
+            
+            <conditionLogic>and</conditionLogic>
+            
+            <conditions>
+                
+                <leftValueReference>Run_Lead_Conversion.error</leftValueReference>
+                
+                <operator>EqualTo</operator>
+                
+                <rightValue>
+                    
+                    <stringValue>System Product Mismatch</stringValue>
+                    
+                </rightValue>
+                
+            </conditions>
+            
+            <connector>
+                
+                <targetReference>scrProducts_Do_Not_Match_0_0</targetReference>
+                
+            </connector>
+            
+            <label>System Product Mismatch</label>
+            
+        </rules>
+        
+        <rules>
+            
+            <name>No_Demand_Capacity_Available</name>
+            
+            <conditionLogic>and</conditionLogic>
+            
+            <conditions>
+                
+                <leftValueReference>Run_Lead_Conversion.error</leftValueReference>
+                
+                <operator>EqualTo</operator>
+                
+                <rightValue>
+                    
+                    <stringValue>No Demand Capacity Available</stringValue>
+                    
+                </rightValue>
+                
+            </conditions>
+            
+            <connector>
+                
+                <targetReference>Get_Utility</targetReference>
+                
+            </connector>
+            
+            <label>No Demand Capacity Available</label>
+            
+        </rules>
+        
+        <rules>
+            
+            <name>Successful_Conversion</name>
+            
+            <conditionLogic>and</conditionLogic>
+            
+            <conditions>
+                
+                <leftValueReference>Run_Lead_Conversion.error</leftValueReference>
+                
+                <operator>EqualTo</operator>
+                
+            </conditions>
+            
+            <conditions>
+                
+                <leftValueReference>Run_Lead_Conversion.errorMessage</leftValueReference>
+                
+                <operator>EqualTo</operator>
+                
+            </conditions>
+            
+            <connector>
+                
+                <targetReference>Update_Screen_GetLead_0</targetReference>
+                
+            </connector>
+            
+            <label>Successful Conversion</label>
+            
+        </rules>
+        
+    </decisions>
+    
+    <decisions>
+        
+        <description>If Lead is already converted, no need to try again</description>
+        
+        <name>IsConverted</name>
+        
+        <label>Is Lead Converted?</label>
+        
+        <locationX>1172</locationX>
+        
+        <locationY>278</locationY>
+        
+        <defaultConnector>
+            
+            <targetReference>updateLeadFields</targetReference>
+            
+        </defaultConnector>
+        
+        <defaultConnectorLabel>Not Converted Yet</defaultConnectorLabel>
+        
+        <rules>
+            
+            <name>IsConvertedTrue</name>
+            
+            <conditionLogic>and</conditionLogic>
+            
+            <conditions>
+                
+                <leftValueReference>getLead.IsConverted</leftValueReference>
+                
+                <operator>EqualTo</operator>
+                
+                <rightValue>
+                    
+                    <booleanValue>true</booleanValue>
+                    
+                </rightValue>
+                
+            </conditions>
+            
+            <connector>
+                
+                <targetReference>scrAlreadyConverted</targetReference>
+                
+            </connector>
+            
+            <label>Is Converted</label>
+            
+        </rules>
+        
+    </decisions>
+    
+    <dynamicChoiceSets>
+        
+        <name>moodysPicklist</name>
+        
+        <dataType>Picklist</dataType>
+        
+        <displayField xsi:nil="true"/>
+        
+        <object xsi:nil="true"/>
+        
+        <picklistField>Moody_s_Risk_Calc__c</picklistField>
+        
+        <picklistObject>Lead</picklistObject>
+        
+    </dynamicChoiceSets>
+    
+    <formulas>
+        
+        <name>formula_IgnoreLoadZones</name>
+        
+        <dataType>Boolean</dataType>
+        
+        <expression>{!getLead.Product__r.Ignore_Load_Zones_When_Qualifying__c}</expression>
+        
+    </formulas>
+    
+    <formulas>
+        
+        <name>formula_RunningUserId</name>
+        
+        <dataType>String</dataType>
+        
+        <expression>{!$User.Id}</expression>
+        
+    </formulas>
+    
+    <formulas>
+        
+        <name>formula_SplitLZ</name>
+        
+        <dataType>Boolean</dataType>
+        
+        <expression>CONTAINS({!getLead.LoadZone__c}, &quot;/&quot;)</expression>
+        
+    </formulas>
+    
+    <formulas>
+        
+        <name>formulaShowProductWarning</name>
+        
+        <dataType>Boolean</dataType>
+        
+        <expression>{!Lead_After_Qualification.Product__r.Has_Project_Specific_Products__c}</expression>
+        
+    </formulas>
+    
+    <interviewLabel>Lead {!$Flow.CurrentDateTime}</interviewLabel>
+    
+    <label>Lead Qualification/Conversion</label>
+    
+    <loops>
+        
+        <name>Loop_Thru_Selected_Systems</name>
+        
+        <label>Loop Thru Selected Systems</label>
+        
+        <locationX>1370</locationX>
+        
+        <locationY>1718</locationY>
+        
+        <collectionReference>selectedSSSList</collectionReference>
+        
+        <iterationOrder>Asc</iterationOrder>
+        
+        <nextValueConnector>
+            
+            <targetReference>Add_Selected_System_Id_to_List</targetReference>
+            
+        </nextValueConnector>
+        
+        <noMoreValuesConnector>
+            
+            <targetReference>Run_Lead_Conversion</targetReference>
+            
+        </noMoreValuesConnector>
+        
+    </loops>
+    
+    <processMetadataValues>
+        
+        <name>BuilderType</name>
+        
+        <value>
+            
+            <stringValue>LightningFlowBuilder</stringValue>
+            
+        </value>
+        
+    </processMetadataValues>
+    
+    <processMetadataValues>
+        
+        <name>CanvasMode</name>
+        
+        <value>
+            
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+            
+        </value>
+        
+    </processMetadataValues>
+    
+    <processMetadataValues>
+        
+        <name>OriginBuilderType</name>
+        
+        <value>
+            
+            <stringValue>LightningFlowBuilder</stringValue>
+            
+        </value>
+        
+    </processMetadataValues>
+    
+    <processType>Flow</processType>
+    
+    <recordLookups>
+        
+        <name>Get_Lead</name>
+        
+        <label>Get Updated Lead</label>
+        
+        <locationX>2294</locationX>
+        
+        <locationY>758</locationY>
+        
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        
+        <connector>
+            
+            <targetReference>Get_Qualifying_Systems</targetReference>
+            
+        </connector>
+        
+        <filterLogic>and</filterLogic>
+        
+        <filters>
+            
+            <field>Id</field>
+            
+            <operator>EqualTo</operator>
+            
+            <value>
+                
+                <elementReference>recordId</elementReference>
+                
+            </value>
+            
+        </filters>
+        
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        
+        <object>Lead</object>
+        
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+        
+    </recordLookups>
+    
+    <recordLookups>
+        
+        <name>Get_UALs_For_Incomplete</name>
+        
+        <label>Get UALs For Incomplete</label>
+        
+        <locationX>1106</locationX>
+        
+        <locationY>2294</locationY>
+        
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        
+        <connector>
+            
+            <targetReference>Resolve_UALs_Before_Conversion_0_0</targetReference>
+            
+        </connector>
+        
+        <filterLogic>and</filterLogic>
+        
+        <filters>
+            
+            <field>Lead__c</field>
+            
+            <operator>EqualTo</operator>
+            
+            <value>
+                
+                <elementReference>recordId</elementReference>
+                
+            </value>
+            
+        </filters>
+        
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        
+        <object>Utility_Account_Log__c</object>
+        
+        <queriedFields>Id</queriedFields>
+        
+        <queriedFields>QC_Status__c</queriedFields>
+        
+        <queriedFields>Annual_kWh__c</queriedFields>
+        
+        <queriedFields>Annual_Cost_of_Electricity__c</queriedFields>
+        
+        <queriedFields>Name</queriedFields>
+        
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+        
+    </recordLookups>
+    
+    <recordLookups>
+        
+        <name>Get_UALs_For_No_Demand</name>
+        
+        <label>Get UALs For No Demand</label>
+        
+        <locationX>1898</locationX>
+        
+        <locationY>2414</locationY>
+        
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        
+        <connector>
+            
+            <targetReference>scrNoDemandCapacity</targetReference>
+            
+        </connector>
+        
+        <filterLogic>and</filterLogic>
+        
+        <filters>
+            
+            <field>Lead__c</field>
+            
+            <operator>EqualTo</operator>
+            
+            <value>
+                
+                <elementReference>recordId</elementReference>
+                
+            </value>
+            
+        </filters>
+        
+        <filters>
+            
+            <field>Average_Demand__c</field>
+            
+            <operator>GreaterThanOrEqualTo</operator>
+            
+            <value>
+                
+                <elementReference>Get_Utility.Average_Demand_Threshold__c</elementReference>
+                
+            </value>
+            
+        </filters>
+        
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        
+        <object>Utility_Account_Log__c</object>
+        
+        <queriedFields>Id</queriedFields>
+        
+        <queriedFields>QC_Status__c</queriedFields>
+        
+        <queriedFields>Annual_kWh__c</queriedFields>
+        
+        <queriedFields>Annual_Cost_of_Electricity__c</queriedFields>
+        
+        <queriedFields>Name</queriedFields>
+        
+        <queriedFields>Average_Demand__c</queriedFields>
+        
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+        
+    </recordLookups>
+    
+    <recordLookups>
+        
+        <name>Get_Utility</name>
+        
+        <label>Get Utility</label>
+        
+        <locationX>1898</locationX>
+        
+        <locationY>2294</locationY>
+        
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        
+        <connector>
+            
+            <targetReference>Get_UALs_For_No_Demand</targetReference>
+            
+        </connector>
+        
+        <filterLogic>and</filterLogic>
+        
+        <filters>
+            
+            <field>Id</field>
+            
+            <operator>EqualTo</operator>
+            
+            <value>
+                
+                <elementReference>currentUtility</elementReference>
+                
+            </value>
+            
+        </filters>
+        
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        
+        <object>Utility__c</object>
+        
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+        
+    </recordLookups>
+    
+    <recordLookups>
+        
+        <name>getLead</name>
+        
+        <label>Get Lead</label>
+        
+        <locationX>1172</locationX>
+        
+        <locationY>158</locationY>
+        
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        
+        <connector>
+            
+            <targetReference>IsConverted</targetReference>
+            
+        </connector>
+        
+        <filterLogic>and</filterLogic>
+        
+        <filters>
+            
+            <field>Id</field>
+            
+            <operator>EqualTo</operator>
+            
+            <value>
+                
+                <elementReference>recordId</elementReference>
+                
+            </value>
+            
+        </filters>
+        
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        
+        <object>Lead</object>
+        
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+        
+    </recordLookups>
+    
+    <recordLookups>
+        
+        <name>Lead_After_Qualification</name>
+        
+        <label>Get Updated Lead</label>
+        
+        <locationX>2294</locationX>
+        
+        <locationY>1358</locationY>
+        
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        
+        <connector>
+            
+            <targetReference>Check_Qualification</targetReference>
+            
+        </connector>
+        
+        <filterLogic>and</filterLogic>
+        
+        <filters>
+            
+            <field>Id</field>
+            
+            <operator>EqualTo</operator>
+            
+            <value>
+                
+                <elementReference>recordId</elementReference>
+                
+            </value>
+            
+        </filters>
+        
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        
+        <object>Lead</object>
+        
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+        
+    </recordLookups>
+    
+    <recordUpdates>
+        
+        <name>updateLeadRecord</name>
+        
+        <label>Update Lead</label>
+        
+        <locationX>2294</locationX>
+        
+        <locationY>638</locationY>
+        
+        <connector>
+            
+            <targetReference>Get_Lead</targetReference>
+            
+        </connector>
+        
+        <faultConnector>
+            
+            <isGoTo>true</isGoTo>
+            
+            <targetReference>Assign_Error_Log_0_0</targetReference>
+            
+        </faultConnector>
+        
+        <inputReference>getLead</inputReference>
+        
+    </recordUpdates>
+    
+    <runInMode>SystemModeWithoutSharing</runInMode>
+    
+    <screens>
+        
+        <name>appIncompleteScr</name>
+        
+        <label>Application Incomplete Screen</label>
+        
+        <locationX>842</locationX>
+        
+        <locationY>2294</locationY>
+        
+        <allowBack>false</allowBack>
+        
+        <allowFinish>true</allowFinish>
+        
+        <allowPause>false</allowPause>
+        
+        <fields>
+            
+            <name>txtAppIncomplete</name>
+            
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(255, 0, 0); font-size: 20px;&quot;&gt;APPLICATION INCOMPLETE&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(255, 0, 0);&quot;&gt;The Lead has been identified as potentially incomplete as a result of the Application Complete Date field missing a value.&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Please ensure that the Lead has been fully completed as would be indicated by the Application Complete Date field being set. If you believe this is in error, please contact BizApps for assistance.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            
+            <fieldType>DisplayText</fieldType>
+            
+        </fields>
+        
+        <showFooter>true</showFooter>
+        
+        <showHeader>false</showHeader>
+        
+    </screens>
+    
+    <screens>
+        
+        <name>invalidEmailScr</name>
+        
+        <label>Invalid Email Screen</label>
+        
+        <locationX>1370</locationX>
+        
+        <locationY>2294</locationY>
+        
+        <allowBack>false</allowBack>
+        
+        <allowFinish>true</allowFinish>
+        
+        <allowPause>false</allowPause>
+        
+        <fields>
+            
+            <name>txtInvalidEmail</name>
+            
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(255, 0, 0); font-size: 20px;&quot;&gt;INVALID EMAIL&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(255, 0, 0);&quot;&gt;The latest email communication to the customer on this Lead is reported to have bounced. The email address for the customer appears invalid.&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Please ensure that we have an updated, working email on file for the customer on this Lead.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            
+            <fieldType>DisplayText</fieldType>
+            
+        </fields>
+        
+        <showFooter>true</showFooter>
+        
+        <showHeader>false</showHeader>
+        
+    </screens>
+    
+    <screens>
+        
+        <name>Qualification_Preview</name>
+        
+        <label>Qualification Preview</label>
+        
+        <locationX>2294</locationX>
+        
+        <locationY>1118</locationY>
+        
+        <allowBack>true</allowBack>
+        
+        <allowFinish>true</allowFinish>
+        
+        <allowPause>false</allowPause>
+        
+        <connector>
+            
+            <targetReference>leadQualificationCheck</targetReference>
+            
+        </connector>
+        
+        <fields>
+            
+            <name>previewHeaderText</name>
+            
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(0, 153, 255); font-size: 20px;&quot;&gt;QUALIFICATION PREVIEW&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            
+            <fieldType>DisplayText</fieldType>
+            
+        </fields>
+        
+        <fields>
+            
+            <name>qualificationPreviewHelptext</name>
+            
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;Consult the table below to preview qualifying systems for this Lead.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            
+            <fieldType>DisplayText</fieldType>
+            
+        </fields>
+        
+        <fields>
+            
+            <name>previewError</name>
+            
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(255, 0, 0); background-color: rgb(255, 255, 255);&quot;&gt;NOTE:&lt;/b&gt;&lt;b style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt; No qualifying systems were found. &lt;/b&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;If you proceed, the Lead will be marked &apos;Unqualified&apos; and the customer will receive an email indicating that their application has been denied.﻿&lt;/span&gt;&lt;/p&gt;</fieldText>
+            
+            <fieldType>DisplayText</fieldType>
+            
+            <visibilityRule>
+                
+                <conditionLogic>and</conditionLogic>
+                
+                <conditions>
+                    
+                    <leftValueReference>numberOfQualifyingSystemsForLead</leftValueReference>
+                    
+                    <operator>EqualTo</operator>
+                    
+                    <rightValue>
+                        
+                        <numberValue>0.0</numberValue>
+                        
+                    </rightValue>
+                    
+                </conditions>
+                
+            </visibilityRule>
+            
+        </fields>
+        
+        <fields>
+            
+            <name>tableSSSPreview</name>
+            
+            <dataTypeMappings>
+                
+                <typeName>T</typeName>
+                
+                <typeValue>Shared_Solar_System__c</typeValue>
+                
+            </dataTypeMappings>
+            
+            <extensionName>c:datatable</extensionName>
+            
+            <fieldType>ComponentInstance</fieldType>
+            
+            <inputParameters>
+                
+                <name>objectName</name>
+                
+                <value>
+                    
+                    <stringValue>Shared_Solar_System__c</stringValue>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputParameters>
+                
+                <name>columnFields</name>
+                
+                <value>
+                    
+                    <stringValue>Name,Product__c,Utility__c,Capacity_Available_to_be_Reserved__c</stringValue>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputParameters>
+                
+                <name>columnWidths</name>
+                
+                <value>
+                    
+                    <stringValue>Name:249, Product__c:249, Utility__c:249, Capacity_Available_to_be_Reserved__c:249</stringValue>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputParameters>
+                
+                <name>tableData</name>
+                
+                <value>
+                    
+                    <elementReference>orderedSSSList</elementReference>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputParameters>
+                
+                <name>hideCheckboxColumn</name>
+                
+                <value>
+                    
+                    <booleanValue>true</booleanValue>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            
+            <isRequired>true</isRequired>
+            
+            <outputParameters>
+                
+                <assignToReference>selectedSSSList</assignToReference>
+                
+                <name>outputSelectedRows</name>
+                
+            </outputParameters>
+            
+        </fields>
+        
+        <showFooter>true</showFooter>
+        
+        <showHeader>false</showHeader>
+        
+    </screens>
+    
+    <screens>
+        
+        <name>Resolve_UALs_Before_Conversion_0_0</name>
+        
+        <label>UALs Incomplete</label>
+        
+        <locationX>1106</locationX>
+        
+        <locationY>2414</locationY>
+        
+        <allowBack>false</allowBack>
+        
+        <allowFinish>true</allowFinish>
+        
+        <allowPause>false</allowPause>
+        
+        <fields>
+            
+            <name>txtResolveUALs_0_0</name>
+            
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 20px; color: rgb(255, 0, 0);&quot;&gt;INCOMPLETE UTILITY ACCOUNT LOGS&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(255, 0, 0);&quot;&gt;The Utility Account Logs for this lead are not ready for conversion.&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;A lead needs to have at least one Utility Account Log (UAL) with a QC Status of &apos;Complete&apos; in order to proceed with conversion.&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;Please also confirm that &apos;Complete&apos; UALs for this Lead meet the following criteria:&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;- Annual Usage is populated&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;- Rate Class is populated&lt;/p&gt;</fieldText>
+            
+            <fieldType>DisplayText</fieldType>
+            
+        </fields>
+        
+        <fields>
+            
+            <name>ualDatatable_0_0</name>
+            
+            <dataTypeMappings>
+                
+                <typeName>T</typeName>
+                
+                <typeValue>Utility_Account_Log__c</typeValue>
+                
+            </dataTypeMappings>
+            
+            <extensionName>c:datatable</extensionName>
+            
+            <fieldType>ComponentInstance</fieldType>
+            
+            <inputParameters>
+                
+                <name>objectName</name>
+                
+                <value>
+                    
+                    <stringValue>Utility_Account_Log__c</stringValue>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputParameters>
+                
+                <name>columnFields</name>
+                
+                <value>
+                    
+                    <stringValue>Name,QC_Status__c,Annual_kWh__c,Annual_Cost_of_Electricity__c</stringValue>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputParameters>
+                
+                <name>columnWidths</name>
+                
+                <value>
+                    
+                    <stringValue>Name:228, QC_Status__c:228, Annual_kWh__c:228, Annual_Cost_of_Electricity__c:228</stringValue>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputParameters>
+                
+                <name>hideCheckboxColumn</name>
+                
+                <value>
+                    
+                    <booleanValue>true</booleanValue>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputParameters>
+                
+                <name>columnEdits</name>
+                
+                <value>
+                    
+                    <stringValue>QC_Status__c:true</stringValue>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputParameters>
+                
+                <name>not_suppressNameFieldLink</name>
+                
+                <value>
+                    
+                    <booleanValue>true</booleanValue>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputParameters>
+                
+                <name>tableData</name>
+                
+                <value>
+                    
+                    <elementReference>Get_UALs_For_Incomplete</elementReference>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            
+            <isRequired>true</isRequired>
+            
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+            
+        </fields>
+        
+        <showFooter>true</showFooter>
+        
+        <showHeader>false</showHeader>
+        
+    </screens>
+    
+    <screens>
+        
+        <name>scrAlreadyConverted</name>
+        
+        <label>Already Converted Lead</label>
+        
+        <locationX>50</locationX>
+        
+        <locationY>398</locationY>
+        
+        <allowBack>false</allowBack>
+        
+        <allowFinish>true</allowFinish>
+        
+        <allowPause>false</allowPause>
+        
+        <fields>
+            
+            <name>txtAlreadyConverted</name>
+            
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(7, 202, 7); font-size: 20px;&quot;&gt;LEAD ALREADY CONVERTED&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            
+            <fieldType>DisplayText</fieldType>
+            
+        </fields>
+        
+        <fields>
+            
+            <name>leadAlreadyConvertedHelptext</name>
+            
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;This lead has already been converted. No further action necessary.&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;You may close this window now.&lt;/p&gt;</fieldText>
+            
+            <fieldType>DisplayText</fieldType>
+            
+        </fields>
+        
+        <showFooter>true</showFooter>
+        
+        <showHeader>false</showHeader>
+        
+    </screens>
+    
+    <screens>
+        
+        <name>scrError_0</name>
+        
+        <label>Error Screen</label>
+        
+        <locationX>314</locationX>
+        
+        <locationY>2774</locationY>
+        
+        <allowBack>true</allowBack>
+        
+        <allowFinish>true</allowFinish>
+        
+        <allowPause>false</allowPause>
+        
+        <fields>
+            
+            <name>txtError_0</name>
+            
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 20px; color: rgb(255, 0, 0);&quot;&gt;ERROR ENCOUNTERED&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;An unhandled error was encountered during Qualification and Conversion of the lead. BizApps has been notified.&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;You may close this window or go back to re-attempt your request.&lt;/p&gt;</fieldText>
+            
+            <fieldType>DisplayText</fieldType>
+            
+        </fields>
+        
+        <showFooter>true</showFooter>
+        
+        <showHeader>false</showHeader>
+        
+    </screens>
+    
+    <screens>
+        
+        <name>scrError_0_0</name>
+        
+        <label>Error Screen</label>
+        
+        <locationX>2426</locationX>
+        
+        <locationY>2294</locationY>
+        
+        <allowBack>true</allowBack>
+        
+        <allowFinish>true</allowFinish>
+        
+        <allowPause>false</allowPause>
+        
+        <fields>
+            
+            <name>txtError_0_0</name>
+            
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(255, 0, 0); font-size: 20px;&quot;&gt;ERROR ENCOUNTERED&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;An unhandled error was encountered during Qualification and Conversion of the lead.&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;You may close this window or go back to re-attempt your request.&lt;/p&gt;</fieldText>
+            
+            <fieldType>DisplayText</fieldType>
+            
+        </fields>
+        
+        <showFooter>true</showFooter>
+        
+        <showHeader>false</showHeader>
+        
+    </screens>
+    
+    <screens>
+        
+        <name>scrFinish_0</name>
+        
+        <label>Finish</label>
+        
+        <locationX>2162</locationX>
+        
+        <locationY>2414</locationY>
+        
+        <allowBack>false</allowBack>
+        
+        <allowFinish>true</allowFinish>
+        
+        <allowPause>false</allowPause>
+        
+        <fields>
+            
+            <name>txttest_0</name>
+            
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(10, 205, 79); font-size: 20px; background-color: rgb(255, 255, 255);&quot;&gt;SUCCESS&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;The Lead has been successfully converted!&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;You may now close this window.&lt;/p&gt;</fieldText>
+            
+            <fieldType>DisplayText</fieldType>
+            
+        </fields>
+        
+        <showFooter>true</showFooter>
+        
+        <showHeader>false</showHeader>
+        
+    </screens>
+    
+    <screens>
+        
+        <name>scrNoDemandCapacity</name>
+        
+        <label>No Demand Capacity</label>
+        
+        <locationX>1898</locationX>
+        
+        <locationY>2534</locationY>
+        
+        <allowBack>true</allowBack>
+        
+        <allowFinish>false</allowFinish>
+        
+        <allowPause>false</allowPause>
+        
+        <fields>
+            
+            <name>txtNoDemandCapacity</name>
+            
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 20px; color: rgb(255, 0, 0);&quot;&gt;NO DEMAND CAPACITY AVAILABLE&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(255, 0, 0);&quot;&gt;One or more Utility Account Logs for this Lead has an Average Demand high enough to indicate a Demand subscription with the Utility, and none of the selected Systems have any available Demand Capacity.&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Please go back and make changes to the selections of Systems, and/or check Exclude From Demand Capacity on the affected UALs if permitted. Also, verify that the selected Systems have Reserved Demand Capacity set.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            
+            <fieldType>DisplayText</fieldType>
+            
+        </fields>
+        
+        <fields>
+            
+            <name>UALs</name>
+            
+            <dataTypeMappings>
+                
+                <typeName>T</typeName>
+                
+                <typeValue>Utility_Account_Log__c</typeValue>
+                
+            </dataTypeMappings>
+            
+            <extensionName>c:datatableV2</extensionName>
+            
+            <fieldType>ComponentInstance</fieldType>
+            
+            <inputParameters>
+                
+                <name>tableData</name>
+                
+                <value>
+                    
+                    <elementReference>Get_UALs_For_No_Demand</elementReference>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputParameters>
+                
+                <name>hideCheckboxColumn</name>
+                
+                <value>
+                    
+                    <booleanValue>true</booleanValue>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputParameters>
+                
+                <name>columnFields</name>
+                
+                <value>
+                    
+                    <stringValue>Name, Average_Demand__c, QC_Status__c, Annual_kWh__c, Annual_Cost_of_Electricity__c</stringValue>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            
+            <isRequired>true</isRequired>
+            
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+            
+        </fields>
+        
+        <showFooter>true</showFooter>
+        
+        <showHeader>false</showHeader>
+        
+    </screens>
+    
+    <screens>
+        
+        <name>scrProducts_Do_Not_Match_0_0</name>
+        
+        <label>Products Do Not Match</label>
+        
+        <locationX>1634</locationX>
+        
+        <locationY>2294</locationY>
+        
+        <allowBack>true</allowBack>
+        
+        <allowFinish>false</allowFinish>
+        
+        <allowPause>false</allowPause>
+        
+        <fields>
+            
+            <name>txtProductNoMatch_0_0</name>
+            
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 20px; color: rgb(255, 0, 0);&quot;&gt;PRODUCT MISMATCH&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(255, 0, 0);&quot;&gt;The Shared Solar Systems you selected do not all have the same Product, or one or more Systems do not match the Product on the Lead.&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Please go back and make changes to the selections of Systems and/or Products for this Lead, or close this window.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            
+            <fieldType>DisplayText</fieldType>
+            
+        </fields>
+        
+        <showFooter>true</showFooter>
+        
+        <showHeader>false</showHeader>
+        
+    </screens>
+    
+    <screens>
+        
+        <name>scrQualifiedLead</name>
+        
+        <label>Qualified - Select Systems</label>
+        
+        <locationX>1370</locationX>
+        
+        <locationY>1598</locationY>
+        
+        <allowBack>true</allowBack>
+        
+        <allowFinish>true</allowFinish>
+        
+        <allowPause>true</allowPause>
+        
+        <connector>
+            
+            <targetReference>Loop_Thru_Selected_Systems</targetReference>
+            
+        </connector>
+        
+        <fields>
+            
+            <name>selectSystemsHeader</name>
+            
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(0, 153, 255); font-size: 20px;&quot;&gt;SELECT SHARED SOLAR SYSTEMS&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            
+            <fieldType>DisplayText</fieldType>
+            
+        </fields>
+        
+        <fields>
+            
+            <name>txtDatable</name>
+            
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Select the Shared Solar Systems that you want to be &lt;/span&gt;&lt;b style=&quot;color: rgb(0, 0, 0);&quot;&gt;considered &lt;/b&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;for subscriptions. &lt;/span&gt;&lt;span style=&quot;color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);&quot;&gt;Subscriptions will be created and sized based on the customer&apos;s annual usage, available capacity, and project maximums.&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;NOTE: This does &lt;/span&gt;&lt;b style=&quot;color: rgb(0, 0, 0);&quot;&gt;not &lt;/b&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;guarantee subscriptions will be created for &lt;/span&gt;&lt;b style=&quot;color: rgb(0, 0, 0);&quot;&gt;all &lt;/b&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;projects. If the project is not selected, no subscriptions will be created for the project.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            
+            <fieldType>DisplayText</fieldType>
+            
+        </fields>
+        
+        <fields>
+            
+            <name>tableSSS</name>
+            
+            <dataTypeMappings>
+                
+                <typeName>T</typeName>
+                
+                <typeValue>Shared_Solar_System__c</typeValue>
+                
+            </dataTypeMappings>
+            
+            <extensionName>c:datatable</extensionName>
+            
+            <fieldType>ComponentInstance</fieldType>
+            
+            <inputParameters>
+                
+                <name>objectName</name>
+                
+                <value>
+                    
+                    <stringValue>Shared_Solar_System__c</stringValue>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputParameters>
+                
+                <name>columnFields</name>
+                
+                <value>
+                    
+                    <stringValue>Name,Product__c,Utility__c,Capacity_Available_to_be_Reserved__c</stringValue>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputParameters>
+                
+                <name>columnWidths</name>
+                
+                <value>
+                    
+                    <stringValue>Name:249, Product__c:249, Utility__c:249, Capacity_Available_to_be_Reserved__c:249</stringValue>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputParameters>
+                
+                <name>tableData</name>
+                
+                <value>
+                    
+                    <elementReference>orderedSSSList</elementReference>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputParameters>
+                
+                <name>preSelectedRows</name>
+                
+                <value>
+                    
+                    <elementReference>orderedSSSList</elementReference>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            
+            <isRequired>true</isRequired>
+            
+            <outputParameters>
+                
+                <assignToReference>selectedSSSList</assignToReference>
+                
+                <name>outputSelectedRows</name>
+                
+            </outputParameters>
+            
+        </fields>
+        
+        <showFooter>true</showFooter>
+        
+        <showHeader>false</showHeader>
+        
+    </screens>
+    
+    <screens>
+        
+        <name>showLeadStatus</name>
+        
+        <label>Unqualified</label>
+        
+        <locationX>2954</locationX>
+        
+        <locationY>1598</locationY>
+        
+        <allowBack>false</allowBack>
+        
+        <allowFinish>true</allowFinish>
+        
+        <allowPause>false</allowPause>
+        
+        <connector>
+            
+            <targetReference>updateScreenUnqualified</targetReference>
+            
+        </connector>
+        
+        <fields>
+            
+            <name>leadStatus</name>
+            
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(234, 8, 8); font-size: 20px;&quot;&gt;LEAD IS UNQUALIFIED&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;color: rgb(62, 62, 60);&quot;&gt;﻿&lt;/span&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Consult the table below to determine why there are no Projects available for this customer.&lt;/li&gt;&lt;li&gt;&lt;b&gt;NOTE&lt;/b&gt;: An email has been sent to the customer indicating &apos;Sorry, we were unable to approve your application&apos;&lt;/li&gt;&lt;/ul&gt;</fieldText>
+            
+            <fieldType>DisplayText</fieldType>
+            
+        </fields>
+        
+        <fields>
+            
+            <name>yodaTable</name>
+            
+            <extensionName>c:csQualificationTable</extensionName>
+            
+            <fieldType>ComponentInstance</fieldType>
+            
+            <inputParameters>
+                
+                <name>leadId</name>
+                
+                <value>
+                    
+                    <elementReference>Lead_After_Qualification.Id</elementReference>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputParameters>
+                
+                <name>partner</name>
+                
+                <value>
+                    
+                    <elementReference>Lead_After_Qualification.Partner_Lookup__c</elementReference>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputParameters>
+                
+                <name>product</name>
+                
+                <value>
+                    
+                    <elementReference>Lead_After_Qualification.Product__c</elementReference>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputParameters>
+                
+                <name>underwriting</name>
+                
+                <value>
+                    
+                    <elementReference>Lead_After_Qualification.Underwriting_Criteria__c</elementReference>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            
+            <isRequired>true</isRequired>
+            
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+            
+        </fields>
+        
+        <showFooter>true</showFooter>
+        
+        <showHeader>false</showHeader>
+        
+    </screens>
+    
+    <screens>
+        
+        <name>showLeadStatusInvalid</name>
+        
+        <label>Bad Lead Status</label>
+        
+        <locationX>3218</locationX>
+        
+        <locationY>1598</locationY>
+        
+        <allowBack>false</allowBack>
+        
+        <allowFinish>true</allowFinish>
+        
+        <allowPause>false</allowPause>
+        
+        <fields>
+            
+            <name>leadStatusInvalid</name>
+            
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 20px; color: rgb(234, 8, 8);&quot;&gt;LEAD STATUS INVALID&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b&gt;Lead Status = &lt;/b&gt;&lt;b style=&quot;color: rgb(255, 0, 0);&quot;&gt;{!Lead_After_Qualification.Status}&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;The Status of the Lead is invalid for the continuation of this process. Please contact BizApps for assistance.&lt;/p&gt;</fieldText>
+            
+            <fieldType>DisplayText</fieldType>
+            
+        </fields>
+        
+        <showFooter>true</showFooter>
+        
+        <showHeader>false</showHeader>
+        
+    </screens>
+    
+    <screens>
+        
+        <name>testLeadScr</name>
+        
+        <label>Invalid Email Screen</label>
+        
+        <locationX>578</locationX>
+        
+        <locationY>2294</locationY>
+        
+        <allowBack>false</allowBack>
+        
+        <allowFinish>true</allowFinish>
+        
+        <allowPause>false</allowPause>
+        
+        <fields>
+            
+            <name>txtTestLead</name>
+            
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(255, 0, 0); font-size: 20px;&quot;&gt;TEST LEAD&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(255, 0, 0);&quot;&gt;The Lead has been identified as a Test Lead used for testing purposes only. Conversion of this lead is not permitted under these circumstances.&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Please ensure that the last name on the Lead is not &apos;Testcase&apos;, which indicates a Test Lead scenario.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            
+            <fieldType>DisplayText</fieldType>
+            
+        </fields>
+        
+        <showFooter>true</showFooter>
+        
+        <showHeader>false</showHeader>
+        
+    </screens>
+    
+    <screens>
+        
+        <name>updateLeadFields</name>
+        
+        <label>Current Lead Info Screen</label>
+        
+        <locationX>2294</locationX>
+        
+        <locationY>398</locationY>
+        
+        <allowBack>true</allowBack>
+        
+        <allowFinish>true</allowFinish>
+        
+        <allowPause>false</allowPause>
+        
+        <connector>
+            
+            <targetReference>assignLeadFields</targetReference>
+            
+        </connector>
+        
+        <fields>
+            
+            <name>currentLeadInfoDisplay</name>
+            
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 20px; color: rgb(0, 153, 255);&quot;&gt;CURRENT LEAD INFO&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            
+            <fieldType>DisplayText</fieldType>
+            
+        </fields>
+        
+        <fields>
+            
+            <name>currentLeadInfo</name>
+            
+            <fieldText>&lt;p&gt;&lt;b&gt;Utility:&lt;/b&gt; &lt;span style=&quot;background-color: var(--lwc-colorBackgroundInput,rgb(255, 255, 255)); color: var(--lwc-colorTextWeak,rgb(62, 62, 60)); font-size: var(--lwc-fontSize3,0.8125rem); font-family: var(--lwc-fontFamily,&amp;quot;Salesforce Sans&amp;quot;, Arial, sans-serif);&quot;&gt;{!getLead.Utility_relationship__r.Name}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Load Zone:&lt;/b&gt; {!getLead.LoadZone__c}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Product:&lt;/b&gt; {!getLead.Product__r.Name}&lt;/p&gt;</fieldText>
+            
+            <fieldType>DisplayText</fieldType>
+            
+        </fields>
+        
+        <fields>
+            
+            <name>txtMoodyScore</name>
+            
+            <fieldText>&lt;p&gt;&lt;b style=&quot;background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;Moody&apos;s Rick Calc:&lt;/b&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt; {!getLead.Moody_s_Risk_Calc__c}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            
+            <fieldType>DisplayText</fieldType>
+            
+            <visibilityRule>
+                
+                <conditionLogic>and</conditionLogic>
+                
+                <conditions>
+                    
+                    <leftValueReference>getLead.Underwriting_Criteria__c</leftValueReference>
+                    
+                    <operator>EqualTo</operator>
+                    
+                    <rightValue>
+                        
+                        <stringValue>Financial Review</stringValue>
+                        
+                    </rightValue>
+                    
+                </conditions>
+                
+            </visibilityRule>
+            
+        </fields>
+        
+        <fields>
+            
+            <name>selectedFieldCollection</name>
+            
+            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Update the fields below if required.&lt;/p&gt;</fieldText>
+            
+            <fieldType>DisplayText</fieldType>
+            
+        </fields>
+        
+        <fields>
+            
+            <name>updateMoodys</name>
+            
+            <choiceReferences>currentMoodys</choiceReferences>
+            
+            <choiceReferences>moodysPicklist</choiceReferences>
+            
+            <dataType>String</dataType>
+            
+            <defaultSelectedChoiceReference>currentMoodys</defaultSelectedChoiceReference>
+            
+            <fieldText>Moody&apos;s Rick Calc:</fieldText>
+            
+            <fieldType>DropdownBox</fieldType>
+            
+            <isRequired>true</isRequired>
+            
+            <visibilityRule>
+                
+                <conditionLogic>and</conditionLogic>
+                
+                <conditions>
+                    
+                    <leftValueReference>getLead.Underwriting_Criteria__c</leftValueReference>
+                    
+                    <operator>EqualTo</operator>
+                    
+                    <rightValue>
+                        
+                        <stringValue>Financial Review</stringValue>
+                        
+                    </rightValue>
+                    
+                </conditions>
+                
+            </visibilityRule>
+            
+        </fields>
+        
+        <fields>
+            
+            <name>updateUtility</name>
+            
+            <extensionName>flowruntime:lookup</extensionName>
+            
+            <fieldType>ComponentInstance</fieldType>
+            
+            <inputParameters>
+                
+                <name>fieldApiName</name>
+                
+                <value>
+                    
+                    <stringValue>Utility_relationship__c</stringValue>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputParameters>
+                
+                <name>label</name>
+                
+                <value>
+                    
+                    <stringValue>Utility: </stringValue>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputParameters>
+                
+                <name>objectApiName</name>
+                
+                <value>
+                    
+                    <stringValue>Lead</stringValue>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputParameters>
+                
+                <name>recordId</name>
+                
+                <value>
+                    
+                    <elementReference>currentUtility</elementReference>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            
+            <isRequired>true</isRequired>
+            
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+            
+        </fields>
+        
+        <fields>
+            
+            <name>txtSplitLoadZone</name>
+            
+            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(255, 0, 0);&quot;&gt;Please resolve Split Load Zone before proceeding.&lt;/b&gt;&lt;/p&gt;</fieldText>
+            
+            <fieldType>DisplayText</fieldType>
+            
+            <visibilityRule>
+                
+                <conditionLogic>and</conditionLogic>
+                
+                <conditions>
+                    
+                    <leftValueReference>formula_SplitLZ</leftValueReference>
+                    
+                    <operator>EqualTo</operator>
+                    
+                    <rightValue>
+                        
+                        <booleanValue>true</booleanValue>
+                        
+                    </rightValue>
+                    
+                </conditions>
+                
+                <conditions>
+                    
+                    <leftValueReference>formula_IgnoreLoadZones</leftValueReference>
+                    
+                    <operator>EqualTo</operator>
+                    
+                    <rightValue>
+                        
+                        <booleanValue>false</booleanValue>
+                        
+                    </rightValue>
+                    
+                </conditions>
+                
+            </visibilityRule>
+            
+        </fields>
+        
+        <fields>
+            
+            <name>updateLoadZone</name>
+            
+            <dataType>String</dataType>
+            
+            <defaultValue>
+                
+                <elementReference>currentLoadZone</elementReference>
+                
+            </defaultValue>
+            
+            <fieldText>Load Zone:</fieldText>
+            
+            <fieldType>InputField</fieldType>
+            
+            <isRequired>false</isRequired>
+            
+        </fields>
+        
+        <fields>
+            
+            <name>updateProduct</name>
+            
+            <extensionName>flowruntime:lookup</extensionName>
+            
+            <fieldType>ComponentInstance</fieldType>
+            
+            <inputParameters>
+                
+                <name>fieldApiName</name>
+                
+                <value>
+                    
+                    <stringValue>Product__c</stringValue>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputParameters>
+                
+                <name>objectApiName</name>
+                
+                <value>
+                    
+                    <stringValue>Lead</stringValue>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputParameters>
+                
+                <name>label</name>
+                
+                <value>
+                    
+                    <stringValue>Product: </stringValue>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputParameters>
+                
+                <name>recordId</name>
+                
+                <value>
+                    
+                    <elementReference>currentProduct</elementReference>
+                    
+                </value>
+                
+            </inputParameters>
+            
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            
+            <isRequired>true</isRequired>
+            
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+            
+        </fields>
+        
+        <fields>
+            
+            <name>spacer3</name>
+            
+            <fieldText>&lt;p&gt; &lt;/p&gt;</fieldText>
+            
+            <fieldType>DisplayText</fieldType>
+            
+        </fields>
+        
+        <showFooter>true</showFooter>
+        
+        <showHeader>false</showHeader>
+        
+    </screens>
+    
+    <start>
+        
+        <locationX>1046</locationX>
+        
+        <locationY>0</locationY>
+        
+        <connector>
+            
+            <targetReference>getLead</targetReference>
+            
+        </connector>
+        
+    </start>
+    
+    <status>Active</status>
+    
+    <subflows>
+        
+        <name>Log_Errors_0</name>
+        
+        <label>Log Errors</label>
+        
+        <locationX>314</locationX>
+        
+        <locationY>2534</locationY>
+        
+        <connector>
+            
+            <targetReference>Update_Screen_Before_Error_0</targetReference>
+            
+        </connector>
+        
+        <flowName>Error_Log_Creation</flowName>
+        
+        <inputAssignments>
+            
+            <name>socv_ErrorLog</name>
+            
+            <value>
+                
+                <elementReference>sovc_ErrorLogs</elementReference>
+                
+            </value>
+            
+        </inputAssignments>
+        
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+        
+    </subflows>
+    
+    <textTemplates>
+        
+        <name>errorMessage</name>
+        
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        
+        <text>&lt;p&gt;Flow: Lead Qualification/Conversion&lt;/p&gt;&lt;p&gt;Record: {!$Flow.CurrentRecord}&lt;/p&gt;&lt;p&gt;Message: {!$Flow.FaultMessage}&lt;/p&gt;</text>
+        
+    </textTemplates>
+    
+    <variables>
+        
+        <name>allCollection</name>
+        
+        <dataType>String</dataType>
+        
+        <isCollection>true</isCollection>
+        
+        <isInput>true</isInput>
+        
+        <isOutput>true</isOutput>
+        
+    </variables>
+    
+    <variables>
+        
+        <description>Error code provided by CSLeadsConverter, if any, during lead conversion, which instructs flow how to process the results of the transaction</description>
+        
+        <name>apexConversionErrorCode</name>
+        
+        <dataType>Number</dataType>
+        
+        <isCollection>false</isCollection>
+        
+        <isInput>false</isInput>
+        
+        <isOutput>false</isOutput>
+        
+        <scale>0</scale>
+        
+    </variables>
+    
+    <variables>
+        
+        <name>apexConversionErrorMessage</name>
+        
+        <dataType>String</dataType>
+        
+        <isCollection>false</isCollection>
+        
+        <isInput>false</isInput>
+        
+        <isOutput>false</isOutput>
+        
+    </variables>
+    
+    <variables>
+        
+        <name>currentId</name>
+        
+        <dataType>String</dataType>
+        
+        <isCollection>false</isCollection>
+        
+        <isInput>false</isInput>
+        
+        <isOutput>false</isOutput>
+        
+    </variables>
+    
+    <variables>
+        
+        <name>currentLoadZone</name>
+        
+        <dataType>String</dataType>
+        
+        <isCollection>false</isCollection>
+        
+        <isInput>false</isInput>
+        
+        <isOutput>false</isOutput>
+        
+        <value>
+            
+            <elementReference>getLead.LoadZone__c</elementReference>
+            
+        </value>
+        
+    </variables>
+    
+    <variables>
+        
+        <name>currentParcelZip</name>
+        
+        <dataType>String</dataType>
+        
+        <isCollection>false</isCollection>
+        
+        <isInput>false</isInput>
+        
+        <isOutput>false</isOutput>
+        
+        <value>
+            
+            <elementReference>getLead.Parcel_Zip__c</elementReference>
+            
+        </value>
+        
+    </variables>
+    
+    <variables>
+        
+        <name>currentProduct</name>
+        
+        <dataType>String</dataType>
+        
+        <isCollection>false</isCollection>
+        
+        <isInput>false</isInput>
+        
+        <isOutput>true</isOutput>
+        
+        <value>
+            
+            <elementReference>getLead.Product__c</elementReference>
+            
+        </value>
+        
+    </variables>
+    
+    <variables>
+        
+        <name>currentUtility</name>
+        
+        <dataType>String</dataType>
+        
+        <isCollection>false</isCollection>
+        
+        <isInput>false</isInput>
+        
+        <isOutput>false</isOutput>
+        
+        <value>
+            
+            <elementReference>getLead.Utility_relationship__c</elementReference>
+            
+        </value>
+        
+    </variables>
+    
+    <variables>
+        
+        <name>leadIdToConvert</name>
+        
+        <dataType>String</dataType>
+        
+        <isCollection>false</isCollection>
+        
+        <isInput>false</isInput>
+        
+        <isOutput>true</isOutput>
+        
+        <value>
+            
+            <elementReference>Lead_After_Qualification.Id</elementReference>
+            
+        </value>
+        
+    </variables>
+    
+    <variables>
+        
+        <name>leadList</name>
+        
+        <dataType>SObject</dataType>
+        
+        <isCollection>true</isCollection>
+        
+        <isInput>false</isInput>
+        
+        <isOutput>false</isOutput>
+        
+        <objectType>Lead</objectType>
+        
+    </variables>
+    
+    <variables>
+        
+        <name>leadToConvert</name>
+        
+        <dataType>SObject</dataType>
+        
+        <isCollection>false</isCollection>
+        
+        <isInput>false</isInput>
+        
+        <isOutput>true</isOutput>
+        
+        <objectType>Lead</objectType>
+        
+    </variables>
+    
+    <variables>
+        
+        <name>numberOfQualifyingSystemsForLead</name>
+        
+        <dataType>Number</dataType>
+        
+        <isCollection>false</isCollection>
+        
+        <isInput>false</isInput>
+        
+        <isOutput>false</isOutput>
+        
+        <scale>0</scale>
+        
+    </variables>
+    
+    <variables>
+        
+        <name>old_currentMoody</name>
+        
+        <dataType>String</dataType>
+        
+        <isCollection>false</isCollection>
+        
+        <isInput>false</isInput>
+        
+        <isOutput>false</isOutput>
+        
+        <value>
+            
+            <elementReference>getLead.Moody_s_Risk_Calc__c</elementReference>
+            
+        </value>
+        
+    </variables>
+    
+    <variables>
+        
+        <name>old_currentProduct</name>
+        
+        <dataType>SObject</dataType>
+        
+        <isCollection>false</isCollection>
+        
+        <isInput>false</isInput>
+        
+        <isOutput>false</isOutput>
+        
+        <objectType>Product2</objectType>
+        
+    </variables>
+    
+    <variables>
+        
+        <name>old_currentUtility</name>
+        
+        <dataType>SObject</dataType>
+        
+        <isCollection>false</isCollection>
+        
+        <isInput>false</isInput>
+        
+        <isOutput>false</isOutput>
+        
+        <objectType>Utility__c</objectType>
+        
+    </variables>
+    
+    <variables>
+        
+        <name>orderedSSSList</name>
+        
+        <dataType>SObject</dataType>
+        
+        <isCollection>true</isCollection>
+        
+        <isInput>true</isInput>
+        
+        <isOutput>true</isOutput>
+        
+        <objectType>Shared_Solar_System__c</objectType>
+        
+    </variables>
+    
+    <variables>
+        
+        <name>recordId</name>
+        
+        <dataType>String</dataType>
+        
+        <isCollection>false</isCollection>
+        
+        <isInput>true</isInput>
+        
+        <isOutput>false</isOutput>
+        
+    </variables>
+    
+    <variables>
+        
+        <name>selectedSSSList</name>
+        
+        <dataType>SObject</dataType>
+        
+        <isCollection>true</isCollection>
+        
+        <isInput>false</isInput>
+        
+        <isOutput>true</isOutput>
+        
+        <objectType>Shared_Solar_System__c</objectType>
+        
+    </variables>
+    
+    <variables>
+        
+        <name>selectedSystemIds</name>
+        
+        <dataType>String</dataType>
+        
+        <isCollection>true</isCollection>
+        
+        <isInput>false</isInput>
+        
+        <isOutput>false</isOutput>
+        
+    </variables>
+    
+    <variables>
+        
+        <name>sov_ErrorLog</name>
+        
+        <dataType>SObject</dataType>
+        
+        <isCollection>false</isCollection>
+        
+        <isInput>false</isInput>
+        
+        <isOutput>true</isOutput>
+        
+        <objectType>Error_Log__c</objectType>
+        
+    </variables>
+    
+    <variables>
+        
+        <name>sovc_ErrorLogs</name>
+        
+        <dataType>SObject</dataType>
+        
+        <isCollection>true</isCollection>
+        
+        <isInput>false</isInput>
+        
+        <isOutput>true</isOutput>
+        
+        <objectType>Error_Log__c</objectType>
+        
+    </variables>
+    
+    <variables>
+        
+        <name>ualsReadyForConversion</name>
+        
+        <dataType>Boolean</dataType>
+        
+        <isCollection>false</isCollection>
+        
+        <isInput>false</isInput>
+        
+        <isOutput>false</isOutput>
+        
+        <value>
+            
+            <booleanValue>true</booleanValue>
+            
+        </value>
+        
+    </variables>
+    
+    <variables>
+        
+        <name>utilityLookup</name>
+        
+        <dataType>SObject</dataType>
+        
+        <isCollection>false</isCollection>
+        
+        <isInput>true</isInput>
+        
+        <isOutput>true</isOutput>
+        
+        <objectType>Utility__c</objectType>
+        
+    </variables>
+    
+    <variables>
+        
+        <name>varSubscriptionType</name>
+        
+        <dataType>String</dataType>
+        
+        <isCollection>false</isCollection>
+        
+        <isInput>false</isInput>
+        
+        <isOutput>false</isOutput>
+        
+    </variables>
+    
+</Flow>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Lead_Convert</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+ISCHANGED(IsConverted),
+IsConverted, 
+    NOT(TEXT(PRIORVALUE(Status)) = &quot;Qualified&quot;),
+    Product_line__c != &quot;Residential Loan&quot;
+)</errorConditionFormula>
+    <errorMessage>Customer is not Qualified</errorMessage>
+</ValidationRule>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Annual_kWh_Subscription_Future_Rollup__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>This is a rollup of all approved subscription orders.</inlineHelpText>
+    <label>Annual kWh Subscription (Future)</label>
+    <summarizedField>Subscription_Order__c.Change_in_Annual_kWh__c</summarizedField>
+    <summaryFilterItems>
+        
+            <field>Subscription_Order__c.Approval_Status__c</field>
+        
+            <operation>equals</operation>
+        
+            <value>Approved</value>
+        
+        </summaryFilterItems>
+    <summaryForeignKey>Subscription_Order__c.Utility_Account_Subscription__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

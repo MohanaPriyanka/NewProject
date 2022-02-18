@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Conga_Template_ID__c</fullName>
+    <description>This is used in the conga composer to determine which template is used.</description>
+    <externalId>false</externalId>
+    <formula>IF(
+
+ISPICKVAL(Shared_Solar_System__r.Product__r.Program__c,&quot;SMART - Community Solar&quot;),&quot;{!Environment.VAR_CONGA_TEMPLATE_AOBC}&quot;,
+
+CASE(Utility__c,
+&quot;Consolidated Edison&quot;, &quot;{!Environment.VAR_CONGA_TEMPLATE_ALS_CONED}&quot;,
+&quot;Eversource (East)&quot;,&quot;a2F0a000001RC7W,{!Environment.VAR_CONGA_TEMPLATE_EVERSOURCE_MA_SREC_EXCEL}&quot;,
+&quot;Eversource (West)&quot;,&quot;a2F0a000001RC7W,{!Environment.VAR_CONGA_TEMPLATE_EVERSOURCE_MA_SREC_EXCEL}&quot;,
+&quot;National Grid (MA)&quot;,&quot;a2F0a000001RBod,{!Environment.VAR_CONGA_TEMPLATE_NG_MA_SREC_EXCEL}&quot;,
+&quot;NYS Electric and Gas&quot;,&quot;a2F0a000000OY5fEAG&quot;,
+&quot;Orange and Rockland&quot;,&quot;{!Environment.VAR_CONGA_TEMPLATE_OANDRALS}&quot;,
+&quot;National Grid (NY)&quot;,
+    IF(Shared_Solar_System__r.UCB__c,&quot;{!Environment.VAR_CONGA_NGRID_NY_UCB_ALS}&quot;,&quot;{!Environment.VAR_CONGA_NGNY_ALS_EXCEL},{!Environment.VAR_CONGA_NGNY_ALS_PDF}&quot;),
+&quot;Central Hudson Gas and Electric&quot;, &quot;a2F0a000000Ob66EAC&quot;,
+&quot;&quot;
+)
+)</formula>
+    <inlineHelpText>This is used in the conga composer to determine which template is used.</inlineHelpText>
+    <label>Conga Template ID</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

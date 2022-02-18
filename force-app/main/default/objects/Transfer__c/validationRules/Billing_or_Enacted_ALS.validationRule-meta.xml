@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Billing_or_Enacted_ALS</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+NOT( ISBLANK(Allocation_Schedule__c)),
+NOT(ISPICKVAL(Allocation_Schedule__r.Status__c, &apos;Billing&apos;)), NOT(ISPICKVAL(Allocation_Schedule__r.Status__c, &apos;Enacted By Utility&apos;)))</errorConditionFormula>
+    <errorMessage>Allocation Schedule must be &quot;Billing&quot; or &quot;Enacted by Utility&quot;</errorMessage>
+</ValidationRule>

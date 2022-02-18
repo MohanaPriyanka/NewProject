@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Prevent_Editing_Permission_Related_Field</fullName>
+    <active>true</active>
+    <description>Prevents anyone from creating a permissions request case that is &quot;In Progress&quot; (will trigger provisioning of permissions) or editing an existing case.</description>
+    <errorConditionFormula>AND(
+    TEXT(Type) = &quot;Permissions Request&quot;,
+    RecordType.DeveloperName = &quot;Product_Support&quot;, /*this applies only to permissions cases which trigger auto assignment of perm sets */
+    OR(
+            AND( /*if a case is new, it must be set to &quot;Awaiting Internal Team&quot; */
+                ISNEW(),
+                TEXT(Status)!=&quot;Awaiting Internal Team&quot;
+               ),
+              
+            AND( /*if a case is not new, it must either be after the perm expiration date and set to closed, or else it can&apos;t be edited */
+                NOT(ISNEW()),
+                IF(NOW() &gt; Permission_Set_Expiration_Date_Time__c &amp;&amp; TEXT(Status) = &quot;Closed&quot;,FALSE,TRUE)
+               
+                )
+                
+        )      
+)</errorConditionFormula>
+    <errorMessage>You cannot update or manually create permission provisioning cases.</errorMessage>
+</ValidationRule>

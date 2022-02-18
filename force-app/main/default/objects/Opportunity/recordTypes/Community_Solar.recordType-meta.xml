@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Community_Solar</fullName>
+    <active>true</active>
+    <businessProcess>Community Solar</businessProcess>
+    <compactLayoutAssignment>CS_Layout</compactLayoutAssignment>
+    <description>Record Type for all CS Customers</description>
+    <label>Community Solar</label>
+    <picklistValues>
+        
+            <picklist>Customer_Sub_Group__c</picklist>
+        
+            <values>
+            
+                <fullName>LMI</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Public Offtake</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <picklist>Underwriting_Criteria__c</picklist>
+        
+            <values>
+            
+                <fullName>FICO</fullName>
+            
+                <default>true</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Financial Review</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Investment-Grade</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>None</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Past Payment History</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <picklist>Customer_Group__c</picklist>
+        
+            <values>
+            
+                <fullName>Anchor</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Non-Residential</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Residential</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <picklist>LeadSource</picklist>
+        
+            <values>
+            
+                <fullName>CSAP</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Other</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Partner</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Switch</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Third-Party</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Website</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+        </picklistValues>
+</RecordType>

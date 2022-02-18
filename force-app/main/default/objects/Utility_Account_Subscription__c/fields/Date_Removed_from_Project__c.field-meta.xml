@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Date_Removed_from_Project__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Populated with Date Allocation Schedule Retired by Utility when &quot;Date Allocation Schedule Retired by Utility&quot; on all related Allocation Schedule Subscriptions is populated AND Date Utility Account Cancelled is NOT populated</inlineHelpText>
+    <label>Date Removed from Project</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

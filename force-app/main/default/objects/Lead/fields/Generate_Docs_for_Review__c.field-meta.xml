@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Generate_Docs_for_Review__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Updated by LWC/PATCH call to retrieve new docs when relevant Lead fields are updated</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Flag that triggers a WFR to generate disclosure form and contracts for the Lead</inlineHelpText>
+    <label>Generate Docs for Review</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

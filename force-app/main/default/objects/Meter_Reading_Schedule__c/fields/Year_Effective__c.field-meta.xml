@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Year_Effective__c</fullName>
+    <description>This is the year the schedule is effective for. Do not apply schedule for a past year for current meter reading.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This is the year the schedule is effective for. Do not apply schedule for a past year for current meter reading.</inlineHelpText>
+    <label>Year Effective</label>
+    <length>4</length>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

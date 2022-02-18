@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Contract_Close_Commission__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
+    <inlineHelpText>Contract Close Commission Payment record this Subscription Order is applied to. If no value, this Subscription Order has not been applied to a Commission Payment record yet.</inlineHelpText>
+    <label>Contract Close Commission</label>
+    <referenceTo>Commission_Payment__c</referenceTo>
+    <relationshipLabel>Contract_Close_Subscription_Orders</relationshipLabel>
+    <relationshipName>Subscription_Orders</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

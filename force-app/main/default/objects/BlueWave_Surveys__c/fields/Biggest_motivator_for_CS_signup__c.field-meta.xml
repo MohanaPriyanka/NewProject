@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Biggest_motivator_for_CS_signup__c</fullName>
+    <externalId>false</externalId>
+    <label>Biggest motivator for CS signup</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>Monthly energy savings</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Monthly energy savings</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Environmental benefit of supporting solar</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Environmental benefit of supporting solar</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Going completely solar by adding community solar to a rooftop installation</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Going completely solar by adding community solar to a rooftop installation</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>A family/friend recommended community solar or BlueWave</fullName>
+                
+                    <default>false</default>
+                
+                    <label>A family/friend recommended community solar or BlueWave</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Other</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Other</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+    <visibleLines>5</visibleLines>
+</CustomField>

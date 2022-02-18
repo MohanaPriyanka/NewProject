@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Program__c</fullName>
+    <externalId>false</externalId>
+    <label>Program</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <restricted>true</restricted>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>MSLP</fullName>
+                
+                    <default>false</default>
+                
+                    <label>MSLP</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>BlueWave Solar Loan</fullName>
+                
+                    <default>false</default>
+                
+                    <label>BlueWave Solar Loan</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>SMART - Community Solar</fullName>
+                
+                    <default>false</default>
+                
+                    <label>SMART - Community Solar</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>SREC - Community Solar</fullName>
+                
+                    <default>false</default>
+                
+                    <label>SREC - Community Solar</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>CED Ensemble</fullName>
+                
+                    <default>false</default>
+                
+                    <label>CED Ensemble</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>VDER - Community Solar</fullName>
+                
+                    <default>false</default>
+                
+                    <label>VDER - Community Solar</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Net Energy Billing (NEB)</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Net Energy Billing (NEB)</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

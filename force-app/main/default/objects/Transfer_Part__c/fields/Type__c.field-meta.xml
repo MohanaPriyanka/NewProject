@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Type__c</fullName>
+    <externalId>false</externalId>
+    <label>Type</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <restricted>true</restricted>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>Transfer</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Transfer</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Fee</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Fee</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Incentive Payment</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Incentive Payment</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Unsubscribed Credits</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Unsubscribed Credits</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Customer Savings</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Customer Savings</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Payment</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Payment</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Unserviced</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Unserviced</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Bill</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Bill</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

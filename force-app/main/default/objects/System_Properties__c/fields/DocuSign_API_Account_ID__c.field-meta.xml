@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DocuSign_API_Account_ID__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>DocuSign API Account ID (https://admindemo.docusign.com/api-integrator-key) e.g. 2255b4dd-7d4f-425a-bcc9-d53328055381</inlineHelpText>
+    <label>DocuSign API Account ID</label>
+    <length>36</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

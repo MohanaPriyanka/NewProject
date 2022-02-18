@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Client_Account__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
+    <inlineHelpText>Stamped on creation from Shared Solar System&apos;s Client</inlineHelpText>
+    <label>Client Account</label>
+    <referenceTo>Account</referenceTo>
+    <relationshipLabel>Bill Periods</relationshipLabel>
+    <relationshipName>Bill_Periods</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

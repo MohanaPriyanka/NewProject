@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>Project_Image__c</fullName>
+    <description>This is the project image that is displayed in the Customer Portal. It needs to be a link to an publicly accessible image.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This is the project image that is displayed in the Customer Portal. It needs to be a link to an publicly accessible image.</inlineHelpText>
+    <label>Project Image</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Url</type>
+</CustomField>

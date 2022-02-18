@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Customer_Support_My_Cases</fullName>
+    <columns>CASES.CASE_NUMBER</columns>
+    <columns>NAME</columns>
+    <columns>CASES.SUBJECT</columns>
+    <columns>CASES.STATUS</columns>
+    <columns>Case_Update__c</columns>
+    <columns>CASES.CREATED_DATE</columns>
+    <columns>CASES.LAST_UPDATE</columns>
+    <columns>CASES.ORIGIN</columns>
+    <filterScope>Mine</filterScope>
+    <filters>
+        
+            <field>CASES.STATUS</field>
+        
+            <operation>notEqual</operation>
+        
+            <value>Closed,Resolved</value>
+        
+        </filters>
+    <filters>
+        
+            <field>CASES.RECORDTYPE</field>
+        
+            <operation>equals</operation>
+        
+            <value>Case.Partner_Care_Case,Case.Case,Case.Customer_Care</value>
+        
+        </filters>
+    <label>Support Ops - My Cases</label>
+</ListView>

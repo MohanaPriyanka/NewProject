@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Bill_Status__c</fullName>
+    <externalId>false</externalId>
+    <label>Bill Status</label>
+    <required>false</required>
+    <trackFeedHistory>true</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <restricted>true</restricted>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>Host Account Bill Uploaded</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Host Account Bill Uploaded</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Host Account Bill QCed</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Host Account Bill QCed</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Credit Transfers QCed</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Credit Transfers QCed</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Ready to Generate</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Ready to Generate</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Bills QCed</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Bills QCed</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Email Bills Sent</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Email Bills Sent</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Letter Bills Sent</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Letter Bills Sent</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Autopay QCed</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Autopay QCed</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Not Billing this Month</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Not Billing this Month</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>New Production Update</fullName>
+                
+                    <default>false</default>
+                
+                    <isActive>false</isActive>
+                
+                    <label>New Production Update</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

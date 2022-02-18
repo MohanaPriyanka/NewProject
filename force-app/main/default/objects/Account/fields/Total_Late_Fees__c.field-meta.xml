@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Total_Late_Fees__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Sum of all Late Fees on Account</inlineHelpText>
+    <label>Total Late Fees</label>
+    <summarizedField>Account_Bill__c.Late_Fees__c</summarizedField>
+    <summaryForeignKey>Account_Bill__c.Parent_Account__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <type>Summary</type>
+</CustomField>

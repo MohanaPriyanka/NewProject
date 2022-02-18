@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cust_Top_3__c</fullName>
+    <externalId>false</externalId>
+    <label>Cust Top 3</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        
+            <restricted>true</restricted>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>Affordable monthly payments</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Affordable monthly payments</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>The interest rate of the loan</fullName>
+                
+                    <default>false</default>
+                
+                    <label>The interest rate of the loan</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Total cost of ownership</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Total cost of ownership</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Knowing BlueWave&apos;s name as a financing provider</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Knowing BlueWave&apos;s name as a financing provider</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Energy security</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Energy security</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Improved environmental impact</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Improved environmental impact</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Other</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Other</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Purchasing products that help you save money and optimize your energy use</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Purchasing products that help you save money and optimize your energy use</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Reviewing your energy usage or savings online</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Reviewing your energy usage or savings online</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Purchasing energy from alternative energy sources apart from community solar</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Purchasing energy from alternative energy sources apart from community solar</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+    <visibleLines>7</visibleLines>
+</CustomField>

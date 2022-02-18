@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>Estimated_PTO_Date_MANUAL__c</fullName>
+    <description>Date the project is estimated to reach PTO.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Date the project is estimated to reach PTO.</inlineHelpText>
+    <label>Estimated PTO Date</label>
+    <required>false</required>
+    <trackFeedHistory>true</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

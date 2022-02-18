@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LASER_Credit_Access_Custom</fullName>
+    <availability>online</availability>
+    <description>Alternative to the LASER Credit Access button to standardize on the &quot;Pull Credit Report&quot; checkbox. See https://github.com/BlueWaveFinanceGroup/SMP/pull/136 for context</description>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Pull Credit Report</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/27.0/connection.js&quot;)}
+
+var lead = new sforce.SObject(&apos;Lead&apos;); 
+lead.Id = &apos;{!Lead.Id}&apos;; 
+lead.LASERCA__Pull_Credit_Report__c = true;
+var result = sforce.connection.update([lead]); 
+alert(&apos;You have queued a credit check, please refresh the page to check for results&apos;);</url>
+</WebLink>

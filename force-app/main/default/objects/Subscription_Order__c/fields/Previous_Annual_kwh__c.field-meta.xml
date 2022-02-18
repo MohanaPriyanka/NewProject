@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Previous_Annual_kwh__c</fullName>
+    <description>This is the Annual kwh on the related UAS when the Subscription Order was created.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This is the Annual kwh on the related UAS when the Subscription Order was created.</inlineHelpText>
+    <label>Previous Annual kwh</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

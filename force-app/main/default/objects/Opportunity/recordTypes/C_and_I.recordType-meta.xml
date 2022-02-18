@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>C_and_I</fullName>
+    <active>true</active>
+    <businessProcess>C and I</businessProcess>
+    <label>C and I</label>
+    <picklistValues>
+        
+            <picklist>Underwriting_Criteria__c</picklist>
+        
+            <values>
+            
+                <fullName>FICO</fullName>
+            
+                <default>true</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Financial Review</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Investment-Grade</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>None</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Past Payment History</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <picklist>Customer_Group__c</picklist>
+        
+            <values>
+            
+                <fullName>Anchor</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Business</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Non-Residential</fullName>
+            
+                <default>true</default>
+            
+            </values>
+        
+            <values>
+            
+                <fullName>Residential</fullName>
+            
+                <default>false</default>
+            
+            </values>
+        
+        </picklistValues>
+</RecordType>

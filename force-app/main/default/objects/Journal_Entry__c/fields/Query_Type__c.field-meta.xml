@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Query_Type__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>When we download data from Zuora, we use 5 different types of queries. Same as object type, but query for Payment Parts applied to Debit Memos and those applied to Invoices separately</inlineHelpText>
+    <label>Query Type</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <restricted>true</restricted>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>InvoiceItem</fullName>
+                
+                    <default>false</default>
+                
+                    <label>InvoiceItem</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>CreditMemo</fullName>
+                
+                    <default>false</default>
+                
+                    <label>CreditMemo</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>DebitMemo</fullName>
+                
+                    <default>false</default>
+                
+                    <label>DebitMemo</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>PaymentPart_DM</fullName>
+                
+                    <default>false</default>
+                
+                    <label>PaymentPart_DM</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>PaymentPart_IV</fullName>
+                
+                    <default>false</default>
+                
+                    <label>PaymentPart_IV</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

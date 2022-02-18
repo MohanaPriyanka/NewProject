@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Max_Limit_Used__c</fullName>
+    <externalId>false</externalId>
+    <formula>MAX( Limits_SOQL_Query_Rows_Percent_Used__c,
+     Limits_SOQL_Queries_Percent_Used__c,
+     Limits_Heap_Size_Percent_Used__c,
+     Limits_CPU_Time_Percent_Used__c,
+     Limits_DML_Rows_Percent_Used__c,
+     Limits_DML_Statements_Percent_Used__c
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Max Limit Used</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackTrending>false</trackTrending>
+    <type>Percent</type>
+</CustomField>

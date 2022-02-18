@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>System_Bill_Generation_Grace_Period__c</fullName>
+    <defaultValue>15</defaultValue>
+    <externalId>false</externalId>
+    <inlineHelpText>Number of days past 30 to wait for System Bills to be generated, before the CSCancellationService determines that we&apos;ve stopped billing the customer. Used to handle the case where we don&apos;t generate bills on the 15th because of a weekend or holiday.</inlineHelpText>
+    <label>System Bill Generation Grace Period</label>
+    <precision>2</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

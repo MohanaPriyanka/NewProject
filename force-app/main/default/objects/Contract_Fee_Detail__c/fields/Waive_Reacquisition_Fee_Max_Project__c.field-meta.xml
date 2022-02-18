@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Waive_Reacquisition_Fee_Max_Project__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Reacquisition fees will be waived until X% (annually) of the project (calculated by summing SOs with waived fee CIMs) has been reacquired after the initial period. If blank, all SOs will get CIMs to waive fees (potentially more than 100% of the project).</inlineHelpText>
+    <label>Waive Reacq Fee: Max % After Period</label>
+    <precision>7</precision>
+    <required>false</required>
+    <scale>4</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Percent</type>
+</CustomField>

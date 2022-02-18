@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Date_Removed_from_Project__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Automatically filled when this Property Account has been removed from all enacted Schedule Z&apos;s.</inlineHelpText>
+    <label>Date Removed from Last Project</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Date</type>
+</CustomField>

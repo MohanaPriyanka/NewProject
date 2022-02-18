@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Easement_Compact</fullName>
+    <fields>Name</fields>
+    <fields>Easement_Type__c</fields>
+    <fields>Easement_Sent__c</fields>
+    <fields>Easement_Received_from_Utility__c</fields>
+    <fields>Easement_Business_Days_Act__c</fields>
+    <fields>Easement_Business_Days_Est__c</fields>
+    <fields>Easement_Process_Completed_Act__c</fields>
+    <fields>Easement_Process_Completed_Est__c</fields>
+    <fields>Easement_Process_Started_Est__c</fields>
+    <label>Easement Compact</label>
+</CompactLayout>

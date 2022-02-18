@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__BillingAccount__c</fullName>
+    <deleteConstraint>Cascade</deleteConstraint>
+    <deprecated>false</deprecated>
+    <description>The Zuora billing account that the invoice is for.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The Zuora billing account that the invoice is for.</inlineHelpText>
+    <label>Billing Account</label>
+    <referenceTo>Zuora__CustomerAccount__c</referenceTo>
+    <relationshipLabel>Invoices</relationshipLabel>
+    <relationshipName>ZInvoices</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

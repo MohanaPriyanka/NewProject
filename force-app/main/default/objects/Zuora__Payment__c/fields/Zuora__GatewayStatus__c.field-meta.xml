@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__GatewayStatus__c</fullName>
+    <deprecated>false</deprecated>
+    <description>The status of the payment in the gateway.</description>
+    <externalId>false</externalId>
+    <label>Gateway State</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>MarkedForSubmission</fullName>
+                
+                    <default>false</default>
+                
+                    <label>MarkedForSubmission</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Submitted</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Submitted</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Settled</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Settled</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>NotSubmitted</fullName>
+                
+                    <default>false</default>
+                
+                    <label>NotSubmitted</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>FailedToSettle</fullName>
+                
+                    <default>false</default>
+                
+                    <label>FailedToSettle</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

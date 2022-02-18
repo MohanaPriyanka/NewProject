@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label/>
+    <name>Task_Subject__c</name>
+    <picklistValues>
+        
+            <masterLabel>Adjust subscription, &gt;25kW</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Change account # on contract</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Change load zone</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Change to commercial</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Check Comments About Sizing section</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Check contract, handwritten</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Credit report did not match customer&apos;s name, attach credit check for right customer</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Credit report is missing, Upload correct credit report</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Custom&apos;s credit was denied , change stage to unqualified</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Customer email missing</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Load zone missing on utility bill</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Other</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Subscription adjustment needed</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Too few years at location</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Too few years in business</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Upload Green Button Data</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Upload complete contract</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Upload complete utility bill to utility Account Log</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Upload utility bill without overdue payments</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+</CustomFieldTranslation>

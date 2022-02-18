@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Unique_ID__c</fullName>
+    <description>Designed to support the scenario in which we were creating Tasks for all of the actions we needed the partner to take during the lending process. Since we have moved over to a separate object, Partner_Task__c, this field can be retired.</description>
+    <externalId>true</externalId>
+    <label>Unique ID</label>
+    <length>100</length>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

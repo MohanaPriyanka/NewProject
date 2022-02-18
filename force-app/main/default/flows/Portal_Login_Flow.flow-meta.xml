@@ -1,0 +1,593 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    
+    <apiVersion>52.0</apiVersion>
+    
+    <decisions>
+        
+        <name>Portal_Type</name>
+        
+        <label>Portal Type</label>
+        
+        <locationX>534</locationX>
+        
+        <locationY>158</locationY>
+        
+        <defaultConnectorLabel>Other Profile</defaultConnectorLabel>
+        
+        <rules>
+            
+            <name>Customer_Portal</name>
+            
+            <conditionLogic>or</conditionLogic>
+            
+            <conditions>
+                
+                <leftValueReference>$Profile.Name</leftValueReference>
+                
+                <operator>Contains</operator>
+                
+                <rightValue>
+                    
+                    <stringValue>Community Solar</stringValue>
+                    
+                </rightValue>
+                
+            </conditions>
+            
+            <connector>
+                
+                <targetReference>Get_Customer_Portal_Messages</targetReference>
+                
+            </connector>
+            
+            <label>Customer Portal</label>
+            
+        </rules>
+        
+        <rules>
+            
+            <name>Client_Portal</name>
+            
+            <conditionLogic>and</conditionLogic>
+            
+            <conditions>
+                
+                <leftValueReference>$Profile.Name</leftValueReference>
+                
+                <operator>Contains</operator>
+                
+                <rightValue>
+                    
+                    <stringValue>CS Client Partner</stringValue>
+                    
+                </rightValue>
+                
+            </conditions>
+            
+            <connector>
+                
+                <targetReference>Get_Client_Portal_Messages</targetReference>
+                
+            </connector>
+            
+            <label>Client Portal</label>
+            
+        </rules>
+        
+        <rules>
+            
+            <name>Partner_Portal</name>
+            
+            <conditionLogic>and</conditionLogic>
+            
+            <conditions>
+                
+                <leftValueReference>$Profile.Name</leftValueReference>
+                
+                <operator>Contains</operator>
+                
+                <rightValue>
+                    
+                    <stringValue>Partner Portal Community</stringValue>
+                    
+                </rightValue>
+                
+            </conditions>
+            
+            <connector>
+                
+                <targetReference>Get_Partner_Portal_Messages</targetReference>
+                
+            </connector>
+            
+            <label>Partner Portal</label>
+            
+        </rules>
+        
+    </decisions>
+    
+    <interviewLabel>Portal Login Flow {!$Flow.CurrentDateTime}</interviewLabel>
+    
+    <label>Portal Login Flow</label>
+    
+    <loops>
+        
+        <name>Client_Portal_Messages_Loop</name>
+        
+        <label>Client Portal Messages Loop</label>
+        
+        <locationX>402</locationX>
+        
+        <locationY>398</locationY>
+        
+        <collectionReference>Get_Client_Portal_Messages</collectionReference>
+        
+        <iterationOrder>Asc</iterationOrder>
+        
+        <nextValueConnector>
+            
+            <targetReference>Client_Portal_Message</targetReference>
+            
+        </nextValueConnector>
+        
+    </loops>
+    
+    <loops>
+        
+        <name>Customer_Portal_Messages_Loop</name>
+        
+        <label>Customer Portal Messages Loop</label>
+        
+        <locationX>50</locationX>
+        
+        <locationY>398</locationY>
+        
+        <collectionReference>Get_Customer_Portal_Messages</collectionReference>
+        
+        <iterationOrder>Asc</iterationOrder>
+        
+        <nextValueConnector>
+            
+            <targetReference>Customer_Portal_Message</targetReference>
+            
+        </nextValueConnector>
+        
+    </loops>
+    
+    <loops>
+        
+        <name>Partner_Portal_Message_Loop</name>
+        
+        <label>Partner Portal Message Loop</label>
+        
+        <locationX>754</locationX>
+        
+        <locationY>398</locationY>
+        
+        <collectionReference>Get_Partner_Portal_Messages</collectionReference>
+        
+        <iterationOrder>Asc</iterationOrder>
+        
+        <nextValueConnector>
+            
+            <targetReference>Partner_Portal_Message</targetReference>
+            
+        </nextValueConnector>
+        
+    </loops>
+    
+    <processMetadataValues>
+        
+        <name>BuilderType</name>
+        
+        <value>
+            
+            <stringValue>LightningFlowBuilder</stringValue>
+            
+        </value>
+        
+    </processMetadataValues>
+    
+    <processMetadataValues>
+        
+        <name>CanvasMode</name>
+        
+        <value>
+            
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+            
+        </value>
+        
+    </processMetadataValues>
+    
+    <processMetadataValues>
+        
+        <name>OriginBuilderType</name>
+        
+        <value>
+            
+            <stringValue>LightningFlowBuilder</stringValue>
+            
+        </value>
+        
+    </processMetadataValues>
+    
+    <processType>Flow</processType>
+    
+    <recordLookups>
+        
+        <name>Get_Client_Portal_Messages</name>
+        
+        <label>Get Client Portal Messages</label>
+        
+        <locationX>402</locationX>
+        
+        <locationY>278</locationY>
+        
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        
+        <connector>
+            
+            <targetReference>Client_Portal_Messages_Loop</targetReference>
+            
+        </connector>
+        
+        <filterLogic>and</filterLogic>
+        
+        <filters>
+            
+            <field>Audience__c</field>
+            
+            <operator>EqualTo</operator>
+            
+            <value>
+                
+                <stringValue>Client</stringValue>
+                
+            </value>
+            
+        </filters>
+        
+        <filters>
+            
+            <field>Start_Time__c</field>
+            
+            <operator>LessThanOrEqualTo</operator>
+            
+            <value>
+                
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+                
+            </value>
+            
+        </filters>
+        
+        <filters>
+            
+            <field>End_Time__c</field>
+            
+            <operator>GreaterThanOrEqualTo</operator>
+            
+            <value>
+                
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+                
+            </value>
+            
+        </filters>
+        
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        
+        <object>Portal_Login_Message__c</object>
+        
+        <queriedFields>Id</queriedFields>
+        
+        <queriedFields>Message__c</queriedFields>
+        
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+        
+    </recordLookups>
+    
+    <recordLookups>
+        
+        <name>Get_Customer_Portal_Messages</name>
+        
+        <label>Get Customer Portal Messages</label>
+        
+        <locationX>50</locationX>
+        
+        <locationY>278</locationY>
+        
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        
+        <connector>
+            
+            <targetReference>Customer_Portal_Messages_Loop</targetReference>
+            
+        </connector>
+        
+        <filterLogic>and</filterLogic>
+        
+        <filters>
+            
+            <field>Audience__c</field>
+            
+            <operator>EqualTo</operator>
+            
+            <value>
+                
+                <stringValue>Customer</stringValue>
+                
+            </value>
+            
+        </filters>
+        
+        <filters>
+            
+            <field>Start_Time__c</field>
+            
+            <operator>LessThanOrEqualTo</operator>
+            
+            <value>
+                
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+                
+            </value>
+            
+        </filters>
+        
+        <filters>
+            
+            <field>End_Time__c</field>
+            
+            <operator>GreaterThanOrEqualTo</operator>
+            
+            <value>
+                
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+                
+            </value>
+            
+        </filters>
+        
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        
+        <object>Portal_Login_Message__c</object>
+        
+        <queriedFields>Id</queriedFields>
+        
+        <queriedFields>Message__c</queriedFields>
+        
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+        
+    </recordLookups>
+    
+    <recordLookups>
+        
+        <name>Get_Partner_Portal_Messages</name>
+        
+        <label>Get Partner Portal Messages</label>
+        
+        <locationX>754</locationX>
+        
+        <locationY>278</locationY>
+        
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        
+        <connector>
+            
+            <targetReference>Partner_Portal_Message_Loop</targetReference>
+            
+        </connector>
+        
+        <filterLogic>and</filterLogic>
+        
+        <filters>
+            
+            <field>Audience__c</field>
+            
+            <operator>EqualTo</operator>
+            
+            <value>
+                
+                <stringValue>Partner</stringValue>
+                
+            </value>
+            
+        </filters>
+        
+        <filters>
+            
+            <field>Start_Time__c</field>
+            
+            <operator>LessThanOrEqualTo</operator>
+            
+            <value>
+                
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+                
+            </value>
+            
+        </filters>
+        
+        <filters>
+            
+            <field>End_Time__c</field>
+            
+            <operator>GreaterThanOrEqualTo</operator>
+            
+            <value>
+                
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+                
+            </value>
+            
+        </filters>
+        
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        
+        <object>Portal_Login_Message__c</object>
+        
+        <queriedFields>Id</queriedFields>
+        
+        <queriedFields>Message__c</queriedFields>
+        
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+        
+    </recordLookups>
+    
+    <runInMode>SystemModeWithoutSharing</runInMode>
+    
+    <screens>
+        
+        <name>Client_Portal_Message</name>
+        
+        <label>Client Portal Message</label>
+        
+        <locationX>490</locationX>
+        
+        <locationY>518</locationY>
+        
+        <allowBack>true</allowBack>
+        
+        <allowFinish>true</allowFinish>
+        
+        <allowPause>false</allowPause>
+        
+        <connector>
+            
+            <targetReference>Client_Portal_Messages_Loop</targetReference>
+            
+        </connector>
+        
+        <fields>
+            
+            <name>Display_Client_Portal_Message</name>
+            
+            <fieldText>&lt;p&gt;{!Client_Portal_Messages_Loop.Message__c}&lt;/p&gt;</fieldText>
+            
+            <fieldType>DisplayText</fieldType>
+            
+        </fields>
+        
+        <showFooter>true</showFooter>
+        
+        <showHeader>true</showHeader>
+        
+    </screens>
+    
+    <screens>
+        
+        <name>Customer_Portal_Message</name>
+        
+        <label>Customer Portal Message</label>
+        
+        <locationX>138</locationX>
+        
+        <locationY>518</locationY>
+        
+        <allowBack>true</allowBack>
+        
+        <allowFinish>true</allowFinish>
+        
+        <allowPause>false</allowPause>
+        
+        <connector>
+            
+            <targetReference>Customer_Portal_Messages_Loop</targetReference>
+            
+        </connector>
+        
+        <fields>
+            
+            <name>DisplayCustomerPortalMessage</name>
+            
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 18px;&quot;&gt;{!Customer_Portal_Messages_Loop.Message__c}&lt;/b&gt;&lt;/p&gt;</fieldText>
+            
+            <fieldType>DisplayText</fieldType>
+            
+        </fields>
+        
+        <showFooter>true</showFooter>
+        
+        <showHeader>true</showHeader>
+        
+    </screens>
+    
+    <screens>
+        
+        <name>Partner_Portal_Message</name>
+        
+        <label>Partner Portal Message</label>
+        
+        <locationX>842</locationX>
+        
+        <locationY>518</locationY>
+        
+        <allowBack>true</allowBack>
+        
+        <allowFinish>true</allowFinish>
+        
+        <allowPause>false</allowPause>
+        
+        <connector>
+            
+            <targetReference>Partner_Portal_Message_Loop</targetReference>
+            
+        </connector>
+        
+        <fields>
+            
+            <name>DisplayPartnerPortalMessage</name>
+            
+            <fieldText>&lt;p&gt;{!Partner_Portal_Message_Loop.Message__c}&lt;/p&gt;</fieldText>
+            
+            <fieldType>DisplayText</fieldType>
+            
+        </fields>
+        
+        <showFooter>true</showFooter>
+        
+        <showHeader>true</showHeader>
+        
+    </screens>
+    
+    <start>
+        
+        <locationX>408</locationX>
+        
+        <locationY>0</locationY>
+        
+        <connector>
+            
+            <targetReference>Portal_Type</targetReference>
+            
+        </connector>
+        
+    </start>
+    
+    <status>Active</status>
+    
+    <variables>
+        
+        <name>LoginFlow_FinishLocation</name>
+        
+        <dataType>String</dataType>
+        
+        <isCollection>false</isCollection>
+        
+        <isInput>false</isInput>
+        
+        <isOutput>true</isOutput>
+        
+        <value>
+            
+            <stringValue>/s/</stringValue>
+            
+        </value>
+        
+    </variables>
+    
+</Flow>

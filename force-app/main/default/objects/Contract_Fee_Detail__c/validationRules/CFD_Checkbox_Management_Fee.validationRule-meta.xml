@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CFD_Checkbox_Management_Fee</fullName>
+    <active>true</active>
+    <description>A CFD can only have one Fee Type selected, so “Management Fee” can only be checked if “Acquisition Type: Acquisition” and “Acquisition Type: Reacquisition” and &quot;Deposit Fee&quot; are not selected.</description>
+    <errorConditionFormula>AND(Management_Fee__c, OR(Acquisition_Type_Acquisition__c, Acquisition_Type_Reacquisition__c, Deposit_Fee__c))</errorConditionFormula>
+    <errorDisplayField>Management_Fee__c</errorDisplayField>
+    <errorMessage>You can only have one Fee Type selected for a Contract Fee Detail object.</errorMessage>
+</ValidationRule>

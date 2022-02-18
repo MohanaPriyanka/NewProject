@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Acquisition_Type__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF (DATEVALUE( Effective_Date__c ) &gt; Utility_Account_Subscription__r.Shared_Solar_System__r.Reacquisition_Start_Date__c , &quot;Reacquisition&quot;,&quot;Acquisition&quot;)</formula>
+    <inlineHelpText>Displays &quot;Reacquisition&quot; if the SO&apos;s &quot;Effective Date&quot; is after the UAS&apos;s SSS &quot;Reacquisition Start Date&quot;, otherwise it display &quot;Acquisition&quot;</inlineHelpText>
+    <label>Acquisition Type</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

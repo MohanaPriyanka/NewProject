@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>Do_Not_Underwrite_Check</fullName>
+    <active>true</active>
+    <errorConditionFormula>Do_Not_Underwrite__c  = true &amp;&amp;
+(Available_SMB_Underwriting_Method_Docs__c = true ||
+ Available_SMB_Underwriting_Method_FICO__c = true)</errorConditionFormula>
+    <errorMessage>If &quot;Do Not Underwrite&quot; is checked, no Available Underwriting Methods can also be checked</errorMessage>
+</ValidationRule>

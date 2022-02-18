@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Last_Bill_Send_Date_New_Charges_Zuora__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Last Invoice Date where new charges were &gt; 0</inlineHelpText>
+    <label>Last Bill Send Date New Charges Zuora</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Date</type>
+</CustomField>

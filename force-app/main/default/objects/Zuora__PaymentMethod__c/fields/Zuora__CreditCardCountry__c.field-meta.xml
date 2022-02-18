@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__CreditCardCountry__c</fullName>
+    <deprecated>false</deprecated>
+    <description>The country in which the billing address is located. Country names must be spelled in full.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The country in which the billing address is located. Country names must be spelled in full.</inlineHelpText>
+    <label>Credit Card Country</label>
+    <length>40</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

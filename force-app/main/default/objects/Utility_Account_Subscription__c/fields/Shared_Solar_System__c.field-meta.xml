@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Shared_Solar_System__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>This is the SSS on the Opportunity when the UAS was created. The SSS on an existing UAS should never be changed.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This is the SSS on the Opportunity when the UAS was created. The SSS on an existing UAS should never be changed.</inlineHelpText>
+    <label>Shared Solar System</label>
+    <referenceTo>Shared_Solar_System__c</referenceTo>
+    <relationshipLabel>Utility Account Subscriptions</relationshipLabel>
+    <relationshipName>Utility_Account_Subscriptions</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

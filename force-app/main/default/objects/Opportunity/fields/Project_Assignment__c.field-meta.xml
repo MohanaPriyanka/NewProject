@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Project_Assignment__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Would you like the System/Waitlist to be assigned Automatically or Manually. If Automatic, the assignment only occurs when a new record is created. The Customer is assigned to the System with the most available capacity in their Service Territory.</inlineHelpText>
+    <label>System Assignment</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>Automatic - COD Date/Available Capacity</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Automatic - COD Date/Available Capacity</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Manual</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Manual</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Automatic - Assignment Order</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Automatic - Assignment Order</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

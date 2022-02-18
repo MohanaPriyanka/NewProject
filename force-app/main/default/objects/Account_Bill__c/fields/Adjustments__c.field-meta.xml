@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Adjustments__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Shows the total adjustments the customer receives, even if only some of the adjustment is applied this bill (for instance, if they get a credit for more than their current bill)</inlineHelpText>
+    <label>Adjustments</label>
+    <summarizedField>System_Bill__c.Adjustments__c</summarizedField>
+    <summaryForeignKey>System_Bill__c.Account_Bill__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

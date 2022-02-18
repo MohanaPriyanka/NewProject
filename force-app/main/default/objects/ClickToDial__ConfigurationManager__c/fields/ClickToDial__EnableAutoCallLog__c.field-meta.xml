@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ClickToDial__EnableAutoCallLog__c</fullName>
+    <defaultValue>&quot;No&quot;</defaultValue>
+    <deprecated>false</deprecated>
+    <description>&quot;Yes&quot; for auto call log and &quot;No&quot; for user confirmation.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>&quot;Yes&quot; for auto call log and &quot;No&quot; for user confirmation.</inlineHelpText>
+    <label>Enable Auto Call Log</label>
+    <length>3</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

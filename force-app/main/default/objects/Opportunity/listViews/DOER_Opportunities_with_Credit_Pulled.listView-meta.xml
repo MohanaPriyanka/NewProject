@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DOER_Opportunities_with_Credit_Pulled</fullName>
+    <columns>OPPORTUNITY.NAME</columns>
+    <columns>Application_Date__c</columns>
+    <columns>Lead_Status__c</columns>
+    <columns>OPPORTUNITY.CREATED_DATE</columns>
+    <columns>Email__c</columns>
+    <columns>Community_Solar_State__c</columns>
+    <columns>Personal_Credit_Report2__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        
+            <field>Product_Line__c</field>
+        
+            <operation>equals</operation>
+        
+            <value>Residential Loan</value>
+        
+        </filters>
+    <filters>
+        
+            <field>Personal_Credit_Report2__c</field>
+        
+            <operation>notEqual</operation>
+        
+        </filters>
+    <filters>
+        
+            <field>Lead_Status__c</field>
+        
+            <operation>notEqual</operation>
+        
+            <value>Qualified</value>
+        
+        </filters>
+    <filters>
+        
+            <field>OPPORTUNITY.NAME</field>
+        
+            <operation>notContain</operation>
+        
+            <value>test</value>
+        
+        </filters>
+    <filters>
+        
+            <field>DOER_Solar_Loan__c</field>
+        
+            <operation>equals</operation>
+        
+            <value>1</value>
+        
+        </filters>
+    <label>DOER Opportunities with Credit Pulled</label>
+</ListView>

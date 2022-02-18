@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__BankBranchCode__c</fullName>
+    <deprecated>false</deprecated>
+    <description>The branch code of the bank used for Direct Debit.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The branch code of the bank used for Direct Debit.</inlineHelpText>
+    <label>Bank Branch Code</label>
+    <length>5</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

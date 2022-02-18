@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Finaled_Case_Owner__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Case owner that the CSCancellationService should use when creating a case after a utility account is finaled (Customer_Care, Partner_Support, etc)</inlineHelpText>
+    <label>Finaled Case Owner</label>
+    <length>255</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

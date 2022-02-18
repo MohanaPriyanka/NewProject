@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Top_3_fin_selection__c</fullName>
+    <externalId>false</externalId>
+    <label>Top 3 fin selection</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        
+            <restricted>true</restricted>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>Interest rate</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Interest rate</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Availability of multiple loan types</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Availability of multiple loan types</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Application processing time</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Application processing time</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Online portal functionality</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Online portal functionality</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Partner support &amp; training</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Partner support &amp; training</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Requirements on homeowner FICO score / creditworthiness</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Requirements on homeowner FICO score / creditworthiness</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Monthly payment calculation for customers</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Monthly payment calculation for customers</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Other</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Other</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+    <visibleLines>8</visibleLines>
+</CustomField>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Method__c</fullName>
+    <description>Used to show the check number or CC information on the customer portal</description>
+    <externalId>false</externalId>
+    <formula>IF( ISPICKVAL(Zuora__Type__c, &quot;Electronic&quot;), 
+    Zuora__PaymentMethod__c, 
+    Zuora__PaymentMethod__c + &quot; &quot; +  Zuora__ReferenceId__c)</formula>
+    <inlineHelpText>Details about the payment (check number, CC, or ACH information)</inlineHelpText>
+    <label>Method</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

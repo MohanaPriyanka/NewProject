@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Utility_Account_Number_Regex_Groups__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Regex for breaking utility account numbers into capture groups for formatting. Ex: to format a utility account number as XX-XXXX-XXXX-XXXX-X use the regex (\d{0,2})(\d{0,4})(\d{0,4})(\d{0,4})(\d?). Delimiters are captured in the UAN Regex Delimiter field.</inlineHelpText>
+    <label>UAN Regex Groups</label>
+    <length>255</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

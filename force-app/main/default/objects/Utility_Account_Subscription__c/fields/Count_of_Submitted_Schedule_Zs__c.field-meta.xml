@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Count_of_Submitted_Schedule_Zs__c</fullName>
+    <externalId>false</externalId>
+    <label>Count of Submitted Allocation Schedules</label>
+    <summaryFilterItems>
+        
+            <field>Schedule_Z_Subscription__c.Submitted__c</field>
+        
+            <operation>equals</operation>
+        
+            <value>True</value>
+        
+        </summaryFilterItems>
+    <summaryForeignKey>Schedule_Z_Subscription__c.Utility_Account_Subscription__c</summaryForeignKey>
+    <summaryOperation>count</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

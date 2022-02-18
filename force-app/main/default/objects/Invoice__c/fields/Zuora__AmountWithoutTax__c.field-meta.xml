@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__AmountWithoutTax__c</fullName>
+    <deprecated>false</deprecated>
+    <description>The total of the invoice before any taxes are applied.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The total of the invoice before any taxes are applied.</inlineHelpText>
+    <label>Amount Without Tax</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

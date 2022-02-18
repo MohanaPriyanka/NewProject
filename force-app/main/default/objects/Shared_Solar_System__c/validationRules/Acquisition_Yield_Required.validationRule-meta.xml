@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>Acquisition_Yield_Required</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+ISCHANGED(Stage__c),
+ISPICKVAL(Stage__c,&quot;Acquisition&quot;),
+OR (
+Expected_Yield_kWh_kW__c = 0,
+ISBLANK(Expected_Yield_kWh_kW__c)
+)
+)</errorConditionFormula>
+    <errorMessage>Cannot change status to acquisition without populating the Expected Yield field</errorMessage>
+</ValidationRule>

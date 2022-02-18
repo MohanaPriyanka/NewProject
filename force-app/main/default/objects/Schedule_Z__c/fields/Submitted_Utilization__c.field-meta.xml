@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Submitted_Utilization__c</fullName>
+    <description>Roll up summary of the % field on Allocation Schedule Subscriptions.</description>
+    <externalId>false</externalId>
+    <label>Submitted Utilization</label>
+    <summarizedField>Schedule_Z_Subscription__c.Percent_Share__c</summarizedField>
+    <summaryForeignKey>Schedule_Z_Subscription__c.Schedule_Z__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

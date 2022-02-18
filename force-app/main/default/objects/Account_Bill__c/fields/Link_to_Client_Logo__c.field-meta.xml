@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Link_to_Client_Logo__c</fullName>
+    <externalId>false</externalId>
+    <formula>&quot;https://na54.salesforce.com&quot; + IF( ISPICKVAL(Parent_Account__r.Client_Brand_Key__c, &quot;BluewaveLogo&quot;), &quot;/resource/1470818337000/BlueWaveLogo&quot;, &quot;/resource/clientLogos/&quot; +  TEXT(Parent_Account__r.Client_Brand_Key__c) + &quot;.png&quot; )</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Link to Client Logo</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

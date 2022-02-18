@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label/>
+    <name>Product_Line__c</name>
+    <picklistValues>
+        
+            <masterLabel>Both</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Community Solar</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Large Offtake</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Other</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+    <picklistValues>
+        
+            <masterLabel>Solar Loan</masterLabel>
+        
+            <translation/>
+        
+        </picklistValues>
+</CustomFieldTranslation>

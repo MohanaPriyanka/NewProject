@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Num_Cancelled_OR_Enacted_Removed_UAS__c</fullName>
+    <externalId>false</externalId>
+    <label>Num Cancelled OR Enacted: Removed UAS</label>
+    <summaryFilterItems>
+        
+            <field>Utility_Account_Subscription__c.Next_Schedule_Z_Status__c</field>
+        
+            <operation>equals</operation>
+        
+            <value>Inactive Subscription</value>
+        
+        </summaryFilterItems>
+    <summaryForeignKey>Utility_Account_Subscription__c.Utility_Account_Log__c</summaryForeignKey>
+    <summaryOperation>count</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

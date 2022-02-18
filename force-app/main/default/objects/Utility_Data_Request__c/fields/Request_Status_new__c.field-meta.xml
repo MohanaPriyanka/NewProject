@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>Request_Status_new__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(OR(ISPICKVAL(Header_Status__c,&quot;Error&quot;),ISPICKVAL(Detail_Status__c, &quot;Error&quot;)),&quot;Error&quot;,
+    IF(AND(ISPICKVAL(Header_Status__c,&quot;Data Received&quot;),ISPICKVAL(Detail_Status__c, &quot;Data Received&quot;)),&quot;Data Received&quot;,
+        IF(AND(ISPICKVAL(Header_Status__c,&quot;Complete&quot;),ISPICKVAL(Detail_Status__c,&quot;Complete&quot;)),&quot;Complete&quot;,
+            IF(OR(ISPICKVAL(Header_Status__c,&quot;Data Received&quot;),ISPICKVAL(Header_Status__c,&quot;Complete&quot;),ISPICKVAL(Detail_Status__c,&quot;Data Received&quot;),ISPICKVAL(Detail_Status__c,&quot;Complete&quot;)),&quot;Partial Data Received&quot;,
+                IF(ISPICKVAL(Header_Status__c, &quot;Sent&quot;),&quot;Sent&quot;,
+                    IF(ISPICKVAL(Header_Status__c, &quot;Pending&quot;),&quot;Pending&quot;,&quot;Error&quot;)
+                )
+            )
+        )
+    )
+)</formula>
+    <inlineHelpText>Overall status of the request based on the header and detail status fields. Both header and detail statuses must be complete for the request status to change to complete.</inlineHelpText>
+    <label>Request Status</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

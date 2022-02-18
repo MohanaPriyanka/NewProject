@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Lock_Approved_SOs</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+
+/* Prevents changing the approval status once it&apos;s been set to approved, but still allowing it to be set to approved.*/
+
+OR(ISPICKVAL(Approval_Status__c,&apos;Approved&apos;), ISPICKVAL(Approval_Status__c,&apos;&apos;)),
+PRIORVALUE(Approval_Status__c)!=&apos;&apos;,
+
+OR(
+(ISCHANGED( Approved_Change_in_Subscription__c)),
+(ISCHANGED( Approved_Change_in_Percent_Share__c)),
+(ISCHANGED( Client_Account__c)),
+(ISCHANGED( Shared_Solar_System_Order__c )),
+(ISCHANGED( Product__c )),
+(ISCHANGED( Previous_Annual_Cost__c )),
+(ISCHANGED( New_Annual_Cost__c )),
+(ISCHANGED( Previous_Annual_kwh__c )),
+(ISCHANGED( New_Annual_kWh__c )),
+(ISCHANGED( Effective_Date__c )),
+(ISCHANGED( Expected_Yield_kWh_kW__c )),
+(ISCHANGED( Utility_Number_of_Decimal_Places__c )),
+(ISCHANGED( Previous_kw_DC_Subscription__c )),
+(ISCHANGED( Utility_NMC_Tariff__c )),
+(ISCHANGED( Change_in_Annual_Cost__c )),
+(ISCHANGED( Change_in_Annual_kWh__c )),
+(ISCHANGED( Size_Ratio__c )),
+(ISCHANGED( Total_System_Size_kW_DC__c )),
+(ISCHANGED( Previous_Percent_Share_of_System__c ))
+)
+)</errorConditionFormula>
+    <errorDisplayField>Approval_Status__c</errorDisplayField>
+    <errorMessage>Once a Subscription Order is Approved, it cannot be edited. To update a customers subscription, please log a new Subscription Order.</errorMessage>
+</ValidationRule>

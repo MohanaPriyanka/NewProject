@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>Glynt_Monthly_kWh_Usage__c</fullName>
+    <description>Monthly kWh Usage as indicated on bill processed by Glynt (e.g. Maine CMP)</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Monthly kWh Usage as indicated on bill processed by Glynt (e.g. Maine CMP)</inlineHelpText>
+    <label>Monthly kWh Usage</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

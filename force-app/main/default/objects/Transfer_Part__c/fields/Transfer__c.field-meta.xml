@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Transfer__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <description>A lookup relationship from Transfer Parts up to Transfer.</description>
+    <externalId>false</externalId>
+    <label>Transfer</label>
+    <referenceTo>Transfer__c</referenceTo>
+    <relationshipName>Transfer_Parts</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

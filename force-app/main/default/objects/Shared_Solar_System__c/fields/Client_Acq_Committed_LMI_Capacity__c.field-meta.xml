@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>Client_Acq_Committed_LMI_Capacity__c</fullName>
+    <description>Set by SystemCapacityRollupCalculator</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Sum of all Small CS Subscriptions where the Opportunity&apos;s Stage is Complete, Partner is a Client, and Customer Sub-Group is LMI</inlineHelpText>
+    <label>Client Acq Committed LMI Capacity</label>
+    <precision>12</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

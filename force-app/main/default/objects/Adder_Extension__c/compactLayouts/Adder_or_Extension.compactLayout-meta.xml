@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Adder_or_Extension</fullName>
+    <fields>RecordTypeId</fields>
+    <fields>Adder_Type__c</fields>
+    <fields>Incentive__c</fields>
+    <fields>Name</fields>
+    <fields>Block__c</fields>
+    <fields>Tranche__c</fields>
+    <fields>Extension_Type__c</fields>
+    <fields>Extension_Fee__c</fields>
+    <fields>Extension_Fee_Paid__c</fields>
+    <fields>Extension_Expires__c</fields>
+    <label>Adder or Extension</label>
+</CompactLayout>

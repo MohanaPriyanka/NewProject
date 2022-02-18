@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__IPAddress__c</fullName>
+    <deprecated>false</deprecated>
+    <description>This is the IP address of the user when the PaymentMethod was created or updated</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This is the IP address of the user when the PaymentMethod was created or updated</inlineHelpText>
+    <label>IP Address</label>
+    <length>15</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

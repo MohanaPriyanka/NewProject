@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Estimated_Install_Date__c</fullName>
+    <description>This is the date submitted by the CS customer on the webform, or if they are also an RL customer, from their RL records.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This is the date submitted by the CS customer on the webform, or if they are also an RL customer, from their RL records.</inlineHelpText>
+    <label>Estimated Install Date</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Date</type>
+</CustomField>

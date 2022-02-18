@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Override_Countersign_Template_Id__c</fullName>
+    <description>Field used to get the original contract sent to the customer.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Field used to get the original contract sent to the customer.</inlineHelpText>
+    <label>Override Countersign Template Id</label>
+    <length>250</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>Send_Via_Email</fullName>
+    <availability>online</availability>
+    <displayType>link</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Send Via Email</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/27.0/connection.js&quot;)} 
+
+var objCase = new sforce.SObject(&apos;APXT_BPM__Conductor__c&apos;); 
+
+if({!APXT_BPM__Conductor__c.Emails_Sent__c}){ 
+
+alert(&quot;Emails Already Sent&quot;); 
+
+} 
+else { 
+var yes = confirm(&quot;Are you sure you want to send emails? This will send to all Account Bills with &apos;Ready for Email Send&apos; checked. Use the &apos;View Emails that Will Be Sent&apos; button to QC. If you are sure you want to send, hit okay.&quot;) 
+
+if(!yes) { 
+document.location.reload(true); 
+} else { 
+objCase.Id = &apos;{!APXT_BPM__Conductor__c.Id}&apos;; 
+objCase.Emails_Sent__c = true; 
+var result = sforce.connection.update([objCase]); 
+alert(&apos;Email Bills are Being Sent&apos;); 
+document.location.reload(true); 
+} 
+}</url>
+</WebLink>

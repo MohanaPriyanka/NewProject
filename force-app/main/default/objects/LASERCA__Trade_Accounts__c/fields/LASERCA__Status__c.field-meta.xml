@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LASERCA__Status__c</fullName>
+    <deprecated>false</deprecated>
+    <externalId>false</externalId>
+    <formula>IF((LASERCA__Rating_Type__c == &quot;AsAgreed&quot; || LASERCA__Rating_Type__c == &quot;Closed&quot; || LASERCA__Rating_Type__c == &quot;Current&quot; || LASERCA__Rating_Type__c == &quot;Deleted&quot;|| LASERCA__Rating_Type__c == &quot;Inactive&quot;|| LASERCA__Rating_Type__c == &quot;NoStatus&quot;|| LASERCA__Rating_Type__c == &quot;Paid&quot;|| LASERCA__Rating_Type__c == &quot;TooNewRt&quot;|| LASERCA__Rating_Type__c == &quot;Transferred&quot;|| LASERCA__Rating_Type__c == &quot;VolSur&quot;|| LASERCA__Rating_Type__c == &quot;CRCDLST&quot;)|| LASERCA__Rating_Type__c == &quot;Late30Days&quot;|| LASERCA__Rating_Type__c == &quot;Late60Days&quot;|| LASERCA__Rating_Type__c == &quot;Late90Days&quot;, &quot;Satisfactory&quot;, &quot;&quot; )&amp;
+IF((LASERCA__Rating_Type__c == &quot;Bankruptcy&quot;|| LASERCA__Rating_Type__c == &quot;BankruptcyOrWageEarnerPlan&quot; || LASERCA__Rating_Type__c == &quot;Collection&quot; || LASERCA__Rating_Type__c == &quot;DEFRDPay&quot; ||LASERCA__Rating_Type__c == &quot;Delinq120+&quot; ||LASERCA__Rating_Type__c == &quot;Delinq30&quot;||LASERCA__Rating_Type__c == &quot;Delinq60&quot;||LASERCA__Rating_Type__c == &quot;Delinq90&quot;|| LASERCA__Rating_Type__c == &quot;LateOver120Days&quot;||LASERCA__Rating_Type__c == &quot;Foreclo&quot;||LASERCA__Rating_Type__c == &quot;Reposess&quot;||LASERCA__Rating_Type__c == &quot;Foreclosure&quot;|| LASERCA__Rating_Type__c == &quot;Repossession&quot; ||LASERCA__Rating_Type__c == &quot;GovClaim&quot;), &quot;Now Delinquent&quot;, &quot;&quot; )&amp; 
+IF((LASERCA__Rating_Type__c == &quot;CloseNPAA&quot; || LASERCA__Rating_Type__c == &quot;CoNowPay&quot; || LASERCA__Rating_Type__c == &quot;ChargeOff&quot; || LASERCA__Rating_Type__c == &quot;CurWas120+&quot; || LASERCA__Rating_Type__c == &quot;CurWas30&quot;  || LASERCA__Rating_Type__c == &quot;CurWas60&quot; || LASERCA__Rating_Type__c == &quot;CurWas90&quot; || LASERCA__Rating_Type__c == &quot;CurWasBK&quot; || LASERCA__Rating_Type__c == &quot;CurWasColl&quot; || LASERCA__Rating_Type__c== &quot;CurWasRepo&quot; ||LASERCA__Rating_Type__c== &quot;PaidRepo&quot; || LASERCA__Rating_Type__c == &quot;PaidFore&quot;|| LASERCA__Rating_Type__c == &quot;PaidCol&quot;|| LASERCA__Rating_Type__c == &quot;PayPlan&quot;|| LASERCA__Rating_Type__c == &quot;Scnl&quot;|| LASERCA__Rating_Type__c == &quot;Settled&quot;|| LASERCA__Rating_Type__c == &quot;PdWas120&quot;|| LASERCA__Rating_Type__c == &quot;PdWas90&quot;|| LASERCA__Rating_Type__c == &quot;PdWas60&quot; || LASERCA__Rating_Type__c == &quot;PdWas30&quot;), &quot;Was Delinquent&quot;, &quot;&quot; )&amp; 
+IF((LASERCA__Rating_Type__c == &quot;NoDataAvailable&quot; || LASERCA__Rating_Type__c == &quot; &quot;), &quot;NoDataAvailable&quot;, &quot;&quot;)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Status</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

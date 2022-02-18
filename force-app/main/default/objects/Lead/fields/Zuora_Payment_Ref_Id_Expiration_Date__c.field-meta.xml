@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora_Payment_Ref_Id_Expiration_Date__c</fullName>
+    <description>Date/Time of Zuora Ref Id expiration. If time has past, the Id is invalid</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The date that the customer&apos;s payment information expires in Zuora&apos;s system, if it has not be moved onto a Zuora account</inlineHelpText>
+    <label>Zuora Payment Ref Id Expiration Date</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>DateTime</type>
+</CustomField>

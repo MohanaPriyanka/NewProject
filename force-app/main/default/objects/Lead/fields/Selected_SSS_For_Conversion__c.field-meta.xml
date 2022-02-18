@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Selected_SSS_For_Conversion__c</fullName>
+    <description>SSS that have been selected by the user to be considered for Subscriptions during Conversion</description>
+    <externalId>false</externalId>
+    <label>Selected SSS For Conversion</label>
+    <length>255</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Fee_Type_Must_Be_Set</fullName>
+    <active>true</active>
+    <errorConditionFormula>NOT(
+OR(
+Acquisition_Type_Acquisition__c,
+Acquisition_Type_Reacquisition__c,
+Management_Fee__c,
+Deposit_Fee__c 
+)
+)</errorConditionFormula>
+    <errorMessage>You must set the fee type to be either Acquisition, Reacquisition, Management, or Deposit</errorMessage>
+</ValidationRule>

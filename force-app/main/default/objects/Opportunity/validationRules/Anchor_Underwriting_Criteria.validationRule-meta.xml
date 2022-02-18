@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Anchor_Underwriting_Criteria</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISPICKVAL(Underwriting_Criteria__c,&quot;Investment-Grade&quot;),
+    NOT(ISPICKVAL(Customer_Group__c,&quot;Anchor&quot;))
+)</errorConditionFormula>
+    <errorMessage>Only Anchors can be marked with underwriting criteria = Investment Grade or Financial Review</errorMessage>
+</ValidationRule>

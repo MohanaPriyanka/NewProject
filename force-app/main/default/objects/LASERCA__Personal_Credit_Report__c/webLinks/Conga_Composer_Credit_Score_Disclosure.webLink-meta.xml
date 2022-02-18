@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Conga_Composer_Credit_Score_Disclosure</fullName>
+    <availability>online</availability>
+    <description>Originally created by Conga Solution Manager. Date of last use of Update Button from Conga Solution record: https://apxtconga4.na16.visual.force.com/a2Dj0000000aXTMEA2
+13-Feb-2017 03:01:13 PM</description>
+    <displayType>button</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <hasMenubar>false</hasMenubar>
+    <hasScrollbars>false</hasScrollbars>
+    <hasToolbar>false</hasToolbar>
+    <height>660</height>
+    <isResizable>false</isResizable>
+    <linkType>url</linkType>
+    <masterLabel>Credit Score Disclosure</masterLabel>
+    <openType>newWindow</openType>
+    <position>none</position>
+    <protected>false</protected>
+    <showsLocation>false</showsLocation>
+    <showsStatus>false</showsStatus>
+    <url>/apex/APXTConga4__Conga_Composer?serverUrl={!API.Partner_Server_URL_370}&amp;id={!LASERCA__Personal_Credit_Report__c.Id}
+
+&amp;QueryId=[CreditScoreDisclosur]a27j0000001Dp3r
+
+&amp;TemplateId=a2Fj0000001Jo7z</url>
+    <width>900</width>
+</WebLink>

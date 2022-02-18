@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Number_of_Removed_UASes__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Count of UASes that have a Allocation Schedule Subscription and a Date Removed From Project, used by the cancellation process to update the Property Account when all projects have been removed.</inlineHelpText>
+    <label>Number of Removed UASes</label>
+    <summaryFilterItems>
+        
+            <field>Utility_Account_Subscription__c.Total_Count_of_Schedule_Zs__c</field>
+        
+            <operation>greaterThan</operation>
+        
+            <value>0</value>
+        
+        </summaryFilterItems>
+    <summaryFilterItems>
+        
+            <field>Utility_Account_Subscription__c.Date_Removed_from_Project__c</field>
+        
+            <operation>notEqual</operation>
+        
+            <value/>
+        
+        </summaryFilterItems>
+    <summaryForeignKey>Utility_Account_Subscription__c.Utility_Account_Log__c</summaryForeignKey>
+    <summaryOperation>count</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

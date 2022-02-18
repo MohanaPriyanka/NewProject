@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Credits_Allocated_Adjustments__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Rollup of Credits Allocated from Adjustments</inlineHelpText>
+    <label>Credits Allocated Adjustments</label>
+    <summarizedField>Bill_Adjustment__c.Credits_Allocated__c</summarizedField>
+    <summaryForeignKey>Bill_Adjustment__c.Account__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <type>Summary</type>
+</CustomField>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Published_Bill_Payment_Plan</fullName>
+    <active>true</active>
+    <description>Cannot update Payment Plan Balance on an already published bill.</description>
+    <errorConditionFormula>AND(
+ISCHANGED(Payment_Plan_Balance__c),
+Account_Bill__r.Published__c)</errorConditionFormula>
+    <errorMessage>Cannot update Payment Plan Balance on an already published bill.</errorMessage>
+</ValidationRule>

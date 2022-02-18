@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Maxed_Out_Opportunities__c</fullName>
+    <description>If any Opportunity linked to this account has the checkbox &quot;Undersubscribed but at max capacity&quot; checked, fills in here</description>
+    <externalId>false</externalId>
+    <label>Maxed Out Opportunities</label>
+    <summaryFilterItems>
+        
+            <field>Opportunity.Undersubscribed_but_at_max_capacity__c</field>
+        
+            <operation>equals</operation>
+        
+            <value>True</value>
+        
+        </summaryFilterItems>
+    <summaryForeignKey>Opportunity.AccountId</summaryForeignKey>
+    <summaryOperation>count</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <type>Summary</type>
+</CustomField>

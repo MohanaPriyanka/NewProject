@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__PaypalPreapprovalKey__c</fullName>
+    <deprecated>false</deprecated>
+    <description>This is a key that is obtained from PayPal&apos;s Adaptive Payments API.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This is a key that is obtained from PayPal&apos;s Adaptive Payments API.</inlineHelpText>
+    <label>Paypal Pre-approval Key</label>
+    <length>32</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

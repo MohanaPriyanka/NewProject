@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__AchAccountType__c</fullName>
+    <deprecated>false</deprecated>
+    <description>Type of bank account, this ACH payment is coming from.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Type of bank account, this ACH payment is coming from.</inlineHelpText>
+    <label>Ach Account Type</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        
+            <valueSetDefinition>
+            
+                <sorted>false</sorted>
+            
+                <value>
+                
+                    <fullName>BusinessChecking</fullName>
+                
+                    <default>false</default>
+                
+                    <label>BusinessChecking</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Checking</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Checking</label>
+                
+                </value>
+            
+                <value>
+                
+                    <fullName>Saving</fullName>
+                
+                    <default>false</default>
+                
+                    <label>Saving</label>
+                
+                </value>
+            
+            </valueSetDefinition>
+        
+        </valueSet>
+</CustomField>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Allocation_Schedule__c</fullName>
+    <description>A master-detail relationship up to allocation schedule</description>
+    <externalId>false</externalId>
+    <label>Allocation Schedule</label>
+    <referenceTo>Schedule_Z__c</referenceTo>
+    <relationshipLabel>Client Allocation Schedule Subscriptions</relationshipLabel>
+    <relationshipName>Client_Allocation_Schedule_Subscriptions</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>true</writeRequiresMasterRead>
+</CustomField>

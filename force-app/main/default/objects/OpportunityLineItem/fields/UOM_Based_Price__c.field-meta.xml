@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>UOM_Based_Price__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Price based on Product&apos;s default unit of measure e.g. per W (acquisition service) or per MW (management services)</inlineHelpText>
+    <label>UOM Based Price</label>
+    <precision>14</precision>
+    <required>false</required>
+    <scale>4</scale>
+    <type>Currency</type>
+</CustomField>

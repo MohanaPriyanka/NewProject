@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__SubscriptionStartDate__c</fullName>
+    <deprecated>false</deprecated>
+    <description>The date when the subscription term starts. This is equal to the term start date if the subscription is on its initial term. Otherwise, it is the original term start date if the subscription has renewed.</description>
+    <externalId>false</externalId>
+    <label>Subscription Start Date</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

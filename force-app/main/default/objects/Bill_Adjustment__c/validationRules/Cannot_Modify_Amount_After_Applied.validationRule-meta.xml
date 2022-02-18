@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cannot_Modify_Amount_After_Applied</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(NOT(ISBLANK(UASB__c)), 
+ISCHANGED(Adjustment_Amount__c), 
+UASB__r.Adjustment_Amount__c != Adjustment_Amount__c)</errorConditionFormula>
+    <errorMessage>Cannot modify adjustment amount without first changing the UASB Adjustment Amount</errorMessage>
+</ValidationRule>

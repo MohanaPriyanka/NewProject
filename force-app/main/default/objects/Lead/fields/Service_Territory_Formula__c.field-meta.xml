@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Service_Territory_Formula__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(INCLUDES(  Load_Zone__c , &quot;NEMA&quot;), &quot;NEMA&quot;,  
+IF(INCLUDES(  Load_Zone__c , &quot;SEMA&quot;), &quot;SEMA&quot;, 
+IF(INCLUDES(  Load_Zone__c , &quot;WCMA&quot;), &quot;WCMA&quot;, 
+IF(INCLUDES(  Load_Zone__c , &quot;NEMA/WCMA&quot;), &quot;NEMA/WCMA&quot;, 
+IF(INCLUDES(  Load_Zone__c , &quot;SEMA/WCMA&quot;), &quot;SEMA/WCMA&quot;, 
+IF(INCLUDES(  Load_Zone__c , &quot;NEMA/SEMA&quot;), &quot;NEMA/SEMA&quot;, 
+IF(INCLUDES(  Load_Zone__c , &quot;WCMA/NEMA&quot;), &quot;WCMA/NEMA&quot;, 
+IF(INCLUDES(  Load_Zone__c , &quot;WCMA/SEMA&quot;), &quot;WCMA/SEMA&quot;, 
+IF(INCLUDES(  Load_Zone__c , &quot;SEMA/NEMA&quot;), &quot;SEMA/NEMA&quot;, &quot;Other&quot;)))))))))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Service Territory</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

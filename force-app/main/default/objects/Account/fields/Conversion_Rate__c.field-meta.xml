@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Conversion_Rate__c</fullName>
+    <defaultValue>0</defaultValue>
+    <description>For the Partner QC Scorecard. 60-80%= 1   &gt;80% =2.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>For the Partner QC Scorecard. 60-80%= 1   &gt;80% =2.</inlineHelpText>
+    <label>Conversion Rate</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

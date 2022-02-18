@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Published_Bill_Previous_Overdue</fullName>
+    <active>true</active>
+    <description>Cannot update Previous Overdue Balance on an already published bill.</description>
+    <errorConditionFormula>AND(
+ISCHANGED(Previous_Month_Overdue_Balance__c), 
+Account_Bill__r.Published__c)</errorConditionFormula>
+    <errorMessage>Cannot update Previous Month Overdue Balance on an already published bill.</errorMessage>
+</ValidationRule>

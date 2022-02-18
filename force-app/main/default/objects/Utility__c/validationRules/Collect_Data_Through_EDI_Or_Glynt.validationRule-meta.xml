@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Collect_Data_Through_EDI_Or_Glynt</fullName>
+    <active>true</active>
+    <description>Can&apos;t have EDI and Glynt enabled at the same time</description>
+    <errorConditionFormula>AND(ISPICKVAL( Utility_Data_Collection_Mechanism__c , &quot;EDI&quot;),
+    Use_Glynt__c)</errorConditionFormula>
+    <errorMessage>Collecting data through both EDI and Glynt is not supported - choose one or the other</errorMessage>
+</ValidationRule>

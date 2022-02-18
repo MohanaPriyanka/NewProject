@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Adjustment_Type_Is_Required</fullName>
+    <active>false</active>
+    <errorConditionFormula>AND(
+ISPICKVAL(Adjustment_Type__c,&quot;&quot;),
+ISPICKVAL(Approval_Status__c ,&quot;Approved&quot;)
+)</errorConditionFormula>
+    <errorMessage>Adjustment Type is Required</errorMessage>
+</ValidationRule>

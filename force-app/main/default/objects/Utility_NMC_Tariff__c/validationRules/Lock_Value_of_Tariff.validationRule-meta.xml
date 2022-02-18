@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Lock_Value_of_Tariff</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+OR(
+$CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true,
+$CustomMetadata.Custom_Feature_Enablement__mdt.Sizing_Method.Feature_is_Enabled__c=true),
+OR(
+AND(
+ISCHANGED(Value_of_NMC__c),
+PRIORVALUE(Value_of_NMC__c)!=0
+),
+AND(
+ISCHANGED(Size_Ratio__c),
+PRIORVALUE(Size_Ratio__c)!=1
+)
+)
+)</errorConditionFormula>
+    <errorMessage>The Value of NMC or Size Ratio cannot be changed after it&apos;s been created. If you need to change the values, please create a new record, and relate it to the appropriate shared solar systems. This is to ensure that we track all subscription changes.</errorMessage>
+</ValidationRule>

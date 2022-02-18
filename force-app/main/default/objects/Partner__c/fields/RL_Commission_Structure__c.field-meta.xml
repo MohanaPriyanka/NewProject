@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RL_Commission_Structure__c</fullName>
+    <description>$/kW for RL commission structure</description>
+    <externalId>false</externalId>
+    <inlineHelpText>$/kW for RL commission structure</inlineHelpText>
+    <label>RL Commission Structure ($/kW DC)</label>
+    <precision>16</precision>
+    <required>false</required>
+    <scale>4</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

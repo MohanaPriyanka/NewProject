@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Total_Acq_Qty_kW__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Rollup of Opportunity Product quantities where Product Family = Acquisition</inlineHelpText>
+    <label>Total Acq Qty (kW)</label>
+    <summarizedField>OpportunityLineItem.Quantity</summarizedField>
+    <summaryFilterItems>
+        
+            <field>OpportunityLineItem.Product_Family__c</field>
+        
+            <operation>equals</operation>
+        
+            <value>Acquisition</value>
+        
+        </summaryFilterItems>
+    <summaryForeignKey>OpportunityLineItem.OpportunityId</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

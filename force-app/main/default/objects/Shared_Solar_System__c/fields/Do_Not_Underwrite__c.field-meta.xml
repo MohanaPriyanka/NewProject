@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>Do_Not_Underwrite__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Default unchecked; checked if the SSS does not require underwriting for applicants (e.g. UCB product)</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Default unchecked; checked if the SSS does not require underwriting for applicants (e.g. UCB product)</inlineHelpText>
+    <label>Do Not Underwrite</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

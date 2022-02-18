@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Utility_Account_Log_Name__c</fullName>
+    <description>Used in the UAS display flow on cases</description>
+    <externalId>false</externalId>
+    <formula>Utility_Account_Log__r.Name</formula>
+    <label>Utility Account Number</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

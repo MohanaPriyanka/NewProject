@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+    <fullName>Estimated_First_BW_Bill_Override__c</fullName>
+    <description>If filled in, the date will override the formula in the Estimated First BW Bill Date field on the shared solar system.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>If filled in, the date will override the formula in the Estimated First BW Bill Date field on the shared solar system.</inlineHelpText>
+    <label>Estimated First BW Bill Override</label>
+    <required>false</required>
+    <trackFeedHistory>true</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

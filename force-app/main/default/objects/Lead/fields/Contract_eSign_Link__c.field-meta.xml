@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Contract_eSign_Link__c</fullName>
+    <description>Link that points to the loc=agree page for SSF, if Contract Re-Signs are ever necessary for a customer.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Link that points to the loc=agree page for SSF, if Contract Re-Signs are ever necessary for a customer.</inlineHelpText>
+    <label>Contract eSign Link</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Url</type>
+</CustomField>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CS_Auto_Lead_Conversion_Batch_Size__c</fullName>
+    <description>See CSLeadsConverter, CSLeadConversionValidator</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Batch size for queueables in the &quot;Auto Lead Qualification &amp; Conversion&quot; process for Community Solar leads. Toggle this if limits are reached for existing batches. For reference, Lead conversion triggers UAS creation and a slew of other code, which if unoptimized, can result in batch failures if the batch size is too large.</inlineHelpText>
+    <label>CS Auto Lead Conversion Batch Size</label>
+    <precision>3</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

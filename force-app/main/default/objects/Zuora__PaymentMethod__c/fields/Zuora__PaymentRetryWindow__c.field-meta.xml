@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zuora__PaymentRetryWindow__c</fullName>
+    <deprecated>false</deprecated>
+    <description>Use the retry interval setting to prevent a payment attempt if the last failed payment was within the last number of hours.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Use the retry interval setting to prevent a payment attempt if the last failed payment was within the last number of hours.</inlineHelpText>
+    <label>Payment Retry Window</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

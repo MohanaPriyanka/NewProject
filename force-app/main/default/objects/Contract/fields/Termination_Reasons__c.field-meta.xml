@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Termination_Reasons__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Reasons and Circumstances in which BW or the Client could terminate this agreement</inlineHelpText>
+    <label>Termination Reasons</label>
+    <length>60000</length>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Html</type>
+    <visibleLines>10</visibleLines>
+</CustomField>

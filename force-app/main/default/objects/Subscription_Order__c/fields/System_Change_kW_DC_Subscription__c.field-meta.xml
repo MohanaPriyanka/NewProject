@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>System_Change_kW_DC_Subscription__c</fullName>
+    <description>March 2021: Lucy and Peter suggest something like this:
+CASE(Product__r.Customer_Subscription_Type__c,
+     &apos;kWh&apos;, 
+     (New_Annual_kWh__c*BLANKVALUE(Size_Ratio__c,1))/ Expected_Yield_kWh_kW__c,
+     &apos;Annual Cost ($)&apos;, 
+     New_Annual_Cost__c / BLANKVALUE(Value_of_NMC__c,1)/Expected_Yield_kWh_kW__c,
+     &apos;&apos;
+     )
+There are historical records that would change (maybe for the better) because of a null Size Ratio that we should consider when making this change</description>
+    <externalId>false</externalId>
+    <formula>IF(
+
+TEXT( Product__r.Customer_Subscription_Type__c )=&apos;kWh&apos;,
+
+IF(
+AND(
+$CustomMetadata.Custom_Feature_Enablement__mdt.Sizing_Method.Feature_is_Enabled__c = true,
+NOT(ISBLANK(Utility_Account_Subscription__r.Sizing_Method__c))
+),
+(New_Annual_kWh__c*Size_Ratio__c)/ Expected_Yield_kWh_kW__c,
+New_Annual_kWh__c / Expected_Yield_kWh_kW__c
+) ,
+
+IF( Utility_Account_Subscription__r.UAS_Number__c &gt; 1 ,
+
+New_Annual_Cost__c / Value_of_NMC__c / Expected_Yield_kWh_kW__c,
+
+IF(
+
+OR( Utility_Account_Subscription__r.Auto_Unround__c = TRUE , Utility_Account_Subscription__r.UAS_Number__c = 1),
+New_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c,
+
+
+IF(
+
+OR(Utility_Account_Subscription__r.UAS_Number__c=1, Utility_Account_Subscription__r.Shared_Solar_System__r.Name = &apos;Fairhaven Mill Rd&apos;,
+
+Utility_Account_Subscription__r.Shared_Solar_System__r.Name= &apos;Oxford Clara Barton&apos;),
+
+Round(( New_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4, 0)/4,0))))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>New kW DC Subscription</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>4</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

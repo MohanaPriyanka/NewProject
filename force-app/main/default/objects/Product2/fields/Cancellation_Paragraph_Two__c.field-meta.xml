@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cancellation_Paragraph_Two__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>CSCancellationService pulls into the cancellation confirmation email when the customer cancels. Intended to contain timing information. Follows paragraph one, which confirms the written cancellation request. This text should be surrounded by &lt;br&gt;.</inlineHelpText>
+    <label>Cancellation Paragraph Two</label>
+    <length>32768</length>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>LongTextArea</type>
+    <visibleLines>5</visibleLines>
+</CustomField>

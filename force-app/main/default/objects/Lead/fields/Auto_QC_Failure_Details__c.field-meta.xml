@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Auto_QC_Failure_Details__c</fullName>
+    <description>Failures encountered during Auto Lead Qualification &amp; Conversion when more than one is encountered. See CSLeadsConverter / CSLeadConversionValidator.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Failures encountered during Auto Lead Qualification &amp; Conversion when more than one is encountered</inlineHelpText>
+    <label>Auto QC Failure Details</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>TextArea</type>
+</CustomField>

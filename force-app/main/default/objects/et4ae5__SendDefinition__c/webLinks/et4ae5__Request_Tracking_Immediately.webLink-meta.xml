@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>et4ae5__Request_Tracking_Immediately</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Request Tracking Immediately</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/19.0/connection.js&quot;)} {!REQUIRESCRIPT(&quot;/soap/ajax/15.0/apex.js&quot;)} var responder = sforce.apex.execute(&quot;et4ae5/trackingWebServices&quot;,&quot;requestImmediateTracking&quot;
+	    ,{sendDefId:&quot;{!CASESAFEID( et4ae5__SendDefinition__c.Id )}&quot;});  alert(responder);</url>
+</WebLink>

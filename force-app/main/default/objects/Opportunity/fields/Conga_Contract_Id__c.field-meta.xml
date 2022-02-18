@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Conga_Contract_Id__c</fullName>
+    <description>Pulls in the Conga template IDs used to generate the countersigned version of SSF contracts. Needed because lookupfields can&apos;t be referenced in buttons.</description>
+    <externalId>false</externalId>
+    <formula>Product__r.Opp_Conga_Template_Id_s__c</formula>
+    <inlineHelpText>Pulls in the Conga template IDs used to generate the countersigned version of SSF contracts. Needed because lookupfields can&apos;t be referenced in buttons.</inlineHelpText>
+    <label>Conga Contract Id</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

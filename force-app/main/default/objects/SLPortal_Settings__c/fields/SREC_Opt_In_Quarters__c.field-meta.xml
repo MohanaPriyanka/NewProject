@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SREC_Opt_In_Quarters__c</fullName>
+    <description>Shows the SREC Opt-In Quarters available for the SLPortal. Separate values by a comma.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Shows the SREC Opt-In Quarters available for the SLPortal. Separate values by a comma.</inlineHelpText>
+    <label>SREC Opt-In Quarters</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>TextArea</type>
+</CustomField>

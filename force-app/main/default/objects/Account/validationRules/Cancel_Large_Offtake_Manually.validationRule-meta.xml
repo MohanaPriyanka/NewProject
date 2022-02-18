@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cancel_Large_Offtake_Manually</fullName>
+    <active>true</active>
+    <description>We don&apos;t want to accidentally cancel Anchor or Public Offtake accounts</description>
+    <errorConditionFormula>AND( Count_of_Large_Offtake_Opps__c &gt; 0,
+     ISBLANK(PRIORVALUE(Cancellation_Request_Date__c)),
+     NOT(ISBLANK(Cancellation_Request_Date__c)))</errorConditionFormula>
+    <errorDisplayField>Cancellation_Request_Date__c</errorDisplayField>
+    <errorMessage>This account has Anchor opportunities (that aren&apos;t already cancelled). Please cancel them manually by updating Utility Account Subscriptions.</errorMessage>
+</ValidationRule>

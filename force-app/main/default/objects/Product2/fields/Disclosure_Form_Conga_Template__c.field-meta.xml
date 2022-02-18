@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Disclosure_Form_Conga_Template__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>This is the ID of the Conga template used in SSF for the disclosure form for Contracts generated off of the Contract object.</inlineHelpText>
+    <label>Disclosure Form Conga Template</label>
+    <length>180</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

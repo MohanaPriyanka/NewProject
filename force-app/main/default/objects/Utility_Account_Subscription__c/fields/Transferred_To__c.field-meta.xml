@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Transferred_To__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>This is the lookup to the transfer object which relates to both this UAS and the UAS that is replacing it.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This should be populated when a UAS is transferred to a new one via Subscription Transfer.  You should typically make a new transfer for each UAS that is being transferred unless they are being combined.</inlineHelpText>
+    <label>Transferred To</label>
+    <referenceTo>Subscription_Transfer__c</referenceTo>
+    <relationshipLabel>Transferred From UASs</relationshipLabel>
+    <relationshipName>Utility_Account_Subscriptions</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

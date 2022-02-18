@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Project_Value__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Numerical value of a project - Please enter $0 if there&apos;s no value attached to the project yet.</inlineHelpText>
+    <label>Contract/Project Value</label>
+    <precision>14</precision>
+    <required>false</required>
+    <scale>4</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Currency</type>
+</CustomField>

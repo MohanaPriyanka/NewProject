@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Concatenated_Install_Address__c</fullName>
+    <description>Used in RL docusign packages</description>
+    <externalId>false</externalId>
+    <formula>BLANKVALUE(Community_Solar_Street_Address__c, Street_Address__c) + &quot;, &quot; + BLANKVALUE(Community_Solar_City__c, City__c) + &quot;, &quot; + BLANKVALUE(Community_Solar_State__c, BLANKVALUE(State_of_Issuance__c,State__c)) + &quot; &quot; + BLANKVALUE(Parcel_ZIp__c,Zip_Code__c)</formula>
+    <inlineHelpText>Used in RL docusign packages</inlineHelpText>
+    <label>Concatenated Install Address</label>
+    <required>false</required>
+    <securityClassification>Restricted</securityClassification>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Community_Solar_New</fullName>
+    <columns>OPPORTUNITY.CREATED_DATE</columns>
+    <columns>OPPORTUNITY.NAME</columns>
+    <columns>Shared_Solar_System__c</columns>
+    <columns>CS_Capacity_Allocated__c</columns>
+    <columns>OPPORTUNITY.STAGE_NAME</columns>
+    <columns>Partner_tag2__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        
+            <field>Product_Line__c</field>
+        
+            <operation>equals</operation>
+        
+            <value>Community Solar</value>
+        
+        </filters>
+    <filters>
+        
+            <field>OPPORTUNITY.STAGE_NAME</field>
+        
+            <operation>equals</operation>
+        
+            <value>New</value>
+        
+        </filters>
+    <filters>
+        
+            <field>OPPORTUNITY.NAME</field>
+        
+            <operation>notContain</operation>
+        
+            <value>test</value>
+        
+        </filters>
+    <label>Community Solar - New</label>
+    <sharedTo>
+        
+            <group>BFG</group>
+        
+        </sharedTo>
+</ListView>

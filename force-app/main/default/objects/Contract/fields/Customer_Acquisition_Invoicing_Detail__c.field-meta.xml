@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Customer_Acquisition_Invoicing_Detail__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Terms at which customer acquisition fee is paid</inlineHelpText>
+    <label>XXCustomer Acquisition Invoicing Detail</label>
+    <length>10000</length>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Html</type>
+    <visibleLines>10</visibleLines>
+</CustomField>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Unfinished_Lead__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>This designates whether or not the full application has been completed by the applicant. If an application is still in process, this checkbox will stay unfinished (true).</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This designates whether or not the full application has been completed by the applicant. If an application is still in process, this checkbox will stay unfinished (true).</inlineHelpText>
+    <label>Unfinished Lead</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

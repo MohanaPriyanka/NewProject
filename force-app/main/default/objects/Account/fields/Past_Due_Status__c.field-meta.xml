@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Past_Due_Status__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF( OR(Total_Outstanding_Balance_Merge__c =0,Recurring_Billing__c = TRUE), &quot;Current and Autopay&quot;, 
+IF(Days_Past_Due__c =0, &quot;Current and Autopay&quot;, 
+IF(Days_Past_Due__c &lt;= 30 , &quot;1-30 Days Late&quot;, 
+IF(Days_Past_Due__c &lt;= 60, &quot;31-60 Days Late&quot;, 
+IF(Days_Past_Due__c &lt;= 90, &quot;61-90 Days Late&quot;, 
+&quot;90+ Days Late&quot;)))))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>If there no balance OR the customer is on autopay, shows &quot;Current and Autopay&quot;. It should be &quot;Current OR Autopay&quot;.</inlineHelpText>
+    <label>Account Past Due Status</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

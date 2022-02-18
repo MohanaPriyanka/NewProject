@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Is_there_a_Partner_Record__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>This is a QC checkbox for confirming that the Customer has an installer we are ready to work with.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This is a QC checkbox for confirming that the Customer has an installer we are ready to work with.</inlineHelpText>
+    <label>Installer in PIN?</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,3 +1,0 @@
-<aura:component implements="forceCommunity:availableForAllPageTypes" controller="Logger">
-    <aura:handler event="c:ApexCallbackError" action="{!c.log}"/>
-</aura:component>

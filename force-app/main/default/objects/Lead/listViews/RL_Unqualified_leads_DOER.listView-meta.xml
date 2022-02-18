@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RL_Unqualified_leads_DOER</fullName>
+    <columns>FULL_NAME</columns>
+    <columns>LEAD.COMPANY</columns>
+    <columns>LEAD.STATE_CODE</columns>
+    <columns>LEAD.EMAIL</columns>
+    <columns>LEAD.STATUS</columns>
+    <columns>LEAD.CREATED_DATE</columns>
+    <columns>Comments__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        
+            <field>LEAD.STATUS</field>
+        
+            <operation>equals</operation>
+        
+            <value>Unqualified,Denied pending Avidia Review,Declined</value>
+        
+        </filters>
+    <filters>
+        
+            <field>DOER_Solar_Loan__c</field>
+        
+            <operation>equals</operation>
+        
+            <value>1</value>
+        
+        </filters>
+    <label>RL - Unqualified leads DOER</label>
+    <sharedTo>
+        
+            <group>BFG</group>
+        
+            <group>BWC</group>
+        
+        </sharedTo>
+</ListView>
