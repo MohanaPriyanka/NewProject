@@ -67,6 +67,7 @@ public inherited sharing class JournalEntrySelector {
             FROM Journal_Entry__c
             WHERE CreatedDate = TODAY
             AND (Object_Type__c = 'InvoiceItem' OR Object_Type__c = 'PaymentPart')
+            AND Amount__c != 0
             ORDER BY Date__c ASC
         ];
     }
