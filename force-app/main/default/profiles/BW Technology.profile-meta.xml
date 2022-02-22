@@ -137694,14 +137694,6 @@
     
     <userPermissions>
         
-        <enabled>false</enabled>
-        
-        <name>CaseWrapUpUser</name>
-        
-    </userPermissions>
-    
-    <userPermissions>
-        
         <enabled>true</enabled>
         
         <name>ChangeDashboardColors</name>
