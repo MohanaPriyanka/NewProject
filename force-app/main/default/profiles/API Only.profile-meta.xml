@@ -108044,6 +108044,14 @@
         
         <enabled>false</enabled>
         
+        <name>CaseWrapUpUser</name>
+        
+    </userPermissions>
+    
+    <userPermissions>
+        
+        <enabled>false</enabled>
+        
         <name>ChangeDashboardColors</name>
         
     </userPermissions>
