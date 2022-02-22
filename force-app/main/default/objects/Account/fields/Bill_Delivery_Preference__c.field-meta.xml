@@ -8,44 +8,24 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Email and Paper</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Email and Paper</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Email only</fullName>
-                
-                    <default>true</default>
-                
-                    <label>Email only</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Paper only</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Paper only</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Email and Paper</fullName>
+                <default>false</default>
+                <label>Email and Paper</label>
+            </value>
+            <value>
+                <fullName>Email only</fullName>
+                <default>true</default>
+                <label>Email only</label>
+            </value>
+            <value>
+                <fullName>Paper only</fullName>
+                <default>false</default>
+                <label>Paper only</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

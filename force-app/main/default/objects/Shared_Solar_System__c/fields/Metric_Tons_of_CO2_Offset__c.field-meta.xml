@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Metric_Tons_of_CO2_Offset__c</fullName>
     <externalId>false</externalId>
     <formula>(Total_System_Size_kWh_DC__c  * Expected_Yield_kWh_kW__c)*7.07*0.0001</formula>

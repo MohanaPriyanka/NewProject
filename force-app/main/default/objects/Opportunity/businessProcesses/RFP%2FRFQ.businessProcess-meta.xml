@@ -3,52 +3,31 @@
     <fullName>RFP%2FRFQ</fullName>
     <isActive>true</isActive>
     <values>
-        
-            <fullName>BWC No Bid</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>BWC No Bid</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Expecting Release</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Expecting Release</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>In Process</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>In Process</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Lost</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Lost</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>On Hold</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>On Hold</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Submitted</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Submitted</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Won</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Won</fullName>
+        <default>false</default>
+    </values>
 </BusinessProcess>

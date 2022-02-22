@@ -8,63 +8,34 @@
     <trackTrending>false</trackTrending>
     <type>MultiselectPicklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>I met the BlueWave team at a trade show or community event</fullName>
-                
-                    <default>false</default>
-                
-                    <label>I met the BlueWave team at a trade show or community event</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Another solar installer mentioned BlueWave</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Another solar installer mentioned BlueWave</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>A customer mentioned hearing about BlueWave loans</fullName>
-                
-                    <default>false</default>
-                
-                    <label>A customer mentioned hearing about BlueWave loans</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Someone from BlueWave reached out to me directly</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Someone from BlueWave reached out to me directly</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>I saw BlueWave advertising and followed up</fullName>
-                
-                    <default>false</default>
-                
-                    <label>I saw BlueWave advertising and followed up</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>I met the BlueWave team at a trade show or community event</fullName>
+                <default>false</default>
+                <label>I met the BlueWave team at a trade show or community event</label>
+            </value>
+            <value>
+                <fullName>Another solar installer mentioned BlueWave</fullName>
+                <default>false</default>
+                <label>Another solar installer mentioned BlueWave</label>
+            </value>
+            <value>
+                <fullName>A customer mentioned hearing about BlueWave loans</fullName>
+                <default>false</default>
+                <label>A customer mentioned hearing about BlueWave loans</label>
+            </value>
+            <value>
+                <fullName>Someone from BlueWave reached out to me directly</fullName>
+                <default>false</default>
+                <label>Someone from BlueWave reached out to me directly</label>
+            </value>
+            <value>
+                <fullName>I saw BlueWave advertising and followed up</fullName>
+                <default>false</default>
+                <label>I saw BlueWave advertising and followed up</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
     <visibleLines>6</visibleLines>
 </CustomField>

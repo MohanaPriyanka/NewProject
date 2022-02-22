@@ -1,0 +1,451 @@
+.clear, .clearfix{
+    clear:both;
+}
+.edn-notify-bar{
+    position: absolute;
+    z-index: 9999;
+    width: 100%;
+}
+.edn-notify-bar p{
+    margin: 0 !important;
+}
+.edn-notify-bar .edn-front-title,input#edn_subs_submit_ajax{
+    clear: both;
+}
+.edn-top-up-arrow .fa.fa-angle-up {
+    left: 4px;
+    position:absolute;
+    top: 0;
+}
+.edn-top-down-arrow .fa.fa-angle-down{
+    left: 4px;
+    position:absolute;
+    top: 1px; 
+}
+.edn-notify-bar.edn-position-Top {
+    background-color:#f6bf3b;
+    position: fixed;
+    top: 0;
+    border-bottom:2px solid #fff;
+    -webkit-box-shadow: 0 0 2px 3px #E3E3E3;
+    box-shadow: 0 0 2px 3px #E3E3E3;
+}
+.edn-controls-Top {
+  position: fixed;
+  right: 12px;
+  top: 12px;
+  z-index: 9999;
+}
+.edn-controls-Top a .edn-top-up-arrow, .edn-controls-Top a .edn-top-down-arrow, .edn-controls-Top a .fa.fa-close{
+    background: rgba(0, 0, 0, 0.4)/*#2b2b2b none repeat scroll 0 0*/;
+    padding: 10px;
+    border-radius: 3px;
+}
+.edn-controls-Top a .fa.fa-close{
+    padding: 4px;
+}
+.edn-controls-Top:hover{
+    background-color:#000;
+    border-radius: 3px;
+}
+.edn-cntrol-wrap.edn-controls-Bottom {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  z-index: 9999;
+}
+.edn-controls-Bottom a .edn-bottom-down-arrow, .edn-controls-Bottom a .edn-bottom-up-arrow, .edn-controls-Bottom a .fa.fa-close{
+    background: rgba(0, 0, 0, 0.4)/*#2b2b2b none repeat scroll 0 0*/;
+    border-radius: 3px;
+    padding: 12px;
+}
+.edn-controls-Bottom a .fa.fa-close{
+    padding: 6px;
+}
+.edn-bottom-down-arrow .fa.fa-angle-down{
+    left: 6px;
+    position:absolute;
+    top: 4px; 
+}
+.edn-bottom-up-arrow .fa.fa-angle-up {
+    left: 6px;
+    position:absolute;
+    top: 3px;
+}
+.edn-controls-close .fa.fa-close {
+  font-size: 14px;
+  left: -22px;
+  position: absolute;
+  top: 0px;
+}
+.edn-controls-Bottom .edn-controls-close .fa.fa-close {
+  font-size: 14px;
+  left: -23px;
+  position: absolute;
+  top: -23px;
+}
+.edn-controls-close .fa.fa-close:hover{
+    color:#fff;
+}
+.edn-controls-Bottom:hover{
+    background-color:#000;
+    border-radius: 3px;
+}
+.edn-bottom-down-arrow, .edn-bottom-up-arrow {
+  color: #fff;
+}
+.edn-controls-Top a {
+    text-decoration: none;
+}
+.edn-controls-Top a:focus, .edn-controls-Bottom a:focus{
+    background:none;
+    outline:none;
+}
+.container {
+    width: 90%;
+    margin: 0 auto;
+    padding:10px 0;
+}
+.edn-position-Bottom .edn-social-network-wrapper {
+  display: inline-block;
+}
+/*-------------------------------------------------------
+EDN SOCIAL WRAPPER
+-------------------------------------------------------*/
+.edn-position-Top .edn-social-network-wrapper {
+
+  display:inline-block;
+}
+.edn-social-icon-buttons{
+    display: inline-block;
+    border-radius: 3px;
+    text-align: center;
+	transition: all ease-in-out 0.5s;
+	-webkit-transition: all ease-in-out 0.5s;
+	-moz-transition: all ease-in-out 0.5s;
+    height:30px;
+    width:30px;
+}
+.edn-social-icon-buttons:hover{
+  background-color:#000; 
+   }
+   .edn-social-icon-buttons:hover .fa{
+    color:#fff;
+   }
+.edn-social-icon-buttons > a{
+	transition: all ease-in-out 0.5s;
+	-webkit-transition: all ease-in-out 0.5s;
+	-moz-transition: all ease-in-out 0.5s;
+    color:#000;
+}
+
+.bx-viewport .notify_slider li {
+  color: #000;
+}
+.edn-ticker .js-marquee-wrapper .js-marquee {
+  color: #000;
+}
+.edn-social-icon-buttons:hover{
+    transform: rotate(360deg);
+}
+.edn-social-icon-buttons .fa {
+    padding: 8px;
+}
+.edn-social-center-wrap {
+    margin: auto;
+    text-align: center;
+    width: 100% !important;
+}
+/*-------------------------------------------------------
+EDN TYPE MAIN
+------------------------------------------------------- */
+.edn-type-main-center-wrap {
+  float: none;
+  width: 100% !important;
+}
+.edn-type-main-wrapper {
+    float: right;
+    width: 79%;
+}
+.error {
+    color: #ad0c0c;
+    display: block;
+    padding-top: 2px;
+}
+
+/*type-normal*/
+
+.edn-type-text-wrap {
+    margin: auto;
+    text-align: center;
+    width: 60%;
+}
+
+
+/*---------------------------------------------------------------*/
+/*------------------------- OPT-IN FORM -------------------------*/
+/*---------------------------------------------------------------*/
+
+.edn-type-newsletter-wrap input[type="email"] {
+    color: #000 !important;
+}
+form#subscribeform
+{
+  
+    -webkit-display: inline-flex;
+    /*position: absolute;
+    right: 285px;
+    top: 21px;
+	height:61%;*/
+	
+}
+input#edn_subs_submit_ajax
+{
+    border-radius: 2px !important;
+	margin-left:8px;
+}
+input.edn_subs_email_r
+{
+	border-radius:2px;
+	border:none;
+	height:100%;
+	border:1px solid transparent
+}
+label.error
+{
+    position: relative;
+	left: 0;
+	width:100%;
+   
+}
+.edn-top-up-arrow
+{
+	color:gainsboro;
+}
+.edn-type-newsletter-wrap button, .button, input[type="button"], input[type="reset"], input[type="submit"]{
+    text-transform: uppercase !important;
+    vertical-align: bottom !important;
+    -webkit-appearance: button !important;
+    cursor: pointer !important;
+}
+.edn-type-newsletter-wrap input, textarea {
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+.edn-type-newsletter-wrap button, input {
+    line-height: normal !important;
+}
+.edn-type-newsletter-wrap button, input, select, textarea {
+    -webkit-box-sizing: border-box !important;
+    -moz-box-sizing: border-box !important;
+    box-sizing: border-box !important;
+    font-size: 100% !important;
+    max-width: 100% !important;
+    vertical-align: baseline !important;
+}
+/*---------------------------------------------------------------
+  NOTIFICATION BAR COLTROLS 
+---------------------------------------------------------------*/
+ a.edn-controls-close
+ {
+    color:ghostwhite;35
+	
+ }
+
+/*-------------------------------------------------------
+ SLIDER 
+-------------------------------------------------------*/
+
+.edn-display-mode-slider .bx-wrapper .bx-viewport {
+    box-shadow: none !important;  
+    border: none !important;
+    background: none !important; 
+    padding: 0 !important;
+}
+.edn-display-mode-slider .bx-wrapper .bx-pager.bx-default-pager a {
+    background: #FFF !important;
+    border-radius: 0;
+    height: 5px !important;
+    width: 17px;
+}
+.edn-display-mode-slider wrapper .bx-pager.bx-default-pager a.active {
+    background: #E66432 !important;
+}
+.edn-display-mode-slider .bx-wrapper .bx-pager.bx-default-pager a:hover, .bx-wrapper .bx-pager.bx-default-pager a.active {
+    background: #E66432 !important;
+}
+.edn-display-mode-slider .bx-wrapper .bx-pager, .bx-wrapper .bx-controls-auto {
+    display: none;
+    bottom: -30px;
+}
+.bx-wrapper {
+    margin:0 auto !important;
+}
+.bx-wrapper .bx-prev {
+    background: rgba(0, 0, 0, 0) url("../../images/controls.png") no-repeat scroll 0 -32px !important;
+    left: -40px !important;
+}
+.bx-wrapper .bx-next {
+    background: rgba(0, 0, 0, 0) url("../../images/controls.png") no-repeat scroll -43px -32px !important;
+    right: -30px !important;
+}
+.edn-ticker-slider {
+    padding-top: 2px;
+}
+.notify_slider {
+    margin: 0;
+}
+/*-------------------------------------------------------
+EDN TICKER (MARQUEE) OPTION 
+-------------------------------------------------------*/
+.marquee, .edn-ticker, .marquee-vert-before, .marquee-vert {
+    width: 100%;
+    overflow: hidden;
+}
+.f-left {
+    list-style: none;
+    float: left;
+    margin-right: 20px;
+}
+.edn-display-mode-normal > p {
+  color:#000;
+}
+
+/*..................header text.................*/
+ 
+.edn-position-Bottom{
+    background-color:#f6bf3b;
+	position:fixed;
+	bottom:0;
+	left:0;
+    border-top:2px solid #fff;
+    -webkit-box-shadow: 0 0 2px 3px #E3E3E3;
+    box-shadow: 0 0 2px 3px #E3E3E3;
+	}
+.edn-position-Bottom label.error {
+  bottom: 0;
+  width: 100%;
+}
+.edn-top-down-arrow{
+    color:#fff;
+}
+#subscribeform > input#edn_subs_submit_ajax{
+    background: rgba(0, 0, 0, 0.4)/*#2b2b2b*/;
+
+}
+.edn-notify-bar .edn-front-title, .edn-subscribe-form {
+     text-align: center;
+}
+.edn-subscribe-form .edn_subs_email_r{
+    width: 26%;
+}
+.edn-front-title {
+    line-height: 1.25;
+}
+.edn-type-newsletter-wrap input, textarea {
+    padding: 3px 10px !important;
+}
+.edn-notify-bar input#edn_subs_submit_ajax{
+    font-size: 18px;
+}
+.edn-notify-bar .edn-front-title {
+    display: inline-block;
+    margin-right:10px;
+    color:#000;
+}
+/*.................. Responsive media query .................*/
+@media screen and (max-width:1180px){
+.edn-social-network-wrapper {
+            width: 26%;
+        }
+.edn-type-main-wrapper {
+            width: 74%;
+        } 
+
+    }
+@media screen and (max-width:1024px){
+        .edn-social-network-wrapper {
+            width: 30%;
+        }
+        .edn-type-main-wrapper {
+            width: 70%;
+        }   
+    }
+@media screen and (max-width:980px){
+        .edn-social-network-wrapper {
+            width: 35%;
+        }
+        .edn-type-main-wrapper {
+            width: 65%;
+        }  
+    }
+@media screen and (max-width:800px){
+    .edn-social-network-wrapper {
+        width: 25%;
+    }
+    .edn-type-main-wrapper {
+        width: 75%;
+        /*padding-top:10px;*/
+    }  
+    .edn-notify-bar .edn-front-title {
+      display: block;
+      margin-right: 0;
+      text-align: left;
+      margin-bottom: 3px;
+    } 
+    .edn-type-main-wrapper .edn-subscribe-form .edn-front-title {
+      text-align: center;
+    }
+}
+    
+@media screen and (max-width:640px){
+    .edn-social-network-wrapper {
+        width: 100% !important;
+        text-align: center;
+        margin-bottom: 5px;
+    }
+     .edn-notify-bar .edn-front-title {
+      display:inline-block;
+      margin-right: 12px;
+    } 
+    .edn-type-main-wrapper {
+        width: 100% !important;
+        padding-top:0;
+    }
+    .edn-type-text-wrap {
+      width: 90%;
+    }
+}
+ 
+@media screen and (max-width:480px){
+    .edn-social-network-wrapper {
+        text-align: center;
+        width: 100% !important;
+    }  
+    .edn-type-main-wrapper {
+        width: 100% !important;
+        padding-bottom: 10px;
+    }
+    form#subscribeform {
+        display: block !important;
+    }
+    #subscribeform > input#edn_subs_submit_ajax {
+        margin: 0;
+        width: 100% !important;
+    }
+    .edn_subs_email_r {
+        width: 100% !important;
+        margin-bottom: 10px;
+    }
+    .edn-type-newsletter-wrap {
+        width: 100%;
+    }
+    .edn-notify-bar .edn-front-title {
+        text-align: center;
+    }
+    .edn-type-text-wrap {
+        padding-top: 0;
+    }
+    .edn-ticker-slider {
+        padding-top: 0;
+    }
+}

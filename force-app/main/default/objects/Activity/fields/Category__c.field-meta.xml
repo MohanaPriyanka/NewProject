@@ -6,582 +6,293 @@
     <required>false</required>
     <type>Picklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Accounting - ERP System Implementation</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Accounting - ERP System Implementation</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Accounting - Executive Request</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Accounting - Executive Request</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Accounting - Financial Tracking &amp; Reporting</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Accounting - Financial Tracking &amp; Reporting</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Accounting - HR Policy</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Accounting - HR Policy</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Accounting - IT Support</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Accounting - IT Support</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Accounting - Legacy Clean-up</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Accounting - Legacy Clean-up</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Business Development - Community Solar</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Business Development - Community Solar</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Business Development - Executive Request</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Business Development - Executive Request</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Business Development - Large offtake &amp; anchor</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Business Development - Large offtake &amp; anchor</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Business Development - Residential Loan</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Business Development - Residential Loan</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Executive - Business Development</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Executive - Business Development</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Executive - Corporate Finance &amp; Accounting</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Executive - Corporate Finance &amp; Accounting</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Executive - Development</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Executive - Development</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Executive - External Affairs</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Executive - External Affairs</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Executive - General Executive</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Executive - General Executive</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Executive - Operations</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Executive - Operations</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Executive - Project &amp; Platform Finance</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Executive - Project &amp; Platform Finance</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>External Affairs - B-Corp</fullName>
-                
-                    <default>false</default>
-                
-                    <label>External Affairs - B-Corp</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>External Affairs - Community Service</fullName>
-                
-                    <default>false</default>
-                
-                    <label>External Affairs - Community Service</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>External Affairs - Conferences/Events</fullName>
-                
-                    <default>false</default>
-                
-                    <label>External Affairs - Conferences/Events</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>External Affairs - Executive Request</fullName>
-                
-                    <default>false</default>
-                
-                    <label>External Affairs - Executive Request</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>External Affairs - Government / Regulatory Affairs</fullName>
-                
-                    <default>false</default>
-                
-                    <label>External Affairs - Government / Regulatory Affairs</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>External Affairs - Newsletters</fullName>
-                
-                    <default>false</default>
-                
-                    <label>External Affairs - Newsletters</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>External Affairs - Press Releases</fullName>
-                
-                    <default>false</default>
-                
-                    <label>External Affairs - Press Releases</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>External Affairs - Social Media</fullName>
-                
-                    <default>false</default>
-                
-                    <label>External Affairs - Social Media</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>External Affairs - Team Support</fullName>
-                
-                    <default>false</default>
-                
-                    <label>External Affairs - Team Support</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Marketing</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Marketing</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Operations</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Operations</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>EC - Business Operations</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Operations - Business Operations</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>EC - Executive Request</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Operations - Executive Request</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>EC - Product Engineering</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Operations - Product Engineering</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>EC - Product Marketing</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Operations - Product Marketing</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Other</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Other</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Partnership Relations</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Partnership Relations</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Product Team</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Product Team</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Project Finance - 1603 Compliance / Loan Support</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Project Finance - 1603 Compliance / Loan Support</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>BlueWave Capital Raising</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Project Finance - BlueWave Capital Raising</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>BlueWave Solar Loan Sales Process</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Project Finance - BlueWave Solar Loan Sales Process</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Project Finance - Corporate Finance</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Project Finance - Corporate Finance</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Project Finance - Debt Capital Markets / Structured Transactions</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Project Finance - Debt Capital Markets / Structured Transactions</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Project Finance - Equity Capital Markets / Strategic Partnerships</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Project Finance - Equity Capital Markets / Strategic Partnerships</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Project Finance - Executive Request</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Project Finance - Executive Request</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Offtake Sales</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Project Finance - Offtake Sales</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Project Finance - Platform Finance</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Project Finance - Platform Finance</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Strategic Capital Raise</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Project Finance - Strategic Capital Raise</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Project Management - Asset Management</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Project Management - Asset Management</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Project Management - Construction</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Project Management - Construction</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Project Management - Executive/Corporate</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Project Management - Executive Request</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Project Management - Interconnection</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Project Management - Interconnection</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Project Management - Project Development</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Project Management - Project Development</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Project Management - Site Acquisition</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Project Management - Site Acquisition</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Sales Operations - Executive Request</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Sales Operations - Executive Request</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Project Management - Site Acquisition - Engagement</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Project Management - Site Acquisition - Engagement</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Sales Operations - Project Management</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Sales Operations - Project Management</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Sales Operations - Quality Control</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Sales Operations - Quality Control</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Sales Operations - Partner Support</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Sales Operations - Partner Support</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Sales Operations - Innovation</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Sales Operations - Innovation</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Accounting - ERP System Implementation</fullName>
+                <default>false</default>
+                <label>Accounting - ERP System Implementation</label>
+            </value>
+            <value>
+                <fullName>Accounting - Executive Request</fullName>
+                <default>false</default>
+                <label>Accounting - Executive Request</label>
+            </value>
+            <value>
+                <fullName>Accounting - Financial Tracking &amp; Reporting</fullName>
+                <default>false</default>
+                <label>Accounting - Financial Tracking &amp; Reporting</label>
+            </value>
+            <value>
+                <fullName>Accounting - HR Policy</fullName>
+                <default>false</default>
+                <label>Accounting - HR Policy</label>
+            </value>
+            <value>
+                <fullName>Accounting - IT Support</fullName>
+                <default>false</default>
+                <label>Accounting - IT Support</label>
+            </value>
+            <value>
+                <fullName>Accounting - Legacy Clean-up</fullName>
+                <default>false</default>
+                <label>Accounting - Legacy Clean-up</label>
+            </value>
+            <value>
+                <fullName>Business Development - Community Solar</fullName>
+                <default>false</default>
+                <label>Business Development - Community Solar</label>
+            </value>
+            <value>
+                <fullName>Business Development - Executive Request</fullName>
+                <default>false</default>
+                <label>Business Development - Executive Request</label>
+            </value>
+            <value>
+                <fullName>Business Development - Large offtake &amp; anchor</fullName>
+                <default>false</default>
+                <label>Business Development - Large offtake &amp; anchor</label>
+            </value>
+            <value>
+                <fullName>Business Development - Residential Loan</fullName>
+                <default>false</default>
+                <label>Business Development - Residential Loan</label>
+            </value>
+            <value>
+                <fullName>Executive - Business Development</fullName>
+                <default>false</default>
+                <label>Executive - Business Development</label>
+            </value>
+            <value>
+                <fullName>Executive - Corporate Finance &amp; Accounting</fullName>
+                <default>false</default>
+                <label>Executive - Corporate Finance &amp; Accounting</label>
+            </value>
+            <value>
+                <fullName>Executive - Development</fullName>
+                <default>false</default>
+                <label>Executive - Development</label>
+            </value>
+            <value>
+                <fullName>Executive - External Affairs</fullName>
+                <default>false</default>
+                <label>Executive - External Affairs</label>
+            </value>
+            <value>
+                <fullName>Executive - General Executive</fullName>
+                <default>false</default>
+                <label>Executive - General Executive</label>
+            </value>
+            <value>
+                <fullName>Executive - Operations</fullName>
+                <default>false</default>
+                <label>Executive - Operations</label>
+            </value>
+            <value>
+                <fullName>Executive - Project &amp; Platform Finance</fullName>
+                <default>false</default>
+                <label>Executive - Project &amp; Platform Finance</label>
+            </value>
+            <value>
+                <fullName>External Affairs - B-Corp</fullName>
+                <default>false</default>
+                <label>External Affairs - B-Corp</label>
+            </value>
+            <value>
+                <fullName>External Affairs - Community Service</fullName>
+                <default>false</default>
+                <label>External Affairs - Community Service</label>
+            </value>
+            <value>
+                <fullName>External Affairs - Conferences/Events</fullName>
+                <default>false</default>
+                <label>External Affairs - Conferences/Events</label>
+            </value>
+            <value>
+                <fullName>External Affairs - Executive Request</fullName>
+                <default>false</default>
+                <label>External Affairs - Executive Request</label>
+            </value>
+            <value>
+                <fullName>External Affairs - Government / Regulatory Affairs</fullName>
+                <default>false</default>
+                <label>External Affairs - Government / Regulatory Affairs</label>
+            </value>
+            <value>
+                <fullName>External Affairs - Newsletters</fullName>
+                <default>false</default>
+                <label>External Affairs - Newsletters</label>
+            </value>
+            <value>
+                <fullName>External Affairs - Press Releases</fullName>
+                <default>false</default>
+                <label>External Affairs - Press Releases</label>
+            </value>
+            <value>
+                <fullName>External Affairs - Social Media</fullName>
+                <default>false</default>
+                <label>External Affairs - Social Media</label>
+            </value>
+            <value>
+                <fullName>External Affairs - Team Support</fullName>
+                <default>false</default>
+                <label>External Affairs - Team Support</label>
+            </value>
+            <value>
+                <fullName>Marketing</fullName>
+                <default>false</default>
+                <label>Marketing</label>
+            </value>
+            <value>
+                <fullName>Operations</fullName>
+                <default>false</default>
+                <label>Operations</label>
+            </value>
+            <value>
+                <fullName>EC - Business Operations</fullName>
+                <default>false</default>
+                <label>Operations - Business Operations</label>
+            </value>
+            <value>
+                <fullName>EC - Executive Request</fullName>
+                <default>false</default>
+                <label>Operations - Executive Request</label>
+            </value>
+            <value>
+                <fullName>EC - Product Engineering</fullName>
+                <default>false</default>
+                <label>Operations - Product Engineering</label>
+            </value>
+            <value>
+                <fullName>EC - Product Marketing</fullName>
+                <default>false</default>
+                <label>Operations - Product Marketing</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+            <value>
+                <fullName>Partnership Relations</fullName>
+                <default>false</default>
+                <label>Partnership Relations</label>
+            </value>
+            <value>
+                <fullName>Product Team</fullName>
+                <default>false</default>
+                <label>Product Team</label>
+            </value>
+            <value>
+                <fullName>Project Finance - 1603 Compliance / Loan Support</fullName>
+                <default>false</default>
+                <label>Project Finance - 1603 Compliance / Loan Support</label>
+            </value>
+            <value>
+                <fullName>BlueWave Capital Raising</fullName>
+                <default>false</default>
+                <label>Project Finance - BlueWave Capital Raising</label>
+            </value>
+            <value>
+                <fullName>BlueWave Solar Loan Sales Process</fullName>
+                <default>false</default>
+                <label>Project Finance - BlueWave Solar Loan Sales Process</label>
+            </value>
+            <value>
+                <fullName>Project Finance - Corporate Finance</fullName>
+                <default>false</default>
+                <label>Project Finance - Corporate Finance</label>
+            </value>
+            <value>
+                <fullName>Project Finance - Debt Capital Markets / Structured Transactions</fullName>
+                <default>false</default>
+                <label>Project Finance - Debt Capital Markets / Structured Transactions</label>
+            </value>
+            <value>
+                <fullName>Project Finance - Equity Capital Markets / Strategic Partnerships</fullName>
+                <default>false</default>
+                <label>Project Finance - Equity Capital Markets / Strategic Partnerships</label>
+            </value>
+            <value>
+                <fullName>Project Finance - Executive Request</fullName>
+                <default>false</default>
+                <label>Project Finance - Executive Request</label>
+            </value>
+            <value>
+                <fullName>Offtake Sales</fullName>
+                <default>false</default>
+                <label>Project Finance - Offtake Sales</label>
+            </value>
+            <value>
+                <fullName>Project Finance - Platform Finance</fullName>
+                <default>false</default>
+                <label>Project Finance - Platform Finance</label>
+            </value>
+            <value>
+                <fullName>Strategic Capital Raise</fullName>
+                <default>false</default>
+                <label>Project Finance - Strategic Capital Raise</label>
+            </value>
+            <value>
+                <fullName>Project Management - Asset Management</fullName>
+                <default>false</default>
+                <label>Project Management - Asset Management</label>
+            </value>
+            <value>
+                <fullName>Project Management - Construction</fullName>
+                <default>false</default>
+                <label>Project Management - Construction</label>
+            </value>
+            <value>
+                <fullName>Project Management - Executive/Corporate</fullName>
+                <default>false</default>
+                <label>Project Management - Executive Request</label>
+            </value>
+            <value>
+                <fullName>Project Management - Interconnection</fullName>
+                <default>false</default>
+                <label>Project Management - Interconnection</label>
+            </value>
+            <value>
+                <fullName>Project Management - Project Development</fullName>
+                <default>false</default>
+                <label>Project Management - Project Development</label>
+            </value>
+            <value>
+                <fullName>Project Management - Site Acquisition</fullName>
+                <default>false</default>
+                <label>Project Management - Site Acquisition</label>
+            </value>
+            <value>
+                <fullName>Sales Operations - Executive Request</fullName>
+                <default>false</default>
+                <label>Sales Operations - Executive Request</label>
+            </value>
+            <value>
+                <fullName>Project Management - Site Acquisition - Engagement</fullName>
+                <default>false</default>
+                <label>Project Management - Site Acquisition - Engagement</label>
+            </value>
+            <value>
+                <fullName>Sales Operations - Project Management</fullName>
+                <default>false</default>
+                <label>Sales Operations - Project Management</label>
+            </value>
+            <value>
+                <fullName>Sales Operations - Quality Control</fullName>
+                <default>false</default>
+                <label>Sales Operations - Quality Control</label>
+            </value>
+            <value>
+                <fullName>Sales Operations - Partner Support</fullName>
+                <default>false</default>
+                <label>Sales Operations - Partner Support</label>
+            </value>
+            <value>
+                <fullName>Sales Operations - Innovation</fullName>
+                <default>false</default>
+                <label>Sales Operations - Innovation</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

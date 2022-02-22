@@ -9,32 +9,18 @@
     <trackFeedHistory>false</trackFeedHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Classic</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Classic</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Next Generation</fullName>
-                
-                    <default>true</default>
-                
-                    <label>Next Generation</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Classic</fullName>
+                <default>false</default>
+                <label>Classic</label>
+            </value>
+            <value>
+                <fullName>Next Generation</fullName>
+                <default>true</default>
+                <label>Next Generation</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

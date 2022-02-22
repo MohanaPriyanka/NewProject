@@ -6,14 +6,10 @@
     <label>Total Mgmt Qty (kW)</label>
     <summarizedField>OpportunityLineItem.Quantity</summarizedField>
     <summaryFilterItems>
-        
-            <field>OpportunityLineItem.Product_Family__c</field>
-        
-            <operation>equals</operation>
-        
-            <value>Management</value>
-        
-        </summaryFilterItems>
+        <field>OpportunityLineItem.Product_Family__c</field>
+        <operation>equals</operation>
+        <value>Management</value>
+    </summaryFilterItems>
     <summaryForeignKey>OpportunityLineItem.OpportunityId</summaryForeignKey>
     <summaryOperation>sum</summaryOperation>
     <trackHistory>false</trackHistory>

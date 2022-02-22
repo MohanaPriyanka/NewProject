@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Effective_Net_Metering_Rate__c</fullName>
     <externalId>false</externalId>
     <formula>Net_Metering_Credits_Allocated__c / Subscription_Production_kWh__c</formula>

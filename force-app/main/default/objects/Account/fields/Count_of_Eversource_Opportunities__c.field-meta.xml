@@ -4,14 +4,10 @@
     <externalId>false</externalId>
     <label>Count of Eversource Opportunities</label>
     <summaryFilterItems>
-        
-            <field>Opportunity.UtilityMapper__c</field>
-        
-            <operation>equals</operation>
-        
-            <value>Eversource</value>
-        
-        </summaryFilterItems>
+        <field>Opportunity.UtilityMapper__c</field>
+        <operation>equals</operation>
+        <value>Eversource</value>
+    </summaryFilterItems>
     <summaryForeignKey>Opportunity.AccountId</summaryForeignKey>
     <summaryOperation>count</summaryOperation>
     <trackHistory>false</trackHistory>

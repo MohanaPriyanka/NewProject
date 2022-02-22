@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Usage_Sender_Transaction_Id__c</fullName>
     <caseSensitive>false</caseSensitive>
     <description>Used to store the sender transaction ID for the Usage History Data returned from ESG. This ID is different from the Parent Transaction ID</description>

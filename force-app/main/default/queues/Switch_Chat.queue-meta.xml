@@ -1,27 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <Queue xmlns="http://soap.sforce.com/2006/04/metadata">
-    
     <doesSendEmailToMembers>false</doesSendEmailToMembers>
-    
     <name>Switch Chat</name>
-    
     <queueMembers>
-        
         <users>
-            
-            <user>lalexander@bluewavesolar.com</user>
-            
+            <user>jberger@bluewavesolar.com</user>
+            <user>mshea@bluewavesolar.com</user>
+            <user>mfish@perchenergy.com</user>
         </users>
-        
     </queueMembers>
-    
     <queueRoutingConfig>Switch_Chat</queueRoutingConfig>
-    
     <queueSobject>
-        
         <sobjectType>LiveChatTranscript</sobjectType>
-        
     </queueSobject>
-    
 </Queue>

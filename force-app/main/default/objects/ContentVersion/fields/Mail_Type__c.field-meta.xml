@@ -8,84 +8,44 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>firstclass</fullName>
-                
-                    <default>false</default>
-                
-                    <label>firstclass</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>firstclass_hse</fullName>
-                
-                    <default>false</default>
-                
-                    <label>firstclass_hse</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>certified</fullName>
-                
-                    <default>false</default>
-                
-                    <label>certified</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>certnoerr</fullName>
-                
-                    <default>false</default>
-                
-                    <label>certnoerr</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>postcard</fullName>
-                
-                    <default>false</default>
-                
-                    <label>postcard</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>flat</fullName>
-                
-                    <default>false</default>
-                
-                    <label>flat</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>propostcard</fullName>
-                
-                    <default>false</default>
-                
-                    <label>propostcard</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>firstclass</fullName>
+                <default>false</default>
+                <label>firstclass</label>
+            </value>
+            <value>
+                <fullName>firstclass_hse</fullName>
+                <default>false</default>
+                <label>firstclass_hse</label>
+            </value>
+            <value>
+                <fullName>certified</fullName>
+                <default>false</default>
+                <label>certified</label>
+            </value>
+            <value>
+                <fullName>certnoerr</fullName>
+                <default>false</default>
+                <label>certnoerr</label>
+            </value>
+            <value>
+                <fullName>postcard</fullName>
+                <default>false</default>
+                <label>postcard</label>
+            </value>
+            <value>
+                <fullName>flat</fullName>
+                <default>false</default>
+                <label>flat</label>
+            </value>
+            <value>
+                <fullName>propostcard</fullName>
+                <default>false</default>
+                <label>propostcard</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

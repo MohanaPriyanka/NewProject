@@ -9,128 +9,66 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Production</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Production</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Late Fee Waived</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Late Fee Waived</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Customer Refund</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Customer Refund</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>BW Credit</fullName>
-                
-                    <default>false</default>
-                
-                    <label>BW Credit</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Project Payment Transfer</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Project Payment Transfer</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Returned Payment</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Returned Payment</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Client Credit</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Client Credit</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Returned Check Payment</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Returned Check Payment</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>No Longer Billing</fullName>
-                
-                    <default>false</default>
-                
-                    <label>No Longer Billing</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Plympton TBD</fullName>
-                
-                    <default>false</default>
-                
-                    <isActive>false</isActive>
-                
-                    <label>Plympton TBD</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Write - Off</fullName>
-                
-                    <default>false</default>
-                
-                    <isActive>false</isActive>
-                
-                    <label>Write - Off</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Production</fullName>
+                <default>false</default>
+                <label>Production</label>
+            </value>
+            <value>
+                <fullName>Late Fee Waived</fullName>
+                <default>false</default>
+                <label>Late Fee Waived</label>
+            </value>
+            <value>
+                <fullName>Customer Refund</fullName>
+                <default>false</default>
+                <label>Customer Refund</label>
+            </value>
+            <value>
+                <fullName>BW Credit</fullName>
+                <default>false</default>
+                <label>BW Credit</label>
+            </value>
+            <value>
+                <fullName>Project Payment Transfer</fullName>
+                <default>false</default>
+                <label>Project Payment Transfer</label>
+            </value>
+            <value>
+                <fullName>Returned Payment</fullName>
+                <default>false</default>
+                <label>Returned Payment</label>
+            </value>
+            <value>
+                <fullName>Client Credit</fullName>
+                <default>false</default>
+                <label>Client Credit</label>
+            </value>
+            <value>
+                <fullName>Returned Check Payment</fullName>
+                <default>false</default>
+                <label>Returned Check Payment</label>
+            </value>
+            <value>
+                <fullName>No Longer Billing</fullName>
+                <default>false</default>
+                <label>No Longer Billing</label>
+            </value>
+            <value>
+                <fullName>Plympton TBD</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Plympton TBD</label>
+            </value>
+            <value>
+                <fullName>Write - Off</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Write - Off</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

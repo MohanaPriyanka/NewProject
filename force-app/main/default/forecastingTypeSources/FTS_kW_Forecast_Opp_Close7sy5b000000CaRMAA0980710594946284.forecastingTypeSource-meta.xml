@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ForecastingTypeSource xmlns="http://soap.sforce.com/2006/04/metadata">
+    <forecastingSourceDefinition>FSD_OpportunityLineItem720414795819046</forecastingSourceDefinition>
+    <forecastingType>kW_Forecast_Opp_Close</forecastingType>
+    <masterLabel>FTS_kW_Forecast_Opp_Close7sy5b000000CaRMAA0980710594946284</masterLabel>
+    <sourceGroup>1</sourceGroup>
+</ForecastingTypeSource>

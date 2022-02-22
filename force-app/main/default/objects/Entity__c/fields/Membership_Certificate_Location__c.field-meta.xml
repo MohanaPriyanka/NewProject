@@ -10,44 +10,24 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>BlueWave office</fullName>
-                
-                    <default>false</default>
-                
-                    <label>BlueWave office</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Lender&apos;s office</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Lender&apos;s office</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Other - see notes</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Other - see notes</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>BlueWave office</fullName>
+                <default>false</default>
+                <label>BlueWave office</label>
+            </value>
+            <value>
+                <fullName>Lender&apos;s office</fullName>
+                <default>false</default>
+                <label>Lender&apos;s office</label>
+            </value>
+            <value>
+                <fullName>Other - see notes</fullName>
+                <default>false</default>
+                <label>Other - see notes</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

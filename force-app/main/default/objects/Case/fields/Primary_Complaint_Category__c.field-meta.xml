@@ -10,174 +10,89 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Advertising/marketing</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Advertising/marketing</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Application</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Application</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Customer Service</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Customer Service</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Discrimination</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Discrimination</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Fraud</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Fraud</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Identity Theft</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Identity Theft</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Improper Sales Practices</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Improper Sales Practices</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Installer/Partner</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Installer/Partner</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Miscellaneous</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Miscellaneous</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Origination/Credit Decision</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Origination/Credit Decision</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Payments</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Payments</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Privacy</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Privacy</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Servicemember/SCRA</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Servicemember/SCRA</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Service Provider</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Service Provider</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Servicing/Collection</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Servicing/Collection</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Unauthorized Enrollment</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Unauthorized Enrollment</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Advertising/marketing</fullName>
+                <default>false</default>
+                <label>Advertising/marketing</label>
+            </value>
+            <value>
+                <fullName>Application</fullName>
+                <default>false</default>
+                <label>Application</label>
+            </value>
+            <value>
+                <fullName>Customer Service</fullName>
+                <default>false</default>
+                <label>Customer Service</label>
+            </value>
+            <value>
+                <fullName>Discrimination</fullName>
+                <default>false</default>
+                <label>Discrimination</label>
+            </value>
+            <value>
+                <fullName>Fraud</fullName>
+                <default>false</default>
+                <label>Fraud</label>
+            </value>
+            <value>
+                <fullName>Identity Theft</fullName>
+                <default>false</default>
+                <label>Identity Theft</label>
+            </value>
+            <value>
+                <fullName>Improper Sales Practices</fullName>
+                <default>false</default>
+                <label>Improper Sales Practices</label>
+            </value>
+            <value>
+                <fullName>Installer/Partner</fullName>
+                <default>false</default>
+                <label>Installer/Partner</label>
+            </value>
+            <value>
+                <fullName>Miscellaneous</fullName>
+                <default>false</default>
+                <label>Miscellaneous</label>
+            </value>
+            <value>
+                <fullName>Origination/Credit Decision</fullName>
+                <default>false</default>
+                <label>Origination/Credit Decision</label>
+            </value>
+            <value>
+                <fullName>Payments</fullName>
+                <default>false</default>
+                <label>Payments</label>
+            </value>
+            <value>
+                <fullName>Privacy</fullName>
+                <default>false</default>
+                <label>Privacy</label>
+            </value>
+            <value>
+                <fullName>Servicemember/SCRA</fullName>
+                <default>false</default>
+                <label>Servicemember/SCRA</label>
+            </value>
+            <value>
+                <fullName>Service Provider</fullName>
+                <default>false</default>
+                <label>Service Provider</label>
+            </value>
+            <value>
+                <fullName>Servicing/Collection</fullName>
+                <default>false</default>
+                <label>Servicing/Collection</label>
+            </value>
+            <value>
+                <fullName>Unauthorized Enrollment</fullName>
+                <default>false</default>
+                <label>Unauthorized Enrollment</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

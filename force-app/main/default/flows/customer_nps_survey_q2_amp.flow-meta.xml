@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <choices>
+        <name>c_025317ee_e1b1_4479_90d2_adb9d46e6e61</name>
+        <choiceText>10 minute read</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>10 minute read</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>c_11e13a2e_e911_45b0_832d_462b90bf7702</name>
+        <choiceText>Amp and BlueWave company updates</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Amp and BlueWave company updates</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>c_1e605843_8b0c_4641_923e_6226173cc65b</name>
+        <choiceText>To support local energy generation</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>To support local energy generation</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>c_2525794d_a528_42e8_93e5_6497cc1ecc5b</name>
+        <choiceText>Once every two weeks</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Once every two weeks</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>c_38f61e46_4b73_4d55_bd19_d3236924d194</name>
+        <choiceText>No</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>No</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>c_3dc475ba_ef32_46e9_8c3a_0664477a85b2</name>
+        <choiceText>5 minute read</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>5 minute read</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>c_40fabca4_9840_4f58_bc98_fa8e92f51032</name>
+        <choiceText>To save money</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>To save money</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>c_4bc464a4_1792_488f_9ce7_7c50451d71cd</name>
+        <choiceText>Once every two months</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Once every two months</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>c_5082b682_6755_4493_a419_f358f376ed3d</name>
+        <choiceText>Once every six months</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Once every six months</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>c_52862aa6_34ef_4fa9_87d9_b84a9c9e544c</name>
+        <choiceText>Couldn&apos;t get my own solar panels but wanted to support solar</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Couldn&apos;t get my own solar panels but wanted to support solar</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>c_57c0fbd9_8d56_4328_82fa_4161813de29f</name>
+        <choiceText>Solar industry news</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Solar industry news</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>c_5ea5938b_5624_4db8_8ee5_7c7d0cb9bbd8</name>
+        <choiceText>Surveys to improve customer experience</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Surveys to improve customer experience</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>c_6314a212_3948_40ba_8760_a183ef5d94e1</name>
+        <choiceText>2 minute read</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>2 minute read</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>c_91986ee5_b204_42aa_a4fe_93b3525774d8</name>
+        <choiceText>Green lifestyle tips</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Green lifestyle tips</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>c_92f69fcb_a305_439c_8d7c_fdb35a9877b7</name>
+        <choiceText>15 minute read</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>15 minute read</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>c_9ab9e505_dba4_4576_88d1_90eb3c6617ff</name>
+        <choiceText>Yes</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Yes</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>c_ab797419_25b8_48c4_bf08_a7e1717b5650</name>
+        <choiceText>Amp or BlueWave seemed like a cool company</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Amp or BlueWave seemed like a cool company</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>c_cc59cca0_7cf0_4993_934c_79ea9073bddc</name>
+        <choiceText>To support clean energy and the environment</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>To support clean energy and the environment</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>c_e3350567_490f_4069_8331_1b6590caebae</name>
+        <choiceText>Environmental activism</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Environmental activism</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>c_ea8a9fe5_7d56_4768_a2c3_5644e9968dd4</name>
+        <choiceText>Once a month</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Once a month</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>c_f7fe18e0_6d18_4214_8e24_b470d5992d28</name>
+        <choiceText>Project construction updates and stories</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Project construction updates and stories</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>c_f970f66c_08c2_4cf4_8feb_e3e27dfd4b46</name>
+        <choiceText>Education about community solar</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Education about community solar</stringValue>
+        </value>
+    </choices>
+    <decisions>
+        <name>d_81b95808_e081_4351_b148_331f30099325</name>
+        <label>my_decision</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>p_87d919ca_a0cf_4f39_8339_c81e5c4c8ab5</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Next Page</defaultConnectorLabel>
+        <rules>
+            <name>r_98b8044c_0b81_43db_8817_dea6a4e2a720</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>q_6724db9a_3842_4829_9b03_440436b1eb9c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>c_38f61e46_4b73_4d55_bd19_d3236924d194</elementReference>
+                </rightValue>
+            </conditions>
+            <label>my_rule</label>
+        </rules>
+    </decisions>
+    <interviewLabel>Customer NPS survey Q2 AMP</interviewLabel>
+    <label>Customer NPS survey Q2 AMP</label>
+    <processMetadataValues>
+        <name>BrandingSet</name>
+        <value>
+            <stringValue>survey_a050da57_f533_445a_951e_232b0844cd6c</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>autoProgressEnabled</name>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>hasWelcomePage</name>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>overrideActiveVersion</name>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </processMetadataValues>
+    <processType>Survey</processType>
+    <screens>
+        <name>p_00c2ab23_1768_4488_a32f_d56de18a7487</name>
+        <label>Page 1</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>p_49e08a3d_3905_422e_b8fd_526c47cea2d4</targetReference>
+        </connector>
+        <fields>
+            <processMetadataValues>
+                <name>autoProgressAction</name>
+                <value>
+                    <stringValue>NONE</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>defaultValue</name>
+                <value>
+                    <elementReference>var_q_a4f1a15a_76ae_48da_982d_e4d585e38308_defaultValue</elementReference>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>max</name>
+                <value>
+                    <stringValue>10</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>min</name>
+                <value>
+                    <stringValue>0</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>questionType</name>
+                <value>
+                    <stringValue>NPS</stringValue>
+                </value>
+            </processMetadataValues>
+            <name>q_a4f1a15a_76ae_48da_982d_e4d585e38308</name>
+            <dataType>Number</dataType>
+            <extensionName>survey:runtimeNps</extensionName>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 18px; font-family: sans-serif;&quot;&gt;How likely are you to recommend Amp and BlueWave to a friend or colleague?&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>ComponentInput</fieldType>
+            <isRequired>true</isRequired>
+            <scale>0</scale>
+        </fields>
+        <pausedText>Survey paused. To pick up where you left off, refresh this page or click the link in your survey invitation.</pausedText>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>p_3842e12f_c2a1_4a30_8fe0_c5d13c6f25bb</name>
+        <label>Page 3</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>d_81b95808_e081_4351_b148_331f30099325</targetReference>
+        </connector>
+        <fields>
+            <processMetadataValues>
+                <name>autoProgressAction</name>
+                <value>
+                    <stringValue>NONE</stringValue>
+                </value>
+            </processMetadataValues>
+            <name>q_6724db9a_3842_4829_9b03_440436b1eb9c</name>
+            <choiceReferences>c_38f61e46_4b73_4d55_bd19_d3236924d194</choiceReferences>
+            <choiceReferences>c_9ab9e505_dba4_4576_88d1_90eb3c6617ff</choiceReferences>
+            <dataType>String</dataType>
+            <extensionName>survey:runtimePicklist</extensionName>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 18px; font-family: sans-serif;&quot;&gt;We&apos;re starting a new customer&amp;nbsp;newsletter and want your input on its content! Select &quot;Yes&quot; to provide input, select &quot;No&quot; to finish the survey.&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>ComponentChoice</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <pausedText>Survey paused. To pick up where you left off, refresh this page or click the link in your survey invitation.</pausedText>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>p_49e08a3d_3905_422e_b8fd_526c47cea2d4</name>
+        <label>Page 2</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>p_3842e12f_c2a1_4a30_8fe0_c5d13c6f25bb</targetReference>
+        </connector>
+        <fields>
+            <processMetadataValues>
+                <name>autoProgressAction</name>
+                <value>
+                    <stringValue>NONE</stringValue>
+                </value>
+            </processMetadataValues>
+            <name>q_1d612cb7_1da4_4efb_9b1b_c7a4c240f060</name>
+            <dataType>String</dataType>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 18px; font-family: sans-serif;&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;&lt;/span&gt;What is the one thing we could do to make you happier?&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <pausedText>Survey paused. To pick up where you left off, refresh this page or click the link in your survey invitation.</pausedText>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>p_87d919ca_a0cf_4f39_8339_c81e5c4c8ab5</name>
+        <label>Page 4 If Yes on Page 3</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <processMetadataValues>
+                <name>autoProgressAction</name>
+                <value>
+                    <stringValue>NONE</stringValue>
+                </value>
+            </processMetadataValues>
+            <name>q_0506ea66_9932_4693_849d_8629d170a0be</name>
+            <choiceReferences>c_91986ee5_b204_42aa_a4fe_93b3525774d8</choiceReferences>
+            <choiceReferences>c_f970f66c_08c2_4cf4_8feb_e3e27dfd4b46</choiceReferences>
+            <choiceReferences>c_57c0fbd9_8d56_4328_82fa_4161813de29f</choiceReferences>
+            <choiceReferences>c_11e13a2e_e911_45b0_832d_462b90bf7702</choiceReferences>
+            <choiceReferences>c_f7fe18e0_6d18_4214_8e24_b470d5992d28</choiceReferences>
+            <choiceReferences>c_5ea5938b_5624_4db8_8ee5_7c7d0cb9bbd8</choiceReferences>
+            <choiceReferences>c_e3350567_490f_4069_8331_1b6590caebae</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-family: sans-serif; font-size: 18px;&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;&lt;/span&gt;What kind of content would you like to see more of in our Newsletter? (check all that apply)&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>MultiSelectCheckboxes</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <processMetadataValues>
+                <name>autoProgressAction</name>
+                <value>
+                    <stringValue>NONE</stringValue>
+                </value>
+            </processMetadataValues>
+            <name>q_12d48c9b_d09d_47df_9399_190cc34b2c9c</name>
+            <choiceReferences>c_6314a212_3948_40ba_8760_a183ef5d94e1</choiceReferences>
+            <choiceReferences>c_3dc475ba_ef32_46e9_8c3a_0664477a85b2</choiceReferences>
+            <choiceReferences>c_025317ee_e1b1_4479_90d2_adb9d46e6e61</choiceReferences>
+            <choiceReferences>c_92f69fcb_a305_439c_8d7c_fdb35a9877b7</choiceReferences>
+            <dataType>String</dataType>
+            <extensionName>survey:runtimePicklist</extensionName>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-family: sans-serif; font-size: 18px;&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;&lt;/span&gt;How long should our newsletter be?&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>ComponentChoice</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <processMetadataValues>
+                <name>autoProgressAction</name>
+                <value>
+                    <stringValue>NONE</stringValue>
+                </value>
+            </processMetadataValues>
+            <name>q_29332552_b4a5_47e8_aa2f_976e86e66013</name>
+            <choiceReferences>c_cc59cca0_7cf0_4993_934c_79ea9073bddc</choiceReferences>
+            <choiceReferences>c_40fabca4_9840_4f58_bc98_fa8e92f51032</choiceReferences>
+            <choiceReferences>c_1e605843_8b0c_4641_923e_6226173cc65b</choiceReferences>
+            <choiceReferences>c_52862aa6_34ef_4fa9_87d9_b84a9c9e544c</choiceReferences>
+            <choiceReferences>c_ab797419_25b8_48c4_bf08_a7e1717b5650</choiceReferences>
+            <dataType>String</dataType>
+            <extensionName>survey:runtimePicklist</extensionName>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-family: sans-serif; font-size: 18px;&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;&lt;/span&gt;What below best describes why you signed up for community solar?&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>ComponentChoice</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <processMetadataValues>
+                <name>autoProgressAction</name>
+                <value>
+                    <stringValue>NONE</stringValue>
+                </value>
+            </processMetadataValues>
+            <name>q_d9cf9efc_8a2a_49b2_ae05_1cb97aab328b</name>
+            <choiceReferences>c_2525794d_a528_42e8_93e5_6497cc1ecc5b</choiceReferences>
+            <choiceReferences>c_ea8a9fe5_7d56_4768_a2c3_5644e9968dd4</choiceReferences>
+            <choiceReferences>c_4bc464a4_1792_488f_9ce7_7c50451d71cd</choiceReferences>
+            <choiceReferences>c_5082b682_6755_4493_a419_f358f376ed3d</choiceReferences>
+            <dataType>String</dataType>
+            <extensionName>survey:runtimePicklist</extensionName>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-family: sans-serif; font-size: 18px;&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;&lt;/span&gt;How often would you like to receive our newsletter?&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>ComponentChoice</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <pausedText>Survey paused. To pick up where you left off, refresh this page or click the link in your survey invitation.</pausedText>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <startElementReference>p_00c2ab23_1768_4488_a32f_d56de18a7487</startElementReference>
+    <status>Active</status>
+    <textTemplates>
+        <name>thankYouDescriptionTextTemplate</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text></text>
+    </textTemplates>
+    <textTemplates>
+        <name>thankYouLabelTextTemplate</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 18px; font-family: sans-serif;&quot;&gt;Thank you for the feedback!&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b&gt;&lt;span class=&quot;ql-cursor&quot;&gt;&lt;/span&gt;&lt;/b&gt;&lt;img src=&quot;https://bluewavesolar--c.documentforce.com/file-asset-public/AMPBWfinalbrand1?oid=00Dj0000001q7GO&amp;amp;v=1&quot; alt=&quot;AMPBWfinalbrand&quot;&gt;&lt;/p&gt;</text>
+    </textTemplates>
+    <variables>
+        <name>guestUserLang</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>invitationId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <stringValue></stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>previewMode</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <name>thankYouDescription</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <stringValue>{!thankYouDescriptionTextTemplate}</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>thankYouLabel</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <stringValue>{!thankYouLabelTextTemplate}</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>var_q_a4f1a15a_76ae_48da_982d_e4d585e38308_defaultValue</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <scale>2</scale>
+    </variables>
+</Flow>

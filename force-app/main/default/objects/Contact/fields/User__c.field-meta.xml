@@ -6,24 +6,15 @@
     <inlineHelpText>User record associated to a contact. Only applicable to internal users</inlineHelpText>
     <label>User</label>
     <lookupFilter>
-        
-            <active>true</active>
-        
-            <filterItems>
-            
-                <field>User.UserType</field>
-            
-                <operation>equals</operation>
-            
-                <value>Standard</value>
-            
-            </filterItems>
-        
-            <infoMessage>This lookup is for internal users.</infoMessage>
-        
-            <isOptional>true</isOptional>
-        
-        </lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>User.UserType</field>
+            <operation>equals</operation>
+            <value>Standard</value>
+        </filterItems>
+        <infoMessage>This lookup is for internal users.</infoMessage>
+        <isOptional>true</isOptional>
+    </lookupFilter>
     <referenceTo>User</referenceTo>
     <relationshipName>Contacts</relationshipName>
     <required>false</required>

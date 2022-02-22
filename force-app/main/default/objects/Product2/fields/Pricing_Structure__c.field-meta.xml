@@ -8,34 +8,19 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Use Solar Electric Rate</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Use Solar Electric Rate</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Fixed % Discount</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Fixed % Discount</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Use Solar Electric Rate</fullName>
+                <default>false</default>
+                <label>Use Solar Electric Rate</label>
+            </value>
+            <value>
+                <fullName>Fixed % Discount</fullName>
+                <default>false</default>
+                <label>Fixed % Discount</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

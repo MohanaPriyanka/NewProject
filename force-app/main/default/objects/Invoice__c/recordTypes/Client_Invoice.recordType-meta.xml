@@ -4,24 +4,47 @@
     <active>true</active>
     <label>Client Invoice</label>
     <picklistValues>
-        
-            <picklist>Status__c</picklist>
-        
-            <values>
-            
-                <fullName>Draft</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Sent</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-        </picklistValues>
+        <picklist>Invoice_Type__c</picklist>
+        <values>
+            <fullName>Direct</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Submitted by Partner</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Product_Line__c</picklist>
+        <values>
+            <fullName>Community Solar</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Residential Loan</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Reconciliation_Status__c</picklist>
+        <values>
+            <fullName>Approved</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Issues found</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status__c</picklist>
+        <values>
+            <fullName>Draft</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sent</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
 </RecordType>

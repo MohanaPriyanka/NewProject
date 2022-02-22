@@ -5,14 +5,12 @@
     <inlineHelpText>The SSS milestone date that starts management fees - can be used for either one-time or recurring fees. For one time, the date the charge is incurred. For recurring, the start date that the recurring charge begins</inlineHelpText>
     <label>Management Fee Trigger</label>
     <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
     <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetName>Client_Invoicing_Events</valueSetName>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetName>Client_Invoicing_Events</valueSetName>
+    </valueSet>
 </CustomField>

@@ -9,44 +9,24 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>C&amp;I</fullName>
-                
-                    <default>false</default>
-                
-                    <label>C&amp;I</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Ground Mount</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Ground Mount</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Storage Facility</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Storage Facility</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>C&amp;I</fullName>
+                <default>false</default>
+                <label>C&amp;I</label>
+            </value>
+            <value>
+                <fullName>Ground Mount</fullName>
+                <default>false</default>
+                <label>Ground Mount</label>
+            </value>
+            <value>
+                <fullName>Storage Facility</fullName>
+                <default>false</default>
+                <label>Storage Facility</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

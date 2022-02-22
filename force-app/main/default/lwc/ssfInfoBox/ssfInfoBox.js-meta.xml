@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
-    
     <apiVersion>50.0</apiVersion>
-    
     <description>Popup information box containing help text</description>
-    
     <isExposed>false</isExposed>
-    
     <masterLabel>Ssf Info Box</masterLabel>
-    
 </LightningComponentBundle>

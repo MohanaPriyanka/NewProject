@@ -9,10 +9,7 @@
     <trackHistory>true</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetName>Client_Logo_Filenames</valueSetName>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetName>Client_Logo_Filenames</valueSetName>
+    </valueSet>
 </CustomField>

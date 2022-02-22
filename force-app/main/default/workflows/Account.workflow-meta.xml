@@ -1,115 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
-    
     <alerts>
-        
         <fullName>Sales_Partner_Application_Submitted_Notification</fullName>
-        
         <description>Sales Partner Application Submitted Notification</description>
-        
         <protected>false</protected>
-        
         <recipients>
-            
             <recipient>Partner_Application_QC_Team</recipient>
-            
             <type>group</type>
-            
         </recipients>
-        
         <senderType>CurrentUser</senderType>
-        
         <template>BFG_Internal_Alerts/Partner_App_Submitted_Alert_Internal</template>
-        
     </alerts>
-    
     <fieldUpdates>
-        
         <fullName>Date_Email_Sent</fullName>
-        
         <field>Date_Cancellation_Email_Sent__c</field>
-        
         <formula>TODAY()</formula>
-        
         <name>Date Email Sent</name>
-        
         <notifyAssignee>false</notifyAssignee>
-        
         <operation>Formula</operation>
-        
         <protected>false</protected>
-        
+        <reevaluateOnChange>false</reevaluateOnChange>
     </fieldUpdates>
-    
     <tasks>
-        
         <fullName>EMAIL_LOG_Recurring_Billing_Receipt</fullName>
-        
         <assignedTo>api@bluewavesolar.com</assignedTo>
-        
         <assignedToType>user</assignedToType>
-        
         <description>EMAIL LOG: Recurring Billing email via this workflow https://na16.salesforce.com/01Qj0000000Eesk</description>
-        
         <dueDateOffset>0</dueDateOffset>
-        
         <notifyAssignee>false</notifyAssignee>
-        
         <priority>Normal</priority>
-        
         <protected>false</protected>
-        
         <status>Completed</status>
-        
         <subject>EMAIL LOG: Recurring Billing Receipt</subject>
-        
     </tasks>
-    
     <tasks>
-        
         <fullName>Email_Account_is_3_Days_Past_Due</fullName>
-        
         <assignedTo>api@bluewavesolar.com</assignedTo>
-        
         <assignedToType>user</assignedToType>
-        
         <description>Sent manually because these customers did not get 3 day warning before due date</description>
-        
         <dueDateOffset>0</dueDateOffset>
-        
         <notifyAssignee>false</notifyAssignee>
-        
         <priority>Normal</priority>
-        
         <protected>false</protected>
-        
         <status>Completed</status>
-        
         <subject>Email: Account is 3 Days Past Due</subject>
-        
     </tasks>
-    
     <tasks>
-        
         <fullName>emailis3dayspastude</fullName>
-        
         <assignedTo>api@bluewavesolar.com</assignedTo>
-        
         <assignedToType>user</assignedToType>
-        
         <dueDateOffset>0</dueDateOffset>
-        
         <notifyAssignee>false</notifyAssignee>
-        
         <priority>Normal</priority>
-        
         <protected>false</protected>
-        
         <status>Completed</status>
-        
         <subject>Email: Account is 3 Days Past Due</subject>
-        
     </tasks>
-    
 </Workflow>

@@ -8,44 +8,24 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Passive</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Passive</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Detractor</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Detractor</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Promoter</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Promoter</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Passive</fullName>
+                <default>false</default>
+                <label>Passive</label>
+            </value>
+            <value>
+                <fullName>Detractor</fullName>
+                <default>false</default>
+                <label>Detractor</label>
+            </value>
+            <value>
+                <fullName>Promoter</fullName>
+                <default>false</default>
+                <label>Promoter</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

@@ -9,54 +9,29 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Contract Execution</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Contract Execution</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>First Bill Sent</fullName>
-                
-                    <default>false</default>
-                
-                    <label>First Bill Sent</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>First Bill Paid</fullName>
-                
-                    <default>false</default>
-                
-                    <label>First Bill Paid</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Cancellation/Refund</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Cancellation/Refund</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Contract Execution</fullName>
+                <default>false</default>
+                <label>Contract Execution</label>
+            </value>
+            <value>
+                <fullName>First Bill Sent</fullName>
+                <default>false</default>
+                <label>First Bill Sent</label>
+            </value>
+            <value>
+                <fullName>First Bill Paid</fullName>
+                <default>false</default>
+                <label>First Bill Paid</label>
+            </value>
+            <value>
+                <fullName>Cancellation/Refund</fullName>
+                <default>false</default>
+                <label>Cancellation/Refund</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

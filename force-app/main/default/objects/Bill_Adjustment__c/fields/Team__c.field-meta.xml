@@ -10,84 +10,44 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Accounting</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Accounting</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Business Applications</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Business Applications</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Client</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Client</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Customer</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Customer</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Operations</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Operations</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Other</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Other</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Utility</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Utility</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Accounting</fullName>
+                <default>false</default>
+                <label>Accounting</label>
+            </value>
+            <value>
+                <fullName>Business Applications</fullName>
+                <default>false</default>
+                <label>Business Applications</label>
+            </value>
+            <value>
+                <fullName>Client</fullName>
+                <default>false</default>
+                <label>Client</label>
+            </value>
+            <value>
+                <fullName>Customer</fullName>
+                <default>false</default>
+                <label>Customer</label>
+            </value>
+            <value>
+                <fullName>Operations</fullName>
+                <default>false</default>
+                <label>Operations</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+            <value>
+                <fullName>Utility</fullName>
+                <default>false</default>
+                <label>Utility</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

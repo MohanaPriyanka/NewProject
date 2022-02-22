@@ -9,32 +9,18 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>BlueWave Solar Loan</fullName>
-                
-                    <default>false</default>
-                
-                    <label>BlueWave Solar Loan</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>MSLP</fullName>
-                
-                    <default>false</default>
-                
-                    <label>MSLP</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>BlueWave Solar Loan</fullName>
+                <default>false</default>
+                <label>BlueWave Solar Loan</label>
+            </value>
+            <value>
+                <fullName>MSLP</fullName>
+                <default>false</default>
+                <label>MSLP</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

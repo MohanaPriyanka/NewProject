@@ -9,74 +9,39 @@
     <trackHistory>true</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Application Started</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Application Started</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Under Review</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Under Review</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Additional Signature Required</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Additional Signature Required</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Awaiting Information Requested</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Awaiting Information Requested</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Expired/Unqualified</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Expired/Unqualified</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Complete</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Complete</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Application Started</fullName>
+                <default>false</default>
+                <label>Application Started</label>
+            </value>
+            <value>
+                <fullName>Under Review</fullName>
+                <default>false</default>
+                <label>Under Review</label>
+            </value>
+            <value>
+                <fullName>Additional Signature Required</fullName>
+                <default>false</default>
+                <label>Additional Signature Required</label>
+            </value>
+            <value>
+                <fullName>Awaiting Information Requested</fullName>
+                <default>false</default>
+                <label>Awaiting Information Requested</label>
+            </value>
+            <value>
+                <fullName>Expired/Unqualified</fullName>
+                <default>false</default>
+                <label>Expired/Unqualified</label>
+            </value>
+            <value>
+                <fullName>Complete</fullName>
+                <default>false</default>
+                <label>Complete</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Auto_Payment_Form__c</fullName>
     <defaultValue>false</defaultValue>
     <description>This field determines whether or not the customer&apos;s portal will show the Chargent connected payment button/form or if it will show the form that simply collects payment information up front. True is the latter, false is the former.</description>

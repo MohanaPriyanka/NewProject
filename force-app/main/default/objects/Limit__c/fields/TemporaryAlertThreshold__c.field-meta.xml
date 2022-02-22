@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>TemporaryAlertThreshold__c</fullName>
-    <deprecated>false</deprecated>
     <externalId>false</externalId>
     <inlineHelpText>If an alert has been triggered and you want to temporarily increase the threshold</inlineHelpText>
     <label>Temporary Alert Threshold</label>

@@ -10,54 +10,29 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Pending Utility Data</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Pending Utility Data</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Complete</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Complete</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Pending BW Review</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Pending BW Review</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Unqualified</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Unqualified</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Pending Utility Data</fullName>
+                <default>false</default>
+                <label>Pending Utility Data</label>
+            </value>
+            <value>
+                <fullName>Complete</fullName>
+                <default>false</default>
+                <label>Complete</label>
+            </value>
+            <value>
+                <fullName>Pending BW Review</fullName>
+                <default>false</default>
+                <label>Pending BW Review</label>
+            </value>
+            <value>
+                <fullName>Unqualified</fullName>
+                <default>false</default>
+                <label>Unqualified</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

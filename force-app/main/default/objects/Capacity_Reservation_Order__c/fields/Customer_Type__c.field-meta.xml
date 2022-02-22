@@ -7,44 +7,24 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Anchor</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Anchor</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Small CS</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Small CS</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>LMI</fullName>
-                
-                    <default>false</default>
-                
-                    <label>LMI</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Anchor</fullName>
+                <default>false</default>
+                <label>Anchor</label>
+            </value>
+            <value>
+                <fullName>Small CS</fullName>
+                <default>false</default>
+                <label>Small CS</label>
+            </value>
+            <value>
+                <fullName>LMI</fullName>
+                <default>false</default>
+                <label>LMI</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

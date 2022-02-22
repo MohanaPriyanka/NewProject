@@ -10,34 +10,19 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>BlueWave Solar Loan</fullName>
-                
-                    <default>false</default>
-                
-                    <label>BlueWave Solar Loan</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Massachusetts Solar Loan Program</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Massachusetts Solar Loan Program</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>BlueWave Solar Loan</fullName>
+                <default>false</default>
+                <label>BlueWave Solar Loan</label>
+            </value>
+            <value>
+                <fullName>Massachusetts Solar Loan Program</fullName>
+                <default>false</default>
+                <label>Massachusetts Solar Loan Program</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

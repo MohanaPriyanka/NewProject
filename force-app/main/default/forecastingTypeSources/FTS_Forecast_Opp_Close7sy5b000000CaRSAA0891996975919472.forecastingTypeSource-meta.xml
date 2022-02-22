@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ForecastingTypeSource xmlns="http://soap.sforce.com/2006/04/metadata">
+    <forecastingSourceDefinition>FSD_Opportunity117210489834947</forecastingSourceDefinition>
+    <forecastingType>Forecast_Opp_Close</forecastingType>
+    <masterLabel>FTS_Forecast_Opp_Close7sy5b000000CaRSAA0891996975919472</masterLabel>
+    <parentSourceDefinition>FSD_OpportunityLineItem866290324060474</parentSourceDefinition>
+    <relationField>OpportunityLineItem.OpportunityId</relationField>
+    <sourceGroup>1</sourceGroup>
+</ForecastingTypeSource>

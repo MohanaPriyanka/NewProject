@@ -5,24 +5,15 @@
     <externalId>false</externalId>
     <label>Externally Serviced UASB</label>
     <lookupFilter>
-        
-            <active>true</active>
-        
-            <errorMessage>UASB must be externally serviced</errorMessage>
-        
-            <filterItems>
-            
-                <field>UASB__c.Externally_Serviced__c</field>
-            
-                <operation>equals</operation>
-            
-                <value>True</value>
-            
-            </filterItems>
-        
-            <isOptional>false</isOptional>
-        
-        </lookupFilter>
+        <active>true</active>
+        <errorMessage>UASB must be externally serviced</errorMessage>
+        <filterItems>
+            <field>UASB__c.Externally_Serviced__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
     <referenceTo>UASB__c</referenceTo>
     <relationshipLabel>Production Detail</relationshipLabel>
     <relationshipName>Production_Detail</relationshipName>

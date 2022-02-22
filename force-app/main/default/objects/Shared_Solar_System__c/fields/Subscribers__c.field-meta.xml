@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Subscribers__c</fullName>
     <externalId>false</externalId>
     <inlineHelpText>Total # of Allocation Schedules assigned to Project</inlineHelpText>
     <label>Subscribers</label>
     <summarizedField>Schedule_Z__c.Subscriptions__c</summarizedField>
     <summaryFilterItems>
-        
-            <field>Schedule_Z__c.Status__c</field>
-        
-            <operation>equals</operation>
-        
-            <value>Billing</value>
-        
-        </summaryFilterItems>
+        <field>Schedule_Z__c.Status__c</field>
+        <operation>equals</operation>
+        <value>Billing</value>
+    </summaryFilterItems>
     <summaryForeignKey>Schedule_Z__c.Shared_Solar_System__c</summaryForeignKey>
     <summaryOperation>max</summaryOperation>
     <trackHistory>false</trackHistory>

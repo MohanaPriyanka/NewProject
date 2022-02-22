@@ -1,25 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <Queue xmlns="http://soap.sforce.com/2006/04/metadata">
-    
     <doesSendEmailToMembers>true</doesSendEmailToMembers>
-    
     <name>Customer KB Approvals</name>
-    
     <queueMembers>
-        
         <users>
-            
-            <user>mzhe@bluewavesolar.com</user>
-            
+            <user>agryta@perchenergy.com</user>
+            <user>emanicke@bluewavesolar.com</user>
+            <user>iouellette@bluewavesolar.com</user>
+            <user>vcoloma@perchenergy.com</user>
         </users>
-        
     </queueMembers>
-    
     <queueSobject>
-        
         <sobjectType>KnowledgeArticleVersion</sobjectType>
-        
     </queueSobject>
-    
 </Queue>

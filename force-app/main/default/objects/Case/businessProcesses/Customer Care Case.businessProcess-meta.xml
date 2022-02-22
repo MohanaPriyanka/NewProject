@@ -3,52 +3,31 @@
     <fullName>Customer Care Case</fullName>
     <isActive>true</isActive>
     <values>
-        
-            <fullName>Awaiting Customer</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Awaiting Customer</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Awaiting External Team</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Awaiting External Team</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Awaiting Internal Team</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Awaiting Internal Team</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Closed</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Closed</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Escalated</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Escalated</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>In Progress</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>In Progress</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>New</fullName>
-        
-            <default>true</default>
-        
-        </values>
+        <fullName>New</fullName>
+        <default>true</default>
+    </values>
 </BusinessProcess>

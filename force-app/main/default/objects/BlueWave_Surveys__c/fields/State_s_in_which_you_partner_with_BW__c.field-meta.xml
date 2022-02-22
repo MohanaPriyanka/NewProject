@@ -14,63 +14,34 @@ New York</description>
     <trackTrending>false</trackTrending>
     <type>MultiselectPicklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Massachusetts - Mass Solar Loan</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Massachusetts - Mass Solar Loan</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Massachusetts - BlueWave Home Solar Loan</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Massachusetts - BlueWave Home Solar Loan</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>North Carolina</fullName>
-                
-                    <default>false</default>
-                
-                    <label>North Carolina</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>South Carolina</fullName>
-                
-                    <default>false</default>
-                
-                    <label>South Carolina</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Rhode Island</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Rhode Island</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Massachusetts - Mass Solar Loan</fullName>
+                <default>false</default>
+                <label>Massachusetts - Mass Solar Loan</label>
+            </value>
+            <value>
+                <fullName>Massachusetts - BlueWave Home Solar Loan</fullName>
+                <default>false</default>
+                <label>Massachusetts - BlueWave Home Solar Loan</label>
+            </value>
+            <value>
+                <fullName>North Carolina</fullName>
+                <default>false</default>
+                <label>North Carolina</label>
+            </value>
+            <value>
+                <fullName>South Carolina</fullName>
+                <default>false</default>
+                <label>South Carolina</label>
+            </value>
+            <value>
+                <fullName>Rhode Island</fullName>
+                <default>false</default>
+                <label>Rhode Island</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
     <visibleLines>6</visibleLines>
 </CustomField>

@@ -16,5 +16,5 @@
     <protected>false</protected>
     <showsLocation>false</showsLocation>
     <showsStatus>false</showsStatus>
-    <url>{!Environment.var_base_url}.lightning.force.com/lightning/r/Report/00O0a000005FEM2/view?fv0={!Schedule_Z__c.Id}</url>
+    <url>https://bluewavesolar.lightning.force.com/lightning/r/Report/00O0a000005FEM2/view?fv0={!Schedule_Z__c.Id}</url>
 </WebLink>

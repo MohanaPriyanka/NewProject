@@ -9,34 +9,19 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Open</fullName>
-                
-                    <default>true</default>
-                
-                    <label>Open</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Closed</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Closed</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Open</fullName>
+                <default>true</default>
+                <label>Open</label>
+            </value>
+            <value>
+                <fullName>Closed</fullName>
+                <default>false</default>
+                <label>Closed</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

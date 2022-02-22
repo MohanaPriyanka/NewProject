@@ -9,54 +9,29 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Not Due</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Not Due</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Pending Approval</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Pending Approval</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Approved</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Approved</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Rejected</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Rejected</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Not Due</fullName>
+                <default>false</default>
+                <label>Not Due</label>
+            </value>
+            <value>
+                <fullName>Pending Approval</fullName>
+                <default>false</default>
+                <label>Pending Approval</label>
+            </value>
+            <value>
+                <fullName>Approved</fullName>
+                <default>false</default>
+                <label>Approved</label>
+            </value>
+            <value>
+                <fullName>Rejected</fullName>
+                <default>false</default>
+                <label>Rejected</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

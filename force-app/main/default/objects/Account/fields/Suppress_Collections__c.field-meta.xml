@@ -9,34 +9,19 @@
     <trackHistory>true</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Suppress collections until no longer past due</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Suppress collections until no longer past due</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Suppress collections forever</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Suppress collections forever</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Suppress collections until no longer past due</fullName>
+                <default>false</default>
+                <label>Suppress collections until no longer past due</label>
+            </value>
+            <value>
+                <fullName>Suppress collections forever</fullName>
+                <default>false</default>
+                <label>Suppress collections forever</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

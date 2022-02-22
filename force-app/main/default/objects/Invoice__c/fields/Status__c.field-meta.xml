@@ -9,74 +9,39 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Draft</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Draft</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Received &gt;&gt; QC</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Received &gt;&gt; QC</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>QC Complete &gt;&gt; Submit to Accounting</fullName>
-                
-                    <default>false</default>
-                
-                    <label>QC Complete &gt;&gt; Submit to Accounting</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Submitted to Accounting</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Submitted to Accounting</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Rejected</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Rejected</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Sent</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Sent</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Draft</fullName>
+                <default>false</default>
+                <label>Draft</label>
+            </value>
+            <value>
+                <fullName>Received &gt;&gt; QC</fullName>
+                <default>false</default>
+                <label>Received &gt;&gt; QC</label>
+            </value>
+            <value>
+                <fullName>QC Complete &gt;&gt; Submit to Accounting</fullName>
+                <default>false</default>
+                <label>QC Complete &gt;&gt; Submit to Accounting</label>
+            </value>
+            <value>
+                <fullName>Submitted to Accounting</fullName>
+                <default>false</default>
+                <label>Submitted to Accounting</label>
+            </value>
+            <value>
+                <fullName>Rejected</fullName>
+                <default>false</default>
+                <label>Rejected</label>
+            </value>
+            <value>
+                <fullName>Sent</fullName>
+                <default>false</default>
+                <label>Sent</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

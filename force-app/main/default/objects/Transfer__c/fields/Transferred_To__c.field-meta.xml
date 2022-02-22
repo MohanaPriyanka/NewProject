@@ -5,48 +5,29 @@
     <inlineHelpText>Credits are transferred/billed to this party</inlineHelpText>
     <label>Transferred To</label>
     <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
     <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Customer</fullName>
-                
-                    <default>true</default>
-                
-                    <label>Customer</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Client</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Client</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>BlueWave</fullName>
-                
-                    <default>false</default>
-                
-                    <label>BlueWave</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Customer</fullName>
+                <default>true</default>
+                <label>Customer</label>
+            </value>
+            <value>
+                <fullName>Client</fullName>
+                <default>false</default>
+                <label>Client</label>
+            </value>
+            <value>
+                <fullName>BlueWave</fullName>
+                <default>false</default>
+                <label>BlueWave</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

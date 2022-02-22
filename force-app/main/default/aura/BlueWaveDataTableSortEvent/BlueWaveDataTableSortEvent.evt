@@ -1,0 +1,4 @@
+<aura:event type="COMPONENT" access="global">
+    <aura:attribute name="sortField" type="String"/>
+    <aura:attribute name="sortAsc" type="Boolean"/>
+</aura:event>

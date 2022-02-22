@@ -6,14 +6,10 @@
     <label>Customer Savings</label>
     <summarizedField>Transfer_Part__c.Amount__c</summarizedField>
     <summaryFilterItems>
-        
-            <field>Transfer_Part__c.Type__c</field>
-        
-            <operation>equals</operation>
-        
-            <value>Customer Savings</value>
-        
-        </summaryFilterItems>
+        <field>Transfer_Part__c.Type__c</field>
+        <operation>equals</operation>
+        <value>Customer Savings</value>
+    </summaryFilterItems>
     <summaryForeignKey>Transfer_Part__c.Production__c</summaryForeignKey>
     <summaryOperation>sum</summaryOperation>
     <trackTrending>false</trackTrending>

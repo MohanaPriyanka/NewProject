@@ -9,34 +9,19 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Pending Verification</fullName>
-                
-                    <default>true</default>
-                
-                    <label>Pending Verification</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Verified</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Verified</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Pending Verification</fullName>
+                <default>true</default>
+                <label>Pending Verification</label>
+            </value>
+            <value>
+                <fullName>Verified</fullName>
+                <default>false</default>
+                <label>Verified</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

@@ -10,6 +10,6 @@ Hard Pull: Bluewave2</description>
     <inlineHelpText>Check this checkbox to pull a credit report using the Soft Pull Transunion account. Use the Pull Credit Report checkbox for hard credit pulls.</inlineHelpText>
     <label>Soft Pull Credit Report</label>
     <trackFeedHistory>false</trackFeedHistory>
-    <trackHistory>false</trackHistory>
+    <trackHistory>true</trackHistory>
     <type>Checkbox</type>
 </CustomField>

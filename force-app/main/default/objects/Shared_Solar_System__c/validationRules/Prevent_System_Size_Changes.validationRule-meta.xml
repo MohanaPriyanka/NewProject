@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Prevent_System_Size_Changes</fullName>
     <active>true</active>
     <description>Prevents updates to yield or system size once project is in onboarding, acq or management. Update should go through the SSSO approval process.</description>

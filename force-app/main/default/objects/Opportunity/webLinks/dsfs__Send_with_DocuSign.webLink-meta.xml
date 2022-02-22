@@ -4,10 +4,10 @@
     <availability>online</availability>
     <description>This button will initiate a DocuSign Envelope that is linked to the Opportunity</description>
     <displayType>button</displayType>
-    <linkType>javascript</linkType>
+    <height>600</height>
+    <linkType>page</linkType>
     <masterLabel>Send with DocuSign</masterLabel>
-    <openType>onClickJavaScript</openType>
+    <openType>noSidebar</openType>
+    <page>dsfs__CreateEnvelopeFromOpportunity</page>
     <protected>false</protected>
-    <url>{!REQUIRESCRIPT(&quot;/apex/dsfs__DocuSign_JavaScript&quot;)}
-DocuSign_CreateEnvelope();</url>
 </WebLink>

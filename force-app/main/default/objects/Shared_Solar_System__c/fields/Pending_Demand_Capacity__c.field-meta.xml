@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Pending_Demand_Capacity__c</fullName>
     <description>Sum of New, Pending, or QC in Progress &quot;Demand&quot; subscriptions (determined when a UAL&apos;s Average Demand exceeds the Average Demand Threshold specified on the Utility record)</description>
     <externalId>false</externalId>

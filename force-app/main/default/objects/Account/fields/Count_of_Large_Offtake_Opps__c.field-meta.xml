@@ -5,23 +5,15 @@
     <inlineHelpText>Count of non-Cancelled Anchor opportunities that indicate whether this Property Account is large offtake, in which case the cancellation process is manual.</inlineHelpText>
     <label>Count of Large Offtake Opps</label>
     <summaryFilterItems>
-        
-            <field>Opportunity.Customer_Group__c</field>
-        
-            <operation>equals</operation>
-        
-            <value>Anchor</value>
-        
-        </summaryFilterItems>
+        <field>Opportunity.Customer_Group__c</field>
+        <operation>equals</operation>
+        <value>Anchor</value>
+    </summaryFilterItems>
     <summaryFilterItems>
-        
-            <field>Opportunity.StageName</field>
-        
-            <operation>notEqual</operation>
-        
-            <value>Cancelled</value>
-        
-        </summaryFilterItems>
+        <field>Opportunity.StageName</field>
+        <operation>notEqual</operation>
+        <value>Cancelled</value>
+    </summaryFilterItems>
     <summaryForeignKey>Opportunity.AccountId</summaryForeignKey>
     <summaryOperation>count</summaryOperation>
     <trackHistory>false</trackHistory>

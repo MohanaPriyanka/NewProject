@@ -5,14 +5,10 @@
     <inlineHelpText>Count of UASes that have a Allocation Schedule Subscription, used by the cancellation process to update the Property Account when removed from all projects</inlineHelpText>
     <label>Number of Subscribed UASes</label>
     <summaryFilterItems>
-        
-            <field>Utility_Account_Subscription__c.Total_Count_of_Schedule_Zs__c</field>
-        
-            <operation>greaterThan</operation>
-        
-            <value>0</value>
-        
-        </summaryFilterItems>
+        <field>Utility_Account_Subscription__c.Total_Count_of_Schedule_Zs__c</field>
+        <operation>greaterThan</operation>
+        <value>0</value>
+    </summaryFilterItems>
     <summaryForeignKey>Utility_Account_Subscription__c.Utility_Account_Log__c</summaryForeignKey>
     <summaryOperation>count</summaryOperation>
     <trackHistory>false</trackHistory>

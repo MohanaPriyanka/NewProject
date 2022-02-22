@@ -10,64 +10,34 @@ https://www.zuora.com/developer/api-reference/#operation/GET_DataQueryJob</inlin
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>accepted</fullName>
-                
-                    <default>false</default>
-                
-                    <label>accepted</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>in_progress</fullName>
-                
-                    <default>false</default>
-                
-                    <label>in_progress</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>completed</fullName>
-                
-                    <default>false</default>
-                
-                    <label>completed</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>failed</fullName>
-                
-                    <default>false</default>
-                
-                    <label>failed</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>cancelled</fullName>
-                
-                    <default>false</default>
-                
-                    <label>cancelled</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>accepted</fullName>
+                <default>false</default>
+                <label>accepted</label>
+            </value>
+            <value>
+                <fullName>in_progress</fullName>
+                <default>false</default>
+                <label>in_progress</label>
+            </value>
+            <value>
+                <fullName>completed</fullName>
+                <default>false</default>
+                <label>completed</label>
+            </value>
+            <value>
+                <fullName>failed</fullName>
+                <default>false</default>
+                <label>failed</label>
+            </value>
+            <value>
+                <fullName>cancelled</fullName>
+                <default>false</default>
+                <label>cancelled</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

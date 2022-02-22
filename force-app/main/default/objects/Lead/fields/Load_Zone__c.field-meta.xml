@@ -8,43 +8,24 @@
     <trackHistory>false</trackHistory>
     <type>MultiselectPicklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>NEMA</fullName>
-                
-                    <default>false</default>
-                
-                    <label>NEMA</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>SEMA</fullName>
-                
-                    <default>false</default>
-                
-                    <label>SEMA</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>WCMA</fullName>
-                
-                    <default>false</default>
-                
-                    <label>WCMA</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>NEMA</fullName>
+                <default>false</default>
+                <label>NEMA</label>
+            </value>
+            <value>
+                <fullName>SEMA</fullName>
+                <default>false</default>
+                <label>SEMA</label>
+            </value>
+            <value>
+                <fullName>WCMA</fullName>
+                <default>false</default>
+                <label>WCMA</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
     <visibleLines>4</visibleLines>
 </CustomField>

@@ -16,7 +16,13 @@
  *              of the Name fields in the corresponding records. Return the
  *              records that now include both the Id and Name for each lookup.
  * 
- * 10/xx/20 -   Eric Smith -    Version 2.46    Issue error if no field names are given
+ * 01/06/21 -   Eric Smith -    Version 3.0.6   Handle Textarea as Richtext
+ * 
+ * 12/30/20 -   Eric Smith -    Version 3.0.5   Remove Field Names from Empty Table Header
+ * 
+ * 12/14/20 -   Eric Smith -    Version 3.0.0   Return object plural name and icon name to the CPE
+ * 
+ * 10/07/20 -   Eric Smith -    Version 2.46    Issue error if no field names are given
  *                                              Allow case insensitive field names
  *                                              Allow custom field API names w/o the __c suffix
  *                                              Get and Return which fields are picklist fields along with Value & Label
@@ -66,6 +72,25 @@ public with sharing class SObjectController2 {
         String timezoneOffset;
     }
 
+    public class CPEReturnResults { 
+        String objectLabel;
+        String objectPluralLabel;
+        String objectIconName;
+    }
+
+    @AuraEnabled
+    public static string getCPEReturnResults(String objName){
+        // Get info about the object to pass back to the CPE
+        CPEReturnResults cpeRR = new CPEReturnResults();
+        SObjectType sobjType = ((SObject)(Type.forName('Schema.'+objName).newInstance())).getSObjectType();
+        DescribeSObjectResult objDescribe = sobjType.getDescribe();
+        cpeRR.objectLabel = objDescribe.getLabel();
+        cpeRR.objectPluralLabel = objDescribe.getLabelPlural();
+        cpeRR.objectIconName = getIconName(objName);
+        System.Debug('cpeRR - '+JSON.serializePretty(cpeRR));
+        return JSON.serialize(cpeRR);
+    }
+
     @AuraEnabled
     public static string getReturnResults(List<SObject> records, String fieldNames){
         System.Debug('records-'+records);
@@ -74,7 +99,8 @@ public with sharing class SObjectController2 {
         if (records.isEmpty()) {
             // throw new MyApexException ('The datatable record collection is empty');
             List<String> emptyList = new List<String>();
-            curRR.dtableColumnFieldDescriptorString = '{"label":"Empty Table, Fields ['+fieldNames+']", "fieldName":"Id", "type":"text"}';
+            // curRR.dtableColumnFieldDescriptorString = '{"label":"Empty Table, Fields ['+fieldNames+']", "fieldName":"Id", "type":"text"}';   // Removed field names in v3.0.5
+            curRR.dtableColumnFieldDescriptorString = '{"label":"Empty Table", "fieldName":"Id", "type":"text"}';
             curRR.lookupFieldData = '{}';
             curRR.lookupFieldList = emptyList;
             curRR.percentFieldList = emptyList;
@@ -205,7 +231,7 @@ public with sharing class SObjectController2 {
             for(String lf : lookupFields) {
                 if(so.get(lf) != null) {
                     Id lrid = ((Id) so.get(lf));
-                    String relObjName = lrid.getSobjectType().getDescribe().getName();
+                    String relObjName = lrid.getSObjectType().getDescribe().getName();
                     if(!objIdMap.containsKey(relObjName)) {
                         objIdMap.put(relObjName, new Set<Id>());
                     }
@@ -257,7 +283,7 @@ public with sharing class SObjectController2 {
             for(String lf : lookupFields) {         
                 if(so.get(lf) != null) {
                     Id lrid = ((Id) so.get(lf));
-                    String relObjName = lrid.getSobjectType().getDescribe().getName();
+                    String relObjName = lrid.getSObjectType().getDescribe().getName();
                     Map<Id, SObject> recs = dataMap.get(relObjName);
                     if (recs == null) continue;
                     SObject cso = recs.get(lrid);
@@ -337,6 +363,9 @@ public with sharing class SObjectController2 {
             when 'CHECKBOX' {
                 return 'checkbox';
             }
+            when 'TEXTAREA' {
+                return 'richtext';
+            }
             when 'STRING' {
                 if (isFormula) return 'richtext';
                 return 'text';
@@ -391,6 +420,36 @@ public with sharing class SObjectController2 {
     private static integer getTimezoneOffset() {
         Datetime dtNow = Datetime.now();
         return UserInfo.getTimezone().getOffset(dtNow);
+    }
+
+    // Get the icon name for the selected object
+    // Thanks to Satya.2020 (https://developer.salesforce.com/forums/?id=9062I000000IQ3eQAG)
+    private static String getIconName(String sObjectName){
+        system.debug('Getting Icon for: '+sObjectName);
+        String iconName;
+        List<Schema.DescribeTabSetResult> tabSetDesc = Schema.describeTabs();
+        List<Schema.DescribeTabResult> tabDesc = new List<Schema.DescribeTabResult>();
+        List<Schema.DescribeIconResult> iconDesc = new List<Schema.DescribeIconResult>();
+
+        for(Schema.DescribeTabSetResult tsr : tabSetDesc) { tabDesc.addAll(tsr.getTabs()); }
+
+        for(Schema.DescribeTabResult tr : tabDesc) {
+            if( sObjectName == tr.getSobjectName() ) {
+                if( tr.isCustom() == true ) {
+                    iconDesc.addAll(tr.getIcons());
+                } else {
+                    iconName = 'standard:' + sObjectName.toLowerCase();
+                }
+            }
+        }
+        for (Schema.DescribeIconResult ir : iconDesc) {
+            if (ir.getContentType() == 'image/svg+xml'){
+                iconName = 'custom:' + ir.getUrl().substringBetween('custom/','.svg').substringBefore('_');
+                break;
+            }
+        }
+        system.debug('iconName: '+iconName);
+        return iconName;
     }
 
 }

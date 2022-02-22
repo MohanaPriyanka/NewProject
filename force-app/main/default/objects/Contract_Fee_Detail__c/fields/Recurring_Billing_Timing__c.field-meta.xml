@@ -4,38 +4,24 @@
     <externalId>false</externalId>
     <label>Recurring Billing Timing</label>
     <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
     <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>In Arrears</fullName>
-                
-                    <default>false</default>
-                
-                    <label>In Arrears</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>In Advance</fullName>
-                
-                    <default>false</default>
-                
-                    <label>In Advance</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>In Arrears</fullName>
+                <default>false</default>
+                <label>In Arrears</label>
+            </value>
+            <value>
+                <fullName>In Advance</fullName>
+                <default>false</default>
+                <label>In Advance</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

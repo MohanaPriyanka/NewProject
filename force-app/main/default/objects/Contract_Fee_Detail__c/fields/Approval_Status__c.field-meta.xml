@@ -9,44 +9,24 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Draft</fullName>
-                
-                    <default>true</default>
-                
-                    <label>Draft</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>In Approvals</fullName>
-                
-                    <default>false</default>
-                
-                    <label>In Approvals</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Approved</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Approved</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Draft</fullName>
+                <default>true</default>
+                <label>Draft</label>
+            </value>
+            <value>
+                <fullName>In Approvals</fullName>
+                <default>false</default>
+                <label>In Approvals</label>
+            </value>
+            <value>
+                <fullName>Approved</fullName>
+                <default>false</default>
+                <label>Approved</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

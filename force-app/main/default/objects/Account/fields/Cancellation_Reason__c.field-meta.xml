@@ -9,250 +9,127 @@
     <trackHistory>true</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Lack of Payment</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Lack of Payment - Default</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Lack of Payment - Unhappy with customer service/servicing</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Lack of Payment - Unhappy with customer service/servicing</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Lack of Payment - Does Not Understand Product</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Lack of Payment - Does Not Understand Product</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Lack of Payment - Product Does Not Meet Needs</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Lack of Payment - Product Does Not Meet Needs</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Lack of Payment - Financial Hardship</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Lack of Payment - Financial Hardship</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Lack of Payment - Business Sold/Out of Business</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Lack of Payment - Business Sold/Out of Business</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Lack of Payment - Customer Moved</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Lack of Payment - Customer Moved</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Lack of Payment - Unable to Establish Communication</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Lack of Payment - Unable to Establish Communication</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Lack of Payment - Other</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Lack of Payment - Other</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Customer Moved</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Customer Moved</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Business Sold/Out of Business</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Business Sold/Out of Business</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Does Not Understand Product</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Does Not Understand Product</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Ineligible account</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Ineligible account</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Product Does Not Meet Needs</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Product Does Not Meet Needs</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Transferred Servicers</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Transferred Servicers</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Unauthorized Enrollment/Improper Sale</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Unauthorized Enrollment/Improper Sale</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Unhappy with customer service/servicing</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Unhappy with customer service/servicing</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Financial Hardship</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Financial Hardship</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Death</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Death</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Other</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Other</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Lack of Payment - Unhappy with BW Service</fullName>
-                
-                    <default>false</default>
-                
-                    <isActive>false</isActive>
-                
-                    <label>Lack of Payment - Unhappy with BW Service</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Unable to Establish Communication</fullName>
-                
-                    <default>false</default>
-                
-                    <isActive>false</isActive>
-                
-                    <label>Unable to Establish Communication</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Unhappy with BW Service</fullName>
-                
-                    <default>false</default>
-                
-                    <isActive>false</isActive>
-                
-                    <label>Unhappy with BW Service</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Lack of Payment</fullName>
+                <default>false</default>
+                <label>Lack of Payment - Default</label>
+            </value>
+            <value>
+                <fullName>Lack of Payment - Unhappy with customer service/servicing</fullName>
+                <default>false</default>
+                <label>Lack of Payment - Unhappy with customer service/servicing</label>
+            </value>
+            <value>
+                <fullName>Lack of Payment - Does Not Understand Product</fullName>
+                <default>false</default>
+                <label>Lack of Payment - Does Not Understand Product</label>
+            </value>
+            <value>
+                <fullName>Lack of Payment - Product Does Not Meet Needs</fullName>
+                <default>false</default>
+                <label>Lack of Payment - Product Does Not Meet Needs</label>
+            </value>
+            <value>
+                <fullName>Lack of Payment - Financial Hardship</fullName>
+                <default>false</default>
+                <label>Lack of Payment - Financial Hardship</label>
+            </value>
+            <value>
+                <fullName>Lack of Payment - Business Sold/Out of Business</fullName>
+                <default>false</default>
+                <label>Lack of Payment - Business Sold/Out of Business</label>
+            </value>
+            <value>
+                <fullName>Lack of Payment - Customer Moved</fullName>
+                <default>false</default>
+                <label>Lack of Payment - Customer Moved</label>
+            </value>
+            <value>
+                <fullName>Lack of Payment - Unable to Establish Communication</fullName>
+                <default>false</default>
+                <label>Lack of Payment - Unable to Establish Communication</label>
+            </value>
+            <value>
+                <fullName>Lack of Payment - Other</fullName>
+                <default>false</default>
+                <label>Lack of Payment - Other</label>
+            </value>
+            <value>
+                <fullName>Customer Moved</fullName>
+                <default>false</default>
+                <label>Customer Moved</label>
+            </value>
+            <value>
+                <fullName>Business Sold/Out of Business</fullName>
+                <default>false</default>
+                <label>Business Sold/Out of Business</label>
+            </value>
+            <value>
+                <fullName>Does Not Understand Product</fullName>
+                <default>false</default>
+                <label>Does Not Understand Product</label>
+            </value>
+            <value>
+                <fullName>Ineligible account</fullName>
+                <default>false</default>
+                <label>Ineligible account</label>
+            </value>
+            <value>
+                <fullName>Product Does Not Meet Needs</fullName>
+                <default>false</default>
+                <label>Product Does Not Meet Needs</label>
+            </value>
+            <value>
+                <fullName>Transferred Servicers</fullName>
+                <default>false</default>
+                <label>Transferred Servicers</label>
+            </value>
+            <value>
+                <fullName>Unauthorized Enrollment/Improper Sale</fullName>
+                <default>false</default>
+                <label>Unauthorized Enrollment/Improper Sale</label>
+            </value>
+            <value>
+                <fullName>Unhappy with customer service/servicing</fullName>
+                <default>false</default>
+                <label>Unhappy with customer service/servicing</label>
+            </value>
+            <value>
+                <fullName>Financial Hardship</fullName>
+                <default>false</default>
+                <label>Financial Hardship</label>
+            </value>
+            <value>
+                <fullName>Death</fullName>
+                <default>false</default>
+                <label>Death</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+            <value>
+                <fullName>Lack of Payment - Unhappy with BW Service</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Lack of Payment - Unhappy with BW Service</label>
+            </value>
+            <value>
+                <fullName>Unable to Establish Communication</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Unable to Establish Communication</label>
+            </value>
+            <value>
+                <fullName>Unhappy with BW Service</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Unhappy with BW Service</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

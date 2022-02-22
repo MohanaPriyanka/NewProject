@@ -10,10 +10,7 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetName>Underwriting_Criteria</valueSetName>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetName>Underwriting_Criteria</valueSetName>
+    </valueSet>
 </CustomField>

@@ -71,8 +71,8 @@
     <fieldUpdates>
         <fullName>Opportunity_Stage_BW_Signature</fullName>
         <field>StageName</field>
-        <literalValue>Pending Perch Signature</literalValue>
-        <name>Opportunity Stage - Perch Signature</name>
+        <literalValue>Pending BlueWave Signature</literalValue>
+        <name>Opportunity Stage - BW Signature</name>
         <notifyAssignee>false</notifyAssignee>
         <operation>Literal</operation>
         <protected>false</protected>

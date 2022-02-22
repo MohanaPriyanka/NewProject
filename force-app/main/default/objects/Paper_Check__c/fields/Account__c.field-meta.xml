@@ -6,24 +6,15 @@
     <inlineHelpText>This is the Property Account to which the check is applied.</inlineHelpText>
     <label>Account</label>
     <lookupFilter>
-        
-            <active>true</active>
-        
-            <errorMessage>Paper checks can only be logged to Property Accounts.</errorMessage>
-        
-            <filterItems>
-            
-                <field>Account.RecordTypeId</field>
-            
-                <operation>equals</operation>
-            
-                <value>Property</value>
-            
-            </filterItems>
-        
-            <isOptional>false</isOptional>
-        
-        </lookupFilter>
+        <active>true</active>
+        <errorMessage>Paper checks can only be logged to Property Accounts.</errorMessage>
+        <filterItems>
+            <field>Account.RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Property</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
     <referenceTo>Account</referenceTo>
     <relationshipLabel>Paper Checks</relationshipLabel>
     <relationshipName>Paper_Checks</relationshipName>

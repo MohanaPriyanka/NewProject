@@ -1,55 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <BusinessProcess xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>C %26 I</fullName>
-    <description>This is for the C and I solar development business line</description>
     <isActive>true</isActive>
     <values>
-        
-            <fullName>Negotiating</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Negotiating</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>New</fullName>
-        
-            <default>true</default>
-        
-        </values>
+        <fullName>New</fullName>
+        <default>true</default>
+    </values>
     <values>
-        
-            <fullName>Pending Information</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Pending Information</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Qualified</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Qualified</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Reviewed</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Reviewed</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Under Review</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Under Review</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Unqualified</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Unqualified</fullName>
+        <default>false</default>
+    </values>
 </BusinessProcess>

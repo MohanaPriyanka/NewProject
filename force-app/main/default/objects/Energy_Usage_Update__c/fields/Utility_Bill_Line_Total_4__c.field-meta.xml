@@ -6,23 +6,15 @@
     <label>Fees &amp; Credits Total (4 of 4)</label>
     <summarizedField>Utility_Bill_Line_Item__c.Amount__c</summarizedField>
     <summaryFilterItems>
-        
-            <field>Utility_Bill_Line_Item__c.Group__c</field>
-        
-            <operation>equals</operation>
-        
-            <value>4</value>
-        
-        </summaryFilterItems>
+        <field>Utility_Bill_Line_Item__c.Group__c</field>
+        <operation>equals</operation>
+        <value>4</value>
+    </summaryFilterItems>
     <summaryFilterItems>
-        
-            <field>Utility_Bill_Line_Item__c.Category__c</field>
-        
-            <operation>equals</operation>
-        
-            <value>Fees &amp; Credits</value>
-        
-        </summaryFilterItems>
+        <field>Utility_Bill_Line_Item__c.Category__c</field>
+        <operation>equals</operation>
+        <value>Fees &amp; Credits</value>
+    </summaryFilterItems>
     <summaryForeignKey>Utility_Bill_Line_Item__c.Production_Update__c</summaryForeignKey>
     <summaryOperation>sum</summaryOperation>
     <trackHistory>false</trackHistory>

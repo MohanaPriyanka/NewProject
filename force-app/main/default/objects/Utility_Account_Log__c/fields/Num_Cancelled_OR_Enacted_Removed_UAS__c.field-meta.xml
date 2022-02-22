@@ -4,14 +4,10 @@
     <externalId>false</externalId>
     <label>Num Cancelled OR Enacted: Removed UAS</label>
     <summaryFilterItems>
-        
-            <field>Utility_Account_Subscription__c.Next_Schedule_Z_Status__c</field>
-        
-            <operation>equals</operation>
-        
-            <value>Inactive Subscription</value>
-        
-        </summaryFilterItems>
+        <field>Utility_Account_Subscription__c.Next_Schedule_Z_Status__c</field>
+        <operation>equals</operation>
+        <value>Inactive Subscription</value>
+    </summaryFilterItems>
     <summaryForeignKey>Utility_Account_Subscription__c.Utility_Account_Log__c</summaryForeignKey>
     <summaryOperation>count</summaryOperation>
     <trackHistory>false</trackHistory>

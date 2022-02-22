@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Capacity_Available_to_be_Reserved__c</fullName>
     <externalId>false</externalId>
     <formula>Perch_Acq_Reserved_Small_CS_Capacity__c - (Pending_Small_CS_Capacity__c + Capacity_Committed_kW_DC__c)</formula>

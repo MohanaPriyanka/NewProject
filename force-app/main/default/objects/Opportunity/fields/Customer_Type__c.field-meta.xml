@@ -9,183 +9,94 @@
     <trackTrending>false</trackTrending>
     <type>MultiselectPicklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>County</fullName>
-                
-                    <default>false</default>
-                
-                    <label>County</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Municipality</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Municipality</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Public School</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Public School</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Private School</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Private School</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Public Affordable-Surplus</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Public Affordable-Surplus</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Public Affordable-Deficit</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Public Affordable-Deficit</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Public Affordable-Unknown Budget</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Public Affordable-Unknown Budget</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>MAPC</fullName>
-                
-                    <default>false</default>
-                
-                    <label>MAPC</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>MLP</fullName>
-                
-                    <default>false</default>
-                
-                    <label>MLP</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>C&amp;I</fullName>
-                
-                    <default>false</default>
-                
-                    <label>C&amp;I</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Private Affordable</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Private Affordable</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Sewer</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Sewer</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Water</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Water</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Fire</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Fire</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Public Works</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Public Works</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Airport</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Airport</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Ambulance</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Ambulance</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>County</fullName>
+                <default>false</default>
+                <label>County</label>
+            </value>
+            <value>
+                <fullName>Municipality</fullName>
+                <default>false</default>
+                <label>Municipality</label>
+            </value>
+            <value>
+                <fullName>Public School</fullName>
+                <default>false</default>
+                <label>Public School</label>
+            </value>
+            <value>
+                <fullName>Private School</fullName>
+                <default>false</default>
+                <label>Private School</label>
+            </value>
+            <value>
+                <fullName>Public Affordable-Surplus</fullName>
+                <default>false</default>
+                <label>Public Affordable-Surplus</label>
+            </value>
+            <value>
+                <fullName>Public Affordable-Deficit</fullName>
+                <default>false</default>
+                <label>Public Affordable-Deficit</label>
+            </value>
+            <value>
+                <fullName>Public Affordable-Unknown Budget</fullName>
+                <default>false</default>
+                <label>Public Affordable-Unknown Budget</label>
+            </value>
+            <value>
+                <fullName>MAPC</fullName>
+                <default>false</default>
+                <label>MAPC</label>
+            </value>
+            <value>
+                <fullName>MLP</fullName>
+                <default>false</default>
+                <label>MLP</label>
+            </value>
+            <value>
+                <fullName>C&amp;I</fullName>
+                <default>false</default>
+                <label>C&amp;I</label>
+            </value>
+            <value>
+                <fullName>Private Affordable</fullName>
+                <default>false</default>
+                <label>Private Affordable</label>
+            </value>
+            <value>
+                <fullName>Sewer</fullName>
+                <default>false</default>
+                <label>Sewer</label>
+            </value>
+            <value>
+                <fullName>Water</fullName>
+                <default>false</default>
+                <label>Water</label>
+            </value>
+            <value>
+                <fullName>Fire</fullName>
+                <default>false</default>
+                <label>Fire</label>
+            </value>
+            <value>
+                <fullName>Public Works</fullName>
+                <default>false</default>
+                <label>Public Works</label>
+            </value>
+            <value>
+                <fullName>Airport</fullName>
+                <default>false</default>
+                <label>Airport</label>
+            </value>
+            <value>
+                <fullName>Ambulance</fullName>
+                <default>false</default>
+                <label>Ambulance</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
     <visibleLines>4</visibleLines>
 </CustomField>

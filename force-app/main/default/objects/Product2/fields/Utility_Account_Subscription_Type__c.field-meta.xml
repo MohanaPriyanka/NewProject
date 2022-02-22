@@ -9,34 +9,19 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Multiple subscriptions per Utility Account</fullName>
-                
-                    <default>true</default>
-                
-                    <label>Multiple subscriptions per Utility Account</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Single subscription per Utility Account</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Single subscription per Utility Account</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Multiple subscriptions per Utility Account</fullName>
+                <default>true</default>
+                <label>Multiple subscriptions per Utility Account</label>
+            </value>
+            <value>
+                <fullName>Single subscription per Utility Account</fullName>
+                <default>false</default>
+                <label>Single subscription per Utility Account</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

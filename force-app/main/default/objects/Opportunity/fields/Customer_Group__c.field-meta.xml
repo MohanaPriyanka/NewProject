@@ -9,52 +9,28 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Residential</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Residential</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Non-Residential</fullName>
-                
-                    <default>true</default>
-                
-                    <label>Non-Residential</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Anchor</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Anchor</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Business</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Business</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Residential</fullName>
+                <default>false</default>
+                <label>Residential</label>
+            </value>
+            <value>
+                <fullName>Non-Residential</fullName>
+                <default>true</default>
+                <label>Non-Residential</label>
+            </value>
+            <value>
+                <fullName>Anchor</fullName>
+                <default>false</default>
+                <label>Anchor</label>
+            </value>
+            <value>
+                <fullName>Business</fullName>
+                <default>false</default>
+                <label>Business</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

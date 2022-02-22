@@ -9,32 +9,18 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Automatic</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Automatic</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Manual</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Manual</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Automatic</fullName>
+                <default>false</default>
+                <label>Automatic</label>
+            </value>
+            <value>
+                <fullName>Manual</fullName>
+                <default>false</default>
+                <label>Manual</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

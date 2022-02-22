@@ -4,9 +4,9 @@
     <externalId>false</externalId>
     <inlineHelpText>Sum of Projects that are currently billing (where we expect utilization to be close to 100%)</inlineHelpText>
     <label>MW Under Management</label>
-    <precision>3</precision>
+    <precision>5</precision>
     <required>false</required>
-    <scale>0</scale>
+    <scale>2</scale>
     <trackTrending>false</trackTrending>
     <type>Number</type>
     <unique>false</unique>

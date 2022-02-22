@@ -10,144 +10,74 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Client Request</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Client Request</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Credit Adjustment</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Credit Adjustment</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Incentive</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Incentive</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Customer Support - Courtesy</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Customer Support - Courtesy</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Customer Support - Error</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Customer Support - Error</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Finalled Utility Account</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Finalled Utility Account</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Missed Bill</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Missed Bill</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Payment Failure</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Payment Failure</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Payment Logging Error</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Payment Logging Error</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Platform Bug</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Platform Bug</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Reconciliation Clean-Up</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Reconciliation Clean-Up</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Utility Error</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Utility Error</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Other</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Other</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Client Request</fullName>
+                <default>false</default>
+                <label>Client Request</label>
+            </value>
+            <value>
+                <fullName>Credit Adjustment</fullName>
+                <default>false</default>
+                <label>Credit Adjustment</label>
+            </value>
+            <value>
+                <fullName>Incentive</fullName>
+                <default>false</default>
+                <label>Incentive</label>
+            </value>
+            <value>
+                <fullName>Customer Support - Courtesy</fullName>
+                <default>false</default>
+                <label>Customer Support - Courtesy</label>
+            </value>
+            <value>
+                <fullName>Customer Support - Error</fullName>
+                <default>false</default>
+                <label>Customer Support - Error</label>
+            </value>
+            <value>
+                <fullName>Finalled Utility Account</fullName>
+                <default>false</default>
+                <label>Finalled Utility Account</label>
+            </value>
+            <value>
+                <fullName>Missed Bill</fullName>
+                <default>false</default>
+                <label>Missed Bill</label>
+            </value>
+            <value>
+                <fullName>Payment Failure</fullName>
+                <default>false</default>
+                <label>Payment Failure</label>
+            </value>
+            <value>
+                <fullName>Payment Logging Error</fullName>
+                <default>false</default>
+                <label>Payment Logging Error</label>
+            </value>
+            <value>
+                <fullName>Platform Bug</fullName>
+                <default>false</default>
+                <label>Platform Bug</label>
+            </value>
+            <value>
+                <fullName>Reconciliation Clean-Up</fullName>
+                <default>false</default>
+                <label>Reconciliation Clean-Up</label>
+            </value>
+            <value>
+                <fullName>Utility Error</fullName>
+                <default>false</default>
+                <label>Utility Error</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

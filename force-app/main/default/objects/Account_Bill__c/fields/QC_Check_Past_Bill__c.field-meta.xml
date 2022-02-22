@@ -10,34 +10,19 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Confirmed</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Confirmed</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>ERROR</fullName>
-                
-                    <default>false</default>
-                
-                    <label>ERROR</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Confirmed</fullName>
+                <default>false</default>
+                <label>Confirmed</label>
+            </value>
+            <value>
+                <fullName>ERROR</fullName>
+                <default>false</default>
+                <label>ERROR</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

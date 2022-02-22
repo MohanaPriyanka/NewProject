@@ -7,114 +7,59 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>SREC Value</fullName>
-                
-                    <default>false</default>
-                
-                    <label>SREC Value</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Billing</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Billing</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Loan Approval</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Loan Approval</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Avidia Account</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Avidia Account</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Payment Structure</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Payment Structure</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Cancellations</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Cancellations</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Other</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Other</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Subscription Adjustments</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Subscription Adjustments</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>General</fullName>
-                
-                    <default>false</default>
-                
-                    <label>General</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>CS Benefits</fullName>
-                
-                    <default>false</default>
-                
-                    <label>CS Benefits</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>SREC Value</fullName>
+                <default>false</default>
+                <label>SREC Value</label>
+            </value>
+            <value>
+                <fullName>Billing</fullName>
+                <default>false</default>
+                <label>Billing</label>
+            </value>
+            <value>
+                <fullName>Loan Approval</fullName>
+                <default>false</default>
+                <label>Loan Approval</label>
+            </value>
+            <value>
+                <fullName>Avidia Account</fullName>
+                <default>false</default>
+                <label>Avidia Account</label>
+            </value>
+            <value>
+                <fullName>Payment Structure</fullName>
+                <default>false</default>
+                <label>Payment Structure</label>
+            </value>
+            <value>
+                <fullName>Cancellations</fullName>
+                <default>false</default>
+                <label>Cancellations</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+            <value>
+                <fullName>Subscription Adjustments</fullName>
+                <default>false</default>
+                <label>Subscription Adjustments</label>
+            </value>
+            <value>
+                <fullName>General</fullName>
+                <default>false</default>
+                <label>General</label>
+            </value>
+            <value>
+                <fullName>CS Benefits</fullName>
+                <default>false</default>
+                <label>CS Benefits</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

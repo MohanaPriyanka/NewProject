@@ -8,34 +8,19 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>UCB</fullName>
-                
-                    <default>false</default>
-                
-                    <label>UCB</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Non-UCB</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Non-UCB</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>UCB</fullName>
+                <default>false</default>
+                <label>UCB</label>
+            </value>
+            <value>
+                <fullName>Non-UCB</fullName>
+                <default>false</default>
+                <label>Non-UCB</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

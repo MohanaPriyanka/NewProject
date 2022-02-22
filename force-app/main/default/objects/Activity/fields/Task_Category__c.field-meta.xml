@@ -7,125 +7,65 @@
     <required>false</required>
     <type>MultiselectPicklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Billing</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Billing</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Cancellation</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Cancellation</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Fairhaven and Clara Barton Call-a-thon</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Fairhaven and Clara Barton Call-a-thon</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Fairhaven and Clara Barton Fiasco</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Fairhaven and Clara Barton Fiasco</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>General CS</fullName>
-                
-                    <default>false</default>
-                
-                    <label>General CS</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>How much will I save</fullName>
-                
-                    <default>false</default>
-                
-                    <label>How much will I save</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>How to Pay Bill</fullName>
-                
-                    <default>false</default>
-                
-                    <label>How to Pay Bill</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Payment Plan</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Payment Plan</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Portal Log In</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Portal Log In</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Subscription Size Change</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Subscription Size Change</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>When will I see credits on my account</fullName>
-                
-                    <default>false</default>
-                
-                    <label>When will I see credits on my account</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Billing</fullName>
+                <default>false</default>
+                <label>Billing</label>
+            </value>
+            <value>
+                <fullName>Cancellation</fullName>
+                <default>false</default>
+                <label>Cancellation</label>
+            </value>
+            <value>
+                <fullName>Fairhaven and Clara Barton Call-a-thon</fullName>
+                <default>false</default>
+                <label>Fairhaven and Clara Barton Call-a-thon</label>
+            </value>
+            <value>
+                <fullName>Fairhaven and Clara Barton Fiasco</fullName>
+                <default>false</default>
+                <label>Fairhaven and Clara Barton Fiasco</label>
+            </value>
+            <value>
+                <fullName>General CS</fullName>
+                <default>false</default>
+                <label>General CS</label>
+            </value>
+            <value>
+                <fullName>How much will I save</fullName>
+                <default>false</default>
+                <label>How much will I save</label>
+            </value>
+            <value>
+                <fullName>How to Pay Bill</fullName>
+                <default>false</default>
+                <label>How to Pay Bill</label>
+            </value>
+            <value>
+                <fullName>Payment Plan</fullName>
+                <default>false</default>
+                <label>Payment Plan</label>
+            </value>
+            <value>
+                <fullName>Portal Log In</fullName>
+                <default>false</default>
+                <label>Portal Log In</label>
+            </value>
+            <value>
+                <fullName>Subscription Size Change</fullName>
+                <default>false</default>
+                <label>Subscription Size Change</label>
+            </value>
+            <value>
+                <fullName>When will I see credits on my account</fullName>
+                <default>false</default>
+                <label>When will I see credits on my account</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
     <visibleLines>5</visibleLines>
 </CustomField>

@@ -5,24 +5,15 @@
     <inlineHelpText>Partner Account</inlineHelpText>
     <label>Partner Account</label>
     <lookupFilter>
-        
-            <active>true</active>
-        
-            <errorMessage>The Account must have a record type of Partner Account</errorMessage>
-        
-            <filterItems>
-            
-                <field>Account.RecordTypeId</field>
-            
-                <operation>equals</operation>
-            
-                <value>Partner Account</value>
-            
-            </filterItems>
-        
-            <isOptional>false</isOptional>
-        
-        </lookupFilter>
+        <active>true</active>
+        <errorMessage>The Account must have a record type of Partner Account</errorMessage>
+        <filterItems>
+            <field>Account.RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Partner Account</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
     <referenceTo>Account</referenceTo>
     <relationshipLabel>Shared Solar Systems</relationshipLabel>
     <relationshipName>Partner_Shared_Solar_System_Accesses</relationshipName>

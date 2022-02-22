@@ -6,6 +6,7 @@
     <inlineHelpText>This is the date that the Subscription Order was approved. It is populated automatically when the Status field is set to approved. Subscription Orders cannot be edited once they&apos;ve been approved.</inlineHelpText>
     <label>Effective Date</label>
     <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
     <trackHistory>true</trackHistory>
     <trackTrending>false</trackTrending>
     <type>DateTime</type>

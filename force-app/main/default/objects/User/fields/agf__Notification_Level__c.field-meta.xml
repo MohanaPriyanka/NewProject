@@ -13,42 +13,23 @@ The Whole Enchilada: All notifications (Default)</inlineHelpText>
     <trackFeedHistory>false</trackFeedHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Bread &amp; Butter</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Bread &amp; Butter</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Meat &amp; Potatoes</fullName>
-                
-                    <default>true</default>
-                
-                    <label>Meat &amp; Potatoes</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>The Whole Enchilada</fullName>
-                
-                    <default>false</default>
-                
-                    <label>The Whole Enchilada</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Bread &amp; Butter</fullName>
+                <default>false</default>
+                <label>Bread &amp; Butter</label>
+            </value>
+            <value>
+                <fullName>Meat &amp; Potatoes</fullName>
+                <default>true</default>
+                <label>Meat &amp; Potatoes</label>
+            </value>
+            <value>
+                <fullName>The Whole Enchilada</fullName>
+                <default>false</default>
+                <label>The Whole Enchilada</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

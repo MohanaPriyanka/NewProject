@@ -8,33 +8,19 @@
     <trackTrending>false</trackTrending>
     <type>MultiselectPicklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Community Solar</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Community Solar</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Residential Loan</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Residential Loan</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Community Solar</fullName>
+                <default>false</default>
+                <label>Community Solar</label>
+            </value>
+            <value>
+                <fullName>Residential Loan</fullName>
+                <default>false</default>
+                <label>Residential Loan</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
     <visibleLines>4</visibleLines>
 </CustomField>

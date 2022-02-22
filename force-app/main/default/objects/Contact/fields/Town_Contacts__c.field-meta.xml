@@ -5,22 +5,14 @@
     <externalId>false</externalId>
     <label>Town Contacts</label>
     <lookupFilter>
-        
-            <active>true</active>
-        
-            <filterItems>
-            
-                <field>$Source.RecordTypeId</field>
-            
-                <operation>equals</operation>
-            
-                <value>Project Management Contact</value>
-            
-            </filterItems>
-        
-            <isOptional>false</isOptional>
-        
-        </lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>$Source.RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Project Management Contact</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
     <referenceTo>Town__c</referenceTo>
     <relationshipLabel>Contacts</relationshipLabel>
     <relationshipName>Contacts</relationshipName>

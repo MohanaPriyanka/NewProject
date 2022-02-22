@@ -8,44 +8,24 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>No</fullName>
-                
-                    <default>true</default>
-                
-                    <label>No</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Yes</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Yes</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Not Applied in Salesforce</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Not Applied in Salesforce</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>No</fullName>
+                <default>true</default>
+                <label>No</label>
+            </value>
+            <value>
+                <fullName>Yes</fullName>
+                <default>false</default>
+                <label>Yes</label>
+            </value>
+            <value>
+                <fullName>Not Applied in Salesforce</fullName>
+                <default>false</default>
+                <label>Not Applied in Salesforce</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

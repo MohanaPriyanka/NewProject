@@ -8,34 +8,19 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Residential</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Residential</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Non-Residential</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Non-Residential</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Residential</fullName>
+                <default>false</default>
+                <label>Residential</label>
+            </value>
+            <value>
+                <fullName>Non-Residential</fullName>
+                <default>false</default>
+                <label>Non-Residential</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

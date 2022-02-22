@@ -5,46 +5,28 @@
     <inlineHelpText>Credits are transferred and billed by UASB, Adjustment, or Not Billed</inlineHelpText>
     <label>Bill By</label>
     <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
     <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>UASB</fullName>
-                
-                    <default>false</default>
-                
-                    <label>UASB</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Adjustment</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Adjustment</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Not Billed</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Not Billed</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>UASB</fullName>
+                <default>false</default>
+                <label>UASB</label>
+            </value>
+            <value>
+                <fullName>Adjustment</fullName>
+                <default>false</default>
+                <label>Adjustment</label>
+            </value>
+            <value>
+                <fullName>Not Billed</fullName>
+                <default>false</default>
+                <label>Not Billed</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

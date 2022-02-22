@@ -9,84 +9,44 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Not Started</fullName>
-                
-                    <default>true</default>
-                
-                    <label>Not Started</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>In Process</fullName>
-                
-                    <default>false</default>
-                
-                    <label>In Process</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>In Good Standing</fullName>
-                
-                    <default>false</default>
-                
-                    <label>In Good Standing</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Not in Good Standing</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Not in Good Standing</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Termination in process</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Termination in process</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Terminated - DO NOT USE</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Terminated - DO NOT USE</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Sold</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Sold</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Not Started</fullName>
+                <default>true</default>
+                <label>Not Started</label>
+            </value>
+            <value>
+                <fullName>In Process</fullName>
+                <default>false</default>
+                <label>In Process</label>
+            </value>
+            <value>
+                <fullName>In Good Standing</fullName>
+                <default>false</default>
+                <label>In Good Standing</label>
+            </value>
+            <value>
+                <fullName>Not in Good Standing</fullName>
+                <default>false</default>
+                <label>Not in Good Standing</label>
+            </value>
+            <value>
+                <fullName>Termination in process</fullName>
+                <default>false</default>
+                <label>Termination in process</label>
+            </value>
+            <value>
+                <fullName>Terminated - DO NOT USE</fullName>
+                <default>false</default>
+                <label>Terminated - DO NOT USE</label>
+            </value>
+            <value>
+                <fullName>Sold</fullName>
+                <default>false</default>
+                <label>Sold</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

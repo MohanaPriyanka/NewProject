@@ -9,10 +9,7 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetName>CS_Services_Type</valueSetName>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetName>CS_Services_Type</valueSetName>
+    </valueSet>
 </CustomField>

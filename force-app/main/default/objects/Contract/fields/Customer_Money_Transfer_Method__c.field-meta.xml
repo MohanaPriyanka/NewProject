@@ -9,32 +9,18 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Customer pays Project Co Directly</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Customer pays Project Co Directly</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Customer pays BW and BW Remits Monthly</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Customer pays BW and BW Remits Monthly</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Customer pays Project Co Directly</fullName>
+                <default>false</default>
+                <label>Customer pays Project Co Directly</label>
+            </value>
+            <value>
+                <fullName>Customer pays BW and BW Remits Monthly</fullName>
+                <default>false</default>
+                <label>Customer pays BW and BW Remits Monthly</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Average_Demand__c</fullName>
     <description>Value calculated from UDRP Quantities in the last 12 months where the Measurement Unit = K1 and the Measurement Significance Code = 51</description>
     <externalId>false</externalId>

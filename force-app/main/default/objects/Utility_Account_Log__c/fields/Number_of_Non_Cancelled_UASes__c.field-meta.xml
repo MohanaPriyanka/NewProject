@@ -4,14 +4,10 @@
     <externalId>false</externalId>
     <label>Number of Non-Cancelled UASes</label>
     <summaryFilterItems>
-        
-            <field>Utility_Account_Subscription__c.Current_Schedule_Z_Status__c</field>
-        
-            <operation>notEqual</operation>
-        
-            <value>Cancelled</value>
-        
-        </summaryFilterItems>
+        <field>Utility_Account_Subscription__c.Current_Schedule_Z_Status__c</field>
+        <operation>notEqual</operation>
+        <value>Cancelled</value>
+    </summaryFilterItems>
     <summaryForeignKey>Utility_Account_Subscription__c.Utility_Account_Log__c</summaryForeignKey>
     <summaryOperation>count</summaryOperation>
     <trackHistory>false</trackHistory>

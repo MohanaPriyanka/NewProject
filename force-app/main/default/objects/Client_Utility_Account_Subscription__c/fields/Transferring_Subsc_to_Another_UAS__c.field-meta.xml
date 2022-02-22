@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Transferring_Subsc_to_Another_UAS__c</fullName>
+    <externalId>false</externalId>
+    <formula>Utility_Account_Subscription__r.Transferring_Subsc_to_Another_UAS__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>If checked, this subscription going to be transferred with next allocation schedule</inlineHelpText>
+    <label>Transferring Subsc. to Another UAS</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

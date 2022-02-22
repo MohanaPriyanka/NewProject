@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Service_Territory__c</fullName>
     <externalId>false</externalId>
     <label>XXXService Territory</label>
@@ -9,62 +9,33 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Duke Energy Carolinas (DEC)</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Duke Energy Carolinas (DEC)</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Duke Energy Progress (DEP)</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Duke Energy Progress (DEP)</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>NEMA</fullName>
-                
-                    <default>false</default>
-                
-                    <label>NEMA</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>SEMA</fullName>
-                
-                    <default>false</default>
-                
-                    <label>SEMA</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>WCMA</fullName>
-                
-                    <default>false</default>
-                
-                    <label>WCMA</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Duke Energy Carolinas (DEC)</fullName>
+                <default>false</default>
+                <label>Duke Energy Carolinas (DEC)</label>
+            </value>
+            <value>
+                <fullName>Duke Energy Progress (DEP)</fullName>
+                <default>false</default>
+                <label>Duke Energy Progress (DEP)</label>
+            </value>
+            <value>
+                <fullName>NEMA</fullName>
+                <default>false</default>
+                <label>NEMA</label>
+            </value>
+            <value>
+                <fullName>SEMA</fullName>
+                <default>false</default>
+                <label>SEMA</label>
+            </value>
+            <value>
+                <fullName>WCMA</fullName>
+                <default>false</default>
+                <label>WCMA</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

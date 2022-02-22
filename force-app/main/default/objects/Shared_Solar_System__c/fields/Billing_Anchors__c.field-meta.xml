@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Billing_Anchors__c</fullName>
     <externalId>false</externalId>
     <label>Billing Anchors on Project</label>
@@ -9,34 +9,24 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>BlueWave</fullName>
-                
-                    <default>false</default>
-                
-                    <label>BlueWave</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>RadianGen</fullName>
-                
-                    <default>false</default>
-                
-                    <label>RadianGen</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>BlueWave</fullName>
+                <default>false</default>
+                <label>BlueWave</label>
+            </value>
+            <value>
+                <fullName>RadianGen</fullName>
+                <default>false</default>
+                <label>RadianGen</label>
+            </value>
+            <value>
+                <fullName>Client</fullName>
+                <default>false</default>
+                <label>Client</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

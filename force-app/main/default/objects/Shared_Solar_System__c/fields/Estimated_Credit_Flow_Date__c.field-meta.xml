@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Estimated_Credit_Flow_Date__c</fullName>
     <description>Adds 30 days to the Last Allocation Schedule Enacted Date if populated. Otherwise, adds 30 days to Actual PTO Date or 3 months to the Estimated PTO Date.</description>
     <externalId>false</externalId>

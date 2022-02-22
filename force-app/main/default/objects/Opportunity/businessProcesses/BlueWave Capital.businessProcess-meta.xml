@@ -3,73 +3,47 @@
     <fullName>BlueWave Capital</fullName>
     <isActive>true</isActive>
     <values>
-        
-            <fullName>Cancelled</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Cancelled</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Complete</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Complete</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Contract Pending</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Contract Pending</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Expired</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Expired</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Negotiation%2FReview</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Negotiation%2FReview</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>New</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>New</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Pending Perch Signature</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Pending BlueWave Signature</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Pending System Information from Partner</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Pending Perch Signature</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Record has been updated</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Pending System Information from Partner</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Waitlist</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Record has been updated</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Waitlist</fullName>
+        <default>false</default>
+    </values>
 </BusinessProcess>

@@ -10,34 +10,19 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Variable by kW</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Variable by kW</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Fixed by Annual kWh</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Fixed by Annual kWh</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Variable by kW</fullName>
+                <default>false</default>
+                <label>Variable by kW</label>
+            </value>
+            <value>
+                <fullName>Fixed by Annual kWh</fullName>
+                <default>false</default>
+                <label>Fixed by Annual kWh</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

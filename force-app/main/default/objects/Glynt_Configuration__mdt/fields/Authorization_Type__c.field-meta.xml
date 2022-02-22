@@ -8,34 +8,19 @@
     <required>false</required>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>OAuth</fullName>
-                
-                    <default>true</default>
-                
-                    <label>OAuth</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Basic</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Basic</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>OAuth</fullName>
+                <default>true</default>
+                <label>OAuth</label>
+            </value>
+            <value>
+                <fullName>Basic</fullName>
+                <default>false</default>
+                <label>Basic</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

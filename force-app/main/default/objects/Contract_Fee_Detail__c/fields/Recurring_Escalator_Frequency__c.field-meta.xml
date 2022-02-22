@@ -5,48 +5,29 @@
     <inlineHelpText>The frequency in which a recurring escalator is increased or decreased. For ex.) a fee that increases 2% annually</inlineHelpText>
     <label>Recurring Escalator Frequency</label>
     <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
     <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Monthly</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Monthly</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Quarterly</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Quarterly</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Annually</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Annually</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Monthly</fullName>
+                <default>false</default>
+                <label>Monthly</label>
+            </value>
+            <value>
+                <fullName>Quarterly</fullName>
+                <default>false</default>
+                <label>Quarterly</label>
+            </value>
+            <value>
+                <fullName>Annually</fullName>
+                <default>false</default>
+                <label>Annually</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

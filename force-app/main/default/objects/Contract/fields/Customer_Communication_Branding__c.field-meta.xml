@@ -8,32 +8,18 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>BlueWave</fullName>
-                
-                    <default>false</default>
-                
-                    <label>BlueWave</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Cobranding with Client</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Cobranding with Client</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>BlueWave</fullName>
+                <default>false</default>
+                <label>BlueWave</label>
+            </value>
+            <value>
+                <fullName>Cobranding with Client</fullName>
+                <default>false</default>
+                <label>Cobranding with Client</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

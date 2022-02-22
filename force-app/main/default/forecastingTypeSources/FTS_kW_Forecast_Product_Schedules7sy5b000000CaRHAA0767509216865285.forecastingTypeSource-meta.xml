@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ForecastingTypeSource xmlns="http://soap.sforce.com/2006/04/metadata">
+    <forecastingSourceDefinition>FSD_OpportunityLineItemSchedule655841925531018</forecastingSourceDefinition>
+    <forecastingType>kW_Forecast_Product_Schedules</forecastingType>
+    <masterLabel>FTS_kW_Forecast_Product_Schedules7sy5b000000CaRHAA0767509216865285</masterLabel>
+    <sourceGroup>1</sourceGroup>
+</ForecastingTypeSource>

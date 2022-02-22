@@ -9,34 +9,19 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Swell</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Swell</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Yeti</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Yeti</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Swell</fullName>
+                <default>false</default>
+                <label>Swell</label>
+            </value>
+            <value>
+                <fullName>Yeti</fullName>
+                <default>false</default>
+                <label>Yeti</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

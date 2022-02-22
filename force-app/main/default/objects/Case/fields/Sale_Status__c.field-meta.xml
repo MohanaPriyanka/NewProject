@@ -10,56 +10,30 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <controllingField>Product_Line__c</controllingField>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Pre-sale</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Pre-sale</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Post-sale</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Post-sale</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <controllingFieldValue>Solar Loan</controllingFieldValue>
-            
-                <valueName>Pre-sale</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <controllingFieldValue>Solar Loan</controllingFieldValue>
-            
-                <valueName>Post-sale</valueName>
-            
-            </valueSettings>
-        
-        </valueSet>
+        <controllingField>Product_Line__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Pre-sale</fullName>
+                <default>false</default>
+                <label>Pre-sale</label>
+            </value>
+            <value>
+                <fullName>Post-sale</fullName>
+                <default>false</default>
+                <label>Post-sale</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <controllingFieldValue>Solar Loan</controllingFieldValue>
+            <valueName>Pre-sale</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <controllingFieldValue>Solar Loan</controllingFieldValue>
+            <valueName>Post-sale</valueName>
+        </valueSettings>
+    </valueSet>
 </CustomField>

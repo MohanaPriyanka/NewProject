@@ -4,9 +4,9 @@
     <externalId>false</externalId>
     <formula>&quot;&amp;solmgr=1&quot; + 
 &quot;&amp;Id=&quot; + Id + 
-&quot;&amp;QueryId=[QC]{!Environment.VAR_CONGA_NY_QC_TASK},[Opps]{!Environment.VAR_CONGA_NY_OPPS}, [DQLead]{!Environment.VAR_CONGA_QUERY_NY_CS_DQ_LEADS}, [Referrals]{!Environment.VAR_CONGA_QUERY_REFERRAL}, [Expired]{!Environment.VAR_CONGA_QUERY_NY_EXPIRED_OPPS}, [Complete]{!Environment.VAR_CONGA_QUERY_NY_COMPLETED_OPPS}&quot; + 
+&quot;&amp;QueryId=[QC]a270a000000Si1k,[Opps]a270a000000Si1p, [DQLead]a270a000000Si1u, [Referrals]a270a000000Si1z, [Expired]a270a000000Si24, [Complete]a270a000000Si29&quot; + 
 &quot;&amp;TemplateId=a2F0a000000OIoi&quot; + 
-&quot;&amp;CongaEmailTemplateId={!Environment.VAR_CONGA_EMAIL_TEMPLATE_CS_DAILY_REPORT}&quot; + 
+&quot;&amp;CongaEmailTemplateId=a260a00000FhciJ&quot; + 
 &quot;&amp;EmailAdditionalTo=&quot; + Email__c + 
 &quot;&amp;ofn=&quot; + Name + &quot; &quot; + &quot;NY Community Solar Update Report&quot; + &quot; &quot; + TEXT(TODAY()) + 
 &quot;&amp;qmode=SendEmail&quot; + 

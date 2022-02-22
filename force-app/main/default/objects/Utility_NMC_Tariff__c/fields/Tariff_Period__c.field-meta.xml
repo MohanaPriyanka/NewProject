@@ -8,34 +8,19 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>I</fullName>
-                
-                    <default>false</default>
-                
-                    <label>I</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>II</fullName>
-                
-                    <default>false</default>
-                
-                    <label>II</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>I</fullName>
+                <default>false</default>
+                <label>I</label>
+            </value>
+            <value>
+                <fullName>II</fullName>
+                <default>false</default>
+                <label>II</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

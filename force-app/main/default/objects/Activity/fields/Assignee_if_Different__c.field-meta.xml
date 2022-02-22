@@ -6,152 +6,78 @@
     <required>false</required>
     <type>Picklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Aly Garvin</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Aly Garvin</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Alex Schulte</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Alex Schulte</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Reg Schonborn</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Reg Schonborn</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Lucy Alexander</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Lucy Alexander</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Vanessa Coloma</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Vanessa Coloma</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Dean Smithyman</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Dean Smithyman</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Lee-Anne Roodt</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Lee-Anne Roodt</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Wells Howe</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Wells Howe</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Jordan Pentaleri</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Jordan Pentaleri</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Trevor Lennox</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Trevor Lennox</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Olivia Love</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Olivia Love</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Jennifer Matchett</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Jennifer Matchett</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Chris Gosline</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Chris Gosline</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Allison Rand</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Allison Rand</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Aly Garvin</fullName>
+                <default>false</default>
+                <label>Aly Garvin</label>
+            </value>
+            <value>
+                <fullName>Alex Schulte</fullName>
+                <default>false</default>
+                <label>Alex Schulte</label>
+            </value>
+            <value>
+                <fullName>Reg Schonborn</fullName>
+                <default>false</default>
+                <label>Reg Schonborn</label>
+            </value>
+            <value>
+                <fullName>Lucy Alexander</fullName>
+                <default>false</default>
+                <label>Lucy Alexander</label>
+            </value>
+            <value>
+                <fullName>Vanessa Coloma</fullName>
+                <default>false</default>
+                <label>Vanessa Coloma</label>
+            </value>
+            <value>
+                <fullName>Dean Smithyman</fullName>
+                <default>false</default>
+                <label>Dean Smithyman</label>
+            </value>
+            <value>
+                <fullName>Lee-Anne Roodt</fullName>
+                <default>false</default>
+                <label>Lee-Anne Roodt</label>
+            </value>
+            <value>
+                <fullName>Wells Howe</fullName>
+                <default>false</default>
+                <label>Wells Howe</label>
+            </value>
+            <value>
+                <fullName>Jordan Pentaleri</fullName>
+                <default>false</default>
+                <label>Jordan Pentaleri</label>
+            </value>
+            <value>
+                <fullName>Trevor Lennox</fullName>
+                <default>false</default>
+                <label>Trevor Lennox</label>
+            </value>
+            <value>
+                <fullName>Olivia Love</fullName>
+                <default>false</default>
+                <label>Olivia Love</label>
+            </value>
+            <value>
+                <fullName>Jennifer Matchett</fullName>
+                <default>false</default>
+                <label>Jennifer Matchett</label>
+            </value>
+            <value>
+                <fullName>Chris Gosline</fullName>
+                <default>false</default>
+                <label>Chris Gosline</label>
+            </value>
+            <value>
+                <fullName>Allison Rand</fullName>
+                <default>false</default>
+                <label>Allison Rand</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

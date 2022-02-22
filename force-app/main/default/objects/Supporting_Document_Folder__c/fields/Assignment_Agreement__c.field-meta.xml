@@ -5,24 +5,15 @@
     <externalId>false</externalId>
     <label>Assignment Agreement</label>
     <lookupFilter>
-        
-            <active>true</active>
-        
-            <errorMessage>Supporting Document Folder must be related to a Client Assignment Agreement contract type</errorMessage>
-        
-            <filterItems>
-            
-                <field>Contract.RecordTypeId</field>
-            
-                <operation>equals</operation>
-            
-                <value>Assignment Agreement</value>
-            
-            </filterItems>
-        
-            <isOptional>false</isOptional>
-        
-        </lookupFilter>
+        <active>true</active>
+        <errorMessage>Supporting Document Folder must be related to a Client Assignment Agreement contract type</errorMessage>
+        <filterItems>
+            <field>Contract.RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Assignment Agreement</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
     <referenceTo>Contract</referenceTo>
     <relationshipLabel>Supporting Document Folders</relationshipLabel>
     <relationshipName>Supporting_Document_Folders</relationshipName>

@@ -1,0 +1,28 @@
+@font-face {
+font-family: 'Judson-Bold';
+src: url(../resource/PerchFonts/Fonts/Judson-Bold.ttf) format('truetype');
+}
+
+@font-face {
+font-family: 'Manrope-Regular';
+src: url(../resource/PerchFonts/Fonts/Manrope-Regular.ttf) format('truetype');
+}
+
+.comm-navigation__home-link {
+  visibility: hidden;
+}
+
+.slds-icon_xx-small, .slds-icon--xx-small {
+  visibility: hidden;
+}
+
+
+.selfServiceArticleHeaderDetail .date > .uiOutputDate, .selfServiceArticleHeaderDetail > .timestamp-icon, .selfServiceArticleHeaderDetail > .dot {display: none; }
+.content .slds-form.slds-form_stacked .slds-grid.slds-gutters_small.forcePageBlockSectionRow:first-child {
+    display: none;
+}
+
+.content .slds-form.slds-form_stacked .slds-grid.slds-gutters_small.forcePageBlockSectionRow:nth-child(2) {
+    display: none;
+}
+:root { --dxp-c-section-columns-max-width: 1170px; }

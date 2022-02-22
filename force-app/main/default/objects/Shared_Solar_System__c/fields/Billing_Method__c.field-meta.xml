@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Billing_Method__c</fullName>
     <externalId>false</externalId>
     <label>Billing Method</label>
@@ -9,32 +9,18 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>NMC</fullName>
-                
-                    <default>false</default>
-                
-                    <label>NMC</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>kWh</fullName>
-                
-                    <default>false</default>
-                
-                    <label>kWh</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>NMC</fullName>
+                <default>false</default>
+                <label>NMC</label>
+            </value>
+            <value>
+                <fullName>kWh</fullName>
+                <default>false</default>
+                <label>kWh</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

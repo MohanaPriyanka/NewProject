@@ -9,54 +9,29 @@
     <trackHistory>true</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Started</fullName>
-                
-                    <default>true</default>
-                
-                    <label>Started</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Customer Info Completed</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Customer Info Completed</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Contracts Signed</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Contracts Signed</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Application Completed</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Application Completed</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Started</fullName>
+                <default>true</default>
+                <label>Started</label>
+            </value>
+            <value>
+                <fullName>Customer Info Completed</fullName>
+                <default>false</default>
+                <label>Customer Info Completed</label>
+            </value>
+            <value>
+                <fullName>Contracts Signed</fullName>
+                <default>false</default>
+                <label>Contracts Signed</label>
+            </value>
+            <value>
+                <fullName>Application Completed</fullName>
+                <default>false</default>
+                <label>Application Completed</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

@@ -7,34 +7,19 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Perch</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Perch</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Client</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Client</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Perch</fullName>
+                <default>false</default>
+                <label>Perch</label>
+            </value>
+            <value>
+                <fullName>Client</fullName>
+                <default>false</default>
+                <label>Client</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

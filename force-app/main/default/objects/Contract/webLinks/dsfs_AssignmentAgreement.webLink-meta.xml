@@ -8,5 +8,5 @@
     <masterLabel>Send DocuSign Assignment Agreement</masterLabel>
     <openType>replace</openType>
     <protected>false</protected>
-    <url>{!URLFOR(&quot;/apex/dsfs__DocuSign_CreateEnvelope&quot;,null, [sId=Contract.Id,ecId=&quot;{!Environment.VAR_DSConfiguration_ClientAA}&quot;])}</url>
+    <url>{!URLFOR(&quot;/apex/dsfs__DocuSign_CreateEnvelope&quot;,null, [sId=Contract.Id,ecId=&quot;a9M0a00000001MzEAI&quot;])}</url>
 </WebLink>

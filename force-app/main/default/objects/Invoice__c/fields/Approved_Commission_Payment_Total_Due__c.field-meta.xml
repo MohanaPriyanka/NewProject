@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Approved_Commission_Payment_Total_Due__c</fullName>
+    <externalId>false</externalId>
+    <label>Approved Commission Payment Total Due</label>
+    <summarizedField>Commission_Payment__c.Amount_Due__c</summarizedField>
+    <summaryFilterItems>
+        <field>Commission_Payment__c.Status__c</field>
+        <operation>equals</operation>
+        <value>Approved</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Commission_Payment__c.Invoice__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

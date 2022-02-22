@@ -4,108 +4,63 @@
     <description>Lead Process for Residential Solar Loans</description>
     <isActive>true</isActive>
     <values>
-        
-            <fullName>Awaiting Info Requested from Customer</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Awaiting Info Requested from Customer</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Cancelled</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Cancelled</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Declined</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Declined</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Denied pending Avidia Review</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Denied pending Avidia Review</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Expired</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Expired</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Interested</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Interested</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Not Interested</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Not Interested</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Pending Credit Review</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Pending Credit Review</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Pending Information</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Pending Information</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Pre-Qualified</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Pre-Qualified</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Qualified</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Qualified</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Ready for Credit Check</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Ready for Credit Check</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Under BlueWave Review</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Under BlueWave Review</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Unfinished</fullName>
-        
-            <default>true</default>
-        
-        </values>
+        <fullName>Unfinished</fullName>
+        <default>true</default>
+    </values>
     <values>
-        
-            <fullName>Unqualified</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Unqualified</fullName>
+        <default>false</default>
+    </values>
 </BusinessProcess>

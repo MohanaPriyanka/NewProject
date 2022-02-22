@@ -5,17 +5,17 @@
     <externalId>false</externalId>
     <formula>IF(
 
-ISPICKVAL(Shared_Solar_System__r.Product__r.Program__c,&quot;SMART - Community Solar&quot;),&quot;{!Environment.VAR_CONGA_TEMPLATE_AOBC}&quot;,
+ISPICKVAL(Shared_Solar_System__r.Product__r.Program__c,&quot;SMART - Community Solar&quot;),&quot;a2F0a000000OHZeEAO&quot;,
 
 CASE(Utility__c,
-&quot;Consolidated Edison&quot;, &quot;{!Environment.VAR_CONGA_TEMPLATE_ALS_CONED}&quot;,
-&quot;Eversource (East)&quot;,&quot;a2F0a000001RC7W,{!Environment.VAR_CONGA_TEMPLATE_EVERSOURCE_MA_SREC_EXCEL}&quot;,
-&quot;Eversource (West)&quot;,&quot;a2F0a000001RC7W,{!Environment.VAR_CONGA_TEMPLATE_EVERSOURCE_MA_SREC_EXCEL}&quot;,
-&quot;National Grid (MA)&quot;,&quot;a2F0a000001RBod,{!Environment.VAR_CONGA_TEMPLATE_NG_MA_SREC_EXCEL}&quot;,
+&quot;Consolidated Edison&quot;, &quot;a2F5b000001WPDVEA4&quot;,
+&quot;Eversource (East)&quot;,&quot;a2F0a000001RC7W,a2F0a000000OaV5EAK&quot;,
+&quot;Eversource (West)&quot;,&quot;a2F0a000001RC7W,a2F0a000000OaV5EAK&quot;,
+&quot;National Grid (MA)&quot;,&quot;a2F0a000001RBod,a2F0a000000OaVAEA0&quot;,
 &quot;NYS Electric and Gas&quot;,&quot;a2F0a000000OY5fEAG&quot;,
-&quot;Orange and Rockland&quot;,&quot;{!Environment.VAR_CONGA_TEMPLATE_OANDRALS}&quot;,
+&quot;Orange and Rockland&quot;,&quot;a2F0a000000OYv9EAG&quot;,
 &quot;National Grid (NY)&quot;,
-    IF(Shared_Solar_System__r.UCB__c,&quot;{!Environment.VAR_CONGA_NGRID_NY_UCB_ALS}&quot;,&quot;{!Environment.VAR_CONGA_NGNY_ALS_EXCEL},{!Environment.VAR_CONGA_NGNY_ALS_PDF}&quot;),
+    IF(Shared_Solar_System__r.UCB__c,&quot;a2F5b000001WAtTEAW&quot;,&quot;a2F0a000000OYzBEAW,a2F0a000000OYzGEAW&quot;),
 &quot;Central Hudson Gas and Electric&quot;, &quot;a2F0a000000Ob66EAC&quot;,
 &quot;&quot;
 )
@@ -23,6 +23,7 @@ CASE(Utility__c,
     <inlineHelpText>This is used in the conga composer to determine which template is used.</inlineHelpText>
     <label>Conga Template ID</label>
     <required>false</required>
+    <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>
     <type>Text</type>
     <unique>false</unique>

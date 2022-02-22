@@ -5,14 +5,12 @@
     <inlineHelpText>Must be populated at same time as field Waive Reacq Fee: # of Months. The milestone + # of Months defines the end of the initial period, allowing us to waive fees before or after that initial period.</inlineHelpText>
     <label>Waive Reacq Fee:Initial Period Milestone</label>
     <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
     <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetName>Client_Invoicing_Events</valueSetName>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetName>Client_Invoicing_Events</valueSetName>
+    </valueSet>
 </CustomField>

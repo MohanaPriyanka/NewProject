@@ -6,14 +6,10 @@
     <label>Savings UASB</label>
     <summarizedField>UASB__c.Savings__c</summarizedField>
     <summaryFilterItems>
-        
-            <field>UASB__c.Zuora_Id__c</field>
-        
-            <operation>notEqual</operation>
-        
-            <value/>
-        
-        </summaryFilterItems>
+        <field>UASB__c.Zuora_Id__c</field>
+        <operation>notEqual</operation>
+        <value></value>
+    </summaryFilterItems>
     <summaryForeignKey>UASB__c.Account__c</summaryForeignKey>
     <summaryOperation>sum</summaryOperation>
     <trackHistory>false</trackHistory>

@@ -11,104 +11,54 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>New-Cold</fullName>
-                
-                    <default>false</default>
-                
-                    <label>New-Cold</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>New-Warm</fullName>
-                
-                    <default>false</default>
-                
-                    <label>New-Warm</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Proposal-Cold</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Proposal-Cold</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Proposal-Internal/Friendly Intro</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Proposal-Internal/Friendly Intro</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Proposal-Scout/Partner Intro</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Proposal-Scout/Partner Intro</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Customer Support/LOI/MOU</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Customer Support/LOI/MOU</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Board Approval</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Board Approval</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>NMCPA Signed</fullName>
-                
-                    <default>false</default>
-                
-                    <label>NMCPA Signed</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Complete</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Complete</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>New-Cold</fullName>
+                <default>false</default>
+                <label>New-Cold</label>
+            </value>
+            <value>
+                <fullName>New-Warm</fullName>
+                <default>false</default>
+                <label>New-Warm</label>
+            </value>
+            <value>
+                <fullName>Proposal-Cold</fullName>
+                <default>false</default>
+                <label>Proposal-Cold</label>
+            </value>
+            <value>
+                <fullName>Proposal-Internal/Friendly Intro</fullName>
+                <default>false</default>
+                <label>Proposal-Internal/Friendly Intro</label>
+            </value>
+            <value>
+                <fullName>Proposal-Scout/Partner Intro</fullName>
+                <default>false</default>
+                <label>Proposal-Scout/Partner Intro</label>
+            </value>
+            <value>
+                <fullName>Customer Support/LOI/MOU</fullName>
+                <default>false</default>
+                <label>Customer Support/LOI/MOU</label>
+            </value>
+            <value>
+                <fullName>Board Approval</fullName>
+                <default>false</default>
+                <label>Board Approval</label>
+            </value>
+            <value>
+                <fullName>NMCPA Signed</fullName>
+                <default>false</default>
+                <label>NMCPA Signed</label>
+            </value>
+            <value>
+                <fullName>Complete</fullName>
+                <default>false</default>
+                <label>Complete</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

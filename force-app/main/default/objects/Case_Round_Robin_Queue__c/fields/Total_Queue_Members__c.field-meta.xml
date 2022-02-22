@@ -5,14 +5,10 @@
     <label>Total Queue Members</label>
     <summarizedField>Case_RR_Queue_Member_Assignment__c.Weight__c</summarizedField>
     <summaryFilterItems>
-        
-            <field>Case_RR_Queue_Member_Assignment__c.Weight__c</field>
-        
-            <operation>greaterOrEqual</operation>
-        
-            <value>1</value>
-        
-        </summaryFilterItems>
+        <field>Case_RR_Queue_Member_Assignment__c.Weight__c</field>
+        <operation>greaterOrEqual</operation>
+        <value>1</value>
+    </summaryFilterItems>
     <summaryForeignKey>Case_RR_Queue_Member_Assignment__c.Case_Round_Robin_Queue__c</summaryForeignKey>
     <summaryOperation>sum</summaryOperation>
     <trackTrending>false</trackTrending>

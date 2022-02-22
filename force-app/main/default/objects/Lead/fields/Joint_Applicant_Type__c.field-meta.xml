@@ -8,34 +8,19 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Co-Applicant</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Co-Applicant</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Co-Signer</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Co-Signer</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Co-Applicant</fullName>
+                <default>false</default>
+                <label>Co-Applicant</label>
+            </value>
+            <value>
+                <fullName>Co-Signer</fullName>
+                <default>false</default>
+                <label>Co-Signer</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

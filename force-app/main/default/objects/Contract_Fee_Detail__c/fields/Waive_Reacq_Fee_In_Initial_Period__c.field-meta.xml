@@ -5,6 +5,7 @@
     <externalId>false</externalId>
     <inlineHelpText>Specifies that reacquisition fees should be waived up to a Max Project % (which could be blank) for Subscription Orders effective before the initial period.</inlineHelpText>
     <label>Waive Reacq Fee In Initial Period</label>
+    <trackFeedHistory>false</trackFeedHistory>
     <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>
     <type>Checkbox</type>

@@ -6,14 +6,10 @@
     <label>Future Customer Subscription (KW DC)</label>
     <summarizedField>Subscription_Order__c.Approved_Change_in_Subscription__c</summarizedField>
     <summaryFilterItems>
-        
-            <field>Subscription_Order__c.Approval_Status__c</field>
-        
-            <operation>equals</operation>
-        
-            <value>Approved</value>
-        
-        </summaryFilterItems>
+        <field>Subscription_Order__c.Approval_Status__c</field>
+        <operation>equals</operation>
+        <value>Approved</value>
+    </summaryFilterItems>
     <summaryForeignKey>Subscription_Order__c.Utility_Account_Subscription__c</summaryForeignKey>
     <summaryOperation>sum</summaryOperation>
     <trackHistory>false</trackHistory>

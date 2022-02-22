@@ -4,14 +4,10 @@
     <externalId>false</externalId>
     <label>Number of Active Opportunities</label>
     <summaryFilterItems>
-        
-            <field>Opportunity.StageName</field>
-        
-            <operation>notEqual</operation>
-        
-            <value>Cancelled, Unqualified, Rejected Contract, Expired, DUPLICATE, Lost</value>
-        
-        </summaryFilterItems>
+        <field>Opportunity.StageName</field>
+        <operation>notEqual</operation>
+        <value>Cancelled, Unqualified, Rejected Contract, Expired, DUPLICATE, Lost</value>
+    </summaryFilterItems>
     <summaryForeignKey>Opportunity.AccountId</summaryForeignKey>
     <summaryOperation>count</summaryOperation>
     <trackHistory>false</trackHistory>

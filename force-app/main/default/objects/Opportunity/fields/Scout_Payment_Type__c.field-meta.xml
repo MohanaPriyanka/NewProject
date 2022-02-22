@@ -9,42 +9,23 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Retainer</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Retainer</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Commission</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Commission</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Commission and Retainer</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Commission and Retainer</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Retainer</fullName>
+                <default>false</default>
+                <label>Retainer</label>
+            </value>
+            <value>
+                <fullName>Commission</fullName>
+                <default>false</default>
+                <label>Commission</label>
+            </value>
+            <value>
+                <fullName>Commission and Retainer</fullName>
+                <default>false</default>
+                <label>Commission and Retainer</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

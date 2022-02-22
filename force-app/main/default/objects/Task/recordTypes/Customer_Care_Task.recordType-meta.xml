@@ -4,893 +4,453 @@
     <active>true</active>
     <label>Customer Care Task</label>
     <picklistValues>
-        
-            <picklist>Assignee_if_Different__c</picklist>
-        
-            <values>
-            
-                <fullName>Alex Schulte</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Aly Garvin</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Chris Gosline</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Dean Smithyman</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Jennifer Matchett</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Jordan Pentaleri</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Lee-Anne Roodt</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Lucy Alexander</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Olivia Love</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Reg Schonborn</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Trevor Lennox</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Vanessa Coloma</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Wells Howe</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-        </picklistValues>
+        <picklist>Assignee_if_Different__c</picklist>
+        <values>
+            <fullName>Alex Schulte</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Aly Garvin</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Chris Gosline</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Dean Smithyman</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Jennifer Matchett</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Jordan Pentaleri</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Lee-Anne Roodt</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Lucy Alexander</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Olivia Love</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reg Schonborn</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Trevor Lennox</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Vanessa Coloma</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Wells Howe</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
     <picklistValues>
-        
-            <picklist>Category__c</picklist>
-        
-            <values>
-            
-                <fullName>Accounting - ERP System Implementation</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Accounting - Executive Request</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Accounting - Financial Tracking %26 Reporting</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Accounting - HR Policy</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Accounting - IT Support</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Accounting - Legacy Clean-up</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>BlueWave Solar Loan Sales Process</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Business Development - Community Solar</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Business Development - Executive Request</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Business Development - Large offtake %26 anchor</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Business Development - Residential Loan</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Executive - Business Development</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Executive - Corporate Finance %26 Accounting</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Executive - Development</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Executive - External Affairs</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Executive - General Executive</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Executive - Operations</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Executive - Project %26 Platform Finance</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>External Affairs - B-Corp</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>External Affairs - Community Service</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>External Affairs - Conferences%2FEvents</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>External Affairs - Executive Request</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>External Affairs - Government %2F Regulatory Affairs</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>External Affairs - Newsletters</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>External Affairs - Press Releases</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>External Affairs - Social Media</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>External Affairs - Team Support</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Marketing</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Operations</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Other</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Partnership Relations</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Product Team</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Project Finance - 1603 Compliance %2F Loan Support</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Project Finance - Corporate Finance</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Project Finance - Debt Capital Markets %2F Structured Transactions</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Project Finance - Equity Capital Markets %2F Strategic Partnerships</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Project Finance - Executive Request</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Project Finance - Platform Finance</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Project Management - Asset Management</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Project Management - Construction</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Project Management - Executive%2FCorporate</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Project Management - Interconnection</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Project Management - Project Development</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Project Management - Site Acquisition</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-        </picklistValues>
+        <picklist>Category__c</picklist>
+        <values>
+            <fullName>Accounting - ERP System Implementation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Accounting - Executive Request</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Accounting - Financial Tracking %26 Reporting</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Accounting - HR Policy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Accounting - IT Support</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Accounting - Legacy Clean-up</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BlueWave Solar Loan Sales Process</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Business Development - Community Solar</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Business Development - Executive Request</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Business Development - Large offtake %26 anchor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Business Development - Residential Loan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Executive - Business Development</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Executive - Corporate Finance %26 Accounting</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Executive - Development</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Executive - External Affairs</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Executive - General Executive</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Executive - Operations</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Executive - Project %26 Platform Finance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>External Affairs - B-Corp</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>External Affairs - Community Service</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>External Affairs - Conferences%2FEvents</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>External Affairs - Executive Request</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>External Affairs - Government %2F Regulatory Affairs</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>External Affairs - Newsletters</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>External Affairs - Press Releases</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>External Affairs - Social Media</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>External Affairs - Team Support</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Marketing</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Operations</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Partnership Relations</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Product Team</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Project Finance - 1603 Compliance %2F Loan Support</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Project Finance - Corporate Finance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Project Finance - Debt Capital Markets %2F Structured Transactions</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Project Finance - Equity Capital Markets %2F Strategic Partnerships</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Project Finance - Executive Request</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Project Finance - Platform Finance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Project Management - Asset Management</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Project Management - Construction</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Project Management - Executive%2FCorporate</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Project Management - Interconnection</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Project Management - Project Development</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Project Management - Site Acquisition</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
     <picklistValues>
-        
-            <picklist>Priority</picklist>
-        
-            <values>
-            
-                <fullName>High</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Low</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Normal</fullName>
-            
-                <default>true</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Urgent</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-        </picklistValues>
+        <picklist>Priority</picklist>
+        <values>
+            <fullName>High</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Low</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Normal</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Urgent</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
     <picklistValues>
-        
-            <picklist>Product_Line__c</picklist>
-        
-            <values>
-            
-                <fullName>Both</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Community Solar</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Other</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Solar Loan</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-        </picklistValues>
+        <picklist>Product_Line__c</picklist>
+        <values>
+            <fullName>Both</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Community Solar</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Solar Loan</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
     <picklistValues>
-        
-            <picklist>Status</picklist>
-        
-            <values>
-            
-                <fullName>Completed</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>In Process</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>New</fullName>
-            
-                <default>true</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>New Submittal</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>On Hold</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Redundant Task</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Unsuccesful</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-        </picklistValues>
+        <picklist>Status</picklist>
+        <values>
+            <fullName>Completed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>In Process</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>New</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>New Submittal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>On Hold</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Redundant Task</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Unsuccesful</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
     <picklistValues>
-        
-            <picklist>Subject</picklist>
-        
-            <values>
-            
-                <fullName>Call</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Other</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Send Letter</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Send Quote</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-        </picklistValues>
+        <picklist>Subject</picklist>
+        <values>
+            <fullName>Call</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Send Letter</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Send Quote</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
     <picklistValues>
-        
-            <picklist>Task_Size__c</picklist>
-        
-            <values>
-            
-                <fullName>1</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>13</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>2</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>3</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>5</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>8</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-        </picklistValues>
+        <picklist>Task_Size__c</picklist>
+        <values>
+            <fullName>1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>13</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>3</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>5</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>8</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
     <picklistValues>
-        
-            <picklist>Task_Subject__c</picklist>
-        
-            <values>
-            
-                <fullName>Adjust subscription%2C %3E25kW</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Change account %23 on contract</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Change load zone</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Change to commercial</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Check Comments About Sizing section</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Check contract%2C handwritten</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Credit report did not match customer%27s name%2C attach credit check for right customer</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Credit report is missing%2C Upload correct credit report</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Custom%27s credit was denied %2C change stage to unqualified</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Customer email missing</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Load zone missing on utility bill</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Other</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Subscription adjustment needed</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Too few years at location</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Too few years in business</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Upload complete contract</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Upload complete utility bill to utility Account Log</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-        </picklistValues>
+        <picklist>Task_Subject__c</picklist>
+        <values>
+            <fullName>Adjust subscription%2C %3E25kW</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Change account %23 on contract</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Change load zone</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Change to commercial</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Check Comments About Sizing section</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Check contract%2C handwritten</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Credit report did not match customer%27s name%2C attach credit check for right customer</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Credit report is missing%2C Upload correct credit report</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Custom%27s credit was denied %2C change stage to unqualified</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Customer email missing</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Load zone missing on utility bill</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Subscription adjustment needed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Too few years at location</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Too few years in business</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Upload complete contract</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Upload complete utility bill to utility Account Log</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
     <picklistValues>
-        
-            <picklist>Tracking__c</picklist>
-        
-            <values>
-            
-                <fullName>Adjusted Schedule</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Behind Schedule</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>On Time</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-        </picklistValues>
+        <picklist>Tracking__c</picklist>
+        <values>
+            <fullName>Adjusted Schedule</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Behind Schedule</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>On Time</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
     <picklistValues>
-        
-            <picklist>Type</picklist>
-        
-            <values>
-            
-                <fullName>Call</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Meeting</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Other</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-        </picklistValues>
+        <picklist>Type</picklist>
+        <values>
+            <fullName>Call</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Meeting</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
 </RecordType>

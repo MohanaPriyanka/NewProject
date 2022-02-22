@@ -7,6 +7,7 @@
     <summarizedField>Schedule_Z_Subscription__c.Percent_Share__c</summarizedField>
     <summaryForeignKey>Schedule_Z_Subscription__c.Schedule_Z__c</summaryForeignKey>
     <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>
     <type>Summary</type>
 </CustomField>

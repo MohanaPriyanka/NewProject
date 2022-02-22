@@ -9,44 +9,24 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Active</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Active</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Active with New Version Pending</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Active with New Version Pending</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>SSA Pending</fullName>
-                
-                    <default>false</default>
-                
-                    <label>SSA Pending for New Partner</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Active</fullName>
+                <default>false</default>
+                <label>Active</label>
+            </value>
+            <value>
+                <fullName>Active with New Version Pending</fullName>
+                <default>false</default>
+                <label>Active with New Version Pending</label>
+            </value>
+            <value>
+                <fullName>SSA Pending</fullName>
+                <default>false</default>
+                <label>SSA Pending for New Partner</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

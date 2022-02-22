@@ -9,53 +9,29 @@
     <trackTrending>false</trackTrending>
     <type>MultiselectPicklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>NMCPA</fullName>
-                
-                    <default>false</default>
-                
-                    <label>NMCPA</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>PPA</fullName>
-                
-                    <default>false</default>
-                
-                    <label>PPA</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Lease</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Lease</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>PILOT</fullName>
-                
-                    <default>false</default>
-                
-                    <label>PILOT</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>NMCPA</fullName>
+                <default>false</default>
+                <label>NMCPA</label>
+            </value>
+            <value>
+                <fullName>PPA</fullName>
+                <default>false</default>
+                <label>PPA</label>
+            </value>
+            <value>
+                <fullName>Lease</fullName>
+                <default>false</default>
+                <label>Lease</label>
+            </value>
+            <value>
+                <fullName>PILOT</fullName>
+                <default>false</default>
+                <label>PILOT</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
     <visibleLines>4</visibleLines>
 </CustomField>

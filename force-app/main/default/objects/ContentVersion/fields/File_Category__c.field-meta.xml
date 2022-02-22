@@ -8,108 +8,56 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Customer Disclosure Form</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Customer Disclosure Form</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Partial Customer Agreement Packet</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Partial Customer Agreement Packet</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Full Customer Agreement Packet</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Full Customer Agreement Packet</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Customer Agreement</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Customer Agreement</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Customer Utility Bill</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Customer Utility Bill</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Transfer Sheet</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Transfer Sheet</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Financial Review Documents</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Financial Review Documents</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Customer Bill</fullName>
-                
-                    <default>false</default>
-                
-                    <isActive>false</isActive>
-                
-                    <label>Customer Bill</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Customer Contract</fullName>
-                
-                    <default>false</default>
-                
-                    <isActive>false</isActive>
-                
-                    <label>Customer Contract</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Customer Disclosure Form</fullName>
+                <default>false</default>
+                <label>Customer Disclosure Form</label>
+            </value>
+            <value>
+                <fullName>Partial Customer Agreement Packet</fullName>
+                <default>false</default>
+                <label>Partial Customer Agreement Packet</label>
+            </value>
+            <value>
+                <fullName>Full Customer Agreement Packet</fullName>
+                <default>false</default>
+                <label>Full Customer Agreement Packet</label>
+            </value>
+            <value>
+                <fullName>Customer Agreement</fullName>
+                <default>false</default>
+                <label>Customer Agreement</label>
+            </value>
+            <value>
+                <fullName>Customer Utility Bill</fullName>
+                <default>false</default>
+                <label>Customer Utility Bill</label>
+            </value>
+            <value>
+                <fullName>Transfer Sheet</fullName>
+                <default>false</default>
+                <label>Transfer Sheet</label>
+            </value>
+            <value>
+                <fullName>Financial Review Documents</fullName>
+                <default>false</default>
+                <label>Financial Review Documents</label>
+            </value>
+            <value>
+                <fullName>Customer Bill</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Customer Bill</label>
+            </value>
+            <value>
+                <fullName>Customer Contract</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Customer Contract</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

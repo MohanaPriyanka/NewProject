@@ -7,32 +7,18 @@
     <required>false</required>
     <type>Picklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Sent</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Sent</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Unsubscribed</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Unsubscribed</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Sent</fullName>
+                <default>false</default>
+                <label>Sent</label>
+            </value>
+            <value>
+                <fullName>Unsubscribed</fullName>
+                <default>false</default>
+                <label>Unsubscribed</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

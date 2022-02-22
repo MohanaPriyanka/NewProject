@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>LastSnapshotValue__c</fullName>
-    <deprecated>false</deprecated>
     <externalId>false</externalId>
     <inlineHelpText>The value of the last snapshot taken</inlineHelpText>
     <label>Last Snapshot Value</label>

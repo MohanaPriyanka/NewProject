@@ -5,14 +5,10 @@
     <inlineHelpText>Used to determine Product Line</inlineHelpText>
     <label>Count of CS Opportunities</label>
     <summaryFilterItems>
-        
-            <field>Opportunity.Product_Line__c</field>
-        
-            <operation>equals</operation>
-        
-            <value>Community Solar</value>
-        
-        </summaryFilterItems>
+        <field>Opportunity.Product_Line__c</field>
+        <operation>equals</operation>
+        <value>Community Solar</value>
+    </summaryFilterItems>
     <summaryForeignKey>Opportunity.AccountId</summaryForeignKey>
     <summaryOperation>count</summaryOperation>
     <trackHistory>false</trackHistory>

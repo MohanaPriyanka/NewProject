@@ -8,44 +8,24 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Automatic - Assignment Order</fullName>
-                
-                    <default>true</default>
-                
-                    <label>Automatic - Assignment Order</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Automatic - COD Date/Available Capacity</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Automatic - COD Date/Available Capacity</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Manual</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Manual</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Automatic - Assignment Order</fullName>
+                <default>true</default>
+                <label>Automatic - Assignment Order</label>
+            </value>
+            <value>
+                <fullName>Automatic - COD Date/Available Capacity</fullName>
+                <default>false</default>
+                <label>Automatic - COD Date/Available Capacity</label>
+            </value>
+            <value>
+                <fullName>Manual</fullName>
+                <default>false</default>
+                <label>Manual</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

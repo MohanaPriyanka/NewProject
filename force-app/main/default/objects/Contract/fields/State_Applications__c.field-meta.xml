@@ -8,11 +8,8 @@
     <trackHistory>false</trackHistory>
     <type>MultiselectPicklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetName>State_abbreviations</valueSetName>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetName>State_abbreviations</valueSetName>
+    </valueSet>
     <visibleLines>8</visibleLines>
 </CustomField>

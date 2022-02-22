@@ -1,47 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <Queue xmlns="http://soap.sforce.com/2006/04/metadata">
-    
     <doesSendEmailToMembers>false</doesSendEmailToMembers>
-    
     <name>Biz Apps Support</name>
-    
     <queueMembers>
-        
         <users>
-            
-            <user>jbattles@bluewavesolar.com</user>
-            
-            <user>jparlin@bluewavesolar.com</user>
-            
-            <user>kwhite@bluewavesolar.com</user>
-            
-            <user>lalexander@bluewavesolar.com</user>
-            
-            <user>pyao@bluewavesolar.com</user>
-            
-            <user>srenfro18@bluewavesolar.com</user>
-            
+            <user>asaha@perchenergy.com</user>
+            <user>aingram@perchenergy.com</user>
+            <user>jbattles@perchenergy.com</user>
+            <user>jparlin@perchenergy.com</user>
+            <user>pyao@perchenergy.com</user>
+            <user>rnachison@perchenergy.com</user>
         </users>
-        
     </queueMembers>
-    
     <queueSobject>
-        
         <sobjectType>Case</sobjectType>
-        
     </queueSobject>
-    
     <queueSobject>
-        
         <sobjectType>Limit__c</sobjectType>
-        
     </queueSobject>
-    
     <queueSobject>
-        
         <sobjectType>copado__User_Story__c</sobjectType>
-        
     </queueSobject>
-    
 </Queue>

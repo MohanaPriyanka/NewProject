@@ -4,40 +4,25 @@
     <active>true</active>
     <label>SREC</label>
     <picklistValues>
-        
-            <picklist>Incentive_Type__c</picklist>
-        
-            <values>
-            
-                <fullName>Federal</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>MASS ACA</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>SMART</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>SREC</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-        </picklistValues>
+        <picklist>Incentive_Type__c</picklist>
+        <values>
+            <fullName>Federal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SREC</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Public_Private__c</picklist>
+        <values>
+            <fullName>Private</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Public</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
 </RecordType>

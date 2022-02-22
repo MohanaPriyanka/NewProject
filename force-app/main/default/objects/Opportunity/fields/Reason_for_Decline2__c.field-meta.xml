@@ -10,92 +10,48 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Not Interested</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Not Interested</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Problem with Contract</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Problem with Contract</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Looking for a Fixed Rate</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Looking for a Fixed Rate</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Going with another Company</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Going with another Company</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Looking for a Rooftop Installation</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Looking for a Rooftop Installation</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Subscription too Small</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Subscription too Small</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Poor Customer Service</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Poor Customer Service</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Other</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Other</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Not Interested</fullName>
+                <default>false</default>
+                <label>Not Interested</label>
+            </value>
+            <value>
+                <fullName>Problem with Contract</fullName>
+                <default>false</default>
+                <label>Problem with Contract</label>
+            </value>
+            <value>
+                <fullName>Looking for a Fixed Rate</fullName>
+                <default>false</default>
+                <label>Looking for a Fixed Rate</label>
+            </value>
+            <value>
+                <fullName>Going with another Company</fullName>
+                <default>false</default>
+                <label>Going with another Company</label>
+            </value>
+            <value>
+                <fullName>Looking for a Rooftop Installation</fullName>
+                <default>false</default>
+                <label>Looking for a Rooftop Installation</label>
+            </value>
+            <value>
+                <fullName>Subscription too Small</fullName>
+                <default>false</default>
+                <label>Subscription too Small</label>
+            </value>
+            <value>
+                <fullName>Poor Customer Service</fullName>
+                <default>false</default>
+                <label>Poor Customer Service</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

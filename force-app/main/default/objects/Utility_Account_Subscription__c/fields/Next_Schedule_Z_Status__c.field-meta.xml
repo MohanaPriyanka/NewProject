@@ -10,32 +10,18 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Active Subscription</fullName>
-                
-                    <default>true</default>
-                
-                    <label>Active Subscription</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Inactive Subscription</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Inactive Subscription</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Active Subscription</fullName>
+                <default>true</default>
+                <label>Active Subscription</label>
+            </value>
+            <value>
+                <fullName>Inactive Subscription</fullName>
+                <default>false</default>
+                <label>Inactive Subscription</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

@@ -5,14 +5,10 @@
     <label>Due Date</label>
     <summarizedField>System_Bill__c.Bill_Due_Date__c</summarizedField>
     <summaryFilterItems>
-        
-            <field>System_Bill__c.Bill_Due_Date__c</field>
-        
-            <operation>notEqual</operation>
-        
-            <value/>
-        
-        </summaryFilterItems>
+        <field>System_Bill__c.Bill_Due_Date__c</field>
+        <operation>notEqual</operation>
+        <value></value>
+    </summaryFilterItems>
     <summaryForeignKey>System_Bill__c.Account_Bill__c</summaryForeignKey>
     <summaryOperation>min</summaryOperation>
     <trackHistory>false</trackHistory>

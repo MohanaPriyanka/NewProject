@@ -9,98 +9,51 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>NEMA</fullName>
-                
-                    <default>false</default>
-                
-                    <label>NEMA</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>SEMA</fullName>
-                
-                    <default>false</default>
-                
-                    <label>SEMA</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>WCMA</fullName>
-                
-                    <default>false</default>
-                
-                    <label>WCMA</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>WCMA/SEMA</fullName>
-                
-                    <default>false</default>
-                
-                    <label>WCMA/SEMA</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>NEMA/SEMA</fullName>
-                
-                    <default>false</default>
-                
-                    <label>NEMA/SEMA</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>NEMA/WCMA</fullName>
-                
-                    <default>false</default>
-                
-                    <label>NEMA/WCMA</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Oran</fullName>
-                
-                    <default>false</default>
-                
-                    <isActive>false</isActive>
-                
-                    <label>Oran</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>WCMA/NEMA</fullName>
-                
-                    <default>false</default>
-                
-                    <isActive>false</isActive>
-                
-                    <label>WCMA/NEMA</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>NEMA</fullName>
+                <default>false</default>
+                <label>NEMA</label>
+            </value>
+            <value>
+                <fullName>SEMA</fullName>
+                <default>false</default>
+                <label>SEMA</label>
+            </value>
+            <value>
+                <fullName>WCMA</fullName>
+                <default>false</default>
+                <label>WCMA</label>
+            </value>
+            <value>
+                <fullName>WCMA/SEMA</fullName>
+                <default>false</default>
+                <label>WCMA/SEMA</label>
+            </value>
+            <value>
+                <fullName>NEMA/SEMA</fullName>
+                <default>false</default>
+                <label>NEMA/SEMA</label>
+            </value>
+            <value>
+                <fullName>NEMA/WCMA</fullName>
+                <default>false</default>
+                <label>NEMA/WCMA</label>
+            </value>
+            <value>
+                <fullName>Oran</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Oran</label>
+            </value>
+            <value>
+                <fullName>WCMA/NEMA</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>WCMA/NEMA</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Meter_Reading_Schedule__c</fullName>
     <deleteConstraint>SetNull</deleteConstraint>
     <description>This is a lookup to the Meter Reading Schedule, which determines when the dates at which the host account meter will be read. The group can be found on the host account bill. This field is populated by the IX team.</description>

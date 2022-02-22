@@ -5,24 +5,15 @@
     <externalId>false</externalId>
     <label>Assignment Agreement</label>
     <lookupFilter>
-        
-            <active>true</active>
-        
-            <errorMessage>Assignment Agreement must be a contract with record type = Assignment Agreement</errorMessage>
-        
-            <filterItems>
-            
-                <field>Contract.RecordTypeId</field>
-            
-                <operation>equals</operation>
-            
-                <value>Assignment Agreement</value>
-            
-            </filterItems>
-        
-            <isOptional>false</isOptional>
-        
-        </lookupFilter>
+        <active>true</active>
+        <errorMessage>Assignment Agreement must be a contract with record type = Assignment Agreement</errorMessage>
+        <filterItems>
+            <field>Contract.RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Assignment Agreement</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
     <referenceTo>Contract</referenceTo>
     <relationshipLabel>Customer Assignments (Opportunity)</relationshipLabel>
     <relationshipName>CustomerAssignmentsOpp</relationshipName>

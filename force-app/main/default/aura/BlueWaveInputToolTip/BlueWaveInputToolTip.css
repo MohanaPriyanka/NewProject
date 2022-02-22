@@ -1,0 +1,39 @@
+.THIS.anchor {
+    position: relative;
+    display: inline-block;
+}
+
+.THIS .slds-popover__right {
+    position: absolute;
+    bottom: calc(100% + 14px);
+    left: calc(50% - 25px);
+    display: none;
+    white-space: normal;
+    background-color: t(colorBrand);
+}
+
+
+.THIS .slds-popover__left {
+    position: absolute;
+    bottom: calc(100% + 14px);
+    right: calc(50% - 25px);
+    display: none;
+    white-space: normal;
+    background-color: t(colorBrand);
+}
+
+.THIS .popover-text {
+    color: t(colorTextButtonBrand);
+}
+
+.THIS.anchor:hover .slds-popover__right  {
+    display: block;
+}
+
+.THIS.anchor:hover .slds-popover__left  {
+    display: block;
+}
+
+.THIS .noDisplay {
+    display: none;
+}

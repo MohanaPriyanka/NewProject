@@ -9,34 +9,19 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Partner</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Partner</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Sales Representative</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Sales Representative</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Partner</fullName>
+                <default>false</default>
+                <label>Partner</label>
+            </value>
+            <value>
+                <fullName>Sales Representative</fullName>
+                <default>false</default>
+                <label>Sales Representative</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

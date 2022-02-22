@@ -6,22 +6,14 @@
     <inlineHelpText>User who enters in cancellation reason and request date</inlineHelpText>
     <label>Cancelled By</label>
     <lookupFilter>
-        
-            <active>true</active>
-        
-            <filterItems>
-            
-                <field>User.UserType</field>
-            
-                <operation>equals</operation>
-            
-                <value>Standard</value>
-            
-            </filterItems>
-        
-            <isOptional>true</isOptional>
-        
-        </lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>User.UserType</field>
+            <operation>equals</operation>
+            <value>Standard</value>
+        </filterItems>
+        <isOptional>true</isOptional>
+    </lookupFilter>
     <referenceTo>User</referenceTo>
     <relationshipName>Accounts</relationshipName>
     <required>false</required>

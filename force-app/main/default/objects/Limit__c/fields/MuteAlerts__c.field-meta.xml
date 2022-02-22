@@ -2,7 +2,6 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>MuteAlerts__c</fullName>
     <defaultValue>false</defaultValue>
-    <deprecated>false</deprecated>
     <externalId>false</externalId>
     <inlineHelpText>To stop all alerts, check this box.</inlineHelpText>
     <label>Mute Alerts</label>

@@ -5,474 +5,255 @@
     <businessProcess>Finance Case</businessProcess>
     <label>Asset Management Case</label>
     <picklistValues>
-        
-            <picklist>Case_Type__c</picklist>
-        
-            <values>
-            
-                <fullName>3rd Party</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Customer</fullName>
-            
-                <default>true</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Perch</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Vendor</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-        </picklistValues>
+        <picklist>Assignee_If_Different__c</picklist>
+        <values>
+            <fullName>Alex Schulte</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Aly Garvin</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BWOC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Kamal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Olivia Love</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reg Schonborn</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Trevor Lennox</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
     <picklistValues>
-        
-            <picklist>Assignee_If_Different__c</picklist>
-        
-            <values>
-            
-                <fullName>Alex Schulte</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Aly Garvin</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>BWOC</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Kamal</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Olivia Love</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Reg Schonborn</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Trevor Lennox</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-        </picklistValues>
+        <picklist>Case_Type__c</picklist>
+        <values>
+            <fullName>3rd Party</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Customer</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Perch</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Vendor</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
     <picklistValues>
-        
-            <picklist>Category__c</picklist>
-        
-            <values>
-            
-                <fullName>Billing</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-        </picklistValues>
+        <picklist>Category__c</picklist>
+        <values>
+            <fullName>Billing</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
     <picklistValues>
-        
-            <picklist>Origin</picklist>
-        
-            <values>
-            
-                <fullName>Chatter Answers</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Email</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Phone</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Web</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-        </picklistValues>
+        <picklist>Origin</picklist>
+        <values>
+            <fullName>Chatter Answers</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Email</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Phone</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Web</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
     <picklistValues>
-        
-            <picklist>Primary_Complaint_Category__c</picklist>
-        
-            <values>
-            
-                <fullName>Advertising%2Fmarketing</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Application</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Customer Service</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Discrimination</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Fraud</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Identity Theft</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Improper Sales Practices</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Installer%2FPartner</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Miscellaneous</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Origination%2FCredit Decision</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Payments</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Privacy</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Service Provider</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Servicemember%2FSCRA</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Servicing%2FCollection</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Unauthorized Enrollment</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-        </picklistValues>
+        <picklist>Primary_Complaint_Category__c</picklist>
+        <values>
+            <fullName>Advertising%2Fmarketing</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Application</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Customer Service</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Discrimination</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Fraud</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Identity Theft</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Improper Sales Practices</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Installer%2FPartner</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Miscellaneous</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Origination%2FCredit Decision</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Payments</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Privacy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Service Provider</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Servicemember%2FSCRA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Servicing%2FCollection</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Unauthorized Enrollment</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
     <picklistValues>
-        
-            <picklist>Priority</picklist>
-        
-            <values>
-            
-                <fullName>High</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Low</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Medium</fullName>
-            
-                <default>true</default>
-            
-            </values>
-        
-        </picklistValues>
+        <picklist>Priority</picklist>
+        <values>
+            <fullName>High</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Low</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Medium</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
     <picklistValues>
-        
-            <picklist>Product_Line__c</picklist>
-        
-            <values>
-            
-                <fullName>Community Solar</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-        </picklistValues>
+        <picklist>Product_Line__c</picklist>
+        <values>
+            <fullName>Community Solar</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
     <picklistValues>
-        
-            <picklist>Reason</picklist>
-        
-            <values>
-            
-                <fullName>Complex functionality</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Executive Team - Complete</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Existing problem</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Instructions not clear</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>New problem</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>User didn%27t attend training</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-        </picklistValues>
+        <picklist>QC_Case_Subject__c</picklist>
+        <values>
+            <fullName>Other</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Subscription adjustment needed</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
     <picklistValues>
-        
-            <picklist>Resolution__c</picklist>
-        
-            <values>
-            
-                <fullName>Data Update</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Modify Access</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>No Longer an Issue</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Question</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>User Error</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-        </picklistValues>
+        <picklist>Reason</picklist>
+        <values>
+            <fullName>Complex functionality</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Executive Team - Complete</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Existing problem</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Instructions not clear</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>New problem</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>User didn%27t attend training</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
     <picklistValues>
-        
-            <picklist>Sale_Status__c</picklist>
-        
-            <values>
-            
-                <fullName>Post-sale</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Pre-sale</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-        </picklistValues>
+        <picklist>Resolution__c</picklist>
+        <values>
+            <fullName>Data Update</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Modify Access</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No Longer an Issue</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Question</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>User Error</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
     <picklistValues>
-        
-            <picklist>Type</picklist>
-        
-            <values>
-            
-                <fullName>Feature Request</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Problem</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Question</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-        </picklistValues>
+        <picklist>Sale_Status__c</picklist>
+        <values>
+            <fullName>Post-sale</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pre-sale</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Type</picklist>
+        <values>
+            <fullName>Feature Request</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Problem</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Question</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
 </RecordType>

@@ -1,39 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
-    
     <fieldPermissions>
-        
         <editable>true</editable>
-        
         <field>Product2.Collect_Rate_Class_via_Application__c</field>
-        
         <readable>true</readable>
-        
     </fieldPermissions>
-    
     <hasActivationRequired>false</hasActivationRequired>
-    
     <label>Edit Products</label>
-    
     <license>Salesforce</license>
-    
     <objectPermissions>
-        
         <allowCreate>false</allowCreate>
-        
         <allowDelete>false</allowDelete>
-        
         <allowEdit>true</allowEdit>
-        
         <allowRead>true</allowRead>
-        
         <modifyAllRecords>false</modifyAllRecords>
-        
         <object>Product2</object>
-        
         <viewAllRecords>false</viewAllRecords>
-        
     </objectPermissions>
-    
 </PermissionSet>

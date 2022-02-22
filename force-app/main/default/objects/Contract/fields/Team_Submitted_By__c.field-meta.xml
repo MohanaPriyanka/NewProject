@@ -8,154 +8,79 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Business Applications</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Business Applications</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Business Development</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Business Development</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Client Operations</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Client Operations</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Client Product Management</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Client Product Management</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>CS Product Management</fullName>
-                
-                    <default>false</default>
-                
-                    <label>CS Product Management</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Customer Operations</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Customer Operations</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Data and Finance Operations</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Data and Finance Operations</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Information &amp; Technology</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Information &amp; Technology</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Legal</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Legal</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Marketing</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Marketing</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Office Management</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Office Management</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Originations</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Originations</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>UX Development</fullName>
-                
-                    <default>false</default>
-                
-                    <label>UX Development</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>People</fullName>
-                
-                    <default>false</default>
-                
-                    <label>People</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Business Applications</fullName>
+                <default>false</default>
+                <label>Business Applications</label>
+            </value>
+            <value>
+                <fullName>Business Development</fullName>
+                <default>false</default>
+                <label>Business Development</label>
+            </value>
+            <value>
+                <fullName>Client Operations</fullName>
+                <default>false</default>
+                <label>Client Operations</label>
+            </value>
+            <value>
+                <fullName>Client Product Management</fullName>
+                <default>false</default>
+                <label>Client Product Management</label>
+            </value>
+            <value>
+                <fullName>CS Product Management</fullName>
+                <default>false</default>
+                <label>CS Product Management</label>
+            </value>
+            <value>
+                <fullName>Customer Operations</fullName>
+                <default>false</default>
+                <label>Customer Operations</label>
+            </value>
+            <value>
+                <fullName>Data and Finance Operations</fullName>
+                <default>false</default>
+                <label>Data and Finance Operations</label>
+            </value>
+            <value>
+                <fullName>Information &amp; Technology</fullName>
+                <default>false</default>
+                <label>Information &amp; Technology</label>
+            </value>
+            <value>
+                <fullName>Legal</fullName>
+                <default>false</default>
+                <label>Legal</label>
+            </value>
+            <value>
+                <fullName>Marketing</fullName>
+                <default>false</default>
+                <label>Marketing</label>
+            </value>
+            <value>
+                <fullName>Office Management</fullName>
+                <default>false</default>
+                <label>Office Management</label>
+            </value>
+            <value>
+                <fullName>Originations</fullName>
+                <default>false</default>
+                <label>Originations</label>
+            </value>
+            <value>
+                <fullName>UX Development</fullName>
+                <default>false</default>
+                <label>UX Development</label>
+            </value>
+            <value>
+                <fullName>People</fullName>
+                <default>false</default>
+                <label>People</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

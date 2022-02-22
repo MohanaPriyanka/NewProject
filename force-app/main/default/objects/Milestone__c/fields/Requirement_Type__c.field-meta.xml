@@ -9,58 +9,31 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>At Least</fullName>
-                
-                    <default>false</default>
-                
-                    <label>At Least</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Equal To</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Equal To</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>No More Than</fullName>
-                
-                    <default>false</default>
-                
-                    <isActive>false</isActive>
-                
-                    <label>No More Than</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Up To</fullName>
-                
-                    <default>false</default>
-                
-                    <isActive>false</isActive>
-                
-                    <label>Up To</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>At Least</fullName>
+                <default>false</default>
+                <label>At Least</label>
+            </value>
+            <value>
+                <fullName>Equal To</fullName>
+                <default>false</default>
+                <label>Equal To</label>
+            </value>
+            <value>
+                <fullName>No More Than</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>No More Than</label>
+            </value>
+            <value>
+                <fullName>Up To</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Up To</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

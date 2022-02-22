@@ -8,65 +8,35 @@
     <trackTrending>false</trackTrending>
     <type>MultiselectPicklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Ability to sell to the small business community</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Ability to sell to the small business community</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Differentiation from competing installers</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Differentiation from competing installers</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Providing an option to customers unable to install rooftop systems</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Providing an option to customers unable to install rooftop systems</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Topping off rooftop customers with Community Solar</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Topping off rooftop customers with Community Solar</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Other</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Other</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Ability to sell to the small business community</fullName>
+                <default>false</default>
+                <label>Ability to sell to the small business community</label>
+            </value>
+            <value>
+                <fullName>Differentiation from competing installers</fullName>
+                <default>false</default>
+                <label>Differentiation from competing installers</label>
+            </value>
+            <value>
+                <fullName>Providing an option to customers unable to install rooftop systems</fullName>
+                <default>false</default>
+                <label>Providing an option to customers unable to install rooftop systems</label>
+            </value>
+            <value>
+                <fullName>Topping off rooftop customers with Community Solar</fullName>
+                <default>false</default>
+                <label>Topping off rooftop customers with Community Solar</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
     <visibleLines>5</visibleLines>
 </CustomField>

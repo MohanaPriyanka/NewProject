@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Exception_Reason_Code__c</fullName>
     <description>Ex: A13=Other A76=Account not found or invalid
 A80=Service, Commodity or Billing Option Not Available

@@ -5,61 +5,633 @@
     <businessProcess>BlueWave Capital</businessProcess>
     <label>Distribution Partners</label>
     <picklistValues>
-        
-            <picklist>Underwriting_Criteria__c</picklist>
-        
-            <values>
-            
-                <fullName>FICO</fullName>
-            
-                <default>true</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Financial Review</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Investment-Grade</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>None</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Past Payment History</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-        </picklistValues>
+        <picklist>Anchor_Stage__c</picklist>
+        <values>
+            <fullName>Board Approval</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Complete</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Customer Support%2FLOI%2FMOU</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NMCPA Signed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>New-Cold</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>New-Warm</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Proposal-Cold</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Proposal-Internal%2FFriendly Intro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Proposal-Scout%2FPartner Intro</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
     <picklistValues>
-        
-            <picklist>Customer_Group__c</picklist>
-        
-            <values>
-            
-                <fullName>Residential</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-        </picklistValues>
+        <picklist>Annual_Electricity_Cost_Method__c</picklist>
+        <values>
+            <fullName>Enter the data manually</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Utility Account Log Calculator %28Default%29</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>CC_Card_Type__c</picklist>
+        <values>
+            <fullName>Amex</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Discover</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MasterCard</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Visa</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Communication_Reached__c</picklist>
+        <values>
+            <fullName>Conversation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Email</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>In Person</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No Answer</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Voicemail</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Company_Tyope__c</picklist>
+        <values>
+            <fullName>Installer</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Customer_Group__c</picklist>
+        <values>
+            <fullName>Residential</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Customer_Sub_Group__c</picklist>
+        <values>
+            <fullName>Public Offtake</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Customer_Type__c</picklist>
+        <values>
+            <fullName>C%26I</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>County</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MAPC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MLP</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Municipality</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Private Affordable</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Private School</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Public Affordable-Deficit</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Public Affordable-Surplus</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Public Affordable-Unknown Budget</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Public School</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>ForecastCategoryName</picklist>
+        <values>
+            <fullName>Best Case</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Closed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Commit</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Omitted</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pipeline</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Joint_Applicant_Type__c</picklist>
+        <values>
+            <fullName>Co-Applicant</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Co-Signer</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>LASERCA__Request_Credit_Bureau__c</picklist>
+        <values>
+            <fullName>Equifax</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Experian</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Transunion</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>LASERCA__Special_Options__c</picklist>
+        <values>
+            <fullName>Downgrade</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Downgrade Applicant Only</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Downgrade Co-Applicant Only</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ForceNew</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reissue</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retrieve</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Upgrade</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>LeadSource</picklist>
+        <values>
+            <fullName>Other</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Partner</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Website</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Level_of_Interest__c</picklist>
+        <values>
+            <fullName>1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>3</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>4</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>5</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Load_Zone_Utility_4__c</picklist>
+        <values>
+            <fullName>Bahamas Electricity Corporation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Grand Bahama Power Company</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Manual Lookup Required</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NEMA Eversource</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NEMA Municipal Electric Department</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NEMA National Grid</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NEMA%2FSEMA Eversource</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NEMA%2FWCMA Municipal Electric Department</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NEMA%2FWCMA National Grid</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SEMA Eversource</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SEMA Municipal Electric Department</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SEMA National Grid</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SEMA National Grid%2FEversource</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SEMA%2FWCMA National Grid</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>WCMA Eversource</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>WCMA Eversource %2F Municipal Electric Department</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>WCMA Municipal Electric Department</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>WCMA National Grid</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>WCMA Unitil</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Meeting_Type__c</picklist>
+        <values>
+            <fullName>Conference</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Email</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>In Person</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Phone</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Skype</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>NMCPA__c</picklist>
+        <values>
+            <fullName>Co-Development</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Fixed Rate</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Floating Discount</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>With Escalator</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>NMC_Tariff_Method__c</picklist>
+        <values>
+            <fullName>Automatic</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Manual</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Offtake_Type__c</picklist>
+        <values>
+            <fullName>CS Only</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CS and Anchor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Large Anchor Only</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Small Anchor Only</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Price_Type__c</picklist>
+        <values>
+            <fullName>Lease</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NMCPA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PILOT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PPA</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Project_Assignment__c</picklist>
+        <values>
+            <fullName>Automatic - COD Date%2FAvailable Capacity</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Manual</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Reason_for_Decline2__c</picklist>
+        <values>
+            <fullName>Going with another Company</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Not Interested</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Poor Customer Service</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Region__c</picklist>
+        <values>
+            <fullName>MA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NH</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NY</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VT</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Scout_Payment_Type__c</picklist>
+        <values>
+            <fullName>Commission</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Commission and Retainer</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retainer</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Shared_Solar_System_picklist__c</picklist>
+        <values>
+            <fullName>Spartanburg - Central Ave%2E</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>State_Multiselect__c</picklist>
+        <values>
+            <fullName>FL</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NY</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RI</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SC</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status_of_Financials__c</picklist>
+        <values>
+            <fullName>Approved</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Declined</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Not Requested</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Received</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Requested</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Type</picklist>
+        <values>
+            <fullName>Existing Business</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>New Business</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Underwriting_Criteria__c</picklist>
+        <values>
+            <fullName>FICO</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Financial Review</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Investment-Grade</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>None</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Past Payment History</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>zqu__DeliveryInstallationStatus__c</picklist>
+        <values>
+            <fullName>Completed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>In progress</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Yet to begin</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
 </RecordType>

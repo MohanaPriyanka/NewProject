@@ -3,59 +3,35 @@
     <fullName>BD</fullName>
     <isActive>true</isActive>
     <values>
-        
-            <fullName>Board Approval</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Board Approval</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Complete</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Complete</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Completed</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Completed</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>LOI%2FMOU</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>LOI%2FMOU</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>New</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>New</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>On Hold - Awaiting Supply</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>On Hold - Awaiting Supply</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>PPA%2FNMCPA Signed</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>PPA%2FNMCPA Signed</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Proposal</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Proposal</fullName>
+        <default>false</default>
+    </values>
 </BusinessProcess>

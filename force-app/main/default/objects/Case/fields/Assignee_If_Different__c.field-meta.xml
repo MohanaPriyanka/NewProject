@@ -8,82 +8,43 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Aly Garvin</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Aly Garvin</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Alex Schulte</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Alex Schulte</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Reg Schonborn</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Reg Schonborn</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Olivia Love</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Olivia Love</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Trevor Lennox</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Trevor Lennox</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Kamal</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Kamal</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>BWOC</fullName>
-                
-                    <default>false</default>
-                
-                    <label>BWOC</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Aly Garvin</fullName>
+                <default>false</default>
+                <label>Aly Garvin</label>
+            </value>
+            <value>
+                <fullName>Alex Schulte</fullName>
+                <default>false</default>
+                <label>Alex Schulte</label>
+            </value>
+            <value>
+                <fullName>Reg Schonborn</fullName>
+                <default>false</default>
+                <label>Reg Schonborn</label>
+            </value>
+            <value>
+                <fullName>Olivia Love</fullName>
+                <default>false</default>
+                <label>Olivia Love</label>
+            </value>
+            <value>
+                <fullName>Trevor Lennox</fullName>
+                <default>false</default>
+                <label>Trevor Lennox</label>
+            </value>
+            <value>
+                <fullName>Kamal</fullName>
+                <default>false</default>
+                <label>Kamal</label>
+            </value>
+            <value>
+                <fullName>BWOC</fullName>
+                <default>false</default>
+                <label>BWOC</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

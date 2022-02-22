@@ -5,14 +5,10 @@
     <label>Max Overdue Due Date</label>
     <summarizedField>Account_Bill__c.Due_Date_SB__c</summarizedField>
     <summaryFilterItems>
-        
-            <field>Account_Bill__c.Balance_Net_Late_Payments__c</field>
-        
-            <operation>greaterThan</operation>
-        
-            <value>1</value>
-        
-        </summaryFilterItems>
+        <field>Account_Bill__c.Balance_Net_Late_Payments__c</field>
+        <operation>greaterThan</operation>
+        <value>1</value>
+    </summaryFilterItems>
     <summaryForeignKey>Account_Bill__c.Parent_Account__c</summaryForeignKey>
     <summaryOperation>min</summaryOperation>
     <trackHistory>false</trackHistory>

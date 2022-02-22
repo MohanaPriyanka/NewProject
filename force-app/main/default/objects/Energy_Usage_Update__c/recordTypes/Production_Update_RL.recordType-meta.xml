@@ -4,80 +4,42 @@
     <active>true</active>
     <label>Production Update - RL</label>
     <picklistValues>
-        
-            <picklist>Bill_Status__c</picklist>
-        
-            <values>
-            
-                <fullName>Autopay QCed</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Bills QCed</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Credit Transfers QCed</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Email Bills Sent</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Host Account Bill QCed</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Host Account Bill Uploaded</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Letter Bills Sent</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Not Billing this Month</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-            <values>
-            
-                <fullName>Ready to Generate</fullName>
-            
-                <default>false</default>
-            
-            </values>
-        
-        </picklistValues>
+        <picklist>Bill_Status__c</picklist>
+        <values>
+            <fullName>Autopay QCed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Bills QCed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Credit Transfers QCed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Email Bills Sent</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Host Account Bill QCed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Host Account Bill Uploaded</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Letter Bills Sent</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Not Billing this Month</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ready to Generate</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
 </RecordType>

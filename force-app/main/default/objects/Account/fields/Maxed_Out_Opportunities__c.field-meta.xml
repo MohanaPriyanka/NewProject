@@ -5,14 +5,10 @@
     <externalId>false</externalId>
     <label>Maxed Out Opportunities</label>
     <summaryFilterItems>
-        
-            <field>Opportunity.Undersubscribed_but_at_max_capacity__c</field>
-        
-            <operation>equals</operation>
-        
-            <value>True</value>
-        
-        </summaryFilterItems>
+        <field>Opportunity.Undersubscribed_but_at_max_capacity__c</field>
+        <operation>equals</operation>
+        <value>True</value>
+    </summaryFilterItems>
     <summaryForeignKey>Opportunity.AccountId</summaryForeignKey>
     <summaryOperation>count</summaryOperation>
     <trackHistory>false</trackHistory>

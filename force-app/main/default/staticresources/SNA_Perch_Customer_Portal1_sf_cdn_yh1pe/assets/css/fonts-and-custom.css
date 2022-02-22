@@ -1,0 +1,14 @@
+.slds-form-element .uiTooltip.tooltip-trigger, .slds-form-element + .tooltipIcon {
+    display: none;
+}
+
+@font-face {
+font-family: 'Judson-Bold';
+src: url(../resource/PerchFonts/Fonts/Judson-Bold.ttf) format('truetype');
+}
+
+@font-face {
+font-family: 'Manrope-Regular';
+src: url(../resource/PerchFonts/Fonts/Manrope-Regular.ttf) format('truetype');
+}
+:root { --dxp-c-section-columns-max-width: 1440px; }

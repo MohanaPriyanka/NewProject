@@ -8,42 +8,23 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>ASO</fullName>
-                
-                    <default>false</default>
-                
-                    <label>ASO</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Fee-Based</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Fee-Based</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>COVID</fullName>
-                
-                    <default>false</default>
-                
-                    <label>COVID</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>ASO</fullName>
+                <default>false</default>
+                <label>ASO</label>
+            </value>
+            <value>
+                <fullName>Fee-Based</fullName>
+                <default>false</default>
+                <label>Fee-Based</label>
+            </value>
+            <value>
+                <fullName>COVID</fullName>
+                <default>false</default>
+                <label>COVID</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

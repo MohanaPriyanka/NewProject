@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Sender_Transaction_ID__c</fullName>
     <caseSensitive>false</caseSensitive>
     <description>Stores the transaction ID provided by ESG in the USGH response file</description>

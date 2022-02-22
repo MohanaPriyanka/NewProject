@@ -4,73 +4,43 @@
     <description>CS Lead Process</description>
     <isActive>true</isActive>
     <values>
-        
-            <fullName>Contacting</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Contacting</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Engaging</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Engaging</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Future Prospect</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Future Prospect</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Lost</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Lost</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Marketing Qualified</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Marketing Qualified</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>New</fullName>
-        
-            <default>true</default>
-        
-        </values>
+        <fullName>New</fullName>
+        <default>true</default>
+    </values>
     <values>
-        
-            <fullName>No Response</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>No Response</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Qualified</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Qualified</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Sales Qualified</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Sales Qualified</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Unqualified</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Unqualified</fullName>
+        <default>false</default>
+    </values>
 </BusinessProcess>

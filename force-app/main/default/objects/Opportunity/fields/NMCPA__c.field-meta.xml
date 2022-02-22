@@ -9,52 +9,28 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Fixed Rate</fullName>
-                
-                    <default>true</default>
-                
-                    <label>Fixed Rate</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>With Escalator</fullName>
-                
-                    <default>false</default>
-                
-                    <label>With Escalator</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Floating Discount</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Floating Discount</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Co-Development</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Co-Development</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Fixed Rate</fullName>
+                <default>true</default>
+                <label>Fixed Rate</label>
+            </value>
+            <value>
+                <fullName>With Escalator</fullName>
+                <default>false</default>
+                <label>With Escalator</label>
+            </value>
+            <value>
+                <fullName>Floating Discount</fullName>
+                <default>false</default>
+                <label>Floating Discount</label>
+            </value>
+            <value>
+                <fullName>Co-Development</fullName>
+                <default>false</default>
+                <label>Co-Development</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

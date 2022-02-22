@@ -8,32 +8,18 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Public</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Public</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Private</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Private</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Public</fullName>
+                <default>false</default>
+                <label>Public</label>
+            </value>
+            <value>
+                <fullName>Private</fullName>
+                <default>false</default>
+                <label>Private</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

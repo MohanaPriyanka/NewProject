@@ -5,14 +5,10 @@
     <inlineHelpText>Used to determine Product Line</inlineHelpText>
     <label>Count of RL Opportunities</label>
     <summaryFilterItems>
-        
-            <field>Opportunity.Product_Line__c</field>
-        
-            <operation>equals</operation>
-        
-            <value>Residential Loan</value>
-        
-        </summaryFilterItems>
+        <field>Opportunity.Product_Line__c</field>
+        <operation>equals</operation>
+        <value>Residential Loan</value>
+    </summaryFilterItems>
     <summaryForeignKey>Opportunity.AccountId</summaryForeignKey>
     <summaryOperation>count</summaryOperation>
     <trackHistory>false</trackHistory>

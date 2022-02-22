@@ -5,24 +5,15 @@
     <inlineHelpText>The related Client Contract</inlineHelpText>
     <label>Contract</label>
     <lookupFilter>
-        
-            <active>true</active>
-        
-            <errorMessage>Contract Fee Detail must be related to a contract with the record type = Client Contract</errorMessage>
-        
-            <filterItems>
-            
-                <field>Contract.RecordTypeId</field>
-            
-                <operation>equals</operation>
-            
-                <value>Client Contract</value>
-            
-            </filterItems>
-        
-            <isOptional>false</isOptional>
-        
-        </lookupFilter>
+        <active>true</active>
+        <errorMessage>Contract Fee Detail must be related to a contract with the record type = Client Contract</errorMessage>
+        <filterItems>
+            <field>Contract.RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Client Contract</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
     <referenceTo>Contract</referenceTo>
     <relationshipLabel>Contract Fee Detail</relationshipLabel>
     <relationshipName>Contract_Fee_Detail</relationshipName>

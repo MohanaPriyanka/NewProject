@@ -8,52 +8,28 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Different Product</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Different Product</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Poor Customer Service</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Poor Customer Service</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Not Pursuing Solar</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Not Pursuing Solar</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Problem with Contract</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Problem with Contract</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Different Product</fullName>
+                <default>false</default>
+                <label>Different Product</label>
+            </value>
+            <value>
+                <fullName>Poor Customer Service</fullName>
+                <default>false</default>
+                <label>Poor Customer Service</label>
+            </value>
+            <value>
+                <fullName>Not Pursuing Solar</fullName>
+                <default>false</default>
+                <label>Not Pursuing Solar</label>
+            </value>
+            <value>
+                <fullName>Problem with Contract</fullName>
+                <default>false</default>
+                <label>Problem with Contract</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

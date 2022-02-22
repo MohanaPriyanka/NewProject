@@ -2,7 +2,6 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>SnapshotRetentionDays__c</fullName>
     <defaultValue>365</defaultValue>
-    <deprecated>false</deprecated>
     <externalId>false</externalId>
     <inlineHelpText>The number of days to retain snapshots. Any snapshots older will be deleted. Leave blank to retain all snapshots</inlineHelpText>
     <label>Snapshot Retention (Days)</label>

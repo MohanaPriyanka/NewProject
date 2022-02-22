@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Reacquisition_Start_Date__c</fullName>
     <externalId>false</externalId>
     <inlineHelpText>The date at which acquisition is over and reacquisition begins, usually set by the first date at which an allocation schedule is accepted by the utility at 100%.</inlineHelpText>

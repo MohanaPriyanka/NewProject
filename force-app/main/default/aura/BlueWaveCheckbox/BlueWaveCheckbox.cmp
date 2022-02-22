@@ -1,0 +1,8 @@
+<aura:component description="Supports BlueWaveCheckbox by setting checkbox based on list items">
+  <aura:attribute name="selectedItems" type="List"/>
+  <aura:attribute name="text" type="String"/>
+  <aura:attribute name="label" type="String"/>
+  <aura:attribute name="value" type="Boolean"/>
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+  <lightning:input type="checkbox" label="{!v.label}" name="{!v.text}" checked="{!v.value}" onchange="{!c.handleChange}"/>
+</aura:component>

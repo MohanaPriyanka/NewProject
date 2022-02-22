@@ -8,32 +8,18 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Approved</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Approved</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Declined</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Declined</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Approved</fullName>
+                <default>false</default>
+                <label>Approved</label>
+            </value>
+            <value>
+                <fullName>Declined</fullName>
+                <default>false</default>
+                <label>Declined</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

@@ -6,62 +6,33 @@
     <required>false</required>
     <type>Picklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Community Solar</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Community Solar</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Solar Loan</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Solar Loan</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Both</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Both</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Other</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Other</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Large Offtake</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Large Offtake</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Community Solar</fullName>
+                <default>false</default>
+                <label>Community Solar</label>
+            </value>
+            <value>
+                <fullName>Solar Loan</fullName>
+                <default>false</default>
+                <label>Solar Loan</label>
+            </value>
+            <value>
+                <fullName>Both</fullName>
+                <default>false</default>
+                <label>Both</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+            <value>
+                <fullName>Large Offtake</fullName>
+                <default>false</default>
+                <label>Large Offtake</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

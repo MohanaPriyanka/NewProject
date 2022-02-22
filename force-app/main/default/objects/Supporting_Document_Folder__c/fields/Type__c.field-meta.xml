@@ -8,54 +8,29 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Customer Agreements</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Customer Agreements</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Customer Disclosure Forms</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Customer Disclosure Forms</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Customer Credit Reports</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Customer Credit Reports</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Customer Addendums</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Customer Addendums</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Customer Agreements</fullName>
+                <default>false</default>
+                <label>Customer Agreements</label>
+            </value>
+            <value>
+                <fullName>Customer Disclosure Forms</fullName>
+                <default>false</default>
+                <label>Customer Disclosure Forms</label>
+            </value>
+            <value>
+                <fullName>Customer Credit Reports</fullName>
+                <default>false</default>
+                <label>Customer Credit Reports</label>
+            </value>
+            <value>
+                <fullName>Customer Addendums</fullName>
+                <default>false</default>
+                <label>Customer Addendums</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

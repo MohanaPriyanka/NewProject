@@ -1,0 +1,15 @@
+.THIS .box {
+    box-shadow: 0 2px 2px 0px #7c98ad  , 0px 3px 1px -2px #7c98ad  , 0px 1px 5px 0 #7c98ad  ;
+}
+
+.THIS .center {
+    padding-left: 15%;
+}
+
+.THIS .centerWithoutPreviousPage {
+    padding-left: 22.5%;
+}
+
+.THIS .noDisplay {
+    display: none;
+}

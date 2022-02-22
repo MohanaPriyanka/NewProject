@@ -11,10 +11,7 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetName>State_abbreviations</valueSetName>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetName>State_abbreviations</valueSetName>
+    </valueSet>
 </CustomField>

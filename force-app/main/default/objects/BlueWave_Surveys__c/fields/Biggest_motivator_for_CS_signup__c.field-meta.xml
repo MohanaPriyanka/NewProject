@@ -8,63 +8,34 @@
     <trackTrending>false</trackTrending>
     <type>MultiselectPicklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Monthly energy savings</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Monthly energy savings</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Environmental benefit of supporting solar</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Environmental benefit of supporting solar</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Going completely solar by adding community solar to a rooftop installation</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Going completely solar by adding community solar to a rooftop installation</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>A family/friend recommended community solar or BlueWave</fullName>
-                
-                    <default>false</default>
-                
-                    <label>A family/friend recommended community solar or BlueWave</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Other</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Other</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Monthly energy savings</fullName>
+                <default>false</default>
+                <label>Monthly energy savings</label>
+            </value>
+            <value>
+                <fullName>Environmental benefit of supporting solar</fullName>
+                <default>false</default>
+                <label>Environmental benefit of supporting solar</label>
+            </value>
+            <value>
+                <fullName>Going completely solar by adding community solar to a rooftop installation</fullName>
+                <default>false</default>
+                <label>Going completely solar by adding community solar to a rooftop installation</label>
+            </value>
+            <value>
+                <fullName>A family/friend recommended community solar or BlueWave</fullName>
+                <default>false</default>
+                <label>A family/friend recommended community solar or BlueWave</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
     <visibleLines>5</visibleLines>
 </CustomField>

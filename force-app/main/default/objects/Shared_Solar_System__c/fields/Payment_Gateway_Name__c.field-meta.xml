@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Payment_Gateway_Name__c</fullName>
     <description>We have some systems (like Marathon) that don&apos;t use the Client&apos;s gateway, so we need to check an override first. And since usually the payment gateway is the same for all of a client&apos;s entities (and it&apos;s easy to forget to set the gateway on a new entity), we look to the Client Account for the entity.</description>
     <externalId>false</externalId>

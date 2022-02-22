@@ -1,0 +1,20 @@
+/* hide follow, following, unfollow buttons on record detail */
+.forceActionsContainer .slds-button.slds-button--neutral.not-selected.slds-not-selected, .forceActionsContainer .slds-button.slds-button--neutral.is-selected.slds-is-selected {
+    display: none
+}
+
+/* hide record detail field tooltips */
+.slds-form-element .uiTooltip.tooltip-trigger, .slds-form-element + .tooltipIcon {
+    display: none;
+}
+
+@font-face {
+    font-family: 'Judson-Bold';
+    src: url(../resource/PerchFonts/Fonts/Judson-Bold.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: 'Manrope-Regular';
+    src: url(../resource/PerchFonts/Fonts/Manrope-Regular.ttf) format('truetype');
+}
+:root { --dxp-c-section-columns-max-width: 1170px; }

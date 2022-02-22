@@ -8,74 +8,39 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Aerial</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Aerial</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>DOT</fullName>
-                
-                    <default>false</default>
-                
-                    <label>DOT</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Environmental</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Environmental</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Land Owner</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Land Owner</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Transmission Corridor</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Transmission Corridor</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>ROW</fullName>
-                
-                    <default>false</default>
-                
-                    <label>ROW</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Aerial</fullName>
+                <default>false</default>
+                <label>Aerial</label>
+            </value>
+            <value>
+                <fullName>DOT</fullName>
+                <default>false</default>
+                <label>DOT</label>
+            </value>
+            <value>
+                <fullName>Environmental</fullName>
+                <default>false</default>
+                <label>Environmental</label>
+            </value>
+            <value>
+                <fullName>Land Owner</fullName>
+                <default>false</default>
+                <label>Land Owner</label>
+            </value>
+            <value>
+                <fullName>Transmission Corridor</fullName>
+                <default>false</default>
+                <label>Transmission Corridor</label>
+            </value>
+            <value>
+                <fullName>ROW</fullName>
+                <default>false</default>
+                <label>ROW</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

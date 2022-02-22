@@ -7,34 +7,19 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>File Upload</fullName>
-                
-                    <default>true</default>
-                
-                    <label>File Upload</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>EDI</fullName>
-                
-                    <default>false</default>
-                
-                    <label>EDI</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>File Upload</fullName>
+                <default>true</default>
+                <label>File Upload</label>
+            </value>
+            <value>
+                <fullName>EDI</fullName>
+                <default>false</default>
+                <label>EDI</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

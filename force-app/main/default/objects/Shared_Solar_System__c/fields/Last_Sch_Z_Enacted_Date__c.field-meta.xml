@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Last_Sch_Z_Enacted_Date__c</fullName>
     <description>This field is populated with the maximum Date Enacted by Utility field on all related Allocation Schedule records. If it needs to be updated, please update the Allocation Schedule record.</description>
     <externalId>false</externalId>

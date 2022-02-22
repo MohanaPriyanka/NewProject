@@ -9,54 +9,29 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Upgrade</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Upgrade</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Downgrade</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Downgrade</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Downgrade Applicant Only</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Downgrade Applicant Only</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Downgrade Co-Applicant Only</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Downgrade Co-Applicant Only</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Upgrade</fullName>
+                <default>false</default>
+                <label>Upgrade</label>
+            </value>
+            <value>
+                <fullName>Downgrade</fullName>
+                <default>false</default>
+                <label>Downgrade</label>
+            </value>
+            <value>
+                <fullName>Downgrade Applicant Only</fullName>
+                <default>false</default>
+                <label>Downgrade Applicant Only</label>
+            </value>
+            <value>
+                <fullName>Downgrade Co-Applicant Only</fullName>
+                <default>false</default>
+                <label>Downgrade Co-Applicant Only</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

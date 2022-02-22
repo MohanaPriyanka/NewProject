@@ -8,72 +8,38 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>NAV_Getting_Started</fullName>
-                
-                    <default>false</default>
-                
-                    <label>NAV_Getting_Started</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>NAV_Personal_Information</fullName>
-                
-                    <default>false</default>
-                
-                    <label>NAV_Personal_Information</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>NAV_Capacity_Check</fullName>
-                
-                    <default>false</default>
-                
-                    <label>NAV_Capacity_Check</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>NAV_Credit_Check</fullName>
-                
-                    <default>false</default>
-                
-                    <label>NAV_Credit_Check</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>NAV_Energy_Information</fullName>
-                
-                    <default>false</default>
-                
-                    <label>NAV_Energy_Information</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>NAV_Complete</fullName>
-                
-                    <default>false</default>
-                
-                    <label>NAV_Complete</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>NAV_Getting_Started</fullName>
+                <default>false</default>
+                <label>NAV_Getting_Started</label>
+            </value>
+            <value>
+                <fullName>NAV_Personal_Information</fullName>
+                <default>false</default>
+                <label>NAV_Personal_Information</label>
+            </value>
+            <value>
+                <fullName>NAV_Capacity_Check</fullName>
+                <default>false</default>
+                <label>NAV_Capacity_Check</label>
+            </value>
+            <value>
+                <fullName>NAV_Credit_Check</fullName>
+                <default>false</default>
+                <label>NAV_Credit_Check</label>
+            </value>
+            <value>
+                <fullName>NAV_Energy_Information</fullName>
+                <default>false</default>
+                <label>NAV_Energy_Information</label>
+            </value>
+            <value>
+                <fullName>NAV_Complete</fullName>
+                <default>false</default>
+                <label>NAV_Complete</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

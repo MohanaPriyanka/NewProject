@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Type__c</fullName>
     <externalId>false</externalId>
     <inlineHelpText>The type of fee that will be applied.</inlineHelpText>
@@ -8,124 +8,64 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <controllingField>Category__c</controllingField>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Utility Fees/Tax</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Utility Fees/Tax</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Utility Credits</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Utility Credits</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>US Paid to Client</fullName>
-                
-                    <default>false</default>
-                
-                    <label>US Paid to Client</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Main Transfer</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Main Transfer</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>US Payable to Client</fullName>
-                
-                    <default>false</default>
-                
-                    <label>US Payable to Client</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Special Transfer</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Special Transfer</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Fees &amp; Credits</controllingFieldValue>
-            
-                <valueName>Utility Fees/Tax</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Fees &amp; Credits</controllingFieldValue>
-            
-                <valueName>Utility Credits</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Fees &amp; Credits</controllingFieldValue>
-            
-                <valueName>US Paid to Client</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Transfers</controllingFieldValue>
-            
-                <valueName>Main Transfer</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Transfers</controllingFieldValue>
-            
-                <valueName>US Payable to Client</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Transfers</controllingFieldValue>
-            
-                <valueName>Special Transfer</valueName>
-            
-            </valueSettings>
-        
-        </valueSet>
+        <controllingField>Category__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Utility Fees/Tax</fullName>
+                <default>false</default>
+                <label>Utility Fees/Tax</label>
+            </value>
+            <value>
+                <fullName>Utility Credits</fullName>
+                <default>false</default>
+                <label>Utility Credits</label>
+            </value>
+            <value>
+                <fullName>US Paid to Client</fullName>
+                <default>false</default>
+                <label>US Paid to Client</label>
+            </value>
+            <value>
+                <fullName>Main Transfer</fullName>
+                <default>false</default>
+                <label>Main Transfer</label>
+            </value>
+            <value>
+                <fullName>US Payable to Client</fullName>
+                <default>false</default>
+                <label>US Payable to Client</label>
+            </value>
+            <value>
+                <fullName>Special Transfer</fullName>
+                <default>false</default>
+                <label>Special Transfer</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Fees &amp; Credits</controllingFieldValue>
+            <valueName>Utility Fees/Tax</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Fees &amp; Credits</controllingFieldValue>
+            <valueName>Utility Credits</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Fees &amp; Credits</controllingFieldValue>
+            <valueName>US Paid to Client</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Transfers</controllingFieldValue>
+            <valueName>Main Transfer</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Transfers</controllingFieldValue>
+            <valueName>US Payable to Client</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Transfers</controllingFieldValue>
+            <valueName>Special Transfer</valueName>
+        </valueSettings>
+    </valueSet>
 </CustomField>

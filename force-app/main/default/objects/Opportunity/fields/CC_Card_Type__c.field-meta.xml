@@ -10,52 +10,28 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Visa</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Visa</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>MasterCard</fullName>
-                
-                    <default>false</default>
-                
-                    <label>MasterCard</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Amex</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Amex</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Discover</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Discover</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Visa</fullName>
+                <default>false</default>
+                <label>Visa</label>
+            </value>
+            <value>
+                <fullName>MasterCard</fullName>
+                <default>false</default>
+                <label>MasterCard</label>
+            </value>
+            <value>
+                <fullName>Amex</fullName>
+                <default>false</default>
+                <label>Amex</label>
+            </value>
+            <value>
+                <fullName>Discover</fullName>
+                <default>false</default>
+                <label>Discover</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

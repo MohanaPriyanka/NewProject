@@ -8,52 +8,28 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Monthly</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Monthly</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Quarterly</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Quarterly</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Annual</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Annual</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>One-Time</fullName>
-                
-                    <default>false</default>
-                
-                    <label>One-Time</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Monthly</fullName>
+                <default>false</default>
+                <label>Monthly</label>
+            </value>
+            <value>
+                <fullName>Quarterly</fullName>
+                <default>false</default>
+                <label>Quarterly</label>
+            </value>
+            <value>
+                <fullName>Annual</fullName>
+                <default>false</default>
+                <label>Annual</label>
+            </value>
+            <value>
+                <fullName>One-Time</fullName>
+                <default>false</default>
+                <label>One-Time</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

@@ -10,10 +10,7 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetName>Client_Invoicing_Events</valueSetName>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetName>Client_Invoicing_Events</valueSetName>
+    </valueSet>
 </CustomField>

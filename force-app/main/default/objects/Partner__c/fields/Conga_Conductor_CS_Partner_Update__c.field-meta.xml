@@ -5,9 +5,9 @@
     <externalId>false</externalId>
     <formula>&quot;&amp;solmgr=1&quot; +
 &quot;&amp;Id=&quot; + Id +
-&quot;&amp;QueryId=[QC]{!Environment.VAR_CONGA_CSPARTER_QC},[Opps]{!Environment.VAR_CONGA_CSPARTNER_OPP}, [DQLead]{!Environment.VAR_CONGA_CSPARTNER_DQLEADS}, [Referrals]{!Environment.VAR_CONGA_CSPARTNER_REFERRALS}, [Expired]{!Environment.VAR_CONGA_CSPARTNER_EXPIRED}, [Complete]{!Environment.VAR_CONGA_CSPARNTER_COMPLETE}&quot; +
-&quot;&amp;TemplateId={!Environment.VAR_CONGA_TEMPLATE_DAILYCS}&quot; +
-&quot;&amp;CongaEmailTemplateId={!Environment.VAR_CONGA_EMAIL_TEMPLATE_CS_DAILY_REPORT}&quot; + 
+&quot;&amp;QueryId=[QC]a270a000001dI6z,[Opps]a270a000001EiFY, [DQLead]a270a000001EkT5, [Referrals]a270a000001EpbL, [Expired]a270a000000N74w, [Complete]a270a000000N75f&quot; +
+&quot;&amp;TemplateId=a2F0a000001ZXvg&quot; +
+&quot;&amp;CongaEmailTemplateId=a260a00000FhciJ&quot; + 
 &quot;&amp;EmailAdditionalTo=&quot; + Email__c +
 &quot;&amp;ofn=&quot; + Name + &quot; &quot; + &quot;Community Solar Update Report&quot; + &quot; &quot; + TEXT(TODAY()) +
 &quot;&amp;qmode=SendEmail&quot; +

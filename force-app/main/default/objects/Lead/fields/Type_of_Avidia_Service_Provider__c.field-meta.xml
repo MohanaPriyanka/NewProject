@@ -8,64 +8,34 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Real Estate Appraiser</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Real Estate Appraiser</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Attorney</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Attorney</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Accountant</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Accountant</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Consultant</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Consultant</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>None of the above</fullName>
-                
-                    <default>false</default>
-                
-                    <label>None of the above</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Real Estate Appraiser</fullName>
+                <default>false</default>
+                <label>Real Estate Appraiser</label>
+            </value>
+            <value>
+                <fullName>Attorney</fullName>
+                <default>false</default>
+                <label>Attorney</label>
+            </value>
+            <value>
+                <fullName>Accountant</fullName>
+                <default>false</default>
+                <label>Accountant</label>
+            </value>
+            <value>
+                <fullName>Consultant</fullName>
+                <default>false</default>
+                <label>Consultant</label>
+            </value>
+            <value>
+                <fullName>None of the above</fullName>
+                <default>false</default>
+                <label>None of the above</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

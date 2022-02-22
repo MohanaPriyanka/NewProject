@@ -1,0 +1,21 @@
+@font-face {
+    font-family: proximaNovaFont;
+    src: url('/sfsites/c/resource/ProximaNova');
+}
+div {
+	font-size: 1rem;
+}
+.comm-page-custom-switch, .comm-page-custom-partnerswitch {
+    background-color: #151C34;
+    background-image: url('/sfsites/c/resource/SimpleSignupFormStyling/Image_Background.jpg');
+    background-position: center -600px;
+    background-repeat: no-repeat;
+	background-size: auto;
+}
+.comm-page-custom-switch .cCenterPanel, .comm-page-custom-partnerswitch .cCenterPanel {
+    margin-top: 0;
+}
+.slds-form-element__label {
+    font-size: 1rem;
+}
+:root { --dxp-c-section-columns-max-width: 1170px; }

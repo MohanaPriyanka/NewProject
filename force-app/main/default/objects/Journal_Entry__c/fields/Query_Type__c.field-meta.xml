@@ -8,64 +8,34 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>InvoiceItem</fullName>
-                
-                    <default>false</default>
-                
-                    <label>InvoiceItem</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>CreditMemo</fullName>
-                
-                    <default>false</default>
-                
-                    <label>CreditMemo</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>DebitMemo</fullName>
-                
-                    <default>false</default>
-                
-                    <label>DebitMemo</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>PaymentPart_DM</fullName>
-                
-                    <default>false</default>
-                
-                    <label>PaymentPart_DM</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>PaymentPart_IV</fullName>
-                
-                    <default>false</default>
-                
-                    <label>PaymentPart_IV</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>InvoiceItem</fullName>
+                <default>false</default>
+                <label>InvoiceItem</label>
+            </value>
+            <value>
+                <fullName>CreditMemo</fullName>
+                <default>false</default>
+                <label>CreditMemo</label>
+            </value>
+            <value>
+                <fullName>DebitMemo</fullName>
+                <default>false</default>
+                <label>DebitMemo</label>
+            </value>
+            <value>
+                <fullName>PaymentPart_DM</fullName>
+                <default>false</default>
+                <label>PaymentPart_DM</label>
+            </value>
+            <value>
+                <fullName>PaymentPart_IV</fullName>
+                <default>false</default>
+                <label>PaymentPart_IV</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

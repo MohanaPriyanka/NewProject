@@ -9,42 +9,23 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Experian</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Experian</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>TransUnion</fullName>
-                
-                    <default>false</default>
-                
-                    <label>TransUnion</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Equifax</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Equifax</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Experian</fullName>
+                <default>false</default>
+                <label>Experian</label>
+            </value>
+            <value>
+                <fullName>TransUnion</fullName>
+                <default>false</default>
+                <label>TransUnion</label>
+            </value>
+            <value>
+                <fullName>Equifax</fullName>
+                <default>false</default>
+                <label>Equifax</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

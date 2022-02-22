@@ -7,1574 +7,789 @@
     <required>false</required>
     <type>Picklist</type>
     <valueSet>
-        
-            <controllingField>Category__c</controllingField>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>00. Payment Schedule</fullName>
-                
-                    <default>false</default>
-                
-                    <label>00. Payment Schedule</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>01. Pre-Application Report</fullName>
-                
-                    <default>false</default>
-                
-                    <label>01. Pre-Application Report</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>02. Diligence Report</fullName>
-                
-                    <default>false</default>
-                
-                    <label>02. Diligence Report</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>03. Interconnection Application Packet (Original/Revised)</fullName>
-                
-                    <default>false</default>
-                
-                    <label>03. Interconnection Application Packet (Original/Revised)</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>04. Technical Pre-Study (Screening/Preliminary/Feasibility)</fullName>
-                
-                    <default>false</default>
-                
-                    <label>04. Technical Pre-Study (Screening/Preliminary/Feasibility)</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>05. Legal Form</fullName>
-                
-                    <default>false</default>
-                
-                    <label>05. Legal Form</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>06. Technical Study (ASO, SIS, ESS, Restudy)</fullName>
-                
-                    <default>false</default>
-                
-                    <label>06. Technical Study (ASO, SIS, ESS, Restudy)</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>07. 20-50BD Technical Study Review</fullName>
-                
-                    <default>false</default>
-                
-                    <label>07. 20-50BD Technical Study Review</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>08. ISA &amp; Amendment</fullName>
-                
-                    <default>false</default>
-                
-                    <label>08. ISA &amp; Amendment</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>09. Federal &amp; State Incentive</fullName>
-                
-                    <default>false</default>
-                
-                    <label>09. Federal &amp; State Incentive</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>10. Utility Design and Easement</fullName>
-                
-                    <default>false</default>
-                
-                    <label>10. Utility Design and Easement</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>11. Wireless Test</fullName>
-                
-                    <default>false</default>
-                
-                    <label>11. Wireless Test</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>12. Utility Construction</fullName>
-                
-                    <default>false</default>
-                
-                    <label>12. Utility Construction</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>13. Telecommunication</fullName>
-                
-                    <default>false</default>
-                
-                    <label>13. Telecommunication</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>14. Witness Test</fullName>
-                
-                    <default>false</default>
-                
-                    <label>14. Witness Test</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>15. Consent to Assignment</fullName>
-                
-                    <default>false</default>
-                
-                    <label>15. Consent to Assignment</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>16. Transfer of Ownership</fullName>
-                
-                    <default>false</default>
-                
-                    <label>16. Transfer of Ownership</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>25% ISA Payment</fullName>
-                
-                    <default>false</default>
-                
-                    <label>25% ISA Payment</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>75% ISA Payment</fullName>
-                
-                    <default>false</default>
-                
-                    <label>75% ISA Payment</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Acquisition</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Acquisition</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Admin (Salesforce, organization, planning, management)</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Admin (Salesforce, organization, planning, management)</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Asset Management</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Asset Management</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Blast Letter</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Blast Letter</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Budget/Cashflow review</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Budget/Cashflow review</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Budgets</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Budgets</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Community Service</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Community Service</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Community Solar</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Community Solar</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Compliance</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Compliance</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Construction Administration</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Construction Administration</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Construction Budget</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Construction Budget</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Contract Review</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Contract Review</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Corporate Finance</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Corporate Finance</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Draft</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Draft</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Due Diligence</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Due Diligence</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Engagement</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Engagement</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>EPC</fullName>
-                
-                    <default>false</default>
-                
-                    <label>EPC Construction</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>ESS Application</fullName>
-                
-                    <default>false</default>
-                
-                    <label>ESS Application</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Event</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Event</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Exec Committee</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Exec Committee</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>FERC</fullName>
-                
-                    <default>false</default>
-                
-                    <label>FERC</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Finance</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Finance</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Finance Committee</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Finance Committee</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Financial Modeling</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Financial Modeling</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>HR</fullName>
-                
-                    <default>false</default>
-                
-                    <label>HR</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Impact Study</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Impact Study</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Incentives</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Incentives</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Interconnection</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Interconnection</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Interconnection - Application Stage</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Interconnection - Application Stage</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Interconnection - Net Metering</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Interconnection - Net Metering</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Interconnection - Utility Construction</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Interconnection - Utility Construction</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Interview</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Interview</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Investor Relations</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Investor Relations</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>ISA</fullName>
-                
-                    <default>false</default>
-                
-                    <label>ISA</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>ISO NE</fullName>
-                
-                    <default>false</default>
-                
-                    <label>ISO NE</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>IX Applications</fullName>
-                
-                    <default>false</default>
-                
-                    <label>IX Applications</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>IX Meetings</fullName>
-                
-                    <default>false</default>
-                
-                    <label>IX Meetings</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Lobbying</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Lobbying</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Mailer</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Mailer</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>MassACA</fullName>
-                
-                    <default>false</default>
-                
-                    <label>MassACA</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Meeting</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Meeting</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Metering</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Metering</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Modeling</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Modeling</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Net-Metering</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Net-Metering</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Off-site meetings</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Off-site meetings</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Ongoing Tasks</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Ongoing Tasks</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Other</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Other</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Partnerships</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Partnerships</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Payment/Deadline</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Payment/Deadline</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Permitting</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Permitting</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Physical Plant</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Physical Plant</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Platform Development</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Platform Development</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Policy Development</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Policy Development</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Press Release</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Press Release</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Project Considerations (Risk Summary &amp; IC)</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Project Considerations (Risk Summary &amp; IC)</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Project Finance</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Project Finance</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Project Management Summary</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Project Management Summary</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Project Partners</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Project Partners</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>PV + ESS Applications</fullName>
-                
-                    <default>false</default>
-                
-                    <label>PV + ESS Applications</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Real Estate</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Real Estate</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Revenue and OpEx</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Revenue and OpEx</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Review</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Review</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>RFP</fullName>
-                
-                    <default>false</default>
-                
-                    <label>RFP</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Sales</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Sales</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Sent to Scout</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Sent to Scout</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Detailed Study</fullName>
-                
-                    <default>false</default>
-                
-                    <label>SIS (Detailed)</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>SIS</fullName>
-                
-                    <default>false</default>
-                
-                    <label>SIS (Impact)</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>SIS Payment</fullName>
-                
-                    <default>false</default>
-                
-                    <label>SIS Payment</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Site Origination</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Site Origination</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Site Visit</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Site Visit</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>SMART</fullName>
-                
-                    <default>false</default>
-                
-                    <label>SMART</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Social Media</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Social Media</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>SREC (and other Incentive Programs)</fullName>
-                
-                    <default>false</default>
-                
-                    <label>SREC (and other Incentive Programs)</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>SRECS</fullName>
-                
-                    <default>false</default>
-                
-                    <label>SRECS</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Stage 1 Pre-Development - DD Stage and Site Acq</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Stage 1 Pre-Development - DD Stage and Site Acq</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Stage 1 Pre-Development - Interconnection Strategy &amp; App</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Stage 1 Pre-Development - Interconnection Strategy &amp; App</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Stage 2 Development - Design</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Stage 2 Development - Design</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Stage 2 Development - Permitting</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Stage 2 Development - Permitting</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Stage 2 Development - Real Estate</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Stage 2 Development - Real Estate</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Stage 2 Development - Tax Agreement &amp; Ch. 61/A/B</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Stage 2 Development - Tax Agreement &amp; Ch. 61/A/B</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Stage 3 - Pre-Construction</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Stage 3 - Pre-Construction</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Stage 4 - Construction</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Stage 4 - Construction</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Structure/Strategy</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Structure/Strategy</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Study Payments</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Study Payments</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>System Operations</fullName>
-                
-                    <default>false</default>
-                
-                    <label>System Operations</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Telecom Construction</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Telecom Construction</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Telecom Payments</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Telecom Payments</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Third Party Interests (Scouts &amp; Offtake)</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Third Party Interests (Scouts &amp; Offtake)</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Utility Construction</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Utility Construction</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Utility Design</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Utility Design</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Utility Studies</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Utility Studies</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Wireless Test</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Wireless Test</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Site Acquisition - Engagement</controllingFieldValue>
-            
-                <controllingFieldValue>Project Management - Site Acquisition</controllingFieldValue>
-            
-                <valueName>Blast Letter</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Site Acquisition - Engagement</controllingFieldValue>
-            
-                <controllingFieldValue>Project Management - Site Acquisition</controllingFieldValue>
-            
-                <valueName>Engagement</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Site Acquisition - Engagement</controllingFieldValue>
-            
-                <controllingFieldValue>Project Management - Site Acquisition</controllingFieldValue>
-            
-                <valueName>Mailer</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Site Acquisition - Engagement</controllingFieldValue>
-            
-                <controllingFieldValue>Project Management - Executive/Corporate</controllingFieldValue>
-            
-                <controllingFieldValue>Project Management - Site Acquisition</controllingFieldValue>
-            
-                <controllingFieldValue>Project Management - Construction</controllingFieldValue>
-            
-                <valueName>Meeting</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Site Acquisition - Engagement</controllingFieldValue>
-            
-                <controllingFieldValue>Project Management - Site Acquisition</controllingFieldValue>
-            
-                <valueName>Sent to Scout</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Executive/Corporate</controllingFieldValue>
-            
-                <controllingFieldValue>Project Management - Site Acquisition</controllingFieldValue>
-            
-                <valueName>Admin (Salesforce, organization, planning, management)</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Site Acquisition</controllingFieldValue>
-            
-                <valueName>Acquisition</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Site Acquisition</controllingFieldValue>
-            
-                <valueName>Due Diligence</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Site Acquisition</controllingFieldValue>
-            
-                <valueName>HR</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Site Acquisition</controllingFieldValue>
-            
-                <valueName>Site Origination</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Site Acquisition</controllingFieldValue>
-            
-                <controllingFieldValue>Project Management - Construction</controllingFieldValue>
-            
-                <valueName>Site Visit</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
-            
-                <valueName>Community Solar</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
-            
-                <valueName>Construction Budget</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
-            
-                <valueName>Finance</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
-            
-                <valueName>Interconnection - Application Stage</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
-            
-                <valueName>Interconnection - Net Metering</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
-            
-                <valueName>Interconnection - Utility Construction</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
-            
-                <valueName>Project Considerations (Risk Summary &amp; IC)</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
-            
-                <valueName>Project Management Summary</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
-            
-                <valueName>Project Partners</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
-            
-                <valueName>SREC (and other Incentive Programs)</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
-            
-                <valueName>Stage 1 Pre-Development - DD Stage and Site Acq</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
-            
-                <valueName>Stage 1 Pre-Development - Interconnection Strategy &amp; App</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
-            
-                <valueName>Stage 2 Development - Design</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
-            
-                <valueName>Stage 2 Development - Permitting</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
-            
-                <valueName>Stage 2 Development - Real Estate</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
-            
-                <valueName>Stage 2 Development - Tax Agreement &amp; Ch. 61/A/B</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
-            
-                <valueName>Stage 3 - Pre-Construction</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
-            
-                <valueName>Stage 4 - Construction</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
-            
-                <valueName>Third Party Interests (Scouts &amp; Offtake)</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-            
-                <valueName>00. Payment Schedule</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-            
-                <valueName>01. Pre-Application Report</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-            
-                <valueName>02. Diligence Report</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-            
-                <valueName>03. Interconnection Application Packet (Original/Revised)</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-            
-                <valueName>04. Technical Pre-Study (Screening/Preliminary/Feasibility)</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-            
-                <valueName>05. Legal Form</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-            
-                <valueName>06. Technical Study (ASO, SIS, ESS, Restudy)</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-            
-                <valueName>07. 20-50BD Technical Study Review</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-            
-                <valueName>08. ISA &amp; Amendment</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-            
-                <valueName>09. Federal &amp; State Incentive</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-            
-                <valueName>10. Utility Design and Easement</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-            
-                <valueName>11. Wireless Test</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-            
-                <valueName>12. Utility Construction</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-            
-                <valueName>13. Telecommunication</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-            
-                <valueName>14. Witness Test</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-            
-                <valueName>15. Consent to Assignment</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-            
-                <valueName>16. Transfer of Ownership</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Construction</controllingFieldValue>
-            
-                <valueName>Construction Administration</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Construction</controllingFieldValue>
-            
-                <valueName>EPC</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Construction</controllingFieldValue>
-            
-                <valueName>RFP</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Asset Management</controllingFieldValue>
-            
-                <valueName>Compliance</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Asset Management</controllingFieldValue>
-            
-                <valueName>Other</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Asset Management</controllingFieldValue>
-            
-                <valueName>Physical Plant</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Project Management - Asset Management</controllingFieldValue>
-            
-                <valueName>Revenue and OpEx</valueName>
-            
-            </valueSettings>
-        
-        </valueSet>
+        <controllingField>Category__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>00. Payment Schedule</fullName>
+                <default>false</default>
+                <label>00. Payment Schedule</label>
+            </value>
+            <value>
+                <fullName>01. Pre-Application Report</fullName>
+                <default>false</default>
+                <label>01. Pre-Application Report</label>
+            </value>
+            <value>
+                <fullName>02. Diligence Report</fullName>
+                <default>false</default>
+                <label>02. Diligence Report</label>
+            </value>
+            <value>
+                <fullName>03. Interconnection Application Packet (Original/Revised)</fullName>
+                <default>false</default>
+                <label>03. Interconnection Application Packet (Original/Revised)</label>
+            </value>
+            <value>
+                <fullName>04. Technical Pre-Study (Screening/Preliminary/Feasibility)</fullName>
+                <default>false</default>
+                <label>04. Technical Pre-Study (Screening/Preliminary/Feasibility)</label>
+            </value>
+            <value>
+                <fullName>05. Legal Form</fullName>
+                <default>false</default>
+                <label>05. Legal Form</label>
+            </value>
+            <value>
+                <fullName>06. Technical Study (ASO, SIS, ESS, Restudy)</fullName>
+                <default>false</default>
+                <label>06. Technical Study (ASO, SIS, ESS, Restudy)</label>
+            </value>
+            <value>
+                <fullName>07. 20-50BD Technical Study Review</fullName>
+                <default>false</default>
+                <label>07. 20-50BD Technical Study Review</label>
+            </value>
+            <value>
+                <fullName>08. ISA &amp; Amendment</fullName>
+                <default>false</default>
+                <label>08. ISA &amp; Amendment</label>
+            </value>
+            <value>
+                <fullName>09. Federal &amp; State Incentive</fullName>
+                <default>false</default>
+                <label>09. Federal &amp; State Incentive</label>
+            </value>
+            <value>
+                <fullName>10. Utility Design and Easement</fullName>
+                <default>false</default>
+                <label>10. Utility Design and Easement</label>
+            </value>
+            <value>
+                <fullName>11. Wireless Test</fullName>
+                <default>false</default>
+                <label>11. Wireless Test</label>
+            </value>
+            <value>
+                <fullName>12. Utility Construction</fullName>
+                <default>false</default>
+                <label>12. Utility Construction</label>
+            </value>
+            <value>
+                <fullName>13. Telecommunication</fullName>
+                <default>false</default>
+                <label>13. Telecommunication</label>
+            </value>
+            <value>
+                <fullName>14. Witness Test</fullName>
+                <default>false</default>
+                <label>14. Witness Test</label>
+            </value>
+            <value>
+                <fullName>15. Consent to Assignment</fullName>
+                <default>false</default>
+                <label>15. Consent to Assignment</label>
+            </value>
+            <value>
+                <fullName>16. Transfer of Ownership</fullName>
+                <default>false</default>
+                <label>16. Transfer of Ownership</label>
+            </value>
+            <value>
+                <fullName>25% ISA Payment</fullName>
+                <default>false</default>
+                <label>25% ISA Payment</label>
+            </value>
+            <value>
+                <fullName>75% ISA Payment</fullName>
+                <default>false</default>
+                <label>75% ISA Payment</label>
+            </value>
+            <value>
+                <fullName>Acquisition</fullName>
+                <default>false</default>
+                <label>Acquisition</label>
+            </value>
+            <value>
+                <fullName>Admin (Salesforce, organization, planning, management)</fullName>
+                <default>false</default>
+                <label>Admin (Salesforce, organization, planning, management)</label>
+            </value>
+            <value>
+                <fullName>Asset Management</fullName>
+                <default>false</default>
+                <label>Asset Management</label>
+            </value>
+            <value>
+                <fullName>Blast Letter</fullName>
+                <default>false</default>
+                <label>Blast Letter</label>
+            </value>
+            <value>
+                <fullName>Budget/Cashflow review</fullName>
+                <default>false</default>
+                <label>Budget/Cashflow review</label>
+            </value>
+            <value>
+                <fullName>Budgets</fullName>
+                <default>false</default>
+                <label>Budgets</label>
+            </value>
+            <value>
+                <fullName>Community Service</fullName>
+                <default>false</default>
+                <label>Community Service</label>
+            </value>
+            <value>
+                <fullName>Community Solar</fullName>
+                <default>false</default>
+                <label>Community Solar</label>
+            </value>
+            <value>
+                <fullName>Compliance</fullName>
+                <default>false</default>
+                <label>Compliance</label>
+            </value>
+            <value>
+                <fullName>Construction Administration</fullName>
+                <default>false</default>
+                <label>Construction Administration</label>
+            </value>
+            <value>
+                <fullName>Construction Budget</fullName>
+                <default>false</default>
+                <label>Construction Budget</label>
+            </value>
+            <value>
+                <fullName>Contract Review</fullName>
+                <default>false</default>
+                <label>Contract Review</label>
+            </value>
+            <value>
+                <fullName>Corporate Finance</fullName>
+                <default>false</default>
+                <label>Corporate Finance</label>
+            </value>
+            <value>
+                <fullName>Draft</fullName>
+                <default>false</default>
+                <label>Draft</label>
+            </value>
+            <value>
+                <fullName>Due Diligence</fullName>
+                <default>false</default>
+                <label>Due Diligence</label>
+            </value>
+            <value>
+                <fullName>Engagement</fullName>
+                <default>false</default>
+                <label>Engagement</label>
+            </value>
+            <value>
+                <fullName>EPC</fullName>
+                <default>false</default>
+                <label>EPC Construction</label>
+            </value>
+            <value>
+                <fullName>ESS Application</fullName>
+                <default>false</default>
+                <label>ESS Application</label>
+            </value>
+            <value>
+                <fullName>Event</fullName>
+                <default>false</default>
+                <label>Event</label>
+            </value>
+            <value>
+                <fullName>Exec Committee</fullName>
+                <default>false</default>
+                <label>Exec Committee</label>
+            </value>
+            <value>
+                <fullName>FERC</fullName>
+                <default>false</default>
+                <label>FERC</label>
+            </value>
+            <value>
+                <fullName>Finance</fullName>
+                <default>false</default>
+                <label>Finance</label>
+            </value>
+            <value>
+                <fullName>Finance Committee</fullName>
+                <default>false</default>
+                <label>Finance Committee</label>
+            </value>
+            <value>
+                <fullName>Financial Modeling</fullName>
+                <default>false</default>
+                <label>Financial Modeling</label>
+            </value>
+            <value>
+                <fullName>HR</fullName>
+                <default>false</default>
+                <label>HR</label>
+            </value>
+            <value>
+                <fullName>Impact Study</fullName>
+                <default>false</default>
+                <label>Impact Study</label>
+            </value>
+            <value>
+                <fullName>Incentives</fullName>
+                <default>false</default>
+                <label>Incentives</label>
+            </value>
+            <value>
+                <fullName>Interconnection</fullName>
+                <default>false</default>
+                <label>Interconnection</label>
+            </value>
+            <value>
+                <fullName>Interconnection - Application Stage</fullName>
+                <default>false</default>
+                <label>Interconnection - Application Stage</label>
+            </value>
+            <value>
+                <fullName>Interconnection - Net Metering</fullName>
+                <default>false</default>
+                <label>Interconnection - Net Metering</label>
+            </value>
+            <value>
+                <fullName>Interconnection - Utility Construction</fullName>
+                <default>false</default>
+                <label>Interconnection - Utility Construction</label>
+            </value>
+            <value>
+                <fullName>Interview</fullName>
+                <default>false</default>
+                <label>Interview</label>
+            </value>
+            <value>
+                <fullName>Investor Relations</fullName>
+                <default>false</default>
+                <label>Investor Relations</label>
+            </value>
+            <value>
+                <fullName>ISA</fullName>
+                <default>false</default>
+                <label>ISA</label>
+            </value>
+            <value>
+                <fullName>ISO NE</fullName>
+                <default>false</default>
+                <label>ISO NE</label>
+            </value>
+            <value>
+                <fullName>IX Applications</fullName>
+                <default>false</default>
+                <label>IX Applications</label>
+            </value>
+            <value>
+                <fullName>IX Meetings</fullName>
+                <default>false</default>
+                <label>IX Meetings</label>
+            </value>
+            <value>
+                <fullName>Lobbying</fullName>
+                <default>false</default>
+                <label>Lobbying</label>
+            </value>
+            <value>
+                <fullName>Mailer</fullName>
+                <default>false</default>
+                <label>Mailer</label>
+            </value>
+            <value>
+                <fullName>MassACA</fullName>
+                <default>false</default>
+                <label>MassACA</label>
+            </value>
+            <value>
+                <fullName>Meeting</fullName>
+                <default>false</default>
+                <label>Meeting</label>
+            </value>
+            <value>
+                <fullName>Metering</fullName>
+                <default>false</default>
+                <label>Metering</label>
+            </value>
+            <value>
+                <fullName>Modeling</fullName>
+                <default>false</default>
+                <label>Modeling</label>
+            </value>
+            <value>
+                <fullName>Net-Metering</fullName>
+                <default>false</default>
+                <label>Net-Metering</label>
+            </value>
+            <value>
+                <fullName>Off-site meetings</fullName>
+                <default>false</default>
+                <label>Off-site meetings</label>
+            </value>
+            <value>
+                <fullName>Ongoing Tasks</fullName>
+                <default>false</default>
+                <label>Ongoing Tasks</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+            <value>
+                <fullName>Partnerships</fullName>
+                <default>false</default>
+                <label>Partnerships</label>
+            </value>
+            <value>
+                <fullName>Payment/Deadline</fullName>
+                <default>false</default>
+                <label>Payment/Deadline</label>
+            </value>
+            <value>
+                <fullName>Permitting</fullName>
+                <default>false</default>
+                <label>Permitting</label>
+            </value>
+            <value>
+                <fullName>Physical Plant</fullName>
+                <default>false</default>
+                <label>Physical Plant</label>
+            </value>
+            <value>
+                <fullName>Platform Development</fullName>
+                <default>false</default>
+                <label>Platform Development</label>
+            </value>
+            <value>
+                <fullName>Policy Development</fullName>
+                <default>false</default>
+                <label>Policy Development</label>
+            </value>
+            <value>
+                <fullName>Press Release</fullName>
+                <default>false</default>
+                <label>Press Release</label>
+            </value>
+            <value>
+                <fullName>Project Considerations (Risk Summary &amp; IC)</fullName>
+                <default>false</default>
+                <label>Project Considerations (Risk Summary &amp; IC)</label>
+            </value>
+            <value>
+                <fullName>Project Finance</fullName>
+                <default>false</default>
+                <label>Project Finance</label>
+            </value>
+            <value>
+                <fullName>Project Management Summary</fullName>
+                <default>false</default>
+                <label>Project Management Summary</label>
+            </value>
+            <value>
+                <fullName>Project Partners</fullName>
+                <default>false</default>
+                <label>Project Partners</label>
+            </value>
+            <value>
+                <fullName>PV + ESS Applications</fullName>
+                <default>false</default>
+                <label>PV + ESS Applications</label>
+            </value>
+            <value>
+                <fullName>Real Estate</fullName>
+                <default>false</default>
+                <label>Real Estate</label>
+            </value>
+            <value>
+                <fullName>Revenue and OpEx</fullName>
+                <default>false</default>
+                <label>Revenue and OpEx</label>
+            </value>
+            <value>
+                <fullName>Review</fullName>
+                <default>false</default>
+                <label>Review</label>
+            </value>
+            <value>
+                <fullName>RFP</fullName>
+                <default>false</default>
+                <label>RFP</label>
+            </value>
+            <value>
+                <fullName>Sales</fullName>
+                <default>false</default>
+                <label>Sales</label>
+            </value>
+            <value>
+                <fullName>Sent to Scout</fullName>
+                <default>false</default>
+                <label>Sent to Scout</label>
+            </value>
+            <value>
+                <fullName>Detailed Study</fullName>
+                <default>false</default>
+                <label>SIS (Detailed)</label>
+            </value>
+            <value>
+                <fullName>SIS</fullName>
+                <default>false</default>
+                <label>SIS (Impact)</label>
+            </value>
+            <value>
+                <fullName>SIS Payment</fullName>
+                <default>false</default>
+                <label>SIS Payment</label>
+            </value>
+            <value>
+                <fullName>Site Origination</fullName>
+                <default>false</default>
+                <label>Site Origination</label>
+            </value>
+            <value>
+                <fullName>Site Visit</fullName>
+                <default>false</default>
+                <label>Site Visit</label>
+            </value>
+            <value>
+                <fullName>SMART</fullName>
+                <default>false</default>
+                <label>SMART</label>
+            </value>
+            <value>
+                <fullName>Social Media</fullName>
+                <default>false</default>
+                <label>Social Media</label>
+            </value>
+            <value>
+                <fullName>SREC (and other Incentive Programs)</fullName>
+                <default>false</default>
+                <label>SREC (and other Incentive Programs)</label>
+            </value>
+            <value>
+                <fullName>SRECS</fullName>
+                <default>false</default>
+                <label>SRECS</label>
+            </value>
+            <value>
+                <fullName>Stage 1 Pre-Development - DD Stage and Site Acq</fullName>
+                <default>false</default>
+                <label>Stage 1 Pre-Development - DD Stage and Site Acq</label>
+            </value>
+            <value>
+                <fullName>Stage 1 Pre-Development - Interconnection Strategy &amp; App</fullName>
+                <default>false</default>
+                <label>Stage 1 Pre-Development - Interconnection Strategy &amp; App</label>
+            </value>
+            <value>
+                <fullName>Stage 2 Development - Design</fullName>
+                <default>false</default>
+                <label>Stage 2 Development - Design</label>
+            </value>
+            <value>
+                <fullName>Stage 2 Development - Permitting</fullName>
+                <default>false</default>
+                <label>Stage 2 Development - Permitting</label>
+            </value>
+            <value>
+                <fullName>Stage 2 Development - Real Estate</fullName>
+                <default>false</default>
+                <label>Stage 2 Development - Real Estate</label>
+            </value>
+            <value>
+                <fullName>Stage 2 Development - Tax Agreement &amp; Ch. 61/A/B</fullName>
+                <default>false</default>
+                <label>Stage 2 Development - Tax Agreement &amp; Ch. 61/A/B</label>
+            </value>
+            <value>
+                <fullName>Stage 3 - Pre-Construction</fullName>
+                <default>false</default>
+                <label>Stage 3 - Pre-Construction</label>
+            </value>
+            <value>
+                <fullName>Stage 4 - Construction</fullName>
+                <default>false</default>
+                <label>Stage 4 - Construction</label>
+            </value>
+            <value>
+                <fullName>Structure/Strategy</fullName>
+                <default>false</default>
+                <label>Structure/Strategy</label>
+            </value>
+            <value>
+                <fullName>Study Payments</fullName>
+                <default>false</default>
+                <label>Study Payments</label>
+            </value>
+            <value>
+                <fullName>System Operations</fullName>
+                <default>false</default>
+                <label>System Operations</label>
+            </value>
+            <value>
+                <fullName>Telecom Construction</fullName>
+                <default>false</default>
+                <label>Telecom Construction</label>
+            </value>
+            <value>
+                <fullName>Telecom Payments</fullName>
+                <default>false</default>
+                <label>Telecom Payments</label>
+            </value>
+            <value>
+                <fullName>Third Party Interests (Scouts &amp; Offtake)</fullName>
+                <default>false</default>
+                <label>Third Party Interests (Scouts &amp; Offtake)</label>
+            </value>
+            <value>
+                <fullName>Utility Construction</fullName>
+                <default>false</default>
+                <label>Utility Construction</label>
+            </value>
+            <value>
+                <fullName>Utility Design</fullName>
+                <default>false</default>
+                <label>Utility Design</label>
+            </value>
+            <value>
+                <fullName>Utility Studies</fullName>
+                <default>false</default>
+                <label>Utility Studies</label>
+            </value>
+            <value>
+                <fullName>Wireless Test</fullName>
+                <default>false</default>
+                <label>Wireless Test</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Site Acquisition - Engagement</controllingFieldValue>
+            <controllingFieldValue>Project Management - Site Acquisition</controllingFieldValue>
+            <valueName>Blast Letter</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Site Acquisition - Engagement</controllingFieldValue>
+            <controllingFieldValue>Project Management - Site Acquisition</controllingFieldValue>
+            <valueName>Engagement</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Site Acquisition - Engagement</controllingFieldValue>
+            <controllingFieldValue>Project Management - Site Acquisition</controllingFieldValue>
+            <valueName>Mailer</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Site Acquisition - Engagement</controllingFieldValue>
+            <controllingFieldValue>Project Management - Executive/Corporate</controllingFieldValue>
+            <controllingFieldValue>Project Management - Site Acquisition</controllingFieldValue>
+            <controllingFieldValue>Project Management - Construction</controllingFieldValue>
+            <valueName>Meeting</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Site Acquisition - Engagement</controllingFieldValue>
+            <controllingFieldValue>Project Management - Site Acquisition</controllingFieldValue>
+            <valueName>Sent to Scout</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Executive/Corporate</controllingFieldValue>
+            <controllingFieldValue>Project Management - Site Acquisition</controllingFieldValue>
+            <valueName>Admin (Salesforce, organization, planning, management)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Site Acquisition</controllingFieldValue>
+            <valueName>Acquisition</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Site Acquisition</controllingFieldValue>
+            <valueName>Due Diligence</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Site Acquisition</controllingFieldValue>
+            <valueName>HR</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Site Acquisition</controllingFieldValue>
+            <valueName>Site Origination</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Site Acquisition</controllingFieldValue>
+            <controllingFieldValue>Project Management - Construction</controllingFieldValue>
+            <valueName>Site Visit</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+            <valueName>Community Solar</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+            <valueName>Construction Budget</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+            <valueName>Finance</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+            <valueName>Interconnection - Application Stage</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+            <valueName>Interconnection - Net Metering</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+            <valueName>Interconnection - Utility Construction</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+            <valueName>Project Considerations (Risk Summary &amp; IC)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+            <valueName>Project Management Summary</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+            <valueName>Project Partners</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+            <valueName>SREC (and other Incentive Programs)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+            <valueName>Stage 1 Pre-Development - DD Stage and Site Acq</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+            <valueName>Stage 1 Pre-Development - Interconnection Strategy &amp; App</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+            <valueName>Stage 2 Development - Design</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+            <valueName>Stage 2 Development - Permitting</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+            <valueName>Stage 2 Development - Real Estate</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+            <valueName>Stage 2 Development - Tax Agreement &amp; Ch. 61/A/B</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+            <valueName>Stage 3 - Pre-Construction</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+            <valueName>Stage 4 - Construction</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+            <valueName>Third Party Interests (Scouts &amp; Offtake)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+            <valueName>00. Payment Schedule</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+            <valueName>01. Pre-Application Report</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+            <valueName>02. Diligence Report</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+            <valueName>03. Interconnection Application Packet (Original/Revised)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+            <valueName>04. Technical Pre-Study (Screening/Preliminary/Feasibility)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+            <valueName>05. Legal Form</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+            <valueName>06. Technical Study (ASO, SIS, ESS, Restudy)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+            <valueName>07. 20-50BD Technical Study Review</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+            <valueName>08. ISA &amp; Amendment</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+            <valueName>09. Federal &amp; State Incentive</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+            <valueName>10. Utility Design and Easement</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+            <valueName>11. Wireless Test</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+            <valueName>12. Utility Construction</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+            <valueName>13. Telecommunication</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+            <valueName>14. Witness Test</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+            <valueName>15. Consent to Assignment</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+            <valueName>16. Transfer of Ownership</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Construction</controllingFieldValue>
+            <valueName>Construction Administration</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Construction</controllingFieldValue>
+            <valueName>EPC</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Construction</controllingFieldValue>
+            <valueName>RFP</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Asset Management</controllingFieldValue>
+            <valueName>Compliance</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Asset Management</controllingFieldValue>
+            <valueName>Other</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Asset Management</controllingFieldValue>
+            <valueName>Physical Plant</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Project Management - Asset Management</controllingFieldValue>
+            <valueName>Revenue and OpEx</valueName>
+        </valueSettings>
+    </valueSet>
 </CustomField>

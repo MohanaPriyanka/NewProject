@@ -8,34 +8,19 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Project Ratio</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Project Ratio</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Rate Class Ratio</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Rate Class Ratio</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Project Ratio</fullName>
+                <default>false</default>
+                <label>Project Ratio</label>
+            </value>
+            <value>
+                <fullName>Rate Class Ratio</fullName>
+                <default>false</default>
+                <label>Rate Class Ratio</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

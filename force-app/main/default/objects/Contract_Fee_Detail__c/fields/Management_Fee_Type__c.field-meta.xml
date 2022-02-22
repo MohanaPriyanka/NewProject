@@ -5,38 +5,24 @@
     <inlineHelpText>One-Time fees are often called &quot;onboarding fees&quot;</inlineHelpText>
     <label>Management Fee Type</label>
     <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
     <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>One-Time</fullName>
-                
-                    <default>false</default>
-                
-                    <label>One-Time</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Recurring</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Recurring</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>One-Time</fullName>
+                <default>false</default>
+                <label>One-Time</label>
+            </value>
+            <value>
+                <fullName>Recurring</fullName>
+                <default>false</default>
+                <label>Recurring</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Client_Brand_Key__c</fullName>
     <externalId>false</externalId>
     <inlineHelpText>&quot;Client Brand Key&quot; set on the client account linked to the entity. Use this field to override that value for a specific SSS</inlineHelpText>
@@ -10,10 +10,7 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetName>Client_Logo_Filenames</valueSetName>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetName>Client_Logo_Filenames</valueSetName>
+    </valueSet>
 </CustomField>

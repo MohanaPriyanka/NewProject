@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<WebLink xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Customer_Info_Report</fullName>
     <availability>online</availability>
     <description>Allocation Schedule with FICO and Property Type</description>

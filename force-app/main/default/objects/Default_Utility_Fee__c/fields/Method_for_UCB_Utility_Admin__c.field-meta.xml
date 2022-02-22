@@ -8,34 +8,19 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>CDG Subscription Fee</fullName>
-                
-                    <default>false</default>
-                
-                    <label>CDG Subscription Fee</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Calculated Credits</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Calculated Credits</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>CDG Subscription Fee</fullName>
+                <default>false</default>
+                <label>CDG Subscription Fee</label>
+            </value>
+            <value>
+                <fullName>Calculated Credits</fullName>
+                <default>false</default>
+                <label>Calculated Credits</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

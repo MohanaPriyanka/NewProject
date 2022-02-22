@@ -9,54 +9,29 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Waived Acquisition / Reacquisition Fee</fullName>
-                
-                    <default>true</default>
-                
-                    <label>Waived Acquisition / Reacquisition Fee</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Adjustment for Resize Fee</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Adjustment for Resize Fee</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Utilization Adjustment to Management Fee</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Utilization Adjustment to Management Fee</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Manual Adjustment</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Manual Adjustment</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Waived Acquisition / Reacquisition Fee</fullName>
+                <default>true</default>
+                <label>Waived Acquisition / Reacquisition Fee</label>
+            </value>
+            <value>
+                <fullName>Adjustment for Resize Fee</fullName>
+                <default>false</default>
+                <label>Adjustment for Resize Fee</label>
+            </value>
+            <value>
+                <fullName>Utilization Adjustment to Management Fee</fullName>
+                <default>false</default>
+                <label>Utilization Adjustment to Management Fee</label>
+            </value>
+            <value>
+                <fullName>Manual Adjustment</fullName>
+                <default>false</default>
+                <label>Manual Adjustment</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

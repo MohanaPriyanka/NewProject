@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StaticResource xmlns="http://soap.sforce.com/2006/04/metadata">
+    <cacheControl>Public</cacheControl>
+    <contentType>application/javascript</contentType>
+    <description>Bundle Version 2.3.0
+Doesn&apos;t work with 2.5.0: http://salesforce.stackexchange.com/questions/155591/chartjs-v2-4-0-failed-to-create-chart-cant-acquire-context-from-the-given-item</description>
+</StaticResource>

@@ -8,34 +8,19 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>kWh</fullName>
-                
-                    <default>false</default>
-                
-                    <label>kWh</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Electricity Cost ($)</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Electricity Cost ($)</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>kWh</fullName>
+                <default>false</default>
+                <label>kWh</label>
+            </value>
+            <value>
+                <fullName>Electricity Cost ($)</fullName>
+                <default>false</default>
+                <label>Electricity Cost ($)</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

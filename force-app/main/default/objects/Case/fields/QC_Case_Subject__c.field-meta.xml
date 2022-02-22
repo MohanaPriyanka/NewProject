@@ -9,172 +9,88 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>File Not Scored Due to Insufficient Credit</fullName>
-                
-                    <default>false</default>
-                
-                    <label>File Not Scored Due to Insufficient Credit</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Low Credit Match - New Guarantor Needs to Apply</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Low Credit Match - New Guarantor Needs to Apply</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>No Credit Match - Provide Additional Background on Guarantor (New Address or DOB)</fullName>
-                
-                    <default>false</default>
-                
-                    <label>No Credit Match - Provide Additional Background on Guarantor (New Address or DOB)</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Not Enough Usage to be Subscribed</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Not Enough Usage to be Subscribed</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Provide Information on Net Metering Credits</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Provide Information on Net Metering Credits</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Provide New Utility Account Number for EDI Utility Data</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Provide New Utility Account Number for EDI Utility Data</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Provide Payment Information - Notify Customer to Call BlueWave Support</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Provide Payment Information - Notify Customer to Call BlueWave Support</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Signature Needed on Updated Customer Contract at Link Provided - Typos Corrected</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Signature Needed on Updated Customer Contract at Link Provided - Typos Corrected</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Subscription adjustment needed</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Subscription adjustment needed</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Upload Complete Utility Bill to Case - Bill Within last 90 Days Needed</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Upload Complete Utility Bill to Case - Bill Within last 90 Days Needed</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Upload Complete Utility Bill to Case - Customer Disabled EDI Data</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Upload Complete Utility Bill to Case - Customer Disabled EDI Data</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Upload Complete Utility Bill to Case - Need 3 Months of Bills</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Upload Complete Utility Bill to Case - Need 3 Months of Bills</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Upload Complete Utility Bill to Case - Need Bill without Overdue Payments</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Upload Complete Utility Bill to Case - Need Bill without Overdue Payments</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Upload Complete Utility Bill to Case - Need More Pages</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Upload Complete Utility Bill to Case - Need More Pages</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Utility Account is Already Subscribed</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Utility Account is Already Subscribed</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Other</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Other</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>File Not Scored Due to Insufficient Credit</fullName>
+                <default>false</default>
+                <label>File Not Scored Due to Insufficient Credit</label>
+            </value>
+            <value>
+                <fullName>Low Credit Match - New Guarantor Needs to Apply</fullName>
+                <default>false</default>
+                <label>Low Credit Match - New Guarantor Needs to Apply</label>
+            </value>
+            <value>
+                <fullName>No Credit Match - Provide Additional Background on Guarantor (New Address or DOB)</fullName>
+                <default>false</default>
+                <label>No Credit Match - Provide Additional Background on Guarantor (New Address or DOB)</label>
+            </value>
+            <value>
+                <fullName>Not Enough Usage to be Subscribed</fullName>
+                <default>false</default>
+                <label>Not Enough Usage to be Subscribed</label>
+            </value>
+            <value>
+                <fullName>Provide Information on Net Metering Credits</fullName>
+                <default>false</default>
+                <label>Provide Information on Net Metering Credits</label>
+            </value>
+            <value>
+                <fullName>Provide New Utility Account Number for EDI Utility Data</fullName>
+                <default>false</default>
+                <label>Provide New Utility Account Number for EDI Utility Data</label>
+            </value>
+            <value>
+                <fullName>Provide Payment Information - Notify Customer to Call BlueWave Support</fullName>
+                <default>false</default>
+                <label>Provide Payment Information - Notify Customer to Call BlueWave Support</label>
+            </value>
+            <value>
+                <fullName>Signature Needed on Updated Customer Contract at Link Provided - Typos Corrected</fullName>
+                <default>false</default>
+                <label>Signature Needed on Updated Customer Contract at Link Provided - Typos Corrected</label>
+            </value>
+            <value>
+                <fullName>Subscription adjustment needed</fullName>
+                <default>false</default>
+                <label>Subscription adjustment needed</label>
+            </value>
+            <value>
+                <fullName>Upload Complete Utility Bill to Case - Bill Within last 90 Days Needed</fullName>
+                <default>false</default>
+                <label>Upload Complete Utility Bill to Case - Bill Within last 90 Days Needed</label>
+            </value>
+            <value>
+                <fullName>Upload Complete Utility Bill to Case - Customer Disabled EDI Data</fullName>
+                <default>false</default>
+                <label>Upload Complete Utility Bill to Case - Customer Disabled EDI Data</label>
+            </value>
+            <value>
+                <fullName>Upload Complete Utility Bill to Case - Need 3 Months of Bills</fullName>
+                <default>false</default>
+                <label>Upload Complete Utility Bill to Case - Need 3 Months of Bills</label>
+            </value>
+            <value>
+                <fullName>Upload Complete Utility Bill to Case - Need Bill without Overdue Payments</fullName>
+                <default>false</default>
+                <label>Upload Complete Utility Bill to Case - Need Bill without Overdue Payments</label>
+            </value>
+            <value>
+                <fullName>Upload Complete Utility Bill to Case - Need More Pages</fullName>
+                <default>false</default>
+                <label>Upload Complete Utility Bill to Case - Need More Pages</label>
+            </value>
+            <value>
+                <fullName>Utility Account is Already Subscribed</fullName>
+                <default>false</default>
+                <label>Utility Account is Already Subscribed</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

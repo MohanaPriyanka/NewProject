@@ -7,14 +7,10 @@
     <label>Subscribed Annual Cost of Electricity</label>
     <summarizedField>Utility_Account_Subscription__c.Annual_Cost_Future_Rollup__c</summarizedField>
     <summaryFilterItems>
-        
-            <field>Utility_Account_Subscription__c.Next_Schedule_Z_Status__c</field>
-        
-            <operation>equals</operation>
-        
-            <value>Active Subscription</value>
-        
-        </summaryFilterItems>
+        <field>Utility_Account_Subscription__c.Next_Schedule_Z_Status__c</field>
+        <operation>equals</operation>
+        <value>Active Subscription</value>
+    </summaryFilterItems>
     <summaryForeignKey>Utility_Account_Subscription__c.Utility_Account_Log__c</summaryForeignKey>
     <summaryOperation>sum</summaryOperation>
     <trackHistory>false</trackHistory>

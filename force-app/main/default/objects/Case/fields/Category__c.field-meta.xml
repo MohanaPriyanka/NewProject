@@ -9,986 +9,495 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <controllingField>Product_Line__c</controllingField>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Onboarding</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Onboarding</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>TPF/Collections</fullName>
-                
-                    <default>false</default>
-                
-                    <label>TPF/Collections</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>SREC</fullName>
-                
-                    <default>false</default>
-                
-                    <label>SREC</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Billing</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Billing-Issue</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Subscription Change</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Subscription Transfer</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Technical Assistance</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Technical Assistance</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Product Question</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Product Question</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Subscription Adjustment</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Subscription Adjustment</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Other</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Other</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>SRECs</fullName>
-                
-                    <default>false</default>
-                
-                    <label>SRECs</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Application Status</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Application Status</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Disbursals</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Disbursals</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Loan Terms</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Loan Terms</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Amortization Table</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Amortization Table</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Portal Issue</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Portal Support</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Underwriting</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Underwriting</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Poor Review</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Poor Review</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Credit Allocation Issue</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Credit Allocation Issue</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Cancelled Utility Account</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Cancelled Utility Account</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Final Bill</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Final Bill</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Payment Plan</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Payment Plan</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Do not send bill</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Do not send bill</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Bill % Incorrect: Rounding error</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Bill % Incorrect: Rounding error</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Bill % Incorrect: Unknown error</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Bill % Incorrect: Unknown error</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>UAS Marked as Cancelled: On Transfer Sheet</fullName>
-                
-                    <default>false</default>
-                
-                    <label>UAS Marked as Cancelled: On Transfer Sheet</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>UAS Marked as Cancelled: Not on Transfer Sheet</fullName>
-                
-                    <default>false</default>
-                
-                    <label>UAS Marked as Cancelled: Not on Transfer Sheet</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Custom Message Update</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Custom Message Update</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Transfer</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Transfer</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Cancellation</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Cancellation</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Product Terms</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Product Terms</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>QC Call</fullName>
-                
-                    <default>false</default>
-                
-                    <label>QC Call</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Contract/Application Issue</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Contract/Application Issue</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Customer Utility Bill</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Customer Utility Bill</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Elligibility</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Elligibility</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Capacity</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Capacity</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Invoice</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Invoice</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Customer Management</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Customer Management</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Customer Acquisition</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Customer Acquisition</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Both_Customer_Management_and_Acquisition</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Both Customer Management and Acquisition</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Billing Payment</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Billing-Payment</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Feedback/Feature Request</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Feedback/Feature Request</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>QC</fullName>
-                
-                    <default>false</default>
-                
-                    <label>QC</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Collections</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Collections</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Finaled UAL</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Finaled UAL</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Account Question</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Account Question</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Update Customer Info</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Update Customer Info</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Partner Onboarding</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Partner Onboarding</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Customer Enrollment</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Customer Enrollment</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Partner Portal</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Partner Portal</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Commission Payments</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Commission Payments</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Customer Updates</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Customer Updates</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Project Availability</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Project Availability</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Sales Materials</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Sales Materials</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <controllingFieldValue>Solar Loan</controllingFieldValue>
-            
-                <valueName>Billing</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>Subscription Change</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <controllingFieldValue>Solar Loan</controllingFieldValue>
-            
-                <valueName>Technical Assistance</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <controllingFieldValue>Solar Loan</controllingFieldValue>
-            
-                <valueName>Product Question</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>Subscription Adjustment</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <controllingFieldValue>Solar Loan</controllingFieldValue>
-            
-                <valueName>Other</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <controllingFieldValue>Solar Loan</controllingFieldValue>
-            
-                <valueName>Portal Issue</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <controllingFieldValue>Solar Loan</controllingFieldValue>
-            
-                <valueName>Poor Review</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>Credit Allocation Issue</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>Cancelled Utility Account</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>Final Bill</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>Payment Plan</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>Do not send bill</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>Bill % Incorrect: Rounding error</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>Bill % Incorrect: Unknown error</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>UAS Marked as Cancelled: On Transfer Sheet</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>UAS Marked as Cancelled: Not on Transfer Sheet</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>Custom Message Update</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>Transfer</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <controllingFieldValue>Solar Loan</controllingFieldValue>
-            
-                <valueName>Cancellation</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>Product Terms</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>QC Call</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>Contract/Application Issue</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>Customer Utility Bill</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>Elligibility</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>Capacity</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>Invoice</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>Customer Management</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>Customer Acquisition</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>Both_Customer_Management_and_Acquisition</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <controllingFieldValue>Solar Loan</controllingFieldValue>
-            
-                <valueName>Billing Payment</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <controllingFieldValue>Solar Loan</controllingFieldValue>
-            
-                <valueName>Feedback/Feature Request</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>QC</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>Collections</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>Finaled UAL</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>Account Question</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>Update Customer Info</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>Partner Onboarding</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>Customer Enrollment</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>Partner Portal</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>Commission Payments</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>Customer Updates</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>Project Availability</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Community Solar</controllingFieldValue>
-            
-                <valueName>Sales Materials</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Solar Loan</controllingFieldValue>
-            
-                <valueName>Onboarding</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Solar Loan</controllingFieldValue>
-            
-                <valueName>TPF/Collections</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Solar Loan</controllingFieldValue>
-            
-                <valueName>SREC</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Solar Loan</controllingFieldValue>
-            
-                <valueName>SRECs</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Solar Loan</controllingFieldValue>
-            
-                <valueName>Application Status</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Solar Loan</controllingFieldValue>
-            
-                <valueName>Disbursals</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Solar Loan</controllingFieldValue>
-            
-                <valueName>Loan Terms</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Solar Loan</controllingFieldValue>
-            
-                <valueName>Amortization Table</valueName>
-            
-            </valueSettings>
-        
-            <valueSettings>
-            
-                <controllingFieldValue>Solar Loan</controllingFieldValue>
-            
-                <valueName>Underwriting</valueName>
-            
-            </valueSettings>
-        
-        </valueSet>
+        <controllingField>Product_Line__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Onboarding</fullName>
+                <default>false</default>
+                <label>Onboarding</label>
+            </value>
+            <value>
+                <fullName>TPF/Collections</fullName>
+                <default>false</default>
+                <label>TPF/Collections</label>
+            </value>
+            <value>
+                <fullName>SREC</fullName>
+                <default>false</default>
+                <label>SREC</label>
+            </value>
+            <value>
+                <fullName>Billing</fullName>
+                <default>false</default>
+                <label>Billing-Issue</label>
+            </value>
+            <value>
+                <fullName>Subscription Change</fullName>
+                <default>false</default>
+                <label>Subscription Transfer</label>
+            </value>
+            <value>
+                <fullName>Technical Assistance</fullName>
+                <default>false</default>
+                <label>Technical Assistance</label>
+            </value>
+            <value>
+                <fullName>Product Question</fullName>
+                <default>false</default>
+                <label>Product Question</label>
+            </value>
+            <value>
+                <fullName>Subscription Adjustment</fullName>
+                <default>false</default>
+                <label>Subscription Adjustment</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+            <value>
+                <fullName>SRECs</fullName>
+                <default>false</default>
+                <label>SRECs</label>
+            </value>
+            <value>
+                <fullName>Application Status</fullName>
+                <default>false</default>
+                <label>Application Status</label>
+            </value>
+            <value>
+                <fullName>Disbursals</fullName>
+                <default>false</default>
+                <label>Disbursals</label>
+            </value>
+            <value>
+                <fullName>Loan Terms</fullName>
+                <default>false</default>
+                <label>Loan Terms</label>
+            </value>
+            <value>
+                <fullName>Amortization Table</fullName>
+                <default>false</default>
+                <label>Amortization Table</label>
+            </value>
+            <value>
+                <fullName>Portal Issue</fullName>
+                <default>false</default>
+                <label>Portal Support</label>
+            </value>
+            <value>
+                <fullName>Underwriting</fullName>
+                <default>false</default>
+                <label>Underwriting</label>
+            </value>
+            <value>
+                <fullName>Poor Review</fullName>
+                <default>false</default>
+                <label>Poor Review</label>
+            </value>
+            <value>
+                <fullName>Credit Allocation Issue</fullName>
+                <default>false</default>
+                <label>Credit Allocation Issue</label>
+            </value>
+            <value>
+                <fullName>Cancelled Utility Account</fullName>
+                <default>false</default>
+                <label>Cancelled Utility Account</label>
+            </value>
+            <value>
+                <fullName>Final Bill</fullName>
+                <default>false</default>
+                <label>Final Bill</label>
+            </value>
+            <value>
+                <fullName>Payment Plan</fullName>
+                <default>false</default>
+                <label>Payment Plan</label>
+            </value>
+            <value>
+                <fullName>Do not send bill</fullName>
+                <default>false</default>
+                <label>Do not send bill</label>
+            </value>
+            <value>
+                <fullName>Bill % Incorrect: Rounding error</fullName>
+                <default>false</default>
+                <label>Bill % Incorrect: Rounding error</label>
+            </value>
+            <value>
+                <fullName>Bill % Incorrect: Unknown error</fullName>
+                <default>false</default>
+                <label>Bill % Incorrect: Unknown error</label>
+            </value>
+            <value>
+                <fullName>UAS Marked as Cancelled: On Transfer Sheet</fullName>
+                <default>false</default>
+                <label>UAS Marked as Cancelled: On Transfer Sheet</label>
+            </value>
+            <value>
+                <fullName>UAS Marked as Cancelled: Not on Transfer Sheet</fullName>
+                <default>false</default>
+                <label>UAS Marked as Cancelled: Not on Transfer Sheet</label>
+            </value>
+            <value>
+                <fullName>Custom Message Update</fullName>
+                <default>false</default>
+                <label>Custom Message Update</label>
+            </value>
+            <value>
+                <fullName>Transfer</fullName>
+                <default>false</default>
+                <label>Transfer</label>
+            </value>
+            <value>
+                <fullName>Cancellation</fullName>
+                <default>false</default>
+                <label>Cancellation</label>
+            </value>
+            <value>
+                <fullName>Product Terms</fullName>
+                <default>false</default>
+                <label>Product Terms</label>
+            </value>
+            <value>
+                <fullName>QC Call</fullName>
+                <default>false</default>
+                <label>QC Call</label>
+            </value>
+            <value>
+                <fullName>Contract/Application Issue</fullName>
+                <default>false</default>
+                <label>Contract/Application Issue</label>
+            </value>
+            <value>
+                <fullName>Customer Utility Bill</fullName>
+                <default>false</default>
+                <label>Customer Utility Bill</label>
+            </value>
+            <value>
+                <fullName>Elligibility</fullName>
+                <default>false</default>
+                <label>Elligibility</label>
+            </value>
+            <value>
+                <fullName>Capacity</fullName>
+                <default>false</default>
+                <label>Capacity</label>
+            </value>
+            <value>
+                <fullName>Invoice</fullName>
+                <default>false</default>
+                <label>Invoice</label>
+            </value>
+            <value>
+                <fullName>Customer Management</fullName>
+                <default>false</default>
+                <label>Customer Management</label>
+            </value>
+            <value>
+                <fullName>Customer Acquisition</fullName>
+                <default>false</default>
+                <label>Customer Acquisition</label>
+            </value>
+            <value>
+                <fullName>Both_Customer_Management_and_Acquisition</fullName>
+                <default>false</default>
+                <label>Both Customer Management and Acquisition</label>
+            </value>
+            <value>
+                <fullName>Billing Payment</fullName>
+                <default>false</default>
+                <label>Billing-Payment</label>
+            </value>
+            <value>
+                <fullName>Feedback/Feature Request</fullName>
+                <default>false</default>
+                <label>Feedback/Feature Request</label>
+            </value>
+            <value>
+                <fullName>QC</fullName>
+                <default>false</default>
+                <label>QC</label>
+            </value>
+            <value>
+                <fullName>Collections</fullName>
+                <default>false</default>
+                <label>Collections</label>
+            </value>
+            <value>
+                <fullName>Finaled UAL</fullName>
+                <default>false</default>
+                <label>Finaled UAL</label>
+            </value>
+            <value>
+                <fullName>Account Question</fullName>
+                <default>false</default>
+                <label>Account Question</label>
+            </value>
+            <value>
+                <fullName>Update Customer Info</fullName>
+                <default>false</default>
+                <label>Update Customer Info</label>
+            </value>
+            <value>
+                <fullName>Partner Onboarding</fullName>
+                <default>false</default>
+                <label>Partner Onboarding</label>
+            </value>
+            <value>
+                <fullName>Customer Enrollment</fullName>
+                <default>false</default>
+                <label>Customer Enrollment</label>
+            </value>
+            <value>
+                <fullName>Partner Portal</fullName>
+                <default>false</default>
+                <label>Partner Portal</label>
+            </value>
+            <value>
+                <fullName>Commission Payments</fullName>
+                <default>false</default>
+                <label>Commission Payments</label>
+            </value>
+            <value>
+                <fullName>Customer Updates</fullName>
+                <default>false</default>
+                <label>Customer Updates</label>
+            </value>
+            <value>
+                <fullName>Project Availability</fullName>
+                <default>false</default>
+                <label>Project Availability</label>
+            </value>
+            <value>
+                <fullName>Sales Materials</fullName>
+                <default>false</default>
+                <label>Sales Materials</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <controllingFieldValue>Solar Loan</controllingFieldValue>
+            <valueName>Billing</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>Subscription Change</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <controllingFieldValue>Solar Loan</controllingFieldValue>
+            <valueName>Technical Assistance</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <controllingFieldValue>Solar Loan</controllingFieldValue>
+            <valueName>Product Question</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>Subscription Adjustment</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <controllingFieldValue>Solar Loan</controllingFieldValue>
+            <valueName>Other</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <controllingFieldValue>Solar Loan</controllingFieldValue>
+            <valueName>Portal Issue</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <controllingFieldValue>Solar Loan</controllingFieldValue>
+            <valueName>Poor Review</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>Credit Allocation Issue</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>Cancelled Utility Account</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>Final Bill</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>Payment Plan</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>Do not send bill</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>Bill % Incorrect: Rounding error</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>Bill % Incorrect: Unknown error</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>UAS Marked as Cancelled: On Transfer Sheet</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>UAS Marked as Cancelled: Not on Transfer Sheet</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>Custom Message Update</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>Transfer</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <controllingFieldValue>Solar Loan</controllingFieldValue>
+            <valueName>Cancellation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>Product Terms</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>QC Call</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>Contract/Application Issue</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>Customer Utility Bill</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>Elligibility</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>Capacity</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>Invoice</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>Customer Management</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>Customer Acquisition</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>Both_Customer_Management_and_Acquisition</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <controllingFieldValue>Solar Loan</controllingFieldValue>
+            <valueName>Billing Payment</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <controllingFieldValue>Solar Loan</controllingFieldValue>
+            <valueName>Feedback/Feature Request</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>QC</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>Collections</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>Finaled UAL</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>Account Question</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>Update Customer Info</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>Partner Onboarding</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>Customer Enrollment</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>Partner Portal</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>Commission Payments</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>Customer Updates</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>Project Availability</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Community Solar</controllingFieldValue>
+            <valueName>Sales Materials</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Solar Loan</controllingFieldValue>
+            <valueName>Onboarding</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Solar Loan</controllingFieldValue>
+            <valueName>TPF/Collections</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Solar Loan</controllingFieldValue>
+            <valueName>SREC</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Solar Loan</controllingFieldValue>
+            <valueName>SRECs</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Solar Loan</controllingFieldValue>
+            <valueName>Application Status</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Solar Loan</controllingFieldValue>
+            <valueName>Disbursals</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Solar Loan</controllingFieldValue>
+            <valueName>Loan Terms</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Solar Loan</controllingFieldValue>
+            <valueName>Amortization Table</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Solar Loan</controllingFieldValue>
+            <valueName>Underwriting</valueName>
+        </valueSettings>
+    </valueSet>
 </CustomField>

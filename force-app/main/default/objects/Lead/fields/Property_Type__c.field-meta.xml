@@ -8,74 +8,39 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Single Family Home (1-4 Units)</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Single Family Home (1-4 Units)</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Second Home (1-4 Units)</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Second Home (1-4 Units)</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Commercial</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Commercial</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Multi Family Home (5+ Units)</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Multi Family Home (5+ Units)</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Condo</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Condo</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Apartment</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Apartment</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Single Family Home (1-4 Units)</fullName>
+                <default>false</default>
+                <label>Single Family Home (1-4 Units)</label>
+            </value>
+            <value>
+                <fullName>Second Home (1-4 Units)</fullName>
+                <default>false</default>
+                <label>Second Home (1-4 Units)</label>
+            </value>
+            <value>
+                <fullName>Commercial</fullName>
+                <default>false</default>
+                <label>Commercial</label>
+            </value>
+            <value>
+                <fullName>Multi Family Home (5+ Units)</fullName>
+                <default>false</default>
+                <label>Multi Family Home (5+ Units)</label>
+            </value>
+            <value>
+                <fullName>Condo</fullName>
+                <default>false</default>
+                <label>Condo</label>
+            </value>
+            <value>
+                <fullName>Apartment</fullName>
+                <default>false</default>
+                <label>Apartment</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

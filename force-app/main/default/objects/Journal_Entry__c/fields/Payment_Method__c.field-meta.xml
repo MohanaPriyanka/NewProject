@@ -8,54 +8,29 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>ACH</fullName>
-                
-                    <default>false</default>
-                
-                    <label>ACH</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>CreditCard</fullName>
-                
-                    <default>false</default>
-                
-                    <label>CreditCard</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Check</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Check</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Cash</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Cash</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>ACH</fullName>
+                <default>false</default>
+                <label>ACH</label>
+            </value>
+            <value>
+                <fullName>CreditCard</fullName>
+                <default>false</default>
+                <label>CreditCard</label>
+            </value>
+            <value>
+                <fullName>Check</fullName>
+                <default>false</default>
+                <label>Check</label>
+            </value>
+            <value>
+                <fullName>Cash</fullName>
+                <default>false</default>
+                <label>Cash</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

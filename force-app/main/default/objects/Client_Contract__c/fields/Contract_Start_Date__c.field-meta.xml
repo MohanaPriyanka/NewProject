@@ -7,6 +7,7 @@
     <inlineHelpText>The related Contract&apos;s Start Date</inlineHelpText>
     <label>Contract Start Date</label>
     <required>false</required>
+    <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>
     <type>Date</type>
 </CustomField>

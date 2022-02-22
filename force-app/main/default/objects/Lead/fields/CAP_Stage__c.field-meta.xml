@@ -9,10 +9,7 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetName>CAP_Stages</valueSetName>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetName>CAP_Stages</valueSetName>
+    </valueSet>
 </CustomField>

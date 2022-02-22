@@ -3,59 +3,39 @@
     <fullName>BW Community Solar</fullName>
     <isActive>true</isActive>
     <values>
-        
-            <fullName>Cancelled</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Cancelled</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Closed Lost</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Closed Lost</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Closed Won</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Closed Won</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Contract Pending</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Contract Pending</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Engaged in Proposal Details</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Engaged in Proposal Details</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>New</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>NDA Executed</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>On Hold</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>New</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Proposal</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>On Hold</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Proposal</fullName>
+        <default>false</default>
+    </values>
 </BusinessProcess>

@@ -4,38 +4,24 @@
     <externalId>false</externalId>
     <label>Utilization Adjustment Type</label>
     <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
     <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Multiplier (%)</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Multiplier (%)</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Amount ($)</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Amount ($)</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Multiplier (%)</fullName>
+                <default>false</default>
+                <label>Multiplier (%)</label>
+            </value>
+            <value>
+                <fullName>Amount ($)</fullName>
+                <default>false</default>
+                <label>Amount ($)</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

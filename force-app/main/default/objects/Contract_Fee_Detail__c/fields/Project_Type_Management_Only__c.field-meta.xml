@@ -5,6 +5,7 @@
     <externalId>false</externalId>
     <inlineHelpText>For management fees that are only relevant for projects that are Management Only</inlineHelpText>
     <label>Project Type: Management Only</label>
+    <trackFeedHistory>false</trackFeedHistory>
     <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>
     <type>Checkbox</type>

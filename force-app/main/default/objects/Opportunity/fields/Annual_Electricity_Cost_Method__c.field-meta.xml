@@ -9,32 +9,18 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Enter the data manually</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Enter the data manually</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Utility Account Log Calculator (Default)</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Utility Account Log Calculator (Default)</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Enter the data manually</fullName>
+                <default>false</default>
+                <label>Enter the data manually</label>
+            </value>
+            <value>
+                <fullName>Utility Account Log Calculator (Default)</fullName>
+                <default>false</default>
+                <label>Utility Account Log Calculator (Default)</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

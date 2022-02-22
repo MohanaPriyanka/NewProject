@@ -3,52 +3,31 @@
     <fullName>Community Solar Anchor</fullName>
     <isActive>true</isActive>
     <values>
-        
-            <fullName>Board Approval</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Board Approval</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Complete</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Complete</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Contract Pending</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Contract Pending</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Lost</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Lost</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>New</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>New</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>PPA%2FNMCPA Signed</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>PPA%2FNMCPA Signed</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Proposal</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Proposal</fullName>
+        <default>false</default>
+    </values>
 </BusinessProcess>

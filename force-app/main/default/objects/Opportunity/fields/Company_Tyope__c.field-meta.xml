@@ -9,22 +9,13 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Installer</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Installer</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Installer</fullName>
+                <default>false</default>
+                <label>Installer</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

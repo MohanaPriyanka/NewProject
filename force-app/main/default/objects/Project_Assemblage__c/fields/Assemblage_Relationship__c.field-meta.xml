@@ -8,33 +8,19 @@
     <trackTrending>false</trackTrending>
     <type>MultiselectPicklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Common Interconnection Strategy</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Common Interconnection Strategy</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Common Ownership</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Common Ownership</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Common Interconnection Strategy</fullName>
+                <default>false</default>
+                <label>Common Interconnection Strategy</label>
+            </value>
+            <value>
+                <fullName>Common Ownership</fullName>
+                <default>false</default>
+                <label>Common Ownership</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
     <visibleLines>4</visibleLines>
 </CustomField>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Percent_Share_Decimal_Places__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>For percent field, so 23.45% is 0.2345 (4 decimal places) and 23.4567 is 0.234567 (6 decimal places)</inlineHelpText>
+    <label>XXPercent Share Decimal Places</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

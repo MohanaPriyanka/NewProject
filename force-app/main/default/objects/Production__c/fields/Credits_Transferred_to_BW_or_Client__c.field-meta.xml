@@ -6,23 +6,15 @@
     <label>Credits Transferred to BW or Client</label>
     <summarizedField>Transfer_Part__c.Amount__c</summarizedField>
     <summaryFilterItems>
-        
-            <field>Transfer_Part__c.Transfer_Transferred_To__c</field>
-        
-            <operation>notEqual</operation>
-        
-            <value>Customer</value>
-        
-        </summaryFilterItems>
+        <field>Transfer_Part__c.Transfer_Transferred_To__c</field>
+        <operation>notEqual</operation>
+        <value>Customer</value>
+    </summaryFilterItems>
     <summaryFilterItems>
-        
-            <field>Transfer_Part__c.Type__c</field>
-        
-            <operation>equals</operation>
-        
-            <value>Transfer</value>
-        
-        </summaryFilterItems>
+        <field>Transfer_Part__c.Type__c</field>
+        <operation>equals</operation>
+        <value>Transfer</value>
+    </summaryFilterItems>
     <summaryForeignKey>Transfer_Part__c.Production__c</summaryForeignKey>
     <summaryOperation>sum</summaryOperation>
     <trackTrending>false</trackTrending>

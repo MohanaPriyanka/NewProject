@@ -8,94 +8,49 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>1.89</fullName>
-                
-                    <default>false</default>
-                
-                    <label>1.89</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>3.25</fullName>
-                
-                    <default>false</default>
-                
-                    <label>3.25</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>3.39</fullName>
-                
-                    <default>false</default>
-                
-                    <label>3.39</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>5.99</fullName>
-                
-                    <default>false</default>
-                
-                    <label>5.99</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>6.25</fullName>
-                
-                    <default>false</default>
-                
-                    <label>6.25</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>6.49</fullName>
-                
-                    <default>false</default>
-                
-                    <label>6.49</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>3.29</fullName>
-                
-                    <default>false</default>
-                
-                    <label>3.29</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>3.99</fullName>
-                
-                    <default>false</default>
-                
-                    <label>3.99</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>1.89</fullName>
+                <default>false</default>
+                <label>1.89</label>
+            </value>
+            <value>
+                <fullName>3.25</fullName>
+                <default>false</default>
+                <label>3.25</label>
+            </value>
+            <value>
+                <fullName>3.39</fullName>
+                <default>false</default>
+                <label>3.39</label>
+            </value>
+            <value>
+                <fullName>5.99</fullName>
+                <default>false</default>
+                <label>5.99</label>
+            </value>
+            <value>
+                <fullName>6.25</fullName>
+                <default>false</default>
+                <label>6.25</label>
+            </value>
+            <value>
+                <fullName>6.49</fullName>
+                <default>false</default>
+                <label>6.49</label>
+            </value>
+            <value>
+                <fullName>3.29</fullName>
+                <default>false</default>
+                <label>3.29</label>
+            </value>
+            <value>
+                <fullName>3.99</fullName>
+                <default>false</default>
+                <label>3.99</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

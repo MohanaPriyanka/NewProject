@@ -9,62 +9,33 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Conversation</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Conversation</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Voicemail</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Voicemail</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Email</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Email</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>In Person</fullName>
-                
-                    <default>false</default>
-                
-                    <label>In Person</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>No Answer</fullName>
-                
-                    <default>false</default>
-                
-                    <label>No Answer</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Conversation</fullName>
+                <default>false</default>
+                <label>Conversation</label>
+            </value>
+            <value>
+                <fullName>Voicemail</fullName>
+                <default>false</default>
+                <label>Voicemail</label>
+            </value>
+            <value>
+                <fullName>Email</fullName>
+                <default>false</default>
+                <label>Email</label>
+            </value>
+            <value>
+                <fullName>In Person</fullName>
+                <default>false</default>
+                <label>In Person</label>
+            </value>
+            <value>
+                <fullName>No Answer</fullName>
+                <default>false</default>
+                <label>No Answer</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

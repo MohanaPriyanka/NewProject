@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomField xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Expected_Yield_MW__c</fullName>
     <description>This field is used in the Maine customer contract used in SSF. It converts the expected yield kW to MW by dividing by 1000.</description>
     <externalId>false</externalId>

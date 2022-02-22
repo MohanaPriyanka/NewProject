@@ -1,27 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <Queue xmlns="http://soap.sforce.com/2006/04/metadata">
-    
     <doesSendEmailToMembers>false</doesSendEmailToMembers>
-    
     <name>BWS Salesforce Support</name>
-    
     <queueMembers>
-        
         <users>
-            
-            <user>adroppers@bluewavesolar.com</user>
-            
-            <user>rschonborn@bluewavesolar.com</user>
-            
+            <user>adroppers@oldbluewavesolar.com</user>
+            <user>rschonborn@oldbluewavesolar.com</user>
         </users>
-        
     </queueMembers>
-    
     <queueSobject>
-        
         <sobjectType>Case</sobjectType>
-        
     </queueSobject>
-    
 </Queue>

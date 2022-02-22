@@ -4,80 +4,51 @@
     <description>Sales process for the Residential Loan</description>
     <isActive>true</isActive>
     <values>
-        
-            <fullName>Cancelled</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Cancelled</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Complete</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Complete</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Contract Pending</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Contract Pending</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>DUPLICATE</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>DUPLICATE</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Expired</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Expired</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>New</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>New</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Pending Perch Signature</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Pending BlueWave Signature</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Pending Quality Control Signature</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Pending Perch Signature</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Pending System Information from Partner</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Pending Quality Control Signature</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>QC In Process</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>Pending System Information from Partner</fullName>
+        <default>false</default>
+    </values>
     <values>
-        
-            <fullName>Unqualified</fullName>
-        
-            <default>false</default>
-        
-        </values>
+        <fullName>QC In Process</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Unqualified</fullName>
+        <default>false</default>
+    </values>
 </BusinessProcess>

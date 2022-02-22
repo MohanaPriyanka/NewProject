@@ -380,3 +380,6 @@ SMP.iml
 
 #pmdCache file is used for the PMD plugin in VS Code
 .pmdCache
+**/jsconfig.json
+
+**/.eslintrc.json

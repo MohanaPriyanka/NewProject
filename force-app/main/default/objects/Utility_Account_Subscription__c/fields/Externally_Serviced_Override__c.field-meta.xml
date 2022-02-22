@@ -9,34 +9,19 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Externally Serviced</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Externally Serviced</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Internally Serviced</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Internally Serviced</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Externally Serviced</fullName>
+                <default>false</default>
+                <label>Externally Serviced</label>
+            </value>
+            <value>
+                <fullName>Internally Serviced</fullName>
+                <default>false</default>
+                <label>Internally Serviced</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

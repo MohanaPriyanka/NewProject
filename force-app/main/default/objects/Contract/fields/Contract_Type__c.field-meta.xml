@@ -8,256 +8,130 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Anchor Customer Contract</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Anchor Customer Contract</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>BPD Scout Agreement</fullName>
-                
-                    <default>false</default>
-                
-                    <label>BPD Scout Agreement</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Client Service Agreement</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Client Service Agreement</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Consumer Disclosure Form</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Consumer Disclosure Form</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Customer Assignment</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Customer Assignment</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Customer Contract Template</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Customer Contract Template</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Engineering, Procurement and Construction Contract (EPC)</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Engineering, Procurement and Construction Contract (EPC)</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Financing Agreement</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Financing Agreement</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Lease Option Agreement</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Lease Option Agreement</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Membership Interest Purchase Agreement (MIPA) and Ancillary Documents</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Membership Interest Purchase Agreement (MIPA) and Ancillary Documents</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>NDA</fullName>
-                
-                    <default>false</default>
-                
-                    <label>NDA</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Sales Partner Agreement</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Sales Partner Agreement</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Small-Offtake Customer Contract</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Small-Offtake Customer Contract</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Vendor Agreement</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Vendor Agreement</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Generic</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Generic</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Project Specific</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Project Specific</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Client Acquired Customer Assignment</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Client Acquired Customer Assignment</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Lease Agreement</fullName>
-                
-                    <default>false</default>
-                
-                    <isActive>false</isActive>
-                
-                    <label>Lease Agreement</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Loan Origination and Servicing Agreement</fullName>
-                
-                    <default>false</default>
-                
-                    <isActive>false</isActive>
-                
-                    <label>Loan Origination and Servicing Agreement</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Membership Interest Purchase Agreement (MIPA)</fullName>
-                
-                    <default>false</default>
-                
-                    <isActive>false</isActive>
-                
-                    <label>Membership Interest Purchase Agreement (MIPA)</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Partner MSA</fullName>
-                
-                    <default>false</default>
-                
-                    <isActive>false</isActive>
-                
-                    <label>Partner MSA</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Partner SOW</fullName>
-                
-                    <default>false</default>
-                
-                    <isActive>false</isActive>
-                
-                    <label>Partner SOW</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Partner SSA</fullName>
-                
-                    <default>false</default>
-                
-                    <isActive>false</isActive>
-                
-                    <label>Partner SSA</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Anchor Customer Contract</fullName>
+                <default>false</default>
+                <label>Anchor Customer Contract</label>
+            </value>
+            <value>
+                <fullName>BPD Scout Agreement</fullName>
+                <default>false</default>
+                <label>BPD Scout Agreement</label>
+            </value>
+            <value>
+                <fullName>Client Service Agreement</fullName>
+                <default>false</default>
+                <label>Client Service Agreement</label>
+            </value>
+            <value>
+                <fullName>Consumer Disclosure Form</fullName>
+                <default>false</default>
+                <label>Consumer Disclosure Form</label>
+            </value>
+            <value>
+                <fullName>Customer Assignment</fullName>
+                <default>false</default>
+                <label>Customer Assignment</label>
+            </value>
+            <value>
+                <fullName>Customer Contract Template</fullName>
+                <default>false</default>
+                <label>Customer Contract Template</label>
+            </value>
+            <value>
+                <fullName>Engineering, Procurement and Construction Contract (EPC)</fullName>
+                <default>false</default>
+                <label>Engineering, Procurement and Construction Contract (EPC)</label>
+            </value>
+            <value>
+                <fullName>Financing Agreement</fullName>
+                <default>false</default>
+                <label>Financing Agreement</label>
+            </value>
+            <value>
+                <fullName>Lease Option Agreement</fullName>
+                <default>false</default>
+                <label>Lease Option Agreement</label>
+            </value>
+            <value>
+                <fullName>Membership Interest Purchase Agreement (MIPA) and Ancillary Documents</fullName>
+                <default>false</default>
+                <label>Membership Interest Purchase Agreement (MIPA) and Ancillary Documents</label>
+            </value>
+            <value>
+                <fullName>NDA</fullName>
+                <default>false</default>
+                <label>NDA</label>
+            </value>
+            <value>
+                <fullName>Sales Partner Agreement</fullName>
+                <default>false</default>
+                <label>Sales Partner Agreement</label>
+            </value>
+            <value>
+                <fullName>Small-Offtake Customer Contract</fullName>
+                <default>false</default>
+                <label>Small-Offtake Customer Contract</label>
+            </value>
+            <value>
+                <fullName>Vendor Agreement</fullName>
+                <default>false</default>
+                <label>Vendor Agreement</label>
+            </value>
+            <value>
+                <fullName>Generic</fullName>
+                <default>false</default>
+                <label>Generic</label>
+            </value>
+            <value>
+                <fullName>Project Specific</fullName>
+                <default>false</default>
+                <label>Project Specific</label>
+            </value>
+            <value>
+                <fullName>Client Acquired Customer Assignment</fullName>
+                <default>false</default>
+                <label>Client Acquired Customer Assignment</label>
+            </value>
+            <value>
+                <fullName>Lease Agreement</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Lease Agreement</label>
+            </value>
+            <value>
+                <fullName>Loan Origination and Servicing Agreement</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Loan Origination and Servicing Agreement</label>
+            </value>
+            <value>
+                <fullName>Membership Interest Purchase Agreement (MIPA)</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Membership Interest Purchase Agreement (MIPA)</label>
+            </value>
+            <value>
+                <fullName>Partner MSA</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Partner MSA</label>
+            </value>
+            <value>
+                <fullName>Partner SOW</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Partner SOW</label>
+            </value>
+            <value>
+                <fullName>Partner SSA</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Partner SSA</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

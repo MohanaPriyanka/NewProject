@@ -8,42 +8,23 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Duke Energy Progress (DEP)</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Duke Energy Progress (DEP)</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Duke Energy Carolinas (DEC)</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Duke Energy Carolinas (DEC)</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>All</fullName>
-                
-                    <default>false</default>
-                
-                    <label>All</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Duke Energy Progress (DEP)</fullName>
+                <default>false</default>
+                <label>Duke Energy Progress (DEP)</label>
+            </value>
+            <value>
+                <fullName>Duke Energy Carolinas (DEC)</fullName>
+                <default>false</default>
+                <label>Duke Energy Carolinas (DEC)</label>
+            </value>
+            <value>
+                <fullName>All</fullName>
+                <default>false</default>
+                <label>All</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

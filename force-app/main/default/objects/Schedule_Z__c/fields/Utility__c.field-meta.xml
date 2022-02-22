@@ -5,6 +5,7 @@
     <formula>Shared_Solar_System__r.Utility__r.Name</formula>
     <label>Utility</label>
     <required>false</required>
+    <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>
     <type>Text</type>
     <unique>false</unique>

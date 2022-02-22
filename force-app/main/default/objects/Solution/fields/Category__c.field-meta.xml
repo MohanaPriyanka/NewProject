@@ -7,34 +7,19 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <restricted>true</restricted>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Community Solar</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Community Solar</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Solar Loan</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Solar Loan</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Community Solar</fullName>
+                <default>false</default>
+                <label>Community Solar</label>
+            </value>
+            <value>
+                <fullName>Solar Loan</fullName>
+                <default>false</default>
+                <label>Solar Loan</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

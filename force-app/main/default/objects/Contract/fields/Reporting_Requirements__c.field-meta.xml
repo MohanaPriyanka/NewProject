@@ -9,73 +9,39 @@
     <trackHistory>false</trackHistory>
     <type>MultiselectPicklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Accounts Aging</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Accounts Aging</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Customer Terminations</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Customer Terminations</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Project Attrition</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Project Attrition</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Accounts Receivable</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Accounts Receivable</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Days Sales Outstanding (DSO)</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Days Sales Outstanding (DSO)</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Other, see detail</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Other, see detail</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Accounts Aging</fullName>
+                <default>false</default>
+                <label>Accounts Aging</label>
+            </value>
+            <value>
+                <fullName>Customer Terminations</fullName>
+                <default>false</default>
+                <label>Customer Terminations</label>
+            </value>
+            <value>
+                <fullName>Project Attrition</fullName>
+                <default>false</default>
+                <label>Project Attrition</label>
+            </value>
+            <value>
+                <fullName>Accounts Receivable</fullName>
+                <default>false</default>
+                <label>Accounts Receivable</label>
+            </value>
+            <value>
+                <fullName>Days Sales Outstanding (DSO)</fullName>
+                <default>false</default>
+                <label>Days Sales Outstanding (DSO)</label>
+            </value>
+            <value>
+                <fullName>Other, see detail</fullName>
+                <default>false</default>
+                <label>Other, see detail</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
     <visibleLines>5</visibleLines>
 </CustomField>

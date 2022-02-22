@@ -8,232 +8,118 @@
     <trackHistory>false</trackHistory>
     <type>Picklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Arts/Entertainment/Media</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Arts/Entertainment/Media</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Automotive</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Automotive</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Biotechnology/Chemicals</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Biotechnology/Chemicals</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Construction</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Construction</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Education</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Education</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Engineering</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Engineering</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Facilities</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Facilities</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Financial Services</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Financial Services</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Government</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Government</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Healthcare</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Healthcare</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Hospitality</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Hospitality</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Information Technology</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Information Technology</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Insurance</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Insurance</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Legal</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Legal</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Manufacturing/Production</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Manufacturing/Production</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Marketing</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Marketing</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Non-Profit</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Non-Profit</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Real Estate</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Real Estate</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Religious Organization</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Religious Organization</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Restaurant/Food &amp; Beverage</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Restaurant/Food &amp; Beverage</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Retail/Wholesale</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Retail/Wholesale</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Transportation/Warehouse</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Transportation/Warehouse</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Arts/Entertainment/Media</fullName>
+                <default>false</default>
+                <label>Arts/Entertainment/Media</label>
+            </value>
+            <value>
+                <fullName>Automotive</fullName>
+                <default>false</default>
+                <label>Automotive</label>
+            </value>
+            <value>
+                <fullName>Biotechnology/Chemicals</fullName>
+                <default>false</default>
+                <label>Biotechnology/Chemicals</label>
+            </value>
+            <value>
+                <fullName>Construction</fullName>
+                <default>false</default>
+                <label>Construction</label>
+            </value>
+            <value>
+                <fullName>Education</fullName>
+                <default>false</default>
+                <label>Education</label>
+            </value>
+            <value>
+                <fullName>Engineering</fullName>
+                <default>false</default>
+                <label>Engineering</label>
+            </value>
+            <value>
+                <fullName>Facilities</fullName>
+                <default>false</default>
+                <label>Facilities</label>
+            </value>
+            <value>
+                <fullName>Financial Services</fullName>
+                <default>false</default>
+                <label>Financial Services</label>
+            </value>
+            <value>
+                <fullName>Government</fullName>
+                <default>false</default>
+                <label>Government</label>
+            </value>
+            <value>
+                <fullName>Healthcare</fullName>
+                <default>false</default>
+                <label>Healthcare</label>
+            </value>
+            <value>
+                <fullName>Hospitality</fullName>
+                <default>false</default>
+                <label>Hospitality</label>
+            </value>
+            <value>
+                <fullName>Information Technology</fullName>
+                <default>false</default>
+                <label>Information Technology</label>
+            </value>
+            <value>
+                <fullName>Insurance</fullName>
+                <default>false</default>
+                <label>Insurance</label>
+            </value>
+            <value>
+                <fullName>Legal</fullName>
+                <default>false</default>
+                <label>Legal</label>
+            </value>
+            <value>
+                <fullName>Manufacturing/Production</fullName>
+                <default>false</default>
+                <label>Manufacturing/Production</label>
+            </value>
+            <value>
+                <fullName>Marketing</fullName>
+                <default>false</default>
+                <label>Marketing</label>
+            </value>
+            <value>
+                <fullName>Non-Profit</fullName>
+                <default>false</default>
+                <label>Non-Profit</label>
+            </value>
+            <value>
+                <fullName>Real Estate</fullName>
+                <default>false</default>
+                <label>Real Estate</label>
+            </value>
+            <value>
+                <fullName>Religious Organization</fullName>
+                <default>false</default>
+                <label>Religious Organization</label>
+            </value>
+            <value>
+                <fullName>Restaurant/Food &amp; Beverage</fullName>
+                <default>false</default>
+                <label>Restaurant/Food &amp; Beverage</label>
+            </value>
+            <value>
+                <fullName>Retail/Wholesale</fullName>
+                <default>false</default>
+                <label>Retail/Wholesale</label>
+            </value>
+            <value>
+                <fullName>Transportation/Warehouse</fullName>
+                <default>false</default>
+                <label>Transportation/Warehouse</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>

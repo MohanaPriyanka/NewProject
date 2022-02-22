@@ -3,11 +3,9 @@
     <fullName>LASERCA__LASER_Credit_Access_2</fullName>
     <availability>online</availability>
     <displayType>button</displayType>
-    <linkType>javascript</linkType>
+    <linkType>page</linkType>
     <masterLabel>LASER Credit Access</masterLabel>
-    <openType>onClickJavaScript</openType>
+    <openType>replace</openType>
+    <page>LASERCA__CreditAPI</page>
     <protected>false</protected>
-    <url>if(confirm(&apos;You are about to run a personal credit report. Are you sure you want to proceed?&apos;)){
-window.location.href = &apos;/apex/LASERCA__CreditAPI?id={!Contact.Id}&amp;createTask=true&amp;retURL=/{!Contact.Id}&apos;;
-}</url>
 </WebLink>

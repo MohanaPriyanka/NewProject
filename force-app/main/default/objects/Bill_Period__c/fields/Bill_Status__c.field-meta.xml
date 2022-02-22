@@ -7,92 +7,38 @@
     <trackTrending>false</trackTrending>
     <type>Picklist</type>
     <valueSet>
-        
-            <valueSetDefinition>
-            
-                <sorted>false</sorted>
-            
-                <value>
-                
-                    <fullName>Production Uploaded</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Production Uploaded</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Production QCed</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Production QCed</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Credit Transfers QCed</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Credit Transfers QCed</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Ready to Generate</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Ready to Generate</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Generated</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Generated</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Bill Run Complete</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Bill Run Complete</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Host Account Bill Uploaded</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Production Uploaded1</label>
-                
-                </value>
-            
-                <value>
-                
-                    <fullName>Host Account Bill QCed</fullName>
-                
-                    <default>false</default>
-                
-                    <label>Production QCed1</label>
-                
-                </value>
-            
-            </valueSetDefinition>
-        
-        </valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Production Uploaded</fullName>
+                <default>false</default>
+                <label>Production Uploaded</label>
+            </value>
+            <value>
+                <fullName>Production QCed</fullName>
+                <default>false</default>
+                <label>Production QCed</label>
+            </value>
+            <value>
+                <fullName>Credit Transfers QCed</fullName>
+                <default>false</default>
+                <label>Credit Transfers QCed</label>
+            </value>
+            <value>
+                <fullName>Ready to Generate</fullName>
+                <default>false</default>
+                <label>Ready to Generate</label>
+            </value>
+            <value>
+                <fullName>Generated</fullName>
+                <default>false</default>
+                <label>Generated</label>
+            </value>
+            <value>
+                <fullName>Bill Run Complete</fullName>
+                <default>false</default>
+                <label>Bill Run Complete</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
 </CustomField>
