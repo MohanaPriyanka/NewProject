@@ -74,7 +74,6 @@ build/
 *.vssscc
 .builds
 *.pidb
-*.log
 *.scc
 
 # Visual C++ cache files
@@ -193,7 +192,6 @@ $RECYCLE.BIN/
 *.egg
 *.egg-info
 dist/
-build/
 eggs/
 parts/
 var/
@@ -228,7 +226,6 @@ debug/
 
 # emacs save files
 *.*~
-*.sublime-workspace
 #*#
 
 # ant
@@ -240,6 +237,7 @@ build.properties
 .idea/**/tasks.xml
 .idea/dictionaries
 .idea/dbnavigator.xml
+.idea/shelf
 
 # Sensitive or high-churn files:
 .idea/**/dataSources/
@@ -376,6 +374,8 @@ src/package.xml
 /IlluminatedCloud/
 /.idea/illuminatedCloud.xml
 SMP.iml
+/manifest/package.xml
+
 
 #pmdCache file is used for the PMD plugin in VS Code
 .pmdCache
