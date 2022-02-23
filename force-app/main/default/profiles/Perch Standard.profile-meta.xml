@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <Profile xmlns="http://soap.sforce.com/2006/04/metadata">
-    
+    <fullName>Perch Standard</fullName>
     <applicationVisibilities>
         
         <application>APXTConga4__CongaMerge</application>
@@ -149019,9 +149019,7 @@
     </userPermissions>
     
     <userPermissions>
-        
-        <enabled>false</enabled>
-        
+        <enabled>true</enabled>
         <name>EmailTemplateManagement</name>
         
     </userPermissions>
