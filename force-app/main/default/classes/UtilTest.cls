@@ -1,17 +1,12 @@
 /**
- * Created by mstackhouse on 9/21/2018.
- * Description:
+ * @description : Tests Util class to ensure methods behave as expected
  */
 @SuppressWarnings('PMD.AvoidHardcodingId')
 @IsTest
 public with sharing class UtilTest {
     @IsTest
     private static void testInsertSObj() {
-        Profile profile = [
-            SELECT Id
-            FROM Profile
-            WHERE Name='BFG Standard User'
-        ];
+        Profile profile = [SELECT Id FROM Profile WHERE Name = 'Perch Standard'];
 
         User u = new User(
             Alias = 'testUtil',
@@ -56,8 +51,8 @@ public with sharing class UtilTest {
         System.assertEquals(1, errorLogs.size());
     }
 
-    @isTest
-    private static void testDatabaseUpdate(){
+    @IsTest
+    private static void testDatabaseUpdate() {
         Account acct = new Account(Name = 'Account');
         insert acct;
 

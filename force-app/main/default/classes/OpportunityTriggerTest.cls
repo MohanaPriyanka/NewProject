@@ -1,21 +1,20 @@
 @IsTest
 public with sharing class OpportunityTriggerTest {
-
     @TestSetup
     public static void setupData() {
-        Profile bfgStandardUser = [SELECT Id FROM Profile WHERE Name = 'BFG Standard User'];
-        User bfgUser = new User (ProfileId = bfgStandardUser.Id,
+        Profile perchStandardUser = [SELECT Id FROM Profile WHERE Name = 'Perch Standard'];
+        User perchUser = new User (ProfileId = perchStandardUser.Id,
             FirstName = 'Test',
-            LastName = 'BFG_User',
-            Username = 'bfguser@test.com',
-            Email = 'bfguser@test.com',
-            Alias = 'bfg_usr',
-            CommunityNickname = 'bfg_usr',
+            LastName = 'Perch_User',
+            Username = 'perchuser@test.com',
+            Email = 'perchuser@test.com',
+            Alias = 'perch',
+            CommunityNickname = 'perch_usr',
             TimeZoneSidKey = 'America/New_York',
             LocaleSidKey = 'en_US',
             EmailEncodingKey = 'ISO-8859-1',
             LanguageLocaleKey = 'en_US');
-        insert bfgUser;
+        insert perchUser;
         Test.loadData(Utility__c.SObjectType, 'TestCSUtility');
         Test.loadData(Utility_NMC_Tariff__c.SObjectType, 'TestCSUtilityNMCTariff');
         Test.loadData(Product2.SObjectType, 'RecalcUALTestProduct');
