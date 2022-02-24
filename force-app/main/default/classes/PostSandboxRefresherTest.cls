@@ -1,12 +1,13 @@
-/*************************************************************************************
- * Created By: Peter Yao
- * Description: Tests actions taken after refreshing a sandbox to load in test data
- *************************************************************************************/
+/**
+ * @description Tests actions taken after refreshing a sandbox to load in test data
+ *  Created By: Peter Yao
+ **/
 @IsTest
 private class PostSandboxRefresherTest {
-    @TestSetup public static void setupTestData() {
+    @TestSetup
+    public static void setupTestData() {
         insert new BW_Address__c(
-            Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street 4th Floor',
+            Name = 'Perch', Address_Line_One__c = '137 Newbury Street 4th Floor',
             Address_Line_Two__c = 'Boston, MA 02114'
         );
         TestFactory.setCSBillSettings();
@@ -18,35 +19,35 @@ private class PostSandboxRefresherTest {
         Test.loadData(Account.SObjectType, 'TestCSAccount');
         Test.loadData(Entity__c.SObjectType, 'TestCSEntity');
         Test.loadData(Shared_Solar_System__c.SObjectType, 'TestCSSharedSolarSystem');
-        Test.loadData(Partner__c.SObjectType,'TestRLPartner');
+        Test.loadData(Partner__c.SObjectType, 'TestRLPartner');
         Test.loadData(Opportunity.SObjectType, 'TestCSOpportunity');
         Test.stopTest();
         if (System_Properties__c.getall().isEmpty()) {
             insert new System_Properties__c(
                 Name = 'System',
-                DocuSign_Customer_Care_User__c = 'customercare@bluewavesolar.com'
+                DocuSign_Customer_Care_User__c = 'customercare@perchenergy.com'
             );
         }
-        Account testAcct = new Account(Name='Test');
+        Account testAcct = new Account(Name = 'Test');
         insert testAcct;
         List<Contact> contactList = new List<Contact>();
         List<Lead> leadList = new List<Lead>();
-        for (Integer i=0; i<2; i++) {
+        for (Integer i = 0; i < 2; i++) {
             Contact c = new Contact(FirstName = 'test',
                 LastName = 'testerson',
-                Email = 'ttesterson'+i+'@email.com',
+                Email = 'ttesterson' + i + '@email.com',
                 Account = testAcct);
             contactList.add(c);
             Lead l = new Lead(FirstName = 'test',
                 LastName = 'testerson',
                 Company = 'test',
-                Email = 'ttesterson'+i+'@email.com');
+                Email = 'ttesterson' + i + '@email.com');
             leadList.add(l);
         }
         insert contactList;
         insert leadList;
         Product2 normalCSProduct = new Product2(
-            Name = 'BlueWave SMART',
+            Name = 'Perch SMART',
             Family = 'Community Solar',
             Product_Type__c = 'Community Solar',
             Program__c = 'SMART - Community Solar',
@@ -65,7 +66,7 @@ private class PostSandboxRefresherTest {
                 'your subscription, we will notify you via email.</br>'
         );
         Product2 normalSRECProduct = new Product2(
-            Name = 'BlueWave SREC',
+            Name = 'Perch SREC',
             Family = 'Community Solar',
             Product_Type__c = 'Community Solar',
             Program__c = 'SREC - Community Solar',
@@ -222,7 +223,9 @@ private class PostSandboxRefresherTest {
     @IsTest
     static void testDeleteCSRecords() {
         CSRecordLoader.CustomerName fooBar = new CSRecordLoader.CustomerName('Foo', 'Bar', 1);
-        CSRecordLoader.insertAccountsAndContacts(new List<CSRecordLoader.CustomerName>{fooBar});
+        CSRecordLoader.insertAccountsAndContacts(new List<CSRecordLoader.CustomerName>{
+            fooBar
+        });
         List<Account> accounts = [SELECT Id FROM Account WHERE CreatedDate = :CSRecordLoader.csDataDate];
         System.assertEquals(2, accounts.size(), 'Expected two accounts to be created, parent and property');
         CSRecordLoader.deleteCSRecords();
@@ -262,7 +265,7 @@ private class PostSandboxRefresherTest {
             WHERE Class__c = 'BillingAccountTrigger'
             AND Method__c = 'TriggerDisabled'
         ];
-        System.assertEquals(0,triggerOffWarning.size());
+        System.assertEquals(0, triggerOffWarning.size());
         Account newSFAccountOne = new Account(
             Name = 'Account One',
             Recurring_Billing__c = false
@@ -271,7 +274,9 @@ private class PostSandboxRefresherTest {
             Name = 'Account Two',
             Recurring_Billing__c = false
         );
-        insert new List<Account>{newSFAccountOne, newSFAccountTwo};
+        insert new List<Account>{
+            newSFAccountOne, newSFAccountTwo
+        };
         Zuora__CustomerAccount__c newZuoraAccountOne = new Zuora__CustomerAccount__c(
             Name = 'Account Name',
             Zuora__Account__c = newSFAccountOne.Id,
@@ -284,7 +289,9 @@ private class PostSandboxRefresherTest {
             Zuora__Zuora_Id__c = '333333333333333333333',
             Zuora__AutoPay__c = false
         );
-        List<Zuora__CustomerAccount__c> zAccounts = new List<Zuora__CustomerAccount__c>{newZuoraAccountOne, newZuoraAccountTwo};
+        List<Zuora__CustomerAccount__c> zAccounts = new List<Zuora__CustomerAccount__c>{
+            newZuoraAccountOne, newZuoraAccountTwo
+        };
         insert zAccounts;
         newZuoraAccountOne.Zuora__AutoPay__c = true;
         newZuoraAccountTwo.Zuora__AutoPay__c = true;
@@ -299,11 +306,11 @@ private class PostSandboxRefresherTest {
         List<Zuora__CustomerAccount__c> billingAccounts = [
             SELECT Id, Zuora__AutoPay__c
             FROM Zuora__CustomerAccount__c
-            WHERE Id = : newZuoraAccountOne.Id
-            OR Id = : newZuoraAccountTwo.Id
+            WHERE Id = :newZuoraAccountOne.Id
+            OR Id = :newZuoraAccountTwo.Id
         ];
-        System.assertEquals(true,billingAccounts[0].Zuora__AutoPay__c);
-        System.assertEquals(true,billingAccounts[0].Zuora__AutoPay__c);
+        System.assertEquals(true, billingAccounts[0].Zuora__AutoPay__c);
+        System.assertEquals(true, billingAccounts[0].Zuora__AutoPay__c);
         List<Error_Log__c> updatedTriggerOffWarning = [
             SELECT Id, Class__c, Method__c, Message__c
             FROM Error_Log__c
@@ -314,17 +321,19 @@ private class PostSandboxRefresherTest {
             'Expected two errors logged, one before insert and one after insert, but got these: ' + updatedTriggerOffWarning);
     }
     @IsTest
-    static void testInvocableGenericBatch(){
+    static void testInvocableGenericBatch() {
         List<Account> acctList = [
             SELECT Id, Name
             FROM Account
             LIMIT 2
         ];
-        for (Account acct : acctList){
+        for (Account acct : acctList) {
             acct.Name = 'SomeUnique AccountNameB';
         }
         Test.startTest();
-        List<List<SObject>> sobjList = new List<List<SObject>>{acctList};
+        List<List<SObject>> sobjList = new List<List<SObject>>{
+            acctList
+        };
         GenericBatchDMLOperation.callUpdateFromFlow(sobjList);
         Test.stopTest();
 
@@ -333,66 +342,66 @@ private class PostSandboxRefresherTest {
             FROM Account
             WHERE Name = 'SomeUnique AccountNameB'
         ];
-        System.assertEquals(2,accounts.size());
+        System.assertEquals(2, accounts.size());
     }
     @IsTest
     private static void testSetSystemAdmins() {
-        Profile bfgStandardUserProfile = [
+        Profile perchStandardUserProfile = [
             SELECT Id
             FROM Profile
-            WHERE Name='BFG Standard User'
+            WHERE Name = 'Perch Standard'
         ];
         Profile systemAdminProfile = [
             SELECT Id
             FROM Profile
-            WHERE Name='System Administrator'
+            WHERE Name = 'System Administrator'
         ];
         Profile bwTechnologyProfile = [
             SELECT Id
             FROM Profile
-            WHERE Name='BW Technology'
+            WHERE Name = 'BW Technology'
         ];
         List<User> users = new List<User>();
-        User bfgStandardUser = new User(
+        User perchStandardUser = new User(
             Alias = 'bfgsu',
-            Email='testUtil@test.test',
-            EmailEncodingKey='UTF-8',
-            LastName='testUtil',
-            LanguageLocaleKey='en_US',
-            LocaleSidKey='en_US',
-            ProfileId = bfgStandardUserProfile.Id,
-            Country='United States',
+            Email = 'testUtil@test.test',
+            EmailEncodingKey = 'UTF-8',
+            LastName = 'testUtil',
+            LanguageLocaleKey = 'en_US',
+            LocaleSidKey = 'en_US',
+            ProfileId = perchStandardUserProfile.Id,
+            Country = 'United States',
             IsActive = true,
-            TimeZoneSidKey='America/New_York',
-            Username='bfgstandarduser@test.test'
+            TimeZoneSidKey = 'America/New_York',
+            Username = 'perchstandarduser@test.test'
         );
-        users.add(bfgStandardUser);
+        users.add(perchStandardUser);
         User systemAdminUser = new User(
             Alias = 'sysAdmin',
-            Email='testUtil@test.test',
-            EmailEncodingKey='UTF-8',
-            LastName='testUtil',
-            LanguageLocaleKey='en_US',
-            LocaleSidKey='en_US',
+            Email = 'testUtil@test.test',
+            EmailEncodingKey = 'UTF-8',
+            LastName = 'testUtil',
+            LanguageLocaleKey = 'en_US',
+            LocaleSidKey = 'en_US',
             ProfileId = systemAdminProfile.Id,
-            Country='United States',
+            Country = 'United States',
             IsActive = true,
-            TimeZoneSidKey='America/New_York',
-            Username='systemadmin@test.test'
+            TimeZoneSidKey = 'America/New_York',
+            Username = 'systemadmin@test.test'
         );
         users.add(systemAdminUser);
-        User bwTechnologyUser= new User(
+        User bwTechnologyUser = new User(
             Alias = 'bwTech',
-            Email='testUtil@test.test',
-            EmailEncodingKey='UTF-8',
-            LastName='testUtil',
-            LanguageLocaleKey='en_US',
-            LocaleSidKey='en_US',
+            Email = 'testUtil@test.test',
+            EmailEncodingKey = 'UTF-8',
+            LastName = 'testUtil',
+            LanguageLocaleKey = 'en_US',
+            LocaleSidKey = 'en_US',
             ProfileId = bwTechnologyProfile.Id,
-            Country='United States',
+            Country = 'United States',
             IsActive = true,
-            TimeZoneSidKey='America/New_York',
-            Username='bwTechnology@test.test'
+            TimeZoneSidKey = 'America/New_York',
+            Username = 'bwTechnology@test.test'
         );
         users.add(bwTechnologyUser);
         insert users;
@@ -414,7 +423,7 @@ private class PostSandboxRefresherTest {
         for (User user : users) {
             switch on user.Alias {
                 when 'bfgsu' {
-                    System.assertEquals(bfgStandardUserProfile.Id, user.ProfileId, 'Should not have updated a non-BW Technology user');
+                    System.assertEquals(perchStandardUserProfile.Id, user.ProfileId, 'Should not have updated a non-BW Technology user');
                 } when 'sysAdmin' {
                     System.assertEquals(systemAdminProfile.Id, user.ProfileId, 'Should not have updated a non-BW Technology user');
                 } when 'bwTech' {
@@ -442,7 +451,9 @@ private class PostSandboxRefresherTest {
         update leads[0];
 
         Test.startTest();
-        InvocableBatchLeadConverter.startLeadConversionBatch(new List<List<Lead>>{leads});
+        InvocableBatchLeadConverter.startLeadConversionBatch(new List<List<Lead>>{
+            leads
+        });
         Test.stopTest();
 
         leads = [SELECT Id FROM Lead WHERE Id IN :leads AND IsConverted = TRUE];

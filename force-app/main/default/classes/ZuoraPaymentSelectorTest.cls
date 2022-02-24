@@ -1,4 +1,5 @@
 /**
+ * @description Tests ZuoraPaymentSelector
  * Created by PeterYao on 8/28/2019.
  */
 @IsTest
@@ -36,9 +37,9 @@ public with sharing class ZuoraPaymentSelectorTest {
     public static void testPaymentSelectorInsufficientPermissions() {
         Zuora__Payment__c payment = [SELECT Id FROM Zuora__Payment__c LIMIT 1];
         ZuoraPaymentSelector paymentSelector = new ZuoraPaymentSelector();
-        User bfgStandardUser = [SELECT Id
+        User perchStandardUser = [SELECT Id
                                 FROM User
-                                WHERE Profile.Name = 'BFG Standard User'
+                                WHERE Profile.Name = 'Perch Standard'
                                 AND IsActive = TRUE
                                 AND Id NOT IN (
                                                 SELECT AssigneeId
@@ -46,8 +47,8 @@ public with sharing class ZuoraPaymentSelectorTest {
                                                 WHERE PermissionSet.Name LIKE '%Zuora%')
                                 LIMIT 1];
         Boolean exceptionCaught = false;
-        // Since a BFG Standard User without a Zuora perm set should never have permissions to query payments
-        System.runAs(bfgStandardUser) {
+        // Since a Perch Standard User without a Zuora perm set should never have permissions to query payments
+        System.runAs(perchStandardUser) {
             try {
                 paymentSelector.selectById(new Set<Id>{payment.Id});
             } catch (Util.FatalBWException bwe) {
@@ -102,7 +103,7 @@ public with sharing class ZuoraPaymentSelectorTest {
         System.assertEquals(dt, parsedDatetime, 'Expected to get find the end date');
     }
 
-    @isTest
+    @IsTest
     private static void testSelectByExternalId(){
         ZuoraPaymentSelector selector = new ZuoraPaymentSelector();
         Map<String,Zuora__Payment__c> paymentMap = selector.selectByExternalId(new Set<String>{'1234'});
