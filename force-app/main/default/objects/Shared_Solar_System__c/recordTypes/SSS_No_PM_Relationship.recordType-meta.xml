@@ -53,6 +53,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Client</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>RadianGen</fullName>
             <default>false</default>
         </values>
