@@ -3,7 +3,7 @@
     <fullName>First_Bill_Sent_Commission__c</fullName>
     <deleteConstraint>SetNull</deleteConstraint>
     <externalId>false</externalId>
-    <inlineHelpText>First Bill Sent Commission Payment record this Subscription Order is applied to. If no value, this Subscription Order has not been applied to a Commission Payment record yet.</inlineHelpText>
+    <inlineHelpText>Commission Payment this Subscription Order&apos;s First Bill Sent Commission amount is applied to. If no value, this commission has not been applied to a Commission Payment record yet.</inlineHelpText>
     <label>First Bill Sent Commission</label>
     <referenceTo>Commission_Payment__c</referenceTo>
     <relationshipLabel>Subscription Orders (First Bill Sent Commission)</relationshipLabel>

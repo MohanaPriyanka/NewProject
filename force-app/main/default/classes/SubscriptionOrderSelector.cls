@@ -171,4 +171,27 @@ public inherited sharing class SubscriptionOrderSelector {
             AND Utility_Account_Subscription__r.Shared_Solar_System__r.Contract_Assignment_Entity__c = :entityId
         ];
     }
+
+    public Map<Id,List<Subscription_Order__c>> getByOppForVariableCommission(Set<Id> opportunityIds) {
+        Map<Id,List<Subscription_Order__c>> returnMap = new Map<Id,List<Subscription_Order__c>>();
+        for (Subscription_Order__c order : [
+            SELECT Id, Utility_Account_Subscription__r.Opportunity__c, First_Bill_Paid_Estimated_Commission__c,
+                First_Bill_Sent_Estimated_Commission__c, Contract_Close_Estimated_Commission__c,
+                Contract_Close_Commission_Amount__c, Contract_Close_Commission__c, First_Bill_Sent_Commission__c,
+                First_Bill_Sent_Commission_Amount__c, First_Bill_Paid_Commission_Amount__c, First_Bill_Paid_Commission__c
+            FROM Subscription_Order__c
+            WHERE Utility_Account_Subscription__r.Opportunity__c IN : opportunityIds
+            ORDER BY CreatedDate ASC])
+        {
+            Id oppId = order.Utility_Account_Subscription__r.Opportunity__c;
+            if (returnMap.keySet().contains(oppId)) {
+                List<Subscription_Order__c> orders = returnMap.get(oppId);
+                orders.add(order);
+                returnMap.put(oppId, orders);
+            } else {
+                returnMap.put(oppId, new List<Subscription_Order__c>{order});
+            }
+        }
+        return returnMap;
+    }
 }

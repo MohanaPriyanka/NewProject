@@ -3,10 +3,10 @@
     <fullName>Contract_Close_Commission__c</fullName>
     <deleteConstraint>SetNull</deleteConstraint>
     <externalId>false</externalId>
-    <inlineHelpText>Contract Close Commission Payment record this Subscription Order is applied to. If no value, this Subscription Order has not been applied to a Commission Payment record yet.</inlineHelpText>
+    <inlineHelpText>Commission Payment this Subscription Order&apos;s Contract Close Commission amount is applied to. If no value, this commission has not been applied to a Commission Payment record yet.</inlineHelpText>
     <label>Contract Close Commission</label>
     <referenceTo>Commission_Payment__c</referenceTo>
-    <relationshipLabel>Contract_Close_Subscription_Orders</relationshipLabel>
+    <relationshipLabel>Subscription Orders (Contract Close Commission)</relationshipLabel>
     <relationshipName>Subscription_Orders</relationshipName>
     <required>false</required>
     <trackFeedHistory>false</trackFeedHistory>
