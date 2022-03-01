@@ -407,3 +407,5 @@ node_modules/
 # Local environment variables
 .env
 /sfpowerkit-cache.db
+/force-app/main/default/wave/**
+
