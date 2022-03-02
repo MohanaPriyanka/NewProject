@@ -1,12 +1,15 @@
 /**
- * Created by jeffparlin on 2/24/22.
+ * @description Created by jeffparlin on 2/24/22. Queueable class to run to generate Partner Commission records. Accepts
+ * a List<Id> of Partner Account Ids and processes ONE Partner per queueable execution.
  */
 public without sharing class PartnerCommissionGenerator implements Queueable, Finalizer {
 
     @TestVisible private static OpportunitiesSelector oppSelector = new OpportunitiesSelector();
     @TestVisible private static AccountsSelector accountsSelector = new AccountsSelector();
+    @TestVisible private static PartnerInvoiceSelector partnerInvoiceSelector = new PartnerInvoiceSelector();
 
     private Id currentPartner;
+    private Account currentPartnerAccount;
     private List<Id> partnersToProcess;
     private Map<Id,Opportunity> variableRateOpportunities;
     private fflib_SObjectUnitOfWork unitOfWork;
@@ -35,7 +38,7 @@ public without sharing class PartnerCommissionGenerator implements Queueable, Fi
             Subscription_Order__c.SObjectType
         });
         try {
-            createPartnerInvoice();
+            locatePartnerInvoice();
             generateCommissionPayments();
         } catch (Exception e) {
             String message = e.getMessage() + '\n\n' + e.getStackTraceString();
@@ -43,27 +46,34 @@ public without sharing class PartnerCommissionGenerator implements Queueable, Fi
         }
     }
 
-    private void createPartnerInvoice() {
-        Account partnerAccount = accountsSelector.getPartnerAccountDetails(currentPartner);
+    private void locatePartnerInvoice() {
+        currentPartnerAccount = accountsSelector.getPartnerAccountDetails(currentPartner);
+        Id legacyPartnerId = currentPartnerAccount.Partner__c;
+        List<Invoice__c> existingInvoices = partnerInvoiceSelector.getPendingPartnerInvoices(
+            new Set<Id>{legacyPartnerId}, getDueDate()
+        );
+        partnerInvoice = existingInvoices.get(0) != null ? existingInvoices[0] : createPartnerInvoice();
+    }
+
+    private Invoice__c createPartnerInvoice() {
         Date dueDate = getDueDate();
         Id recordTypeId = SObjectType.Invoice__c.getRecordTypeInfosByDeveloperName().get('Partner_Invoice').getRecordTypeId();
         Date dueToAccountingDate = Date.newInstance(dueDate.year(), dueDate.month(), 3);
         Datetime dueDatetime = Datetime.newInstance(dueDate.year(), dueDate.month(), dueDate.day());
-        String monthName = dueDatetime.format('MMMMM');
 
         Invoice__c invoice = new Invoice__c(
-            Name = (partnerAccount.Name + ' ' + monthName + ' ' + String.valueOf(dueDate.year())).left(80),
+            Name = currentPartnerAccount.Name + ' ' + dueDatetime.format('MMMM dd, yyyy'),
             Due_Date__c = dueDate,
             Due_to_Accounting__c = dueToAccountingDate,
             Invoice_Type__c = 'Direct',
-            Partner__c = partnerAccount.Partner__c,
+            Partner__c = currentPartnerAccount.Partner__c,
             Product_Line__c = 'Community Solar',
             Status__c = 'Received >> QC',
             RecordTypeId = recordTypeId,
-            Account__c = partnerAccount.Id
+            Account__c = currentPartnerAccount.Id
         );
         insert invoice;
-        this.partnerInvoice = invoice;
+        return invoice;
     }
 
     private Date getDueDate() {

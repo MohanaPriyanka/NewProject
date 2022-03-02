@@ -1,5 +1,6 @@
 /**
- * Created by jeffparlin on 2/25/22.
+ * @description Created by jeffparlin on 2/25/22. Abstract class for partner commission generation to be extended by
+ * a respective type implementation, e.g. VariableRateCommissionProcessor
  */
 public abstract class PartnerCommissionProcessor {
 

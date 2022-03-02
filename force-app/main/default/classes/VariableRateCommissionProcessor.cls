@@ -1,5 +1,7 @@
 /**
- * @description Created by jeffparlin on 2/25/22.
+ * @description Created by jeffparlin on 2/25/22. Processes Variable Rate Commissions for single Partner. Creates
+ * Partner_Payment__c records corresponding to Subscription_Order__c records for a subscription, and applies those payment
+ * records to the specified Invoice__c record to be later remitted to the Partner by Accounting.
  */
 public without sharing class VariableRateCommissionProcessor extends PartnerCommissionProcessor {
 
