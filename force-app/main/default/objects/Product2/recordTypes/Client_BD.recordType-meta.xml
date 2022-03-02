@@ -17,7 +17,15 @@
     <picklistValues>
         <picklist>Family</picklist>
         <values>
+            <fullName>Acquisition</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Community Solar</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Management</fullName>
             <default>false</default>
         </values>
     </picklistValues>
@@ -67,6 +75,18 @@
         <picklist>QuantityUnitOfMeasure</picklist>
         <values>
             <fullName>Each</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MW</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>W</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>kW</fullName>
             <default>false</default>
         </values>
         <values>
