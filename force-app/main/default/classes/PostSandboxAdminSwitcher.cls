@@ -15,8 +15,12 @@ public with sharing class PostSandboxAdminSwitcher implements Schedulable {
         List<User> usersToMakeSysAdmins = [
             SELECT Id, ProfileId
             FROM User
-            WHERE Profile.Name = 'BW Technology'
-            AND IsActive = TRUE
+            WHERE IsActive = TRUE
+            AND Id IN (
+                SELECT AssigneeId
+                FROM PermissionSetAssignment
+                WHERE PermissionSet.Name = 'Edit_All'
+            )
         ];
         for (User user : usersToMakeSysAdmins) {
             user.ProfileId = sysAdminProfile.Id;

@@ -356,11 +356,7 @@ private class PostSandboxRefresherTest {
             FROM Profile
             WHERE Name = 'System Administrator'
         ];
-        Profile bwTechnologyProfile = [
-            SELECT Id
-            FROM Profile
-            WHERE Name = 'BW Technology'
-        ];
+        PermissionSet editAll = [SELECT Id FROM PermissionSet WHERE Name = 'Edit_All'];
         List<User> users = new List<User>();
         User perchStandardUser = new User(
             Alias = 'bfgsu',
@@ -390,21 +386,26 @@ private class PostSandboxRefresherTest {
             Username = 'systemadmin@test.test'
         );
         users.add(systemAdminUser);
-        User bwTechnologyUser = new User(
+        User bizAppsUser = new User(
             Alias = 'bwTech',
             Email = 'testUtil@test.test',
             EmailEncodingKey = 'UTF-8',
             LastName = 'testUtil',
             LanguageLocaleKey = 'en_US',
             LocaleSidKey = 'en_US',
-            ProfileId = bwTechnologyProfile.Id,
+            ProfileId = perchStandardUserProfile.Id,
             Country = 'United States',
             IsActive = true,
             TimeZoneSidKey = 'America/New_York',
             Username = 'bwTechnology@test.test'
         );
-        users.add(bwTechnologyUser);
+        users.add(bizAppsUser);
         insert users;
+        PermissionSetAssignment psa = new PermissionSetAssignment(
+            AssigneeId = bizAppsUser.Id,
+            PermissionSetId = editAll.Id
+        );
+        insert psa;
         // RunAs to get a new context to avoid
         // MIXED_DML_OPERATION, DML operation on setup object is not permitted after you have updated a non-setup object
         // (or vice versa): User, original object: MPM4_BASE__Milestone1_Resource__c
@@ -433,13 +434,14 @@ private class PostSandboxRefresherTest {
                 }
             }
         }
-        users = [
-            SELECT Id, Alias, ProfileId
-            FROM User
-            WHERE Profile.Name = 'BW Technology'
-            AND IsActive = TRUE
+        List<PermissionSetAssignment> permissionSetAssignments = [
+            SELECT Id, AssigneeId, Assignee.Profile.Name, Assignee.Name
+            FROM PermissionSetAssignment
+            WHERE PermissionSet.Name = 'Edit_All'
         ];
-        System.assertEquals(0, users.size(), 'Expected to have updated all BW Technology users to System Admins');
+        for (PermissionSetAssignment permissionSetAssignment : permissionSetAssignments) {
+            System.assertEquals('System Administrator', permissionSetAssignment.Assignee.Profile.Name, permissionSetAssignment.Assignee.Name);
+        }
     }
     @IsTest
     private static void testBatchLeadConvert() {
