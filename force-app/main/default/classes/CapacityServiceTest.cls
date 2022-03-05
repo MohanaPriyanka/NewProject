@@ -225,88 +225,6 @@ public with sharing class CapacityServiceTest {
         insert property;
     }
 
-    @IsTest
-    public static void testZipcodeServiceReturnsNoCSAssets() {
-        CapacityService service = new CapacityService();
-        CapacityService.ZipcodeResponse response = service.findCapacityByZipcode('11111');
-
-        System.assertEquals('11111', response.zipcode);
-        System.assertEquals(0, response.utilities.size());
-        System.assertEquals(0, response.products.size());
-        System.assertEquals(0, response.loadZones.size());
-        System.assertEquals(0, response.sharedSolarSystems.size());
-        System.assertEquals(false, response.hasCapacity());
-    }
-
-    @IsTest
-    public static void testZipcodeServiceInvalidInputIncompleteZipcode() {
-        CapacityService service = new CapacityService();
-        CapacityService.ZipcodeResponse response = service.findCapacityByZipcode('12');
-
-        System.assertEquals(null, response.zipcode);
-        System.assertEquals(0, response.utilities.size());
-        System.assertEquals(0, response.loadZones.size());
-        System.assertEquals(0, response.products.size());
-        System.assertEquals(0, response.sharedSolarSystems.size());
-        System.assertEquals(0, response.rateClasses.size());
-        System.assertEquals(false, response.hasCapacity());
-    }
-
-    @IsTest
-    public static void testZipcodeServiceInvalidInputNotAZipcode() {
-        CapacityService service = new CapacityService();
-        CapacityService.ZipcodeResponse response = service.findCapacityByZipcode('hello');
-
-        System.assertEquals(null, response.zipcode);
-        System.assertEquals(0, response.utilities.size());
-        System.assertEquals(0, response.products.size());
-        System.assertEquals(0, response.loadZones.size());
-        System.assertEquals(0, response.sharedSolarSystems.size());
-        System.assertEquals(0, response.rateClasses.size());
-        System.assertEquals(false, response.hasCapacity());
-    }
-
-    @IsTest
-    public static void testZipcodeServiceReturnsCSAssets() {
-        CapacityService service = new CapacityService();
-        CapacityService.ZipcodeResponse response = service.findCapacityByZipcode('12345');
-
-        System.assertEquals('12345', response.zipcode);
-        System.assertEquals(1, response.utilities.size());
-        System.assertEquals(1, response.loadZones.size());
-        System.assertEquals(1, response.products.size());
-        System.assertEquals(1, response.sharedSolarSystems.size());
-        System.assertEquals(1, response.rateClasses.size());
-        System.assertEquals(true, response.hasCapacity());
-    }
-
-    @IsTest
-    public static void testZipcodeServiceReturnsMultipleCSAssets() {
-        CapacityService service = new CapacityService();
-        CapacityService.ZipcodeResponse response = service.findCapacityByZipcode('23456');
-
-        System.assertEquals('23456', response.zipcode);
-        System.assertEquals(1, response.utilities.size());
-        System.assertEquals(1, response.loadZones.size());
-        System.assertEquals(2, response.products.size());
-        System.assertEquals(2, response.sharedSolarSystems.size());
-        System.assertEquals(1, response.rateClasses.size());
-        System.assertEquals(true, response.hasCapacity());
-    }
-
-    @IsTest
-    public static void testZipcodeServiceReturnsMultipleUtilities() {
-        CapacityService service = new CapacityService();
-        CapacityService.ZipcodeResponse response = service.findCapacityByZipcode('65432');
-
-        System.assertEquals('65432', response.zipcode);
-        System.assertEquals(2, response.utilities.size());
-        System.assertEquals(1, response.loadZones.size());
-        System.assertEquals(2, response.loadZoneNames.size());
-        System.assertEquals(2, response.products.size());
-        System.assertEquals(4, response.sharedSolarSystems.size());
-        System.assertEquals(2, response.rateClasses.size());
-    }
 
     @IsTest
     public static void testParentProduct() {
@@ -341,7 +259,7 @@ public with sharing class CapacityServiceTest {
         System.assertNotEquals(null, smartProduct.Parent_Product__c);
 
 
-        CapacityService.ZipcodeResponse response = service.findCapacityByZipcode('98765', Util.getFakeId(Partner__c.SObjectType));
+        CapacityService.ZipcodeResponse response = service.findCapacityByZipcode('98765', Util.getFakeId(Partner__c.SObjectType), null);
         System.assertEquals(1, response.utilities.size());
         System.assertEquals(1, response.loadZones.size());
         System.assertEquals(1, response.loadZoneNames.size());
@@ -364,53 +282,13 @@ public with sharing class CapacityServiceTest {
         ];
         sss.Do_Not_Ask_for_Payment_Method__c = true;
         update sss;
-        CapacityService.ZipcodeResponse response = service.findCapacityByZipcode('98765', Util.getFakeId(Partner__c.SObjectType));
+        CapacityService.ZipcodeResponse response = service.findCapacityByZipcode('98765', Util.getFakeId(Partner__c.SObjectType), null);
         System.assertEquals(1, response.utilities.size());
         System.assertEquals(1, response.loadZones.size());
         System.assertEquals(1, response.loadZoneNames.size());
         System.assertEquals(1, response.products.size());
         System.assertEquals(1, response.sharedSolarSystems.size());
         System.assertEquals(1, response.rateClasses.size());
-    }
-
-    @IsTest
-    public static void testZipcodeServiceMultipleRequestsReturnsOnlyRequestedZipcode() {
-        CapacityService service = new CapacityService();
-        CapacityService.ZipcodeResponse response = service.findCapacityByZipcode('65432');
-
-        System.assertEquals('65432', response.zipcode);
-        System.assertEquals(2, response.utilities.size());
-        System.assertEquals(1, response.loadZones.size());
-        System.assertEquals(2, response.loadZoneNames.size());
-        System.assertEquals(2, response.products.size());
-        System.assertEquals(4, response.sharedSolarSystems.size());
-        System.assertEquals(2, response.rateClasses.size());
-        System.assertEquals(true, response.hasCapacity());
-
-        response = service.findCapacityByZipcode('23456');
-
-        System.assertEquals('23456', response.zipcode);
-        System.assertEquals(1, response.utilities.size());
-        System.assertEquals(1, response.loadZones.size());
-        System.assertEquals(2, response.products.size());
-        System.assertEquals(2, response.sharedSolarSystems.size());
-        System.assertEquals(1, response.rateClasses.size());
-        System.assertEquals(true, response.hasCapacity());
-    }
-
-    @IsTest
-    public static void testZipcodeServiceReturnsMultipleUtilitiesWithZip4() {
-        CapacityService service = new CapacityService();
-        CapacityService.ZipcodeResponse response = service.findCapacityByZipcode('65432-1234');
-
-        System.assertEquals('65432', response.zipcode);
-        System.assertEquals(2, response.utilities.size());
-        System.assertEquals(1, response.loadZones.size());
-        System.assertEquals(2, response.loadZoneNames.size());
-        System.assertEquals(2, response.products.size());
-        System.assertEquals(4, response.sharedSolarSystems.size());
-        System.assertEquals(2, response.rateClasses.size());
-        System.assertEquals(true, response.hasCapacity());
     }
 
     @IsTest
@@ -435,7 +313,7 @@ public with sharing class CapacityServiceTest {
         insert partner;
 
         CapacityService service = new CapacityService();
-        CapacityService.ZipcodeResponse response = service.findCapacityByZipcode('12345', partner.Id);
+        CapacityService.ZipcodeResponse response = service.findCapacityByZipcode('12345', partner.Id, null);
         System.assertEquals('12345', response.zipcode, 'Response zip code (' + response.zipcode + ') should match submitted zip code (12345)');
         System.assertNotEquals(0, response.utilities.size(), 'At least one utility should match the zip code and be returned');
         System.assertNotEquals(0, response.utilityIds.size(), 'At least one utility ID should match the zip code and be returned');
@@ -450,7 +328,9 @@ public with sharing class CapacityServiceTest {
     @IsTest
     public static void testFindCapacityByZipCodeWithPartner() {
         CapacityService service = new CapacityService();
-        CapacityService.ZipcodeResponse response = service.findCapacityByZipcode('12345');
+        Partner__c ace = [SELECT Id FROM Partner__c WHERE Name = 'ACE Solar' LIMIT 1];
+        Partner__c defaultPartner = [SELECT Id FROM Partner__c WHERE Name = 'BlueWave Inside Sales' LIMIT 1];
+        CapacityService.ZipcodeResponse response = service.findCapacityByZipcode('12345', ace.Id, null);
         System.assertEquals(1, response.sharedSolarSystems.size());
         System.assertEquals(4, response.utilityZipCodesServed.size());
         List<Partner_Shared_Solar_System_Eligibility__c> partnerSharedSolarSystemEligibilities = [
@@ -466,7 +346,7 @@ public with sharing class CapacityServiceTest {
 
         List<Error_Log__c> errorLogs = [SELECT Message__c FROM Error_Log__c WHERE Class__c = 'CapacityService'];
         System.assertEquals(0, errorLogs.size(), 'Expected to start with no error logs');
-        response = service.findCapacityByZipcode('12345', Util.getFakeId(Partner__c.SObjectType));
+        response = service.findCapacityByZipcode('12345', Util.getFakeId(Partner__c.SObjectType), null);
         System.assertEquals(0, response.sharedSolarSystems.size());
         System.assertEquals(false, response.hasCapacity(), 'Expected no capacity for an unknown partner');
         errorLogs = [SELECT Message__c FROM Error_Log__c WHERE Class__c = 'CapacityService'];
@@ -474,12 +354,11 @@ public with sharing class CapacityServiceTest {
         System.assert(errorLogs[0].Message__c.contains('but proceeding with the default partner'), 'Expected to proceed with the default partner');
         delete errorLogs;
 
-        Partner__c ace = [SELECT Id FROM Partner__c WHERE Name = 'ACE Solar' LIMIT 1];
-        response = service.findCapacityByZipcode('12345', ace.Id);
+        response = service.findCapacityByZipcode('12345', ace.Id, null);
         System.assertEquals(1, response.sharedSolarSystems.size());
         System.assertEquals(true, response.hasCapacity(), 'Expected capacity for ACE Solar');
 
-        response = service.findCapacityByZipcode('23456');
+        response = service.findCapacityByZipcode('23456', defaultPartner.Id, null);
         System.assertEquals(2, response.sharedSolarSystems.size());
         partnerSharedSolarSystemEligibilities = [
             SELECT Id, Shared_Solar_System__c, Account__r.Partner__r.Name
@@ -499,7 +378,7 @@ public with sharing class CapacityServiceTest {
 
         errorLogs = [SELECT Message__c FROM Error_Log__c WHERE Class__c = 'CapacityService'];
         System.assertEquals(0, errorLogs.size(), 'Expected to start with no error logs');
-        response = service.findCapacityByZipcode('23456', Util.getFakeId(Partner__c.SObjectType));
+        response = service.findCapacityByZipcode('23456', Util.getFakeId(Partner__c.SObjectType), null);
         System.assertEquals(2, response.sharedSolarSystems.size());
         System.assertEquals(true, response.hasCapacity(), 'Expected capacity for an unknown partner since there is a system for the default partner');
         errorLogs = [SELECT Message__c FROM Error_Log__c WHERE Class__c = 'CapacityService'];
