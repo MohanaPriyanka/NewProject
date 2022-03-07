@@ -106,7 +106,8 @@ public with sharing class SharedSolarSystemHandlerTest {
             Assignment_Order__c = '1',
             Expected_Yield_kWh_kW__c = 100,
             Assemblage_Count__c = 1,
-            Contract_Assignment_Entity__c = entity1.Id
+            Contract_Assignment_Entity__c = entity1.Id,
+            Perch_Acq_Reserved_LMI_Capacity__c = 50
         );
         Shared_Solar_System__c sss2 = new Shared_Solar_System__c(Name = 'SSS 2',
             Service_Territory__c = 'NEMA',
@@ -127,7 +128,9 @@ public with sharing class SharedSolarSystemHandlerTest {
             Assignment_Order__c = '2',
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
-            Contract_Assignment_Entity__c = entity1.Id
+            Contract_Assignment_Entity__c = entity1.Id,
+            LMI__c = true,
+            Perch_Acq_Reserved_LMI_Capacity__c = 50
         );
         Shared_Solar_System__c sss3 = new Shared_Solar_System__c(Name = 'SSS 3',
             Service_Territory__c = 'NEMA',
@@ -148,7 +151,10 @@ public with sharing class SharedSolarSystemHandlerTest {
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
             Maximum_Subscription_Capacity_kWDC__c = 25,
-            Contract_Assignment_Entity__c = entity1.Id);
+            Contract_Assignment_Entity__c = entity1.Id,
+            LMI__c = true,
+            Perch_Acq_Reserved_LMI_Capacity__c = 0
+        );
         insert new List<Shared_Solar_System__c>{
             sss1, sss2, sss3
         };
@@ -943,5 +949,56 @@ public with sharing class SharedSolarSystemHandlerTest {
             WHERE Severity__c = :Logger.ERROR
         ];
         System.assertEquals(0, errorLogs.size(), errorLogs);
+    }
+
+    @IsTest
+    public static void testCloseSSS() {
+        List<Shared_Solar_System__c> systems = [SELECT
+            Id, Open__c, Capacity_Available_to_be_Reserved__c,
+            Perch_Acq_Available_LMI_Capacity__c, Perch_Acq_Reserved_LMI_Capacity__c, LMI__c, Perch_Acq_Reserved_Small_CS_Capacity__c
+        FROM Shared_Solar_System__c
+        ORDER BY Name];
+
+        System.assert(systems[0].Open__c, 'Expected sss1 to be open');
+        System.assert(systems[0].Capacity_Available_to_be_Reserved__c > 1, 'Expected sss1 to have Regular Capacity');
+        System.assert(systems[0].Perch_Acq_Available_LMI_Capacity__c > 1, 'Expected sss1 to have LMI Capacity to test for data discrepancies');
+        System.assert(!systems[0].LMI__c, 'Expected sss1 to be non-LMI');
+
+        System.assert(systems[1].Open__c, 'Expected sss2 to be open');
+        System.assert(systems[1].Capacity_Available_to_be_Reserved__c > 1, 'Expected sss2 to have Regular Capacity');
+        System.assert(systems[1].Perch_Acq_Available_LMI_Capacity__c > 1, 'Expected sss2 to have LMI Capacity');
+        System.assert(systems[1].LMI__c, 'Expected sss2 to be LMI');
+
+        System.assert(systems[2].Open__c, 'Expected sss3 to be open');
+        System.assert(systems[2].Capacity_Available_to_be_Reserved__c > 1, 'Expected sss3 to have Regular Capacity');
+        System.assert(systems[2].Perch_Acq_Available_LMI_Capacity__c < 1, 'Expected sss3 to have no LMI Capacity');
+        System.assert(systems[2].LMI__c, 'Expected sss3 to be LMI');
+
+        systems[0].Perch_Acq_Reserved_Small_CS_Capacity__c = 0;
+        systems[1].Perch_Acq_Reserved_LMI_Capacity__c = 0;
+        systems[1].Perch_Acq_Reserved_Small_CS_Capacity__c = 0;
+        systems[2].Perch_Acq_Reserved_Small_CS_Capacity__c = 0;
+        systems[2].Perch_Acq_Reserved_LMI_Capacity__c = 50;
+
+        Test.startTest();
+        update systems;
+        Test.stopTest();
+
+        List<Shared_Solar_System__c> updatedSystems = [SELECT
+            Id, Name, Open__c, Capacity_Available_to_be_Reserved__c,
+            Perch_Acq_Available_LMI_Capacity__c
+        FROM Shared_Solar_System__c
+        ORDER BY Name];
+
+        System.assert(!updatedSystems[0].Open__c, 'Expect sss1 to be closed');
+        System.assert(updatedSystems[0].Capacity_Available_to_be_Reserved__c < 1, 'Expected sss1 to have no regular capacity available');
+
+        System.assert(!updatedSystems[1].Open__c, 'Expect sss2 to be closed');
+        System.assert(updatedSystems[1].Capacity_Available_to_be_Reserved__c < 1, 'Expected sss2 to have no regular capacity available');
+        System.assert(updatedSystems[1].Perch_Acq_Available_LMI_Capacity__c < 1, 'Expected sss2 to have no LMI capacity available');
+
+        System.assert(updatedSystems[2].Open__c, 'Expect sss3 to be open');
+        System.assert(updatedSystems[2].Capacity_Available_to_be_Reserved__c < 1, 'Expected sss3 to have no regular capacity available');
+        System.assert(updatedSystems[2].Perch_Acq_Available_LMI_Capacity__c > 1, 'Expected sss3 to have LMI capacity available');
     }
 }
