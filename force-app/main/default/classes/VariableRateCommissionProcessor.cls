@@ -2,11 +2,14 @@
  * @description Created by jeffparlin on 2/25/22. Processes Variable Rate Commissions for single Partner. Creates
  * Partner_Payment__c records corresponding to Subscription_Order__c records for a subscription, and applies those payment
  * records to the specified Invoice__c record to be later remitted to the Partner by Accounting.
+ * Tested By: PartnerCommissionGenerationTest
  */
 public without sharing class VariableRateCommissionProcessor extends PartnerCommissionProcessor {
 
     @TestVisible private static SubscriptionOrderSelector soSelector = new SubscriptionOrderSelector();
     @TestVisible private static CommissionPaymentSelector paymentSelector = new CommissionPaymentSelector();
+    @TestVisible private static FeatureService featureService = new FeatureService();
+    private static Boolean clawbackPaymentsEnabled;
 
     public VariableRateCommissionProcessor(Map<Id, Opportunity> variableRateOpps, fflib_SObjectUnitOfWork uow,
         Invoice__c partnerInvoice)
@@ -18,6 +21,7 @@ public without sharing class VariableRateCommissionProcessor extends PartnerComm
     }
 
     public override void retrieveDependencies() {
+        clawbackPaymentsEnabled = featureService.isEnabled('Clawback_Partner_Commissions');
         constructIterableDealSummaries();
     }
 
@@ -68,7 +72,9 @@ public without sharing class VariableRateCommissionProcessor extends PartnerComm
 
     private Boolean clawbackCommissionNeeded(DealSummary deal) {
         Boolean dealMeetsCriteria = deal.opportunity.StageName != 'Complete';
-        return dealMeetsCriteria && !existingCommissionFound(deal.commissionPayments, 'Cancellation/Refund');
+        return dealMeetsCriteria &&
+            existingCommissionFound(deal.commissionPayments, 'Contract Execution') &&
+            !existingCommissionFound(deal.commissionPayments, 'Cancellation/Refund');
     }
 
     private void generateContractExecutionCommission(DealSummary deal) {
@@ -189,7 +195,10 @@ public without sharing class VariableRateCommissionProcessor extends PartnerComm
         clawbackCommission.First_Bill_Sent_Amount__c = totalFirstBillSentAmount;
         clawbackCommission.First_Bill_Paid_Amount__c = totalFirstBillPaidAmount;
         clawbackCommission.Amount_Due__c = totalContractCloseAmount + totalFirstBillSentAmount + totalFirstBillPaidAmount;
-        unitOfWork.registerNew(clawbackCommission);
+
+        if (clawbackPaymentsEnabled) {
+            unitOfWork.registerNew(clawbackCommission);
+        }
     }
 
     private Commission_Payment__c buildBaseCommissionPayment(DealSummary deal, String nameSuffix, String type) {

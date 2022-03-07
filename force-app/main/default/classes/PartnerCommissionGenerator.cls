@@ -1,8 +1,9 @@
 /**
  * @description Created by jeffparlin on 2/24/22. Queueable class to run to generate Partner Commission records. Accepts
  * a List<Id> of Partner Account Ids and processes ONE Partner per queueable execution.
+ * Tested By: PartnerCommissionGenerationTest
  */
-public without sharing class PartnerCommissionGenerator implements Queueable, Finalizer {
+public without sharing class PartnerCommissionGenerator implements Queueable {
 
     @TestVisible private static OpportunitiesSelector oppSelector = new OpportunitiesSelector();
     @TestVisible private static AccountsSelector accountsSelector = new AccountsSelector();
@@ -21,18 +22,14 @@ public without sharing class PartnerCommissionGenerator implements Queueable, Fi
     }
 
     public void execute(QueueableContext ctx) {
-        executeSynchronous();
-    }
-
-    public void execute(FinalizerContext ctx) {
-        // Chain next job if any partner Ids remain to have yet be processed
+        process();
         partnersToProcess.remove(partnersToProcess.size()-1);
         if (!partnersToProcess.isEmpty()) {
             System.enqueueJob(new PartnerCommissionGenerator(partnersToProcess));
         }
     }
 
-    public void executeSynchronous() {
+    private void process() {
         unitOfWork = new fflib_SObjectUnitOfWork(new List<SObjectType> {
             Commission_Payment__c.SObjectType,
             Subscription_Order__c.SObjectType
@@ -52,7 +49,7 @@ public without sharing class PartnerCommissionGenerator implements Queueable, Fi
         List<Invoice__c> existingInvoices = partnerInvoiceSelector.getPendingPartnerInvoices(
             new Set<Id>{legacyPartnerId}, getDueDate()
         );
-        partnerInvoice = existingInvoices.get(0) != null ? existingInvoices[0] : createPartnerInvoice();
+        partnerInvoice = !existingInvoices.isEmpty() ? existingInvoices[0] : createPartnerInvoice();
     }
 
     private Invoice__c createPartnerInvoice() {
