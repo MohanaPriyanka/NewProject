@@ -227,6 +227,24 @@ public without sharing class CapacityService {
             }
             return false;
         }
+
+        public Boolean hasLMICapacity() {
+            for (Shared_Solar_System__c sss : sharedSolarSystems) {
+                if (Util.nullToZero(sss.Perch_Acq_Available_LMI_Capacity__c) > 0) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public Boolean hasSmallCSCapacity() {
+            for (Shared_Solar_System__c sss : sharedSolarSystems) {
+                if (Util.nullToZero(sss.Capacity_Available_to_be_Reserved__c) > 0) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
     @TestVisible

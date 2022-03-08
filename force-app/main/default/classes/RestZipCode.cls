@@ -7,6 +7,8 @@
 public inherited sharing class RestZipCode {
     public String zipCode;
     public Boolean hasCapacity;
+    public Boolean hasLMICapacity;
+    public Boolean hasSmallCSCapacity;
     public Boolean collectRateClass;
     public Set<Utility> utilities;
     public Set<String> loadZones;
@@ -22,6 +24,8 @@ public inherited sharing class RestZipCode {
     public RestZipCode(CapacityService.ZipcodeResponse response) {
         this.zipCode = response.zipcode;
         this.hasCapacity = response.hasCapacity();
+        this.hasLMICapacity = response.hasLMICapacity();
+        this.hasSmallCSCapacity = response.hasSmallCSCapacity();
         this.collectRateClass = response.collectRateClass();
         this.utilities = response.utilities == null ? getUtilities(new Set<Utility__c>()) : getUtilities(response.utilities);
         this.loadZones = response.loadZoneNames;

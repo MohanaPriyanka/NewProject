@@ -7,7 +7,7 @@
 @IsTest
 public with sharing class CapacityServiceTest {
     @TestSetup
-    public static void testSetup() {
+    private static void testSetup() {
         Utility__c eversource = new Utility__c(
             Name = 'Eversource',
             Number_of_Decimal_Places__c = 2
@@ -121,6 +121,7 @@ public with sharing class CapacityServiceTest {
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 1445.86,
             Perch_Acq_Reserved_Small_CS_Capacity__c = 1445.86,
+            Perch_Acq_Reserved_LMI_Capacity__c = 1445.86,
             Total_System_Size_kW_AC__c  = 996,
             Utility__c = eversource.Id,
             Credit_Score_Requirement__c = 300,
@@ -140,6 +141,7 @@ public with sharing class CapacityServiceTest {
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 1445.86,
             Perch_Acq_Reserved_Small_CS_Capacity__c = 1445.86,
+            Perch_Acq_Reserved_LMI_Capacity__c = 1445.86,
             Total_System_Size_kW_AC__c  = 996,
             Utility__c = eversource.Id,
             Credit_Score_Requirement__c = 300,
@@ -159,6 +161,7 @@ public with sharing class CapacityServiceTest {
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 1445.86,
             Perch_Acq_Reserved_Small_CS_Capacity__c = 1445.86,
+            Perch_Acq_Reserved_LMI_Capacity__c = 1445.86,
             Total_System_Size_kW_AC__c  = 996,
             Utility__c = eversource.Id,
             Credit_Score_Requirement__c = 300,
@@ -178,6 +181,7 @@ public with sharing class CapacityServiceTest {
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 1445.86,
             Perch_Acq_Reserved_Small_CS_Capacity__c = 1445.86,
+            Perch_Acq_Reserved_LMI_Capacity__c = 1445.86,
             Total_System_Size_kW_AC__c  = 996,
             Utility__c = nationalGrid.Id,
             Credit_Score_Requirement__c = 300,
@@ -384,6 +388,17 @@ public with sharing class CapacityServiceTest {
         errorLogs = [SELECT Message__c FROM Error_Log__c WHERE Class__c = 'CapacityService'];
         System.assertEquals(1, errorLogs.size(), 'Expected to find an error log for an unknown partner');
         System.assert(errorLogs[0].Message__c.contains('but proceeding with the default partner'), 'Expected to proceed with the default partner');
+    }
+
+    @IsTest
+    public static void zipCheckShouldFindLMICapacityOrSmallCSCapacity() {
+        CapacityService service = new CapacityService();
+        Partner__c defaultPartner = [SELECT Id FROM Partner__c WHERE Name = 'BlueWave Inside Sales' LIMIT 1];
+        CapacityService.ZipcodeResponse response = service.findCapacityByZipcode('23456', defaultPartner.Id, null);
+        System.assertEquals(2, response.sharedSolarSystems.size());
+        System.assertEquals(true, response.hasCapacity(), 'Expected to find capacity if not looking by partner (for CSAP)');
+        System.assertEquals(true, response.hasLMICapacity(), 'Expected to find LMI Capacity');
+        System.assertEquals(true, response.hasSmallCSCapacity(), 'Expected to find Small CS Capacity');
     }
 
     @IsTest
