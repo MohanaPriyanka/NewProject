@@ -6,15 +6,10 @@
 public without sharing class PartnerCommissionGenerator implements Queueable {
 
     @TestVisible private static OpportunitiesSelector oppSelector = new OpportunitiesSelector();
-    @TestVisible private static AccountsSelector accountsSelector = new AccountsSelector();
-    @TestVisible private static PartnerInvoiceSelector partnerInvoiceSelector = new PartnerInvoiceSelector();
-
-    private Id currentPartner;
-    private Account currentPartnerAccount;
+    @TestVisible private Id currentPartner;
     private List<Id> partnersToProcess;
     private Map<Id,Opportunity> variableRateOpportunities;
     private fflib_SObjectUnitOfWork unitOfWork;
-    private Invoice__c partnerInvoice;
 
     public PartnerCommissionGenerator(List<Id> partnerAccountIds) {
         this.partnersToProcess = partnerAccountIds;
@@ -35,7 +30,6 @@ public without sharing class PartnerCommissionGenerator implements Queueable {
             Subscription_Order__c.SObjectType
         });
         try {
-            locatePartnerInvoice();
             generateCommissionPayments();
         } catch (Exception e) {
             String message = e.getMessage() + '\n\n' + e.getStackTraceString();
@@ -43,45 +37,10 @@ public without sharing class PartnerCommissionGenerator implements Queueable {
         }
     }
 
-    private void locatePartnerInvoice() {
-        currentPartnerAccount = accountsSelector.getPartnerAccountDetails(currentPartner);
-        Id legacyPartnerId = currentPartnerAccount.Partner__c;
-        List<Invoice__c> existingInvoices = partnerInvoiceSelector.getPendingPartnerInvoices(
-            new Set<Id>{legacyPartnerId}, getDueDate()
-        );
-        partnerInvoice = !existingInvoices.isEmpty() ? existingInvoices[0] : createPartnerInvoice();
-    }
-
-    private Invoice__c createPartnerInvoice() {
-        Date dueDate = getDueDate();
-        Id recordTypeId = SObjectType.Invoice__c.getRecordTypeInfosByDeveloperName().get('Partner_Invoice').getRecordTypeId();
-        Date dueToAccountingDate = Date.newInstance(dueDate.year(), dueDate.month(), 3);
-        Datetime dueDatetime = Datetime.newInstance(dueDate.year(), dueDate.month(), dueDate.day());
-
-        Invoice__c invoice = new Invoice__c(
-            Name = currentPartnerAccount.Name + ' ' + dueDatetime.format('MMMM dd, yyyy'),
-            Due_Date__c = dueDate,
-            Due_to_Accounting__c = dueToAccountingDate,
-            Invoice_Type__c = 'Direct',
-            Partner__c = currentPartnerAccount.Partner__c,
-            Product_Line__c = 'Community Solar',
-            Status__c = 'Received >> QC',
-            RecordTypeId = recordTypeId,
-            Account__c = currentPartnerAccount.Id
-        );
-        insert invoice;
-        return invoice;
-    }
-
-    private Date getDueDate() {
-        Date monthFromToday = System.today().addMonths(1);
-        return Date.newInstance(monthFromToday.year(), monthFromToday.month(), 15);
-    }
-
     private void generateCommissionPayments() {
         variableRateOpportunities = oppSelector.getVariableRateCommissionOppsForPartner(currentPartner);
         if (!variableRateOpportunities.isEmpty()) {
-            new VariableRateCommissionProcessor(variableRateOpportunities, unitOfWork, partnerInvoice).generateCommissionPayments();
+            new VariableRateCommissionProcessor(variableRateOpportunities, unitOfWork, currentPartner).generateCommissionPayments();
         }
         unitOfWork.commitWork();
     }

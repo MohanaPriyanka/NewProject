@@ -12,11 +12,11 @@ public without sharing class VariableRateCommissionProcessor extends PartnerComm
     private static Boolean clawbackPaymentsEnabled;
 
     public VariableRateCommissionProcessor(Map<Id, Opportunity> variableRateOpps, fflib_SObjectUnitOfWork uow,
-        Invoice__c partnerInvoice)
+        Id currentPartner)
     {
         super.opportunities = variableRateOpps;
         super.unitOfWork = uow;
-        super.invoice = partnerInvoice;
+        super.currentPartner = currentPartner;
         retrieveDependencies();
     }
 
@@ -209,7 +209,7 @@ public without sharing class VariableRateCommissionProcessor extends PartnerComm
             Opportunity__c = deal.opportunity.Id,
             Status__c = 'Pending Approval',
             Commission_Type__c = type,
-            Invoice__c = invoice.Id
+            Invoice__c = getInvoiceForPartner().Id
         );
     }
 
