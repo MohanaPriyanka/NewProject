@@ -118,15 +118,17 @@ public without sharing class CapacityService {
      * @return null or a valid Partner__c.Id
      */
     private String validatePartnerId(String partnerId) {
-        try {
-            return PartnerSelector.selectPartnerByPartnerId(partnerId).Id;
-        } catch (QueryException qe) {
-            Logger.logNow(
-                'CapacityService',
-                'findCapacityByZipcode',
-                'Did not find a partner for id ' + partnerId + ', but proceeding with the default partner\n' + qe.getStackTraceString(),
-                Logger.ERROR
-            );
+        if (partnerId != '') {
+            try {
+                return PartnerSelector.selectPartnerByPartnerId(partnerId).Id;
+            } catch (QueryException qe) {
+                Logger.logNow(
+                    'CapacityService',
+                    'findCapacityByZipcode',
+                    'Did not find a partner for id ' + partnerId + ', but proceeding with the default partner\n' + qe.getStackTraceString(),
+                    Logger.ERROR
+                );
+            }
         }
         return PartnerSelector.selectDefaultCSPartner().Id;
     }
