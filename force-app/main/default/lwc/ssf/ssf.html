@@ -28,7 +28,8 @@
         </template>
         <template if:true={getZip}>
             <c-ssf-zip-check
-                resi-application-type={resiApplicationType} 
+                resi-application-type={resiApplicationType}
+                application-type={applicationType}
                 partner-id={partnerId}
                 zip-code-input={zipCodeInput}
                 onspinnermessageupdate={handleSpinnerMessageEvent}
@@ -42,7 +43,8 @@
             <c-ssf-basic-info 
                 lead-json={leadJSON} 
                 zip-check-response={zipCodeResponse} 
-                resi-application-type={resiApplicationType} 
+                resi-application-type={resiApplicationType}
+                customer-type={customerType}
                 underwriting-options={underwritingOptions}
                 partner-id={partnerId}
                 sales-rep-id={salesRepId}

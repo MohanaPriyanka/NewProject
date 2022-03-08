@@ -1,1 +1,1 @@
-SubscriptionTransferServiceTest,ClientReportingServiceTest
+RestLeadTest,CSLeadsRESTControllerV2Test,SharedSolarSystemsTest,CSQualificationTestclass,LeadServiceTestclass,SharedSolarSystemsSelectorTest

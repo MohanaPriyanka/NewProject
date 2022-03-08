@@ -13,6 +13,7 @@ public without sharing class RestLead {
     public String businessName;
     public String businessTitle;
     public String applicationType;
+    public String customerType;
     public String streetAddress;
     public String city;
     public String state;
@@ -53,6 +54,7 @@ public without sharing class RestLead {
         this.mobilePhone = lead.MobilePhone;
         this.businessName = lead.Company;
         this.applicationType = lead.Application_Type__c;
+        this.customerType = lead.Customer_type__c;
         this.streetAddress = lead.LASERCA__Home_Address__c;
         this.city = lead.LASERCA__Home_City__c;
         this.state = lead.LASERCA__Home_State__c;
@@ -192,7 +194,7 @@ public without sharing class RestLead {
             Product_line__c = 'Community Solar',
             Business_Phone__c = this.businessPhone,
             Business_Title__c = this.businessTitle,
-            Customer_type__c = this.applicationType,
+            Customer_type__c = this.customerType,
             Customer_Signed_Date__c = this.customerSignedDate,
             Application_Complete_Date__c = this.applicationCompleteDate,
             Status = 'Sales Qualified',

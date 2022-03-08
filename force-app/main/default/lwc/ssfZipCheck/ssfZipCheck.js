@@ -8,6 +8,7 @@ export default class SsfZipCheck extends NavigationMixin(LightningElement) {
     @api resiApplicationType;
     @api partnerId;
     @api zipCodeInput;
+    @api applicationType;
 
     @track selectedUtility;
     @track showModal = false;
