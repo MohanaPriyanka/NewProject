@@ -38,14 +38,16 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
     public void beforeInsert() {
         capacityCalculator.calculateMaximumSubscriptionCapacityForSMART(newList);
         invoicer.updateManagementRevenueStartDateBeforeTrigger(newList);
+        closeFullSystems(newList);
     }
     
     public void beforeUpdate() {
         new SystemCapacityRollupCalculator(newMap.keySet()).performRollupBeforeUpdate(newMap);
         capacityCalculator.calculateMaximumSubscriptionCapacityForSMART(newList);
         invoicer.updateManagementRevenueStartDateBeforeTrigger(newList);
+        closeFullSystems(newList);
     }
-    
+
     public void afterUpdate() {
         uncheckApexContext(newList);
         onUpdateCheckForChangedValues(oldMap, newList);
@@ -158,6 +160,16 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
                 e.getMessage() + '\n' + e.getStackTraceString() + '\n' + JSON.serialize(ordersToUpdate),
                 Logger.ERROR
             );
+        }
+    }
+
+    private void closeFullSystems(List<Shared_Solar_System__c> newList) {
+        for (Shared_Solar_System__c sss : newList) {
+            if (sss.Capacity_Available_to_be_Reserved__c < 1 && sss.Perch_Acq_Available_LMI_Capacity__c < 1 && sss.Open__c && sss.LMI__c) {
+                sss.Open__c = false;
+            } else if (sss.Capacity_Available_to_be_Reserved__c < 1 && sss.Open__c && !sss.LMI__c) {
+                sss.Open__c = false;
+            }
         }
     }
 }
