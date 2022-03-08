@@ -372,9 +372,6 @@ public with sharing class ClientReportingServiceTest {
             Effective_Date__c = System.now()
         );
         insert soResize;
-        List<Client_Utility_Account_Subscription__c> clientUASUpdate = ClientReportObjectSelector.getClientUASesByUASIds(new Set<Id>{
-            uas.Id
-        });
         //Test update of Opp's SSS
         Shared_Solar_System__c sss2 = [
             SELECT Id, Name
@@ -472,6 +469,12 @@ public with sharing class ClientReportingServiceTest {
 
     @IsTest
     public static void testPreventSystemTransferIfOppIsOnActiveALS() {
+        FeatureService.Mock mockFeatureService = new FeatureService.Mock(
+            new Map<String, Boolean>{
+                'Validate_New_SSS_For_Opps' => true
+            });
+        SubscriptionTransferService.featureService = (FeatureService) Test.createStub(FeatureService.class, mockFeatureService);
+
         List<Schedule_Z_Subscription__c> scheduleZSubscriptions = [
             SELECT Id, Utility_Account_Subscription__r.Opportunity__c,
                 Utility_Account_Subscription__r.Shared_Solar_System__c, Schedule_Z__r.Date_Rejected_by_Utility__c

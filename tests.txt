@@ -1,1 +1,1 @@
-SharedSolarSystemHandlerTest
+SubscriptionTransferServiceTest,ClientReportingServiceTest
