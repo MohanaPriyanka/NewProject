@@ -67,6 +67,9 @@ public without sharing class CSOpportunityFactory {
         opp.Customer_Phone__c = lead.Phone2__c;
         opp.Customer_Referral__c = lead.Customer_Referral__c;
         opp.Customer_Type__c = lead.Customer_type__c;
+        if (lead.Customer_type__c == 'LMI') {
+            opp.Customer_Sub_Group__c = 'LMI';
+        }
         opp.Date_of_Application__c = lead.Date_of_Application__c;
         opp.Lead_ID__c = lead.Lead_ID__c;
         opp.LoadZone__c = lead.LoadZone__c;

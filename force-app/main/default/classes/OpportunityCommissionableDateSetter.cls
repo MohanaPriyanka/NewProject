@@ -3,7 +3,7 @@
  * Tested By: OppCommissionableDateSetterTest, BillPeriodServiceTest
  */
 @SuppressWarnings('PMD.ApexCRUDViolation')
-public without sharing class OpportunityCommissionableDateSetter {
+public without sharing class OpportunityCommissionableDateSetter implements GenericBatchDMLOperation.PostBatchOperation {
 
     private static final String FIRST_BILL_SENT_JOURNAL_TYPE = 'InvoiceItem';
     private static final String FIRST_BILL_PAID_JOURNAL_TYPE = 'PaymentPart';
@@ -55,6 +55,20 @@ public without sharing class OpportunityCommissionableDateSetter {
                 + '\n\n' + e.getMessage() + '\n\n' + e.getStackTraceString();
             Logger.postLog('OpportunityCommissionableDateSetter', 'executeForUCB', message, System.now(), Logger.ERROR);
         }
+    }
+
+    /**
+    * @description Implements the PostBatchOperation interface to set Opportunity First Bill Sent / First Bill Paid date
+    * from Journal Entries after Journal Entries are upserted in batch by the ZuoraGLService
+    * @return null
+    */
+    public Object executePostBatch() {
+        List<Journal_Entry__c> commissionableJournalEntries = glSelector.getCommissionableEntriesFromToday();
+        Set<Object> multiMapKeys = CollectionUtil.multiMapByField(
+            commissionableJournalEntries, Journal_Entry__c.Customer_Lookup__c).keySet();
+        Set<Id> accountIdsFromJournalEntries = CollectionUtil.toIds(multiMapKeys);
+        new OpportunityCommissionableDateSetter(accountIdsFromJournalEntries).execute();
+        return null;
     }
 
     private void generateUCBOppUpdateList() {

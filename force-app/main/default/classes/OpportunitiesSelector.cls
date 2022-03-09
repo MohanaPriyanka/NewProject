@@ -301,4 +301,18 @@ public without sharing class OpportunitiesSelector {
             AND Contract.Account.Send_Bills_Contact__c != NULL
         ];
     }
+
+    public Map<Id,Opportunity> getVariableRateCommissionOppsForPartner(Id partnerAccountId) {
+        return new Map<Id,Opportunity>([
+            SELECT Id, Commission_Structure__c, Commission_Structure__r.Cents_kW_DC_First_Bill__c,
+                Commission_Structure__r.Cents_kW_DC_Up_Front__c, Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c,
+                Name, Partner_Account__r.Name, StageName, First_Bill_Sent_Date__c, First_Bill_Paid_Date__c,
+                Partner_tag_lookup__r.Account__r.Name
+            FROM Opportunity
+            WHERE Partner_tag_lookup__r.Account__c =: partnerAccountId
+            AND Commission_Structure__c != NULL
+            AND Commission_Structure__r.Type__c = 'Variable by kW'
+            AND Contract_Close_Date__c >: System.today().addYears(-1)
+        ]);
+    }
 }
