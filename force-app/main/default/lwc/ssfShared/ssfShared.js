@@ -23,6 +23,9 @@ const loadApplication = (component) => {
     if (urlParams.campaignId) {
         component.campaignId = urlParams.campaignId;
     }
+    if (urlParams.applicationType) {
+        component.applicationType = urlParams.applicationType;
+    }
 
     // If resuming an application, process passed-in lead id & other details
     // Otherwise, provide default experience with or without zip already entered
