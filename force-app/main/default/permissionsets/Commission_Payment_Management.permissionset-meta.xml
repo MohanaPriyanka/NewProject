@@ -11,6 +11,16 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Commission_Payment__c.Commission_Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Commission_Payment__c.Contract_Execution_Amount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Commission_Payment__c.Due_Date__c</field>
         <readable>true</readable>
@@ -18,6 +28,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Commission_Payment__c.Due_to_Accounting__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Commission_Payment__c.First_Bill_Paid_Amount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Commission_Payment__c.First_Bill_Sent_Amount__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -52,6 +72,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Invoice__c.Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Invoice__c.Approved_Commission_Payment_Total_Due__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -68,6 +93,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Invoice__c.Date_Rejected__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Invoice__c.Date_Sent__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -93,6 +123,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Invoice__c.Due_to_Accounting__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Invoice__c.Effective_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
