@@ -1,265 +1,133 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <DelegateGroup xmlns="http://soap.sforce.com/2006/04/metadata">
-    
     <groups>Partner Portal Users</groups>
-    
     <label>BW Technology</label>
-    
     <loginAccess>true</loginAccess>
-    
-    <permissionSets>CS Basic</permissionSets>
-    
-    <permissionSets>Edit All</permissionSets>
-    
+    <permissionSets>CloudAnswers Report Sender</permissionSets>
     <permissionSets>Manage Call Centers</permissionSets>
-    
     <permissionSets>Trailhead Tracker</permissionSets>
-    
     <permissionSets>Send Emails</permissionSets>
-    
     <permissionSets>Inline Editing</permissionSets>
-    
     <permissionSets>CS Billing Edit</permissionSets>
-    
     <permissionSets>Shared Solar System Management</permissionSets>
-    
     <permissionSets>CS Subscription Management</permissionSets>
-    
     <permissionSets>Waive Late Fees</permissionSets>
-    
     <permissionSets>Copado User</permissionSets>
-    
     <permissionSets>DMTracking</permissionSets>
-    
     <permissionSets>CS Cancellation</permissionSets>
-    
     <permissionSets>Bill Adjustment Creation</permissionSets>
-    
     <permissionSets>Partner Management</permissionSets>
-    
     <permissionSets>Manage Gateways and Entites</permissionSets>
-    
     <permissionSets>Underwriting Permission</permissionSets>
-    
     <permissionSets>Conga</permissionSets>
-    
     <permissionSets>View and Edit Converted Leads</permissionSets>
-    
     <permissionSets>Sales Analytics Admin</permissionSets>
-    
     <permissionSets>Sales Analytics User</permissionSets>
-    
     <permissionSets>Set Audit Fields on Record Creation</permissionSets>
-    
     <permissionSets>AccessToModifyCSPortal</permissionSets>
-    
     <permissionSets>Marketing Cloud Connector</permissionSets>
-    
     <permissionSets>Marketing Cloud Connector Admin</permissionSets>
-    
     <permissionSets>Marketing Cloud Connector Partner Community User</permissionSets>
-    
     <permissionSets>Marketing Cloud System User</permissionSets>
-    
     <permissionSets>Marketing Cloud Connected App</permissionSets>
-    
     <permissionSets>CRM User</permissionSets>
-    
     <permissionSets>LiveMessage Admin Standard Object Permissions</permissionSets>
-    
     <permissionSets>LiveMessage Agent Standard Object Permissions</permissionSets>
-    
     <permissionSets>LiveMessage Manager Standard Object Permissions</permissionSets>
-    
     <permissionSets>LiveMessage Send Text to List Standard Object Permissions</permissionSets>
-    
     <permissionSets>Edit UAS Schedule Z Status</permissionSets>
-    
     <permissionSets>Commission Structure Management</permissionSets>
-    
     <permissionSets>Commission Payment Management</permissionSets>
-    
     <permissionSets>LASER Credit Access Admin</permissionSets>
-    
     <permissionSets>Modify Cases and Tasks</permissionSets>
-    
     <permissionSets>View All</permissionSets>
-    
     <permissionSets>Manage External Users</permissionSets>
-    
     <permissionSets>Live Agent Manager</permissionSets>
-    
     <permissionSets>Flow Magic Picklists Admin</permissionSets>
-    
     <permissionSets>Flow Magic Picklists User</permissionSets>
-    
     <permissionSets>Legal Spend Fields on Work</permissionSets>
-    
     <permissionSets>Create and Edit Campaigns</permissionSets>
-    
     <permissionSets>CS App Processing</permissionSets>
-    
     <permissionSets>Product Escalation Management</permissionSets>
-    
     <permissionSets>CS Lead Status Editing</permissionSets>
-    
     <permissionSets>Personal Credit Report - full visibility</permissionSets>
-    
     <permissionSets>Personal Credit Report visibility - CS</permissionSets>
-    
     <permissionSets>Zuora Quotes End User</permissionSets>
-    
     <permissionSets>Zuora Quotes Product Admin</permissionSets>
-    
     <permissionSets>Zuora Rules End User</permissionSets>
-    
     <permissionSets>Zuora Object Visibility</permissionSets>
-    
     <permissionSets>Event Monitoring Analytics User</permissionSets>
-    
     <permissionSets>Event Monitoring Analytics Admin</permissionSets>
-    
     <permissionSets>Manage Contracts</permissionSets>
-    
     <permissionSets>Work Request Change Management</permissionSets>
-    
     <permissionSets>Lightning Email Template Report Folder Creation</permissionSets>
-    
     <permissionSets>Full Macro Access</permissionSets>
-    
     <permissionSets>Client Subscription Reporting Object Access</permissionSets>
-    
     <permissionSets>Presence Status Access</permissionSets>
-    
     <permissionSets>Client Reporting General Ledger Modify</permissionSets>
-    
     <permissionSets>Client Reporting General Ledger View</permissionSets>
-    
     <permissionSets>Query Zuora Data</permissionSets>
-    
     <permissionSets>SSS Customer Facing Info Management</permissionSets>
-    
     <permissionSets>Production and Transfer Admin</permissionSets>
-    
     <permissionSets>Manage Entities (Legal)</permissionSets>
-    
     <permissionSets>Einstein Search</permissionSets>
-    
     <permissionSets>Composer Administrator</permissionSets>
-    
     <permissionSets>Composer User</permissionSets>
-    
     <permissionSets>Trigger Administrator</permissionSets>
-    
     <permissionSets>Batch Administrator</permissionSets>
-    
     <permissionSets>CS Customer Data Import</permissionSets>
-    
     <permissionSets>Portfolio Management</permissionSets>
-    
     <permissionSets>Data Mask</permissionSets>
-    
     <permissionSets>FP&amp;A Shared Solar System Management</permissionSets>
-    
     <permissionSets>Salesforce Survey Admin</permissionSets>
-    
     <permissionSets>Client Health Report Management</permissionSets>
-    
     <permissionSets>CS BW Countersignature</permissionSets>
-    
     <permissionSets>SSSO Creation</permissionSets>
-    
     <permissionSets>Subscription Order Mgmt</permissionSets>
-    
     <permissionSets>Subscription Order Visibility</permissionSets>
-    
     <permissionSets>Customer Contract Mgmt</permissionSets>
-    
     <permissionSets>Client Case Sharing</permissionSets>
-    
     <permissionSets>Customer Assignment Agreement Management</permissionSets>
-    
     <permissionSets>Production and Transfer Edit</permissionSets>
-    
     <permissionSets>Client Invoicing</permissionSets>
-    
     <permissionSets>Client Invoicing Admin</permissionSets>
-    
     <permissionSets>CS Billing Admin</permissionSets>
-    
     <permissionSets>Production and Transfer Read</permissionSets>
-    
     <permissionSets>Anchor Management</permissionSets>
-    
     <permissionSets>Campaign Read Access</permissionSets>
-    
     <permissionSets>CS Financial Doc Visibility</permissionSets>
-    
     <permissionSets>Returned Payments</permissionSets>
-    
     <permissionSets>High Velocity Sales User</permissionSets>
-    
     <permissionSets>High Velocity Sales Cadence Creator</permissionSets>
-    
     <permissionSets>Opportunity Product Management</permissionSets>
-    
     <permissionSets>Edit Products</permissionSets>
-    
     <permissionSets>Import Custom Objects</permissionSets>
-    
     <permissionSets>Standard Einstein Activity Capture</permissionSets>
-    
     <permissionSets>Knowledge Manager</permissionSets>
-    
     <permissionSets>LASER Credit Access Site Guest User</permissionSets>
-    
     <permissionSets>LASER Credit Access User</permissionSets>
-    
     <permissionSets>CS Subscription Admin</permissionSets>
-    
     <permissionSets>Edit Email Templates</permissionSets>
-    
     <permissionSets>Inbox Without Einstein Activity Capture</permissionSets>
-    
     <permissionSets>Inbox With Einstein Activity Capture</permissionSets>
-    
+    <permissionSets>CS Basic</permissionSets>
+    <permissionSets>Edit All</permissionSets>
     <permissionSets>Limit Monitoring App</permissionSets>
-    
     <permissionSets>Lightning</permissionSets>
-    
     <permissionSets>DocuSign Administrator</permissionSets>
-    
     <permissionSets>DocuSign User</permissionSets>
-    
     <permissionSets>Wave Analytics</permissionSets>
-    
     <permissionSets>Agile Accelerator Admin</permissionSets>
-    
     <permissionSets>Agile Accelerator User</permissionSets>
-    
     <permissionSets>Salesforce Console User</permissionSets>
-    
     <permissionSets>CS Servicing Visibility</permissionSets>
-    
     <permissionSets>Report Access</permissionSets>
-    
-    <profiles>Perch Standard</profiles>
-    
-    <profiles>IT Support</profiles>
-    
     <profiles>CS Client Partner Login</profiles>
-    
     <profiles>CS Client Partner Login_GSRP</profiles>
-    
     <profiles>Community Solar User</profiles>
-    
+    <profiles>Perch Standard</profiles>
     <profiles>BFG Standard User</profiles>
-    
     <profiles>External BFG User</profiles>
-    
     <profiles>Community Solar Community User</profiles>
-    
     <roles>Founders</roles>
-    
 </DelegateGroup>

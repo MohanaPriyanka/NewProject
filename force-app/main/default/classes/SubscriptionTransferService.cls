@@ -10,6 +10,7 @@ public without sharing class SubscriptionTransferService {
     private static SubscriptionTransferCalculator calculator = new SubscriptionTransferCalculator();
     @TestVisible private static EntitySelector entitySelector = new EntitySelector();
     @TestVisible private static ScheduleZSubscriptionSelector alssSelector = new ScheduleZSubscriptionSelector();
+    @TestVisible private static FeatureService featureService = new FeatureService();
     @TestVisible private static final String OPP_ON_ACTIVE_ALS = 'This Opportunity has UASes that are on an ALS that is not rejected';
     @TestVisible private static final String INVALID_CONTRACT_ASSIGNMENT_ENTITY =
         'Opportunity\'s Contract has an Assignment Agreement and the requested system has a Contract Assignment Entity ' +
@@ -53,17 +54,19 @@ public without sharing class SubscriptionTransferService {
         List<Opportunity> opportunities = OpportunitiesSelector.selectByIds(new List<Id>{
             oppId
         });
-        try {
-            validateNewSSSForOpp(opportunities[0], sss);
-        } catch (Exception e) {
-            InvocableOpportunitySystemUpdater.Request request = new InvocableOpportunitySystemUpdater.Request();
-            request.opportunityId = oppId;
-            request.sssId = newSSSId;
-            request.isSuccess = false;
-            request.errorMessage = e.getMessage();
-            return new List<InvocableOpportunitySystemUpdater.Request>{
-                request
-            };
+        if (featureService.isEnabled('Validate_New_SSS_For_Opps')) {
+            try {
+                validateNewSSSForOpp(opportunities[0], sss);
+            } catch (Exception e) {
+                InvocableOpportunitySystemUpdater.Request request = new InvocableOpportunitySystemUpdater.Request();
+                request.opportunityId = oppId;
+                request.sssId = newSSSId;
+                request.isSuccess = false;
+                request.errorMessage = e.getMessage();
+                return new List<InvocableOpportunitySystemUpdater.Request>{
+                    request
+                };
+            }
         }
         Opportunity opp = new Opportunity(
             Id = oppId,
