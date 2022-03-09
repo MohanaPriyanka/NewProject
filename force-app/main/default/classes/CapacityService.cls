@@ -11,35 +11,6 @@ public without sharing class CapacityService {
     private ZipcodeResponse zipcodeResponse;
 
     /**
-     * @description LEGACY Capacity Check for CSAP, ignoring Sales Partners when querying for systems
-     * @param zipcode ZIP code for capacity check
-     * @return ZipcodeResponse indicating Capacity
-     */
-    public ZipcodeResponse findCapacityByZipcode(String zipcode) {
-        zipcodeResponse = new ZipcodeResponse();
-        if (!isZipcodeValid(zipcode.left(5))) {
-            return zipcodeResponse;
-        }
-
-        setZipCode(zipcode.left(5));
-        setUtilitiesAndLoadZones(null);
-        setRateClasses();
-        csapSetProductsAndSharedSolarSystems();
-        setZipCodesServedInUtilityTerritory();
-        return zipcodeResponse;
-    }
-
-    /**
-     * @description Find capacity when Utility ID is unknown / running initial capacity check by ZIP only
-     * @param zipcode ZIP code to check capacity for
-     * @param partnerId Partner ID for application
-     * @return ZipcodeResponse indicating capacity / availability of our CS product for specified ZIP + Partner
-     */
-    public ZipcodeResponse findCapacityByZipcode(String zipcode, String partnerId) {
-        return findCapacityByZipcode(zipcode, partnerId, null);
-    }
-
-    /**
      * @description Find capacity when single Utility ID is known
      * @param zipcode ZIP code to check capacity for
      * @param partnerId Partner ID for application
@@ -52,7 +23,7 @@ public without sharing class CapacityService {
             return zipcodeResponse;
         }
 
-        setZipCode(zipcode.left(5));
+        zipcodeResponse.zipcode = zipcode.left(5);
         setUtilitiesAndLoadZones(utilityId);
         setRateClasses();
         setProductsAndSharedSolarSystems(validatePartnerId(partnerId));
@@ -60,10 +31,6 @@ public without sharing class CapacityService {
         setBooleanFlags();
 
         return zipcodeResponse;
-    }
-
-    private void setZipCode(String zipcode) {
-        zipcodeResponse.zipcode = zipcode;
     }
 
     private void setUtilitiesAndLoadZones(Id utilityId) {
@@ -120,23 +87,6 @@ public without sharing class CapacityService {
         }
     }
 
-    /**
-     * @description Set Products and SSS for LEGACY CSAP application (uses old Capacity logic prior to W-021559)
-     */
-    private void csapSetProductsAndSharedSolarSystems() {
-        List<Shared_Solar_System__c> openSystems =
-            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
-                zipcodeResponse.utilityIds,
-                zipcodeResponse.loadZoneNames
-            );
-
-        // Allowing null partnerNames to match to all systems, to support CSAP behavior
-        for (Shared_Solar_System__c sharedSolarSystem: openSystems) {
-            zipcodeResponse.sharedSolarSystems.add(sharedSolarSystem);
-            zipcodeResponse.products.add(sharedSolarSystem.Product__r);
-        }
-    }
-
     private void setZipCodesServedInUtilityTerritory() {
         if (zipcodeResponse.utilityIds.size() == 1) {
             String utilityId = (String) new List<Id>(zipcodeResponse.utilityIds)[0];
@@ -168,9 +118,7 @@ public without sharing class CapacityService {
      * @return null or a valid Partner__c.Id
      */
     private String validatePartnerId(String partnerId) {
-        if (partnerId == null) {
-            return null;
-        } else if (partnerId != '') {
+        if (partnerId != '') {
             try {
                 return PartnerSelector.selectPartnerByPartnerId(partnerId).Id;
             } catch (QueryException qe) {
@@ -208,7 +156,7 @@ public without sharing class CapacityService {
     // Use top-ranked SSS to determine if payment will be collected in SSF
     private Boolean collectPaymentSupported() {
         if (zipcodeResponse.sharedSolarSystems.size() >= 1) {
-            return zipcodeResponse.sharedSolarSystems[0].Do_Not_Ask_for_Payment_Method__c ? false : true;
+            return !zipcodeResponse.sharedSolarSystems[0].Do_Not_Ask_for_Payment_Method__c;
         }
         return true;
     }
@@ -216,7 +164,7 @@ public without sharing class CapacityService {
     // Use top-ranked SSS to determine if underwriting language and behavior will be present in SSF
     private Boolean underwriteSupported() {
         if (zipcodeResponse.sharedSolarSystems.size() >= 1) {
-            return zipcodeResponse.sharedSolarSystems[0].Do_Not_Underwrite__c ? false : true;
+            return !zipcodeResponse.sharedSolarSystems[0].Do_Not_Underwrite__c;
         }
         return true;
     }
@@ -225,7 +173,7 @@ public without sharing class CapacityService {
     private Boolean collectPOD() {
         if (!zipcodeResponse.utilities.isEmpty()) {
             Utility__c selectedUtility = new List<Utility__c>(zipcodeResponse.utilities)[0];
-            if (selectedUtility.Collect_Customer_POD_number__c) {
+            if (selectedUtility.Collect_Customer_POD_Number__c) {
                 return true;
             }
         }
@@ -241,7 +189,7 @@ public without sharing class CapacityService {
      */
     public ZipcodeResponse getZipcodeResponseForResumeApp(String zipCode, String utilityId) {
         zipcodeResponse = new ZipcodeResponse();
-        setZipCode(zipCode);
+        zipcodeResponse.zipcode = zipCode;
         setUtilitiesAndLoadZones(utilityId);
         setRateClasses();
         setZipCodesServedInUtilityTerritory();
@@ -281,20 +229,28 @@ public without sharing class CapacityService {
             }
             return false;
         }
+
+        public Boolean hasLMICapacity() {
+            for (Shared_Solar_System__c sss : sharedSolarSystems) {
+                if (Util.nullToZero(sss.Perch_Acq_Available_LMI_Capacity__c) > 0) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public Boolean hasSmallCSCapacity() {
+            for (Shared_Solar_System__c sss : sharedSolarSystems) {
+                if (Util.nullToZero(sss.Capacity_Available_to_be_Reserved__c) > 0) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
     @TestVisible
     private Boolean isZipcodeValid(String zipcode) {
-        // check that the zipcode can be a number
-        Boolean invalidNumber = false;
-        try {
-            Integer.valueOf(zipcode);
-        } catch (Exception e) {
-            invalidNumber = true;
-        }
-        Boolean notFiveDigitsLong = zipcode.length() != 5;
-
-        // zipcode is invalid if it isn't 5 digits long or it cannot be converted to a number
-        return !(notFiveDigitsLong || invalidNumber);
+        return Pattern.matches('\\d{5}', zipcode);
     }
 }

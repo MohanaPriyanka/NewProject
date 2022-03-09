@@ -40,10 +40,11 @@ const getCapacity = async (component, utilityId) => {
     toggleLoadingSpinnerEvent(component, false);
     try {
         let check = await getZipCodeCapacity(component.zipCodeInput, component.partnerId, utilityId);
+        let applicationType = component.applicationType;
         component.zipCodeResponse = JSON.stringify(check);
         if (check.utilities && check.utilities.length > 1) {
             multipleUtilitiesFound(component, check);
-        } else if (check.hasCapacity && check.products.length >= 1 && check.utilities.length === 1) {
+        } else if (hasCapacity(applicationType, check)) {
             capacityFound(component, check);
         } else {
             noCapacity(component);
@@ -61,6 +62,30 @@ const getCapacity = async (component, utilityId) => {
     }
 }
 
+const hasCapacity = (applicationType, check) => {
+    return check.products.length >= 1 &&
+           check.utilities.length === 1 &&
+           (check.hasSmallCSCapacity || (applicationType === 'LMI' && check.hasLMICapacity));
+}
+
+const getCustomerType = (component, check) => {
+    if (component.applicationType === 'LMI') {
+        if (check.hasLMICapacity) {
+            return 'LMI';
+        } else if (check.hasSmallCSCapacity) {
+            return 'Residential';
+        } else {
+            throw 'Cannot determine Customer Type for no LMI or Small CS Capacity';
+        }
+    } else {
+        if (component.resiApplicationType) {
+            return 'Residential';
+        } else {
+            return 'Non-Residential'
+        }
+    }
+}
+
 const capacityFound = (component, check) => {
     toggleLoadingSpinnerEvent(component, true);
     if (check.ficoUnderwriting) {
@@ -75,7 +100,8 @@ const capacityFound = (component, check) => {
         detail: {
             zipCodeResponse: component.zipCodeResponse,
             underwritingOptions: component.underwritingOptions,
-            resiApplicationType: component.resiApplicationType
+            resiApplicationType: component.resiApplicationType,
+            customerType: getCustomerType(component, check)
         }})
     );
 }

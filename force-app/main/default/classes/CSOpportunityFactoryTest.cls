@@ -155,7 +155,8 @@ public without sharing class CSOpportunityFactoryTest {
             Product__c = csProduct.Id,
             Custom_ID__c = 'partner',
             System_Assignment__c = 'Automatic - Assignment Order',
-            Parent_Account__c = parentAccount.Id
+            Parent_Account__c = parentAccount.Id,
+            Customer_type__c = 'LMI'
         );
         insert lead;
 
@@ -232,6 +233,8 @@ public without sharing class CSOpportunityFactoryTest {
         );
         System.assertEquals(0, opp2.Annual_Consumption_kWh__c);
         System.assertEquals('Contract Pending', opp2.StageName);
+        System.assertEquals('LMI', opp1.Customer_Sub_Group__c, 'Expected Opp1 to be LMI since the lead had LMI as the Customer Type');
+        System.assertEquals('LMI', opp2.Customer_Sub_Group__c, 'Expected Opp2 to be LMI since the lead had LMI as the Customer Type');
     }
 
     @IsTest

@@ -20,6 +20,9 @@ const onLoad = (cmp) => {
     if (!cmp.restLead.campaignId) {
         cmp.restLead.campaignId = cmp.campaignId;
     }
+    if (!cmp.restLead.customerType) {
+        cmp.restLead.customerType = cmp.customerType;
+    }
     // if there are no utility accounts, add an empty one so the form will show fields to enter data
     if (cmp.propertyAccount && cmp.propertyAccount.utilityAccountLogs
         && cmp.propertyAccount.utilityAccountLogs.length === 0) {
