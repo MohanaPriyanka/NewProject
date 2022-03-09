@@ -338,4 +338,50 @@ public with sharing class SharedSolarSystemsTest {
         insert commissionStructureMap.values();
         return commissionStructureMap;
     }
+
+    @IsTest
+    private static void systemsShouldSortByApplicationTypeThenByCODOrAssignmentOrder() {
+        sfab_FabricatedSObject fabbedSSS1 = new sfab_FabricatedSObject(Shared_Solar_System__c.class);
+        fabbedSSS1.setField(Shared_Solar_System__c.Name, 'SSS1');
+        fabbedSSS1.setField(Shared_Solar_System__c.Assignment_Order__c, 1);
+        fabbedSSS1.setField(Shared_Solar_System__c.Estimated_COD_Date_Manual__c, Date.newInstance(2022,1,1));
+        fabbedSSS1.setField(Shared_Solar_System__c.Project_Capacity_Available_kW_DC__c, 1000);
+        fabbedSSS1.setField(Shared_Solar_System__c.Capacity_Available_to_be_Reserved__c, 100);
+        fabbedSSS1.setField(Shared_Solar_System__c.Perch_Acq_Available_LMI_Capacity__c, 1000);
+
+        sfab_FabricatedSObject fabbedSSS2 = new sfab_FabricatedSObject(Shared_Solar_System__c.class);
+        fabbedSSS2.setField(Shared_Solar_System__c.Name, 'SSS2');
+        fabbedSSS2.setField(Shared_Solar_System__c.Assignment_Order__c, 2);
+        fabbedSSS2.setField(Shared_Solar_System__c.Estimated_COD_Date_Manual__c, Date.newInstance(2022,1,1));
+        fabbedSSS2.setField(Shared_Solar_System__c.Project_Capacity_Available_kW_DC__c, 100);
+        fabbedSSS2.setField(Shared_Solar_System__c.Capacity_Available_to_be_Reserved__c, 100);
+        fabbedSSS2.setField(Shared_Solar_System__c.Perch_Acq_Available_LMI_Capacity__c, 100);
+
+
+        sfab_FabricatedSObject fabbedSSS3 = new sfab_FabricatedSObject(Shared_Solar_System__c.class);
+        fabbedSSS3.setField(Shared_Solar_System__c.Name, 'SSS3');
+        fabbedSSS3.setField(Shared_Solar_System__c.Assignment_Order__c, 3);
+        fabbedSSS3.setField(Shared_Solar_System__c.Estimated_COD_Date_Manual__c, Date.newInstance(2021,12,1));
+        fabbedSSS3.setField(Shared_Solar_System__c.Project_Capacity_Available_kW_DC__c, 100);
+        fabbedSSS3.setField(Shared_Solar_System__c.Capacity_Available_to_be_Reserved__c, 100);
+        fabbedSSS3.setField(Shared_Solar_System__c.Perch_Acq_Available_LMI_Capacity__c, 0);
+
+        List<SharedSolarSystemQualifier.SortedSystem> systemsToSort = new List<SharedSolarSystemQualifier.SortedSystem>();
+        systemsToSort.add(new SharedSolarSystemQualifier.SortedSystem((Shared_Solar_System__c) fabbedSSS2.toSObject(), 'Automatic - Assignment Order'));
+        systemsToSort.add(new SharedSolarSystemQualifier.SortedSystem((Shared_Solar_System__c) fabbedSSS1.toSObject(), 'Automatic - Assignment Order'));
+        systemsToSort.sort();
+
+        System.assertEquals('SSS1', systemsToSort[0].sss.Name, 'Expected SSS1 to be sorted first by assignment order');
+        System.assertEquals('SSS2', systemsToSort[1].sss.Name, 'Expected SSS2 to be sorted second by assignment order');
+
+        systemsToSort = new List<SharedSolarSystemQualifier.SortedSystem>();
+        systemsToSort.add(new SharedSolarSystemQualifier.SortedSystem((Shared_Solar_System__c) fabbedSSS1.toSObject(), 'Automatic - COD Date/Available Capacity'));
+        systemsToSort.add(new SharedSolarSystemQualifier.SortedSystem((Shared_Solar_System__c) fabbedSSS2.toSObject(), 'Automatic - COD Date/Available Capacity'));
+        systemsToSort.add(new SharedSolarSystemQualifier.SortedSystem((Shared_Solar_System__c) fabbedSSS3.toSObject(), 'Automatic - COD Date/Available Capacity'));
+        systemsToSort.sort();
+
+        System.assertEquals('SSS3', systemsToSort[0].sss.Name, 'Expected SSS3 to be sorted first because it has the oldest COD');
+        System.assertEquals('SSS2', systemsToSort[1].sss.Name, 'Expected SSS2 to be sorted second because it has the smallest Available Capacity');
+        System.assertEquals('SSS1', systemsToSort[2].sss.Name, 'Expected SSS1 to be sorted last because it has the largest Available Capacity');
+    }
 }

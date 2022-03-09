@@ -13,6 +13,8 @@ export default class SsfDTC extends NavigationMixin(LightningElement) {
     @track partnerId;
     @track zipCodeInput;
     @track zipCodeResponse;
+    @track applicationType;
+    @track customerType;
     @track leadJSON;
     @track underwritingOptions = [];
     @track salesRepId;
@@ -82,6 +84,7 @@ export default class SsfDTC extends NavigationMixin(LightningElement) {
         this.zipCodeResponse = event.detail.zipCodeResponse;
         this.underwritingOptions = event.detail.underwritingOptions;
         this.resiApplicationType = event.detail.resiApplicationType;
+        this.customerType = event.detail.customerType;
         this.showBasicInfoPage();
     }
 

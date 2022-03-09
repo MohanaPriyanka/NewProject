@@ -234,6 +234,7 @@ public without sharing class SharedSolarSystemQualifier {
     /**
      * @description Used to sort systems based on either COD and Project Capacity, or Assignment Order
      */
+    @TestVisible
     private class SortedSystem implements Comparable {
         public Shared_Solar_System__c sss;
         public String systemAssignment;

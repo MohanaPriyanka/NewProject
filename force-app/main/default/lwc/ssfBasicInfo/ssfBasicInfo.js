@@ -26,6 +26,7 @@ import {
 export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @api leadJson;
     @api resiApplicationType;
+    @api customerType;
     @api zipCheckResponse;
     @api underwritingOptions;
     @api partnerId;
