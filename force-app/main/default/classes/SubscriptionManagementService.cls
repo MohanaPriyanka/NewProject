@@ -123,7 +123,9 @@ public without sharing class SubscriptionManagementService {
             List<Utility_Account_Subscription__c> uasList = uasSelector.selectActiveUASBySSS(new Set<Id>{
                 ssso.Shared_Solar_System__c
             });
-            uow.registerNew(createSystemChangeSubscriptionOrders(uasList, ssso, null));
+            if (ssso.Yield__c != null || ssso.Total_System_Size_kW_DC__c != null) {
+                uow.registerNew(createSystemChangeSubscriptionOrders(uasList, ssso, null));
+            }
         }
         uow.commitWork();
     }
