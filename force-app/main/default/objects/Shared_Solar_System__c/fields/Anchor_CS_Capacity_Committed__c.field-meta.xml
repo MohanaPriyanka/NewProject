@@ -2,7 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Anchor_CS_Capacity_Committed__c</fullName>
     <externalId>false</externalId>
-    <formula>Capacity_Committed_kW_DC__c +  Anchor_Capacity_Reserved__c + Client_Acq_Committed_Anchor_Capacity__c + Client_Acq_Committed_Small_CS_Capacity__c</formula>
+    <formula>Capacity_Committed_kW_DC__c +  Anchor_Capacity_Reserved__c + Client_Acq_Committed_Anchor_Capacity__c + Client_Acq_Committed_Small_CS_Capacity__c + Client_Acq_Committed_LMI_Capacity__c + Perch_Acq_Committed_LMI_Capacity__c</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <inlineHelpText>Sum of all Perch and Client acquired subscriptions (Anchor and Small CS)</inlineHelpText>
     <label>Total Committed Capacity</label>
