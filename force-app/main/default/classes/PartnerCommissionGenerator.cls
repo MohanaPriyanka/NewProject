@@ -32,7 +32,7 @@ public without sharing class PartnerCommissionGenerator implements Queueable {
         try {
             generateCommissionPayments();
         } catch (Exception e) {
-            String message = e.getMessage() + '\n\n' + e.getStackTraceString();
+            String message = 'Error with partner ' + currentPartner + '\n\n' + e.getMessage() + '\n\n' + e.getStackTraceString();
             Logger.postLog('PartnerCommissionGenerator', 'execute (Queueable)', message, System.now(), Logger.ERROR);
         }
     }

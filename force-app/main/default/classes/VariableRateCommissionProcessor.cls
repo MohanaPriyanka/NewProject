@@ -27,14 +27,19 @@ public without sharing class VariableRateCommissionProcessor extends PartnerComm
 
     public override void generateCommissionPayments() {
         for (DealSummary deal : deals) {
-            if (contractExecutionCommissionNeeded(deal)) {
-                generateContractExecutionCommission(deal);
-            } else if (firstBillSentCommissionNeeded(deal)) {
-                generateFirstBillSentCommission(deal);
-            } else if (firstBillPaidCommissionNeeded(deal)) {
-                generateFirstBillPaidCommission(deal);
-            } else if (clawbackCommissionNeeded(deal)) {
-                generateClawbackCommission(deal);
+            try {
+                if (contractExecutionCommissionNeeded(deal)) {
+                    generateContractExecutionCommission(deal);
+                } else if (firstBillSentCommissionNeeded(deal)) {
+                    generateFirstBillSentCommission(deal);
+                } else if (firstBillPaidCommissionNeeded(deal)) {
+                    generateFirstBillPaidCommission(deal);
+                } else if (clawbackCommissionNeeded(deal)) {
+                    generateClawbackCommission(deal);
+                }
+            } catch (Exception e) {
+                String message =  deal + '\n\n' + e.getMessage() + ' ' + e.getStackTraceString();
+                Logger.postLog('VariableRateCommissionProcessor', 'generateCommissionPayments', message, System.now(), Logger.ERROR);
             }
         }
     }
