@@ -137,7 +137,8 @@ public class PartnerCommissionGenerationTest {
                 (SELECT Id, Approved_Change_in_Subscription__c, First_Bill_Sent_Commission__c, First_Bill_Sent_Estimated_Commission__c,
                     First_Bill_Sent_Commission_Amount__c, Contract_Close_Commission__c, Contract_Close_Estimated_Commission__c,
                     Contract_Close_Commission_Amount__c
-                FROM First_Bill_Subscription_Orders__r)
+                FROM First_Bill_Subscription_Orders__r
+                ORDER BY CreatedDate ASC)
             FROM Commission_Payment__c
             WHERE Commission_Type__c = 'First Bill Sent'
             AND Invoice__c IN : partnerInvoices
