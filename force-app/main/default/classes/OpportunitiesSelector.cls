@@ -312,7 +312,6 @@ public without sharing class OpportunitiesSelector {
             WHERE Partner_tag_lookup__r.Account__c =: partnerAccountId
             AND Commission_Structure__c != NULL
             AND Commission_Structure__r.Type__c = 'Variable by kW'
-            AND Contract_Close_Date__c >: System.today().addYears(-1)
         ]);
     }
 }
