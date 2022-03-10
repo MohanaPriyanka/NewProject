@@ -4,7 +4,7 @@
     <externalId>false</externalId>
     <inlineHelpText>Sum of Future kW DC values on related Opportunity UASes</inlineHelpText>
     <label>Waitlist Capacity</label>
-    <precision>4</precision>
+    <precision>7</precision>
     <required>false</required>
     <scale>0</scale>
     <trackTrending>false</trackTrending>
