@@ -252,4 +252,12 @@ public without sharing class AccountsSelector {
             WHERE Id IN :parentAccountIds
         ]);
     }
+
+    public Account getPartnerAccountDetails(Id partnerAccountId) {
+        return [
+            SELECT Id, Name, Partner__c
+            FROM Account
+            WHERE Id =: partnerAccountId
+        ];
+    }
 }
