@@ -1,6 +1,9 @@
 {
   "packageDirectories": [
     {
+      "path": "force-graph-ql"
+    },
+    {
       "path": "force-app",
       "default": true
     }
