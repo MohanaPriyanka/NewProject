@@ -66,7 +66,7 @@ const retrieveApplication = async (component) => {
         component.leadJSON = JSON.stringify(leadPromise);
     } catch (error) {
         let fail = typeof error === 'object' ? error : JSON.parse(error);
-        if (fail.errors[0].substr(0,21) === 'Invalid authorization') {
+        if (fail?.errors?.[0].substring(0,21) === 'Invalid authorization') {
             const resumeLocation = component.loc ? component.loc : '';
             if (component.pageRef.state.email) {
                 component.loc = 'email';
@@ -75,7 +75,7 @@ const retrieveApplication = async (component) => {
             }
             showInvalidAuthorizationToast(component);
         } else {
-            insertErrorLog(component, error, null, 'ssfShared', 'getLead', 'Error');
+            insertErrorLog(component, error, component.leadId, 'ssfShared', 'getLead', 'Error');
             showGenericErrorToast(component);
         }
         return;
@@ -90,7 +90,7 @@ const retrieveApplication = async (component) => {
                 utilityId: JSON.parse(component.leadJSON).utilityId,
             });
         } catch (error) {
-            insertErrorLog(component, error, null, 'ssfShared', 'getZipCodeData', 'Error');
+            insertErrorLog(component, error, component.leadId, 'ssfShared', 'getZipCodeData', 'Error');
             showGenericErrorToast(component);
         }
     }

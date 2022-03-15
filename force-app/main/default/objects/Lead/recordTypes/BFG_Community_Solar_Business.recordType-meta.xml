@@ -55,6 +55,10 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>No Demand Capacity Available</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>No Qualified Systems Found</fullName>
             <default>false</default>
         </values>
@@ -64,6 +68,10 @@
         </values>
         <values>
             <fullName>Testcase Lead</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Unresolved Split Load Zone</fullName>
             <default>false</default>
         </values>
     </picklistValues>
