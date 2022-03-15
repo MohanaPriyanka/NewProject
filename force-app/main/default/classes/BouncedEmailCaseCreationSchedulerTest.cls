@@ -5,9 +5,8 @@
 @IsTest
 private class BouncedEmailCaseCreationSchedulerTest {
 
-    private static String dummyCronExp = '0 0 0 15 3 ? 2022';
-
-    @TestSetup public static void setupTestData() {
+    @TestSetup
+    private static void setupTestData() {
 
         List<Lead> testLeads = new List<Lead>();
 
@@ -83,7 +82,7 @@ private class BouncedEmailCaseCreationSchedulerTest {
     static void testBouncedEmailCaseCreation() {
 
         Test.startTest();
-        System.schedule('ScheduledBouncedEmailTest', dummyCronExp, new BouncedEmailCaseCreationScheduler());
+        System.schedule('ScheduledBouncedEmailTest', '0 0 13 * * ?', new BouncedEmailCaseCreationScheduler());
         Test.stopTest();
 
         List<Lead> leads = [

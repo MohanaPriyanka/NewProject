@@ -2,6 +2,27 @@
 public without sharing class UserTriggerHandler {
     public static void afterInsert(List<User> users) {
         shareSharedSolarSystems(users);
+        createRelatedContacts(CollectionUtil.getIdSet(users));
+    }
+
+    @Future
+    public static void createRelatedContacts(Set<Id> userIds) {
+        Id perchAccountId = [SELECT Id FROM Account WHERE Name = 'Perch Energy' LIMIT 1]?.Id;
+        List<User> users = [SELECT Id, UserType, FirstName, LastName, Email FROM User WHERE Id IN :userIds];
+        List<Contact> insertContactList = new List<Contact>();
+        for (User u : users) {
+            if (u.UserType == 'Standard' && u.Email.contains('perchenergy.com')) {
+                Contact cntObj = new Contact();
+                cntObj.FirstName = u.FirstName;
+                cntObj.LastName = u.LastName;
+                cntObj.Email = u.Email;
+                cntObj.User__c = u.Id;
+                cntObj.AccountId = perchAccountId;
+                cntObj.RecordTypeId = Schema.SObjectType.Contact.getRecordTypeInfosByName().get('Contact').getRecordTypeId();
+                insertContactList.add(cntObj);
+            }
+        }
+        insert insertContactList;
     }
 
     private static void shareSharedSolarSystems(List<User> users) {

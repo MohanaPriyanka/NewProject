@@ -37,15 +37,16 @@ public with sharing class ZuoraPaymentSelectorTest {
     public static void testPaymentSelectorInsufficientPermissions() {
         Zuora__Payment__c payment = [SELECT Id FROM Zuora__Payment__c LIMIT 1];
         ZuoraPaymentSelector paymentSelector = new ZuoraPaymentSelector();
-        User perchStandardUser = [SELECT Id
-                                FROM User
-                                WHERE Profile.Name = 'Perch Standard'
-                                AND IsActive = TRUE
-                                AND Id NOT IN (
-                                                SELECT AssigneeId
-                                                FROM PermissionSetAssignment
-                                                WHERE PermissionSet.Name LIKE '%Zuora%')
-                                LIMIT 1];
+        User perchStandardUser = [
+            SELECT Id
+            FROM User
+            WHERE Profile.Name = 'Perch Standard'
+            AND IsActive = TRUE
+            AND Id NOT IN (
+                SELECT AssigneeId
+                FROM PermissionSetAssignment
+                WHERE PermissionSet.Name LIKE '%Zuora%' OR PermissionSet.Name = 'Edit_All')
+            LIMIT 1];
         Boolean exceptionCaught = false;
         // Since a Perch Standard User without a Zuora perm set should never have permissions to query payments
         System.runAs(perchStandardUser) {

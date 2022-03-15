@@ -56,13 +56,33 @@ private without sharing class UserTriggerHandlerTest {
             LanguageLocaleKey = 'en_US',
             LocaleSidKey = 'en_US'
         );
-        insert u;
+        User u1 = new User(
+            ProfileId = [SELECT Id FROM Profile WHERE Name = 'Standard User'].Id,
+            FirstName = 'User',
+            LastName = 'Test',
+            Email = 'test@perchenergy.com',
+            Username = 'test@perchenergy.com' + System.currentTimeMillis(),
+            CommunityNickname = 'ptt',
+            CompanyName = 'GearsCRM',
+            Title = 'Tester',
+            Alias = 'test',
+            TimeZoneSidKey = 'America/New_York',
+            EmailEncodingKey = 'UTF-8',
+            LanguageLocaleKey = 'en_US',
+            LocaleSidKey = 'en_US'
+        );
+        List<User> usersList=new List<User>();
+        usersList.add(u);
+        usersList.add(u1);
+        insert usersList;
         Test.stopTest();
 
         List<Shared_Solar_System__Share> shares = [
             SELECT Id, ParentId, UserOrGroupId
             FROM Shared_Solar_System__Share
         ];
+        Contact cnt=[SELECT Id FROM Contact WHERE User__c= :u1.Id];
+        System.assertNotEquals(null, cnt.Id, 'Expected to create a Contact related to the Perch Energy account after inserting a user with a Standard license type and perchenergy.com in the email');
         System.assertEquals(1, shares.size(), 'Expected 1 Shared_Solar_System__share record to be created');
         System.assertEquals(sss.Id, shares[0].ParentId, 'Expected the Shared_Solar_System__share record to have a ParentId equal to the ID of the test Shared_Solar_System__c record');
         System.assertEquals(u.Id, shares[0].UserOrGroupId, 'Expected the Shared_Solar_System__share record to have a UserOrGroupId equal to the ID of the test User record');
