@@ -253,6 +253,14 @@ public without sharing class AccountsSelector {
         ]);
     }
 
+    public Map<Id, Account> selectPropertyAccountsWithOpps(Set<Id> propertyAccountIds) {
+        return new Map<Id, Account>([
+            SELECT Id, Name, Override_Delinquency_Removal__c, (SELECT Id, Customer_Group__c, Shared_Solar_System__r.State__c FROM Opportunities)
+            FROM Account
+            WHERE Id IN :propertyAccountIds
+        ]);
+    }
+  
     public Account getPartnerAccountDetails(Id partnerAccountId) {
         return [
             SELECT Id, Name, Partner__c

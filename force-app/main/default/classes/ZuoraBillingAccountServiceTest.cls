@@ -29,6 +29,9 @@ public with sharing class ZuoraBillingAccountServiceTest {
             propertyAccountsToInsert.add(newSFAccount);
         }
 
+        propertyAccountsToInsert[1].Override_Delinquency_Removal__c = true;
+        propertyAccountsToInsert[4].Override_Delinquency_Removal__c = true;
+
         Account extraPropAccount1 = new Account(
             Name = 'Prop Account Name11',
             Recurring_Billing__c = false,
@@ -69,6 +72,74 @@ public with sharing class ZuoraBillingAccountServiceTest {
             collectionCasesToInsert.add(collectionsCase);
         }
         insert collectionCasesToInsert;
+
+        Shared_Solar_System__c sss1 = new Shared_Solar_System__c(
+            Name = 'SSS1',
+            State__c = 'MN'
+        );
+
+        Shared_Solar_System__c sss2 = new Shared_Solar_System__c(
+            Name = 'SSS2',
+            State__c = 'NY'
+        );
+
+        insert new List<Shared_Solar_System__c>{sss1, sss2};
+
+        Opportunity anchorOpp1 = new Opportunity(
+            Name = 'Anchor Opp1',
+            Customer_Group__c = 'Anchor',
+            StageName = 'New',
+            CloseDate = System.today(),
+            Shared_Solar_System__c = sss2.Id,
+            AccountId = propertyAccountsToInsert[0].Id
+        );
+
+        Opportunity resiOpp1 = new Opportunity(
+            Name = 'Resi Opp1',
+            Customer_Group__c = 'Residential',
+            StageName = 'New',
+            CloseDate = System.today(),
+            Shared_Solar_System__c = sss2.Id,
+            AccountId = propertyAccountsToInsert[1].Id
+        );
+
+        Opportunity minnesotaOpp = new Opportunity(
+            Name = 'MN Opp',
+            Customer_Group__c = 'Residential',
+            StageName = 'New',
+            CloseDate = System.today(),
+            Shared_Solar_System__c = sss1.Id,
+            AccountId = propertyAccountsToInsert[2].Id
+        );
+
+        Opportunity anchorOpp2 = new Opportunity(
+            Name = 'Anchor Opp',
+            Customer_Group__c = 'Anchor',
+            StageName = 'New',
+            CloseDate = System.today(),
+            Shared_Solar_System__c = sss2.Id,
+            AccountId = propertyAccountsToInsert[3].Id
+        );
+
+        Opportunity resiOpp2 = new Opportunity(
+            Name = 'Resi Opp2',
+            Customer_Group__c = 'Residential',
+            StageName = 'New',
+            CloseDate = System.today(),
+            Shared_Solar_System__c = sss2.Id,
+            AccountId = propertyAccountsToInsert[3].Id
+        );
+
+        Opportunity resiOpp3 = new Opportunity(
+            Name = 'Resi Opp3',
+            Customer_Group__c = 'Residential',
+            StageName = 'New',
+            CloseDate = System.today(),
+            Shared_Solar_System__c = sss2.Id,
+            AccountId = propertyAccountsToInsert[4].Id
+        );
+
+        insert new List<Opportunity>{anchorOpp1, resiOpp1, minnesotaOpp, anchorOpp2, resiOpp2, resiOpp3};
 
     }
 
@@ -622,6 +693,68 @@ public with sharing class ZuoraBillingAccountServiceTest {
 
     }
 
+    @IsTest public static void testUnsetOverrideDelinquency() {
+
+        List<Zuora__CustomerAccount__c> oldAccounts = [
+            SELECT Id, Name,
+                Zuora__Zuora_Id__c, Zuora__Account__c
+            FROM Zuora__CustomerAccount__c
+            ORDER BY Id
+            LIMIT 12
+        ];
+
+        oldAccounts[4].Zuora__Balance__c = 500;
+        update oldAccounts;
+
+        Set<Id> accountIdSet = new Set<Id>{
+            oldAccounts[0].Id,
+            oldAccounts[1].Id,
+            oldAccounts[2].Id,
+            oldAccounts[3].Id,
+            oldAccounts[4].Id,
+            oldAccounts[10].Id,
+            oldAccounts[11].Id
+        };
+
+        String expectedResponse =
+            '{"MemoBalance":200.000000,"MemoDueDate":null,' +
+            '"InvoiceBalance":200.000000,"InvoiceDueDate":"2019-10-20",' +
+            '"AccountId":"' + oldAccounts[4].Zuora__Zuora_Id__c + '"}' +
+            '{"MemoBalance":120.000000,"MemoDueDate":"2018-07-15",' +
+            '"InvoiceBalance":null,"InvoiceDueDate":null,' +
+            '"AccountId":"' + oldAccounts[10].Zuora__Zuora_Id__c + '"}' +
+            '{"MemoBalance":0.000000,"MemoDueDate":null,' +
+            '"InvoiceBalance":313.250000,"InvoiceDueDate":"2018-06-15",' +
+            '"AccountId":"' + oldAccounts[11].Zuora__Zuora_Id__c + '"}';
+
+        expectedResponse = new ZuoraDataQueryAsyncService().convertDataQueryResponseToJSON(expectedResponse);
+
+        Test.startTest();
+        ZuoraDataQueryService.ProcessingParameter finishMethod = new ZuoraDataQueryService.ProcessingParameter();
+        finishMethod.className = 'ZuoraBillingAccountService';
+        finishMethod.methodName = 'updateDaysPastDue';
+        finishMethod.recordIds = accountIdSet;
+        ZuoraDataQueryService.handlePostQueryJob(expectedResponse,finishMethod);
+        Test.stopTest();
+
+        Set<Id> propertyAccountIds = new Set<Id>();
+        List<Opportunity> opps = [SELECT Id, AccountId FROM Opportunity WHERE AccountId != null ORDER BY AccountId];
+
+        System.assertEquals(6, opps.size(), 'Expected 5 opportunities');
+
+        for (Opportunity opp : opps) {
+            propertyAccountIds.add(opp.AccountId);
+        }
+
+        List<Account> updatedAccounts = [SELECT Id, Name, Override_Delinquency_Removal__c FROM Account WHERE Id IN :propertyAccountIds];
+
+        System.assertEquals(true, updatedAccounts[0].Override_Delinquency_Removal__c, 'Expected override delinquency to be checked since acc has Anchor opp');
+        System.assertEquals(false, updatedAccounts[1].Override_Delinquency_Removal__c, 'Expected override delinquency to be unchecked since acc has resi opp');
+        System.assertEquals(true, updatedAccounts[2].Override_Delinquency_Removal__c, 'Expected override delinquency to be checked since acc has MN opp');
+        System.assertEquals(true, updatedAccounts[3].Override_Delinquency_Removal__c, 'Expected override delinquency to be checked since acc has Anchor opp and a resi opp');
+        System.assertEquals(true, updatedAccounts[4].Override_Delinquency_Removal__c, 'Expected override delinquency to be checked since acc still has a balance');
+    }
+
     private class MockZuoraAccountSelector implements StubProvider {
         private String zuoraId;
         private Integer daysPastDue;
@@ -665,6 +798,5 @@ public with sharing class ZuoraBillingAccountServiceTest {
             Zuora__CustomerAccount__c customerAccount = (Zuora__CustomerAccount__c) fabricatedCustomerAccount.toSObject();
             return customerAccount;
         }
-
     }
 }

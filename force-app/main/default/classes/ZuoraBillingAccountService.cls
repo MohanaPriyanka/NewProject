@@ -92,6 +92,7 @@ public without sharing class ZuoraBillingAccountService implements Schedulable, 
         List<Account> accountsToUpdate = new List<Account>();
         Map<String, AccountSummary> zuoraIdToAccountSummary = summarizeBalanceQueryResult(queryResponse);
         Set<Id> currentParentAccountIds = new Set<Id>();
+        Set<Id> currentPropertyAccountIds = new Set<Id>();
         List<Zuora__CustomerAccount__c> zuoraBillingAccounts = zuoraAcctSelector.getAllBillingAccounts();
         for (Zuora__CustomerAccount__c zuoraAccount : zuoraBillingAccounts) {
             String zuoraId = zuoraAccount.Zuora__Zuora_Id__c;
@@ -107,6 +108,7 @@ public without sharing class ZuoraBillingAccountService implements Schedulable, 
 
             if(pastDueFieldChanged(propertyToUpdate, zuoraAccount) && noLongerPastDue(propertyToUpdate)) {
                 currentParentAccountIds.add(zuoraAccount.Zuora__Account__r.Parent_Account__c);
+                currentPropertyAccountIds.add(propertyToUpdate.Id);
             }
 
             if (inBadDebtGracePeriod(zuoraAccount) &&
@@ -114,6 +116,8 @@ public without sharing class ZuoraBillingAccountService implements Schedulable, 
                 uow.registerNew(getCaseToReactivateCustomer(zuoraAccount));
             }
         }
+
+        unsetOverrideDelinquency(currentPropertyAccountIds, accountsToUpdate);
 
         if (accountsToUpdate.size() > 200) {
             Database.executeBatch(new GenericBatchDMLOperation(accountsToUpdate, 'Update'));
@@ -132,6 +136,28 @@ public without sharing class ZuoraBillingAccountService implements Schedulable, 
             propertyToUpdate.Suppress_Collections__c = null;
         }
         return propertyToUpdate;
+    }
+
+    @TestVisible
+    private void unsetOverrideDelinquency(Set<Id> propertyAccountIds, List<Account> accountsToUpdate) {
+        Map<Id, Account> propertyAccounts = accountsSelector.selectPropertyAccountsWithOpps(propertyAccountIds);
+
+        for (Account acc : accountsToUpdate) {
+            if (!propertyAccounts.containsKey(acc.Id)) {
+                continue;
+            }
+            Boolean overrideDelinquency = false;
+            Account propertyAcc = propertyAccounts.get(acc.Id);
+            List<Opportunity> childOpps = propertyAcc.Opportunities;
+
+            for (Opportunity opp : childOpps) {
+                // if an account has an opp with Customer Group = Anchor OR with an SSS in the State of MN, the override delinquency box should always be checked
+                if (opp.Customer_Group__c == 'Anchor' || opp.Shared_Solar_System__r.State__c == 'MN') {
+                    overrideDelinquency = true;
+                }
+            }
+            acc.Override_Delinquency_Removal__c = overrideDelinquency;
+        }
     }
 
     private void registerPropertyForUpdate(Account propertyToUpdate, Zuora__CustomerAccount__c zuoraAccount, List<Account> accountsToUpdate) {

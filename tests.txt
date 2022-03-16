@@ -1,1 +1,1 @@
-PartnerCommissionGenerationTest,GraphQLQueryTests
+AccountsSelectorTest, ZuoraBillingAccountServiceTest
