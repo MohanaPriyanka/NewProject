@@ -47,6 +47,11 @@
                 <label>Financial Review Documents</label>
             </value>
             <value>
+                <fullName>Customer Signature</fullName>
+                <default>false</default>
+                <label>Customer Signature</label>
+            </value>
+            <value>
                 <fullName>Customer Bill</fullName>
                 <default>false</default>
                 <isActive>false</isActive>

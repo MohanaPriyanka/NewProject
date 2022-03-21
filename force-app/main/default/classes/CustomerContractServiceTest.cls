@@ -14,7 +14,7 @@ private class CustomerContractServiceTest {
         Lead lead = new Lead(
             FirstName = 'System',
             LastName = 'Testcase',
-            Email = 'test@invalid.bluewavesolar.com',
+            Email = 'test@invalid.perchenergy.com',
             Company = 'System Testcase',
             LeadSource = 'Website',
             Phone = '4444444444',
@@ -45,7 +45,7 @@ private class CustomerContractServiceTest {
 
         Contract contract = createContractFromLead(lead.Id, 2);
         CustomerContractService service = new CustomerContractService();
-        service.signCustomerContracts(lead.Id);
+        service.signCustomerContracts(lead.Id, Util.getFakeId(ContentVersion.SObjectType));
         Contract signedContract = [SELECT Id, Override_Countersign_Template_Id__c FROM Contract WHERE Id =: contract.Id];
         String expectedFieldVal = '[Community Solar Agreement (Countersigned)]12345b,[Solar Disclosure Form (Countersigned)]98765b';
         System.assertEquals(expectedFieldVal, signedContract.Override_Countersign_Template_Id__c, 'Invalid countersignature override');
@@ -86,7 +86,7 @@ private class CustomerContractServiceTest {
         Lead lead = new Lead(
             FirstName = 'System',
             LastName = 'Testcase',
-            Email = 'test@invalid.bluewavesolar.com',
+            Email = 'test@invalid.perchenergy.com',
             Company = 'System Testcase',
             LeadSource = 'Website',
             Phone = '4444444444'
@@ -112,7 +112,7 @@ private class CustomerContractServiceTest {
         Lead lead2 = new Lead(
             FirstName = 'System2',
             LastName = 'Testcase2',
-            Email = 'test2@invalid.bluewavesolar.com',
+            Email = 'test2@invalid.perchenergy.com',
             Company = 'System2 Testcase2',
             LeadSource = 'Website',
             Phone = '2222222222'
@@ -162,7 +162,7 @@ private class CustomerContractServiceTest {
         Lead lead2 = new Lead(
             FirstName = 'System2',
             LastName = 'Testcase2',
-            Email = 'test2@invalid.bluewavesolar.com',
+            Email = 'test2@invalid.perchenergy.com',
             Company = 'System2 Testcase2',
             LeadSource = 'Website',
             Phone = '2222222222'
@@ -195,7 +195,7 @@ private class CustomerContractServiceTest {
 
         Test.startTest();
         CustomerContractService ccs = new CustomerContractService();
-        ccs.signCustomerContracts(lead.Id);
+        ccs.signCustomerContracts(lead.Id, Util.getFakeId(ContentVersion.SObjectType));
         Test.stopTest();
 
         Date today = Datetime.now().date();
@@ -221,7 +221,7 @@ private class CustomerContractServiceTest {
         Test.startTest();
         try {
             CustomerContractService ccs = new CustomerContractService();
-            ccs.signCustomerContracts(lead.Id);
+            ccs.signCustomerContracts(lead.Id, Util.getFakeId(ContentVersion.SObjectType));
             System.assert(false, 'Method should have thrown an error, as there are no contracts associated with the lead');
         } catch (Util.BWException bwe) {
             expectedResult = true;

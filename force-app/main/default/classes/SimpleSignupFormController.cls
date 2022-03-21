@@ -345,4 +345,35 @@ public without sharing class SimpleSignupFormController {
             );
         }
     }
+
+    /**
+     * @description Saves signature as attachment on lead
+     * @param fileContent base64 content of signature file to be uploaded
+     * @param leadId Id of Lead
+     * @return Id of resulting ContentVersion
+    */
+    @AuraEnabled
+    public static Id saveSignature(String fileContent, Id leadId) {
+
+        fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
+            new List<Schema.SObjectType>{
+                ContentVersion.SObjectType,
+                Lead.SObjectType,
+                ContentDocumentLink.SObjectType
+            }
+        );
+        FilesUnitOfWorkHelper customWork = new FilesUnitOfWorkHelper();
+        uow.registerWork(customWork);
+        Lead lead = new Lead(Id=leadId);
+        RestLead.RestContentDocument contentDocument = new RestLead.RestContentDocument();
+        contentDocument.title = 'Signature-' + System.now() + '.png';
+        contentDocument.body = String.escapeSingleQuotes(fileContent);
+        contentDocument.fileCategory = 'Customer Signature';
+        contentDocument.validateCreateFields();
+        ContentVersion contentVersion = contentDocument.asContentVersionForInsert();
+        uow.registerNew(contentVersion);
+        customWork.registerContentDocumentLinkInsert(lead, contentVersion, 'V', 'AllUsers');
+        uow.commitWork();
+        return contentVersion.Id;
+    }
 }

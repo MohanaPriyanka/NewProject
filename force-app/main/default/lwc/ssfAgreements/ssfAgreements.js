@@ -6,31 +6,31 @@ import companyShortName from '@salesforce/label/c.SSF_Company_Short_Name';
 import {
     onLoad,
     onRender,
-    disclosureSigned,
-    creditCheckSigned,
-    communitySolarAgreementSigned,
     displayDocument,
-    showCreditCheckApproval,
+    showApproval,
+    showNextApproval,
     consentsComplete,
     navigateBack,
     getText,
-} from 'c/ssfAgreementsShared';
+} from 'c/ssfAgreementsHelper';
 
 export default class SsfAgreements extends LightningElement {
     @api leadJson;
     @api underwriting;
+    @api version;
 
     @track disclosures;
     @track creditCheck;
-    @track csAgreement;
+    @track phoneConsent;
+    @track communitySolarAgreement;
     @track showDisclosures = true;
     @track showCreditCheck;
-    @track showCSAgreement;
-    @track disclosureIcon = 'utility:record';
+    @track showPhoneConsent;
+    @track showCommunitySolarAgreement;
+    @track disclosuresIcon = 'utility:record';
     @track creditCheckIcon = 'utility:routing_offline';
-    @track csAgreementIcon = 'utility:routing_offline';
-    @track moreCreditCheck = false;
-    @track moreCSAgreement = false;
+    @track phoneConsentIcon = 'utility:routing_offline';
+    @track communitySolarAgreementIcon = 'utility:routing_offline';
     @track consentEmail;
     @track documentUrl;
     @track contractDocuments;
@@ -42,7 +42,6 @@ export default class SsfAgreements extends LightningElement {
     documentPollerId;
     documentPollerTimeoutId;
     esignDisclosureUrl = getText(this, 'esignUrl');
-    version = 'PARTNER';
     label = {
         companyPrivacyPolicyLink,
         companyShortName
@@ -63,6 +62,10 @@ export default class SsfAgreements extends LightningElement {
         const navua = window.navigator.userAgent.toLowerCase();
         return !(navua.indexOf("trident") > -1 || navua.indexOf("edge") > -1);
     };
+
+    get isPartner() {
+        return this.version === 'PARTNER';
+    }
 
     get creditCheckLabel() {
         return getText(this, 'creditCheckLabel');
@@ -85,23 +88,15 @@ export default class SsfAgreements extends LightningElement {
     }
 
     get continueButtonLabel() {
-        return this.lead.noPayment ? 'Finish' : 'Continue';
+        return !this.showCommunitySolarAgreement ? 'Next' : this.lead.noPayment ? 'Finish' : 'Continue';
     }
 
-    get ficoLanguageFirstSegment() {
-        return getText(this, 'fico1');
+    get ficoLanguage() {
+        return getText(this, 'fico');
     }
 
-    get ficoLanguageSecondSegment() {
-        return getText(this, 'fico2');
-    }
-
-    get finDocsLanguageFirstSegment() {
-        return getText(this, 'finDocs1');
-    }
-
-    get finDocsLanguageSecondSegment() {
-        return getText(this, 'finDocs2');
+    get finDocsLanguage() {
+        return getText(this, 'finDocs');
     }
 
     get utilityDataReviewLanguage(){
@@ -124,48 +119,25 @@ export default class SsfAgreements extends LightningElement {
         return getText(this, 'agree2');
     }
 
-    get agreementLanguageThirdSegment() {
-        return getText(this, 'agree3');
+    get phoneConsentLanguage() {
+        return getText(this, 'phoneConsent');
     }
 
     hideContractDocument(event) {
         this.showContractDocument = false;
     }
 
-    disclosureChecked(event) {
-        disclosureSigned(this, event);
-    }
-
-    creditCheckChecked(event) {
-        creditCheckSigned(this, event);
-    }
-
-    showLessCreditCheck(event) {
-        this.moreCreditCheck = false;
-    }
-
-    showMoreCreditCheck(event) {
-        this.moreCreditCheck = true;
-    }
-
-    csAgreementChecked(event) {
-        communitySolarAgreementSigned(this, event);
-    }
-
     filePreview(event) {
         displayDocument(this, event);
     }
 
-    showLessCSAgreement(event) {
-        this.moreCSAgreement = false;
+    handleApprovalChecked(event) {
+        this[event.target.name] = event.target.checked;
     }
 
-    showMoreCSAgreement(event) {
-        this.moreCSAgreement = true;
-    }
+    handleCarouselPreviewClick(event) {
+        showApproval(this, event.currentTarget.dataset.id);
 
-    showCreditCheckApproval(event) {
-        showCreditCheckApproval(this);
     }
 
     checkForSubmit(event) {
@@ -183,6 +155,10 @@ export default class SsfAgreements extends LightningElement {
     }
 
     continueAgreement(event) {
+        if (this.continueButtonLabel === 'Next') {
+            showNextApproval(this);
+            return;
+        }
         consentsComplete(this);
     }
 }

@@ -1,0 +1,12 @@
+/**
+ * Created by rebeccanachison on 1/24/22.
+ */
+
+.ssf-contract-document-link__link {
+    color: #1A5FEA;
+    font-weight: 600;
+}
+
+.ssf-contract-document-link__has-error {
+    background: #a1ffcc;
+}

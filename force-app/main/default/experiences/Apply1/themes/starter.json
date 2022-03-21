@@ -1,6 +1,6 @@
 {
   "activeBrandingSetId" : "89b8b5e9-0ec5-4385-8c47-b21ce33a205e",
-  "customCSS" : "@font-face {\n    font-family: proximaNovaFont;\n    src: url('/sfsites/c/resource/ProximaNova');\n}\ndiv {\n\tfont-size: 1rem;\n}\n.comm-page-custom-switch, .comm-page-custom-partnerswitch {\n    background-color: #151C34;\n    background-image: url('/sfsites/c/resource/SimpleSignupFormStyling/Image_Background.jpg');\n    background-position: center -600px;\n    background-repeat: no-repeat;\n\tbackground-size: auto;\n}\n.comm-page-custom-switch .cCenterPanel, .comm-page-custom-partnerswitch .cCenterPanel {\n    margin-top: 0;\n}\n.slds-form-element__label {\n    font-size: 1rem;\n}",
+  "customCSS" : "@font-face {\n    font-family: Manrope;\n    src: url('/resource/PerchFonts/Fonts/Manrope-Regular.ttf') format('truetype');\n}\ndiv {\n\tfont-size: 1rem;\n}\n.comm-page-custom-switch, .comm-page-custom-partnerswitch {\n    background-color: #0D2727;\n    background-image: url('/sfsites/c/resource/SimpleSignupFormStyling/Image_Background.webp');\n    background-position: center;\n    background-repeat: no-repeat;\n\tbackground-size: cover;\n}\n.comm-page-custom-switch .cCenterPanel, .comm-page-custom-partnerswitch .cCenterPanel {\n    margin-top: 0;\n}\n.slds-form-element__label {\n    font-size: 1rem;\n}",
   "developerName" : "starter",
   "id" : "3c4c3602-b097-4a7e-bda6-c16f0b400cf7",
   "label" : "Starter",

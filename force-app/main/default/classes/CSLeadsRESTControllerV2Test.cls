@@ -692,7 +692,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     @IsTest
     static void testPatchContractSuccess() {
         useMocks();
-        String jsonRequest = '{ "leadId": "' + Util.getFakeId(Schema.Lead.SObjectType) + '" }';
+        String jsonRequest = '{ "leadId": "' + Util.getFakeId(Schema.Lead.SObjectType) + '", "signatureId": "' + Util.getFakeId(ContentVersion.SObjectType) + '" }';
         controller.patchContract(jsonRequest);
         System.assertEquals(200, RestContext.response.statusCode, 'PATCH contract should not throw an error when a valid lead id is provided');
     }
@@ -706,6 +706,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         JSONGenerator jsonGenerator = JSON.createGenerator(false);
         jsonGenerator.writeStartObject();
         jsonGenerator.writeStringField('leadId', dataset.leadId);
+        jsonGenerator.writeStringField('signatureId', Util.getFakeId(ContentVersion.SObjectType));
         jsonGenerator.writeEndObject();
         Test.startTest();
         RestContext.response = new RestResponse();
@@ -730,6 +731,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         JSONGenerator jsonGenerator = JSON.createGenerator(false);
         jsonGenerator.writeStartObject();
         jsonGenerator.writeStringField('leadId', dataset.leadId);
+        jsonGenerator.writeStringField('signatureId', Util.getFakeId(ContentVersion.SObjectType));
         jsonGenerator.writeBooleanField('suppressAppComplete', true);
         jsonGenerator.writeEndObject();
         Test.startTest();

@@ -7,7 +7,7 @@
 }
 
 .page-container {
-    background-color: white;
+    background-color: #fff;
     border-radius: 0.5rem;
     width: 100%;
     justify-content: center;
@@ -52,10 +52,10 @@ button.btn, button.btn-inverse, button.small {
     border-radius: 3rem;
     outline: none;
     padding: 1.125rem 2rem;
-    line-height: 1.25em;
+    line-height: 1.25;
     transition: all .3s ease;
     text-align: center;
-    font-family: CentraMedium, sans-serif;
+    font-family: ManropeSemiBold, sans-serif;
     text-decoration-color: #FFFFFF;
     text-decoration-line: none;
     text-decoration-style: solid;
@@ -64,19 +64,19 @@ button.btn, button.btn-inverse, button.small {
 }
 /* button:not(.slds-accordion__summary-action):hover, button.btn:hover, button.btn-inverse:hover { */
 button.btn:hover, button.btn-inverse:hover, button.small:hover {
-    background-color: #387CDF;
+    background-color: #2774EE;
     color: #FFFFFF;
     box-shadow: 0 4px 8px 0 rgba(43, 47, 57, 0.16);
     transform: translateY(-2px);
 }
 button.btn {
-    background: #151C34;
+    background: #0D2727;
     color: #FFFFFF;
 }
 button.btn-inverse {
     background-color: #FFFFFF;
-    color: #387CDF;
-    border: 1px solid #387CDF;
+    color: #2774EE;
+    border: 1px solid #2774EE;
 }
 button.small {
     font-size: .8125rem;
@@ -87,12 +87,12 @@ button.small {
     float: left;
 }
 .accordion-button__icon.top {
-    fill: #387cdf;
+    fill: #2774EE;
     width: 1.1rem;
     height: 1.1rem;
 }
 .accordion-button__icon {
-    fill: #d3d3d3;
+    fill: #f8f0e9;
     width: .65rem;
     height: .65rem;
 }
@@ -110,7 +110,7 @@ button.small {
     flex-flow: row nowrap;
 }
 .combo-button__icon {
-    fill: #387CDF;
+    fill: #2774EE;
     width: 1.5rem;
     height: 1.5rem;
     margin-right: 0.5rem;
@@ -125,9 +125,9 @@ button.small {
     position: relative;
 }
 .help-button__icon {
-    border: 1px solid #387CDF;
+    border: 1px solid #2774EE;
     border-radius: 2rem;
-    fill: #387CDF;
+    fill: #2774EE;
     height: 1.5rem;
     width: 1.5rem;
     margin-left: 0.5rem;
@@ -166,10 +166,15 @@ button.small {
 /*         Footer          */
 /****************************/
 .footer-container {
-    background-color: #151c34;
+    background-color: #0D2727;
     padding: 2rem;
     width: 100%;
 }
+
+.footer-container p {
+  font-size: 0.875rem;
+}
+
 .faq-title-section {
     display: flex;
     flex-flow: row nowrap;
@@ -199,7 +204,7 @@ button.small {
     margin-top: 0.75rem;
 }
 .footer-section {
-    color: #d3d3d3;
+    color: #f8f0e9;
 }
 .footer-section > * > h3 {
     color: #ffffff;
@@ -212,7 +217,7 @@ button.small {
     color: inherit;
 }
 .link-icon {
-    fill: #387cdf;
+    fill: #2774EE;
     width: .5rem;
     height: .5rem;
     position: relative;
@@ -290,7 +295,7 @@ button.small {
 .tooltip {
     position: absolute;
     white-space: normal;
-    background-color: #387CDF;
+    background-color: #2774EE;
     color: #FFFFFF;
     padding: 1rem;
     z-index: 3;
@@ -316,7 +321,7 @@ button.small {
     position: absolute;
 }
 .tooltip.tooltip__general::after, .tooltip.tooltip__utility::after {
-    border-color: #387CDF transparent transparent transparent;
+    border-color: #2774EE transparent transparent transparent;
 }
 .tooltip.tooltip__general::after {
     top: 62%;
@@ -332,7 +337,7 @@ button.small {
     border-right-width: 50px;
 }
 .tooltip.tooltip__underwriting-field::before {
-    border-color: transparent transparent #387CDF transparent;
+    border-color: transparent transparent #2774EE transparent;
     top: -34%;
     left: 85.5%;
     border-left-width: 70px;
@@ -350,7 +355,7 @@ div.icon-button-group-container {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    margin: 2rem auto 3.75rem;
+    margin: 2rem auto 2.25rem;
     padding: 0.5rem 0;
 }
 div.icon-button {
@@ -365,7 +370,7 @@ div.icon-button:hover {
     background-color: #FFFFFF;
 }
 div.icon-button.selected {
-    border: 0.2rem solid #387CDF;
+    border: 0.2rem solid #2774EE;
 }
 div.icon-container {
     max-width: 12rem;
@@ -399,23 +404,27 @@ div.icon-button.selected > div > div > p {
 /****************************/
 /*          Text            */
 /****************************/
+body.comm-page-custom-switch {
+  color: #0D2727;
+}
+
 .light-text {
     color: rgb(121,121,121);
 }
 .gray-text {
-    color: #d3d3d3;
+    color: #f8f0e9;
 }
 .blue-text {
-    color: #387CDF;
+    color: #2774EE;
 }
 
 p {
-    font-family: Centra;
+    font-family: Manrope;
     font-size: 1rem;
-    line-height: 1.5rem;
+    line-height: 1.5;
 }
 p.thin {
-    font-family: CentraLight;
+    font-family: Manrope;
 }
 p.x_large {
     font-size: 1.5rem;
@@ -432,43 +441,41 @@ p.x_small {
 
 /* headline */
 h1 {
-    font-family: CentraLight;
+    font-family: Manrope;
     font-size: 1.2rem;
-    line-height: 1.2em;
-    font-weight: bold;
+    line-height: 1.4;
     display: block;
 }
 /* sub-headline */
 h2 {
-    font-family: Centra;
+    font-family: Manrope;
     font-size: 1rem;
-    line-height: 1.2em;
+    line-height: 1.2;
     color: rgb(121,121,121);
     display: block;
 }
 
 /* footer link titles */
 h3:not(.slds-accordion__summary-heading) {
-    font-family: CentraLight;
+    font-family: Manrope;
     font-size: 1rem;
-    line-height: 1.2em;
+    line-height: 1.2;
     font-weight: 700;
     color: #ffffff;
 }
 
 /* waiting room headline */
 h4 {
-    font-family: CentraLight;
-    font-size: 1.1rem;
-    line-height: 1.2em;
-    font-weight: bold;
+    font-family: ManropeSemiBold;
+    font-size: 1rem;
+    line-height: 1.5;
 }
 
 /* small headline */
 h6 {
-    font-family: CentraMedium;
+    font-family: ManropeSemiBold;
     font-size: 1rem;
-    line-height: 1.2em;
+    line-height: 1.2;
     text-transform: uppercase;
     letter-spacing: 1px;
     padding-top: 2rem;
@@ -485,16 +492,23 @@ h6 {
         padding: 2rem 3rem;
     }
     h1 {
-        font-size: 1.7rem;
+        font-size: 1.6rem;
     }
     h2 {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
     }
     h3 {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
+    }
+    h4 {
+      font-size: 1.1rem;
+      line-height: 1.3;
+    }
+    .footer-container p {
+      font-size: 1rem;
     }
     p[c-ssfFaq_ssfFaq], p[c-ssfFooter_ssfFooter] {
-        font-size: 0.8rem;
+        font-size: 0.7rem;
     }
     img.icon {
         max-width: 8rem;
@@ -527,7 +541,7 @@ h6 {
         padding: .75rem 1.5rem;
     }
     .address {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
     }
     .input-group {
         display: flex;
@@ -592,63 +606,11 @@ h6 {
 /*      Font Imports        */
 /****************************/
 @font-face {
-    font-family: 'Centra';
-    src: url('/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Book.woff') format('woff'),
-         url('/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Book.woff2') format('woff2'),
-         url('/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Book.eot') format('eot');
+    font-family: 'Manrope';
+    src: url('/resource/PerchFonts/Fonts/Manrope-Regular.ttf') format('truetype');
 }
 
 @font-face {
-    font-family: 'Centra';
-    src: url('/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Bold.woff') format('woff'),
-         url('/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Bold.woff2') format('woff2'),
-         url('/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Bold.eot') format('eot');
-    font-weight: bold;
-}
-
-@font-face {
-    font-family: 'Centra';
-    src: url('/resource/SimpleSignupFormStyling/Fonts/CentraNo2-BookItalic.woff') format('woff'),
-         url('/resource/SimpleSignupFormStyling/Fonts/CentraNo2-BookItalic.woff2') format('woff2'),
-         url('/resource/SimpleSignupFormStyling/Fonts/CentraNo2-BookItalic.eot') format('eot');
-    font-style: italic;
-}
-
-@font-face {
-    font-family: 'Centra';
-    src: url('/resource/SimpleSignupFormStyling/Fonts/CentraNo2-BoldItalic.woff') format('woff'),
-         url('/resource/SimpleSignupFormStyling/Fonts/CentraNo2-BoldItalic.woff2') format('woff2'),
-         url('/resource/SimpleSignupFormStyling/Fonts/CentraNo2-BoldItalic.eot') format('eot');
-    font-weight: bold;
-    font-style: italic;
-}
-
-@font-face {
-    font-family: 'CentraLight';
-    src: url('/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Light.woff') format('woff'),
-         url('/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Light.woff2') format('woff2'),
-         url('/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Light.eot') format('eot');
-}
-
-@font-face {
-    font-family: 'CentraLight';
-    src: url('/resource/SimpleSignupFormStyling/Fonts/CentraNo2-LightItalic.woff') format('woff'),
-         url('/resource/SimpleSignupFormStyling/Fonts/CentraNo2-LightItalic.woff2') format('woff2'),
-         url('/resource/SimpleSignupFormStyling/Fonts/CentraNo2-LightItalic.eot') format('eot');
-    font-style: italic;
-}
-
-@font-face {
-    font-family: 'CentraMedium';
-    src: url('/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Medium.woff') format('woff'),
-         url('/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Medium.woff2') format('woff2'),
-         url('/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Medium.eot') format('eot');
-}
-
-@font-face {
-    font-family: 'CentraMedium';
-    src: url('/resource/SimpleSignupFormStyling/Fonts/CentraNo2-MediumItalic.woff') format('woff'),
-         url('/resource/SimpleSignupFormStyling/Fonts/CentraNo2-MediumItalic.woff2') format('woff2'),
-         url('/resource/SimpleSignupFormStyling/Fonts/CentraNo2-MediumItalic.eot') format('eot');
-    font-style: italic;
+    font-family: 'ManropeSemiBold';
+    src: url('/resource/PerchFonts/Fonts/Manrope-SemiBold.ttf') format('truetype');
 }

@@ -1,0 +1,20 @@
+/**
+ * Created by rebeccanachison on 2/4/22.
+ */
+
+.ssf-signature__wrapper {
+    position: relative;
+}
+
+.ssf-signature__canvas {
+    width: auto;
+    padding: 0;
+}
+
+.ssf-signature__refresh {
+    position: absolute;
+    bottom: 18px;
+    right: 4px;
+    cursor: pointer;
+    --sds-c-icon-color-foreground-default: #b8c7c1;
+}

@@ -59,7 +59,7 @@
             </c-ssf-basic-info-d-t-c>
         </template>
         <template if:true={getAgreements}>
-            <c-ssf-agreements-d-t-c
+            <c-ssf-agreements
                 lead-json={leadJSON}
                 onspinnermessageupdate={handleSpinnerMessageEvent}
                 onresetreadystate={handleResetReadyStateEvent}
@@ -68,8 +68,9 @@
                 onnavigateback={handleNavigateBackToBasicInfo}
                 ontoggleloading={toggleLoadingSpinner}
                 underwriting={underwriting}
-                onloggableerror={handleLoggableErrorEvent}>
-            </c-ssf-agreements-d-t-c>
+                onloggableerror={handleLoggableErrorEvent}
+                version="DTC">
+            </c-ssf-agreements>
         </template>
     </div>
     <c-bluewave-spinner fade-in="true" spinner-message={spinnerMessage} show={showSpinner}></c-bluewave-spinner>

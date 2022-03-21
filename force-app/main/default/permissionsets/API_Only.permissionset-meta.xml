@@ -10309,6 +10309,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract.SSF_Signature_URL__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Contract.ShippingAddress</field>
         <readable>true</readable>
@@ -18356,11 +18361,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Shared_Solar_System__c.Total_CS_Capacity__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Shared_Solar_System__c.Total_CS_Capacity_kW_DC_Formula__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

@@ -469,4 +469,22 @@ public with sharing class SimpleSignupFormControllerTest {
         System.assertEquals('Email only', paperlessOptionOnPropAcc, 'Incorrect paperless option on prop account');
         System.assertEquals(featureCheckBool, collectPaperlessOption, 'Incorrect bool returned');
     }
+
+    @IsTest
+    private static void testSaveSignature() {
+        Id leadId = [SELECT Id FROM Lead LIMIT 1].Id;
+        String fileContent = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjOHPmzH8ACDADZKt3GNsAAAAASUVORK5CYII=';
+        Id contentVersionId = SimpleSignupFormController.saveSignature(fileContent, leadId);
+        ContentDocumentLink contentDocumentLink = [
+            SELECT Id,
+                ContentDocument.LatestPublishedVersionId,
+                ContentDocument.LatestPublishedVersion.File_Category__c,
+                ContentDocument.LatestPublishedVersion.FileType
+            FROM ContentDocumentLink
+            WHERE LinkedEntityId = :leadId
+        ];
+        System.assertEquals(contentVersionId, contentDocumentLink.ContentDocument.LatestPublishedVersionId, 'Document should be linked to Content Version created by method');
+        System.assertEquals('Customer Signature', contentDocumentLink.ContentDocument.LatestPublishedVersion.File_Category__c, 'Content Version should have a file category of "Customer Signature"');
+        System.assertEquals('PNG', contentDocumentLink.ContentDocument.LatestPublishedVersion.FileType, 'Content Version file type should be PNG');
+    }
 }

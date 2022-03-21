@@ -234,6 +234,7 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         Map<String,Object> requestMap = (Map<String,Object>) JSON.deserializeUntyped(jsonRequest);
         RestResponse response = RestContext.response;
         Id leadId;
+        Id signatureId;
         if (!requestMap.containsKey('leadId') || requestMap.get('leadId') == null) {
             envelope.addError('Request did not include correct fields to update');
             response.statusCode = statusCode.badRequest;
@@ -245,7 +246,8 @@ public virtual without sharing class CSLeadsRESTControllerV2 extends RESTControl
         }
         try {
             leadId = (Id) requestMap.get('leadId');
-            customerContractService.signCustomerContracts(leadId);
+            signatureId = (Id) requestMap.get('signatureId');
+            customerContractService.signCustomerContracts(leadId, signatureId);
             updateLeadApplicationStatus(leadId);
             envelope.setData('OK');
             response.statusCode = statusCode.ok;

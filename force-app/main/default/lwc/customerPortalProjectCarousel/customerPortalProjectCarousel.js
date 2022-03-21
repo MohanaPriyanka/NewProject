@@ -38,7 +38,6 @@ export default class CustomerPortalProjectCarousel extends LightningElement {
     }
 
     onCloseModal(event) {
-        console.log(event.detail);
         this.showModal = event.detail.showModal;
     }
 

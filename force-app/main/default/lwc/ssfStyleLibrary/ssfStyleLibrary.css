@@ -1,7 +1,6 @@
 /**
  * Created by LindsayHolmes_GearsCRM on 7/7/20.
  */
-
  
 * {
     box-sizing: border-box;
@@ -45,7 +44,7 @@ button {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0.18);
 }
 button:hover, button.btn:hover, button.btn-inverse:hover {
-    background-color: #387CDF;
+    background-color: #2774EE;
     box-shadow: 0 4px 8px 0 rgba(43, 47, 57, 0.16);
     transform: translateY(-2px);
 }
@@ -55,13 +54,13 @@ button.btn {
 }
 button.btn-inverse {
     background-color: #FFFFFF;
-    color: #387CDF;
+    color: #2774EE;
 }
 .accordion-button {
     float: left;
 }
 .accordion-button__icon.top {
-    fill: #387cdf;
+    fill: #2774EE;
     width: 1.1rem;
     height: 1.1rem;
 }
@@ -84,7 +83,7 @@ button.btn-inverse {
     flex-flow: row nowrap;
 }
 .combo-button__icon {
-    fill: #387CDF;
+    fill: #2774EE;
     width: 1.5rem;
     height: 1.5rem;
     margin-right: 0.5rem;
@@ -172,7 +171,7 @@ button.btn-inverse {
     color: inherit;
 }
 .link-icon {
-    fill: #387cdf;
+    fill: #2774EE;
     width: .5rem;
     height: .5rem;
     position: relative;
@@ -270,7 +269,7 @@ div.icon-button:hover {
     background-color: #FFFFFF;
 }
 div.icon-button.selected {
-    border: 0.2rem solid #387CDF;
+    border: 0.2rem solid #2774EE;
 }
 div.icon-container {
     max-width: 12rem;
@@ -311,7 +310,7 @@ div.icon-button.selected > div > div > p {
     color: #d3d3d3;
 }
 .blue-text {
-    color: #387CDF;
+    color: #2774EE;
 }
 
 p {

@@ -32,7 +32,7 @@ public without sharing class CustomerContractService {
         Util.updateAndLog(contracts, 'CustomerContractService', 'regenerateDocuments');
     }
 
-    public Boolean signCustomerContracts(Id leadId) {
+    public Boolean signCustomerContracts(Id leadId, Id signatureId) {
         List<Contract> contracts = customerContractSelector.selectByRelatedLead(leadId);
         if (contracts == null || contracts.isEmpty()) {
             throw new Util.BWException('There are no existing contracts associated with lead id ' + leadId);
@@ -41,6 +41,7 @@ public without sharing class CustomerContractService {
             c.Customer_Signature_Date_Time__c = Datetime.now();
             c.Generate_Signed_Version__c = true;
             c.Override_Countersign_Template_Id__c = c.Conga_Template_ID_Countersigned__c;
+            c.SSF_Signature_URL__c = URL.getOrgDomainUrl().toExternalForm().split('.my.salesforce.com')[0] + '.file.force.com' + '/sfc/servlet.shepherd/version/renditionDownload?rendition=THUMB720BY480&versionId=' + signatureId + '&operationContext=CHATTER';
         }
         return Util.updateAndLog(contracts, 'SimpleSignupFormController', 'signCustomerContracts');
     }
