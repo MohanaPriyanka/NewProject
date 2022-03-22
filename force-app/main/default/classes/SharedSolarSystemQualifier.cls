@@ -108,6 +108,15 @@ public without sharing class SharedSolarSystemQualifier {
         return qualifiedForSystem(lead, sss, creditScore, true);
     }
 
+    /**
+     * @description This doesn't qualify the system's available capacity with lead's customer type, because a lead
+     * that started with a customer type of LMI might change to Residential if they aren't in a DAC.
+     * @param lead Lead to qualify
+     * @param sss A system to qualify
+     * @param creditScore The lead's credit score
+     * @param skipFICOCheck True to skip FICO, to see if FICO was the disqualifying criteria
+     * @return true if qualified
+     */
     private Boolean qualifiedForSystem(Lead lead, Shared_Solar_System__c sss, String creditScore, Boolean skipFICOCheck) {
         Boolean utilityMatch = sss.Utility__c == lead.Utility_relationship__c;
         Boolean lzInServiceTerritory = loadZoneInServiceTerritory(lead.LoadZone__c, sss);

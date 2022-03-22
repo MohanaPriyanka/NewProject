@@ -200,7 +200,21 @@
             <assignToReference>sov_ErrorLog.Message__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>apexConversionErrorMessage</elementReference>
+                <elementReference>Run_Lead_Conversion.errorMessage</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sov_ErrorLog.Class__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>CSLeadsConverter</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sov_ErrorLog.Method__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>invocableConvertLead</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -238,6 +252,20 @@
             <operator>Assign</operator>
             <value>
                 <elementReference>errorMessage</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sov_ErrorLog.Method__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>InvocableLeadConverter</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sov_ErrorLog.Class__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>CSLeadsConverter</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -994,7 +1022,7 @@
         <allowPause>false</allowPause>
         <fields>
             <name>txtError_0</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 20px; color: rgb(255, 0, 0);&quot;&gt;ERROR ENCOUNTERED&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;An unhandled error was encountered during Qualification and Conversion of the lead. BizApps has been notified.&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;You may close this window or go back to re-attempt your request.&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(255, 0, 0); font-size: 20px;&quot;&gt;ERROR ENCOUNTERED&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;Lead Conversion ran into this error:&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;{!Run_Lead_Conversion.errorMessage}&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;The flow logged an error for BizApps to review. You may close this window or go back to re-attempt your request.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>

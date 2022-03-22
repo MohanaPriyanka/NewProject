@@ -42,7 +42,7 @@ public inherited sharing class SharedSolarSystems {
      * @return Rank-ordered SSS list by Automatic Assignment Order
      */
     public List<Shared_Solar_System__c> orderedSssForCapacityCheck() {
-        return getQualifiedForLead(virtualLead);
+        return qualifier.getQualifiedForLead(virtualLead, records);
     }
 
     public static Decimal calculateMaximumkWh(Shared_Solar_System__c sss) {
@@ -55,7 +55,28 @@ public inherited sharing class SharedSolarSystems {
      * @return List of systems that qualify
      */
     public List<Shared_Solar_System__c> getQualifiedForLead(Lead lead) {
-        return qualifier.getQualifiedForLead(lead, records);
+        List<Shared_Solar_System__c> qualifiedSystems = qualifier.getQualifiedForLead(lead, records);
+        removeUnqualifiedSystemsForCustomerType(lead.Customer_type__c, qualifiedSystems);
+        return qualifiedSystems;
+    }
+
+    @TestVisible
+    private void removeUnqualifiedSystemsForCustomerType(String customerType, List<Shared_Solar_System__c> qualifiedSystems) {
+        for (Integer i = qualifiedSystems.size()-1; i >= 0; i--) {
+            removeUnqualifiedSystemForCustomerType(customerType, qualifiedSystems, i);
+        }
+    }
+
+    private void removeUnqualifiedSystemForCustomerType(String customerType, List<Shared_Solar_System__c> qualifiedSystems, Integer i) {
+        if (customerType == 'LMI') {
+            if (!qualifiedSystems[i].LMI__c || Util.nullToZero(qualifiedSystems[i].Perch_Acq_Available_LMI_Capacity__c) <= 0) {
+                qualifiedSystems.remove(i);
+            }
+        } else {
+            if (Util.nullToZero(qualifiedSystems[i].Capacity_Available_to_be_Reserved__c) <= 0) {
+                qualifiedSystems.remove(i);
+            }
+        }
     }
 
     /**

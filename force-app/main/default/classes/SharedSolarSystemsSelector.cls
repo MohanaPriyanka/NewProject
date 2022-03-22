@@ -27,7 +27,10 @@ public inherited sharing class SharedSolarSystemsSelector {
                 Credit_Score_Requirement__c, Assignment_Order__c, Maximum_Subscription_Capacity_kWDC__c,
                 BWC_Project_Entity_Manual__c, Total_System_Size_kWh_DC__c,
                 Available_SMB_Underwriting_Method_Docs__c, Available_SMB_Underwriting_Method_FICO__c, Public__c,
-                Do_Not_Underwrite__c, Do_Not_Ask_for_Payment_Method__c, (SELECT Id, Account__c, Account__r.Partner__c FROM Partner_Shared_Solar_System_Accesses__r WHERE IsActive__c = TRUE)
+                Do_Not_Underwrite__c, Do_Not_Ask_for_Payment_Method__c, Perch_Acq_Available_LMI_Capacity__c, LMI__c,
+            (
+                SELECT Id, Account__c, Account__r.Partner__c FROM Partner_Shared_Solar_System_Accesses__r WHERE IsActive__c = TRUE
+            )
             FROM Shared_Solar_System__c
             WHERE Id IN :sssIds
         ];
@@ -136,10 +139,15 @@ public inherited sharing class SharedSolarSystemsSelector {
                 Utility_NMC_Tariff__r.Size_Ratio__c, NMC_Value__c,Credit_Score_Requirement__c, Assignment_Order__c,
                 Maximum_Subscription_Capacity_kWDC__c,Available_SMB_Underwriting_Method_FICO__c, Available_SMB_Underwriting_Method_Docs__c,
                 Do_Not_Ask_for_Payment_Method__c, Do_Not_Underwrite__c,BWC_Project_Entity_Manual__c,Available_Demand_Capacity__c,
-                Total_System_Size_kWh_DC__c,Public__c, Waitlist__c, (SELECT Id, Account__c, Account__r.Partner__c FROM Partner_Shared_Solar_System_Accesses__r WHERE IsActive__c = TRUE)
+                Total_System_Size_kWh_DC__c,Public__c, Waitlist__c, Perch_Acq_Available_LMI_Capacity__c, LMI__c,
+            (
+                SELECT Id, Account__c, Account__r.Partner__c
+                FROM Partner_Shared_Solar_System_Accesses__r
+                WHERE IsActive__c = TRUE
+            )
             FROM Shared_Solar_System__c
             WHERE Open__c = TRUE
-            AND Capacity_Available_to_be_Reserved__c > 0
+            AND (Capacity_Available_to_be_Reserved__c > 0 OR Perch_Acq_Available_LMI_Capacity__c > 0)
             ORDER BY Assignment_Order__c
         ];
     }

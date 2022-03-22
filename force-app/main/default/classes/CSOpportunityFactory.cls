@@ -63,13 +63,11 @@ public without sharing class CSOpportunityFactory {
         opp.Application_Type__c = lead.Application_Type__c;
         opp.BS_Sales_ID__c = lead.bs_Sales_ID__c;
         opp.Business_Title__c = lead.Business_Title__c;
-        opp.Customer_Group__c = lead.Customer_Type_Formula__c;
+        opp.Customer_Group__c = (lead.Customer_type__c == 'LMI'?'Residential':lead.Customer_type__c);
         opp.Customer_Phone__c = lead.Phone2__c;
         opp.Customer_Referral__c = lead.Customer_Referral__c;
         opp.Customer_Type__c = lead.Customer_type__c;
-        if (lead.Customer_type__c == 'LMI') {
-            opp.Customer_Sub_Group__c = 'LMI';
-        }
+        opp.Customer_Sub_Group__c = (lead.Customer_type__c=='LMI'?'LMI':null);
         opp.Date_of_Application__c = lead.Date_of_Application__c;
         opp.Lead_ID__c = lead.Lead_ID__c;
         opp.LoadZone__c = lead.LoadZone__c;

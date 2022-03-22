@@ -603,6 +603,7 @@ public class LeadServiceTestclass {
         fabbedSSS.setField(Shared_Solar_System__c.Available_SMB_Underwriting_Method_FICO__c, true);
         fabbedSSS.setField(Shared_Solar_System__c.Credit_Score_Requirement__c, 200);
         fabbedSSS.setField(Shared_Solar_System__c.Do_Not_Ask_for_Payment_Method__c, false);
+        fabbedSSS.setField(Shared_Solar_System__c.Capacity_Available_to_be_Reserved__c, 100);
         sfab_FabricatedSObject fabbedPartnerEligibility = new sfab_FabricatedSObject(Partner_Shared_Solar_System_Eligibility__c.class);
         sfab_FabricatedSObject fabbedPartnerAccount = new sfab_FabricatedSObject(Account.class);
         fabbedPartnerAccount.setField(Account.Partner__c, Util.getFakeId(Partner__c.SObjectType));
@@ -618,6 +619,30 @@ public class LeadServiceTestclass {
 
         System.assertEquals(1, sssService.getQualifiedForLead(hybridLead).size(),
             'Lead should qualify for SSS that has Product with Parent Product that matches the Lead\'s Hybrid/Generic Product');
+    }
+
+    @IsTest
+    private static void testRemoveUnqualifiedSystems() {
+        List<Shared_Solar_System__c> qualifiedSSSes = new List<Shared_Solar_System__c>();
+        sfab_FabricatedSObject fabbedSSS = new sfab_FabricatedSObject(Shared_Solar_System__c.class);
+        fabbedSSS.setField(Shared_Solar_System__c.Perch_Acq_Available_LMI_Capacity__c, 100);
+        fabbedSSS.setField(Shared_Solar_System__c.LMI__c, true);
+        qualifiedSSSes.add((Shared_Solar_System__c) fabbedSSS.toSObject());
+
+        SharedSolarSystems sharedSolarSystems = new SharedSolarSystems(qualifiedSSSes);
+        sharedSolarSystems.removeUnqualifiedSystemsForCustomerType('LMI', qualifiedSSSes);
+        System.assertEquals(1, qualifiedSSSes.size(), 'Should be one qualified system that has LMI capacity for an LMI lead');
+        sharedSolarSystems.removeUnqualifiedSystemsForCustomerType('Residential', qualifiedSSSes);
+        System.assertEquals(0, qualifiedSSSes.size(), 'Should be no qualified systems with capacity for a small CS lead');
+
+        fabbedSSS.setField(Shared_Solar_System__c.LMI__c, false);
+        fabbedSSS.setField(Shared_Solar_System__c.Capacity_Available_to_be_Reserved__c, 100);
+        qualifiedSSSes.add((Shared_Solar_System__c) fabbedSSS.toSObject());
+        sharedSolarSystems = new SharedSolarSystems(qualifiedSSSes);
+        sharedSolarSystems.removeUnqualifiedSystemsForCustomerType('Non-Residential', qualifiedSSSes);
+        System.assertEquals(1, qualifiedSSSes.size(), 'Should be one qualified system that has small cs capacity for an small cs lead');
+        sharedSolarSystems.removeUnqualifiedSystemsForCustomerType('LMI', qualifiedSSSes);
+        System.assertEquals(0, qualifiedSSSes.size(), 'Should be no qualified systems with capacity for an LMI lead');
     }
 
     @IsTest
@@ -692,6 +717,7 @@ public class LeadServiceTestclass {
         fabbedSSS.setField(Shared_Solar_System__c.Available_SMB_Underwriting_Method_FICO__c, true);
         fabbedSSS.setField(Shared_Solar_System__c.Credit_Score_Requirement__c, 200);
         fabbedSSS.setField(Shared_Solar_System__c.Do_Not_Ask_for_Payment_Method__c, ignorePaymentDetails);
+        fabbedSSS.setField(Shared_Solar_System__c.Capacity_Available_to_be_Reserved__c, 100);
         sfab_FabricatedSObject fabbedPartnerEligibility = new sfab_FabricatedSObject(Partner_Shared_Solar_System_Eligibility__c.class);
         sfab_FabricatedSObject fabbedPartnerAccount = new sfab_FabricatedSObject(Account.class);
         fabbedPartnerAccount.setField(Account.Partner__c, Util.getFakeId(Partner__c.SObjectType));
