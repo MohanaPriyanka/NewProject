@@ -1,5 +1,5 @@
 /**
- * Created by jlugo on 2019-07-03.
+ * @description Created by jlugo on 2019-07-03.
  * Tested by RestLeadTest, CSLeadsRESTControllerV2Test
  */
 @SuppressWarnings('PMD.StdCyclomaticComplexity,PMD.ExcessivePublicCount,PMD.TooManyFields')
@@ -40,9 +40,11 @@ public without sharing class RestLead {
     public Date birthdate;
     public Boolean replacementCapacity;
 
-    @TestVisible
-    private static FeatureService featureService = new FeatureService();
+    @TestVisible private static FeatureService featureService = new FeatureService();
+    @TestVisible private static PerchOneLocationService locationService = new PerchOneLocationService();
+    @TestVisible private static CapacityService capacityService = new CapacityService();
 
+    @SuppressWarnings('PMD.EmptyStatementBlock')
     public RestLead() {
     }
 
@@ -83,6 +85,9 @@ public without sharing class RestLead {
         validateBasicFields();
         validateBusinessFieldsIfRequired();
         validatePropertyAccounts();
+        if (customerType == 'LMI') {
+            validateInDACForLMICustomers();
+        }
     }
 
     private void validateBasicFields() {
@@ -117,58 +122,28 @@ public without sharing class RestLead {
 
     private void validatePropertyAccounts() {
         if (propertyAccounts != null && !propertyAccounts.isEmpty()) {
+            // Remove this when supporting multiple property accounts
+            if (propertyAccounts.size() > 1) {
+                throw new Util.BWException('Currently, only <=1 propertyAccount per lead is supported in the API.');
+            }
             for (RestPropertyAccount propertyAccount : propertyAccounts) {
                 propertyAccount.validateCreateFields();
             }
         }
     }
 
-    /**
-     * This is used to merge in fields during PATCHes.  Any field that we expect to PATCH should be added to this method.
-     *
-     * @param fieldNames Set of field names to PATCH
-     * @param baseLead Original Lead from the DB that this Lead's values with be patched on top of.
-     *
-     * @return
-     */
-    @SuppressWarnings('PMD')
-    public Lead mergeFields(Set<String> fieldNames, Lead baseLead) {
-        if (fieldNames.contains('firstName')) baseLead.FirstName = this.firstName;
-        if (fieldNames.contains('lastName')) baseLead.LastName = this.lastName;
-        if (fieldNames.contains('email')) baseLead.Email = this.email;
-        if (fieldNames.contains('mobilePhone')) {
-            baseLead.MobilePhone = this.mobilePhone;
-            baseLead.Phone = this.mobilePhone;
+    private void validateInDACForLMICustomers() {
+        Decimal latitude = propertyAccounts[0].utilityAccountLogs[0].latitude;
+        Decimal longitude = propertyAccounts[0].utilityAccountLogs[0].longitude;
+        if (latitude != null && longitude != null &&
+            locationService.isInDisadvantagedCommunity(latitude, longitude)) {
+            return;
         }
-        if (fieldNames.contains('businessName')) baseLead.Company = this.businessName;
-        if (fieldNames.contains('streetAddress')) baseLead.LASERCA__Home_Address__c = this.streetAddress;
-        if (fieldNames.contains('streetAddress')) baseLead.Street = this.streetAddress;
-        if (fieldNames.contains('city')) baseLead.LASERCA__Home_City__c = this.city;
-        if (fieldNames.contains('city')) baseLead.City = this.city;
-        if (fieldNames.contains('state')) baseLead.LASERCA__Home_State__c = this.state;
-        if (fieldNames.contains('state')) baseLead.State = BlueWaveParent.convertAbbreviationToState(this.state);
-        if (fieldNames.contains('zipCode')) baseLead.LASERCA__Home_Zip__c = this.zipCode;
-        if (fieldNames.contains('zipCode')) baseLead.PostalCode = this.zipCode;
-        if (fieldNames.contains('loadZone')) baseLead.LoadZone__c = this.loadZone;
-        if (fieldNames.contains('businessPhone')) baseLead.Business_Phone__c = this.businessPhone;
-        if (fieldNames.contains('businessTitle')) baseLead.Business_Title__c = this.businessTitle;
-        if (fieldNames.contains('customerSignedDate')) baseLead.Customer_Signed_Date__c = this.customerSignedDate;
-        if (fieldNames.contains('applicationCompleteDate')) baseLead.Application_Complete_Date__c = this.applicationCompleteDate;
-        if (fieldNames.contains('campaignId')) baseLead.Manual_Campaign_ID__c = this.campaignId;
-        if (fieldNames.contains('referralName')) baseLead.Referral_Name__c = this.referralName;
-        if (fieldNames.contains('referralEmail')) baseLead.Referral_Email__c = this.referralEmail;
-        if (fieldNames.contains('continueApplicationLink')) baseLead.Continue_Application_Link__c = this.continueApplicationLink;
-        if (fieldNames.contains('underwritingCriteria')) baseLead.Underwriting_Criteria__c = this.underwritingCriteria;
-        if (fieldNames.contains('utilityId')) baseLead.Utility_relationship__c = this.utilityId;
-        if (fieldNames.contains('birthdate')) baseLead.LASERCA__Birthdate__c = this.birthdate;
-        if (fieldNames.contains('replacementCapacity')) baseLead.Replacement_Capacity__c = this.replacementCapacity;
-        updateDerivedFields(new RestLead(baseLead), baseLead);
-
-        if (this.utilityId == null && this.eiaId != null) {
-            updateUtility(this.eiaId, baseLead);
+        if (capacityService.findCapacityByZipcode(zipCode, (partnerId == null ? '' : partnerId), utilityId).hasSmallCSCapacity()) {
+            this.customerType = 'Residential';
+        } else {
+            throw new Util.BWException('Sorry, at this time, there is only capacity for customers living in a disadvantaged community as defined by New York State');
         }
-
-        return baseLead;
     }
 
     public Lead asLead() {
@@ -230,11 +205,9 @@ public without sharing class RestLead {
 
     @SuppressWarnings('PMD.ApexCRUDViolation')
     private void updateDerivedFields(RestLead restLead, Lead newLead) {
-
+        newLead.Application_Source_Phase_1__c = 'Switch without Partner';
         if (restLead.partnerId != null) {
             newLead.Application_Source_Phase_1__c = 'Switch with Partner';
-        } else {
-            newLead.Application_Source_Phase_1__c = 'Switch without Partner';
         }
 
         if (!featureService.isEnabled('Switch_New_Partner_Data_Model')) {
@@ -258,8 +231,8 @@ public without sharing class RestLead {
                 newLead.bs_Sales_ID__c = customerPartner.Default_Sales_Rep__c;
             }
 
-            if (String.isNotBlank(newLead.BS_Sales_ID__c)) {
-                Contact partnerContact = ContactSelector.selectContactBySalesRepId(newLead.BS_Sales_ID__c);
+            if (String.isNotBlank(newLead.bs_Sales_ID__c)) {
+                Contact partnerContact = ContactSelector.selectContactBySalesRepId(newLead.bs_Sales_ID__c);
                 if (partnerContact != null) {
                     newLead.Partner_Contact__c = partnerContact.Id;
                 }
@@ -325,6 +298,99 @@ public without sharing class RestLead {
         }
     }
 
+    public void insertLeadAccountAndUALs(RestResponse response, CSLeadsRESTControllerV2 controller) {
+        Lead newLead = this.asLead();
+        newLead = controller.leadService.insertLead(newLead);
+        newLead = controller.duplicateService.checkLeadDuplicates(newLead);
+
+        // Set continue application links
+        CSLeadsRESTControllerV2.setContinueApplicationLinks(newLead, null);
+
+        newLead = controller.leadService.updateLead(newLead);
+        if (this.financialDocs != null) {
+            for (RestLead.RestContentDocument contentDoc : this.financialDocs) {
+                Financial_Underwriting_Document__c finDoc = new Financial_Underwriting_Document__c(Lead__c = newLead.Id);
+                controller.uow.registerNew(finDoc);
+                controller.registerNewContentDocs(new List<RestLead.RestContentDocument>{contentDoc}, finDoc);
+            }
+        }
+        if (this.propertyAccounts != null) {
+            for (RestLead.RestPropertyAccount requestPropertyAccount : this.propertyAccounts) {
+                Account newAccount = requestPropertyAccount.asAccount(newLead);
+                controller.uow.registerNew(newAccount);
+                if (newLead.Product__c != null) {
+                    Integer numberOfContractDocs = controller.calcNumberOfContractDocuments(newLead, this);
+                    Contract c = controller.customerContractService.setContractFields(newLead, numberOfContractDocs);
+                    controller.uow.registerNew(c, Contract.AccountId, newAccount);
+                }
+                if (requestPropertyAccount.utilityAccountLogs != null) {
+                    controller.registerNewUALs(requestPropertyAccount.utilityAccountLogs, newAccount);
+                }
+            }
+        }
+        controller.uow.commitWork();
+        controller.updateLeadApplicationStatus(newLead.Id);
+        RestLead responseLead = controller.formatRestLeadFromLeadAndChildren(newLead.Id, true);
+        controller.setEnvelopeData(responseLead);
+        response.statusCode = new RESTController.StatusCode().created;
+    }
+
+    public class MergeService {
+        private RestLead restLead;
+
+        public MergeService(RestLead restLead) {
+            this.restLead = restLead;
+        }
+
+
+        /**
+         * @description Used to merge in fields during PATCHes.  Any field that we expect to PATCH should be added to this method.
+         *
+         * @param fieldNames Set of field names to PATCH
+         * @param baseLead Original Lead from the DB that this Lead's values with be patched on top of.
+         *
+         * @return Lead with merged fields
+         */
+        public Lead mergeFields(Set<String> fieldNames, Lead baseLead) {
+            if (fieldNames.contains('firstName')) baseLead.FirstName = restLead.firstName;
+            if (fieldNames.contains('lastName')) baseLead.LastName = restLead.lastName;
+            if (fieldNames.contains('email')) baseLead.Email = restLead.email;
+            if (fieldNames.contains('mobilePhone')) {
+                baseLead.MobilePhone = restLead.mobilePhone;
+                baseLead.Phone = restLead.mobilePhone;
+            }
+            if (fieldNames.contains('businessName')) baseLead.Company = restLead.businessName;
+            if (fieldNames.contains('streetAddress')) baseLead.LASERCA__Home_Address__c = restLead.streetAddress;
+            if (fieldNames.contains('streetAddress')) baseLead.Street = restLead.streetAddress;
+            if (fieldNames.contains('city')) baseLead.LASERCA__Home_City__c = restLead.city;
+            if (fieldNames.contains('city')) baseLead.City = restLead.city;
+            if (fieldNames.contains('state')) baseLead.LASERCA__Home_State__c = restLead.state;
+            if (fieldNames.contains('state')) baseLead.State = BlueWaveParent.convertAbbreviationToState(restLead.state);
+            if (fieldNames.contains('zipCode')) baseLead.LASERCA__Home_Zip__c = restLead.zipCode;
+            if (fieldNames.contains('zipCode')) baseLead.PostalCode = restLead.zipCode;
+            if (fieldNames.contains('loadZone')) baseLead.LoadZone__c = restLead.loadZone;
+            if (fieldNames.contains('businessPhone')) baseLead.Business_Phone__c = restLead.businessPhone;
+            if (fieldNames.contains('businessTitle')) baseLead.Business_Title__c = restLead.businessTitle;
+            if (fieldNames.contains('customerSignedDate')) baseLead.Customer_Signed_Date__c = restLead.customerSignedDate;
+            if (fieldNames.contains('applicationCompleteDate')) baseLead.Application_Complete_Date__c = restLead.applicationCompleteDate;
+            if (fieldNames.contains('campaignId')) baseLead.Manual_Campaign_ID__c = restLead.campaignId;
+            if (fieldNames.contains('referralName')) baseLead.Referral_Name__c = restLead.referralName;
+            if (fieldNames.contains('referralEmail')) baseLead.Referral_Email__c = restLead.referralEmail;
+            if (fieldNames.contains('continueApplicationLink')) baseLead.Continue_Application_Link__c = restLead.continueApplicationLink;
+            if (fieldNames.contains('underwritingCriteria')) baseLead.Underwriting_Criteria__c = restLead.underwritingCriteria;
+            if (fieldNames.contains('utilityId')) baseLead.Utility_relationship__c = restLead.utilityId;
+            if (fieldNames.contains('birthdate')) baseLead.LASERCA__Birthdate__c = restLead.birthdate;
+            if (fieldNames.contains('replacementCapacity')) baseLead.Replacement_Capacity__c = restLead.replacementCapacity;
+            restLead.updateDerivedFields(new RestLead(baseLead), baseLead);
+
+            if (restLead.utilityId == null && restLead.eiaId != null) {
+                restLead.updateUtility(restLead.eiaId, baseLead);
+            }
+
+            return baseLead;
+        }
+    }
+
     public class RestPropertyAccount {
         public Id id;
         public Id leadId;
@@ -338,6 +404,7 @@ public without sharing class RestLead {
         public Datetime zuoraPaymentRefIdExpirationDate;
         public List<RestUtilityAccountLog> utilityAccountLogs;
 
+        @SuppressWarnings('PMD.EmptyStatementBlock')
         public RestPropertyAccount() {
         }
 
@@ -393,12 +460,12 @@ public without sharing class RestLead {
         }
 
         /**
-         * This is used to merge in fields during PATCHes.  Any field that we expect to PATCH should be added to this method.
+         * @description This is used to merge in fields during PATCHes.  Any field that we expect to PATCH should be added to this method.
          *
          * @param fieldNames Set of field names to PATCH
          * @param baseAccount Original Property Account from the DB that this Account's values with be patched on top of.
          *
-         * @return
+         * @return Account with merged fields
          */
         @SuppressWarnings('PMD')
         public Account mergeFields(Set<String> fieldNames, Account baseAccount) {
@@ -415,7 +482,7 @@ public without sharing class RestLead {
 
     }
 
-    public class RestUtilityAccountLog {
+    public without sharing class RestUtilityAccountLog {
         public Id id;
         public Id leadId;
         public Id propertyAccountId;
@@ -432,6 +499,8 @@ public without sharing class RestLead {
         public Decimal annualKWh;
         public Decimal annualCostOfElectricity;
         public List<RestContentDocument> utilityBills;
+        public Decimal latitude;
+        public Decimal longitude;
 
         public RestUtilityAccountLog() {
             this.utilityBills = new List<RestContentDocument>();
@@ -475,7 +544,9 @@ public without sharing class RestLead {
                 Service_State__c = serviceState,
                 Service_Zip_Code__c = servicePostalCode,
                 Annual_kWh__c = annualKWh,
-                Annual_Cost_of_Electricity__c = annualCostOfElectricity
+                Annual_Cost_of_Electricity__c = annualCostOfElectricity,
+                Location__Latitude__s = latitude,
+                Location__Longitude__s = longitude
             );
 
             List<Lead> leadList = [SELECT Utility_relationship__c FROM Lead WHERE Id = :propertyAccount.Lead__c];
@@ -491,12 +562,12 @@ public without sharing class RestLead {
         }
 
         /**
-         * This is used to merge in fields during PATCHes.  Any field that we expect to PATCH should be added to this method.
+         * @description This is used to merge in fields during PATCHes.  Any field that we expect to PATCH should be added to this method.
          *
          * @param fieldNames Set of field names to PATCH
          * @param baseUAL Original Utility Account Log from the DB that this UAL's values with be patched on top of.
          *
-         * @return
+         * @return UAL with merged fields
          */
         @SuppressWarnings('PMD')
         public Utility_Account_Log__c mergeFields(Set<String> fieldNames, Utility_Account_Log__c baseUAL) {
@@ -558,6 +629,7 @@ public without sharing class RestLead {
         public Datetime createdDate;
         public Integer index;    // used for file upload occurring before parent insert
 
+        @SuppressWarnings('PMD.EmptyStatementBlock')
         public RestContentDocument() {
         }
 

@@ -530,6 +530,16 @@ const insertLead = async (cmp) => {
         toggleLoadingSpinnerEvent(cmp, true, 'waitingRoom');
         cmp.dispatchEvent(new CustomEvent('readystate'));
         postErrorLogEvent(cmp, error, null,'ssfBasicInfoShared', 'insertLead', 'Error');
+        let errorObject = JSON.parse(error);
+        if (errorObject.errors && errorObject.errors[0].includes('there is only capacity for customers living in a disadvantaged community')) {
+            cmp.showSpinner = false;
+            cmp.dispatchEvent(new ShowToastEvent({
+                title: 'Error',
+                message: errorObject.errors[0],
+                variant: 'warning'
+            }));
+            return;
+        }
         showGenericErrorToast(cmp);
     }
 }

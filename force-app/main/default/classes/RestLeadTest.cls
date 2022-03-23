@@ -125,6 +125,36 @@ public with sharing class RestLeadTest {
     }
 
     @IsTest
+    public static void testValidateCreateFieldsLMINotInDACNoCapacity() {
+        try {
+            validUtilityAccountLog.latitude = 41;
+            validUtilityAccountLog.longitude = -73;
+            validResidentialLead.customerType = 'LMI';
+            useMocks(false, false);
+            validResidentialLead.validateCreateFields();
+            System.assert(false, 'Validation should not pass because the LMI customer is not in a DAC and there is no small CS capacity');
+        } catch (Exception e) {
+            System.assert(e.getMessage().contains('disadvantaged community'),
+                'Should inform consumer there is no capacity, but got this: ' + e.getMessage());
+        }
+    }
+
+    @IsTest
+    public static void testValidateCreateFieldsLMINotInDACWithCapacity() {
+        try {
+            validUtilityAccountLog.latitude = 41;
+            validUtilityAccountLog.longitude = -73;
+            validResidentialLead.customerType = 'LMI';
+            useMocks(false, true);
+            validResidentialLead.validateCreateFields();
+            System.assertEquals('Residential', validResidentialLead.customerType,
+                'Should have switched the customer type to Residential from LMI since the customer is not in a DAC');
+        } catch (Exception e) {
+            System.assert(false, 'Validation should not have thrown an exception, since there is small cs capacity for them');
+        }
+    }
+
+    @IsTest
     static void testUalRateClass(){
         Utility__c utility1 = new Utility__c(Name = 'utility1');
         Utility__c utility2 = new Utility__c(Name = 'utility2');
@@ -178,4 +208,45 @@ public with sharing class RestLeadTest {
         List<Error_Log__c> errorLogs = [SELECT Id, Message__c FROM Error_Log__c WHERE Class__c = 'RestLead.RestUtilityAccountLog' AND Method__c = 'updateRateClass'];
         System.assert(!errorLogs.isEmpty(), 'An error log should have been created by the mergeFields() method, as there is no Rate Class matching both the name in the RestUtilityAccountLog and the Utility in the parent lead');
     }
+
+
+    public static void useMocks(Boolean inDAC, Boolean hasSmallCSCapacity) {
+        RestLead.locationService = (PerchOneLocationService) Test.createStub(PerchOneLocationService.class, new MockedPerchOneLocationService(inDAC));
+        RestLead.capacityService = (CapacityService) Test.createStub(CapacityService.class, new MockedCapacityService(hasSmallCSCapacity));
+    }
+
+    public class MockedPerchOneLocationService extends MockProvider {
+        public Boolean inDAC;
+        public MockedPerchOneLocationService(Boolean inDAC) {
+            this.inDAC = inDAC;
+        }
+        public override Object handleMethodCall(MethodCall methodCall) {
+            switch on methodCall.stubbedMethodName {
+                when 'isInDisadvantagedCommunity' {
+                    return inDAC;
+                }
+            }
+            return null;
+        }
+    }
+
+    public class MockedCapacityService extends MockProvider {
+        public Boolean hasSmallCSCapacity;
+        public MockedCapacityService(Boolean hasSmallCSCapacity) {
+            this.hasSmallCSCapacity = hasSmallCSCapacity;
+        }
+        public override Object handleMethodCall(MethodCall methodCall) {
+            switch on methodCall.stubbedMethodName {
+                when 'findCapacityByZipcode' {
+                    CapacityService.ZipcodeResponse response = new CapacityService.ZipcodeResponse();
+                    sfab_FabricatedSObject fabbedSSS = new sfab_FabricatedSObject(Shared_Solar_System__c.class);
+                    fabbedSSS.setField(Shared_Solar_System__c.Capacity_Available_to_be_Reserved__c, hasSmallCSCapacity?100:0);
+                    response.sharedSolarSystems = new List<Shared_Solar_System__c>{(Shared_Solar_System__c) fabbedSSS.toSObject()};
+                    return response;
+                }
+            }
+            return null;
+        }
+    }
+
 }

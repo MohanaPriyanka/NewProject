@@ -63,8 +63,7 @@ public with sharing class CSTestDataFactory {
         restAccount.utilityAccountLogs = new List<RestLead.RestUtilityAccountLog>{requestUAL1};
         restLead.propertyAccounts = new List<RestLead.RestPropertyAccount>{restAccount};
 
-        CSLeadsRESTControllerV2 controller = new CSLeadsRESTControllerV2();
-        controller.insertLeadAccountAndUALs(restLead, new RestResponse());
+        restLead.insertLeadAccountAndUALs(new RestResponse(), new CSLeadsRESTControllerV2());
         leadId = [SELECT Id FROM Lead].Id;
         contractId = [SELECT Id FROM Contract WHERE Lead__c =: leadId].Id;
     }
