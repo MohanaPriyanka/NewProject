@@ -420,6 +420,21 @@
         </values>
     </picklistValues>
     <picklistValues>
+        <picklist>Partner_Commission_Frequency__c</picklist>
+        <values>
+            <fullName>Monthly</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>None</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Weekly</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
         <picklist>Rating</picklist>
         <values>
             <fullName>Cold</fullName>

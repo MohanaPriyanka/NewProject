@@ -136,7 +136,8 @@ public without sharing class PartnerCommissionTestDataFactory {
         Account partnerAcc = new Account(
             RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Partner Account').getRecordTypeId(),
             Name = 'Solar Test Partner',
-            Partner__c = legacyPartner.Id
+            Partner__c = legacyPartner.Id,
+            Partner_Commission_Frequency__c = 'Weekly'
         );
         insert partnerAcc;
 

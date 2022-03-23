@@ -39,9 +39,10 @@ public without sharing class VariableRateCommissionProcessor extends PartnerComm
                 }
             } catch (Exception e) {
                 String message =  deal + '\n\n' + e.getMessage() + ' ' + e.getStackTraceString();
-                Logger.postLog('VariableRateCommissionProcessor', 'generateCommissionPayments', message, System.now(), Logger.ERROR);
+                Logger.logLater('VariableRateCommissionProcessor', 'generateCommissionPayments', message, Logger.ERROR);
             }
         }
+        Logger.flushLogs();
     }
 
     private void constructIterableDealSummaries() {

@@ -2,6 +2,16 @@
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.Partner_Commission_Frequency__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Partner__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Commission_Payment__c.Amount_Due__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -131,6 +141,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Invoice__c.End_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Invoice__c.Invoice_Auto_Number__c</field>
         <readable>true</readable>
@@ -157,6 +172,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Invoice__c.Start_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Invoice__c.Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -167,6 +187,15 @@
     </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Commission Payment Management</label>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Account</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>false</allowDelete>
@@ -185,4 +214,8 @@
         <object>Invoice__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
+    <recordTypeVisibilities>
+        <recordType>Account.Partner_Account</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
 </PermissionSet>

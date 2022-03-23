@@ -1,6 +1,6 @@
 /**
  * @description Created By: peteryao on 1/20/19
- * Tested by: AccountsSelectorTest
+ * Tested by: AccountsSelectorTest, PartnerCommissionGenerationTest
  **/
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class AccountsSelector {
@@ -85,8 +85,8 @@ public without sharing class AccountsSelector {
         return [
             SELECT Id, Zuora_Invoice_Message_1_of_2__c, Zuora_Invoice_Message_2_of_2__c
             FROM Account
-            WHERE Zuora_Invoice_Message_1_of_2__c != null
-            OR Zuora_Invoice_Message_2_of_2__c != null
+            WHERE Zuora_Invoice_Message_1_of_2__c != NULL
+            OR Zuora_Invoice_Message_2_of_2__c != NULL
         ];
     }
 
@@ -232,7 +232,7 @@ public without sharing class AccountsSelector {
             SELECT Id, Date_Removed_from_Project__c,
             (SELECT Id, Date_Removed_from_Project__c FROM Opportunities)
             FROM Account
-            WHERE Date_Removed_from_Project__c != null
+            WHERE Date_Removed_from_Project__c != NULL
             AND Id IN :acctIds
         ];
     }
@@ -263,9 +263,23 @@ public without sharing class AccountsSelector {
   
     public Account getPartnerAccountDetails(Id partnerAccountId) {
         return [
-            SELECT Id, Name, Partner__c
+            SELECT Id, Name, Partner__c, Partner_Commission_Frequency__c
             FROM Account
             WHERE Id =: partnerAccountId
         ];
+    }
+
+    public List<Id> getPartnerAccountsForCommissionGeneration() {
+        List<Id> partnerAccountIds = new List<Id>();
+        for (AggregateResult queryResult : [
+            SELECT COUNT(Id), Partner_tag_lookup__r.Account__c acc
+            FROM Opportunity
+            WHERE Partner_tag_lookup__r.Account__r.RecordType.Name = 'Partner Account'
+            GROUP BY Partner_tag_lookup__r.Account__c
+            ORDER BY COUNT(Id) DESC
+        ]) {
+            partnerAccountIds.add((Id) queryResult.get('acc'));
+        }
+        return partnerAccountIds;
     }
 }

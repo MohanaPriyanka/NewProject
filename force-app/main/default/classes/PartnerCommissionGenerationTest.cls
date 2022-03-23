@@ -359,6 +359,64 @@ public class PartnerCommissionGenerationTest {
         }
     }
 
+    @IsTest
+    private static void testScheduler() {
+        System.assertEquals(0, [SELECT Id FROM Invoice__c].size(), 'No invoices should be created before scheduler run');
+        PartnerCommissionScheduler scheduler = new PartnerCommissionScheduler();
+        Test.startTest();
+        scheduler.execute(null);
+        Test.stopTest();
+        System.assertNotEquals(0, [SELECT Id FROM Invoice__c].size(), 'Invoices should be generated after scheduler run');
+    }
+
+    @IsTest
+    private static void testPartnerInvoiceMetadata() {
+        PartnerInvoice invoiceWrapper;
+
+        // Test Weekly invoice frequency data
+        PartnerInvoice.accountsSelector = (AccountsSelector)
+            Test.createStub(AccountsSelector.class, new MockAccountsSelector('Weekly'));
+        invoiceWrapper = new PartnerInvoice(null);
+        Date testTodaysDate = Date.newInstance(2022, 03, 21);
+        invoiceWrapper.getInvoiceDates(testTodaysDate);
+        System.assertEquals('3/21/2022', invoiceWrapper.startDate.format(), 'Incorrect period start date for weekly invoice');
+        System.assertEquals('3/27/2022', invoiceWrapper.endDate.format(), 'Incorrect period end date for weekly invoice');
+        System.assertEquals('4/8/2022', invoiceWrapper.dueToAccountingDate.format(), 'Incorrect due to accounting date for weekly invoice');
+        System.assertEquals('4/15/2022', invoiceWrapper.dueDate.format(), 'Incorrect due date for weekly invoice');
+        invoiceWrapper.getInvoiceName();
+
+        // Test Monthly invoice frequency data
+        PartnerInvoice.accountsSelector = (AccountsSelector)
+            Test.createStub(AccountsSelector.class, new MockAccountsSelector('Monthly'));
+        invoiceWrapper = new PartnerInvoice(null);
+        testTodaysDate = Date.newInstance(2022, 03, 07);
+        invoiceWrapper.getInvoiceDates(testTodaysDate);
+        System.assertEquals('3/1/2022', invoiceWrapper.startDate.format(), 'Incorrect period start date for monthly invoice');
+        System.assertEquals('3/31/2022', invoiceWrapper.endDate.format(), 'Incorrect period end date for monthly invoice');
+        System.assertEquals('4/3/2022', invoiceWrapper.dueToAccountingDate.format(), 'Incorrect due to accounting date for monthly invoice');
+        System.assertEquals('4/15/2022', invoiceWrapper.dueDate.format(), 'Incorrect due date for monthly invoice');
+        invoiceWrapper.getInvoiceName();
+        System.assertEquals('Test Account - April 2022', invoiceWrapper.invoiceName ,'Incorrect invoice name for monthly invoice');
+    }
+
+    private class MockAccountsSelector extends MockProvider {
+        private String commissionFrequency;
+        public MockAccountsSelector(String commissionFrequency) {
+            this.commissionFrequency = commissionFrequency;
+        }
+        public override Object handleMethodCall(MethodCall methodCall) {
+            switch on methodCall.stubbedMethodName {
+                when 'getPartnerAccountDetails' {
+                    return new Account(
+                        Name = 'Test Account',
+                        Partner_Commission_Frequency__c = commissionFrequency
+                    );
+                }
+            }
+            return null;
+        }
+    }
+
     private static void enableClawbacks(Boolean enabled) {
         FeatureService.Mock mockFeatureService = new FeatureService.Mock(
             new Map<String, Boolean>{

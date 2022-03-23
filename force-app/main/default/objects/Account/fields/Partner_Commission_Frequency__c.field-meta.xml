@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Partner_Commission_Frequency__c</fullName>
+    <description>Interval at which partner commissions are paid out to the partner. This field controls the period comprising a Partner Invoice. See PartnerCommissionGenerator.cls</description>
+    <externalId>false</externalId>
+    <label>Partner Commission Frequency</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Weekly</fullName>
+                <default>false</default>
+                <label>Weekly</label>
+            </value>
+            <value>
+                <fullName>Monthly</fullName>
+                <default>false</default>
+                <label>Monthly</label>
+            </value>
+            <value>
+                <fullName>None</fullName>
+                <default>false</default>
+                <label>None</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

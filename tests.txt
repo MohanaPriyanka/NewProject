@@ -1,1 +1,1 @@
-CSLeadsRESTControllerV2Test,CSLeadsConverterTest
+PartnerCommissionGenerationTest,AccountsSelectorTest,PartnerInvoiceSelectorTest
