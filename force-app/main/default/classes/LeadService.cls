@@ -16,6 +16,8 @@ public without sharing class LeadService {
     ];
     private static Id parentAccountRTId =
         Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
+        private static Id customerContactRTId =
+        Schema.SObjectType.Contact.getRecordTypeInfosByName().get('Customer Contact').getRecordTypeId();
 
     public void completeLeadConversion(List<Lead> updatedLeads, Map<Id, Lead> oldLeadMap){
         List<Lead> convertedCSLeads = new List<Lead>();
@@ -57,6 +59,7 @@ public without sharing class LeadService {
         convertedAccount.BillingState = BlueWaveParent.convertAbbreviationToState(lead.LASERCA__Home_State__c);
         convertedAccount.BillingPostalCode = lead.LASERCA__Home_Zip__c;
         convertedAccount.OwnerId = apiUser.Id;
+        convertedContact.RecordTypeId = customerContactRTId;
         convertedContact.LASERCA__Home_Address__c = lead.LASERCA__Home_Address__c;
         convertedContact.LASERCA__Home_City__c = lead.LASERCA__Home_City__c;
         convertedContact.LASERCA__Home_State__c = lead.LASERCA__Home_State__c;

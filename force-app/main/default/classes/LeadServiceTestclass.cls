@@ -68,12 +68,8 @@ public class LeadServiceTestclass {
             Sizing_Method__c = 'Project Ratio',
             State__c = 'NY',
             IsActive = true,
-
-
-
-
             Customer_Subscription_Type__c = 'kWh');
-        insert csProduct;
+         insert csProduct;
 
         Product2 csProduct2 = new Product2(
             Name = 'Community Solar - SREC 16-01',
@@ -142,14 +138,14 @@ public class LeadServiceTestclass {
             Name = 'BlueWave Test Partner',
             RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Partner_Account').getRecordTypeId()
         );
-        Account partnerAccount2 = new Account(
+       Account partnerAccount2 = new Account(
             Name = 'BlueWave Test Partner2',
             RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Partner_Account').getRecordTypeId()
         );
+        
         insert new List<Account>{
             partnerAccount1, partnerAccount2
-        };
-
+        };        
         Partner__c partner1 = new Partner__c (
             Name = 'BlueWave Test Partner',
             Email__c = 'bwtest@email.com',
@@ -173,7 +169,7 @@ public class LeadServiceTestclass {
         List<Partner_Shared_Solar_System_Eligibility__c> partnerEligibilities = SharedSolarSystemsTest.getPartnerEligibilities(
             new List<Shared_Solar_System__c>{
                 sss1, sss2
-            }, new List<Account>{
+            }, new List<Account>{                              
                 partnerAccount2
             }
         );
@@ -270,7 +266,7 @@ public class LeadServiceTestclass {
             LIMIT 1
         ];
         System.assertNotEquals(null, convertedLead, 'Lead should have been converted');
-        System.assertNotEquals(null, convertedLead.ConvertedAccountId, 'Converted lead should have a ConvertedAccountId');
+        System.assertNotEquals(null, convertedLead.ConvertedAccountId, 'Converted lead should have a ConvertedAccountId'); 
 
         Account convertedAccount = [
             SELECT Id, Owner.Name, RecordType.Name
@@ -285,7 +281,7 @@ public class LeadServiceTestclass {
             LIMIT 1
         ];
         Contact contact = [
-            SELECT Id, Product_Line__c
+            SELECT Id, Product_Line__c,Contact.RecordType.Name
             FROM Contact
             WHERE Id = :convertedLead.ConvertedContactId
             LIMIT 1
@@ -305,15 +301,14 @@ public class LeadServiceTestclass {
             FROM Subscription_Order__c
             WHERE Utility_Account_Subscription__c IN :uasList
         ];
-
-        //test converted account = parent account
-        System.assertEquals('Parent Account', convertedAccount.RecordType.Name, 'Converted account should have a record type of Parent Account');
         System.assertEquals('API', convertedAccount.Owner.Name, 'Converted account should be owned by API user');
 
         //Test property's parent account
         System.assertEquals(convertedAccount.Id, propAcct.Parent_Account__c, 'Property account should be the converted account');
         System.assertEquals(contact.Id, propAcct.Send_Bills_Contact__c, 'Property account Send Bills Contact should be the converted contact');
         System.assertEquals('Community Solar', contact.Product_Line__c, 'Converted contact should be assigned to the Community Solar product line');
+        System.assertEquals('Customer Contact', contact.RecordType.Name, 'Converted contact should be assigned to the Customer Contact record type');
+        System.assertEquals('Parent Account', convertedAccount.RecordType.Name, 'Converted Account should have a record type of Parent Account');
 
         System.assertEquals(1, oppList.size(), 'Lead conversion should have produced a single opportunity');
         System.assertEquals('Albany Post Rd Solar Farm', oppList[0].Shared_Solar_System__r.Name, 'Opportunity should be assigned an SSS with the same utility as the converted lead');
@@ -339,9 +334,8 @@ public class LeadServiceTestclass {
         Lead switchLead = [
             SELECT Id, Status, Company, Product_line__c, Utility_relationship__r.Id, LASERCA__Home_Address__c,
                 LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c
-            FROM Lead
-            LIMIT 1
-        ];
+            FROM Lead LIMIT 1];
+            
         LeadService leadService = new LeadService();
 
         Account propertyAccount = leadService.buildPropertyAccountFromLegacyLead(switchLead);
@@ -352,9 +346,10 @@ public class LeadServiceTestclass {
         insert ual;
 
         switchLead.LeadSource = 'CSAP';
-        switchLead.Status = 'Qualified';
-        update switchLead;
-
+        switchLead.Status = 'Qualified';        
+        update switchLead;        
+        
+       
         pullCreditForLead(switchLead.Id);
 
         Database.LeadConvert lc = new Database.LeadConvert();
@@ -370,6 +365,7 @@ public class LeadServiceTestclass {
             WHERE IsConverted = TRUE
             LIMIT 1
         ];
+       
         Contact contact = [
             SELECT Id, Product_Line__c
             FROM Contact
@@ -377,11 +373,12 @@ public class LeadServiceTestclass {
             LIMIT 1
         ];
         // CSAP deleted the converted contact because the contact was created separately
-        delete contact;
-
+        delete contact; 
+    
         CSLeadsConverter.batchSize = 1;
         CSLeadsConverter converter = new CSLeadsConverter(new Set<Id>{convertedLead.Id});
         converter.execute(null);
+       
         Test.getEventBus().deliver();
         List<Error_Log__c> errorLogs = [
             SELECT Message__c
@@ -389,8 +386,7 @@ public class LeadServiceTestclass {
             WHERE Severity__c = :Logger.ERROR
         ];
         System.assertEquals(0, errorLogs.size(), errorLogs);
-    }
-
+    } 
 
     @IsTest
     static void testFailedEnrollment() {
@@ -471,10 +467,11 @@ public class LeadServiceTestclass {
         insert contract;
 
         Test.startTest();
-        lead.Product__c = newProduct.Id;
-        update lead;
+        lead.Product__c = newProduct.Id;       
+        update lead;        
+       
         Test.stopTest();
-
+        
         System.assertEquals(newProduct.Id, [SELECT Product__c FROM Contract WHERE Id = :contract.Id LIMIT 1].Product__c,
             'New product on Lead should be reflected by new product on Contract'
         );
