@@ -401,55 +401,7 @@ private class TransferPartServiceTest {
         System.assertEquals(10, productions[1].Untransferred_Credits__c);
 
     }
-
-    @IsTest
-    public static void testCreateCaseForTooMuchTransferCredit(){
-        Shared_Solar_System__c sss1 = [
-            SELECT Id
-            FROM Shared_Solar_System__c
-            WHERE Name = 'Oxford Barrett St. P1'
-            LIMIT 1
-        ];
-
-        Schedule_Z__c scheduleZ = [SELECT Id FROM Schedule_Z__c LIMIT 1];
-
-        Transfer__c excessTransfer = new Transfer__c(
-            Name = 'Excess May Transfer',
-            Transfer_Type__c = 'Excess Credit',
-            Allocation_Schedule__c = scheduleZ.Id,
-            Shared_Solar_System__c = sss1.Id,
-            Attempted_Transfer__c = 150,
-            Attempted_kWh_Transfer__c = 280,
-            Transfer_Amount__c = 150,
-            Date_of_Transfer__c = Date.newInstance(2019, 8, 2)
-        );
-
-        insert excessTransfer;
-
-        List<Transfer_Part__c> excessParts = [
-            SELECT Id, Type__c, Amount__c, Transfer__c, Production__c, Production__r.Name, Production__r.Id
-            FROM Transfer_Part__c
-            WHERE Transfer__c = :excessTransfer.Id
-            ORDER BY Production__r.Start_Date__c ASC
-        ];
-
-        Transfer__c checkTransfer = [
-            SELECT Id, Total_Transferred__c, Transfer_Amount__c
-            FROM Transfer__c
-            WHERE Id = :excessTransfer.Id
-            LIMIT 1
-        ];
-
-        List<Case> checkCase = [SELECT Id, Subject FROM Case WHERE Shared_Solar_System__c = :excessTransfer.Shared_Solar_System__c];
-
-        System.assertEquals(1, checkCase.size());
-        System.assertEquals(2, excessParts.size());
-
-        System.assertEquals(140, checkTransfer.Total_Transferred__c);
-        System.assertEquals(150, checkTransfer.Transfer_Amount__c);
-
-    }
-
+    
     @IsTest
     public static void testUtilityFees() {
 

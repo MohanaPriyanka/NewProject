@@ -1,1 +1,1 @@
-PartnerCommissionGenerationTest,AccountsSelectorTest,PartnerInvoiceSelectorTest
+BillGenerationServiceTest, TestBillCreationForCancelledCustomers, TransferPartServiceTest

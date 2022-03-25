@@ -35,36 +35,17 @@ public without sharing class TransferPartService {
 
     public void onAfterTransferUpdate(List<Transfer__c> allTransfers, Map<Id, Transfer__c> oldTransferMap) {
         List<Transfer__c> transferList = new List<Transfer__c>();
-        List<Case> casesToInsert = new List<Case>();
-        Group dataOps = [SELECT Id, DeveloperName FROM Group WHERE Type = 'Queue' AND DeveloperName = 'Data_Ops' LIMIT 1];
-
-        for (Transfer__c transfer : allTransfers) {
+ 		for (Transfer__c transfer : allTransfers) {
             //Data Ops marks the Transfer as QCed by assigning the Transfer_Type
             if (transfer.Transfer_Type__c != null && oldTransferMap.get(transfer.Id).Transfer_Type__c == null) {
                 transferList.add(transfer);
-            } else if (transfer.Total_Transferred__c != transfer.Transfer_Amount__c) {
-                //Update to an existing Transfer Type that has already been QCed and had Transfer parts created
-                Case amountCase = new Case(
-                    Subject = 'Untransferred/Overtransferred Credits for Transfer: ' + transfer.Id,
-                    Status = 'New',
-                    Origin = 'Other',
-                    Shared_Solar_System__c = transfer.Shared_Solar_System__c,
-                    OwnerId = dataOps.Id,
-                    Description = 'The transfer parts that were created for the Transfer: ' + transfer.Id +
-                        ' are either more or less than the Transfer Amount. Please investigate.'
-                );
-                casesToInsert.add(amountCase);
-            } else {
-                return;
             }
         }
-
-        createPartsFromTransfer(transferList);
-        if (casesToInsert.size() > 0) {
-            insert casesToInsert;
+        if (transferList.isEmpty()) {
+            return;
         }
+        createPartsFromTransfer(transferList);
     }
-
 
     public void onAfterTransferParts(List<Transfer_Part__c> allTransferParts) {
         Set<Id> transferIds = new Set<Id>();

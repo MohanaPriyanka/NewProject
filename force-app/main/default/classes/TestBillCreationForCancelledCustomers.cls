@@ -446,16 +446,6 @@ public class TestBillCreationForCancelledCustomers {
         insert new List<Transfer__c>{
             transferA1, transferB1, transferB2
         };
-
-        //If we have multiple months of Production for one Transfer, have to create parts in separate calls (in order)
-        TransferPartService transferPartService = new TransferPartService();
-        transferPartService.createPartsFromTransfer(new List<Transfer__c>{
-            transferA1, transferB1
-        });
-        transferPartService.createPartsFromTransfer(new List<Transfer__c>{
-            transferB2
-        });
-
         List<Transfer_Part__c > parts = [SELECT Id, Name, Amount__c, Production__r.Name FROM Transfer_Part__c];
         System.assertEquals(3, parts.size());
 
