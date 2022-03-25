@@ -85,7 +85,7 @@ public without sharing class RestLead {
         validateBasicFields();
         validateBusinessFieldsIfRequired();
         validatePropertyAccounts();
-        if (customerType == 'LMI') {
+        if (customerType == 'LMI' && featureService.isEnabled('DAC_Verification')) {
             validateInDACForLMICustomers();
         }
     }

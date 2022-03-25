@@ -213,6 +213,11 @@ public with sharing class RestLeadTest {
     public static void useMocks(Boolean inDAC, Boolean hasSmallCSCapacity) {
         RestLead.locationService = (PerchOneLocationService) Test.createStub(PerchOneLocationService.class, new MockedPerchOneLocationService(inDAC));
         RestLead.capacityService = (CapacityService) Test.createStub(CapacityService.class, new MockedCapacityService(hasSmallCSCapacity));
+        FeatureService.Mock mockFeatureService = new FeatureService.Mock(
+            new Map<String, Boolean>{
+                'DAC_Verification' => true
+            });
+        RestLead.featureService = (FeatureService) Test.createStub(FeatureService.class, mockFeatureService);
     }
 
     public class MockedPerchOneLocationService extends MockProvider {
