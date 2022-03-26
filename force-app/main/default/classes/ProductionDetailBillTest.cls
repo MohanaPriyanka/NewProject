@@ -354,40 +354,46 @@ public with sharing class ProductionDetailBillTest {
     }
 
     @IsTest
-    public static void testNegativeBillAmount() {
-        String transferMapAsString = '{"a900a000000GsOyAAK":[' +
-            '{"attributes":{"type":"Transfer_Part__c"},"Id":"a8y0a000000Gu3rAAA","Name":"InvoiceOne_ProductionOne","Production__c":"a8u0a000000I4ETAA0","Transfer__c":"a900a000000GsOyAAK","Transfer__r":{"attributes":{"type":"Transfer__c"},"Id":"a900a000000GsOyAAK","Billing_Method__c":"kWh","Transfer_kWh__c":22187},"Journal_Entry__c":"a920a000000HSfsAAG","kWh_Amount__c":10000,"Type__c":"Bill"},' +
-            '{"attributes":{"type":"Transfer_Part__c"},"Id":"a8y0a000000Gu3rBBB","Name":"InvoiceOne_ProductionTwo","Production__c":"a8u0a000000I4ETAA1","Transfer__c":"a900a000000GsOyAAK","Transfer__r":{"attributes":{"type":"Transfer__c"},"Id":"a900a000000GsOyAAK","Billing_Method__c":"kWh","Transfer_kWh__c":22187},"Journal_Entry__c":"a920a000000HSfsAAG","kWh_Amount__c":12000,"Type__c":"Bill"},' +
-            '{"attributes":{"type":"Transfer_Part__c"},"Id":"a8y0a000000Gu3rCCC","Name":"InvoiceOne_ProductionThree","Production__c":"a8u0a000000I4ETAA2","Transfer__c":"a900a000000GsOyAAK","Transfer__r":{"attributes":{"type":"Transfer__c"},"Id":"a900a000000GsOyAAK","Billing_Method__c":"kWh","Transfer_kWh__c":22187},"Journal_Entry__c":"a920a000000HSfsAAG","kWh_Amount__c":187,"Type__c":"Bill"}' +
-            ']}';
-        Map<Id, List<Transfer_Part__c>> mapParts = (Map<Id, List<Transfer_Part__c>>) JSON.deserialize(transferMapAsString, Map<Id, List<Transfer_Part__c>>.class);
+    public static void testBillAmounts() {
+        sfab_FabricatedSObject fabbedTransfer = getMockTransfer(11130);
+        Transfer_Part__c tp1 = getmockTransferPart(fabbedTransfer, 10000, 5324);
+        Transfer_Part__c tp2 = getmockTransferPart(fabbedTransfer, 12000, 4211);
+        Transfer_Part__c tp3 = getmockTransferPart(fabbedTransfer, 187, 1595);
+        List<Transfer_Part__c> transferParts = new List<Transfer_Part__c>{tp1, tp2, tp3};
+
+        Map<Id, List<Transfer_Part__c>> mapParts = new Map<Id, List<Transfer_Part__c>>();
+        Id transferId = Util.getFakeId(Transfer__c.SObjectType);
+        mapParts.put(transferId, transferParts);
 
         ProductionDetailBillService service = new ProductionDetailBillService();
         service.transferToDetailMap = mapParts;
-        // NEGATIVE Value should yield parts that are also negative
-        service.createBillProductionDetail('a900a000000GsOyAAK', -221.87, 'Bill', 'a920a000000HuJoAAA');
+        Decimal billAmount = -221.87;
+        service.createBillProductionDetail(transferId, billAmount, 'Bill', Util.getFakeId(Journal_Entry__c.SObjectType));
 
         List<Transfer_Part__c> partsToInsertList = service.productionDetailToInsert;
         System.assertEquals(3, partsToInsertList.size());
-        List<Decimal> validPartAmounts = new List<Decimal>{
-            -100.00, -1.87, -120.00
-        };
-        System.assert(validPartAmounts.contains(partsToInsertList[0].Amount__c), partsToInsertList[0].Amount__c);
-        System.assert(validPartAmounts.contains(partsToInsertList[1].Amount__c), partsToInsertList[1].Amount__c);
-        System.assert(validPartAmounts.contains(partsToInsertList[2].Amount__c), partsToInsertList[2].Amount__c);
+        System.assertEquals(
+            partsToInsertList[0].Amount__c,
+            Util.roundValue(billAmount * (tp1.Amount__c/tp1.Transfer__r.Transfer_Amount__c), 2, 'HALF_UP'),
+            'P2BService should insert a PD with an amount based the dollar values of the Transfer and Transfer Parts, not' +
+                ' the kWh values, since credit rates may change monthly'
+        );
+    }
 
-        service.productionDetailToInsert = new List<Transfer_Part__c>();
-        // POSITIVE Value should yield same results as negative, with a different sign
-        validPartAmounts = new List<Decimal>{
-            100.00, 1.87, 120.00
-        };
-        service.createBillProductionDetail('a900a000000GsOyAAK', 221.87, 'Bill', 'a920a000000HuJoAAA');
+    private static sfab_FabricatedSObject getMockTransfer(Decimal transferAmount) {
+        sfab_FabricatedSObject fabbedTransfer = new sfab_FabricatedSObject(Transfer__c.class);
+        fabbedTransfer.setField(Transfer__c.Billing_Method__c, 'kWh');
+        fabbedTransfer.setField(Transfer__c.Transfer_kWh__c, 22187);
+        fabbedTransfer.setField(Transfer__c.Transfer_Amount__c, transferAmount);
+        return fabbedTransfer;
+    }
 
-        partsToInsertList = service.productionDetailToInsert;
-        System.assertEquals(3, partsToInsertList.size());
-        System.assert(validPartAmounts.contains(partsToInsertList[0].Amount__c), partsToInsertList[0].Amount__c);
-        System.assert(validPartAmounts.contains(partsToInsertList[1].Amount__c), partsToInsertList[1].Amount__c);
-        System.assert(validPartAmounts.contains(partsToInsertList[2].Amount__c), partsToInsertList[2].Amount__c);
+    private static Transfer_Part__c getmockTransferPart(sfab_FabricatedSObject fabbedTransfer, Decimal kWhAmount, Decimal amount) {
+        sfab_FabricatedSObject fabbedTransferPart = new sfab_FabricatedSObject(Transfer_Part__c.class);
+        fabbedTransferPart.setField(Transfer_Part__c.kWh_Amount__c, kWhAmount);
+        fabbedTransferPart.setField(Transfer_Part__c.Amount__c, amount);
+        fabbedTransferPart.setParent('Transfer__r', fabbedTransfer);
+        return (Transfer_Part__c) fabbedTransferPart.toSObject();
     }
 
     private static Set<String> getMockInvoiceItemIds() {

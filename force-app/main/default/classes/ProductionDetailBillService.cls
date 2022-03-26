@@ -268,18 +268,13 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
     }
 
     private Decimal getWeightedApplicationAmount(Transfer_Part__c transferProdDetail, Decimal staticBillAmount){
-        Decimal applicationAmount = 0;
-        if (transferProdDetail.Transfer__r.Billing_Method__c == 'kWh'){
-            if (transferProdDetail.Transfer__r.Transfer_kWh__c == 0){
-                return 0;
-            }
-            applicationAmount = staticBillAmount * (transferProdDetail.kWh_Amount__c / transferProdDetail.Transfer__r.Transfer_kWh__c);
-        } else {
-            if (transferProdDetail.Transfer__r.Transfer_Amount__c == 0){
-                return 0;
-            }
-            applicationAmount = staticBillAmount * (transferProdDetail.Amount__c / transferProdDetail.Transfer__r.Transfer_Amount__c);
+        // If the transfer amount is $0, the transfer PD is also $0 (with the exception of 195 MSBW records which
+        // we can ignore). We want 0/0 = 1, so just return the staticBillAmount
+        if (Util.nullToZero(transferProdDetail.Transfer__r.Transfer_Amount__c) == 0) {
+            return staticBillAmount;
         }
+        // We want to allocate based on dollar amount, not on kWh, because the dollar amount accounts for monthly credit rate changes
+        Decimal applicationAmount = staticBillAmount * (transferProdDetail.Amount__c / transferProdDetail.Transfer__r.Transfer_Amount__c);
         applicationAmount = Util.roundValue(applicationAmount,2, 'HALF_UP');
         return applicationAmount;
     }
