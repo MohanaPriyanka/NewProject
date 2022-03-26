@@ -8,6 +8,7 @@
 public without sharing class TransferPartService {
     @TestVisible
     private static ProductionSelector productionSelector = new ProductionSelector();
+    private static TransferSelector transferSelector = new TransferSelector();
     public static MultiMap sssToProductionCreditsMap = MultiMap.newListInstance();
     public class ProductionCredits {
         public Production__c production;
@@ -33,6 +34,29 @@ public without sharing class TransferPartService {
         }
     }
 
+    public void onBeforeInsert(List<Transfer_Part__c> newList) {
+        Set<Id> transferIdsForTransferTo = new Set<Id>();
+        for (Transfer_Part__c part : newList) {
+            if (needsTransferredToSet(part)) {
+                transferIdsForTransferTo.add(part.Transfer__c);
+            }
+        }
+        if (transferIdsForTransferTo.isEmpty()) {
+            return;
+        }
+        Map<Id, Transfer__c> transferMap =
+            new Map<Id, Transfer__c>(transferSelector.getAllTransfersById(transferIdsForTransferTo));
+        for (Transfer_Part__c part : newList) {
+            if (needsTransferredToSet(part)) {
+                part.Transfer_Transferred_To__c = transferMap.get(part.Transfer__c).Transferred_To__c;
+            }
+        }
+    }
+
+    private Boolean needsTransferredToSet(Transfer_Part__c part) {
+        return part.Transfer_Transferred_To__c == null && part.Transfer__c != null;
+    }
+
     public void onAfterTransferUpdate(List<Transfer__c> allTransfers, Map<Id, Transfer__c> oldTransferMap) {
         List<Transfer__c> transferList = new List<Transfer__c>();
  		for (Transfer__c transfer : allTransfers) {
@@ -54,6 +78,7 @@ public without sharing class TransferPartService {
                 transferIds.add(part.Transfer__c);
             }
         }
+
         List<Transfer__c> transfersToUpdate = rollupTransferPartsToTransfer(transferIds);
         update transfersToUpdate;
     }

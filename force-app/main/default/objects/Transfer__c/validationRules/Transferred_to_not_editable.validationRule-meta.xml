@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Transferred_to_not_editable</fullName>
+    <active>true</active>
+    <errorConditionFormula>ISCHANGED( Transferred_To__c )</errorConditionFormula>
+    <errorDisplayField>Transferred_To__c</errorDisplayField>
+    <errorMessage>Transferred to shouldn&apos;t be changed after it&apos;s set because Production Details may have been created with the current value. Have an admin deactivate this to make the change, and also change the Production Details &quot;Transfer Transferred To&quot;, or automate it.</errorMessage>
+</ValidationRule>

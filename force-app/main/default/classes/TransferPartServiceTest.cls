@@ -558,7 +558,31 @@ private class TransferPartServiceTest {
         System.assertEquals(0, transfer.Total_Transferred__c, 'Transfer should have no transferred credits after PD has been deleted');
     }
 
-
-
-
+    @IsTest
+    private static void testTransferToPopulate() {
+        Transfer__c transfer = [
+            SELECT Id, Transferred_To__c
+            FROM Transfer__c
+            LIMIT 1
+        ];
+        Production__c production = [
+            SELECT Id
+            FROM Production__c
+            LIMIT 1
+        ];
+        Transfer_Part__c manuallyCreatedReturnedCreditPD = new Transfer_Part__c(
+            Transfer__c = transfer.Id,
+            Type__c = 'Transfer',
+            Production__c = production.Id,
+            Amount__c = 10
+        );
+        insert manuallyCreatedReturnedCreditPD;
+        manuallyCreatedReturnedCreditPD = [
+            SELECT Id, Transfer_Transferred_To__c
+            FROM Transfer_Part__c
+            WHERE Id = :manuallyCreatedReturnedCreditPD.Id
+        ];
+        System.assertEquals(transfer.Transferred_To__c, manuallyCreatedReturnedCreditPD.Transfer_Transferred_To__c,
+            'Transferred To should be set on Production Detail, even if it is not set when manually created');
+    }
 }

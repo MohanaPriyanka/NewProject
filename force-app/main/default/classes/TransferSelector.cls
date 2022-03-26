@@ -53,6 +53,14 @@ public without sharing class TransferSelector {
         ];
     }
 
+    public List<Transfer__c> getAllTransfersById(Set<Id> transferIdList) {
+        return [
+            SELECT Id, Name, Transferred_To__c
+            FROM Transfer__c
+            WHERE Id IN :transferIdList
+        ];
+    }
+
     public static List<Transfer__c> getAllTransfersBySSS(List<Id> sssIds) {
         return [
             SELECT Id, Name, Shared_Solar_System__c, Shared_Solar_System__r.Id, Shared_Solar_System__r.Name,
