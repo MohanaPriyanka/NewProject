@@ -409,3 +409,5 @@ node_modules/
 /sfpowerkit-cache.db
 /force-app/main/default/wave/**
 
+# Report Types
+/force-app/main/default/reportTypes

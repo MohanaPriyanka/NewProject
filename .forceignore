@@ -384,3 +384,6 @@ SMP.iml
 
 **/.eslintrc.json
 /force-app/main/default/wave/**
+
+# Report Types
+/force-app/main/default/reportTypes
