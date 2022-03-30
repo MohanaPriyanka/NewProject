@@ -12,6 +12,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Commission_Payment__c.Adjustment_Reason__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Commission_Payment__c.Adjustment_To_Payment__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Commission_Payment__c.Amount_Due__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -156,7 +166,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Invoice__c.Notes__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -185,6 +195,10 @@
         <field>Invoice__c.Type__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <flowAccesses>
+        <enabled>true</enabled>
+        <flow>Create_Adjustment_Commission_Payment</flow>
+    </flowAccesses>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Commission Payment Management</label>
     <objectPermissions>
@@ -218,4 +232,12 @@
         <recordType>Account.Partner_Account</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <recordType>Invoice__c.Partner_Invoice</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <tabSettings>
+        <tab>Invoice__c</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
 </PermissionSet>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Assure_Adjustment_Reason_Set</fullName>
+    <active>true</active>
+    <description>An &quot;Adjustment&quot; type Commission Payment requires an Adjustment Reason</description>
+    <errorConditionFormula>ISBLANK( Adjustment_Reason__c ) &amp;&amp; ISPICKVAL(Commission_Type__c, &apos;Adjustment&apos;)</errorConditionFormula>
+    <errorDisplayField>Adjustment_Reason__c</errorDisplayField>
+    <errorMessage>Adjustments require Adjustment Reasons</errorMessage>
+</ValidationRule>

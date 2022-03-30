@@ -1,1 +1,1 @@
-CSLeadsRESTControllerV2Test
+GetObjectNameTest

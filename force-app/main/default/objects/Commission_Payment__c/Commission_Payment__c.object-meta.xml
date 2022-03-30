@@ -161,7 +161,18 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Commission Payments</pluralLabel>
-    <searchLayouts></searchLayouts>
+    <searchLayouts>
+        <lookupDialogsAdditionalFields>Commission_Structure__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Status__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Amount_Due__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Invoice__c</lookupDialogsAdditionalFields>
+        <searchResultsAdditionalFields>Contract_Execution_Amount__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>First_Bill_Paid_Amount__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Amount_Due__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Commission_Structure__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Opportunity__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Invoice__c</searchResultsAdditionalFields>
+    </searchLayouts>
     <sharingModel>ControlledByParent</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

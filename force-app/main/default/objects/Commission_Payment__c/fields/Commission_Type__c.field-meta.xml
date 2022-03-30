@@ -32,6 +32,11 @@
                 <default>false</default>
                 <label>Cancellation/Refund</label>
             </value>
+            <value>
+                <fullName>Adjustment</fullName>
+                <default>false</default>
+                <label>Adjustment</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
