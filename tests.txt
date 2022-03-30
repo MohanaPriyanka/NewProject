@@ -1,1 +1,1 @@
-GetObjectNameTest
+JournalEntrySelectorTest,PartnerCommissionServiceTest,ZuoraGLServiceTest
