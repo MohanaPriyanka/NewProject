@@ -34591,6 +34591,10 @@
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
+        <apexPage>et4ae5__ierImage</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
         <apexPage>flowmagic__FlowPicklistSession</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
