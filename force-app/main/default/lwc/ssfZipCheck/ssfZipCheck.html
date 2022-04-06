@@ -25,8 +25,8 @@
                         </lightning-input>
                     </div>
                     <div class="icon-button-group-parent">
-                        <div class="icon-button-group-container slds-wrap">
-                            <div class="slds-align_absolute-center slds-col slds-p-bottom_large slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <div class={getIconContainerStyle}>
+                            <div class="slds-align_absolute-center slds-col slds-p-bottom_large slds-size_1-of-1 slds-medium-size_1-of-3">
                                 <div class={getResiButtonStyle} onclick={applicationTypeOnChangeResi}>
                                     <div class="icon-container">
                                         <div class="icon">
@@ -36,12 +36,24 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="slds-align_absolute-center slds-col slds-p-bottom_large slds-size_1-of-1 slds-medium-size_1-of-2">
+                            <template if:true={showLMI}>
+                                <div class="slds-align_absolute-center slds-col slds-p-bottom_large slds-size_1-of-1 slds-medium-size_1-of-3">
+                                    <div class={getLMIButtonStyle} onclick={applicationTypeOnChangeLMI}>
+                                        <div class="icon-container">
+                                            <div class="icon">
+                                                <img src={lmiIconUrl} class="icon">
+                                                <p class="icon">LMI</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                            <div class="slds-align_absolute-center slds-col slds-p-bottom_large slds-size_1-of-1 slds-medium-size_1-of-3">
                                 <div class={getBizButtonStyle} onclick={applicationTypeOnChangeBiz}>
                                     <div class="icon-container">
                                         <div class="icon">
                                             <img src={bizIconUrl} class="icon">
-                                            <p class="icon">A Business</p>
+                                            <p class="icon">A Business or Organization</p>
                                         </div>
                                     </div>
                                 </div>

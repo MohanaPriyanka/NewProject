@@ -8,6 +8,7 @@ public without sharing class SimpleSignupFormController {
     private static CustomerContractSelector customerContractSelector = new CustomerContractSelector();
     private static CSLeadsRESTControllerV3 restControllerV3 = new CSLeadsRESTControllerV3();
     private static LeadSelector leadSelector = new LeadSelector();
+    @TestVisible private static AccountsSelector accountsSelector = new AccountsSelector();
 
     @AuraEnabled
     public static String getContentDistributionById(Id leadId, String email, Id documentId) {
@@ -376,4 +377,17 @@ public without sharing class SimpleSignupFormController {
         uow.commitWork();
         return contentVersion.Id;
     }
+
+    /**
+    * @description Checks if Partner sells LMI
+    * @param partnerId ID of Partner__c record
+    * @returns Sells_LMI__c (Boolean)
+    */
+    @AuraEnabled(Cacheable=true)
+    public static Boolean partnerSellsLMI(Id partnerId) {
+        Set<Id> partnerIds = new Set<Id>{partnerId};
+        List<Account> acc = accountsSelector.selectAccountByPartnerIds(partnerIds);
+        return acc[0].Sells_LMI__c;
+    }
+
 }

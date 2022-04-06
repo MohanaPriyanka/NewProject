@@ -27,11 +27,10 @@ export default class SsfZipCheckDTC extends NavigationMixin(LightningElement) {
     @track utilityOptions;
     @track zipCodeResponse;
 
-    resiIconUrl = staticResourceFolder + '/Icon_House.png';
-    bizIconUrl = staticResourceFolder + '/Icon_City.png';
+    resiIconUrl = staticResourceFolder + '/Icon_Perch_House.png';
+    bizIconUrl = staticResourceFolder + '/Icon_Perch_Business.png';
 
     connectedCallback() {
-        loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
         onLoad(this);
     }
 

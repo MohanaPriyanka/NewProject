@@ -1,3 +1,14 @@
 /**
  * Created by jeff on 1/19/21.
  */
+
+@import 'c/ssfStyleLibrary';
+
+.two-button-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: 2rem auto 2.25rem;
+    padding: 0.5rem 0;
+    max-width: 30rem;
+}

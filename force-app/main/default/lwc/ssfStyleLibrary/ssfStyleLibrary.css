@@ -1,17 +1,23 @@
 /**
  * Created by LindsayHolmes_GearsCRM on 7/7/20.
  */
- 
+
+
 * {
     box-sizing: border-box;
 }
 
 .page-container {
+    background-color: #fff;
+    border-radius: 0.5rem;
     width: 100%;
     justify-content: center;
     display: flex;
     align-self: center;
     padding: 1rem;
+}
+c-ssf-file-upload {
+    width: 100%;
 }
 
 .zip-container {
@@ -23,20 +29,34 @@
     margin: auto;
 }
 
+.modal_content {
+    padding: 44px 48px 24px;
+    border-radius: 2rem !IMPORTANT;
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+}
+.fit {
+    width: fit-content;
+}
+
 
 /****************************/
 /*         Buttons          */
 /****************************/
-button {
+/* button:not(.slds-accordion__summary-action):not(lightning-help-text>.slds-form-element__icon>.slds-button_icon) { */
+button.btn, button.btn-inverse, button.small {
     display: inline-block;
     border: none;
     border-radius: 3rem;
     outline: none;
     padding: 1.125rem 2rem;
-    line-height: 1.25rem;
+    line-height: 1.25;
     transition: all .3s ease;
     text-align: center;
-    font-family: CentraMedium, sans-serif;
+    font-family: ManropeSemiBold, sans-serif;
     text-decoration-color: #FFFFFF;
     text-decoration-line: none;
     text-decoration-style: solid;
@@ -45,16 +65,27 @@ button {
 }
 button:hover, button.btn:hover, button.btn-inverse:hover {
     background-color: #2774EE;
+}
+
+button.btn:hover, button.btn-inverse:hover, button.small:hover {
+    background-color: #2774EE;
+    color: #FFFFFF;
     box-shadow: 0 4px 8px 0 rgba(43, 47, 57, 0.16);
     transform: translateY(-2px);
 }
 button.btn {
-    background: #151C34;
+    background: #0D2727;
     color: #FFFFFF;
 }
 button.btn-inverse {
     background-color: #FFFFFF;
     color: #2774EE;
+    border: 1px solid #2774EE;
+}
+button.small {
+    font-size: .8125rem;
+    padding: 0.5rem 1rem;
+    min-width: 5rem;
 }
 .accordion-button {
     float: left;
@@ -65,7 +96,7 @@ button.btn-inverse {
     height: 1.1rem;
 }
 .accordion-button__icon {
-    fill: #d3d3d3;
+    fill: #f8f0e9;
     width: .65rem;
     height: .65rem;
 }
@@ -92,6 +123,20 @@ button.btn-inverse {
     margin-top: auto;
     margin-bottom: auto;
     font-size: 1em;
+}
+.help-button {
+    display: inline-block;
+    position: relative;
+}
+.help-button__icon {
+    border: 1px solid #2774EE;
+    border-radius: 2rem;
+    fill: #2774EE;
+    height: 1.5rem;
+    width: 1.5rem;
+    margin-left: 0.5rem;
+    margin-top: 0.3rem;
+    padding: 0.2rem;
 }
 
 
@@ -125,10 +170,15 @@ button.btn-inverse {
 /*         Footer          */
 /****************************/
 .footer-container {
-    background-color: #151c34;
+    background-color: #0D2727;
     padding: 2rem;
     width: 100%;
 }
+
+.footer-container p {
+    font-size: 0.875rem;
+}
+
 .faq-title-section {
     display: flex;
     flex-flow: row nowrap;
@@ -158,7 +208,7 @@ button.btn-inverse {
     margin-top: 0.75rem;
 }
 .footer-section {
-    color: #d3d3d3;
+    color: #f8f0e9;
 }
 .footer-section > * > h3 {
     color: #ffffff;
@@ -181,7 +231,7 @@ button.btn-inverse {
     width:179px;
     height:auto;
 }
-[class*="col-"] {
+[class|="col"] {
     float: left;
     width: 100%;
     padding: .75rem 0;
@@ -225,7 +275,7 @@ button.btn-inverse {
     justify-content: space-between;
 }
 .form-section.accordion {
-    padding: 0 5px;
+    padding: 0 1rem;
 }
 .form-section-accordion {
     padding: 0;
@@ -233,7 +283,6 @@ button.btn-inverse {
 }
 .input-group {
     position: relative;
-    display: flex;
     width: 100%
 }
 .input-group.half {
@@ -241,6 +290,62 @@ button.btn-inverse {
 }
 .input-group > lightning-input, .input-group > lightning-combobox {
     width: 100%;
+}
+
+
+/****************************/
+/*         Help Text        */
+/****************************/
+.tooltip {
+    position: absolute;
+    white-space: normal;
+    background-color: #2774EE;
+    color: #FFFFFF;
+    padding: 1rem;
+    z-index: 3;
+    border-radius: 2rem;
+    width: 31.5rem;
+}
+.tooltip.tooltip__general {
+    top: -7rem;
+    left: -73%;
+}
+.tooltip.tooltip__utility {
+    top: -41rem;
+    left: 89%;
+    width: 31rem;
+}
+.tooltip.tooltip__underwriting-field {
+    top: 8rem;
+    left: -62%;
+}
+.tooltip.tooltip__general::after, .tooltip.tooltip__utility::after, .tooltip.tooltip__underwriting-field::before {
+    border-style: solid;
+    content: "";
+    position: absolute;
+}
+.tooltip.tooltip__general::after, .tooltip.tooltip__utility::after {
+    border-color: #2774EE transparent transparent transparent;
+}
+.tooltip.tooltip__general::after {
+    top: 62%;
+    left: 85.5%;
+    border-left-width: 70px;
+    border-top-width: 70px;
+}
+.tooltip.tooltip__utility::after {
+    top: 95%;
+    left: 35%;
+    margin-left: -35%;
+    border-top-width: 100px;
+    border-right-width: 50px;
+}
+.tooltip.tooltip__underwriting-field::before {
+    border-color: transparent transparent #2774EE transparent;
+    top: -34%;
+    left: 85.5%;
+    border-left-width: 70px;
+    border-bottom-width: 135px;
 }
 
 
@@ -254,7 +359,7 @@ div.icon-button-group-container {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    margin: 2rem auto 3.75rem;
+    margin: 2rem auto 2.25rem;
     padding: 0.5rem 0;
 }
 div.icon-button {
@@ -264,20 +369,24 @@ div.icon-button {
     border: none;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     margin: 0 0.9rem;
+    padding-bottom: 5px;
 }
 div.icon-button:hover {
     background-color: #FFFFFF;
 }
 div.icon-button.selected {
     border: 0.2rem solid #2774EE;
+    padding-bottom: 5px;
 }
 div.icon-container {
     max-width: 12rem;
-    height: auto;
+    min-width: 12rem;
+    max-height: 12rem;
+    min-height: 12rem;
     padding: 1rem;
     display: flex;
     justify-content: center;
-    align-items: center; 
+    align-items: center;
 }
 div.icon {
     margin-top: auto;
@@ -299,27 +408,34 @@ div.icon-button.selected > div > div > p {
     font-weight: 600;
 }
 
+.hide-button {
+    display: none;
+}
 
 /****************************/
 /*          Text            */
 /****************************/
+body.comm-page-custom-switch {
+    color: #0D2727;
+}
+
 .light-text {
     color: rgb(121,121,121);
 }
 .gray-text {
-    color: #d3d3d3;
+    color: #f8f0e9;
 }
 .blue-text {
     color: #2774EE;
 }
 
 p {
-    font-family: Centra;
+    font-family: Manrope, sans-serif;
     font-size: 1rem;
-    line-height: 1.5rem;
+    line-height: 1.5;
 }
 p.thin {
-    font-family: CentraLight;
+    font-family: Manrope, sans-serif;
 }
 p.x_large {
     font-size: 1.5rem;
@@ -336,43 +452,41 @@ p.x_small {
 
 /* headline */
 h1 {
-    font-family: CentraLight;
+    font-family: Manrope, sans-serif;
     font-size: 1.2rem;
-    line-height: 1.2em;
-    font-weight: bold;
+    line-height: 1.4;
     display: block;
 }
 /* sub-headline */
 h2 {
-    font-family: Centra;
+    font-family: Manrope, sans-serif;
     font-size: 1rem;
-    line-height: 1.2em;
+    line-height: 1.2;
     color: rgb(121,121,121);
     display: block;
 }
 
 /* footer link titles */
-h3 {
-    font-family: CentraLight;
+h3:not(.slds-accordion__summary-heading) {
+    font-family: Manrope, sans-serif;
     font-size: 1rem;
-    line-height: 1.2em;
+    line-height: 1.2;
     font-weight: 700;
     color: #ffffff;
 }
 
 /* waiting room headline */
 h4 {
-    font-family: CentraLight;
-    font-size: 1.1rem;
-    line-height: 1.2em;
-    font-weight: bold;
+    font-family: ManropeSemiBold, sans-serif;
+    font-size: 1rem;
+    line-height: 1.5;
 }
 
 /* small headline */
 h6 {
-    font-family: CentraMedium;
+    font-family: ManropeSemiBold, sans-serif;
     font-size: 1rem;
-    line-height: 1.2em;
+    line-height: 1.2;
     text-transform: uppercase;
     letter-spacing: 1px;
     padding-top: 2rem;
@@ -389,16 +503,23 @@ h6 {
         padding: 2rem 3rem;
     }
     h1 {
-        font-size: 1.7rem;
+        font-size: 1.6rem;
     }
     h2 {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
     }
     h3 {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
+    }
+    h4 {
+        font-size: 1.1rem;
+        line-height: 1.3;
+    }
+    .footer-container p {
+        font-size: 1rem;
     }
     p[c-ssfFaq_ssfFaq], p[c-ssfFooter_ssfFooter] {
-        font-size: 0.8rem;
+        font-size: 0.7rem;
     }
     img.icon {
         max-width: 8rem;
@@ -419,7 +540,10 @@ h6 {
         width: 14rem;
     }
     div.icon-button-group-container {
-        max-width: 30rem;
+        max-width: 40rem;
+    }
+    div.icon-button.selected {
+        border: 0.2rem solid #2774EE;
     }
     .col-1 { width: 16.66%; }
     .col-2 { width: 33.33%; }
@@ -427,11 +551,14 @@ h6 {
     .col-4 { width: 66.66%; }
     .col-5 { width: 83.33%; }
     .col-6 { width: 100%; }
-    [class*="col-"] {
+    [class|="col"] {
         padding: .75rem 1.5rem;
     }
     .address {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
+    }
+    .input-group {
+        display: flex;
     }
     .input-group.half {
         width: 45%;
@@ -440,16 +567,16 @@ h6 {
         max-width: 50rem;
     }
     .form-header {
-        padding: 1rem 1rem 0rem;
+        padding: 1rem 1rem 0;
     }
     .form-subheader {
-        padding: 0rem 1rem 1rem;
+        padding: 0 1rem 1rem;
     }
     .form-section {
-        padding: 0rem 3rem;
+        padding: 0 3rem;
     }
     .form-section.accordion {
-        padding: 0 2rem;
+        padding: 0 1rem;
     }
     .form-section-accordion {
         padding: 0 1rem;
@@ -459,6 +586,26 @@ h6 {
     }
     .carousel-content_text {
         max-width: 50vw;
+    }
+    .fileUploadWithHelp {
+        white-space: nowrap;
+        width: 275%;
+        display: flex;
+    }
+    .fileUploadWithHelp > lightning-file-upload {
+        display:inline-block;
+    }
+    .fieldWithHelp {
+        display: flex;
+    }
+    .fieldWithHelp > lightning-combobox {
+        display:inline-block;
+    }
+    .fieldWithHelp label.slds-form-element__label {
+        white-space: normal;
+    }
+    .fieldWithHelp lightning-base-combobox {
+        width: 110%;
     }
 }
 
@@ -473,63 +620,18 @@ h6 {
 /*      Font Imports        */
 /****************************/
 @font-face {
-    font-family: 'Centra';
-    src: url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Book.woff') format('woff'),
-         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Book.woff2') format('woff2'),
-         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Book.eot') format('eot');
+    font-family: 'Manrope';
+    src: url('/resource/PerchFonts/Fonts/Manrope-Regular.ttf') format('truetype');
 }
 
 @font-face {
-    font-family: 'Centra';
-    src: url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Bold.woff') format('woff'),
-         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Bold.woff2') format('woff2'),
-         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Bold.eot') format('eot');
-    font-weight: bold;
+    font-family: 'ManropeSemiBold';
+    src: url('/resource/PerchFonts/Fonts/Manrope-SemiBold.ttf') format('truetype');
 }
-    
-@font-face {
-    font-family: 'Centra';
-    src: url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-BookItalic.woff') format('woff'),
-         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-BookItalic.woff2') format('woff2'),
-         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-BookItalic.eot') format('eot');
-    font-style: italic;
-}
-    
-@font-face {
-    font-family: 'Centra';
-    src: url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-BoldItalic.woff') format('woff'),
-         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-BoldItalic.woff2') format('woff2'),
-         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-BoldItalic.eot') format('eot');
-    font-weight: bold;
-    font-style: italic;
-}
-    
-@font-face {
-    font-family: 'CentraLight';
-    src: url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Light.woff') format('woff'),
-         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Light.woff2') format('woff2'),
-         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Light.eot') format('eot');
-}
-    
-@font-face {
-    font-family: 'CentraLight';
-    src: url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-LightItalic.woff') format('woff'),
-         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-LightItalic.woff2') format('woff2'),
-         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-LightItalic.eot') format('eot');
-    font-style: italic;
-}
-    
-@font-face {
-    font-family: 'CentraMedium';
-    src: url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Medium.woff') format('woff'),
-         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Medium.woff2') format('woff2'),
-         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-Medium.eot') format('eot');
-}
-    
-@font-face {
-    font-family: 'CentraMedium';
-    src: url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-MediumItalic.woff') format('woff'),
-         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-MediumItalic.woff2') format('woff2'),
-         url('/apply/s/sfsites/c/resource/SimpleSignupFormStyling/Fonts/CentraNo2-MediumItalic.eot') format('eot');
-    font-style: italic;
-}
+
+
+
+
+
+
+

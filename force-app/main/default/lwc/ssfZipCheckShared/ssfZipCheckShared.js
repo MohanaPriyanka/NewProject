@@ -47,7 +47,7 @@ const getCapacity = async (component, utilityId) => {
         } else if (hasCapacity(applicationType, check)) {
             capacityFound(component, check);
         } else {
-            noCapacity(component);
+            noCapacity(component, applicationType);
         }
     } catch (exception) {
         postReadyStateEvent(component, null);
@@ -63,9 +63,16 @@ const getCapacity = async (component, utilityId) => {
 }
 
 const hasCapacity = (applicationType, check) => {
-    return check.products.length >= 1 &&
-           check.utilities.length === 1 &&
-           (check.hasSmallCSCapacity || (applicationType === 'LMI' && check.hasLMICapacity));
+    if(applicationType === 'LMI') {
+        return check.products.length >= 1 &&
+               check.utilities.length === 1 &&
+               check.hasLMICapacity;
+    } else {
+        return check.products.length >= 1 &&
+               check.utilities.length === 1 &&
+               check.hasSmallCSCapacity;
+    }
+
 }
 
 const getCustomerType = (component, check) => {
@@ -106,13 +113,18 @@ const capacityFound = (component, check) => {
     );
 }
 
-const noCapacity = (component) => {
+const noCapacity = (component, applicationType) => {
+    let title = 'Sorry, your zip code is not eligible for service at this time';
+    let msg = 'Please check later';
+    if(applicationType === 'LMI') {
+        title = 'Sorry, there is no LMI capacity for this zip code at this time';
+    }
     window.setTimeout(() => {
         toggleLoadingSpinnerEvent(component, true);
         postReadyStateEvent(component, null);
         const evt = new ShowToastEvent({
-            title: 'Sorry, your zip code is not eligible for service at this time',
-            message: 'Please check later',
+            title: title,
+            message: msg,
             variant: 'warning'
         });
         component.dispatchEvent(evt);

@@ -365,16 +365,20 @@ div.icon-button {
     border: none;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     margin: 0 0.9rem;
+    padding-bottom: 5px;
 }
 div.icon-button:hover {
     background-color: #FFFFFF;
 }
 div.icon-button.selected {
     border: 0.2rem solid #2774EE;
+    padding-bottom: 5px;
 }
 div.icon-container {
     max-width: 12rem;
-    height: auto;
+    min-width: 12rem;
+    max-height: 12rem;
+    min-height: 12rem;
     padding: 1rem;
     display: flex;
     justify-content: center;
@@ -419,12 +423,12 @@ body.comm-page-custom-switch {
 }
 
 p {
-    font-family: Manrope;
+    font-family: Manrope, sans-serif;
     font-size: 1rem;
     line-height: 1.5;
 }
 p.thin {
-    font-family: Manrope;
+    font-family: Manrope, sans-serif;
 }
 p.x_large {
     font-size: 1.5rem;
@@ -441,14 +445,14 @@ p.x_small {
 
 /* headline */
 h1 {
-    font-family: Manrope;
+    font-family: Manrope, sans-serif;
     font-size: 1.2rem;
     line-height: 1.4;
     display: block;
 }
 /* sub-headline */
 h2 {
-    font-family: Manrope;
+    font-family: Manrope, sans-serif;
     font-size: 1rem;
     line-height: 1.2;
     color: rgb(121,121,121);
@@ -457,7 +461,7 @@ h2 {
 
 /* footer link titles */
 h3:not(.slds-accordion__summary-heading) {
-    font-family: Manrope;
+    font-family: Manrope, sans-serif;
     font-size: 1rem;
     line-height: 1.2;
     font-weight: 700;
@@ -466,14 +470,14 @@ h3:not(.slds-accordion__summary-heading) {
 
 /* waiting room headline */
 h4 {
-    font-family: ManropeSemiBold;
+    font-family: ManropeSemiBold, sans-serif;
     font-size: 1rem;
     line-height: 1.5;
 }
 
 /* small headline */
 h6 {
-    font-family: ManropeSemiBold;
+    font-family: ManropeSemiBold, sans-serif;
     font-size: 1rem;
     line-height: 1.2;
     text-transform: uppercase;
@@ -531,6 +535,9 @@ h6 {
     div.icon-button-group-container {
         max-width: 30rem;
     }
+    div.icon-button.selected {
+        border: 0.2rem solid #2774EE;
+    }
     .col-1 { width: 16.66%; }
     .col-2 { width: 33.33%; }
     .col-3 { width: 50%; }
@@ -553,13 +560,13 @@ h6 {
         max-width: 50rem;
     }
     .form-header {
-        padding: 1rem 1rem 0rem;
+        padding: 1rem 1rem 0;
     }
     .form-subheader {
-        padding: 0rem 1rem 1rem;
+        padding: 0 1rem 1rem;
     }
     .form-section {
-        padding: 0rem 3rem;
+        padding: 0 3rem;
     }
     .form-section.accordion {
         padding: 0 1rem;

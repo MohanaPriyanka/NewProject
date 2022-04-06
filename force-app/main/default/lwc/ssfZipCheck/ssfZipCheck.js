@@ -1,7 +1,7 @@
 import { LightningElement, api, track } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
-import { loadStyle } from 'lightning/platformResourceLoader';
 import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStyling';
+import partnerSellsLMI from '@salesforce/apex/SimpleSignupFormController.partnerSellsLMI';
 import { onLoad, proceedWithUtility, checkForSubmit, submitForm } from 'c/ssfZipCheckShared';
 
 export default class SsfZipCheck extends NavigationMixin(LightningElement) {
@@ -15,13 +15,18 @@ export default class SsfZipCheck extends NavigationMixin(LightningElement) {
     @track underwritingOptions = [];
     @track utilityOptions;
     @track zipCodeResponse;
+    @track showLMI = false;
 
-    resiIconUrl = staticResourceFolder + '/Icon_House.png';
-    bizIconUrl = staticResourceFolder + '/Icon_City.png';
+    lmiIconUrl = staticResourceFolder + '/Icon_Perch_LMI.png';
+    resiIconUrl = staticResourceFolder + '/Icon_Perch_House.png';
+    bizIconUrl = staticResourceFolder + '/Icon_Perch_Business.png';
+
 
     connectedCallback() {
-        loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
         onLoad(this);
+        if(this.partnerId != null) {
+            this.partnerSellsLMI();
+        }
     }
 
     renderedCallback() {
@@ -29,6 +34,13 @@ export default class SsfZipCheck extends NavigationMixin(LightningElement) {
         if (inputBox && !this.showModal) {
             inputBox.focus();
         }
+    }
+
+    partnerSellsLMI() {
+        partnerSellsLMI({partnerId: this.partnerId})
+        .then(result => {
+            this.showLMI = result;
+        })
     }
 
     proceedWithSelectedUtility() {
@@ -49,10 +61,17 @@ export default class SsfZipCheck extends NavigationMixin(LightningElement) {
 
     applicationTypeOnChangeResi(event) {
         this.resiApplicationType = true;
+        this.applicationType = 'Residential'
     }
     
     applicationTypeOnChangeBiz(event) {
         this.resiApplicationType = false;
+        this.applicationType = 'Non-Residential'
+    }
+
+    applicationTypeOnChangeLMI(event) {
+        this.resiApplicationType = true;
+        this.applicationType = 'LMI';
     }
 
     closeModal(event) {
@@ -68,7 +87,7 @@ export default class SsfZipCheck extends NavigationMixin(LightningElement) {
 
     get getResiButtonStyle() {
         let style = 'icon-button';
-        if (this.resiApplicationType) {
+        if (this.resiApplicationType && this.applicationType !== 'LMI') {
             style += ' selected';
         }
         return style;
@@ -78,6 +97,22 @@ export default class SsfZipCheck extends NavigationMixin(LightningElement) {
         let style = 'icon-button';
         if (!this.resiApplicationType) {
             style += ' selected';
+        }
+        return style;
+    }
+
+    get getLMIButtonStyle() {
+        let style = 'icon-button';
+        if (this.applicationType === 'LMI') {
+            style += ' selected';
+        }
+        return style;
+    }
+
+    get getIconContainerStyle() {
+        let style = 'icon-button-group-container slds-wrap';
+        if(!this.showLMI) {
+            style = 'two-button-container slds-wrap';
         }
         return style;
     }

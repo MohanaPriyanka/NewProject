@@ -487,4 +487,75 @@ public with sharing class SimpleSignupFormControllerTest {
         System.assertEquals('Customer Signature', contentDocumentLink.ContentDocument.LatestPublishedVersion.File_Category__c, 'Content Version should have a file category of "Customer Signature"');
         System.assertEquals('PNG', contentDocumentLink.ContentDocument.LatestPublishedVersion.FileType, 'Content Version file type should be PNG');
     }
+
+    @IsTest
+    private static void testpartnerSellsLMI() {
+        List<sfab_FabricatedSObject> mockPartners = getMockPartnerList(2);
+        Partner__c partner1 = (Partner__c) mockPartners[0].toSObject();
+        Partner__c partner2 = (Partner__c) mockPartners[1].toSObject();
+
+        Test.startTest();
+            SimpleSignupFormController.accountsSelector = (AccountsSelector) Test.createStub(AccountsSelector.class, new MockSelectors(true));
+            Boolean partner1SellsLMI = SimpleSignupFormController.partnerSellsLMI(partner1.Id);
+            SimpleSignupFormController.accountsSelector = (AccountsSelector) Test.createStub(AccountsSelector.class, new MockSelectors(false));
+            Boolean partner2SellsLMI = SimpleSignupFormController.partnerSellsLMI(partner2.Id);
+        Test.stopTest();
+
+        System.assertEquals(true, partner1SellsLMI);
+        System.assertEquals(false, partner2SellsLMI);
+
+    }
+
+    private static List<sfab_FabricatedSObject> getMockPartnerList(Integer numOfRecords) {
+        List<sfab_FabricatedSObject> mockRecordList = new List<sfab_FabricatedSObject>();
+        for (Integer i = 0; i < numOfRecords; i++) {
+            sfab_FabricatedSObject mockRecord = new sfab_FabricatedSObject(Partner__c.class);
+            String recId = Util.getFakeId(Partner__c.SObjectType) + i;
+            mockRecord.setField(Partner__c.Id, recId);
+            mockRecordList.add(mockRecord);
+        }
+        return mockRecordList;
+    }
+
+    private static List<sfab_FabricatedSObject> getMockAccountList(Integer numOfRecords) {
+        List<sfab_FabricatedSObject> mockRecordList = new List<sfab_FabricatedSObject>();
+        for (Integer i = 0; i < numOfRecords; i++) {
+            sfab_FabricatedSObject mockRecord = new sfab_FabricatedSObject(Account.class);
+            String recId = Util.getFakeId(Account.SObjectType) + i;
+            mockRecord.setField(Account.Id, recId);
+            mockRecordList.add(mockRecord);
+        }
+        return mockRecordList;
+    }
+
+    public class MockSelectors extends MockProvider {
+        private Boolean LMI;
+
+        public MockSelectors(Boolean LMI) {
+            this.LMI = LMI;
+        }
+
+        public override Object handleMethodCall(MethodCall methodCall) {
+            switch on methodCall.stubbedMethodName {
+                when 'selectAccountByPartnerIds' {
+                    List<Account> accountList = new List<Account>();
+
+                    List<sfab_FabricatedSObject> mockAccountList = getMockAccountList(1);
+                    sfab_FabricatedSObject mockAccount = mockAccountList[0];
+                    mockAccount.setField(Account.Name, 'Mock Test Account');
+
+                    if (LMI) {
+                        mockAccount.setField(Account.Sells_LMI__c, true);
+                    }
+
+                    Account acc = (Account) mockAccount.toSObject();
+                    accountList.add(acc);
+                    return accountList;
+                }
+            }
+            return null;
+        }
+
+    }
+
 }

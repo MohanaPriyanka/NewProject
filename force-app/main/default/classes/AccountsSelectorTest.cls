@@ -100,7 +100,7 @@ public with sharing class AccountsSelectorTest {
         System.assertEquals(0, accounts.size());
     }
     @IsTest
-    public static void testSelectById() {
+    public static void testGetAccountsById() {
         List<Account> accounts = [
             SELECT Id
             FROM Account
@@ -109,6 +109,8 @@ public with sharing class AccountsSelectorTest {
         AccountsSelector selector = new AccountsSelector();
         List<Account> queriedAccounts = selector.getAccountsById(new Set<Id>{accounts[0].Id, accounts[1].Id});
         System.assertEquals(2,queriedAccounts.size());
+        System.assertNotEquals(null, selector.getAccountsById(new Set<Id>()),
+            'Expected an empty list when selecting by an empty set');
     }
 
     @IsTest public static void testSelectByPerchId() {
@@ -141,12 +143,6 @@ public with sharing class AccountsSelectorTest {
     }
 
     @IsTest
-    public static void testGetAccountsById() {
-        System.assertNotEquals(null, new AccountsSelector().getAccountsById(new Set<Id>()),
-            'Expected an empty list when selecting by an empty set');
-    }
-
-    @IsTest
     public static void testGetPropertiesFromParent() {
         System.assertNotEquals(null, new AccountsSelector().getPropertiesFromParent(new Set<Id>()),
             'Expected an empty list when selecting by an empty set');
@@ -169,6 +165,42 @@ public with sharing class AccountsSelectorTest {
         insert propertyAccount;
         System.assertNotEquals(null, new AccountsSelector().getRetiredAccounts(new Set<Id>{propertyAccount.Id}),
             'Expected to return Accounts with Date Removed from Project');
+    }
+
+    @IsTest
+    public static void testSelectAccountByPartnerIds() {
+        Set<Id> partnerIds = (new Map<Id, Partner__c>([SELECT Id FROM Partner__c])).keySet();
+        System.assertNotEquals(null, new AccountsSelector().selectAccountByPartnerIds(partnerIds), 'Expected list of accounts');
+    }
+
+    @IsTest
+    public static void testGetPartnerAccountDetails() {
+        Id accId = [SELECT Id FROM Account LIMIT 1].Id;
+        System.assertNotEquals(null, new AccountsSelector().getPartnerAccountDetails(accId), 'Expected list of accounts');
+    }
+
+    @IsTest
+    public static void testSelectPropertyAccountsWithOpps() {
+        Id accId = [SELECT Id FROM Account LIMIT 1].Id;
+        System.assertNotEquals(null, new AccountsSelector().selectPropertyAccountsWithOpps(new Set<Id>{accId}), 'Expected list of accounts');
+    }
+
+    @IsTest
+    public static void testSelectById() {
+        Id accId = [SELECT Id FROM Account LIMIT 1].Id;
+        System.assertNotEquals(null, new AccountsSelector().selectById(new Set<Id>{accId}), 'Expected list of accounts');
+    }
+
+    @IsTest
+    public static void testSelectParentAccountWithPropertyAccounts() {
+        Id accId = [SELECT Id FROM Account LIMIT 1].Id;
+        System.assertNotEquals(null, new AccountsSelector().selectParentAccountWithPropertyAccounts(new Set<Id>{accId}), 'Expected list of accounts');
+    }
+
+    @IsTest
+    public static void testSelectParentAccountWithContacts() {
+        Id accId = [SELECT Id FROM Account LIMIT 1].Id;
+        System.assertNotEquals(null, new AccountsSelector().selectParentAccountWithContacts(new Set<Id>{accId}), 'Expected list of accounts');
     }
 
 }

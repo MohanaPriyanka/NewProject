@@ -1,0 +1,2 @@
+SimpleSignupFormControllerTest, CapacityServiceTest, CreditReportCheckerTest, AccountsSelectorTest, PartnerCommissionGenerationTest
+
