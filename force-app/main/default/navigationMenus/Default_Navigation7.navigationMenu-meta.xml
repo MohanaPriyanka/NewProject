@@ -63,9 +63,7 @@
             </navigationMenuItem>
             
             <navigationMenuItem>
-                
-                <label>Submit a Case</label>
-                
+                <label>Ask A Question</label>
                 <position>1</position>
                 
                 <publiclyAvailable>true</publiclyAvailable>
