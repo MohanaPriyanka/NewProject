@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Included_in_Contract_Close__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Set during Perch Countersignature flow and implemented in W-024422</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Designates if this Subscription Order has been applied to the Contract Close Commission Payment for the corresponding deal.</inlineHelpText>
+    <label>Included in Contract Close</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

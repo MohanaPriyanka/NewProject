@@ -110,6 +110,25 @@
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
+    <actionCalls>
+        <description>Flags Subscription Orders which are a part of deal close at Countersignature (see W-024422)</description>
+        <name>Flag_Subscription_Orders</name>
+        <label>Flag Subscription Orders</label>
+        <locationX>176</locationX>
+        <locationY>1910</locationY>
+        <actionName>DealCloseOrderIdentifier</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>scr_End</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>opportunities</name>
+            <value>
+                <elementReference>socv_SelectedOpportuniites</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
     <apiVersion>49.0</apiVersion>
     <assignments>
         <name>Assign_AddOppToList</name>
@@ -263,7 +282,7 @@
         <locationX>176</locationX>
         <locationY>1790</locationY>
         <connector>
-            <targetReference>scr_End</targetReference>
+            <targetReference>Flag_Subscription_Orders</targetReference>
         </connector>
         <inputReference>socv_OpportunitiesUpdateList</inputReference>
     </recordUpdates>
@@ -272,7 +291,7 @@
         <name>scr_End</name>
         <label>scr_End</label>
         <locationX>176</locationX>
-        <locationY>1910</locationY>
+        <locationY>2030</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>

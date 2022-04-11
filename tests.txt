@@ -1,2 +1,1 @@
-SimpleSignupFormControllerTest, CapacityServiceTest, CreditReportCheckerTest, AccountsSelectorTest, PartnerCommissionGenerationTest
-
+AccountsSelectorTest, PartnerCommissionGenerationTest, OpportunitiesSelectorTest, SubscriptionManagementServiceTest, SubscriptionOrderSelectorTest

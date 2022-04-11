@@ -108,6 +108,9 @@ public without sharing class VariableRateCommissionProcessor extends PartnerComm
         Decimal totalFirstBillSentAmount = 0;
 
         for (Subscription_Order__c order : deal.subscriptionOrders) {
+            if (!order.Included_in_Contract_Close__c) {
+                continue;
+            }
             totalContractCloseAmount += getAndRegisterAmountFromSubscriptionOrder(
                 order,
                 Subscription_Order__c.Contract_Close_Estimated_Commission__c,
@@ -137,6 +140,9 @@ public without sharing class VariableRateCommissionProcessor extends PartnerComm
         Decimal totalFirstBillPaidAmount = 0;
 
         for (Subscription_Order__c order : deal.subscriptionOrders) {
+            if (!order.Included_in_Contract_Close__c) {
+                continue;
+            }
             totalContractCloseAmount += getAndRegisterAmountFromSubscriptionOrder(
                 order,
                 Subscription_Order__c.Contract_Close_Estimated_Commission__c,

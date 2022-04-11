@@ -27,9 +27,19 @@ public class PartnerCommissionGenerationTest {
         ];
         System.assertEquals(4, utilityAccountSubscriptions.size(), 'Should be 4 UAS loaded');
 
+        // Run service to flag Subscription Orders included at Contract Close (executed at end of Perch Countersignature flow)
+        List<List<Opportunity>> oppsToCountersign = new List<List<Opportunity>>{new List<Opportunity>()};
+        for (Utility_Account_Subscription__c subscription : utilityAccountSubscriptions) {
+            Opportunity opp = new Opportunity(
+                Id = subscription.Opportunity__c
+            );
+            oppsToCountersign[0].add(opp);
+        }
+        DealCloseOrderIdentifier.flagOrders(oppsToCountersign);
+
         // Create Resize subscription orders for 2 subscriptions (e.g. prior to Contract Close)
-        createResizeSubscriptionOrder(utilityAccountSubscriptions[1], 1.5);
-        createResizeSubscriptionOrder(utilityAccountSubscriptions[2], 0.5);
+        createResizeSubscriptionOrder(utilityAccountSubscriptions[1], 1.5, true);
+        createResizeSubscriptionOrder(utilityAccountSubscriptions[2], 0.5, true);
 
         // Cancel a subscription AND deal before the Contract Execution commission was paid.
         // This subscription/opportunity should NOT get any Contract Execution Commission Payments
@@ -96,6 +106,16 @@ public class PartnerCommissionGenerationTest {
         ];
         System.assertEquals(4, utilityAccountSubscriptions.size(), 'Should be 4 UAS loaded');
 
+        // Run service to flag Subscription Orders included at Contract Close (executed at end of Perch Countersignature flow)
+        List<List<Opportunity>> oppsToCountersign = new List<List<Opportunity>>{new List<Opportunity>()};
+        for (Utility_Account_Subscription__c subscription : utilityAccountSubscriptions) {
+            Opportunity opp = new Opportunity(
+                Id = subscription.Opportunity__c
+            );
+            oppsToCountersign[0].add(opp);
+        }
+        DealCloseOrderIdentifier.flagOrders(oppsToCountersign);
+
         // Create Invoice/Commission Payment records as if created previously for Contract Execution
         createVariableContractExecutionPayments(utilityAccountSubscriptions);
 
@@ -107,8 +127,10 @@ public class PartnerCommissionGenerationTest {
             ));
         }
 
-        // Create Resize subscription orders for 1 subscription (e.g. AFTER Contract Close but before First Bill Sent)
-        createResizeSubscriptionOrder(utilityAccountSubscriptions[1], 1.5);
+        // Create a Resize subscription order for Subscription #2, created AFTER Contract Close but before First Bill Sent
+        // Note that this subscription order should NOT be included in the First Bill Sent commission payment as per
+        // W-024422 since the Included_in_Contract_Close__c is set to FALSE
+        createResizeSubscriptionOrder(utilityAccountSubscriptions[1], 1.5, false);
 
         unitOfWork.commitWork();
 
@@ -158,20 +180,20 @@ public class PartnerCommissionGenerationTest {
             'First Bill Sent payment amount should equal value on the 1 related Subscription Order');
 
         // SCENARIO B: One Initial Subscription Order and one Resize Subscription Order
-        // True-ups should take place for outstanding contract execution amount due
-        System.assertNotEquals(0, commissionPayments[1].Contract_Execution_Amount__c,
-            'This commission payment should have a contract execution amount (for true up) due to 1 included resize subscription order');
-        System.assertEquals(commissionPayments[1].First_Bill_Subscription_Orders__r[1].Contract_Close_Estimated_Commission__c,
-            commissionPayments[1].Contract_Execution_Amount__c,
-            'Invalid Contract Execution Amount retrieved from resize Subscription order from this deal');
-        System.assertEquals(commissionPayments[1].First_Bill_Subscription_Orders__r[0].First_Bill_Sent_Estimated_Commission__c +
-            commissionPayments[1].First_Bill_Subscription_Orders__r[1].First_Bill_Sent_Estimated_Commission__c,
+        // Resize Subscription Order should not be a part of the Commission Payment (amounts due to be captured at later true-up period)
+        System.assertEquals(1, commissionPayments[1].First_Bill_Subscription_Orders__r.size(),
+            'Only one Subscription Order should be included in the First Bill Sent Commission Payment: Contract Execution');
+        System.assertEquals(0, commissionPayments[1].Contract_Execution_Amount__c,
+            'This commission payment should have no associated contract execution amount due');
+        System.assertEquals(commissionPayments[1].First_Bill_Subscription_Orders__r[0].First_Bill_Sent_Estimated_Commission__c,
             commissionPayments[1].First_Bill_Sent_Amount__c,
-            'First Bill Sent amount should be aggregate/sum of 2 subscription orders');
+            'First Bill Sent amount should be value from respective Subscription Order');
     }
 
     @IsTest
     private static void testVariableFirstBillPaidCommission() {
+        enableClawbacks(false);
+
         // Retrieve test data
         List<Utility_Account_Subscription__c> utilityAccountSubscriptions = [
             SELECT Id, Annual_kWh_Subscription_Future_Rollup__c, Opportunity__r.Commission_Structure__c, Opportunity__c,
@@ -183,16 +205,28 @@ public class PartnerCommissionGenerationTest {
         ];
         System.assertEquals(4, utilityAccountSubscriptions.size(), 'Should be 4 UAS loaded');
 
+        // Run service to flag Subscription Orders included at Contract Close (executed at end of Perch Countersignature flow)
+        List<List<Opportunity>> oppsToCountersign = new List<List<Opportunity>>{new List<Opportunity>()};
+        for (Utility_Account_Subscription__c subscription : utilityAccountSubscriptions) {
+            Opportunity opp = new Opportunity(
+                Id = subscription.Opportunity__c
+            );
+            oppsToCountersign[0].add(opp);
+        }
+        DealCloseOrderIdentifier.flagOrders(oppsToCountersign);
+
         // Create Invoice/Commission Payment records as if created previously for Contract Execution
         createVariableContractExecutionPayments(utilityAccountSubscriptions);
 
         // Create Invoice/Commission Payment records as if created previously for First Bill Sent
         createVariableFirstBillSentPayments(utilityAccountSubscriptions);
 
-        // Create Resize subscription orders for 1 subscription (e.g. AFTER First Bill Sent but BEFORE First Bill Paid)
-        createResizeSubscriptionOrder(utilityAccountSubscriptions[1], 2);
+        // Create Resize subscription orders for Subscription #2, created AFTER First Bill Sent but BEFORE First Bill Paid
+        // Note that this subscription order should NOT be included in the First Bill Sent commission payment as per
+        // W-024422 since the Included_in_Contract_Close__c is set to FALSE
+        createResizeSubscriptionOrder(utilityAccountSubscriptions[1], 2, false);
 
-        // Cancel a subscription after first bill sent but BEFORE first bill paid
+        // Cancel a subscription after first bill sent but BEFORE first bill paid for 1 subscription
         createCancellationSubscriptionOrder(utilityAccountSubscriptions[3]);
         cancelOpportunity(utilityAccountSubscriptions[3]);
 
@@ -251,29 +285,22 @@ public class PartnerCommissionGenerationTest {
             'First Bill Paid payment amount should equal value on the 1 related Subscription Order');
 
         // SCENARIO B: One Initial Subscription Order and one Resize Subscription Order
-        // True-ups should take place for outstanding contract execution / first bill sent amounts due
-        System.assertNotEquals(0, commissionPayments[1].Contract_Execution_Amount__c,
-            'This commission payment should have a contract execution amount (for true up) due to 1 included resize subscription order');
-        System.assertNotEquals(0, commissionPayments[1].First_Bill_Sent_Amount__c,
-            'This commission payment should have a first bill sent amount (for true up) due to 1 included resize subscription order');
-        System.assertEquals(commissionPayments[1].First_Bill_Paid_Subscription_Orders__r[1].Contract_Close_Estimated_Commission__c,
-            commissionPayments[1].Contract_Execution_Amount__c,
-            'Invalid Contract Execution Amount retrieved from resize Subscription order from this deal');
-        System.assertEquals(commissionPayments[1].First_Bill_Paid_Subscription_Orders__r[1].First_Bill_Sent_Estimated_Commission__c,
-            commissionPayments[1].First_Bill_Sent_Amount__c,
-            'Invalid First Bill Sent amount retrieved from resize subscription order from this deal');
-        System.assertEquals(commissionPayments[1].First_Bill_Paid_Subscription_Orders__r[0].First_Bill_Paid_Estimated_Commission__c +
-            commissionPayments[1].First_Bill_Paid_Subscription_Orders__r[1].First_Bill_Paid_Estimated_Commission__c,
+        // Resize Subscription Order should not be a part of the Commission Payment (amounts due to be captured at later true-up period)
+        System.assertEquals(0, commissionPayments[1].Contract_Execution_Amount__c,
+            'This commission payment should have NO Contract Execution Amount despite 1 resize subscription order entered after Contract Close');
+        System.assertEquals(0, commissionPayments[1].First_Bill_Sent_Amount__c,
+            'This commission payment should have NO first bill sent amount despite 1 included resize subscription order entered after Contract Close');
+        System.assertEquals(1, commissionPayments[1].First_Bill_Paid_Subscription_Orders__r.size(),
+            'This commission payment should only have one associated Subscription Order');
+        System.assertEquals(commissionPayments[1].First_Bill_Paid_Subscription_Orders__r[0].First_Bill_Paid_Estimated_Commission__c,
             commissionPayments[1].First_Bill_Paid_Amount__c,
-            'First Bill Paid amount should be aggregate/sum of 2 subscription orders');
+            'First Bill Paid amount should be equal to amount specified on associated Subscription Order');
 
         // SCENARIO C: One Initial Subscription Order, One Cancellation Subscription Order put in after First Bill Sent
-        System.assertEquals(commissionPayments[3].First_Bill_Paid_Subscription_Orders__r[0].Contract_Close_Commission_Amount__c * -1,
-            commissionPayments[3].Contract_Execution_Amount__c,
-            'This commission payment contains a clawback on contract close, so the amount should net out the previously paid amount');
-        System.assertEquals(commissionPayments[3].First_Bill_Paid_Subscription_Orders__r[0].First_Bill_Sent_Commission_Amount__c * -1,
-            commissionPayments[3].First_Bill_Sent_Amount__c,
-            'This commission payment contains a clawback on first bill sent, so the amount should net out the previously paid amount');
+        // Cancellation SO should NOT be a part of the Commission Payment here (but will be assessed at a later true-up period)
+        System.assertEquals(commissionPayments[3].First_Bill_Paid_Subscription_Orders__r[0].First_Bill_Paid_Commission_Amount__c,
+            commissionPayments[3].First_Bill_Paid_Amount__c,
+            'First Bill Paid amount should be equal to amount specified on the associated Initial Subscription Order');
     }
 
     @IsTest
@@ -291,6 +318,14 @@ public class PartnerCommissionGenerationTest {
             ORDER BY Opportunity__r.Name ASC
             LIMIT 1
         ];
+
+        // Run service to flag Subscription Orders included at Contract Close (executed at end of Perch Countersignature flow)
+        List<List<Opportunity>> oppsToCountersign = new List<List<Opportunity>>{new List<Opportunity>()};
+        Opportunity opp = new Opportunity(
+            Id = subscription.Opportunity__c
+        );
+        oppsToCountersign[0].add(opp);
+        DealCloseOrderIdentifier.flagOrders(oppsToCountersign);
 
         // Create Contract Execution, First Bill Sent, and First Bill Paid commissions as if already existing
         createVariableContractExecutionPayments(new List<Utility_Account_Subscription__c>{subscription});
@@ -337,6 +372,9 @@ public class PartnerCommissionGenerationTest {
         System.assertEquals(commissionPayments[0].Subscription_Orders__r[0].First_Bill_Paid_Commission_Amount__c,
             commissionPayments[0].First_Bill_Paid_Amount__c,
             'Clawback commission should be the negative value of any commission paid out to the partner already');
+        System.assert(commissionPayments[0].Contract_Execution_Amount__c < 0, 'Value should be negative');
+        System.assert(commissionPayments[0].First_Bill_Sent_Amount__c < 0, 'Value should be negative');
+        System.assert(commissionPayments[0].First_Bill_Paid_Amount__c < 0, 'Value should be negative');
     }
 
     @IsTest
@@ -426,13 +464,16 @@ public class PartnerCommissionGenerationTest {
             Test.createStub(FeatureService.class, mockFeatureService);
     }
 
-    private static void createResizeSubscriptionOrder(Utility_Account_Subscription__c uas, Decimal multiplier) {
+    private static void createResizeSubscriptionOrder(Utility_Account_Subscription__c uas, Decimal multiplier,
+        Boolean includeInContractClose)
+    {
         Subscription_Order__c so = new Subscription_Order__c(
             Type__c = 'Resize',
             New_Annual_kWh__c = uas.Annual_kWh_Subscription_Future_Rollup__c * multiplier,
             Effective_Date__c = System.now(),
             Approval_Status__c = 'Approved',
-            Comments__c = 'Resize'
+            Comments__c = 'Resize',
+            Included_in_Contract_Close__c = includeInContractClose
         );
         unitOfWork.registerNew(so, Subscription_Order__c.Utility_Account_Subscription__c, uas);
     }

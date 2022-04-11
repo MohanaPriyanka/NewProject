@@ -178,7 +178,8 @@ public inherited sharing class SubscriptionOrderSelector {
             SELECT Id, Utility_Account_Subscription__r.Opportunity__c, First_Bill_Paid_Estimated_Commission__c,
                 First_Bill_Sent_Estimated_Commission__c, Contract_Close_Estimated_Commission__c,
                 Contract_Close_Commission_Amount__c, Contract_Close_Commission__c, First_Bill_Sent_Commission__c,
-                First_Bill_Sent_Commission_Amount__c, First_Bill_Paid_Commission_Amount__c, First_Bill_Paid_Commission__c
+                First_Bill_Sent_Commission_Amount__c, First_Bill_Paid_Commission_Amount__c, First_Bill_Paid_Commission__c,
+                Included_in_Contract_Close__c
             FROM Subscription_Order__c
             WHERE Utility_Account_Subscription__r.Opportunity__c IN : opportunityIds
             ORDER BY CreatedDate ASC])
@@ -193,5 +194,14 @@ public inherited sharing class SubscriptionOrderSelector {
             }
         }
         return returnMap;
+    }
+
+    public List<Subscription_Order__c> getCurrentSubscriptionOrdersForOpportunities(List<Opportunity> opportunities) {
+        Set<Id> opportunityIds = CollectionUtil.getIdSet(opportunities);
+        return [
+            SELECT Id
+            FROM Subscription_Order__c
+            WHERE Utility_Account_Subscription__r.Opportunity__c IN : opportunityIds
+        ];
     }
 }
