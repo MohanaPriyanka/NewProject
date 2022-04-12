@@ -14,10 +14,10 @@ public with sharing class ProductionDetailCreditMemoTest {
         System.assertEquals(5, creditMemoEntries.size());
 
         ProductionDetailCreditMemoService service = new ProductionDetailCreditMemoService();
-        service.calculateProductionDetailFromCreditMemo(creditMemoEntries);
+        service.createProductionDetailFromCreditMemo(creditMemoEntries);
 
-        List<Transfer_Part__c> productionDetailList = service.productionDetailToInsert;
-        System.assertEquals(0, service.productionDetailToDelete.size());
+        List<Transfer_Part__c> productionDetailList = FFLibHelperTest.getRegisterNewListFromUnitOfWork(ProductionDetailCreditMemoService.insertUOW, 'Transfer_Part__c');
+        System.assertEquals(0, FFLibHelperTest.getRegisterDeletedListFromUnitOfWork(ProductionDetailCreditMemoService.deleteUOW, 'Transfer_Part__c').size());
         List<Journal_Entry__c> entryList = service.completedJEs;
         System.assertEquals(5, entryList.size());
 
@@ -53,9 +53,9 @@ public with sharing class ProductionDetailCreditMemoTest {
         ZuoraAPIHelper.numberCalloutsForZuoraNamespace = 88;
 
         ProductionDetailCreditMemoService service = new ProductionDetailCreditMemoService();
-        service.calculateProductionDetailFromCreditMemo(creditMemoEntries);
+        service.createProductionDetailFromCreditMemo(creditMemoEntries);
 
-        List<Transfer_Part__c> productionDetailList = service.productionDetailToInsert;
+        List<Transfer_Part__c> productionDetailList = FFLibHelperTest.getRegisterNewListFromUnitOfWork(ProductionDetailCreditMemoService.insertUOW, 'Transfer_Part__c');
         List<Journal_Entry__c> completedEntries = service.completedJEs;
 
         Integer countOfBills = 0;
@@ -109,9 +109,21 @@ public with sharing class ProductionDetailCreditMemoTest {
         System.assertEquals(5, entryList.size());
 
         ProductionDetailCreditMemoService service = new ProductionDetailCreditMemoService();
-        service.calculateProductionDetailFromCreditMemo(entryList);
+        ProductionDetailCreditMemoService.insertUOW = new fflib_SObjectUnitOfWork(
+            new List<SObjectType>{
+                Transfer_Part__c.SObjectType
+            },
+            new FFLibHelperTest.MockDML()
+        );
+        ProductionDetailCreditMemoService.deleteUOW = new fflib_SObjectUnitOfWork(
+            new List<SObjectType>{
+                Transfer_Part__c.SObjectType
+            },
+            new FFLibHelperTest.MockDML()
+        );
+        service.createProductionDetailFromCreditMemo(entryList);
 
-        System.assertEquals(4, service.productionDetailToDelete.size());
+        System.assertEquals(4, FFLibHelperTest.getRegisterDeletedListFromUnitOfWork(ProductionDetailCreditMemoService.deleteUOW, 'Transfer_Part__c').size());
     }
 
     @IsTest
@@ -210,5 +222,11 @@ public with sharing class ProductionDetailCreditMemoTest {
             entryOne, entryTwo, entryThree, entryFive, entrySix
         };
         return entries;
+    }
+
+    public class MockUOW extends MockProvider {
+        public override Object handleMethodCall(MethodCall methodCall) {
+            return null;
+        }
     }
 }

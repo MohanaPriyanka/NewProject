@@ -1,10 +1,6 @@
 // Tested By: ProductionDetailCreditMemoTest
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class ProductionDetailCreditMemoService implements Database.AllowsCallouts {
-    @TestVisible
-    private List<Transfer_Part__c> productionDetailToInsert = new List<Transfer_Part__c>();
-    @TestVisible
-    private List<Transfer_Part__c> productionDetailToDelete = new List<Transfer_Part__c>();
     // Incomplete Entries aren't fully applied in Zuora yet, and should remain marked as "Ready for Production Detail"
     public List<Journal_Entry__c> incompleteEntries = new List<Journal_Entry__c>();
     public List<Journal_Entry__c> completedJEs = new List<Journal_Entry__c>();
@@ -13,16 +9,20 @@ public without sharing class ProductionDetailCreditMemoService implements Databa
     private static ProductionDetailSelector productionDetailSelector = new ProductionDetailSelector();
     @TestVisible
     private static AdjustmentSelector adjustmentSelector = new AdjustmentSelector();
+    @TestVisible
+    private static fflib_SObjectUnitOfWork deleteUOW = new fflib_SObjectUnitOfWork(
+        new List<SObjectType>{
+            Transfer_Part__c.SObjectType
+        }
+    );
+    @TestVisible
+    private static fflib_SObjectUnitOfWork insertUOW = new fflib_SObjectUnitOfWork(
+        new List<SObjectType>{
+            Transfer_Part__c.SObjectType
+        }
+    );
 
     public void createProductionDetailFromCreditMemo(List<Journal_Entry__c> creditMemoEntries) {
-        calculateProductionDetailFromCreditMemo(creditMemoEntries);
-        insert productionDetailToInsert;
-        List<Database.DeleteResult> deleteResults = Database.delete(productionDetailToDelete, false);
-        logDeleteErrors(deleteResults, productionDetailToDelete);
-    }
-
-    @TestVisible
-    private void calculateProductionDetailFromCreditMemo(List<Journal_Entry__c> creditMemoEntries) {
         List<Journal_Entry__c> billItems = new List<Journal_Entry__c>();
         List<Journal_Entry__c> collectionItems = new List<Journal_Entry__c>();
 
@@ -30,7 +30,7 @@ public without sharing class ProductionDetailCreditMemoService implements Databa
             // If a Credit Memo Journal Entry is marked as "Ready_for_Production_Detail__c" but already
             // has transfer parts, that means it could have been reallocated and we need to re-distribute:
             if (creditMemo.Transfer_Parts__r.size() > 0) {
-                productionDetailToDelete.addAll(creditMemo.Transfer_Parts__r);
+                deleteUOW.registerDeleted(creditMemo.Transfer_Parts__r);
             }
             if (creditMemo.Reason_Code__c == 'Production') {
                 billItems.add(creditMemo);
@@ -44,8 +44,13 @@ public without sharing class ProductionDetailCreditMemoService implements Databa
             // If we hit the calloutLimit, do not add to completedJEs List, so the JE will remain
             // marked as "Ready for Production Detail" = true, and get pulled into the next batch
         }
+        // We need to delete any existing PDs from CMs before we calculate new ones. The createPaymentItemForCreditMemo
+        // step queries any existing PDs to calculate what's already applied, so we shouldn't include anything that we'll
+        // delete.
+        deleteUOW.commitWork();
         createBillItemForCreditMemo(billItems);
         createPaymentItemForCreditMemo(collectionItems);
+        insertUOW.commitWork();
     }
 
     private void createBillItemForCreditMemo(List<Journal_Entry__c> billItems) {
@@ -78,13 +83,13 @@ public without sharing class ProductionDetailCreditMemoService implements Databa
                 billService.createBillProductionDetail(sfAdjustment.Transfer__c, sfAdjustment.Adjustment_Amount__c, 'Payment', entry.Id);
             }
         }
-        productionDetailToInsert.addAll(billService.productionDetailToInsert);
+        insertUOW.registerNew(billService.productionDetailToInsert);
     }
 
     private void createPaymentItemForCreditMemo(List<Journal_Entry__c> collectionItems) {
         ProductionDetailPaymentService payService = new ProductionDetailPaymentService();
         payService.calculateProductionDetailFromCollectionItem(collectionItems);
-        productionDetailToInsert.addAll(payService.productionDetailToInsert);
+        insertUOW.registerNew(payService.productionDetailToInsert);
     }
 
     @TestVisible

@@ -3,8 +3,10 @@
     <fullName>Bill_Part__c</fullName>
     <deleteConstraint>SetNull</deleteConstraint>
     <externalId>false</externalId>
+    <inlineHelpText>The Invoice Item or Debit Memo Production Detail to which this Payment Part, Credit Memo, or Returned Payment Debit Memo record is applied</inlineHelpText>
     <label>Bill Part</label>
     <referenceTo>Transfer_Part__c</referenceTo>
+    <relationshipLabel>Production Detail</relationshipLabel>
     <relationshipName>Bill_Parts</relationshipName>
     <required>false</required>
     <trackTrending>false</trackTrending>

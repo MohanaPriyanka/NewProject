@@ -116,7 +116,18 @@ public with sharing class ProductionToBillServiceTest {
 
         ProductionDetailCreditMemoService.productionDetailSelector = (ProductionDetailSelector) Test.createStub(ProductionDetailSelector.class, new MockProductionDetailSelector());
         ProductionDetailCreditMemoService.adjustmentSelector = (AdjustmentSelector) Test.createStub(AdjustmentSelector.class, new MockAdjustmentSelector());
-
+        ProductionDetailCreditMemoService.insertUOW = new fflib_SObjectUnitOfWork(
+            new List<SObjectType>{
+                Transfer_Part__c.SObjectType
+            },
+            new FFLibHelperTest.MockDML()
+        );
+        ProductionDetailCreditMemoService.deleteUOW = new fflib_SObjectUnitOfWork(
+            new List<SObjectType>{
+                Transfer_Part__c.SObjectType
+            },
+            new FFLibHelperTest.MockDML()
+        );
         ProductionDetailDebitMemoService.adjustmentSelector = (AdjustmentSelector) Test.createStub(AdjustmentSelector.class, new MockAdjustmentSelector());
         ProductionDetailDebitMemoService.productionDetailSelector = (ProductionDetailSelector) Test.createStub(ProductionDetailSelector.class, new MockProductionDetailSelector());
         ProductionDetailDebitMemoService.journalEntrySelector = (JournalEntrySelector) Test.createStub(JournalEntrySelector.class, new MockGLSelector());
