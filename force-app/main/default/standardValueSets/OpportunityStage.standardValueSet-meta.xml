@@ -1,279 +1,140 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <StandardValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
-    
     <sorted>false</sorted>
-    
     <standardValue>
-        
         <fullName>New</fullName>
-        
         <default>false</default>
-        
         <label>New</label>
-        
         <closed>false</closed>
-        
         <forecastCategory>Pipeline</forecastCategory>
-        
         <probability>10</probability>
-        
         <won>false</won>
-        
     </standardValue>
-    
     <standardValue>
-        
         <fullName>Proposal</fullName>
-        
         <default>false</default>
-        
         <label>Proposal</label>
-        
         <closed>false</closed>
-        
         <forecastCategory>Pipeline</forecastCategory>
-        
         <probability>30</probability>
-        
         <won>false</won>
-        
     </standardValue>
-    
     <standardValue>
-        
         <fullName>Engaged in Proposal Details</fullName>
-        
         <default>false</default>
-        
         <label>Engaged in Proposal Details</label>
-        
         <closed>false</closed>
-        
         <forecastCategory>BestCase</forecastCategory>
-        
         <probability>50</probability>
-        
         <won>false</won>
-        
     </standardValue>
-    
     <standardValue>
-        
         <fullName>Contract Pending</fullName>
-        
         <default>false</default>
-        
         <label>Contract Pending</label>
-        
         <closed>false</closed>
-        
         <forecastCategory>Forecast</forecastCategory>
-        
         <probability>90</probability>
-        
         <won>false</won>
-        
     </standardValue>
-    
     <standardValue>
-        
         <fullName>QC In Process</fullName>
-        
         <default>false</default>
-        
         <label>QC In Process</label>
-        
         <closed>false</closed>
-        
         <forecastCategory>Pipeline</forecastCategory>
-        
         <probability>90</probability>
-        
         <won>false</won>
-        
     </standardValue>
-    
     <standardValue>
-        
         <fullName>Closed Won</fullName>
-        
         <default>false</default>
-        
         <label>Closed Won</label>
-        
         <closed>true</closed>
-        
         <forecastCategory>Closed</forecastCategory>
-        
         <probability>100</probability>
-        
         <won>true</won>
-        
     </standardValue>
-    
     <standardValue>
-        
         <fullName>Closed Lost</fullName>
-        
         <default>false</default>
-        
         <label>Closed Lost</label>
-        
         <closed>true</closed>
-        
         <forecastCategory>Omitted</forecastCategory>
-        
         <probability>0</probability>
-        
         <won>false</won>
-        
     </standardValue>
-    
     <standardValue>
-        
         <fullName>Pending Perch Signature</fullName>
-        
         <default>false</default>
-        
         <label>Pending Perch Signature</label>
-        
         <closed>false</closed>
-        
         <forecastCategory>Pipeline</forecastCategory>
-        
         <probability>95</probability>
-        
         <won>false</won>
-        
     </standardValue>
-    
     <standardValue>
-        
         <fullName>Complete</fullName>
-        
         <default>false</default>
-        
         <label>Complete</label>
-        
         <closed>true</closed>
-        
         <forecastCategory>Closed</forecastCategory>
-        
         <probability>100</probability>
-        
         <won>true</won>
-        
     </standardValue>
-    
     <standardValue>
-        
         <fullName>Cancelled</fullName>
-        
         <default>false</default>
-        
         <label>Cancelled</label>
-        
         <closed>true</closed>
-        
         <forecastCategory>Omitted</forecastCategory>
-        
         <probability>0</probability>
-        
         <won>false</won>
-        
     </standardValue>
-    
     <standardValue>
-        
         <fullName>Unqualified</fullName>
-        
         <default>false</default>
-        
         <label>Unqualified</label>
-        
-        <closed>false</closed>
-        
+        <closed>true</closed>
         <forecastCategory>Omitted</forecastCategory>
-        
         <probability>0</probability>
-        
         <won>false</won>
-        
     </standardValue>
-    
     <standardValue>
-        
         <fullName>Rejected Contract</fullName>
-        
         <default>false</default>
-        
         <label>Rejected Contract</label>
-        
         <closed>true</closed>
-        
         <forecastCategory>Omitted</forecastCategory>
-        
         <probability>0</probability>
-        
         <won>false</won>
-        
     </standardValue>
-    
     <standardValue>
-        
         <fullName>Expired</fullName>
-        
         <default>false</default>
-        
         <label>Expired</label>
-        
-        <closed>false</closed>
-        
-        <forecastCategory>Pipeline</forecastCategory>
-        
-        <probability>0</probability>
-        
-        <won>false</won>
-        
-    </standardValue>
-    
-    <standardValue>
-        
-        <fullName>DUPLICATE</fullName>
-        
-        <default>false</default>
-        
-        <description>This is for Duplicate Records</description>
-        
-        <label>DUPLICATE</label>
-        
         <closed>true</closed>
-        
         <forecastCategory>Omitted</forecastCategory>
-        
         <probability>0</probability>
-        
         <won>false</won>
-        
     </standardValue>
-    
     <standardValue>
-        
-        <fullName>On Hold</fullName>
-        
+        <fullName>DUPLICATE</fullName>
         <default>false</default>
-        
-        <label>On Hold</label>
-        
-        <closed>false</closed>
-        
+        <description>This is for Duplicate Records</description>
+        <label>DUPLICATE</label>
+        <closed>true</closed>
         <forecastCategory>Omitted</forecastCategory>
-        
-        <probability>5</probability>
-        
+        <probability>0</probability>
         <won>false</won>
-        
     </standardValue>
-    
+    <standardValue>
+        <fullName>On Hold</fullName>
+        <default>false</default>
+        <label>On Hold</label>
+        <closed>false</closed>
+        <forecastCategory>Omitted</forecastCategory>
+        <probability>5</probability>
+        <won>false</won>
+    </standardValue>
 </StandardValueSet>

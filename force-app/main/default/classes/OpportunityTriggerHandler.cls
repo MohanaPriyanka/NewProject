@@ -1,7 +1,6 @@
 /**
  * @description Trigger handler for Opportunity
- * Tested by: OpportunityTriggerTest, CSCancellationServiceTest, ClientBrandingServiceTest, PartnerCommissionHandlerTest,
- *      UserHandlerTest, PartnerCommissionStructureLocatorTest
+ * Tested by: OpportunityTriggerTest, CSCancellationServiceTest, ClientBrandingServiceTest, PartnerCommissionHandlerTest, UserHandlerTest, PartnerCommissionStructureLocatorTest
  */
 public without sharing class OpportunityTriggerHandler {
 
@@ -159,15 +158,16 @@ public without sharing class OpportunityTriggerHandler {
         }
     }
 
+    private void assessCommissionStructureChange() {
+        List<Opportunity> oppsNeedingCommissionStructureChange = (List<Opportunity>) new SObjectFilter(
+            oldMap, newList, Opportunity.Shared_Solar_System__c, SObjectFilter.ANY_VALUE, SObjectFilter.ANY_VALUE)
+            .addFilterCriteria(Opportunity.IsClosed, SObjectFilter.NOT_EQUAL_TO, true)
+            .get(SObjectFilter.SOBJECT_LIST);
+        setActivePartnerCommissionStructure(oppsNeedingCommissionStructureChange);
+    }
+
     private void setActivePartnerCommissionStructure(List<Opportunity> oppList) {
         PartnerCommissionStructureLocator service = new PartnerCommissionStructureLocator(oppList);
         service.setStructureOnOpportunities();
-    }
-
-    private void assessCommissionStructureChange() {
-        List<Opportunity> oppsWithSystemChange = (List<Opportunity>) new SObjectFilter(
-            oldMap, newList, Opportunity.Shared_Solar_System__c, SObjectFilter.ANY_VALUE, SObjectFilter.ANY_VALUE
-        ).get(SObjectFilter.SOBJECT_LIST);
-        setActivePartnerCommissionStructure(oppsWithSystemChange);
     }
 }
