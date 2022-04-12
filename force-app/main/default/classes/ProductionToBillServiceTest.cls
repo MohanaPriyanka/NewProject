@@ -101,6 +101,45 @@ public with sharing class ProductionToBillServiceTest {
         System.assert(!requeriedAdj.Ready_For_Production_Detail__c);
     }
 
+    @IsTest
+    private static void testJobOrder() {
+        ProductionToBillService productionService = new ProductionToBillService();
+        productionService.opType = ProductionToBillService.OperationType.BILL;
+        productionService.execute(null);
+        System.assertEquals(ProductionToBillService.OperationType.DEBITMEMO, productionService.nextP2BJob.opType,
+            'Expected to generate Production Details for DebitMemos after Invoice Items, since they are needed for Payments and Credit Memos');
+
+        productionService = new ProductionToBillService();
+        productionService.opType = ProductionToBillService.OperationType.DEBITMEMO;
+        productionService.execute(null);
+        System.assertEquals(ProductionToBillService.OperationType.PAYMENT, productionService.nextP2BJob.opType,
+            'Expected to generate Production Details for Payments after Debit Memos');
+
+        productionService = new ProductionToBillService();
+        productionService.opType = ProductionToBillService.OperationType.PAYMENT;
+        productionService.execute(null);
+        System.assertEquals(ProductionToBillService.OperationType.CREDITMEMO, productionService.nextP2BJob.opType,
+            'Expected to generate Production Details for Credit Memos after Payments');
+
+        productionService = new ProductionToBillService();
+        productionService.opType = ProductionToBillService.OperationType.CREDITMEMO;
+        productionService.execute(null);
+        System.assertEquals(ProductionToBillService.OperationType.UNSERVICED_BILL, productionService.nextP2BJob.opType,
+            'Expected to generate Production Details for Unserviced Invoice Items after Credit Memos');
+
+        productionService = new ProductionToBillService();
+        productionService.opType = ProductionToBillService.OperationType.UNSERVICED_BILL;
+        productionService.execute(null);
+        System.assertEquals(ProductionToBillService.OperationType.UNSERVICED_ADJUST, productionService.nextP2BJob.opType,
+            'Expected to generate Production Details for Unserviced Adjustments after Unserviced Invoice Items');
+
+        productionService = new ProductionToBillService();
+        productionService.opType = ProductionToBillService.OperationType.UNSERVICED_ADJUST;
+        productionService.execute(null);
+        System.assertEquals(null, productionService.nextP2BJob,
+            'Expected no next job after generating Production Details for Unserviced Adjustments (until we add a reconciliation job)');
+    }
+
     /* ********* MOCKS ************ */
 
     public static void useMocks() {
@@ -586,4 +625,5 @@ public with sharing class ProductionToBillServiceTest {
             adjustOne, adjustTwo, adjustThree
         };
     }
+
 }

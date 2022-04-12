@@ -7,6 +7,8 @@ public without sharing class ProductionToBillService implements Queueable, Datab
     private static UASBSelector uasbSelector = new UASBSelector();
     @TestVisible
     private static AdjustmentSelector adjustmentSelector = new AdjustmentSelector();
+    @TestVisible
+    private ProductionToBillService nextP2BJob;
 
     public enum OperationType {
         BILL, PAYMENT, CREDITMEMO, DEBITMEMO, UNSERVICED_BILL, UNSERVICED_ADJUST
@@ -21,6 +23,8 @@ public without sharing class ProductionToBillService implements Queueable, Datab
         try {
             if (opType == OperationType.BILL) {
                 executeBillJob();
+            } else if (opType == OperationType.DEBITMEMO) {
+                executeDebitMemoJob();
             } else if (opType == OperationType.PAYMENT) {
                 executePaymentJob();
             } else if (opType == OperationType.CREDITMEMO) {
@@ -29,8 +33,6 @@ public without sharing class ProductionToBillService implements Queueable, Datab
                 executeUnservicedBillJob();
             } else if (opType == OperationType.UNSERVICED_ADJUST) {
                 executeUnservicedAdjustJob();
-            } else if (opType == OperationType.DEBITMEMO) {
-                executeDebitMemoJob();
             }
         } catch (Exception e) {
             String message = e.getMessage() + '\n' + e.getStackTraceString();
@@ -53,7 +55,7 @@ public without sharing class ProductionToBillService implements Queueable, Datab
             markJournalEntriesAsComplete(invoiceItems);
             // Since the billService is async and requeues itself, there's no need to queue the BILL job here
         } else {
-            queueJob(OperationType.PAYMENT);
+            queueJob(OperationType.DEBITMEMO);
         }
     }
 
@@ -131,8 +133,6 @@ public without sharing class ProductionToBillService implements Queueable, Datab
         }
         if (externallyServicedAdjusts.size() == batchSize) {
             queueJob(OperationType.UNSERVICED_ADJUST);
-        } else {
-            queueJob(OperationType.DEBITMEMO);
         }
     }
 
@@ -155,15 +155,17 @@ public without sharing class ProductionToBillService implements Queueable, Datab
             queueJob(OperationType.DEBITMEMO);
         } else {
             updateJournalEntriesReadyStatus(incompleteEntries, true);
+            queueJob(OperationType.PAYMENT);
         }
     }
 
     @TestVisible
     private void queueJob(OperationType operation) {
-        ProductionToBillService billJob = new ProductionToBillService();
-        billJob.opType = operation;
-        billJob.incompleteEntries = incompleteEntries;
-        System.enqueueJob(billJob);
+        ProductionToBillService p2bJob = new ProductionToBillService();
+        p2bJob.opType = operation;
+        p2bJob.incompleteEntries = incompleteEntries;
+        nextP2BJob = p2bJob;
+        System.enqueueJob(p2bJob);
     }
 
     private void markJournalEntriesAsComplete(List<Journal_Entry__c> entries) {
