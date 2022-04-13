@@ -1,5 +1,5 @@
 /**
- * An apex page controller that exposes the site forgot password functionality
+ * @description An apex page controller that exposes the site forgot password functionality
  */
 @IsTest public with sharing class ForgotPasswordControllerTest {
     @IsTest public static void testForgotPasswordControllerInvalidUser() {
@@ -8,7 +8,7 @@
             FROM User
             WHERE Name LIKE '%Guest%'
             AND IsActive = TRUE
-            AND Profile.Name = 'BlueWave Member Portal Profile'
+            AND Profile.Name = 'Perch Customer Portal Profile'
             LIMIT 1
         ];
         System.runAs(guest) {
@@ -31,7 +31,7 @@
 
     @IsTest public static void testForgotPasswordControllerValidUser() {
         Profile profileRecord = [SELECT Id FROM Profile WHERE Name = 'Community Solar Community User'];
-        Account parentAccount = new Account(Name = 'Parent Account');
+        Account parentAccount = new Account(Name = 'Perch Energy');
         insert parentAccount;
         Contact customerContact = new Contact(
             AccountId = parentAccount.Id,
@@ -62,7 +62,7 @@
             FROM User
             WHERE Name LIKE '%Guest%'
             AND IsActive = TRUE
-            AND Profile.Name = 'BlueWave Member Portal Profile'
+            AND Profile.Name = 'Perch Customer Portal Profile'
             LIMIT 1
         ];
         System.runAs(guest) {
