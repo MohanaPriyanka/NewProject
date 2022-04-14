@@ -1,5 +1,6 @@
 @IsTest
 public with sharing class OpportunityTriggerTest {
+
     @TestSetup
     public static void setupData() {
         Profile perchStandardUser = [SELECT Id FROM Profile WHERE Name = 'Perch Standard'];
@@ -52,7 +53,7 @@ public with sharing class OpportunityTriggerTest {
     }
 
     @IsTest
-    public static void testEventHandling(){
+    public static void testEventHandling() {
         Account newAccount = new Account(
             Name = 'newAccount'
         );
@@ -63,7 +64,7 @@ public with sharing class OpportunityTriggerTest {
             WHERE StageName != 'Cancelled'
         ];
         Map<Id, Opportunity> oldOppMap = new Map<Id, Opportunity>();
-        for (Opportunity opp : oppList){
+        for (Opportunity opp : oppList) {
             oldOppMap.put(opp.Id, opp);
         }
         Opportunity newOpp1 = new Opportunity(
@@ -84,8 +85,10 @@ public with sharing class OpportunityTriggerTest {
             StageName = oppList[2].StageName,
             AccountId = newAccount.Id
         );
-        List<Opportunity> newOppList = new List<Opportunity>{newOpp1, newOpp2, newOpp3};
-        Map<Id,Subscription_Change_Event__e> eventMap = new Map<Id,Subscription_Change_Event__e>();
+        List<Opportunity> newOppList = new List<Opportunity>{
+            newOpp1, newOpp2, newOpp3
+        };
+        Map<Id, Subscription_Change_Event__e> eventMap = new Map<Id, Subscription_Change_Event__e>();
         OpportunityTriggerHandler handler = new OpportunityTriggerHandler(oldOppMap, null, newOppList);
         eventMap = handler.publishSubscriptionChangeEvent();
         System.assert(eventMap.containsKey(oppList[0].AccountId));
@@ -98,10 +101,14 @@ public with sharing class OpportunityTriggerTest {
             AccountId = Util.getFakeId(Account.SObjectType),
             StageName = 'Complete'
         );
-        oldOppMap = new Map<Id, Opportunity>{completeOpp.Id => completeOpp};
+        oldOppMap = new Map<Id, Opportunity>{
+            completeOpp.Id => completeOpp
+        };
         Opportunity cancelledOpp = completeOpp.clone(true);
         cancelledOpp.StageName = 'Cancelled';
-        handler = new OpportunityTriggerHandler(oldOppMap, null, new List<Opportunity>{cancelledOpp});
+        handler = new OpportunityTriggerHandler(oldOppMap, null, new List<Opportunity>{
+            cancelledOpp
+        });
         eventMap = handler.publishSubscriptionChangeEvent();
         System.assert(eventMap.containsKey(completeOpp.AccountId),
             'Expected a Subscription Change Event because an Opportunity was cancelled');
@@ -154,5 +161,38 @@ public with sharing class OpportunityTriggerTest {
             System.assertEquals(opportunity.Shared_Solar_System__r.Picklist__c, opportunity.Servicing_on_Behalf_oftest__c,
                 'Servicing on Behalf Of should be set to the SSS Picklist value');
         }
+    }
+
+    @IsTest
+    public static void testActivatePortal() {
+        List<FlowInterview> portalActivationOldFlow = [SELECT Id, InterviewLabel, Name, CurrentElement FROM FlowInterview WHERE CurrentElement = 'Wait_3_Days'];
+        System.assertEquals(0, portalActivationOldFlow.size(), 'There are no flow invitations');
+        Lead ld = (Lead) TestFactory.createSObject(new Lead(
+            LastName = 'Testcase',
+            FirstName = 'Switch',
+            Email = 'switch@email.com',
+            LASERCA__Home_Address__c = '123 Street',
+            LASERCA__Home_City__c = 'Albany',
+            LASERCA__Home_Zip__c = '12345',
+            LASERCA__Home_State__c = 'NY',
+            LoadZone__c = 'Hudson Valley',
+            LeadSource = 'Switch',
+            Company = 'Switch Comp',
+            Status = 'New',
+            Parcel_Zip__c = '12345',
+            Customer_type__c = 'Non-Residential',
+            Application_Type__c = 'Non-Residential',
+            System_Assignment__c = 'Automatic - Assignment Order'));
+        insert ld;
+        Shared_Solar_System__c SSS = [SELECT Id FROM Shared_Solar_System__c LIMIT 1];
+        Opportunity opp = [SELECT Id, Lead__c, StageName, Shared_Solar_System__c FROM Opportunity LIMIT 1];
+        opp.Shared_Solar_System__c = SSS.Id;
+        opp.Lead__c = ld.Id;
+        opp.StageName = 'Complete';
+        update opp;
+
+        System.assertEquals('Complete', opp.StageName, 'Opportunity was successfully set to Complete stage');
+        List<FlowInterview> portalActivationNewFlow = [SELECT Id, InterviewLabel, Name, CurrentElement FROM FlowInterview WHERE CurrentElement = 'Wait_3_Days'];
+        System.assertEquals(1, portalActivationNewFlow.size(), 'One new flow invitation record is created');
     }
 }

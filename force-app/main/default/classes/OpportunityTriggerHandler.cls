@@ -5,6 +5,7 @@
 public without sharing class OpportunityTriggerHandler {
 
     @TestVisible private static PartnerCommissionHandler partnerCommissionHandler = new PartnerCommissionHandler();
+    private static CustomerPortalActivator customerPortalActivator = new CustomerPortalActivator();
     private static Id csRecordTypeId = SObjectType.Opportunity.getRecordTypeInfosByName().get('Community Solar').getRecordTypeId();
     private Map<Id, Opportunity> oldMap;
     private Map<Id, Opportunity> newMap;
@@ -27,6 +28,7 @@ public without sharing class OpportunityTriggerHandler {
 
     public void afterInsert() {
         CSApplicationStatusEventPublisher.publishEvent(null, newList);
+        customerPortalActivator.activatePortalAfterInsert(newMap);
     }
 
     public void beforeUpdate() {
@@ -44,7 +46,10 @@ public without sharing class OpportunityTriggerHandler {
         createPartnerCommission(oldMap, newMap);
         CSApplicationStatusEventPublisher.publishEvent(oldMap, newList);
         new SystemCapacityRollupCalculator(new OpportunityCapacityRollupInitializer(oldMap, newList)).performRollup();
-    }
+        
+        //When opportunity stage is completed the portal will be activated
+        customerPortalActivator.activatePortalAfterUpdate(newMap, oldMap);
+  	}
 
     public void afterDelete() {
         CSApplicationStatusEventPublisher.publishEventAfterDelete(oldMap.values());
