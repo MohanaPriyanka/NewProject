@@ -1,7 +1,6 @@
 /*************************************************************************************
  * Created By: peteryao on 2019-05-15  
- * Description:
- * Test:
+ * Description: Test coverage for ZuoraSubscriptionService, ZuoraRatePlanChargeService
  *************************************************************************************/
 @IsTest
 public with sharing class ZuoraSubscriptionServiceTest {
@@ -357,15 +356,17 @@ public with sharing class ZuoraSubscriptionServiceTest {
 
     @IsTest
     private static void testGetAllRatePlanChargesByAccountId() {
+        ZuoraRatePlanChargeService.maximumCriteriaSupportedByZOQL = 2;
         System.assertEquals(0, ZuoraAPIHelper.numberCalloutsForZuoraNamespace);
         Map<String, ZuoraOutstandingItemsService.RatePlanCharge> ratePlanChargesByChargeId =
-            ZuoraSubscriptionService.getAllRatePlanChargesByAccountId('');
+            ZuoraRatePlanChargeService.getAllRatePlanChargesByAccountId('');
         System.assertEquals('SSS-000099', ratePlanChargesByChargeId.get('2c92c0f96ae3b195016ae5e3665e0c08').Project_Zcustom);
-        System.assertEquals(3, ZuoraAPIHelper.numberCalloutsForZuoraNamespace, 'Expected to use 3 callouts the first time');
-        System.assertEquals(ratePlanChargesByChargeId, ZuoraSubscriptionService.getAllRatePlanChargesByAccountId(''));
-        System.assertEquals(3, ZuoraAPIHelper.numberCalloutsForZuoraNamespace, 'Expected to use no callouts for cache hit');
-        ZuoraSubscriptionService.getAllRatePlanChargesByAccountId('NewAccount');
-        System.assertEquals(6, ZuoraAPIHelper.numberCalloutsForZuoraNamespace, 'Expected to use 3 more callouts for cache miss');
+        System.assertEquals('SSS-000010', ratePlanChargesByChargeId.get('2c92c0fb713ac83a017142e0af227e20').Project_Zcustom);
+        System.assertEquals(4, ZuoraAPIHelper.numberCalloutsForZuoraNamespace, 'Expected to use 4 callouts the first time');
+        System.assertEquals(ratePlanChargesByChargeId, ZuoraRatePlanChargeService.getAllRatePlanChargesByAccountId(''));
+        System.assertEquals(4, ZuoraAPIHelper.numberCalloutsForZuoraNamespace, 'Expected to use no callouts for cache hit');
+        ZuoraRatePlanChargeService.getAllRatePlanChargesByAccountId('NewAccount');
+        System.assertEquals(8, ZuoraAPIHelper.numberCalloutsForZuoraNamespace, 'Expected to use 4 more callouts for cache miss');
     }
 
     @IsTest

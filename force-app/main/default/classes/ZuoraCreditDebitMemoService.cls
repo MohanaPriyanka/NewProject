@@ -140,7 +140,7 @@ public class ZuoraCreditDebitMemoService {
         String client = debitMemo.ClientOwner_Zcustom;
         String relatedId = debitMemo.CRM_ID_Zcustom;
         Map<String, ZuoraOutstandingItemsService.RatePlanCharge> ratePlanChargesByChargeId =
-            ZuoraSubscriptionService.getAllRatePlanChargesByAccountId(accountId);
+            ZuoraRatePlanChargeService.getAllRatePlanChargesByAccountId(accountId);
         List<ZuoraAPI.InvoiceItem> invoiceItems = invoiceService.getRecentItems(accountId);
         invoiceItems.sort();
         for (ZuoraAPI.InvoiceItem invoiceItem : invoiceItems) {
@@ -185,7 +185,7 @@ public class ZuoraCreditDebitMemoService {
 
         if (featureService.isEnabled('Multiple_Subscriptions')) {
             Map<String, ZuoraOutstandingItemsService.RatePlanCharge> ratePlanChargesByChargeId =
-                ZuoraSubscriptionService.getAllRatePlanChargesByAccountId(zuoraAcctId);
+                ZuoraRatePlanChargeService.getAllRatePlanChargesByAccountId(zuoraAcctId);
             for (ZuoraOutstandingItemsService.RatePlanCharge ratePlanCharge : ratePlanChargesByChargeId.values()) {
                 if (ratePlanCharge.matches(client, project)) {
                     return ratePlanCharge.ProductRatePlanChargeId;

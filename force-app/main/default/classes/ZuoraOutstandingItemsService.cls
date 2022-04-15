@@ -2,7 +2,7 @@
  * Created By:  Jordan Pentaleri
  * Description: Queries Zuora for outstanding invoice items and debit memos,
  *              sorts by date and returns list of items with balance
- * Test: ZuoraCreditMemoAllocationTest
+ * Tested By: ZuoraCreditMemoAllocationTest
  *************************************************************************************/
 @SuppressWarnings('PMD.VariableNamingConventions,PMD.ExcessivePublicCount,PMD.FieldNamingConventions,PMD.PropertyNamingConventions')
 public class ZuoraOutstandingItemsService {

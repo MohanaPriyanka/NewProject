@@ -816,6 +816,17 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
             } else {
                 res.setBody(ratePlan);
             }
+        } else if (reqBody.contains('2c92c0fb713ac83a017142e0af227e20')) {
+            String ratePlan = '{"ClientOwner__c":"BW-00000400",' +
+                '"Id":"2c92c0fb713ac83a017142e0af227e20",' +
+                '"ChargeNumber":"C-00003400",' +
+                '"Name":"Utility Credit",' +
+                '"Project__c":"SSS-000010"}';
+            if (reqBody.contains('query')) {
+                res.setBody('{"records":[' + ratePlan + '], "size":3,"done":true}');
+            } else {
+                res.setBody(ratePlan);
+            }
         }
         return res;
     }
