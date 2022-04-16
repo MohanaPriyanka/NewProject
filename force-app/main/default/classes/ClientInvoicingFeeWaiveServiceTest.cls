@@ -573,7 +573,7 @@ public class ClientInvoicingFeeWaiveServiceTest {
         mockCancellationCFD.reacquisition = true;
         mockCancellationCFD.anchor = true;
         mockCancellationCFD.residential = true;
-        mockCancellationCFD.notPublicOfftake = true;
+        mockCancellationCFD.customerSubGroupNotSpecified = true;
         mockCancellationCFD.bcsAcquired = true;
         mockCancellationCFD.closedByBCS = true;
         mockCancellationCFD.amount = .10;

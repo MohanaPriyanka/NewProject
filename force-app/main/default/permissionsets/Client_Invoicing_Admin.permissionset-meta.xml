@@ -58,6 +58,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Contract_Fee_Detail__c.Acq_Cust_Sub_Group_LMI__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contract_Fee_Detail__c.Acquisition_Channels_BCS_Acquired__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -117,6 +122,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract_Fee_Detail__c.Approval_Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Contract_Fee_Detail__c.Deposit_Fee__c</field>
         <readable>true</readable>
@@ -134,6 +144,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Contract_Fee_Detail__c.Fee__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract_Fee_Detail__c.LMI_Rate__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

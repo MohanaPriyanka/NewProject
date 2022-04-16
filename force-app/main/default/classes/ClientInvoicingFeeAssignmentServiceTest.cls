@@ -251,14 +251,14 @@ public class ClientInvoicingFeeAssignmentServiceTest {
         so.closedByBCS = true;
         so.bcsAcquired = true;
         so.publicOfftake = false;
-        so.notPublicOfftake = true;
+        so.customerSubGroupNotSpecified = true;
 
         cfd.residential = true;
         cfd.acquisition = true;
         cfd.closedByBCS = true;
         cfd.bcsAcquired = true;
         cfd.publicOfftake = false;
-        cfd.notPublicOfftake = true;
+        cfd.customerSubGroupNotSpecified = true;
         System.assert(cfd.matches(so), 'Simple Acquisition SO and CFD should match');
 
         cfd.sharedSolarSystemId = Util.getFakeId(Shared_Solar_System__c.SObjectType);
@@ -269,13 +269,13 @@ public class ClientInvoicingFeeAssignmentServiceTest {
 
         cfd.sharedSolarSystemId = null;
         so.publicOfftake = true;
-        so.notPublicOfftake = false;
+        so.customerSubGroupNotSpecified = false;
         System.assert(!cfd.matches(so),
             'SOs are usually not public offtake. ' +
                 'This should no longer match the CFD, since the CFD does not apply to public offtake or not public offtake');
 
         cfd.publicOfftake = true;
-        cfd.notPublicOfftake = true;
+        cfd.customerSubGroupNotSpecified = true;
         System.assert(cfd.matches(so),
             'The Not Public Offtake checkbox is checked by default on CFD, and a validation requires that,' +
                 ' or the Public Offtake checkbox, or both, to be checked, so this should match now');
@@ -283,13 +283,13 @@ public class ClientInvoicingFeeAssignmentServiceTest {
         so.residential = false;
         so.anchor = true;
         so.publicOfftake = false;
-        so.notPublicOfftake = true;
+        so.customerSubGroupNotSpecified = true;
         so.investmentGradeAnchor = false;
         so.notInvestmentGradeAnchor = true;
 
         cfd.anchor = true;
         cfd.publicOfftake = false;
-        cfd.notPublicOfftake = true;
+        cfd.customerSubGroupNotSpecified = true;
         cfd.investmentGradeAnchor = false;
         cfd.notInvestmentGradeAnchor = true;
         System.assert(cfd.matches(so),
@@ -300,7 +300,41 @@ public class ClientInvoicingFeeAssignmentServiceTest {
         System.assert(!cfd.matches(so),
             'An investment grade anchor SO should NOT match a non-investment grade anchor CFD');
 
+        so.residential = true;
+        so.anchor = false;
+        so.publicOfftake = false;
+        so.customerSubGroupNotSpecified = false;
+        so.investmentGradeAnchor = false;
+        so.notInvestmentGradeAnchor = true;
+        so.lmi = false;
+        so.notLmi = true;
+
+        cfd.residential = true;
+        cfd.anchor = false;
+        cfd.publicOfftake = false;
+        cfd.customerSubGroupNotSpecified = false;
+        cfd.investmentGradeAnchor = false;
+        cfd.notInvestmentGradeAnchor = true;
+        cfd.lmi = true;
+        cfd.notLmi = false;
+        System.assert(!cfd.matches(so),
+            'An LMI CFD should not match an non-LMI SO');
+
+        so.lmi = true;
+        so.notLmi = false;
+        cfd.lmi = false;
+        cfd.notLmi = true;
+        System.assert(!cfd.matches(so),
+            'An non-LMI CFD should not match an LMI SO');
+
+        so.lmi = true;
+        so.notLmi = false;
+        cfd.lmi = true;
+        cfd.notLmi = false;
+        System.assert(cfd.matches(so),
+            'An LMI CFD should match an LMI SO');
     }
+
     public static void useMocks() {
         ContractRepository.clientContractSelector = (ClientContractSelector) Test.createStub(ClientContractSelector.class, new MockClientContractSelector());
         ContractRepository.contractFeeDetailSelector = (ContractFeeDetailSelector) Test.createStub(ContractFeeDetailSelector.class, new MockFeeDetailSelector());
@@ -817,7 +851,7 @@ public class ClientInvoicingFeeAssignmentServiceTest {
         feeQualification.closedByBCS = false;
         feeQualification.anchor = false;
         feeQualification.publicOfftake = false;
-        feeQualification.notPublicOfftake = false;
+        feeQualification.customerSubGroupNotSpecified = false;
         feeQualification.residential = false;
         feeQualification.nonResidential = false;
         feeQualification.investmentGradeAnchor = false;

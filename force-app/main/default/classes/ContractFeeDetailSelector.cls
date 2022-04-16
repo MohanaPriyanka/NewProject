@@ -11,6 +11,7 @@ public inherited sharing class ContractFeeDetailSelector {
                 Acquisition_Channels_Non_BCS_Acquired__c,
                 Acquisition_Cust_Group_Anchor__c,
                 Acquisition_Cust_Group_Public_Offtake__c,
+                Acq_Cust_Sub_Group_LMI__c,
                 Acquisition_Cust_Group_Not_Specified__c,
                 Acquisition_Cust_Group_Residential__c,
                 Acquisition_Cust_Group_Non_Residential__c,

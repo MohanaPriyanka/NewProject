@@ -27,7 +27,8 @@ public class ContractFeeDetail extends FeeQualification {
         this.notBCSAcquired = feeDetail.Acquisition_Channels_Non_BCS_Acquired__c;
         this.anchor = feeDetail.Acquisition_Cust_Group_Anchor__c;
         this.publicOfftake = feeDetail.Acquisition_Cust_Group_Public_Offtake__c;
-        this.notPublicOfftake = feeDetail.Acquisition_Cust_Group_Not_Specified__c;
+        this.customerSubGroupNotSpecified = feeDetail.Acquisition_Cust_Group_Not_Specified__c;
+        this.lmi = feeDetail.Acq_Cust_Sub_Group_LMI__c;
         this.residential = feeDetail.Acquisition_Cust_Group_Residential__c;
         this.nonResidential = feeDetail.Acquisition_Cust_Group_Non_Residential__c;
         this.investmentGradeAnchor = feeDetail.Acq_Anchor_Qualif_Investment_Grade__c;
@@ -92,7 +93,9 @@ public class ContractFeeDetail extends FeeQualification {
 
     private Boolean customerSubGroupMatches(SubscriptionOrder so) {
         return (so.publicOfftake && this.publicOfftake ||
-            so.notPublicOfftake && this.notPublicOfftake);
+            so.customerSubGroupNotSpecified && this.customerSubGroupNotSpecified ||
+            so.lmi && this.lmi
+        );
     }
 
     private Boolean anchorQualifierMatches(SubscriptionOrder so) {

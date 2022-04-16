@@ -4,8 +4,9 @@
     <active>true</active>
     <errorConditionFormula>AND (OR (Acquisition_Type_Acquisition__c,
          Acquisition_Type_Reacquisition__c ),
-     NOT(Acquisition_Cust_Group_Public_Offtake__c ),
+     NOT(Acquisition_Cust_Group_Public_Offtake__c),
+     NOT(Acq_Cust_Sub_Group_LMI__c ),
      NOT(Acquisition_Cust_Group_Not_Specified__c))</errorConditionFormula>
     <errorDisplayField>Acquisition_Cust_Group_Not_Specified__c</errorDisplayField>
-    <errorMessage>For Acquisition and Reacquisition CFDs, specify whether it should apply to Public Offtake or customers without a Customer Sub-Group (specified on the Opportunity), or both</errorMessage>
+    <errorMessage>For Acquisition and Reacquisition CFDs, specify whether it should apply to Public Offtake, LMI, or customers without a Customer Sub-Group (specified on the Opportunity), or any combination.</errorMessage>
 </ValidationRule>

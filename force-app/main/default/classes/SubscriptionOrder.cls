@@ -24,7 +24,9 @@ public without sharing class SubscriptionOrder extends FeeQualification {
         this.notBCSAcquired = partnerType == 'Client Account';
         this.anchor = subOrder.Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c == 'Anchor';
         this.publicOfftake = subOrder.Utility_Account_Subscription__r.Opportunity__r.Customer_Sub_Group__c == 'Public Offtake';
-        this.notPublicOfftake = !publicOfftake;
+        this.lmi = subOrder.Utility_Account_Subscription__r.Opportunity__r.Customer_Sub_Group__c == 'LMI';
+        this.customerSubGroupNotSpecified = subOrder.Utility_Account_Subscription__r.Opportunity__r.Customer_Sub_Group__c == null;
+        this.notLmi = !lmi;
         this.residential = subOrder.Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c == 'Residential';
         this.nonResidential = subOrder.Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c == 'Non-Residential';
         this.investmentGradeAnchor = subOrder.Utility_Account_Subscription__r.Opportunity__r.Underwriting_Criteria__c == 'Investment-Grade';

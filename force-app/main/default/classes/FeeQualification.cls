@@ -15,7 +15,9 @@ public virtual without sharing class FeeQualification {
     @TestVisible protected Boolean closedByBCS;
     @TestVisible protected Boolean anchor;
     @TestVisible protected Boolean publicOfftake;
-    @TestVisible protected Boolean notPublicOfftake;
+    @TestVisible protected Boolean customerSubGroupNotSpecified;
+    @TestVisible protected Boolean lmi;
+    @TestVisible protected Boolean notLmi;
     @TestVisible protected Boolean residential;
     @TestVisible protected Boolean nonResidential;
     @TestVisible protected Boolean investmentGradeAnchor;
