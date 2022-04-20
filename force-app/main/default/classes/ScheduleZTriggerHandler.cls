@@ -8,6 +8,19 @@
  */
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class ScheduleZTriggerHandler {
+    public static void onBeforeInsert(List<Schedule_Z__c> newScheduleZS){
+       updateScheduleZCreateOrEdit(newScheduleZS); 
+    }
+    public static void onBeforeUpdate(List<Schedule_Z__c> newScheduleZS){
+       updateScheduleZCreateOrEdit(newScheduleZS); 
+    }
+     public static void onAfterInsert(List<Schedule_Z__c> newScheduleZS){
+       createSubscriptions(newScheduleZS);
+       handleNewlyEnactedScheduleZ(null, newScheduleZS); 
+    }
+     public static void onAfterUpdate(Map<Id, Schedule_Z__c> oldMap,List<Schedule_Z__c> newScheduleZS){
+       handleNewlyEnactedScheduleZ(oldMap, newScheduleZS);
+    }
     @TestVisible
     private static CustomerAssignmentService customerAssignmentService = new CustomerAssignmentService();
 
@@ -231,4 +244,31 @@ public without sharing class ScheduleZTriggerHandler {
         }
         return sssToUpdate;
     }
+    public static void updateScheduleZCreateOrEdit(List<Schedule_Z__c> scheduleZList){
+       for(Schedule_Z__c sch :scheduleZList){
+            if(sch.Status__c=='QC Complete' && sch.Date_QC_Complete__c==null){
+                sch.Date_QC_Complete__c=system.today();
+            } 
+            else if(sch.Status__c=='Executed by Asset Owner' && sch.Date_Executed_by_Asset_Owner__c==null){
+                sch.Date_Executed_by_Asset_Owner__c=system.today();   
+            }
+            else if(sch.Status__c=='Submitted to Utility' && sch.Date_Submitted_to_Utility__c==null){
+                sch.Date_Submitted_to_Utility__c=system.today();   
+            }
+            else if(sch.Status__c=='Rejected by Utility' && sch.Date_Rejected_by_Utility__c==null){
+                sch.Date_Rejected_by_Utility__c=system.today();   
+            }
+            else if(sch.Status__c=='Enacted by Utility' && sch.Date_Enacted_by_Utility__c==null){
+                sch.Date_Enacted_by_Utility__c=system.today();   
+            }
+            else if(sch.Status__c=='Billing' && sch.Date_Billing__c==null){
+                sch.Date_Billing__c=system.today();   
+            }
+            else if(sch.Status__c=='Replaced' && sch.Date_Done_Billing__c==null){
+                sch.Date_Done_Billing__c=system.today();   
+            }
+        }
+    }
+    
+    
 }

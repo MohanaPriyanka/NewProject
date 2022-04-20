@@ -598,21 +598,46 @@ public class ScheduleZTriggerHandlerTest {
             sss1SecondAllocationSchedule, sss2SecondAllocationSchedule
         };
         insert secondSZList;
-
+         
+        sss1SecondAllocationSchedule.Status__c = 'Billing';
+        Update sss1SecondAllocationSchedule;
+        Schedule_Z__c schh = [select id,Status__c,Date_QC_Complete__c,Date_Executed_by_Asset_Owner__c,Date_Billing__c,Date_Enacted_by_Utility__c from Schedule_Z__c where id =:sss1SecondAllocationSchedule.id];
+        System.assertEquals(System.today(), schh.Date_Billing__c, 'Date should updated to today date');
+        
+        sss1SecondAllocationSchedule.Status__c = 'Replaced';
+        Update sss1SecondAllocationSchedule;
+        Schedule_Z__c schhh = [select id,Status__c,Date_QC_Complete__c,Date_Executed_by_Asset_Owner__c,Date_Billing__c,Date_Enacted_by_Utility__c,Date_Done_Billing__c from Schedule_Z__c where id =:sss1SecondAllocationSchedule.id];
+        System.assertEquals(System.today(), schhh.Date_Done_Billing__c, 'Date should updated to today date');
+        
+        sss1SecondAllocationSchedule.Status__c = 'Rejected by Utility';
+        Update sss1SecondAllocationSchedule;
+        Schedule_Z__c sch1 = [select id,Status__c,Date_Rejected_by_Utility__c,Date_Executed_by_Asset_Owner__c,Date_Billing__c,Date_Enacted_by_Utility__c,Date_Done_Billing__c from Schedule_Z__c where id =:sss1SecondAllocationSchedule.id];
+        System.assertEquals(System.today(), sch1.Date_Rejected_by_Utility__c, 'Date should updated to today date');
+        
+        sss1SecondAllocationSchedule.Status__c = 'Executed by Asset Owner';
+        Update sss1SecondAllocationSchedule;
+        Schedule_Z__c sch2 = [select id,Status__c,Date_Executed_by_Asset_Owner__c,Date_Billing__c,Date_Enacted_by_Utility__c,Date_Done_Billing__c from Schedule_Z__c where id =:sss1SecondAllocationSchedule.id];
+        System.assertEquals(System.today(), sch2.Date_Executed_by_Asset_Owner__c, 'Date should updated to today date');
+        
+        sss1SecondAllocationSchedule.Status__c = 'Submitted to Utility';
+        Update sss1SecondAllocationSchedule;
+        Schedule_Z__c sch3 = [select id,Status__c,Date_Submitted_to_Utility__c,Date_Billing__c,Date_Enacted_by_Utility__c,Date_Done_Billing__c from Schedule_Z__c where id =:sss1SecondAllocationSchedule.id];
+        System.assertEquals(System.today(), sch3.Date_Submitted_to_Utility__c, 'Date should updated to today date');
+        
         sss1SecondAllocationSchedule.Status__c = 'Enacted by Utility';
         sss2SecondAllocationSchedule.Status__c = 'Enacted by Utility';
         // First group of Schedule Zs were dated 2 days ago:
         sss1SecondAllocationSchedule.Date_Enacted_by_Utility__c = System.today().addDays(-5);
         sss2SecondAllocationSchedule.Date_Enacted_by_Utility__c = System.today().addDays(-1);
         update secondSZList;
-
+        
         List<Utility_Account_Subscription__c> updatedUASListTwo = [
             SELECT Id, Name, Most_Recent_Enacted_ALSS__c, Most_Recent_Enacted_ALSS__r.Schedule_Z__c
             FROM Utility_Account_Subscription__c
             WHERE Opportunity__r.StageName = 'Complete'
             ORDER BY Opportunity__r.Shared_Solar_System_Name__c
         ];
-
+        
         System.assertEquals(4, updatedUASListTwo.size());
         // sss1 should still be linked to the first schedule z, since sss1SecondAllocationSchedule is dated before sss1FirstAllocationSchedule
         System.assertEquals(sss1FirstAllocationSchedule.Id, updatedUASListTwo[0].Most_Recent_Enacted_ALSS__r.Schedule_Z__c);
