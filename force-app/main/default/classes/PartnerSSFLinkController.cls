@@ -12,7 +12,7 @@ public with sharing class PartnerSSFLinkController {
         if (partnerContact.Partner_Lookup__c == null || partnerContact.Sales_Representative__c == null) {
             return '';
         } else {
-            String ssfUrl = Util.getCommunitySiteURL('Apply') + '/s/switch?salesrepId=';
+            String ssfUrl = Util.getCommunitySiteURL('Apply') + '/s/switch?salesRepId=';
             ssfUrl += partnerContact.Sales_Representative__c;
             ssfUrl += '&partnerId=' + partnerContact.Partner_Lookup__c;
             return ssfUrl;
