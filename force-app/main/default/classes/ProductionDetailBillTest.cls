@@ -374,7 +374,7 @@ public with sharing class ProductionDetailBillTest {
         System.assertEquals(3, partsToInsertList.size());
         System.assertEquals(
             partsToInsertList[0].Amount__c,
-            Util.roundValue(billAmount * (tp1.Amount__c/tp1.Transfer__r.Transfer_Amount__c), 2, 'HALF_UP'),
+            Util.roundValue(billAmount * (tp1.Amount__c/tp1.Transfer__r.Transfer_Amount__c), 4, 'HALF_UP'),
             'P2BService should insert a PD with an amount based the dollar values of the Transfer and Transfer Parts, not' +
                 ' the kWh values, since credit rates may change monthly'
         );

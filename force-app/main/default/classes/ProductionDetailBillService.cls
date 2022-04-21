@@ -275,7 +275,7 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
         }
         // We want to allocate based on dollar amount, not on kWh, because the dollar amount accounts for monthly credit rate changes
         Decimal applicationAmount = staticBillAmount * (transferProdDetail.Amount__c / transferProdDetail.Transfer__r.Transfer_Amount__c);
-        applicationAmount = Util.roundValue(applicationAmount,2, 'HALF_UP');
+        applicationAmount = Util.roundValue(applicationAmount, 4, 'HALF_UP');
         return applicationAmount;
     }
 
