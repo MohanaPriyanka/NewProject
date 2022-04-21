@@ -4,6 +4,9 @@
       "path": "force-graph-ql"
     },
     {
+      "path": "force-universal-mock"
+    },
+    {
       "path": "force-app",
       "default": true
     }
