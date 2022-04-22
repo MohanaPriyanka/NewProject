@@ -1,4 +1,4 @@
-// Tested by ProductionDetailSelectorTest
+// Tested by: ProductionDetailSelectorTest
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public inherited sharing class ProductionDetailSelector {
     public Map<Id, List<Transfer_Part__c>> getTransferPartMap(Set<Id> transferIds) {
@@ -102,6 +102,14 @@ public inherited sharing class ProductionDetailSelector {
             WHERE Production__r.Shared_Solar_System__r.Client_Management_Contract__c IN :managementContractIds
             AND Transfer__r.Bill_Period__r.Bill_Date__c = LAST_N_DAYS:365
             AND Change_in_Utilization__c != 0
+        ];
+    }
+
+    public List<Transfer_Part__c> selectByJournalEntries(List<Journal_Entry__c> journalEntries) {
+        return [
+            SELECT Id
+            FROM Transfer_Part__c
+            WHERE Journal_Entry__c IN :journalEntries
         ];
     }
 }

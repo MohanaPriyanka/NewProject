@@ -1,6 +1,6 @@
-@isTest
+@IsTest
 public class JournalEntryServiceTest {
-    @isTest
+    @IsTest
     public static void testTrigger() {
         List<Error_Log__c> beforeLogs = [
             SELECT Id
@@ -16,8 +16,9 @@ public class JournalEntryServiceTest {
         System.assertEquals(0, beforeEntries.size());
 
         Test.startTest();
-            List<Journal_Entry__c> entries = getJournalEntries();
-            insert entries;
+        List<Journal_Entry__c> entries = getJournalEntries();
+        insert entries;
+
         Test.stopTest();
 
         List<Error_Log__c> afterLogs = [
@@ -34,9 +35,12 @@ public class JournalEntryServiceTest {
         ];
         System.assertEquals(6, afterEntries.size());
         System.assert(afterEntries[3].Ready_for_Production_Detail__c);
+
+        delete entries;
+        System.assert(true, 'Before Delete trigger should be successful');
     }
 
-    @isTest
+    @IsTest
     public static void testDisabledTrigger() {
         Util.disableTrigger('Disable_Journal_Entry_Trigger__c');
         List<Error_Log__c> beforeLogs = [
@@ -73,7 +77,7 @@ public class JournalEntryServiceTest {
         System.assert(!afterEntries[3].Ready_for_Production_Detail__c);
     }
 
-    @isTest
+    @IsTest
     public static void testPopulateLookups() {
         useMocks();
         List<Journal_Entry__c> entries = getJournalEntries();
@@ -133,6 +137,28 @@ public class JournalEntryServiceTest {
                 }
             }
         }
+    }
+
+    @IsTest
+    private static void testDeleteProductionDetailsBeforeJEDeletion() {
+        UniversalMocker mocker = UniversalMocker.mock(ProductionDetailSelector.class);
+        Transfer_Part__c transferPartToDelete = new Transfer_Part__c(
+            Id = Util.getFakeId(Transfer_Part__c.SObjectType),
+            Journal_Entry__c = Util.getFakeId(Journal_Entry__c.SObjectType)
+        );
+        mocker.when('selectByJournalEntries').thenReturn(new List<Transfer_Part__c>{transferPartToDelete});
+        JournalEntryService.productionDetailSelector = (ProductionDetailSelector) mocker.createStub();
+
+        JournalEntryService.uow = new fflib_SObjectUnitOfWork(
+            new List<SObjectType>{
+                Transfer_Part__c.SObjectType
+            },
+            new FFLibHelperTest.MockDML()
+        );
+
+        new JournalEntryService().deleteProductionDetailsBeforeJEDeletion(new List<Journal_Entry__c>());
+        System.assert(FFLibHelperTest.getRegisterDeletedListFromUnitOfWork(JournalEntryService.uow, 'Transfer_Part__c').contains(transferPartToDelete),
+            'The Production Detail related to the journal entry being deleted should be registered for deletion');
     }
 
     private static void useMocks() {

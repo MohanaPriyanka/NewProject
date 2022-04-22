@@ -6,6 +6,12 @@ public with sharing class JournalEntryService {
     public static AccountsSelector accountSelector = new AccountsSelector();
     private Map<String, Shared_Solar_System__c> uniqueIdToSSSMap = new Map<String, Shared_Solar_System__c>();
     private Map<String, Account> bwNumberToAccountMap = new Map<String, Account>();
+    @TestVisible private static ProductionDetailSelector productionDetailSelector = new ProductionDetailSelector();
+    @TestVisible private static fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
+        new List<SObjectType>{
+            Transfer_Part__c.SObjectType
+        }
+    );
 
     public void markReadyForProductionDetail(List<Journal_Entry__c> entries) {
         for (Journal_Entry__c entry : entries) {
@@ -77,5 +83,10 @@ public with sharing class JournalEntryService {
             'Could not find account with bw Id: ' + entry.Customer_Account__c + ' for Journal Entry: ' +  entry.Id );
         }
         return entry;
+    }
+
+    public void deleteProductionDetailsBeforeJEDeletion(List<Journal_Entry__c> journalEntriesBeingDeleted) {
+        uow.registerDeleted(productionDetailSelector.selectByJournalEntries(journalEntriesBeingDeleted));
+        uow.commitWork();
     }
 }
