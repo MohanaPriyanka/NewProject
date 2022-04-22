@@ -592,12 +592,12 @@ private class UtilityDataRequestServiceTest {
         });
         Test.stopTest();
 
-        // Check results... Should have generated a new UDR with appropriate field vals, and updated UAL
+        // Check results... Should have generated a new UDR with appropriate field values, and updated UAL
         List<Utility_Data_Request__c> udrs = [
             SELECT Id, Account_Number__c, Utility__c, Utility_DUNS__c, Utility_Name__c, Request_Status_new__c,
                 Utility_Account_Log__r.Name, Utility_Account_Log__r.Utility_lookup__c,
                 Utility_Account_Log__r.Utility_lookup__r.Name, Utility_Account_Log__r.Utility_lookup__r.Utility_DUNS_Number__c,
-                Utility_Account_Log__r.QC_Status__c,Premise_Number__c
+                Utility_Account_Log__r.QC_Status__c, Premise_Number__c
             FROM Utility_Data_Request__c
             WHERE Utility_Account_Log__c = :ual.Id
         ];
@@ -611,6 +611,54 @@ private class UtilityDataRequestServiceTest {
         System.assertEquals('Pending', udrs[0].Request_Status_new__c, 'Incorrect status for newly-generated UDR');
         System.assertEquals('Pending Utility Data', udrs[0].Utility_Account_Log__r.QC_Status__c, 'UAL status incorrect for pending UDR');
         System.assertEquals(ual.Premise_Number__c, udrs[0].Premise_Number__c, 'PoD ID not copied from UAL when it should be');
+    }
+
+    @IsTest
+    static void testUDRRestriction() {
+        // Build data scenario
+        Utility__c utility = [SELECT Id FROM Utility__c WHERE Name = 'testUtility'];
+        Lead lead = new Lead (
+            Product__c = [SELECT Id FROM Product2 WHERE Name = 'testProduct'].Id,
+            Customer_type__c = 'Commercial',
+            LastName = 'testLead1',
+            Company = 'testBlueWave1',
+            Utility_relationship__c = utility.Id
+        );
+        insert lead;
+        Utility_Account_Log__c ual = new Utility_Account_Log__c(
+            Service_State__c = 'Georgia',
+            Lead__c = lead.Id,
+            Utility_lookup__c = utility.Id,
+            Premise_Number__c = '129585012851'
+        );
+        insert ual;
+
+        TestGenerator testGenerator = new TestGenerator();
+        System.assertEquals(0, udrCount(ual.Id), 'UDRs prior to create() method run should be 0');
+        UtilityDataRequestBuilder.createUDRs(new List<String>{
+            lead.Id
+        });
+        Test.startTest();
+        try {
+            Utility_Data_Request__c testUDR1 = testGenerator.getPendingTestUDR(ual, 'testUDRrt1', utility, 'TomBan', '#66 sky. Ave. ', '', 'boston', 'Ma.', '   04115  ');
+            insert testUDR1;
+        } catch (Exception e) {
+            System.assert(e.getMessage().contains('There is an open UDR for this UAL. Please wait for response before creating a new UDR or close the existing open UDR'));
+        }
+        Test.stopTest();
+
+        // Check results... Should have generated a new UDR with appropriate field values, and updated UAL
+        List<Utility_Data_Request__c> udrs = [
+            SELECT Id, Account_Number__c, Utility__c, Utility_DUNS__c, Utility_Name__c, Request_Status_new__c,
+                Utility_Account_Log__r.Name, Utility_Account_Log__r.Utility_lookup__c,
+                Utility_Account_Log__r.Utility_lookup__r.Name, Utility_Account_Log__r.Utility_lookup__r.Utility_DUNS_Number__c,
+                Utility_Account_Log__r.QC_Status__c, Premise_Number__c
+            FROM Utility_Data_Request__c
+            WHERE Utility_Account_Log__c = :ual.Id
+        ];
+
+        System.assert(!udrs.isEmpty(), 'UDR record is found after running create()');
+        System.assertEquals(1, udrCount(ual.Id), '1 UDR should have been generated for UAL missing UDR');
     }
 
     @IsTest
@@ -738,7 +786,6 @@ private class UtilityDataRequestServiceTest {
             System.assert(udrp.Used_in_Annual_kWh_Calculation__c, 'UDRP starting ' + udrp.Service_Start_Date__c + ' should be used in Annual kWh calc');
         }
     }
-
 
 
     private class TestGenerator {

@@ -15,6 +15,7 @@ public without sharing class UtilityDataRequestService {
     @TestVisible private Set<Id> erroredUtilityDataRequestIds = new Set<Id>();
     @TestVisible private Map<Id, Utility_Data_Request__c> newUDRMap;
     @TestVisible private Map<Id, Utility_Data_Request__c> oldUDRMap;
+    @TestVisible private List<Utility_Data_Request__c> newUdrRecords;
     @TestVisible private Map<String, Rate_Class__c> rateClassWithEDIMap;
     @TestVisible private Map<Id, Id> udrToRateClassMap = new Map<Id, Id>();
     @TestVisible private Map<Id, List<Utility_Data_Request_Period__c>> completedUDRToUdrpMap;
@@ -24,10 +25,12 @@ public without sharing class UtilityDataRequestService {
      * @description Constructor for service class instance
      * @param oldUDRMap Trigger.oldMap
      * @param newUDRMap Trigger.newMap
+     * @param newUdrs
      */
-    public UtilityDataRequestService(Map<Id, Utility_Data_Request__c> oldUDRMap, Map<Id, Utility_Data_Request__c> newUDRMap) {
+    public UtilityDataRequestService(Map<Id, Utility_Data_Request__c> oldUDRMap, Map<Id, Utility_Data_Request__c> newUDRMap, List<Utility_Data_Request__c> newUdrs) {
         this.oldUDRMap = oldUDRMap;
         this.newUDRMap = newUDRMap;
+        this.newUdrRecords = newUdrs;
     }
 
     /**
@@ -48,6 +51,27 @@ public without sharing class UtilityDataRequestService {
         Logger.flushLogs();
     }
 
+    public void beforeUDRInsert() {
+        checkExistingUDR();
+    }
+
+    public void checkExistingUDR() {
+        Set<Id> ualIdset = new Set<Id>();
+        for (Utility_Data_Request__c req : newUdrRecords) {
+                ualIdset.add(req.Utility_Account_Log__c);
+        }
+        Map<Id, Utility_Data_Request__c> existingUDRMap = new Map<Id, Utility_Data_Request__c>();
+        if (ualIdset.size() > 0) {
+            for (Utility_Data_Request__c udr : UtilityDataRequestSelector.getRelatedUdrsByUal(ualIdset)) {
+                existingUDRMap.put(udr.Utility_Account_Log__c, udr);
+            }
+        }
+        for (Utility_Data_Request__c newUdr : newUdrRecords) {
+            if (!existingUDRMap.isEmpty() && existingUDRMap.containsKey(newUdr.Utility_Account_Log__c)) {
+                newudr.addError('There is an open UDR for this UAL. Please wait for response before creating a new UDR or close the existing open UDR');
+            }
+        }
+    }
     /**
      * @description Method used when a UDR record status is updated to 'Complete' from previously being something else
      * <p></p>

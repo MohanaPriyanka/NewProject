@@ -2,11 +2,11 @@
  * @description Created by: Kristin White on 9/28/2020
  * Tested by: UtilityDataRequestServiceTest, GlyntUploadServiceTest
  */
-trigger UtilityDataRequestTrigger on Utility_Data_Request__c (after update, before update) {
+trigger UtilityDataRequestTrigger on Utility_Data_Request__c (before insert,after update, before update) {
     if (Util.isDisabled('Disable_UtilityDataRequestTrigger__c')) {
         return;
     }
-    UtilityDataRequestService udrService = new UtilityDataRequestService(Trigger.oldMap, Trigger.newMap);
+    UtilityDataRequestService udrService = new UtilityDataRequestService(Trigger.oldMap, Trigger.newMap,Trigger.new);
     switch on Trigger.operationType {
         when BEFORE_UPDATE {
             udrService.beforeStatusUpdatedToComplete();
@@ -14,6 +14,9 @@ trigger UtilityDataRequestTrigger on Utility_Data_Request__c (after update, befo
         when AFTER_UPDATE {
             udrService.afterStatusUpdatedToComplete();
             udrService.openErrorCasesIfEncountered();
+        }
+        when BEFORE_INSERT{
+            udrService.beforeUDRInsert();
         }
     }
 }

@@ -29,6 +29,15 @@ public inherited sharing class UtilityDataRequestSelector {
         ];
     }
 
+    public static List<Utility_Data_Request__c> getRelatedUdrsByUal(Set<Id> ualIds) {
+        return [
+            SELECT Id, Detail_Status__c, Request_Status_new__c, Header_Status__c, Utility_Account_Log__c
+            FROM Utility_Data_Request__c
+            WHERE Utility_Account_Log__c IN :ualIds
+            AND Request_Status_new__c IN ('Pending', 'Sent', 'Partial Data Received', 'Data Received')
+        ];
+    }
+
     public Set<Id> getUtilityDataRequestsWithOpenErrorCases(List<Utility_Data_Request__c> erroredUtilityDataRequests) {
         Set<Id> udrsWithOpenErrorCases = new Set<Id>();
         Map<Id, Id> leadIdToUdrId = new Map<Id, Id>();
@@ -39,7 +48,7 @@ public inherited sharing class UtilityDataRequestSelector {
             SELECT Lead_Lookup__c
             FROM Case
             WHERE Lead_Lookup__c IN :leadIdToUdrId.keySet()
-            AND QC_Case_Subject__c =: CaseFactory.ediErrorQCSubject
+            AND QC_Case_Subject__c = :CaseFactory.ediErrorQCSubject
             AND IsClosed = FALSE
         ];
         for (Case c : openCasesForEDIErrors) {
