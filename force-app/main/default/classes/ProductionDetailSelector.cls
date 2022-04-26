@@ -43,7 +43,9 @@ public inherited sharing class ProductionDetailSelector {
                 Production__c, Production__r.Name, Journal_Entry__c, Journal_Entry__r.External_Id__c
             FROM Transfer_Part__c
             WHERE Journal_Entry__r.External_Id__c IN : invoiceEntries
-            AND (Type__c = 'Bill' OR (Type__c = 'Payment' AND Journal_Entry__r.Object_Type__c = 'DebitMemo'))
+            AND (Type__c = 'Bill'
+            OR (Type__c = 'Payment' AND Journal_Entry__r.Object_Type__c = 'DebitMemo')
+            OR (Type__c = 'No Longer Billing' AND Journal_Entry__r.Object_Type__c = 'DebitMemo'))
         ];
 
         for (Transfer_Part__c part : parts){

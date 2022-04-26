@@ -1,4 +1,4 @@
-// Tested By: ProductionDetailPaymentTest
+// Tested By: ProductionDetailPaymentTest, ProductionDetailDebitMemoTest
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class ProductionDetailPaymentService implements Database.AllowsCallouts {
     @TestVisible
@@ -72,7 +72,7 @@ public without sharing class ProductionDetailPaymentService implements Database.
             Transfer__c = invoicePart.Transfer__c,
             Bill_Part__c = invoicePart.Id,
             Journal_Entry__c = paymentEntry.Id,
-            Type__c = 'Payment',
+            Type__c = (paymentEntry.Reason_Code__c=='No Longer Billing'?'No Longer Billing':'Payment'),
             Amount__c = applicationAmount
         );
 

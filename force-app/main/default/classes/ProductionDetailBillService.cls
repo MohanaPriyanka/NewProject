@@ -143,9 +143,9 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
         ZuoraDataQueryService.ProcessingParameter param = new ZuoraDataQueryService.ProcessingParameter();
         param.className = 'ProductionDetailBillService';
         param.optionalStrings = invoiceItemIds;
-        Map<String,Boolean> booleanMap = new Map<String,Boolean>();
-        booleanMap.put('MoreBillsToProcess',invoiceItems.size() == batchSize);
-        param.optionalBooleans = booleanMap;
+        param.enableRetries();
+        param.optionalBooleans.put('MoreBillsToProcess',invoiceItems.size() == batchSize);
+        param.optionalIntegers.put('BatchSize', batchSize);
 
         String queryString = usageSelector.getUsageQueryStringFilterByAccountAndDate(accountNumbers,minDate,maxDate);
         ZuoraDataQueryService.callFromApex(queryString,param);
@@ -158,10 +158,10 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
             distributeInvoiceItemAmongTransferProductionDetail();
             insert productionDetailToInsert;
 
-            if (method.optionalBooleans.get('MoreBillsToProcess')){
-                queueJob(ProductionToBillService.OperationType.BILL);
+            if (method.optionalBooleans.get('MoreBillsToProcess')) {
+                queueJob(ProductionToBillService.OperationType.BILL, method.optionalIntegers.get('BatchSize'));
             } else {
-                queueJob(ProductionToBillService.OperationType.PAYMENT);
+                queueJob(ProductionToBillService.OperationType.DEBITMEMO, method.optionalIntegers.get('BatchSize'));
             }
         } catch (Exception excep) {
             String message = JSON.serialize(method)+ '_'+ excep.getMessage() + '_' + excep.getStackTraceString();
@@ -169,9 +169,9 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
         }
     }
 
-    public void queueJob(ProductionToBillService.OperationType operation){
+    public void queueJob(ProductionToBillService.OperationType operation, Integer batchSize) {
         ProductionToBillService billJob = new ProductionToBillService();
-        billJob.batchSize = 50;
+        billJob.batchSize = batchSize;
         billJob.opType = operation;
         System.enqueueJob(billJob);
     }

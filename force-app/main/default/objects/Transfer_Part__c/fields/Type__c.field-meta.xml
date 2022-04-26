@@ -55,6 +55,11 @@
                 <default>false</default>
                 <label>Externally Serviced</label>
             </value>
+            <value>
+                <fullName>No Longer Billing</fullName>
+                <default>false</default>
+                <label>No Longer Billing</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

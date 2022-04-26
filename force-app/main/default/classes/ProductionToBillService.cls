@@ -164,6 +164,7 @@ public without sharing class ProductionToBillService implements Queueable, Datab
         ProductionToBillService p2bJob = new ProductionToBillService();
         p2bJob.opType = operation;
         p2bJob.incompleteEntries = incompleteEntries;
+        p2bJob.batchSize = batchSize;
         nextP2BJob = p2bJob;
         System.enqueueJob(p2bJob);
     }

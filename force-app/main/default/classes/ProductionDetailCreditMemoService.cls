@@ -107,7 +107,8 @@ public without sharing class ProductionDetailCreditMemoService implements Databa
                 Journal_Entry__c creditMemoPartEntry = new Journal_Entry__c(
                     Id = creditMemo.Id,
                     Applied_Record_Id__c = memoPart.DebitMemoId,
-                    Amount__c = memoPart.Amount
+                    Amount__c = memoPart.Amount,
+                    Reason_Code__c = creditMemo.Reason_Code__c
                 );
                 journalEntriesByPart.add(creditMemoPartEntry);
             } else if (memoPart.InvoiceId != null) {
@@ -130,7 +131,8 @@ public without sharing class ProductionDetailCreditMemoService implements Databa
                 Journal_Entry__c creditMemoPartEntry = new Journal_Entry__c(
                     Id = creditMemo.Id,
                     Applied_Record_Id__c = partItems.InvoiceItemId,
-                    Amount__c = partItems.Amount
+                    Amount__c = partItems.Amount,
+                    Reason_Code__c = creditMemo.Reason_Code__c
                 );
                 journalEntriesByPart.add(creditMemoPartEntry);
             }

@@ -68,6 +68,31 @@ public with sharing class ProductionDetailDebitMemoTest {
     }
 
     @IsTest
+    public static void testNoLongerBillingDebitMemo() {
+        ProductionToBillServiceTest.useMocks();
+        List<Journal_Entry__c> debitMemoEntries = getDebitMemoJournalEntries();
+        Set<String> adjustmentExternalIds = new Set<String>();
+        List<Journal_Entry__c> otherDebitMemos = new List<Journal_Entry__c>();
+        debitMemoEntries[1].Reason_Code__c = 'No Longer Billing';
+        adjustmentExternalIds.add(debitMemoEntries[1].External_Id__c);
+        otherDebitMemos.add(debitMemoEntries[1]);
+        Map<Id, Journal_Entry__c> debitMemoMap = new Map<Id, Journal_Entry__c>(debitMemoEntries);
+
+        ProductionDetailDebitMemoService dmService = new ProductionDetailDebitMemoService();
+        dmService.createProductionDetailsForAdjustments(otherDebitMemos, adjustmentExternalIds);
+
+        List<Transfer_Part__c> noLongerBillingParts = dmService.productionDetailToInsert;
+        for (Transfer_Part__c transferPart : noLongerBillingParts) {
+            if (debitMemoMap.get(transferPart.Journal_Entry__c).Reason_Code__c == 'No Longer Billing') {
+                System.assertEquals('No Longer Billing', transferPart.Type__c, 'No Longer Billing JEs should get No Longer Billing PDs');
+            } else {
+                System.assertNotEquals('No Longer Billing', transferPart.Type__c, 'No Longer Billing PDs should only be for No Longer Billing JEs');
+            }
+        }
+        System.assertEquals(3, noLongerBillingParts.size());
+    }
+
+    @IsTest
     private static void testProductionDetailsForReturnedPayments() {
         // Production Details for Returned Payment Debit Memos are treated like payments, but with a negative amount.
         // Instead of testing ProductionDetailDebitMemoService.createProductionDetailsForReturnedPayments, this avoids
@@ -121,6 +146,31 @@ public with sharing class ProductionDetailDebitMemoTest {
             'Expected one PD to be created for the Returned Payment Debit Memo');
         System.assertEquals(-210.47, paymentService.productionDetailToInsert[0].Amount__c,
             'All Debit Memos, even those applied to another debit memo should have a negative PD');
+    }
+
+    @IsTest
+    private static void testNoLongerBillingCreditMemo() {
+        Journal_Entry__c paymentEntry = new Journal_Entry__c(
+            Id = Util.getFakeId(Journal_Entry__c.SObjectType),
+            External_Id__c = 'CreditMemo1',
+            Amount__c = 210.47,
+            Reason_Code__c = 'No Longer Billing',
+            Object_Type__c = 'CreditMemo'
+        );
+        List<Transfer_Part__c> invoicePartOrDebitMemos = new List<Transfer_Part__c>();
+        invoicePartOrDebitMemos.add(new Transfer_Part__c(
+            Id = Util.getFakeId(Transfer_Part__c.SObjectType),
+            Amount__c = 210.47,
+            Journal_Entry__c = Util.getFakeId(Journal_Entry__c.SObjectType)
+        ));
+        ProductionDetailPaymentService paymentService = new ProductionDetailPaymentService();
+        paymentService.distributePaymentAmongInvoicesOrDebitMemos(paymentEntry, invoicePartOrDebitMemos);
+        System.assertEquals(1, paymentService.productionDetailToInsert.size(),
+            'Expected one PD to be created for the No Longer Billing Credit Memo');
+        System.assertEquals(210.47, paymentService.productionDetailToInsert[0].Amount__c,
+            'Credit Memos should have a positive PD');
+        System.assertEquals('No Longer Billing', paymentService.productionDetailToInsert[0].Type__c,
+            'No Longer Billing Credit Memos should get that type so they are not conflated with Payments');
     }
 
     private static List<Journal_Entry__c> getDebitMemoJournalEntries() {
