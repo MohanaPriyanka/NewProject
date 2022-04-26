@@ -5,23 +5,29 @@
  */
 public without sharing class CSOpportunityFactory {
 
-    public static List<Opportunity> generateCSOpportunities(Lead lead, List<Shared_Solar_System__c> availableSSS,
+   public static List<Opportunity> generateCSOpportunities(Lead lead, List<Shared_Solar_System__c> availableSSS,
         CSSubscriptionEnroller.AnnualEnergyTotal annualTotals, Id propertyAccountId)
     {
         Decimal remainingAccountCostToAllocate = annualTotals.cost;
         Decimal remainingAccountkWhToAllocate = annualTotals.kWh;
         List<Opportunity> oppListToCreate = new List<Opportunity>();
         Integer oppCounter = 1;
-		
+
         for (Shared_Solar_System__c sss : availableSSS) {
             if (remainingAccountCostToAllocate > 0 || remainingAccountkWhToAllocate > 0) {
                 Decimal annualElectricityCostAssigned = Math.min(remainingAccountCostToAllocate, sss.Maximum_Subscription_Cost__c);
                 if (remainingAccountCostToAllocate > 0) {
+                    Decimal percentage = allocationPercentage(annualElectricityCostAssigned, remainingAccountCostToAllocate);
                     remainingAccountCostToAllocate -= annualElectricityCostAssigned;
+                    // getting percentage that was subtracted from cost and subtract the same from capacity
+                    remainingAccountkWhToAllocate -= remainingAccountkWhToAllocate * percentage;
                 }
                 Decimal annualElectricitykWhAssigned = Math.min(remainingAccountkWhToAllocate, SharedSolarSystems.calculateMaximumkWh(sss));
                 if (remainingAccountkWhToAllocate > 0) {
+                    Decimal percentage = allocationPercentage(annualElectricitykWhAssigned, remainingAccountkWhToAllocate);
                     remainingAccountkWhToAllocate -= annualElectricitykWhAssigned;
+                    // getting percentage that was subtracted from capacity and subtract the same from cost
+                    remainingAccountCostToAllocate -= remainingAccountCostToAllocate * percentage;
                 }
                 Opportunity opp = new Opportunity(
                     AccountId = propertyAccountId,
@@ -43,6 +49,10 @@ public without sharing class CSOpportunityFactory {
             }
         }
         return oppListToCreate;
+    }
+
+    private static Decimal allocationPercentage(Decimal amountAssigned, Decimal amountRemaining) {
+        return amountAssigned / amountRemaining;
     }
 
     @TestVisible

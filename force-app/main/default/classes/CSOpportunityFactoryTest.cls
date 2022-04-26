@@ -587,4 +587,60 @@ public without sharing class CSOpportunityFactoryTest {
             opp2.Annual_Consumption_kWh__c
         );
     }
+
+    @IsTest
+    public static void testCanGenerateCSOpportunitiesForLeadByCostAndCapacity() {
+        Decimal costToAssign = 1000;
+        Decimal kWhToAssign = 800;
+        CSSubscriptionEnroller.AnnualEnergyTotal annualTotals = new CSSubscriptionEnroller.AnnualEnergyTotal(
+            costToAssign,
+            kWhToAssign
+        );
+
+        sfab_FabricatedSObject mockPropertyAccount = new sfab_FabricatedSObject(Account.class);
+        mockPropertyAccount.setField(Account.Id, Util.getFakeId(Account.SObjectType));
+        Account propertyAccount = (Account) mockPropertyAccount.toSObject();
+
+        sfab_FabricatedSObject mockLead = new sfab_FabricatedSObject(Lead.class);
+        mockLead.setField(Lead.Id, Util.getFakeId(Lead.SObjectType));
+
+        Lead lead = (Lead) mockLead.toSObject();
+
+        sfab_FabricatedSObject mockSSS1 = new sfab_FabricatedSObject(Shared_Solar_System__c.class);
+        mockSSS1.setField(Shared_Solar_System__c.Id, Util.getFakeId(Shared_Solar_System__c.SObjectType));
+        mockSSS1.setField(Shared_Solar_System__c.Maximum_Subscription_Cost__c, 500);
+        mockSSS1.setField(Shared_Solar_System__c.Maximum_Subscription_Capacity_kWDC__c, 0);
+        mockSSS1.setField(Shared_Solar_System__c.Expected_Yield_kWh_kW__c, 10);
+
+        Shared_Solar_System__c sss1 = (Shared_Solar_System__c) mockSSS1.toSObject();
+
+        sfab_FabricatedSObject mockSSS2 = new sfab_FabricatedSObject(Shared_Solar_System__c.class);
+        mockSSS2.setField(Shared_Solar_System__c.Id, Util.getFakeId(Shared_Solar_System__c.SObjectType));
+        mockSSS2.setField(Shared_Solar_System__c.Maximum_Subscription_Cost__c, 0);
+        mockSSS2.setField(Shared_Solar_System__c.Maximum_Subscription_Capacity_kWDC__c, 500);
+        mockSSS2.setField(Shared_Solar_System__c.Expected_Yield_kWh_kW__c, 10);
+
+        Shared_Solar_System__c sss2 = (Shared_Solar_System__c) mockSSS2.toSObject();
+
+        List<Shared_Solar_System__c> availableSSS = new List<Shared_Solar_System__c>{sss1, sss2};
+
+        Test.startTest();
+        List<Opportunity> generatedOpps = CSOpportunityFactory.generateCSOpportunities(
+            lead,
+            availableSSS,
+            annualTotals,
+            propertyAccount.Id
+        );
+
+        Test.stopTest();
+
+        System.assertEquals(2, generatedOpps.size(), 'There should be 2 opportunities created');
+        Opportunity opp1 = generatedOpps[0];
+        Opportunity opp2 = generatedOpps[1];
+
+        System.assertEquals(opp1.Annual_Consumption_kWh__c, 0, 'The first opportunity should not have any kWh consumption');
+        System.assertEquals(opp1.Annual_Electricity_Cost__c, 500, 'The first opportunity should have 500 electricity cost');
+        System.assertEquals(opp2.Annual_Consumption_kWh__c, 400, 'The second opportunity should have 400 kWh consumption');
+        System.assertEquals(opp2.Annual_Electricity_Cost__c, 0, 'The second opportunity should have 0 electricity cost');
+    }
 }
