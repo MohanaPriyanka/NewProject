@@ -36,6 +36,29 @@ public with sharing class ProductionDetailDebitMemoTest {
                 }
             }
         }
+
+        debitMemoEntries = getDebitMemoJournalEntries();
+        debitMemoEntries[0].Reason_Code__c = 'Refund';
+        service = new ProductionDetailDebitMemoService();
+        service.calculateProductionDetailFromDebitMemo(debitMemoEntries);
+        paymentParts = service.productionDetailToInsert;
+
+        System.assertEquals(5, paymentParts.size(), 'Expected the same number of PDs for Refunds as Returned Payments');
+
+        for (Transfer_Part__c part : paymentParts) {
+            switch on String.valueOf(part.Bill_Part__c) {
+                when 'a8y0a000000Gu3rBBB' {
+                    System.assertEquals(-120, part.Amount__c);
+                }
+                when 'a8y0a000000Gu3rCCC' {
+                    System.assertEquals(-1.87, part.Amount__c);
+                }
+                when else {
+                    //other debit memos are for adjustments - tested below in testAdjustmentPaymentFromDebitMemo
+                    continue;
+                }
+            }
+        }
     }
 
     @IsTest

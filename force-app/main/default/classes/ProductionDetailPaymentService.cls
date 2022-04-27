@@ -76,12 +76,11 @@ public without sharing class ProductionDetailPaymentService implements Database.
             Amount__c = applicationAmount
         );
 
-        // Returned payments create (-) production details to cancel existing payment record
-        if (paymentEntry.Object_Type__c == 'DebitMemo' && paymentEntry.Reason_Code__c == 'Returned Payment') {
+        // Returned payments or Refunds create (-) production details to cancel existing payment record
+        if (paymentEntry.Object_Type__c == 'DebitMemo' && (paymentEntry.Reason_Code__c == 'Returned Payment' || paymentEntry.Reason_Code__c == 'Refund')) {
             payPart.Name = 'Returned Payment';
             payPart.Amount__c = -applicationAmount;
         }
         return payPart;
-
     }
 }

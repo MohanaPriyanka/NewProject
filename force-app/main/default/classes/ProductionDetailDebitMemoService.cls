@@ -1,6 +1,6 @@
 /**
  * Created by SarahRenfro on 8/10/2020.
- * TestedBy: ProductionDetailDebitMemoTest
+ * Tested By: ProductionDetailDebitMemoTest
  */
 
 public without sharing class ProductionDetailDebitMemoService {
@@ -32,7 +32,7 @@ public without sharing class ProductionDetailDebitMemoService {
 
         for (Journal_Entry__c entry : debitMemoEntries) {
             // Returned Payments need to create negative payment production detail records for the payment that was returned
-            if (entry.Reason_Code__c == 'Returned Payment' && entry.Returned_PaymentPart_Id__c != null) {
+            if ((entry.Reason_Code__c == 'Returned Payment' || entry.Reason_Code__c == 'Refund') && entry.Returned_PaymentPart_Id__c != null) {
                 returnedPaymentIds.add(entry.Returned_PaymentPart_Id__c);
                 returnedDebitMemos.add(entry);
             } else {
