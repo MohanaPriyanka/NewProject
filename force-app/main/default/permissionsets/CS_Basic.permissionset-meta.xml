@@ -20491,6 +20491,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Utility_Account_Log__c.RCE__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Utility_Account_Log__c.RNY__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -35762,10 +35767,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>UseQuerySuggestions</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>ViewCaseInteraction</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
