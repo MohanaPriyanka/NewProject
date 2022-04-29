@@ -8,7 +8,7 @@
     <label>Credits Available for Allocation</label>
     <precision>18</precision>
     <required>false</required>
-    <scale>2</scale>
+    <scale>4</scale>
     <trackTrending>false</trackTrending>
     <type>Currency</type>
 </CustomField>
