@@ -49,6 +49,14 @@
                 <behavior>Edit</behavior>
                 <field>Transfer__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Externally_Serviced_UASB__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Externally_Serviced_Bill_Adjustment__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>

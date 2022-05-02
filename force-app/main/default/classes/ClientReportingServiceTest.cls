@@ -109,22 +109,26 @@ public with sharing class ClientReportingServiceTest {
 
         UASB__c billOne = new UASB__c(
             Account__c = uasList[0].Opportunity__r.AccountId,
-            Zuora_Id__c = 'bbb1230005',
-            Utility_Account_Subscription__c = uasList[0].Id
+            Utility_Account_Subscription__c = uasList[0].Id,
+            Externally_Serviced__c = true
         );
         UASB__c billTwo = new UASB__c(
             Account__c = uasList[0].Opportunity__r.AccountId,
-            Zuora_Id__c = 'bbb1230001',
             Utility_Account_Subscription__c = uasList[0].Id
         );
         UASB__c billThree = new UASB__c(
             Account__c = uasList[0].Opportunity__r.AccountId,
-            Zuora_Id__c = 'bbb1230001',
             Utility_Account_Subscription__c = uasList[0].Id
         );
         insert new List<UASB__c>{
             billOne, billTwo, billThree
         };
+        Transfer_Part__c transferPart = new Transfer_Part__c(
+            Externally_Serviced_UASB__c = billOne.Id,
+            Type__c = 'Bill',
+            Production__c = [SELECT Id FROM Production__c LIMIT 1].Id
+        );
+        insert transferPart;
 
         List<UASB__c> uasbs = [
             SELECT Id, Client__c,
@@ -140,6 +144,10 @@ public with sharing class ClientReportingServiceTest {
                 uasb.Client__c
             );
         }
+
+        delete uasbs;
+        List<Transfer_Part__c> transferParts = [SELECT Id FROM Transfer_Part__c WHERE Id = :transferPart.Id];
+        System.assertEquals(0, transferParts.size(), 'PDs related to UASBs should be deleted when the UASB is deleted');
     }
     @IsTest
     public static void testClientStampsProductionAndBillRecords() {
@@ -221,7 +229,60 @@ public with sharing class ClientReportingServiceTest {
         System.assertEquals(sssList[1].Client_Account__c, trfList[1].Client_Account__c);
     }
     @IsTest
-    public static void testExternallyServicedAdjustment() {
+    public static void testExternallyServicedBillAdjustmentTrigger() {
+        Transfer__c transfer = [
+            SELECT Id, Name, Shared_Solar_System__c, Allocation_Schedule__c, Attempted_Transfer__c, Bill_Period__c,
+                Bill_Period__r.Bill_Date__c, Default_Credit_Value__c, Bills_Generated__c, Total_kWh_Transferred__c,
+                Total_Transferred__c, Transfer_Amount__c, Transfer_kWh__c, Transfer_Type__c, Date_of_Transfer__c
+            FROM Transfer__c
+            WHERE Bill_Period__r.Name = 'sssA - March 2016'
+            LIMIT 1
+        ];
+        Utility_Account_Subscription__c uas = [
+            SELECT Id, Opportunity__c, Opportunity__r.Customer_Group__c, Opportunity__r.Shared_Solar_System__c, Opportunity__r.AccountId,
+                Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c
+            FROM Utility_Account_Subscription__c
+            WHERE Name = '0000239'
+        ];
+        uas.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c = 'RadianGen';
+        update uas.Opportunity__r.Shared_Solar_System__r;
+        uas.Opportunity__r.Customer_Group__c = 'Anchor';
+        update uas.Opportunity__r;
+        Bill_Adjustment__c adjustment = new Bill_Adjustment__c(
+            Name = 'UASoneAdjustment',
+            Utility_Account_Subscription__c = uas.Id,
+            Account__c = uas.Opportunity__r.AccountId,
+            Transfer__c = transfer.Id,
+            Adjustment_Type__c = 'Production',
+            Adjustment_Amount__c = 24,
+            Credits_Allocated__c = 24,
+            Approval_Status__c = 'Approved',
+            Reason_For_Adjustment__c = 'Client Owner Test'
+        );
+        insert adjustment;
+        Bill_Adjustment__c billAdjustment = [
+            SELECT Id, Externally_Serviced__c, Ready_For_Production_Detail__c
+            FROM Bill_Adjustment__c
+            WHERE Id = :adjustment.Id
+        ];
+        System.assertEquals(true, billAdjustment.Externally_Serviced__c,
+            'Adjustment should be externally serviced since the system is billed by RadianGen');
+        System.assertEquals(true, billAdjustment.Ready_For_Production_Detail__c,
+            'Ready for Production Detail should be checked for Externally Serviced adjustments');
+        adjustment.Externally_Serviced__c = false;
+        update adjustment;
+        billAdjustment = [
+            SELECT Id, Externally_Serviced__c, Ready_For_Production_Detail__c
+            FROM Bill_Adjustment__c
+            WHERE Id = :adjustment.Id
+        ];
+        System.assertEquals(false, billAdjustment.Ready_For_Production_Detail__c,
+            'Since the adjustment is not externally service, it should not be Ready for PD');
+
+        delete adjustment;
+    }
+    @IsTest
+    private static void testReadyForProductionDetail() {
         Transfer__c transfer = [
             SELECT Id, Name, Shared_Solar_System__c, Allocation_Schedule__c, Attempted_Transfer__c, Bill_Period__c,
                 Bill_Period__r.Bill_Date__c, Default_Credit_Value__c, Bills_Generated__c, Total_kWh_Transferred__c,
@@ -236,22 +297,6 @@ public with sharing class ClientReportingServiceTest {
             FROM Utility_Account_Subscription__c
             WHERE Name = '0000239'
         ];
-        Opportunity opp = [
-            SELECT Id, Customer_Group__c
-            FROM Opportunity
-            WHERE Id = :uas.Opportunity__c
-            LIMIT 1
-        ];
-        Shared_Solar_System__c sss = [
-            SELECT Id, Billing_Anchors__c
-            FROM Shared_Solar_System__c
-            WHERE Id = :uas.Opportunity__r.Shared_Solar_System__c
-            LIMIT 1
-        ];
-        sss.Billing_Anchors__c = 'RadianGen';
-        update sss;
-        opp.Customer_Group__c = 'Anchor';
-        update opp;
         Bill_Adjustment__c adjustment = new Bill_Adjustment__c(
             Name = 'UASoneAdjustment',
             Utility_Account_Subscription__c = uas.Id,
@@ -260,16 +305,47 @@ public with sharing class ClientReportingServiceTest {
             Adjustment_Type__c = 'Production',
             Adjustment_Amount__c = 24,
             Credits_Allocated__c = 24,
-            Approval_Status__c = 'Approved',
-            Reason_For_Adjustment__c = 'Client Owner Test'
+            Approval_Status__c = 'Pending',
+            Reason_For_Adjustment__c = 'Client Owner Test',
+            Externally_Serviced__c = false
         );
-        insert adjustment;
-        Bill_Adjustment__c billAdjustment = [
-            SELECT Id, Externally_Serviced__c
+        Bill_Adjustment__c adjustment2 = new Bill_Adjustment__c(
+            Name = 'UASoneAdjustment',
+            Utility_Account_Subscription__c = uas.Id,
+            Account__c = uas.Opportunity__r.AccountId,
+            Transfer__c = transfer.Id,
+            Adjustment_Type__c = 'Production',
+            Adjustment_Amount__c = 24,
+            Credits_Allocated__c = 24,
+            Approval_Status__c = 'Pending',
+            Reason_For_Adjustment__c = 'Client Owner Test',
+            Externally_Serviced__c = true
+        );
+        List<Bill_Adjustment__c> adjustments = new List<Bill_Adjustment__c>{adjustment, adjustment2};
+        insert adjustments;
+        Map<Id, Bill_Adjustment__c> billAdjustmentMap = new Map<Id, Bill_Adjustment__c>([
+            SELECT Id, Ready_For_Production_Detail__c
             FROM Bill_Adjustment__c
             WHERE Id = :adjustment.Id
-        ];
-        System.assertEquals(true, billAdjustment.Externally_Serviced__c);
+            OR Id = :adjustment2.Id
+        ]);
+        System.assertEquals(false, billAdjustmentMap.get(adjustment.Id).Ready_For_Production_Detail__c,
+            'Ready for PD should be false if adjustment is not approved');
+        System.assertEquals(false, billAdjustmentMap.get(adjustment2.Id).Ready_For_Production_Detail__c,
+            'Ready for PD should be false if adjustment is not approved even if it is externally serviced');
+        adjustment.Approval_Status__c = 'Approved';
+        adjustment2.Approval_Status__c = 'Approved';
+        update adjustments;
+        billAdjustmentMap = new Map<Id, Bill_Adjustment__c>([
+            SELECT Id, Ready_For_Production_Detail__c
+            FROM Bill_Adjustment__c
+            WHERE Id = :adjustment.Id
+            OR Id = :adjustment2.Id
+        ]);
+        System.assertEquals(false, billAdjustmentMap.get(adjustment.Id).Ready_For_Production_Detail__c,
+            'Ready for PD should be false when the adjustment is approved and the adjustment is not externally serviced');
+        System.assertEquals(true, billAdjustmentMap.get(adjustment2.Id).Ready_For_Production_Detail__c,
+            'Ready for PD should be true when the adjustment is approved and the adjustment is externally serviced');
     }
     @IsTest
     public static void testClientHealthScore() {

@@ -1,7 +1,7 @@
 /**
  * Created by SarahRenfro on 8/28/2019.
  *
- * TestedBy: TransferPartServiceTest
+ * Tested By: TransferPartServiceTest
  */
 
 @SuppressWarnings('PMD.ApexCRUDViolation')
@@ -83,11 +83,19 @@ public without sharing class TransferPartService {
         update transfersToUpdate;
     }
 
+    /**
+     * @description Prevents deleting Transfer production details if the Production is verified. Production Details
+     * created for Production to Bill (which have a JE, UASB, or Bill Adjusment) are safe to delete,
+     * if the user has permissions to delete
+     * @param deletedProductionDetails Trigger.oldMap
+     */
     public void onBeforeDelete(Map<Id, Transfer_Part__c> deletedProductionDetails) {
         List<Transfer_Part__c> deletedDetails = ProductionDetailSelector.getDetailsForDeletion(deletedProductionDetails);
         for (Transfer_Part__c detail : deletedDetails) {
             if (detail.Production__r.Verification_Status__c == 'Verified' &&
-                detail.Journal_Entry__c == null) {
+                detail.Journal_Entry__c == null &&
+                detail.Externally_Serviced_UASB__c == null &&
+                detail.Externally_Serviced_Bill_Adjustment__c == null) {
                 Transfer_Part__c triggerDetail = deletedProductionDetails.get(detail.Id);
                 triggerDetail.addError('Production Detail cannot be deleted if Production is "Verified"');
             }

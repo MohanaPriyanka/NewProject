@@ -112,7 +112,7 @@ public without sharing class ProductionToBillService implements Queueable, Datab
         List<UASB__c> externallyServicedUASBs = new List<UASB__c>();
         externallyServicedUASBs = uasbSelector.getUnservicedWithoutProductionDetail(batchSize);
         if (externallyServicedUASBs.size() > 0) {
-            ProductionDetailBillService billService = new ProductionDetailBillService();
+            ProductionDetailUnservicedService billService = new ProductionDetailUnservicedService();
             billService.createProductionDetailFromUnservicedUASB(externallyServicedUASBs);
             markUASBsAsComplete(externallyServicedUASBs);
         }
@@ -127,7 +127,7 @@ public without sharing class ProductionToBillService implements Queueable, Datab
         List<Bill_Adjustment__c> externallyServicedAdjusts = new List<Bill_Adjustment__c>();
         externallyServicedAdjusts = adjustmentSelector.getUnservicedWithoutProductionDetail(batchSize);
         if (externallyServicedAdjusts.size() > 0) {
-            ProductionDetailBillService billService = new ProductionDetailBillService();
+            ProductionDetailUnservicedService billService = new ProductionDetailUnservicedService();
             billService.createProductionDetailFromUnservicedAdjustment(externallyServicedAdjusts);
             markAdjustmentsAsComplete(externallyServicedAdjusts);
         }

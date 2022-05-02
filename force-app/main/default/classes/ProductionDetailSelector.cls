@@ -87,7 +87,8 @@ public inherited sharing class ProductionDetailSelector {
 
     public static List<Transfer_Part__c> getDetailsForDeletion(Map<Id, Transfer_Part__c> details) {
         List<Transfer_Part__c> detailList = [
-            SELECT Id, Production__r.Verification_Status__c, Transfer__c, Journal_Entry__c
+            SELECT Id, Production__r.Verification_Status__c, Transfer__c, Journal_Entry__c,
+                Externally_Serviced_UASB__c, Externally_Serviced_Bill_Adjustment__c
             FROM Transfer_Part__c
             WHERE Id IN :details.keySet()
         ];
@@ -112,6 +113,22 @@ public inherited sharing class ProductionDetailSelector {
             SELECT Id
             FROM Transfer_Part__c
             WHERE Journal_Entry__c IN :journalEntries
+        ];
+    }
+
+    public List<Transfer_Part__c> selectByBillAdjustments(List<Bill_Adjustment__c> billAdjustments) {
+        return [
+            SELECT Id
+            FROM Transfer_Part__c
+            WHERE Externally_Serviced_Bill_Adjustment__c IN :billAdjustments
+        ];
+    }
+
+    public List<Transfer_Part__c> selectByUASBs(List<UASB__c> uasbs) {
+        return [
+            SELECT Id
+            FROM Transfer_Part__c
+            WHERE Externally_Serviced_UASB__c IN :uasbs
         ];
     }
 }

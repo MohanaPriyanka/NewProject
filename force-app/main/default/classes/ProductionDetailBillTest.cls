@@ -293,11 +293,11 @@ public with sharing class ProductionDetailBillTest {
         List<UASB__c> externalUASBs = ProductionToBillServiceTest.getExternallyServicedUASBs();
 
         Test.startTest();
-        ProductionDetailBillService service = new ProductionDetailBillService();
+        ProductionDetailUnservicedService service = new ProductionDetailUnservicedService();
         service.calculateProductionDetailFromUnservicedUASB(externalUASBs);
         Test.stopTest();
 
-        List<Transfer_Part__c> unservicedParts = service.productionDetailToInsert;
+        List<Transfer_Part__c> unservicedParts = service.billService.productionDetailToInsert;
         System.assertEquals(7, unservicedParts.size());
 
         Decimal uasbOneSum = 0;
@@ -326,11 +326,11 @@ public with sharing class ProductionDetailBillTest {
         List<Bill_Adjustment__c> externalAdjusts = ProductionToBillServiceTest.getExternallyServicedAdjustments();
 
         Test.startTest();
-        ProductionDetailBillService service = new ProductionDetailBillService();
+        ProductionDetailUnservicedService service = new ProductionDetailUnservicedService();
         service.calculateProductionDetailFromUnservicedAdjustment(externalAdjusts);
         Test.stopTest();
 
-        List<Transfer_Part__c> unservicedParts = service.productionDetailToInsert;
+        List<Transfer_Part__c> unservicedParts = service.billService.productionDetailToInsert;
         System.assertEquals(7, unservicedParts.size());
 
         Decimal uasbOneSum = 0;

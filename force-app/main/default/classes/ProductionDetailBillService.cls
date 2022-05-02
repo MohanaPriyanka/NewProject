@@ -1,16 +1,11 @@
 // Tested By: ProductionDetailBillTest
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class ProductionDetailBillService implements ZuoraDataQueryService.Processor{
-    @TestVisible
-    private static ZuoraUsageSelector usageSelector = new ZuoraUsageSelector();
-    @TestVisible
-    private static JournalEntrySelector journalEntrySelector = new JournalEntrySelector();
-    @TestVisible
-    private static ProductionDetailSelector productionDetailSelector = new ProductionDetailSelector();
-    @TestVisible
-    private static UASBSelector uasbSelector = new UASBSelector();
-    @TestVisible
-    private static AdjustmentSelector adjustmentSelector = new AdjustmentSelector();
+    @TestVisible private static ZuoraUsageSelector usageSelector = new ZuoraUsageSelector();
+    @TestVisible private static JournalEntrySelector journalEntrySelector = new JournalEntrySelector();
+    @TestVisible private static ProductionDetailSelector productionDetailSelector = new ProductionDetailSelector();
+    @TestVisible private static UASBSelector uasbSelector = new UASBSelector();
+    @TestVisible private static AdjustmentSelector adjustmentSelector = new AdjustmentSelector();
 
     private Set<Id> transferIds = new Set<Id>();
     private Set<String> zuoraUsageIds = new Set<String>();
@@ -188,7 +183,7 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
         Map<String,List<UASB__c>> uasbMap = uasbSelector.getUASBMapFromExternalIds(zuoraUsageIds);
         Map<String,List<Bill_Adjustment__c>> adjustMap = adjustmentSelector.getAdjustmentMapFromExternalIds(zuoraUsageIds);
 
-        for (String invoiceItemId : invoiceIdtoUsageMap.keySet()){
+        for (String invoiceItemId : invoiceIdToUsageMap.keySet()){
             GLInvoiceItem invItem = invoiceIdToUsageMap.get(invoiceItemId);
             invItem.populateSFRecordsFromUsage(uasbMap, adjustMap);
             transferIds.addAll(invItem.transferIds);
@@ -199,10 +194,10 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
     private void distributeInvoiceItemAmongTransferProductionDetail() {
         transferToDetailMap = productionDetailSelector.getTransferPartMap(transferIds);
 
-        for (String invoiceItemId : invoiceIdtoUsageMap.keySet()){
+        for (String invoiceItemId : invoiceIdToUsageMap.keySet()){
             GLInvoiceItem invItem = invoiceIdToUsageMap.get(invoiceItemId);
             for (SObject sfBill : invItem.getAllSFRecords()){
-                distributeAmongTransferProductionDetail(sfBill, invItem.JERecordId);
+                distributeAmongTransferProductionDetail(sfBill, invItem.jERecordId);
             }
         }
     }
@@ -257,9 +252,9 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
     }
 
     private Transfer_Part__c setRelatedRecordId(Transfer_Part__c transferProdDetail, String type, Id relatedRecordId){
-        if (type == 'Externally Serviced' && relatedRecordId.getSObjectType() == UASB__c.sObjectType){
+        if (type == 'Externally Serviced' && relatedRecordId.getSobjectType() == UASB__c.SObjectType){
             transferProdDetail.Externally_Serviced_UASB__c = relatedRecordId;
-        } else if (type == 'Externally Serviced' && relatedRecordId.getSObjectType() == Bill_Adjustment__c.sObjectType){
+        } else if (type == 'Externally Serviced' && relatedRecordId.getSobjectType() == Bill_Adjustment__c.SObjectType){
             transferProdDetail.Externally_Serviced_Bill_Adjustment__c = relatedRecordId;
         } else {
             transferProdDetail.Journal_Entry__c = relatedRecordId;
@@ -320,57 +315,5 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
             usageMap.put(externalId,invoiceItem);
         }
         return usageMap;
-    }
-
-    public void createProductionDetailFromUnservicedUASB(List<UASB__c> unservicedUASBs){
-        calculateProductionDetailFromUnservicedUASB(unservicedUASBs);
-        insert productionDetailToInsert;
-    }
-
-    public void createProductionDetailFromUnservicedAdjustment(List<Bill_Adjustment__c> unservicedAdjusts){
-        calculateProductionDetailFromUnservicedAdjustment(unservicedAdjusts);
-        insert productionDetailToInsert;
-    }
-
-    @TestVisible
-    private void calculateProductionDetailFromUnservicedUASB(List<UASB__c> unservicedUASBs){
-        for (UASB__c exBill : unservicedUASBs){
-            transferIds.add(exBill.Transfer__c);
-        }
-
-        transferToDetailMap = productionDetailSelector.getTransferPartMap(transferIds);
-
-        for (UASB__c externalBill : unservicedUASBs){
-            createBillProductionDetail(externalBill.Transfer__c, externalBill.Credits_Allocated__c, 'Externally Serviced', externalBill.Id);
-        }
-    }
-
-    @TestVisible
-    private void calculateProductionDetailFromUnservicedAdjustment(List<Bill_Adjustment__c> unservicedUASBs){
-        for (Bill_Adjustment__c exBill : unservicedUASBs){
-            transferIds.add(exBill.Transfer__c);
-        }
-
-        transferToDetailMap = productionDetailSelector.getTransferPartMap(transferIds);
-
-        for (Bill_Adjustment__c externalBill : unservicedUASBs){
-            createBillProductionDetail(externalBill.Transfer__c, externalBill.Credits_Allocated__c, 'Externally Serviced', externalBill.Id);
-        }
-    }
-
-    public static void setUnservicedUASBReadyForProdDetail(List<UASB__c> uasbs){
-        for (UASB__c uasb : uasbs) {
-            if (uasb.Externally_Serviced__c && uasb.Credits_Allocated__c != null && uasb.Credits_Allocated__c != 0){
-                uasb.Ready_For_Production_Detail__c = true;
-            }
-        }
-    }
-
-    public static void setUnservicedAdjustReadyForProdDetail(List<Bill_Adjustment__c> adjustments){
-        for (Bill_Adjustment__c adjust : adjustments) {
-            if (adjust.Externally_Serviced__c){
-                adjust.Ready_For_Production_Detail__c = true;
-            }
-        }
     }
 }

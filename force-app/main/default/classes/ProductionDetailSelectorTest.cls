@@ -324,4 +324,17 @@ public class ProductionDetailSelectorTest {
             new ProductionDetailSelector().getRecentUtilizationChangesByContract(contractMap.keySet());
         System.assertEquals(0, productionDetails.size());
     }
+
+    @IsTest
+    private static void testSelectByBillAdjustment() {
+        new ProductionDetailSelector().selectByBillAdjustments(new List<Bill_Adjustment__c>());
+        System.assert(true, 'Simple SOQL did not throw and exception');
+    }
+
+    @IsTest
+    private static void testSelectByUASB() {
+        new ProductionDetailSelector().selectByUASBs(new List<UASB__c>());
+        System.assert(true, 'Simple SOQL did not throw and exception');
+    }
+
 }
