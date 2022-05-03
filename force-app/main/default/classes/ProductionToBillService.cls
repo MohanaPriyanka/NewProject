@@ -133,6 +133,9 @@ public without sharing class ProductionToBillService implements Queueable, Datab
         }
         if (externallyServicedAdjusts.size() == batchSize) {
             queueJob(OperationType.UNSERVICED_ADJUST);
+        } else {
+            ProductionToBillJEAuditor p2bAuditor = new ProductionToBillJEAuditor();
+            Database.executeBatch(p2bAuditor, 2000);
         }
     }
 

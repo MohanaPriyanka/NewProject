@@ -228,4 +228,11 @@ public class UASBSelectorTest {
         System.assertEquals(previousBillOne.Ending_Banked_Credits__c, priorUASBResult.Ending_Banked_Credits__c, 'Wrong ending banked credits');
         System.assertEquals(previousBillOne.Id, priorUASBResult.Id, 'Incorrect prior UASB__c record in map');
     }
+
+    @IsTest
+    private static void testSelectForReconciliation() {
+        UASBSelector uasbSelector = new UASBSelector();
+        uasbSelector.selectForReconciliation(new List<UASB__c>());
+        System.assert(true, 'Simple SOQL executes without exception');
+    }
 }

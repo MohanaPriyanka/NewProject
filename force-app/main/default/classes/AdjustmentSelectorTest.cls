@@ -82,4 +82,10 @@ public class AdjustmentSelectorTest {
         new AdjustmentSelector().getUnservicedWithoutProductionDetail(2);
         System.assert(true, 'Simple SOQL query ran without exception');
     }
+
+    @IsTest
+    private static void testSelectForReconciliation() {
+        new AdjustmentSelector().selectForReconciliation(new List<Bill_Adjustment__c>());
+        System.assert(true, 'Simple SOQL executes without exception');
+    }
 }

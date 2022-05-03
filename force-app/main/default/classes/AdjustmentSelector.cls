@@ -1,4 +1,5 @@
-/* Tested by ZuoraUsageServiceTest, ZuoraCreditDebitMemoServiceTest, AdjustmentSelectorTest
+/*
+ * Tested by: ZuoraUsageServiceTest, ZuoraCreditDebitMemoServiceTest, AdjustmentSelectorTest
  */
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class AdjustmentSelector {
@@ -91,5 +92,19 @@ public without sharing class AdjustmentSelector {
             AND Ready_for_Production_Detail__c = TRUE
             LIMIT :batchSize
         ]);
+    }
+
+    public List<AggregateResultProxy> selectForReconciliation(List<Bill_Adjustment__c> billAdjustmentsToReconcile) {
+        List<AggregateResultProxy> groupedResultProxies = new List<AggregateResultProxy>();
+        for (AggregateResult result : [
+            SELECT Externally_Serviced_Bill_Adjustment__c, SUM(Amount__c) AMOUNT
+            FROM Transfer_Part__c
+            WHERE Externally_Serviced_Bill_Adjustment__c IN :billAdjustmentsToReconcile
+            AND Type__c != 'Customer Savings'
+            GROUP BY Externally_Serviced_Bill_Adjustment__c
+        ]) {
+            groupedResultProxies.add(new AggregateResultProxy().withAggregateResult(result));
+        }
+        return groupedResultProxies;
     }
 }

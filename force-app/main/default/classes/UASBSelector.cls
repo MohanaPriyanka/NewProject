@@ -120,4 +120,18 @@ public without sharing class UASBSelector {
             AND Shared_Solar_System__r.UCB__c = TRUE
         ];
     }
+
+    public List<AggregateResultProxy> selectForReconciliation(List<UASB__c> uasbsToReconcile) {
+        List<AggregateResultProxy> groupedResultProxies = new List<AggregateResultProxy>();
+        for (AggregateResult result : [
+            SELECT Externally_Serviced_UASB__c, SUM(Amount__c) AMOUNT
+            FROM Transfer_Part__c
+            WHERE Externally_Serviced_UASB__c IN :uasbsToReconcile
+            AND Type__c != 'Customer Savings'
+            GROUP BY Externally_Serviced_UASB__c
+        ]) {
+            groupedResultProxies.add(new AggregateResultProxy().withAggregateResult(result));
+        }
+        return groupedResultProxies;
+    }
 }

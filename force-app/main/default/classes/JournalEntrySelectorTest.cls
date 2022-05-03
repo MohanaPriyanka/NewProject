@@ -130,4 +130,10 @@ public class JournalEntrySelectorTest {
         List<Journal_Entry__c> entries = selector.getCommissionableEntriesFromToday();
         System.assertEquals(9,entries.size());
     }
+
+    @IsTest
+    private static void testSelectForReconciliation() {
+        new JournalEntrySelector().selectForReconciliation(new List<Journal_Entry__c>());
+        System.assert(true, 'Simple SOQL executed without exception');
+    }
 }

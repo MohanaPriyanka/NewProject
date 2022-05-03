@@ -71,4 +71,18 @@ public inherited sharing class JournalEntrySelector {
             ORDER BY Date__c ASC
         ];
     }
+
+    public List<AggregateResultProxy> selectForReconciliation(List<Journal_Entry__c> journalEntriesToReconcile) {
+        List<AggregateResultProxy> groupedResultProxies = new List<AggregateResultProxy>();
+        for (AggregateResult result : [
+            SELECT Journal_Entry__c, Journal_Entry__r.Reason_Code__c, Journal_Entry__r.Object_Type__c, SUM(Amount__c) AMOUNT
+            FROM Transfer_Part__c
+            WHERE Journal_Entry__c IN :journalEntriesToReconcile
+            AND Type__c != 'Customer Savings'
+            GROUP BY Journal_Entry__c, Journal_Entry__r.Reason_Code__c, Journal_Entry__r.Object_Type__c
+        ]) {
+            groupedResultProxies.add(new AggregateResultProxy().withAggregateResult(result));
+        }
+        return groupedResultProxies;
+    }
 }
