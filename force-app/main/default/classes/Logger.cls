@@ -18,10 +18,16 @@ public with sharing class Logger implements fflib_SObjectUnitOfWork.IDoWork {
             FINE => 1, INFO => 2, DEBUG => 3, WARN => 4, ERROR => 5
         };
     @TestVisible private static System_Properties__c systemProperty;
+    @TestVisible private static List<String> overriddenClassNames;
 
     static {
         List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
         systemProperty = systemProperties.size() > 0 ? systemProperties[0] : new System_Properties__c();
+        overriddenClassNames = new List<String>();
+        Map<String, Logger_Override__mdt> loggerOverrideMap = Logger_Override__mdt.getAll();
+        for (Logger_Override__mdt classOverride : loggerOverrideMap.values()) {
+            overriddenClassNames.add(classOverride.Classname__c);
+        }
     }
 
     public void doWork() {
@@ -93,6 +99,10 @@ public with sharing class Logger implements fflib_SObjectUnitOfWork.IDoWork {
         }
     }
 
+    private static Boolean isClassOverridden(String className) {
+        return overriddenClassNames.contains(className);
+    }
+
     public static void clearLogs() {
         timesLogsCleared++;
         for (String key : logs.keySet()) {
@@ -161,7 +171,7 @@ public with sharing class Logger implements fflib_SObjectUnitOfWork.IDoWork {
                 Limits_DML_Rows_Used__c = errorLogEvent.Limits_DML_Rows_Used__c,
                 Limits_DML_Rows_Max__c = errorLogEvent.Limits_DML_Rows_Max__c
             );
-            if (shouldLog(log.Severity__c)) {
+            if (shouldLog(log.Severity__c) || isClassOverridden(errorLogEvent.Class__c)) {
                 errorLogsToInsert.add(log);
             }
         }
@@ -209,7 +219,7 @@ public with sharing class Logger implements fflib_SObjectUnitOfWork.IDoWork {
                 Limits_DML_Statements_Max__c = Limits.getLimitDmlStatements(),
                 Limits_DML_Rows_Used__c = Limits.getDmlRows(),
                 Limits_DML_Rows_Max__c = Limits.getLimitDmlRows());
-        if (shouldLog(severity) || closeToLimits(errorLog)) {
+        if (shouldLog(severity) || closeToLimits(errorLog) || isClassOverridden(className)) {
             Database.insert(errorLog, false);
         }
     }
