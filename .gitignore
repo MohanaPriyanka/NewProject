@@ -238,6 +238,9 @@ build.properties
 .idea/dictionaries
 .idea/dbnavigator.xml
 .idea/shelf
+.idea/misc.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/vcs.xml
 
 # Sensitive or high-churn files:
 .idea/**/dataSources/
