@@ -6,9 +6,9 @@
 
 public without sharing class ProductionToBillJEAuditor implements Database.Batchable<SObject>, Database.Stateful {
     public String jesCreatedOrModifiedToday =
-        'SELECT Id, Amount__c FROM Journal_Entry__c WHERE CreatedDate = TODAY OR LastModifiedDate = TODAY';
+        'SELECT Id, Amount__c, Credit_Memo_Unapplied_Amount__c FROM Journal_Entry__c WHERE CreatedDate = TODAY OR LastModifiedDate = TODAY';
     public String jesForPDsCreatedOrModifiedToday =
-        'SELECT Id, Amount__c\n' +
+        'SELECT Id, Amount__c, Credit_Memo_Unapplied_Amount__c\n' +
             'FROM Journal_Entry__c\n' +
             'WHERE CreatedDate != TODAY AND LastModifiedDate != TODAY\n' +
             'AND Id IN (SELECT Journal_Entry__c\n' +
@@ -47,13 +47,14 @@ public without sharing class ProductionToBillJEAuditor implements Database.Batch
         String objectType = (String) pdAggregate.get('Object_Type__c');
         String reasonCode = (String) pdAggregate.get('Reason_Code__c');
         Decimal amount = (Decimal) pdAggregate.get('AMOUNT');
-        Decimal amountToCompare = amount;
+        Journal_Entry__c journalEntry = journalEntryMap.get(jeId);
+        // The Credit Memo Unapplied Amount will show up as a PD in the future, but for now, add it to the aggregate amount
+        Decimal amountToCompare = amount + Util.nullToZero(journalEntry.Credit_Memo_Unapplied_Amount__c);
         if ((objectType == 'CreditMemo' && reasonCode == 'Production') || objectType == 'DebitMemo') {
             amountToCompare = -amount;
         }
-        Journal_Entry__c journalEntry = journalEntryMap.get(jeId);
         if (journalEntry.Amount__c != amountToCompare) {
-            errors += 'JE: ' + jeId + ', Amount: ' + journalEntry.Amount__c + ', PD Sum: ' + amountToCompare +
+            errors += 'JE: ' + jeId + ', Amount: ' + journalEntry.Amount__c + ', PD Sum: ' + amount +
                 ', type: ' + objectType + ', reason:' + reasonCode + '\n';
         }
         journalEntryMap.remove(jeId);

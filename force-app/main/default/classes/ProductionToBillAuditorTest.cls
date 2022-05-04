@@ -69,6 +69,40 @@ private with sharing class ProductionToBillAuditorTest {
     }
 
     @IsTest
+    private static void testJEAuditorReconciliationForPartiallyAppliedCreditMemos() {
+        Id journalEntry1 = Util.getFakeId(Journal_Entry__c.SObjectType);
+        UniversalMocker journalEntrySelectorMock = UniversalMocker.mock(JournalEntrySelector.class);
+        AggregateResultProxy je1Aggregate = new AggregateResultProxy();
+        je1Aggregate.withAliasAndValue('Journal_Entry__c', journalEntry1);
+        je1Aggregate.withAliasAndValue('Object_Type__c', 'CreditMemo');
+        je1Aggregate.withAliasAndValue('AMOUNT', 100);
+
+        journalEntrySelectorMock.when('selectForReconciliation').thenReturn(new List<AggregateResultProxy>{je1Aggregate});
+
+        ProductionToBillJEAuditor.journalEntrySelector = (JournalEntrySelector) journalEntrySelectorMock.createStub();
+
+        List<Journal_Entry__c> scope = new List<Journal_Entry__c>();
+        scope.add(new Journal_Entry__c(
+            Id = journalEntry1,
+            Amount__c = 120,
+            Credit_Memo_Unapplied_Amount__c = 20
+        ));
+
+        ProductionToBillJEAuditor jeAuditor = new ProductionToBillJEAuditor();
+        jeAuditor.execute(null, scope);
+        jeAuditor.finish(null);
+        List<Error_Log__c> errorLogs = [
+            SELECT Message__c
+            FROM Error_Log__c
+            WHERE Severity__c = :Logger.ERROR
+            AND Class__c = 'ProductionToBillJEAuditor'
+        ];
+        System.assertEquals(0, errorLogs.size(),
+            'Expected no error logs because a $120 CM with $20 Unapplied should have $100 of production details, but got this: ' + errorLogs);
+    }
+
+
+    @IsTest
     private static void testJEQueueNextJob() {
         ProductionToBillJEAuditor jeAuditor = new ProductionToBillJEAuditor();
         jeAuditor.query = jeAuditor.jesCreatedOrModifiedToday;

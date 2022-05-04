@@ -101,6 +101,8 @@ public without sharing class ProductionDetailCreditMemoService implements Databa
 
         response = ZuoraAPIHelper.callJsonEndpoint('GET', '/v1/creditmemos/' + creditMemo.External_Id__c + '/parts', null, false);
         memoParts = (ZuoraAPI.CreditMemoWithParts) JSON.deserialize(response.getBody(), ZuoraAPI.CreditMemoWithParts.class);
+        // Reset the Credit Memo's Unapplied Amount in case it is fully applied
+        creditMemo.Credit_Memo_Unapplied_Amount__c = null;
 
         for (ZuoraAPI.CreditMemoPart memoPart : memoParts.parts) {
             if (memoPart.DebitMemoId != null) {
@@ -121,7 +123,9 @@ public without sharing class ProductionDetailCreditMemoService implements Databa
             } else {
                 // If credit memo part doesn't have InvoiceId or DebitMemoId, it has an unapplied amount that
                 // will need to be allocated to production later. Keep the credit memo marked with
-                // 'Ready For Production Detail' until everything has been allocated
+                // 'Ready For Production Detail' until everything has been allocated, and update the Unapplied Amount
+                // for this JE
+                creditMemo.Credit_Memo_Unapplied_Amount__c = memoPart.Amount;
                 incompleteEntries.add(creditMemo);
             }
         }

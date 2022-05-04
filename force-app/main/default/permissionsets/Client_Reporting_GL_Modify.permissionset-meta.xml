@@ -33,6 +33,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Journal_Entry__c.Credit_Memo_Unapplied_Amount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Journal_Entry__c.Customer_Account__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -94,6 +99,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Journal_Entry__c.Query_Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Journal_Entry__c.Ready_for_Production_Detail__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

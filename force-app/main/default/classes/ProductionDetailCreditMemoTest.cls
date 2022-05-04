@@ -142,10 +142,15 @@ public with sharing class ProductionDetailCreditMemoTest {
         );
         HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('GET', '/v1/creditmemos/' + creditMemo.External_Id__c + '/parts', null, false);
         ZuoraAPI.CreditMemoWithParts memoParts = (ZuoraAPI.CreditMemoWithParts) JSON.deserialize(response.getBody(), ZuoraAPI.CreditMemoWithParts.class);
-        System.assertEquals(2, memoParts.parts.size(), 'Expected an Invoice and Debit Memo part for CM parts mock, but got this: ' + response.getBody());
+        System.assertEquals(3, memoParts.parts.size(), 'Expected an Invoice, Debit Memo, and Unapplied part for CM parts mock, but got this: ' + response.getBody());
+        System.assert(memoParts.parts[2].DebitMemoId == null && memoParts.parts[2].InvoiceId == null,
+            'The last memopart should be for an unapplied amount');
+        System.assertEquals(10, memoParts.parts[2].Amount, 'The unapplied amount should be $10');
 
         List<Journal_Entry__c> journalEntriesByPart = new ProductionDetailCreditMemoService().splitCreditMemoIntoParts(creditMemo);
         System.assertEquals(3, journalEntriesByPart.size(), 'Expected two JEs for the Invoice and one for the DM, but got this: ' + journalEntriesByPart);
+        System.assertEquals(memoParts.parts[2].Amount, creditMemo.Credit_Memo_Unapplied_Amount__c,
+            'Expected splitCreditMemoIntoParts to set the Credit Memo Unapplied Amount to be the unapplied part');
     }
 
     private static List<Journal_Entry__c> getCreditMemoJournalEntries() {

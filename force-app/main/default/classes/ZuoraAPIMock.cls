@@ -762,7 +762,11 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
             '{"id" : "2c92c0fb715ce76701717490112a5069",' +
             '"invoiceId" : "2c92c0fa6e3a9391016e3e30d48066d2",' +
             '"debitMemoId" : null,' +
-            '"amount" : 0.590000000} ' +
+            '"amount" : 0.590000000}, ' +
+            '{"id" : "2c92c0fb715ce76701717490112a5070",' +
+            '"invoiceId" : null,' +
+            '"debitMemoId" : null,' +
+            '"amount" : 10.000000000} ' +
             '],"success" : true}');
         return res;
     }

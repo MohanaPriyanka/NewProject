@@ -126,6 +126,10 @@
                 <behavior>Edit</behavior>
                 <field>Paid_To_Client__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Credit_Memo_Unapplied_Amount__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
