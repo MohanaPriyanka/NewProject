@@ -125,7 +125,11 @@ public without sharing class GenericBatchDMLOperation implements Database.Batcha
         if (!String.isEmpty(this.log)) {
             Logger.logNow('GenericBatchDMLOperation', 'finish', this.log, Logger.ERROR);
         }
-        executePostBatchOperation(postBatchOperationClass);
+        try {
+            executePostBatchOperation(postBatchOperationClass);
+        } catch (Exception e) {
+            Logger.logNow('GenericBatchDMLOperation', 'finish', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
+        }
     }
 
     /**

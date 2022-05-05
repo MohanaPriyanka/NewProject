@@ -169,7 +169,9 @@ public without sharing class ProductionToBillService implements Queueable, Datab
         p2bJob.incompleteEntries = incompleteEntries;
         p2bJob.batchSize = batchSize;
         nextP2BJob = p2bJob;
-        System.enqueueJob(p2bJob);
+        if (!Test.isRunningTest()) {
+            System.enqueueJob(p2bJob);
+        }
     }
 
     private void markJournalEntriesAsComplete(List<Journal_Entry__c> entries) {

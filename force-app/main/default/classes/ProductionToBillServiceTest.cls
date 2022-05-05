@@ -5,51 +5,24 @@ public with sharing class ProductionToBillServiceTest {
     private static Integer returnEntryNumber;
 
     @IsTest
-    public static void testScheduleJob() {
+    private static void testJobs() {
         useMocks();
-        List<Error_Log__c> beforeLogs = [
-            SELECT Class__c, Message__c
-            FROM Error_Log__c
-            WHERE Class__c = 'ProductionToBillService'
-        ];
-        System.assertEquals(0, beforeLogs.size());
-
-        Test.startTest();
-        ProductionToBillScheduler prodService = new ProductionToBillScheduler();
-        Datetime dt = Datetime.now().addMinutes(2);
-        String cronExpress = '0 ' + dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
-        System.schedule('P2B', cronExpress, prodService);
-        Test.stopTest();
-
-        List<Error_Log__c> afterLogs = [
-            SELECT Class__c, Message__c
-            FROM Error_Log__c
-            WHERE Class__c = 'ProductionToBillService'
-        ];
-        System.assert(afterLogs.size() > 0);
-    }
-
-    @IsTest
-    public static void testQueueJob() {
-        useMocks();
-        List<Error_Log__c> beforeLogs = [
-            SELECT Class__c, Message__c
-            FROM Error_Log__c
-            WHERE Class__c = 'ProductionToBillService'
-        ];
-        System.assertEquals(0, beforeLogs.size());
-
-        Test.startTest();
-        ProductionToBillService prodService = new ProductionToBillService();
-        prodService.queueJob(ProductionToBillService.OperationType.BILL);
-        Test.stopTest();
-
-        List<Error_Log__c> afterLogs = [
-            SELECT Class__c, Method__c, Message__c
-            FROM Error_Log__c
-            WHERE Class__c = 'ProductionToBillService'
-        ];
-        System.assert(afterLogs.size() > 0);
+        ProductionToBillService productionService = new ProductionToBillService();
+        productionService.opType = ProductionToBillService.OperationType.BILL;
+        productionService.execute(null);
+        productionService.opType = ProductionToBillService.OperationType.DEBITMEMO;
+        productionService.execute(null);
+        productionService.opType = ProductionToBillService.OperationType.PAYMENT;
+        productionService.execute(null);
+        productionService.opType = ProductionToBillService.OperationType.CREDITMEMO;
+        productionService.execute(null);
+        productionService.opType = ProductionToBillService.OperationType.UNSERVICED_BILL;
+        productionService.execute(null);
+        productionService.opType = ProductionToBillService.OperationType.UNSERVICED_ADJUST;
+        productionService.execute(null);
+        System.assert(true,
+            'ProductionToBillService ran all jobs without exception. ' +
+                'Job functionality is tested through different tests (ProductionDetail*Test');
     }
 
     @IsTest

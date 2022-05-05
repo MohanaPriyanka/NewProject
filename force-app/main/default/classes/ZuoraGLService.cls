@@ -101,7 +101,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
                 ZuoraDataQueryService.callFromApex(queryString, method);
             }
             when 'PaymentPart_IV_Last_Half' {
-                generalGLRecordInsert(response, method, 'PartnerCommissionHandler');
+                generalGLRecordInsert(response, method, 'PostGLDownloadService');
             }
         }
     }
@@ -129,6 +129,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
 
         ledgerItems = (List<GeneralLedgerItem>) JSON.deserialize(response, List<GeneralLedgerItem>.class);
         if (ledgerItems.isEmpty()) {
+            GenericBatchDMLOperation.executePostBatchOperation(postBatchClass);
             return;
         }
         // Because some queries are broken into two to avoid limits, and we query Salesforce to compare what's there,
