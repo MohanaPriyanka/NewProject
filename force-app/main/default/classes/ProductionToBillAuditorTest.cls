@@ -75,7 +75,8 @@ private with sharing class ProductionToBillAuditorTest {
         AggregateResultProxy je1Aggregate = new AggregateResultProxy();
         je1Aggregate.withAliasAndValue('Journal_Entry__c', journalEntry1);
         je1Aggregate.withAliasAndValue('Object_Type__c', 'CreditMemo');
-        je1Aggregate.withAliasAndValue('AMOUNT', 100);
+        je1Aggregate.withAliasAndValue('Reason_Code__c', 'Production');
+        je1Aggregate.withAliasAndValue('AMOUNT', -100);
 
         journalEntrySelectorMock.when('selectForReconciliation').thenReturn(new List<AggregateResultProxy>{je1Aggregate});
 

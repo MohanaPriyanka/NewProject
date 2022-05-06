@@ -48,11 +48,12 @@ public without sharing class ProductionToBillJEAuditor implements Database.Batch
         String reasonCode = (String) pdAggregate.get('Reason_Code__c');
         Decimal amount = (Decimal) pdAggregate.get('AMOUNT');
         Journal_Entry__c journalEntry = journalEntryMap.get(jeId);
-        // The Credit Memo Unapplied Amount will show up as a PD in the future, but for now, add it to the aggregate amount
-        Decimal amountToCompare = amount + Util.nullToZero(journalEntry.Credit_Memo_Unapplied_Amount__c);
+        Decimal amountToCompare = amount;
         if ((objectType == 'CreditMemo' && reasonCode == 'Production') || objectType == 'DebitMemo') {
             amountToCompare = -amount;
         }
+        // The Credit Memo Unapplied Amount will show up as a PD in the future, but for now, add it to the aggregate amount
+        amountToCompare += Util.nullToZero(journalEntry.Credit_Memo_Unapplied_Amount__c);
         if (journalEntry.Amount__c != amountToCompare) {
             errors += 'JE: ' + jeId + ', Amount: ' + journalEntry.Amount__c + ', PD Sum: ' + amount +
                 ', type: ' + objectType + ', reason:' + reasonCode + '\n';
