@@ -1,5 +1,6 @@
 /**
  * Created by SarahRenfro on 5/24/2019.
+ * Tested By: UtilityLoadZoneServiceTestclass
  */
 
 public without sharing class UtilityLoadZoneService {
@@ -14,7 +15,7 @@ public without sharing class UtilityLoadZoneService {
         if (zipCodeSet.size() > 0 ){
             Map<String, Load_u__c> validLZU = new Map<String, Load_u__c>();
             for (Load_u__c obj : [
-                SELECT Id, Name, LZ__c, Utility__c,
+                SELECT Id, Name, LZ__c,
                 (SELECT Id, Name, Utility__r.Id, Utility__r.Name FROM ZipCode_Utility_Junctions__r)
                 FROM Load_u__c
                 WHERE Name IN : zipCodeSet] ){
