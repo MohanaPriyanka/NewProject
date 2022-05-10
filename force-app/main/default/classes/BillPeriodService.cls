@@ -119,7 +119,9 @@ public with sharing class BillPeriodService {
                 }
             }
             update billPeriodsToUpdate;
-            update sssToUpdateOnBillRunComplete(billPeriodsToUpdate);
+            Database.executeBatch(new GenericBatchDMLOperation(
+                sssToUpdateOnBillRunComplete(billPeriodsToUpdate), 'Update')
+            );
             handleUCBTransfers(ucbTransfersThisPeriod);
             Logger.logNow('BillPeriodService', 'markBillPeriodsAsBillRunComplete', 'Check limits', Logger.FINE);
         } catch (Exception e){
