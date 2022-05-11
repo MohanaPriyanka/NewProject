@@ -249,7 +249,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
             '"leadId": "' + Util.getFakeId(Schema.Lead.SObjectType) + '",' +
             '"firstName": "Unit",' +
             '"lastName": "Testcase",' +
-            '"email": "test@invalid.bluewavesolar.com",' +
+            '"email": "test@invalid.perchenergy.com",' +
             '"applicationType": "Residential",' +
             '"productName": "CS Product"' +
             '}';
@@ -263,7 +263,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         String jsonRequest = '{' +
             '"firstName": "Unit",' +
             '"lastName": "Testcase",' +
-            '"email": "test@invalid.bluewavesolar.com",' +
+            '"email": "test@invalid.perchenergy.com",' +
             '"applicationType": "Residential",' +
             '"productName": "CS Product"' +
             '}';
@@ -277,7 +277,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         String jsonRequest = '{' +
             '"firstName": "Unit",' +
             '"lastName": "Testcase",' +
-            '"email": "test@invalid.bluewavesolar.com",' +
+            '"email": "test@invalid.perchenergy.com",' +
             '"applicationType": "Residential",' +
             '"productName": "CS Product"' +
             '}';
@@ -293,7 +293,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         String jsonRequest = '{' +
             '"firstName": "Unit",' +
             '"lastName": "Testcase",' +
-            '"email": "test@invalid.bluewavesolar.com",' +
+            '"email": "test@invalid.perchenergy.com",' +
             '"mobilePhone": "555-555-5555",' +
             '"applicationType": "Residential",' +
             '"streetAddress": "1 Test Street",' +
@@ -353,7 +353,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         String jsonRequest = '{' +
             '"firstName": "Unit",' +
             '"lastName": "Testcase",' +
-            '"email": "test@invalid.bluewavesolar.com",' +
+            '"email": "test@invalid.perchenergy.com",' +
             '"mobilePhone": "555-555-5555",' +
             '"applicationType": "Residential",' +
             '"streetAddress": "1 Test Street",' +
@@ -361,7 +361,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
             '"state": "NY",' +
             '"zipCode": "10901",' +
             '"eiaId": "1234",' +
-            '"continueApplicationLink": "http://switch.bluewavesolar.invalid",' +
+            '"continueApplicationLink": "http://switch.perchenergy.invalid",' +
             '"productName": "CS Product",' +
             '"campaignId": "0005500000",' +
             '"propertyAccounts": [{' +
@@ -396,6 +396,25 @@ public with sharing class CSLeadsRESTControllerV2Test {
             System.assert(!caughtException, e.getMessage() + '\n' + e.getStackTraceString());
         }
         System.assertEquals(false, caughtException, 'Did not expect to catch an exception');
+    }
+
+    @IsTest
+    private static void testGetZipcodeCapacity() {
+        useMocks();
+        RestContext.response = new RestResponse();
+        controller.getZipcodeCapacity('02633', '', '');
+        Boolean caughtException = false;
+        try {
+            RESTController.ResponseEnvelope envelope =
+                (RESTController.ResponseEnvelope) JSON.deserialize(RestContext.response.responseBody.toString(), RESTController.ResponseEnvelope.class);
+            System.assertEquals('Project B Main St', ((RestZipCode) envelope.data).solarSystems[0].name, 'Expected mock to return a SSS with this name');
+            System.assertEquals(true, ((RestZipCode) envelope.data).solarSystems[0].smallCsCapacityAvailable, 'Expected first system in list to have small cs capacity');
+            System.assertEquals(false, ((RestZipCode) envelope.data).solarSystems[0].lmiCapacityAvailable, 'Expected first system in list to have no lmi capacity');
+        } catch (Exception e) {
+            System.assert(!caughtException, e.getMessage() + '\n' + e.getStackTraceString());
+        }
+        System.assertEquals(false, caughtException, 'Did not expect to catch an exception');
+
     }
 
     /**************************
@@ -451,7 +470,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
             '"id": "'+Util.getFakeId(Lead.SObjectType)+'",' +
             '"firstName": "Unit",' +
             '"lastName": "Testcase",' +
-            '"email": "test@invalid.bluewavesolar.com",' +
+            '"email": "test@invalid.perchenergy.com",' +
             '"mobilePhone": "555-555-5555",' +
             '"applicationType": "Residential",' +
             '"streetAddress": "1 Test Street",' +
@@ -500,7 +519,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         RestLead requestLead = new RestLead();
         requestLead.firstName = 'Unit';
         requestLead.lastName = 'Testcase';
-        requestLead.email = 'test@invalid.bluewavesolar.com';
+        requestLead.email = 'test@invalid.perchenergy.com';
         requestLead.mobilePhone = '555-555-5555';
         requestLead.businessPhone = '555-555-1111';
         requestLead.businessName = 'Test Business';
@@ -528,7 +547,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
             '   },' +
             '   "FirstName": "Unit",' +
             '   "LastName": "Testcase",' +
-            '   "Email": "test@invalid.bluewavesolar.com",' +
+            '   "Email": "test@invalid.perchenergy.com",' +
             '   "MobilePhone": "555-555-5555",' +
             '   "Business_Phone__c": "555-555-1111",' +
             '   "Company": "Test Business",' +
@@ -595,9 +614,9 @@ public with sharing class CSLeadsRESTControllerV2Test {
         requestLead.lastName = 'Change';
         System.assert(controller.contractFieldsUpdated(JSON.serialize(requestLead), l), 'Method should return true due to change to lastName field');
         requestLead.lastName = 'Testcase';
-        requestLead.email = 'Change@invalid.bluewavesolar.com';
+        requestLead.email = 'Change@invalid.perchenergy.com';
         System.assert(controller.contractFieldsUpdated(JSON.serialize(requestLead), l), 'Method should return true due to change to email field');
-        requestLead.email = 'test@invalid.bluewavesolar.com';
+        requestLead.email = 'test@invalid.perchenergy.com';
         requestLead.mobilePhone = '555-555-0000';
         System.assert(controller.contractFieldsUpdated(JSON.serialize(requestLead), l), 'Method should return true due to change to mobilePhone field');
         requestLead.mobilePhone = '555-555-5555';
@@ -758,7 +777,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         Lead websiteLead = new Lead(
             FirstName = 'System',
             LastName = 'Testcase',
-            Email = 'test@invalid.bluewavesolar.com',
+            Email = 'test@invalid.perchenergy.com',
             Company = 'System Testcase',
             LeadSource = 'Website',
             Phone = '4444444444',
@@ -899,7 +918,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         String json = '{' +
             '"firstName": "System",' +
             '"lastName": "Testcase",' +
-            '"email": "test@invalid.bluewavesolar.com",' +
+            '"email": "test@invalid.perchenergy.com",' +
             '"mobilePhone": "555-555-5555",' +
             '"applicationType": "Residential",' +
             '"streetAddress": "1 Test Street",' +
@@ -940,7 +959,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         String jsonRequest = '{' +
             '"firstName": "Unit",' +
             '"lastName": "Testcase",' +
-            '"email": "test@invalid.bluewavesolar.com",' +
+            '"email": "test@invalid.perchenergy.com",' +
             '"mobilePhone": "555-555-5555",' +
             '"applicationType": "Residential",' +
             '"streetAddress": "1 Test Street",' +
@@ -948,7 +967,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
             '"state": "NY",' +
             '"zipCode": "10901",' +
             '"eiaId": "1234",' +
-            '"continueApplicationLink": "http://switch.bluewavesolar.invalid",' +
+            '"continueApplicationLink": "http://switch.perchenergy.invalid",' +
             '"productName": "CS Product",' +
             '"campaignId": "0005500000",' +
             '"noPayment": false,' +
@@ -1007,7 +1026,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         // All utility bill data (if needed) is submitted in the initial POST /lead, this is legacy fragment from jlugo
         jsonRequest = '{' +
             '   "id": "' + leadId + '",' +
-            '   "email": "test@invalid.bluewavesolar.com",' +
+            '   "email": "test@invalid.perchenergy.com",' +
             '   "propertyAccounts": [{' +
             '      "id": "' + lead.Accounts__r[0].Id + '",' +
             '      "utilityAccountLogs": [{' +
@@ -1030,7 +1049,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         // PATCH /contract - contract signature
         jsonRequest = '{' +
             '   "leadId": "' + leadId + '",' +
-            '   "email": "test@invalid.bluewavesolar.com"' +
+            '   "email": "test@invalid.perchenergy.com"' +
             '}';
         controller.patchContract(jsonRequest);
         lead = [SELECT Id, Application_Status__c, Continue_Application_Link__c FROM Lead WHERE Id = :leadId];
@@ -1044,7 +1063,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         // PATCH /lead - application completion
         jsonRequest = '{' +
             '   "id": "' + leadId + '",' +
-            '   "email": "test@invalid.bluewavesolar.com",' +
+            '   "email": "test@invalid.perchenergy.com",' +
             '   "applicationCompleteDate": "2020-07-22T00:00:00Z"' +
             '}';
         controller.patchLead(jsonRequest);
@@ -1064,7 +1083,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         Lead leadToUpdate = new Lead (
             FirstName = 'Other',
             LastName = 'Testcase',
-            Email = 'test@invalid.bluewavesolar.com',
+            Email = 'test@invalid.perchenergy.com',
             Company = 'System Testcase',
             LeadSource = 'Switch',
             Partner_Account__c = partnerAccount.Id,
@@ -1099,7 +1118,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         Lead leadToUpdate = new Lead (
             FirstName = 'Other',
             LastName = 'Testcase',
-            Email = 'test@invalid.bluewavesolar.com',
+            Email = 'test@invalid.perchenergy.com',
             Company = 'System Testcase',
             LeadSource = 'Switch',
             Partner_Email__c = 'partner@testcase.com',
@@ -1341,7 +1360,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     public class MockCapacityService implements StubProvider {
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
             List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
-            String zipResponseWithCapacity = '{"zipcode":"02633","utilityIds":["a1MS0000008BldpMAC"],"utilities":[{"attributes":{"type":"Utility__c","url":"/services/data/v47.0/sobjects/Utility__c/a1MS0000008BldpMAC"},"Id":"a1MS0000008BldpMAC","Name":"Eversource"}],"sharedSolarSystems":[{"attributes":{"type":"Shared_Solar_System__c","url":"/services/data/v47.0/sobjects/Shared_Solar_System__c/a1JS0000003BMvGMAW"},"Id":"a1JS0000003BMvGMAW","Name":"Project A Oak Road","Capacity_Available_to_be_Reserved__c":144499.98,"Product__c":"01tS0000005j7AVIAY","Product__r":{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AVIAY"},"Id":"01tS0000005j7AVIAY","Name":"BlueWave SMART","Customer_Subscription_Type__c":"kWh"}},{"attributes":{"type":"Shared_Solar_System__c","url":"/services/data/v47.0/sobjects/Shared_Solar_System__c/a1JS0000003BMvHMAW"},"Id":"a1JS0000003BMvHMAW","Name":"Project B Main St","Capacity_Available_to_be_Reserved__c":1445.86,"Product__c":"01tS0000005j7AVIAY","Product__r":{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AVIAY"},"Id":"01tS0000005j7AVIAY","Name":"BlueWave SMART","Customer_Subscription_Type__c":"kWh"}},{"attributes":{"type":"Shared_Solar_System__c","url":"/services/data/v47.0/sobjects/Shared_Solar_System__c/a1JS0000003BMvIMAW"},"Id":"a1JS0000003BMvIMAW","Name":"Project C Second St","Capacity_Available_to_be_Reserved__c":1445.86,"Product__c":"01tS0000005j7AWIAY","Product__r":{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AWIAY"},"Id":"01tS0000005j7AWIAY","Name":"BlueWave SREC","Customer_Subscription_Type__c":"Electricity Cost ($)"}}],"products":[{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AVIAY"},"Id":"01tS0000005j7AVIAY","Name":"BlueWave SMART","Customer_Subscription_Type__c":"kWh"},{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AWIAY"},"Id":"01tS0000005j7AWIAY","Name":"BlueWave SREC","Customer_Subscription_Type__c":"Electricity Cost ($)"}],"loadZones":[{"attributes":{"type":"Load_U__c","url":"/services/data/v47.0/sobjects/Load_U__c/a0ZS0000007rJ3mMAE"},"Id":"a0ZS0000007rJ3mMAE","LZ__c":"SEMA","Town__c":"Medfield","Name":"02633"}],"loadZoneNames":["SEMA"]}';
+            String zipResponseWithCapacity = '{"zipcode":"02633","utilityIds":["a1MS0000008BldpMAC"],"utilities":[{"attributes":{"type":"Utility__c","url":"/services/data/v47.0/sobjects/Utility__c/a1MS0000008BldpMAC"},"Id":"a1MS0000008BldpMAC","Name":"Eversource"}],"sharedSolarSystems":[{"attributes":{"type":"Shared_Solar_System__c","url":"/services/data/v47.0/sobjects/Shared_Solar_System__c/a1JS0000003BMvGMAW"},"Id":"a1JS0000003BMvGMAW","Name":"Project A Oak Road","Capacity_Available_to_be_Reserved__c":144499.98,"Product__c":"01tS0000005j7AVIAY","Product__r":{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AVIAY"},"Id":"01tS0000005j7AVIAY","Name":"Perch SMART","Customer_Subscription_Type__c":"kWh"}},{"attributes":{"type":"Shared_Solar_System__c","url":"/services/data/v47.0/sobjects/Shared_Solar_System__c/a1JS0000003BMvHMAW"},"Id":"a1JS0000003BMvHMAW","Name":"Project B Main St","Capacity_Available_to_be_Reserved__c":1445.86,"Product__c":"01tS0000005j7AVIAY","Product__r":{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AVIAY"},"Id":"01tS0000005j7AVIAY","Name":"Perch SMART","Customer_Subscription_Type__c":"kWh"}},{"attributes":{"type":"Shared_Solar_System__c","url":"/services/data/v47.0/sobjects/Shared_Solar_System__c/a1JS0000003BMvIMAW"},"Id":"a1JS0000003BMvIMAW","Name":"Project C Second St","Capacity_Available_to_be_Reserved__c":1445.86,"Product__c":"01tS0000005j7AWIAY","Product__r":{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AWIAY"},"Id":"01tS0000005j7AWIAY","Name":"Perch SREC","Customer_Subscription_Type__c":"Electricity Cost ($)"}}],"products":[{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AVIAY"},"Id":"01tS0000005j7AVIAY","Name":"Perch SMART","Customer_Subscription_Type__c":"kWh"},{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AWIAY"},"Id":"01tS0000005j7AWIAY","Name":"Perch SREC","Customer_Subscription_Type__c":"Electricity Cost ($)"}],"loadZones":[{"attributes":{"type":"Load_U__c","url":"/services/data/v47.0/sobjects/Load_U__c/a0ZS0000007rJ3mMAE"},"Id":"a0ZS0000007rJ3mMAE","LZ__c":"SEMA","Town__c":"Medfield","Name":"02633"}],"loadZoneNames":["SEMA"]}';
             CapacityService.ZipcodeResponse response =
                 (CapacityService.ZipcodeResponse) JSON.deserialize(zipResponseWithCapacity, CapacityService.ZipcodeResponse.class);
             return response;
@@ -1401,13 +1420,13 @@ public with sharing class CSLeadsRESTControllerV2Test {
                 '"Id": "001000000000111EEA",' +
                 '"FirstName": "Unit",' +
                 '"LastName": "Testcase",' +
-                '"Email": "test@invalid.bluewavesolar.com",' +
+                '"Email": "test@invalid.perchenergy.com",' +
                 '"LeadSource": "Switch"' +
                 '}';
             String jsonLead = '{"attributes":{"type":"Lead","url":"/services/data/v47.0/sobjects/Lead/001000000000111EEA"},' +
                 '"FirstName": "Unit",' +
                 '"LastName": "Testcase",' +
-                '"Email": "test@invalid.bluewavesolar.com",' +
+                '"Email": "test@invalid.perchenergy.com",' +
                 '"LeadSource": "Switch"' +
                 '}';
             if (hasDuplicates) {

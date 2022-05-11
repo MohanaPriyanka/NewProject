@@ -15522,6 +15522,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.SSS_Selection_Enabled__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Account.Savings_Adjustments__c</field>
         <readable>true</readable>
@@ -15534,6 +15539,21 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.Scout_Contact__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Sells_LMI__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Sells_Non_Residential__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Sells_Residential__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -16628,11 +16648,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Bill_Adjustment__c.Account_Bill__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Bill_Adjustment__c.Adjustment_Amount__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -16709,11 +16724,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Bill_Adjustment__c.Outstanding__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Bill_Adjustment__c.Overpayment__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -19139,11 +19149,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Contact.Title</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Contact.Town_Contacts__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -26567,21 +26572,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Load_U__c.Utility_Relationship_1__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Load_U__c.Utility_Relationship_2__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Load_U__c.Utility__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Location.CloseDate</field>
         <readable>true</readable>
@@ -29593,16 +29583,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Project_Assemblage__c.Assemblage_Relationship__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Project_Finance__c.Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Project_Risk_Factor__c.Action_to_Mitigate__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -30129,16 +30109,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Seller.SellerType</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Service_Territory__c.City__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Service_Territory__c.Service_Territory__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -32634,36 +32604,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Task.truly_timeToPickup__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Town__c.Filtering_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Town__c.Last_Contact_Successful__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Town__c.Load_Zone__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Town__c.State__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Town__c.Town_Last_Contacted__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Town__c.Utility__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -54954,15 +54894,6 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
-        <object>Operations_Group_Assignment__c</object>
-        <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
-        <allowEdit>true</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
         <object>Opportunity</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
@@ -55161,24 +55092,6 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
-        <object>Project_Assemblage__c</object>
-        <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
-        <allowEdit>true</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
-        <object>Project_Finance__c</object>
-        <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
-        <allowEdit>true</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
         <object>Project_Risk_Factor__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
@@ -55253,15 +55166,6 @@
         <modifyAllRecords>false</modifyAllRecords>
         <object>ServiceResource</object>
         <viewAllRecords>false</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
-        <allowEdit>true</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
-        <object>Service_Territory__c</object>
-        <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>
@@ -55405,15 +55309,6 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>System_Bill__c</object>
-        <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
-        <allowEdit>true</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
-        <object>Town__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -60753,10 +60648,6 @@
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
-        <recordType>Town__c.Test</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
         <recordType>Utility_Account_Subscription__c.Utility_Account_Subscription_Editable</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
@@ -61185,10 +61076,6 @@
         <visibility>Visible</visibility>
     </tabSettings>
     <tabSettings>
-        <tab>Operations_Group_Assignment__c</tab>
-        <visibility>Available</visibility>
-    </tabSettings>
-    <tabSettings>
         <tab>Overpayment__c</tab>
         <visibility>Visible</visibility>
     </tabSettings>
@@ -61221,14 +61108,6 @@
         <visibility>Visible</visibility>
     </tabSettings>
     <tabSettings>
-        <tab>Project_Assemblage__c</tab>
-        <visibility>Available</visibility>
-    </tabSettings>
-    <tabSettings>
-        <tab>Project_Finance__c</tab>
-        <visibility>Visible</visibility>
-    </tabSettings>
-    <tabSettings>
         <tab>Project_Risk_Factor__c</tab>
         <visibility>Visible</visibility>
     </tabSettings>
@@ -61243,10 +61122,6 @@
     <tabSettings>
         <tab>Schedule_Z__c</tab>
         <visibility>Visible</visibility>
-    </tabSettings>
-    <tabSettings>
-        <tab>Service_Territory__c</tab>
-        <visibility>Available</visibility>
     </tabSettings>
     <tabSettings>
         <tab>Shared_Solar_System_Order__c</tab>
@@ -61266,10 +61141,6 @@
     </tabSettings>
     <tabSettings>
         <tab>System_Bill__c</tab>
-        <visibility>Visible</visibility>
-    </tabSettings>
-    <tabSettings>
-        <tab>Town__c</tab>
         <visibility>Visible</visibility>
     </tabSettings>
     <tabSettings>

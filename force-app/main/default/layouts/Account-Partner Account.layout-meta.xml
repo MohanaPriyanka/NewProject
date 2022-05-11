@@ -83,6 +83,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>SSS_Selection_Enabled__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Sells_Residential__c</field>
             </layoutItems>
             <layoutItems>

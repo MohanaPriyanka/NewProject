@@ -1,7 +1,7 @@
 /**
  * Created by jlugo on 7/3/2019.
  * Description: REST Controller for sending CS Leads to Salesforce
- * Test: CSLeadsRESTControllerV2Test
+ * Tested By: CSLeadsRESTControllerV2Test
  */
 @SuppressWarnings('PMD.TooManyFields')
 public virtual without sharing class CSLeadsRESTControllerV2 extends RESTController {

@@ -14,6 +14,7 @@ public inherited sharing class RestZipCode {
     public Set<String> loadZones;
     public Set<Product> products;
     public Set<RateClass> rateClasses;
+    public List<SolarSystem> solarSystems;
     public Set<String> utilityZipCodesServed;
     public Boolean ficoUnderwriting;
     public Boolean finDocsUnderwriting;
@@ -31,6 +32,7 @@ public inherited sharing class RestZipCode {
         this.loadZones = response.loadZoneNames;
         this.products = response.products == null ? getProducts(new Set<Product2>()) : getProducts(response.products);
         this.rateClasses = response.rateClasses == null ? getRateClasses(new Set<Rate_Class__c>()) : getRateClasses(response.rateClasses);
+        this.solarSystems = response.sharedSolarSystems == null ? getSolarSystems(new List<Shared_Solar_System__c>()) : getSolarSystems(response.sharedSolarSystems);
         this.utilityZipCodesServed = response.utilityZipCodesServed;
         this.ficoUnderwriting = response.ficoUnderwriting;
         this.finDocsUnderwriting = response.finDocsUnderwriting;
@@ -74,6 +76,14 @@ public inherited sharing class RestZipCode {
             rateClasses.add(new RateClass(rc.Id, rc.Name, rc.Suppress_Disclosure_Form__c));
         }
         return rateClasses;
+    }
+
+    private List<SolarSystem> getSolarSystems(List<Shared_Solar_System__c> sssSobjs) {
+        List<SolarSystem> solarSystems = new List<SolarSystem>();
+        for (Shared_Solar_System__c sss : sssSobjs) {
+            solarSystems.add(new SolarSystem(sss.Id, sss.Name, sss.Capacity_Available_to_be_Reserved__c > 0 ? true : false, sss.Perch_Acq_Available_LMI_Capacity__c > 0 ? true : false));
+        }
+        return solarSystems;
     }
 
     public class Utility {
@@ -131,6 +141,20 @@ public inherited sharing class RestZipCode {
             this.rateClassId = id;
             this.name = name;
             this.suppressDisclosureForm = suppressDisclosureForm;
+        }
+    }
+
+    public class SolarSystem {
+        public String sssId;
+        public String name;
+        public Boolean smallCsCapacityAvailable;
+        public Boolean lmiCapacityAvailable;
+
+        public SolarSystem(String id, String name, Boolean smallCsCapacityAvailable, Boolean lmiCapacityAvailable) {
+            this.sssId = id;
+            this.name = name;
+            this.smallCsCapacityAvailable = smallCsCapacityAvailable;
+            this.lmiCapacityAvailable = lmiCapacityAvailable;
         }
     }
 }

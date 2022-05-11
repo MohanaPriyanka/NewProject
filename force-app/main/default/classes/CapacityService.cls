@@ -3,7 +3,7 @@
  * Description: Provides a service to input a zipcode and find whether we have utilities, load zones,
  * products and shared solar systems for this location.
  *
- * Test: CapacityServiceTest
+ * Tested By: CapacityServiceTest
  */
 
 public without sharing class CapacityService {
