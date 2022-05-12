@@ -144,6 +144,7 @@
             <field>Email</field>
         </outputAssignments>
     </recordLookups>
+    <runInMode>SystemModeWithSharing</runInMode>
     <screens>
         <name>Confirm_Screen</name>
         <label>Confirm_Screen</label>
@@ -295,6 +296,9 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+        <value>
+            <elementReference>$Label.email_customercare</elementReference>
+        </value>
     </variables>
     <variables>
         <name>Org_Wide_Sender_Id</name>
