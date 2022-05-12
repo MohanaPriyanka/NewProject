@@ -1,6 +1,6 @@
 /**
  * @description : Can extend fflib_SObjectSelector
- * Test: OpportunitiesSelectorTest
+ * Tested By: OpportunitiesSelectorTest, PartnerCommissionGenerationTest
  **/
 @SuppressWarnings('PMD.ApexCRUDViolation, PMD.ApexDoc PMD.ApexSOQLInjection')
 public without sharing class OpportunitiesSelector {
@@ -161,8 +161,7 @@ public without sharing class OpportunitiesSelector {
                 Product__c, Commission_Structure__c, Partner_tag_lookup__c, Partner_tag_lookup__r.Id,
                 Partner_tag_lookup__r.Account__c, Partner_tag_lookup__r.Name, Partner_tag_lookup__r.Account__r.Name,
                 Partner_tag_lookup__r.Account__r.RecordType.Name, Partner_Account__c, Partner_Account__r.Name,
-                Partner_Account__r.RecordType.Name,
-                (SELECT Id, Status__c FROM Commission_Payments__r WHERE Commission_Type__c = 'Contract Execution')
+                Partner_Account__r.RecordType.Name, (SELECT Id, Status__c FROM Commission_Payments__r WHERE Commission_Type__c = 'Contract Execution')
             FROM Opportunity
             WHERE Id IN :opportunityIds
         ];
@@ -302,16 +301,27 @@ public without sharing class OpportunitiesSelector {
         ];
     }
 
-    public Map<Id,Opportunity> getVariableRateCommissionOppsForPartner(Id partnerAccountId) {
-        return new Map<Id,Opportunity>([
+    public Map<Id, Opportunity> getVariableRateCommissionOppsForPartner(Id partnerAccountId) {
+        return new Map<Id, Opportunity>([
             SELECT Id, Commission_Structure__c, Commission_Structure__r.Cents_kW_DC_First_Bill__c,
                 Commission_Structure__r.Cents_kW_DC_Up_Front__c, Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c,
                 Name, Partner_Account__r.Name, StageName, First_Bill_Sent_Date__c, First_Bill_Paid_Date__c,
                 Partner_tag_lookup__r.Account__r.Name
             FROM Opportunity
-            WHERE Partner_tag_lookup__r.Account__c =: partnerAccountId
+            WHERE Partner_tag_lookup__r.Account__c = :partnerAccountId
             AND Commission_Structure__c != NULL
             AND Commission_Structure__r.Type__c = 'Variable by kW'
         ]);
+    }
+
+    public Opportunity getOpportunityWithCommissionPayments(Id opportunityId) {
+        return [
+            SELECT Id, StageName, IsWon, Commission_Structure__c, (
+                SELECT Id, Status__c
+                FROM Commission_Payments__r
+            )
+            FROM Opportunity
+            WHERE Id = :opportunityId
+        ];
     }
 }

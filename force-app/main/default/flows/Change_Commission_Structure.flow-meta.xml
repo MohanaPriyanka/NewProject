@@ -1,25 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
-        <name>Create_Commission_Payment</name>
-        <label>Create Commission Payment</label>
-        <locationX>905</locationX>
-        <locationY>301</locationY>
-        <actionName>PartnerCommissionHandler</actionName>
+        <name>Run_Commission_Structure_Change</name>
+        <label>Run Commission Structure Change</label>
+        <locationX>314</locationX>
+        <locationY>398</locationY>
+        <actionName>InvocableCommissionStructureChanger</actionName>
         <actionType>apex</actionType>
+        <connector>
+            <targetReference>Handle_Apex_Validation_Errors</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Create_Error_Log</targetReference>
+        </faultConnector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
-            <name>opportunityList</name>
+            <name>newCommissionStructureId</name>
             <value>
-                <elementReference>getOpportunity.Id</elementReference>
+                <elementReference>lookupCS.selectedValue</elementReference>
             </value>
         </inputParameters>
+        <inputParameters>
+            <name>opportunityId</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <apiVersion>49.0</apiVersion>
     <assignments>
         <name>Add_Error_Log</name>
         <label>Add Error Log</label>
-        <locationX>920</locationX>
-        <locationY>583</locationY>
+        <locationX>842</locationX>
+        <locationY>638</locationY>
         <assignmentItems>
             <assignToReference>sovc_ErrorLogs</assignToReference>
             <operator>Add</operator>
@@ -32,26 +46,10 @@
         </connector>
     </assignments>
     <assignments>
-        <name>Assign_Commission_Structure_Id</name>
-        <label>Assign Commission Structure Id</label>
-        <locationX>602</locationX>
-        <locationY>302</locationY>
-        <assignmentItems>
-            <assignToReference>getOpportunity.Commission_Structure__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>lookupCS.selectedValue</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Update_Opportunity</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
         <name>Create_Error_Log</name>
         <label>Create Error Log</label>
-        <locationX>751</locationX>
-        <locationY>576</locationY>
+        <locationX>842</locationX>
+        <locationY>518</locationY>
         <assignmentItems>
             <assignToReference>sov_ErrorLog.Severity__c</assignToReference>
             <operator>Assign</operator>
@@ -78,46 +76,44 @@
         </connector>
     </assignments>
     <decisions>
-        <name>Check_CP_Status</name>
-        <label>Check CP Status</label>
-        <locationX>395</locationX>
-        <locationY>536</locationY>
-        <defaultConnector>
-            <targetReference>Loop_Commission_Payments</targetReference>
-        </defaultConnector>
+        <name>Handle_Apex_Validation_Errors</name>
+        <label>Handle Apex Validation Errors</label>
+        <locationX>314</locationX>
+        <locationY>518</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
-            <name>isApproved</name>
+            <name>Invalid_Opportunity_Stage</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Loop_Commission_Payments.Status__c</leftValueReference>
-                <operator>EqualTo</operator>
+                <leftValueReference>Run_Commission_Structure_Change</leftValueReference>
+                <operator>Contains</operator>
                 <rightValue>
-                    <stringValue>Approved</stringValue>
+                    <stringValue>Invalid Opportunity Stage</stringValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>errorScreen</targetReference>
+                <targetReference>Invalid_Opp_Screen</targetReference>
             </connector>
-            <label>isApproved</label>
+            <label>Invalid Opportunity Stage</label>
+        </rules>
+        <rules>
+            <name>Approved_Commission_Payment_Found</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Run_Commission_Structure_Change</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>Approved Commission Payment Found</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Approved_CP_Found</targetReference>
+            </connector>
+            <label>Approved Commission Payment Found</label>
         </rules>
     </decisions>
     <interviewLabel>Change Commission Structure {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Change Commission Structure</label>
-    <loops>
-        <name>Loop_Commission_Payments</name>
-        <label>Loop Commission Payments</label>
-        <locationX>184</locationX>
-        <locationY>511</locationY>
-        <collectionReference>Get_Commission_Payments</collectionReference>
-        <iterationOrder>Asc</iterationOrder>
-        <nextValueConnector>
-            <targetReference>Check_CP_Status</targetReference>
-        </nextValueConnector>
-        <noMoreValuesConnector>
-            <targetReference>scr_Choose_Commission_Structure</targetReference>
-        </noMoreValuesConnector>
-    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -127,7 +123,7 @@
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>FREE_FORM_CANVAS</stringValue>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -138,34 +134,13 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <recordLookups>
-        <name>Get_Commission_Payments</name>
-        <label>Get Commission Payments</label>
-        <locationX>180</locationX>
-        <locationY>360</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Loop_Commission_Payments</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Opportunity__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>getOpportunity.Id</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>Commission_Payment__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
         <name>getOpportunity</name>
         <label>getOpportunity</label>
-        <locationX>173</locationX>
-        <locationY>196</locationY>
+        <locationX>314</locationX>
+        <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_Commission_Payments</targetReference>
+            <targetReference>scr_Choose_Commission_Structure</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -179,62 +154,68 @@
         <object>Opportunity</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
-    <recordUpdates>
-        <name>Update_Opportunity</name>
-        <label>Update Opportunity</label>
-        <locationX>756</locationX>
-        <locationY>303</locationY>
-        <connector>
-            <targetReference>Create_Commission_Payment</targetReference>
-        </connector>
-        <faultConnector>
-            <targetReference>Create_Error_Log</targetReference>
-        </faultConnector>
-        <inputReference>getOpportunity</inputReference>
-    </recordUpdates>
     <runInMode>SystemModeWithoutSharing</runInMode>
     <screens>
-        <name>ErrorLogScreen</name>
-        <label>ErrorLogScreen</label>
-        <locationX>1214</locationX>
-        <locationY>605</locationY>
-        <allowBack>true</allowBack>
+        <name>Approved_CP_Found</name>
+        <label>Approved CP Found</label>
+        <locationX>314</locationX>
+        <locationY>638</locationY>
+        <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
+        <allowPause>false</allowPause>
         <fields>
-            <name>errorText</name>
-            <fieldText>&lt;p&gt;There was an issue changing the Commission Structure for this Opportunity. BizApps has been notified. &lt;/p&gt;</fieldText>
+            <name>approvedCPFoundText</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0); background-color: rgb(255, 255, 255);&quot;&gt;Sorry! This Opportunity already has an &quot;Approved&quot; Commission Payment with the current Commission Structure. If you need to update this Opportunity&apos;s Commission Structure, please contact BizApps.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
+        <nextOrFinishButtonLabel>Exit</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
     <screens>
-        <name>errorScreen</name>
-        <label>errorScreen</label>
-        <locationX>354</locationX>
-        <locationY>660</locationY>
+        <name>ErrorLogScreen</name>
+        <label>ErrorLogScreen</label>
+        <locationX>842</locationX>
+        <locationY>878</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
+        <allowPause>false</allowPause>
         <fields>
-            <name>errorMessage</name>
-            <fieldText>&lt;p&gt;Sorry! This Opportunity already has an &quot;Approved&quot; Commission Payment with the current Commission Structure. If you need to update this Opportunity&apos;s Commission Structure, please contact BizApps.&lt;/p&gt;</fieldText>
+            <name>errorText</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;There was an issue changing the Commission Structure for this Opportunity. BizApps has been notified.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
+        <nextOrFinishButtonLabel>Exit</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Invalid_Opp_Screen</name>
+        <label>Invalid Opp Screen</label>
+        <locationX>50</locationX>
+        <locationY>638</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>invalidOpportunityText</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;This Opportunity is not eligible for Commission Structure change. Please verify the Stage that the Opportunity is in. For further assistance contact BizApps.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <nextOrFinishButtonLabel>Exit</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
     <screens>
         <name>scr_Choose_Commission_Structure</name>
         <label>Choose Commission Structure</label>
-        <locationX>444</locationX>
-        <locationY>300</locationY>
+        <locationX>314</locationX>
+        <locationY>278</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Assign_Commission_Structure_Id</targetReference>
+            <targetReference>Run_Commission_Structure_Change</targetReference>
         </connector>
         <fields>
             <name>text_AssignCS</name>
@@ -275,6 +256,7 @@
                     <elementReference>commissionStructureId</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -282,8 +264,8 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>50</locationX>
-        <locationY>50</locationY>
+        <locationX>188</locationX>
+        <locationY>0</locationY>
         <connector>
             <targetReference>getOpportunity</targetReference>
         </connector>
@@ -292,8 +274,8 @@
     <subflows>
         <name>Call_Error_Log_Flow</name>
         <label>Call Error Log Flow</label>
-        <locationX>1080</locationX>
-        <locationY>599</locationY>
+        <locationX>842</locationX>
+        <locationY>758</locationY>
         <connector>
             <targetReference>ErrorLogScreen</targetReference>
         </connector>
@@ -324,14 +306,6 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>opportunity</name>
-        <dataType>SObject</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <objectType>Opportunity</objectType>
     </variables>
     <variables>
         <name>opportunityList</name>

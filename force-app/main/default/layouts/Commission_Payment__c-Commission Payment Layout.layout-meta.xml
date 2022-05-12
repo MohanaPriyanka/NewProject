@@ -61,15 +61,15 @@
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Readonly</behavior>
                 <field>Contract_Execution_Amount__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Readonly</behavior>
                 <field>First_Bill_Sent_Amount__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Readonly</behavior>
                 <field>First_Bill_Paid_Amount__c</field>
             </layoutItems>
         </layoutColumns>
@@ -163,6 +163,7 @@
         <fields>Type__c</fields>
         <fields>Approved_Change_in_Subscription__c</fields>
         <fields>Contract_Close_Commission_Amount__c</fields>
+        <fields>Included_in_Contract_Close__c</fields>
         <relatedList>Subscription_Order__c.Contract_Close_Commission__c</relatedList>
     </relatedLists>
     <relatedLists>

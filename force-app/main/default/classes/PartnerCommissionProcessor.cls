@@ -7,6 +7,7 @@ public abstract class PartnerCommissionProcessor {
 
     public Map<Id,Opportunity> opportunities;
     public List<DealSummary> deals = new List<DealSummary>();
+    public List<PartnerCommissionCalculator.Input> paymentDetails = new List<PartnerCommissionCalculator.Input>();
     public fflib_SObjectUnitOfWork unitOfWork;
     public Id currentPartner;
     public PartnerInvoice invoice;

@@ -289,6 +289,11 @@ public class PartnerCommissionHandlerTest {
     private static void testChangeCommissionStructure() {
         Util.disableAllTriggers();
         UtilityAccountSubscriptionHandlerTest.setupData();
+        FeatureService.Mock mockFeatureService = new FeatureService.Mock(new Map<String,Boolean>{
+            'New_Partner_Commission_Generator' => false
+        });
+        InvocableCommissionStructureChanger.featureService = (FeatureService)
+            Test.createStub(FeatureService.class, mockFeatureService);
 
         List<Opportunity> opportunities = [
                 SELECT Id, Partner_tag_lookup__c, Product__c, Partner_Account__c, Shared_Solar_System__c
@@ -370,9 +375,13 @@ public class PartnerCommissionHandlerTest {
         update oppOne;
 
         Test.startTest();
-        PartnerCommissionHandler.invokeCommissionStructureChange(new List<Id>{
-                oppOne.Id
-        });
+            InvocableCommissionStructureChanger.CommissionChangeData data =
+                new InvocableCommissionStructureChanger.CommissionChangeData();
+            data.opportunityId = oppOne.Id;
+            data.newCommissionStructureId = commissionTwo.Id;
+            InvocableCommissionStructureChanger.invokeCommissionStructureChange(
+                new List<InvocableCommissionStructureChanger.CommissionChangeData>{data}
+            );
         Test.stopTest();
 
         List<Commission_Payment__c> commissionPayments = [

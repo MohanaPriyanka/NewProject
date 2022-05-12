@@ -4,7 +4,7 @@
 @IsTest
 public class PartnerCommissionGenerationTest {
 
-    private static fflib_SObjectUnitOfWork unitOfWork = new fflib_SObjectUnitOfWork(new List<SObjectType> {
+    public static fflib_SObjectUnitOfWork unitOfWork = new fflib_SObjectUnitOfWork(new List<SObjectType> {
         Commission_Payment__c.SObjectType,
         Subscription_Order__c.SObjectType,
         Opportunity.SObjectType
@@ -79,11 +79,9 @@ public class PartnerCommissionGenerationTest {
             System.assertEquals('Pending Approval', payment.Status__c, 'Newly generated Commission Payment should be in Pending status');
             Decimal sumOfSubscriptionOrderAmounts = 0;
             for (Subscription_Order__c so : payment.Subscription_Orders__r) {
-                System.assertEquals(so.Contract_Close_Commission_Amount__c, so.Contract_Close_Estimated_Commission__c,
-                    'Contract Close Commission Amount should be equivalent to the respective Estimated Commission Amount');
                 System.assertEquals(payment.Id, so.Contract_Close_Commission__c,
                     'Commission Payment should be stamped on Subscription Order lookup');
-                sumOfSubscriptionOrderAmounts += so.Contract_Close_Commission_Amount__c;
+                sumOfSubscriptionOrderAmounts += so.Contract_Close_Estimated_Commission__c;
             }
             System.assertEquals(sumOfSubscriptionOrderAmounts, payment.Contract_Execution_Amount__c,
                 'Commission payment should represent a sum of Contract Close Commission from child subscription orders');
@@ -168,12 +166,12 @@ public class PartnerCommissionGenerationTest {
         ];
 
         for (Commission_Payment__c payment : commissionPayments) {
-            System.assertNotEquals(0, payment.First_Bill_Sent_Amount__c,
+            System.assertNotEquals(0, Util.nullToZero(payment.First_Bill_Sent_Amount__c),
                 'This commission payment should have a first bill sent amount');
         }
 
         // SCENARIO A: One Initial Subscription Order
-        System.assertEquals(0, commissionPayments[0].Contract_Execution_Amount__c,
+        System.assertEquals(0, Util.nullToZero(commissionPayments[0].Contract_Execution_Amount__c),
             'No Contract Execution amounts should be in this commission payment');
         System.assertEquals(commissionPayments[0].First_Bill_Subscription_Orders__r[0].First_Bill_Sent_Estimated_Commission__c,
             commissionPayments[0].First_Bill_Sent_Amount__c,
@@ -183,7 +181,7 @@ public class PartnerCommissionGenerationTest {
         // Resize Subscription Order should not be a part of the Commission Payment (amounts due to be captured at later true-up period)
         System.assertEquals(1, commissionPayments[1].First_Bill_Subscription_Orders__r.size(),
             'Only one Subscription Order should be included in the First Bill Sent Commission Payment: Contract Execution');
-        System.assertEquals(0, commissionPayments[1].Contract_Execution_Amount__c,
+        System.assertEquals(0, Util.nullToZero(commissionPayments[1].Contract_Execution_Amount__c),
             'This commission payment should have no associated contract execution amount due');
         System.assertEquals(commissionPayments[1].First_Bill_Subscription_Orders__r[0].First_Bill_Sent_Estimated_Commission__c,
             commissionPayments[1].First_Bill_Sent_Amount__c,
@@ -276,9 +274,9 @@ public class PartnerCommissionGenerationTest {
         ];
 
         // SCENARIO A: One Initial Subscription Order
-        System.assertEquals(0, commissionPayments[0].Contract_Execution_Amount__c,
+        System.assertEquals(0, Util.nullToZero(commissionPayments[0].Contract_Execution_Amount__c),
             'No Contract Execution amounts should be in this commission payment');
-        System.assertEquals(0, commissionPayments[0].First_Bill_Sent_Amount__c,
+        System.assertEquals(0, Util.nullToZero(commissionPayments[0].First_Bill_Sent_Amount__c),
             'No First Bill Sent amounts should be in this commission payment');
         System.assertEquals(commissionPayments[0].First_Bill_Paid_Subscription_Orders__r[0].First_Bill_Paid_Estimated_Commission__c,
             commissionPayments[0].First_Bill_Paid_Amount__c,
@@ -286,9 +284,9 @@ public class PartnerCommissionGenerationTest {
 
         // SCENARIO B: One Initial Subscription Order and one Resize Subscription Order
         // Resize Subscription Order should not be a part of the Commission Payment (amounts due to be captured at later true-up period)
-        System.assertEquals(0, commissionPayments[1].Contract_Execution_Amount__c,
+        System.assertEquals(0, Util.nullToZero(commissionPayments[1].Contract_Execution_Amount__c),
             'This commission payment should have NO Contract Execution Amount despite 1 resize subscription order entered after Contract Close');
-        System.assertEquals(0, commissionPayments[1].First_Bill_Sent_Amount__c,
+        System.assertEquals(0, Util.nullToZero(commissionPayments[1].First_Bill_Sent_Amount__c),
             'This commission payment should have NO first bill sent amount despite 1 included resize subscription order entered after Contract Close');
         System.assertEquals(1, commissionPayments[1].First_Bill_Paid_Subscription_Orders__r.size(),
             'This commission payment should only have one associated Subscription Order');
@@ -298,7 +296,7 @@ public class PartnerCommissionGenerationTest {
 
         // SCENARIO C: One Initial Subscription Order, One Cancellation Subscription Order put in after First Bill Sent
         // Cancellation SO should NOT be a part of the Commission Payment here (but will be assessed at a later true-up period)
-        System.assertEquals(commissionPayments[3].First_Bill_Paid_Subscription_Orders__r[0].First_Bill_Paid_Commission_Amount__c,
+        System.assertEquals(commissionPayments[3].First_Bill_Paid_Subscription_Orders__r[0].First_Bill_Paid_Estimated_Commission__c,
             commissionPayments[3].First_Bill_Paid_Amount__c,
             'First Bill Paid amount should be equal to amount specified on the associated Initial Subscription Order');
     }
@@ -363,13 +361,13 @@ public class PartnerCommissionGenerationTest {
         ];
 
         System.assertEquals(1, commissionPayments.size(), '1 chargeback (clawback) commission payment should have been generated');
-        System.assertEquals(commissionPayments[0].Subscription_Orders__r[0].Contract_Close_Commission_Amount__c,
+        System.assertEquals(commissionPayments[0].Subscription_Orders__r[0].Contract_Close_Estimated_Commission__c,
             commissionPayments[0].Contract_Execution_Amount__c,
             'Clawback commission should be the negative value of any commission paid out to the partner already');
-        System.assertEquals(commissionPayments[0].Subscription_Orders__r[0].First_Bill_Sent_Commission_Amount__c,
+        System.assertEquals(commissionPayments[0].Subscription_Orders__r[0].First_Bill_Sent_Estimated_Commission__c,
             commissionPayments[0].First_Bill_Sent_Amount__c,
             'Clawback commission should be the negative value of any commission paid out to the partner already');
-        System.assertEquals(commissionPayments[0].Subscription_Orders__r[0].First_Bill_Paid_Commission_Amount__c,
+        System.assertEquals(commissionPayments[0].Subscription_Orders__r[0].First_Bill_Paid_Estimated_Commission__c,
             commissionPayments[0].First_Bill_Paid_Amount__c,
             'Clawback commission should be the negative value of any commission paid out to the partner already');
         System.assert(commissionPayments[0].Contract_Execution_Amount__c < 0, 'Value should be negative');
@@ -435,6 +433,56 @@ public class PartnerCommissionGenerationTest {
         System.assertEquals('4/15/2022', invoiceWrapper.dueDate.format(), 'Incorrect due date for monthly invoice');
         invoiceWrapper.getInvoiceName();
         System.assertEquals('Test Account - April 2022', invoiceWrapper.invoiceName ,'Incorrect invoice name for monthly invoice');
+    }
+
+    @IsTest
+    public static void testTriggeredSubscriptionOrderUpdate() {
+        List<Utility_Account_Subscription__c> subscriptions = [
+            SELECT Id, Annual_kWh_Subscription_Future_Rollup__c, Opportunity__r.Commission_Structure__c, Opportunity__c,
+            (SELECT Id, Contract_Close_Commission_Amount__c, Contract_Close_Commission__c,
+                Contract_Close_Estimated_Commission__c, First_Bill_Sent_Commission__c, First_Bill_Sent_Estimated_Commission__c,
+                First_Bill_Sent_Commission_Amount__c, First_Bill_Paid_Commission__c, First_Bill_Paid_Estimated_Commission__c,
+                First_Bill_Paid_Commission_Amount__c
+            FROM Subscription_Orders__r)
+            FROM Utility_Account_Subscription__c
+            LIMIT 1
+        ];
+
+        Test.startTest();
+
+        PartnerCommissionGenerationTest.createVariableContractExecutionPayments(subscriptions);
+        PartnerCommissionGenerationTest.createVariableFirstBillSentPayments(subscriptions);
+        PartnerCommissionGenerationTest.createVariableFirstBillPaidPayments(subscriptions);
+        PartnerCommissionGenerationTest.unitOfWork.commitWork();
+
+        List<Commission_Payment__c> commissionPayments = [SELECT Id FROM Commission_Payment__c];
+        System.assertEquals(3, commissionPayments.size(), '3 commission payments should have been created');
+
+        for (Commission_Payment__c payment : commissionPayments) {
+            payment.Status__c = 'Approved';
+        }
+        update commissionPayments; // kicks off CommissionPaymentTrigger
+
+        Test.stopTest();
+
+        CommissionPaymentSelector paymentSelector = new CommissionPaymentSelector();
+        List<Commission_Payment__c> paymentsAfterUpdate = paymentSelector.getWithSubscriptionOrdersById(
+            new Set<Id>{commissionPayments[0].Id, commissionPayments[1].Id, commissionPayments[2].Id}
+        );
+        for (Commission_Payment__c payment : paymentsAfterUpdate) {
+            for (Subscription_Order__c order : payment.Subscription_Orders__r) {
+                System.assertEquals(order.Contract_Close_Estimated_Commission__c, order.Contract_Close_Commission_Amount__c,
+                    'Amount should be stamped by trigger');
+            }
+            for (Subscription_Order__c order : payment.First_Bill_Subscription_Orders__r) {
+                System.assertEquals(order.First_Bill_Sent_Estimated_Commission__c, order.First_Bill_Sent_Commission_Amount__c,
+                    'Amount should be stamped by trigger');
+            }
+            for (Subscription_Order__c order : payment.First_Bill_Paid_Subscription_Orders__r) {
+                System.assertEquals(order.First_Bill_Paid_Estimated_Commission__c, order.First_Bill_Paid_Commission_Amount__c,
+                    'Amount should be stamped by trigger');
+            }
+        }
     }
 
     private class MockAccountsSelector extends MockProvider {
@@ -516,7 +564,6 @@ public class PartnerCommissionGenerationTest {
             );
             unitOfWork.registerNew(payment);
             for (Subscription_Order__c subscriptionOrder : uas.Subscription_Orders__r) {
-                subscriptionOrder.Contract_Close_Commission_Amount__c = subscriptionOrder.Contract_Close_Estimated_Commission__c;
                 unitOfWork.registerDirty(subscriptionOrder, Subscription_Order__c.Contract_Close_Commission__c, payment);
             }
         }
@@ -536,13 +583,12 @@ public class PartnerCommissionGenerationTest {
                 Commission_Structure__c = uas.Opportunity__r.Commission_Structure__c,
                 Name = 'Test',
                 Opportunity__c = uas.Opportunity__c,
-                Status__c = 'Approved',
+                Status__c = 'Pending Approval',
                 Commission_Type__c = 'First Bill Sent',
                 Invoice__c = partnerInvoice.Id
             );
             unitOfWork.registerNew(payment);
             for (Subscription_Order__c subscriptionOrder : uas.Subscription_Orders__r) {
-                subscriptionOrder.First_Bill_Sent_Commission_Amount__c = subscriptionOrder.First_Bill_Sent_Estimated_Commission__c;
                 unitOfWork.registerDirty(subscriptionOrder, Subscription_Order__c.First_Bill_Sent_Commission__c, payment);
             }
         }
@@ -562,13 +608,12 @@ public class PartnerCommissionGenerationTest {
                 Commission_Structure__c = uas.Opportunity__r.Commission_Structure__c,
                 Name = 'Test',
                 Opportunity__c = uas.Opportunity__c,
-                Status__c = 'Approved',
+                Status__c = 'Pending Approval',
                 Commission_Type__c = 'First Bill Paid',
                 Invoice__c = partnerInvoice.Id
             );
             unitOfWork.registerNew(payment);
             for (Subscription_Order__c subscriptionOrder : uas.Subscription_Orders__r) {
-                subscriptionOrder.First_Bill_Paid_Commission_Amount__c = subscriptionOrder.First_Bill_Paid_Estimated_Commission__c;
                 unitOfWork.registerDirty(subscriptionOrder, Subscription_Order__c.First_Bill_Paid_Commission__c, payment);
             }
         }

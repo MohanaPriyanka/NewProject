@@ -12,8 +12,7 @@ public without sharing class VariableRateCommissionProcessor extends PartnerComm
     private static Boolean clawbackPaymentsEnabled;
 
     public VariableRateCommissionProcessor(Map<Id, Opportunity> variableRateOpps, fflib_SObjectUnitOfWork uow,
-        Id currentPartner)
-    {
+        Id currentPartner) {
         super.opportunities = variableRateOpps;
         super.unitOfWork = uow;
         super.currentPartner = currentPartner;
@@ -38,16 +37,17 @@ public without sharing class VariableRateCommissionProcessor extends PartnerComm
                     generateClawbackCommission(deal);
                 }
             } catch (Exception e) {
-                String message =  deal + '\n\n' + e.getMessage() + ' ' + e.getStackTraceString();
+                String message = deal + '\n\n' + e.getMessage() + ' ' + e.getStackTraceString();
                 Logger.logLater('VariableRateCommissionProcessor', 'generateCommissionPayments', message, Logger.ERROR);
             }
         }
+        calculateCommissionAmounts();
         Logger.flushLogs();
     }
 
     private void constructIterableDealSummaries() {
-        Map<Id,List<Subscription_Order__c>> ordersByOpp = soSelector.getByOppForVariableCommission(opportunities.keySet());
-        Map<Id,List<Commission_Payment__c>> paymentsByOpp = paymentSelector.getByOppForVariableCommission(opportunities.keySet());
+        Map<Id, List<Subscription_Order__c>> ordersByOpp = soSelector.getByOppForVariableCommission(opportunities.keySet());
+        Map<Id, List<Commission_Payment__c>> paymentsByOpp = paymentSelector.getByOppForVariableCommission(opportunities.keySet());
         for (Id oppId : opportunities.keySet()) {
             DealSummary deal = new DealSummary();
             deal.opportunity = opportunities.get(oppId);
@@ -84,132 +84,76 @@ public without sharing class VariableRateCommissionProcessor extends PartnerComm
     }
 
     private void generateContractExecutionCommission(DealSummary deal) {
-        Commission_Payment__c executionCommission =  buildBaseCommissionPayment(deal, 'Contract Execution', 'Contract Execution');
-        Decimal totalContractCloseAmount = 0;
+        PartnerCommissionCalculator.Input payment = new PartnerCommissionCalculator.Input();
+        payment.record = buildBaseCommissionPayment(deal, 'Contract Execution', 'Contract Execution');
 
         for (Subscription_Order__c order : deal.subscriptionOrders) {
-            totalContractCloseAmount += getAndRegisterAmountFromSubscriptionOrder(
-                order,
-                Subscription_Order__c.Contract_Close_Estimated_Commission__c,
-                Subscription_Order__c.Contract_Close_Commission_Amount__c,
-                Subscription_Order__c.Contract_Close_Commission__c,
-                executionCommission
+            if (!order.Included_in_Contract_Close__c) {
+                continue;
+            }
+            linkOrderToCommissionPayment(
+                order, Subscription_Order__c.Contract_Close_Commission__c, payment.record, payment.contractCloseOrders
             );
         }
-
-        executionCommission.Contract_Execution_Amount__c = totalContractCloseAmount;
-        executionCommission.Amount_Due__c = totalContractCloseAmount;
-        unitOfWork.registerNew(executionCommission);
+        super.paymentDetails.add(payment);
     }
 
     private void generateFirstBillSentCommission(DealSummary deal) {
-        Commission_Payment__c firstBillSentCommission = buildBaseCommissionPayment(deal, 'First Bill Sent', 'First Bill Sent');
-        Decimal totalContractCloseAmount = 0;
-        Decimal totalFirstBillSentAmount = 0;
+        PartnerCommissionCalculator.Input payment = new PartnerCommissionCalculator.Input();
+        payment.record = buildBaseCommissionPayment(deal, 'First Bill Sent', 'First Bill Sent');
 
         for (Subscription_Order__c order : deal.subscriptionOrders) {
             if (!order.Included_in_Contract_Close__c) {
                 continue;
             }
-            totalContractCloseAmount += getAndRegisterAmountFromSubscriptionOrder(
-                order,
-                Subscription_Order__c.Contract_Close_Estimated_Commission__c,
-                Subscription_Order__c.Contract_Close_Commission_Amount__c,
-                Subscription_Order__c.Contract_Close_Commission__c,
-                firstBillSentCommission
+            linkOrderToCommissionPayment(
+                order, Subscription_Order__c.Contract_Close_Commission__c, payment.record, payment.firstBillSentOrders
             );
-            totalFirstBillSentAmount += getAndRegisterAmountFromSubscriptionOrder(
-                order,
-                Subscription_Order__c.First_Bill_Sent_Estimated_Commission__c,
-                Subscription_Order__c.First_Bill_Sent_Commission_Amount__c,
-                Subscription_Order__c.First_Bill_Sent_Commission__c,
-                firstBillSentCommission
+            linkOrderToCommissionPayment(
+                order, Subscription_Order__c.First_Bill_Sent_Commission__c, payment.record, payment.firstBillSentOrders
             );
         }
-
-        firstBillSentCommission.Contract_Execution_Amount__c = totalContractCloseAmount;
-        firstBillSentCommission.First_Bill_Sent_Amount__c = totalFirstBillSentAmount;
-        firstBillSentCommission.Amount_Due__c = totalContractCloseAmount + totalFirstBillSentAmount;
-        unitOfWork.registerNew(firstBillSentCommission);
+        super.paymentDetails.add(payment);
     }
 
     private void generateFirstBillPaidCommission(DealSummary deal) {
-        Commission_Payment__c firstBillPaidCommission = buildBaseCommissionPayment(deal, 'First Bill Paid', 'First Bill Paid');
-        Decimal totalContractCloseAmount = 0;
-        Decimal totalFirstBillSentAmount = 0;
-        Decimal totalFirstBillPaidAmount = 0;
+        PartnerCommissionCalculator.Input payment = new PartnerCommissionCalculator.Input();
+        payment.record = buildBaseCommissionPayment(deal, 'First Bill Paid', 'First Bill Paid');
 
         for (Subscription_Order__c order : deal.subscriptionOrders) {
             if (!order.Included_in_Contract_Close__c) {
                 continue;
             }
-            totalContractCloseAmount += getAndRegisterAmountFromSubscriptionOrder(
-                order,
-                Subscription_Order__c.Contract_Close_Estimated_Commission__c,
-                Subscription_Order__c.Contract_Close_Commission_Amount__c,
-                Subscription_Order__c.Contract_Close_Commission__c,
-                firstBillPaidCommission
+            linkOrderToCommissionPayment(
+                order, Subscription_Order__c.Contract_Close_Commission__c, payment.record, payment.firstBillPaidOrders
             );
-            totalFirstBillSentAmount += getAndRegisterAmountFromSubscriptionOrder(
-                order,
-                Subscription_Order__c.First_Bill_Sent_Estimated_Commission__c,
-                Subscription_Order__c.First_Bill_Sent_Commission_Amount__c,
-                Subscription_Order__c.First_Bill_Sent_Commission__c,
-                firstBillPaidCommission
+            linkOrderToCommissionPayment(
+                order, Subscription_Order__c.First_Bill_Sent_Commission__c, payment.record, payment.firstBillPaidOrders
             );
-            totalFirstBillPaidAmount += getAndRegisterAmountFromSubscriptionOrder(
-                order,
-                Subscription_Order__c.First_Bill_Paid_Estimated_Commission__c,
-                Subscription_Order__c.First_Bill_Paid_Commission_Amount__c,
-                Subscription_Order__c.First_Bill_Paid_Commission__c,
-                firstBillPaidCommission
+            linkOrderToCommissionPayment(
+                order, Subscription_Order__c.First_Bill_Paid_Commission__c, payment.record, payment.firstBillPaidOrders
             );
         }
-
-        firstBillPaidCommission.Contract_Execution_Amount__c = totalContractCloseAmount;
-        firstBillPaidCommission.First_Bill_Sent_Amount__c = totalFirstBillSentAmount;
-        firstBillPaidCommission.First_Bill_Paid_Amount__c = totalFirstBillPaidAmount;
-        firstBillPaidCommission.Amount_Due__c = totalContractCloseAmount + totalFirstBillSentAmount + totalFirstBillPaidAmount;
-        unitOfWork.registerNew(firstBillPaidCommission);
+        super.paymentDetails.add(payment);
     }
 
     private void generateClawbackCommission(DealSummary deal) {
-        Commission_Payment__c clawbackCommission = buildBaseCommissionPayment(deal, 'Chargeback', 'Cancellation/Refund');
-        Decimal totalContractCloseAmount = 0;
-        Decimal totalFirstBillSentAmount = 0;
-        Decimal totalFirstBillPaidAmount = 0;
+        PartnerCommissionCalculator.Input payment = new PartnerCommissionCalculator.Input();
+        payment.record = buildBaseCommissionPayment(deal, 'Chargeback', 'Cancellation/Refund');
 
         for (Subscription_Order__c order : deal.subscriptionOrders) {
-            totalContractCloseAmount += getAndRegisterAmountFromSubscriptionOrder(
-                order,
-                Subscription_Order__c.Contract_Close_Estimated_Commission__c,
-                Subscription_Order__c.Contract_Close_Commission_Amount__c,
-                Subscription_Order__c.Contract_Close_Commission__c,
-                clawbackCommission
+            linkOrderToCommissionPayment(
+                order, Subscription_Order__c.Contract_Close_Commission__c, payment.record, payment.contractCloseOrders
             );
-            totalFirstBillSentAmount += getAndRegisterAmountFromSubscriptionOrder(
-                order,
-                Subscription_Order__c.First_Bill_Sent_Estimated_Commission__c,
-                Subscription_Order__c.First_Bill_Sent_Commission_Amount__c,
-                Subscription_Order__c.First_Bill_Sent_Commission__c,
-                clawbackCommission
+            linkOrderToCommissionPayment(
+                order, Subscription_Order__c.First_Bill_Sent_Commission__c, payment.record, payment.firstBillSentOrders
             );
-            totalFirstBillPaidAmount += getAndRegisterAmountFromSubscriptionOrder(
-                order,
-                Subscription_Order__c.First_Bill_Paid_Estimated_Commission__c,
-                Subscription_Order__c.First_Bill_Paid_Commission_Amount__c,
-                Subscription_Order__c.First_Bill_Paid_Commission__c,
-                clawbackCommission
+            linkOrderToCommissionPayment(
+                order, Subscription_Order__c.First_Bill_Paid_Commission__c, payment.record, payment.firstBillPaidOrders
             );
         }
-
-        clawbackCommission.Contract_Execution_Amount__c = totalContractCloseAmount;
-        clawbackCommission.First_Bill_Sent_Amount__c = totalFirstBillSentAmount;
-        clawbackCommission.First_Bill_Paid_Amount__c = totalFirstBillPaidAmount;
-        clawbackCommission.Amount_Due__c = totalContractCloseAmount + totalFirstBillSentAmount + totalFirstBillPaidAmount;
-
         if (clawbackPaymentsEnabled) {
-            unitOfWork.registerNew(clawbackCommission);
+            super.paymentDetails.add(payment);
         }
     }
 
@@ -237,16 +181,30 @@ public without sharing class VariableRateCommissionProcessor extends PartnerComm
         return false;
     }
 
-    private Decimal getAndRegisterAmountFromSubscriptionOrder(Subscription_Order__c order, SObjectField estimatedAmountField,
-        SObjectField amountField, SObjectField commissionLookupField, Commission_Payment__c commissionPayment)
+    /**
+     * @description Link a Subscription Order to a Commission Payment if eligible
+     * @param order Subscription Order in question
+     * @param commissionPaymentLookup Lookup field on Subscription Order for specific commission (e.g. Contract Close Commission)
+     * @param commissionPayment Commission Payment to relate Subscription Order to
+     * @param relatedListToApplyTo Related List to relate Subscription Order to (for PartnerCommissionCalculator)
+     */
+    private void linkOrderToCommissionPayment(
+        Subscription_Order__c order,
+        SObjectField commissionPaymentLookup,
+        Commission_Payment__c commissionPayment,
+        List<Subscription_Order__c> relatedListToApplyTo)
     {
-        if (order.get(amountField) == null && order.get(commissionLookupField) == null) {
-            // This subscription order has not been applied to a Commission Payment yet, so stamp amount and apply
-            // to the current Commission_Payment__c record being generated
-            order.put(amountField, order.get(estimatedAmountField));
-            unitOfWork.registerDirty(order, commissionLookupField, commissionPayment);
-            return (Decimal) order.get(amountField);
+        if (order.get(commissionPaymentLookup) == null) {
+            unitOfWork.registerDirty(order, commissionPaymentLookup, commissionPayment);
+            relatedListToApplyTo.add(order);
         }
-        return 0;
+    }
+
+    private void calculateCommissionAmounts() {
+        PartnerCommissionCalculator calculator = new PartnerCommissionCalculator(super.paymentDetails);
+        calculator.calculate();
+        for (PartnerCommissionCalculator.Input payment : super.paymentDetails) {
+            unitOfWork.registerNew(payment.record);
+        }
     }
 }
