@@ -100,7 +100,6 @@ public without sharing class AdjustmentSelector {
             SELECT Externally_Serviced_Bill_Adjustment__c, SUM(Amount__c) AMOUNT
             FROM Transfer_Part__c
             WHERE Externally_Serviced_Bill_Adjustment__c IN :billAdjustmentsToReconcile
-            AND Type__c != 'Customer Savings'
             GROUP BY Externally_Serviced_Bill_Adjustment__c
         ]) {
             groupedResultProxies.add(new AggregateResultProxy().withAggregateResult(result));

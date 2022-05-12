@@ -127,7 +127,6 @@ public without sharing class UASBSelector {
             SELECT Externally_Serviced_UASB__c, SUM(Amount__c) AMOUNT
             FROM Transfer_Part__c
             WHERE Externally_Serviced_UASB__c IN :uasbsToReconcile
-            AND Type__c != 'Customer Savings'
             GROUP BY Externally_Serviced_UASB__c
         ]) {
             groupedResultProxies.add(new AggregateResultProxy().withAggregateResult(result));

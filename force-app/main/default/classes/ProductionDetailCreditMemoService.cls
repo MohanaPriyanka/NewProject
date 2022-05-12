@@ -78,9 +78,8 @@ public without sharing class ProductionDetailCreditMemoService implements Databa
                 continue;
             }
             for (Bill_Adjustment__c sfAdjustment : adjustments) {
-                billService.createBillProductionDetail(sfAdjustment.Transfer__c, sfAdjustment.Adjustment_Amount__c, 'Bill', entry.Id);
-                billService.createBillProductionDetail(sfAdjustment.Transfer__c, sfAdjustment.Discount__c, 'Customer Savings', entry.Id);
-                billService.createBillProductionDetail(sfAdjustment.Transfer__c, sfAdjustment.Adjustment_Amount__c, 'Payment', entry.Id);
+                billService.createBillProductionDetail(sfAdjustment.Transfer__c, sfAdjustment.Adjustment_Amount__c, sfAdjustment.Discount__c, 'Bill', entry.Id);
+                billService.createBillProductionDetail(sfAdjustment.Transfer__c, sfAdjustment.Adjustment_Amount__c, null, 'Payment', entry.Id);
             }
         }
         insertUOW.registerNew(billService.productionDetailToInsert);

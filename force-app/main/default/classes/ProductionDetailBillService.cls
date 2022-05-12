@@ -205,28 +205,29 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
     private void distributeAmongTransferProductionDetail(SObject sfRecord, Id journalRecordId){
         if (sfRecord.getSObjectType() == UASB__c.SObjectType){
             UASB__c bill = (UASB__c)sfRecord;
-            createBillProductionDetail(bill.Transfer__c, bill.Discounted_Bill__c, 'Bill', journalRecordId);
-            createBillProductionDetail(bill.Transfer__c, bill.Savings__c, 'Customer Savings', journalRecordId);
+            createBillProductionDetail(bill.Transfer__c, bill.Discounted_Bill__c, bill.Savings__c, 'Bill', journalRecordId);
         } else if (sfRecord.getSObjectType() == Bill_Adjustment__c.SObjectType){
             Bill_Adjustment__c adjust = (Bill_Adjustment__c)sfRecord;
-            createBillProductionDetail(adjust.Transfer__c, adjust.Adjustment_Amount__c, 'Bill', journalRecordId);
-            createBillProductionDetail(adjust.Transfer__c, adjust.Discount__c, 'Customer Savings', journalRecordId);
+            createBillProductionDetail(adjust.Transfer__c, adjust.Adjustment_Amount__c, adjust.Discount__c, 'Bill', journalRecordId);
         }
     }
 
-    public void createBillProductionDetail(Id transferId, Decimal billAmount, String type, Id relatedRecordId){
-        if (billAmount == null || billAmount == 0){
+    @SuppressWarnings('PMD.ExcessiveParameterList')
+    public void createBillProductionDetail(Id transferId, Decimal billAmount, Decimal savingsAmount, String type, Id relatedRecordId) {
+        billAmount = Util.nullToZero(billAmount);
+        savingsAmount = Util.nullToZero(savingsAmount);
+        if (billAmount == 0 && savingsAmount == 0) {
             return;
         }
-        billAmount = Util.roundValue(billAmount,2, 'HALF_UP');
-        Decimal staticBillAmount = billAmount;
-        Decimal decliningBillAmount = billAmount;
-        Integer loopCount = 0;
+        billAmount = Util.roundValue(billAmount, 2, 'HALF_UP');
+        savingsAmount = Util.roundValue(savingsAmount, 2, 'HALF_UP');
+        Decimal billAmountLeftToApply = billAmount;
+        Decimal savingsAmountLeftToApply = savingsAmount;
 
         List<Transfer_Part__c> transferProductionDetail = transferToDetailMap.get(transferId);
 
-        for (Transfer_Part__c transferDetail : transferProductionDetail){
-            loopCount += 1;
+        for (Integer i = 0; i <= transferProductionDetail.size() -1; i++) {
+            Transfer_Part__c transferDetail = transferProductionDetail[i];
             Transfer_Part__c part = new Transfer_Part__c(
                 Name = type,
                 Production__c = transferDetail.Production__c,
@@ -234,24 +235,45 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
                 Type__c = type
             );
             part = setRelatedRecordId(part, type, relatedRecordId);
-            Decimal applicationAmount = getWeightedApplicationAmount(transferDetail, staticBillAmount);
+            Decimal billAmountToApplyToProductionPeriod = getWeightedApplicationAmount(transferDetail, billAmount);
+            Decimal savingsAmountToApplyToProductionPeriod = getWeightedApplicationAmount(transferDetail, savingsAmount);
 
-            if (Math.abs(applicationAmount) <= Math.abs(decliningBillAmount)){
-                part.Amount__c = applicationAmount;
-                decliningBillAmount -= applicationAmount;
-            } else {
-                part.Amount__c = decliningBillAmount;
-                decliningBillAmount = 0;
-            }
+            billAmountLeftToApply =
+                setPDAmount(billAmountToApplyToProductionPeriod, billAmountLeftToApply, part, Transfer_Part__c.Amount__c);
+            savingsAmountLeftToApply =
+                setPDAmount(savingsAmountToApplyToProductionPeriod, savingsAmountLeftToApply, part, Transfer_Part__c.Customer_Savings__c);
+
             // In cases of rounding cutoff, put remainder (~0.01 or so on last transfer part):
-            if (decliningBillAmount > 0 && loopCount == transferProductionDetail.size()){
-                part.Amount__c = part.Amount__c + decliningBillAmount;
+            if (i == transferProductionDetail.size() -1) {
+                assignRemainderToLastPD(billAmountLeftToApply, part, savingsAmountLeftToApply);
             }
             productionDetailToInsert.add(part);
+
         }
     }
 
-    private Transfer_Part__c setRelatedRecordId(Transfer_Part__c transferProdDetail, String type, Id relatedRecordId){
+    private void assignRemainderToLastPD(Decimal billAmountLeftToApply, Transfer_Part__c part, Decimal savingsAmountLeftToApply) {
+        if (billAmountLeftToApply > 0) {
+            part.Amount__c += billAmountLeftToApply;
+        }
+        if (savingsAmountLeftToApply > 0) {
+            part.Customer_Savings__c += savingsAmountLeftToApply;
+        }
+    }
+
+    private Decimal setPDAmount(Decimal amountToApplyToProductionPeriod, Decimal amountLeftToApply, Transfer_Part__c part, SObjectField field) {
+        if (Math.abs(amountToApplyToProductionPeriod) <= Math.abs(amountLeftToApply)) {
+            part.put(field, amountToApplyToProductionPeriod);
+            amountLeftToApply -= amountToApplyToProductionPeriod;
+        } else {
+            part.put(field, amountLeftToApply);
+            amountLeftToApply = 0;
+        }
+        return amountLeftToApply;
+    }
+
+
+    private Transfer_Part__c setRelatedRecordId(Transfer_Part__c transferProdDetail, String type, Id relatedRecordId) {
         if (type == 'Externally Serviced' && relatedRecordId.getSobjectType() == UASB__c.SObjectType){
             transferProdDetail.Externally_Serviced_UASB__c = relatedRecordId;
         } else if (type == 'Externally Serviced' && relatedRecordId.getSobjectType() == Bill_Adjustment__c.SObjectType){
@@ -262,14 +284,14 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
         return transferProdDetail;
     }
 
-    private Decimal getWeightedApplicationAmount(Transfer_Part__c transferProdDetail, Decimal staticBillAmount){
+    private Decimal getWeightedApplicationAmount(Transfer_Part__c transferProdDetail, Decimal totalAmountToApply) {
         // If the transfer amount is $0, the transfer PD is also $0 (with the exception of 195 MSBW records which
         // we can ignore). We want 0/0 = 1, so just return the staticBillAmount
         if (Util.nullToZero(transferProdDetail.Transfer__r.Transfer_Amount__c) == 0) {
-            return staticBillAmount;
+            return totalAmountToApply;
         }
         // We want to allocate based on dollar amount, not on kWh, because the dollar amount accounts for monthly credit rate changes
-        Decimal applicationAmount = staticBillAmount * (transferProdDetail.Amount__c / transferProdDetail.Transfer__r.Transfer_Amount__c);
+        Decimal applicationAmount = totalAmountToApply * (transferProdDetail.Amount__c / transferProdDetail.Transfer__r.Transfer_Amount__c);
         applicationAmount = Util.roundValue(applicationAmount, 4, 'HALF_UP');
         return applicationAmount;
     }

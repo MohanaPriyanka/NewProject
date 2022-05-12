@@ -59,7 +59,7 @@ public without sharing class ProductionDetailUnservicedService {
             productionDetailSelector.getTransferPartMap(CollectionUtil.getIdSet(unservicedUASBs, UASB__c.Transfer__c));
 
         for (UASB__c externalBill : unservicedUASBs){
-            billService.createBillProductionDetail(externalBill.Transfer__c, externalBill.Credits_Allocated__c, 'Externally Serviced', externalBill.Id);
+            billService.createBillProductionDetail(externalBill.Transfer__c, externalBill.Credits_Allocated__c, null, 'Externally Serviced', externalBill.Id);
         }
     }
 
@@ -141,7 +141,7 @@ public without sharing class ProductionDetailUnservicedService {
             productionDetailSelector.getTransferPartMap( CollectionUtil.getIdSet(adjustments, Bill_Adjustment__c.Transfer__c));
 
         for (Bill_Adjustment__c adjustment : adjustments){
-            billService.createBillProductionDetail(adjustment.Transfer__c, adjustment.Credits_Allocated__c, 'Externally Serviced', adjustment.Id);
+            billService.createBillProductionDetail(adjustment.Transfer__c, adjustment.Credits_Allocated__c, null, 'Externally Serviced', adjustment.Id);
         }
     }
 

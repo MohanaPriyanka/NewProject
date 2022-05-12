@@ -78,7 +78,6 @@ public inherited sharing class JournalEntrySelector {
             SELECT Journal_Entry__c, Journal_Entry__r.Reason_Code__c, Journal_Entry__r.Object_Type__c, SUM(Amount__c) AMOUNT
             FROM Transfer_Part__c
             WHERE Journal_Entry__c IN :journalEntriesToReconcile
-            AND Type__c != 'Customer Savings'
             GROUP BY Journal_Entry__c, Journal_Entry__r.Reason_Code__c, Journal_Entry__r.Object_Type__c
         ]) {
             groupedResultProxies.add(new AggregateResultProxy().withAggregateResult(result));

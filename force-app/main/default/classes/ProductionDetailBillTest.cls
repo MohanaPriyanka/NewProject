@@ -117,7 +117,7 @@ public with sharing class ProductionDetailBillTest {
         */
 
         List<Transfer_Part__c> parts = service.productionDetailToInsert;
-        System.assertEquals(54, parts.size());
+        System.assertEquals(27, parts.size());
 
         Decimal billSum = 0;
         Integer billCount = 0;
@@ -127,9 +127,7 @@ public with sharing class ProductionDetailBillTest {
                 billSum += part.Amount__c;
                 billCount += 1;
             }
-            if (part.Type__c == 'Customer Savings') {
-                savingsSum += part.Amount__c;
-            }
+            savingsSum += part.Customer_Savings__c;
         }
         System.assertEquals(27, billCount);
         System.assertEquals(2615.17, billSum);
@@ -160,7 +158,7 @@ public with sharing class ProductionDetailBillTest {
         System.assertEquals('a900a000000GqNBAA0', uasb.Transfer__c);
 
         List<Transfer_Part__c> parts = service.productionDetailToInsert;
-        System.assertEquals(6, parts.size());
+        System.assertEquals(3, parts.size());
 
         Decimal billSum = 0;
         Decimal savingsSum = 0;
@@ -169,9 +167,7 @@ public with sharing class ProductionDetailBillTest {
             if (part.Type__c == 'Bill') {
                 billSum += part.Amount__c;
             }
-            if (part.Type__c == 'Customer Savings') {
-                savingsSum += part.Amount__c;
-            }
+            savingsSum += part.Customer_Savings__c;
         }
         System.assertEquals(37.23, billSum);
         // SavingsSum is NOT 9.99: In cases of rounding cutoff, put remainder (~0.01 or so on last transfer part)
@@ -207,7 +203,7 @@ public with sharing class ProductionDetailBillTest {
 
         // 8 bills * 2 transfers, 1 for bill, 1 for savings:
         List<Transfer_Part__c> parts = service.productionDetailToInsert;
-        System.assertEquals(32, parts.size());
+        System.assertEquals(16, parts.size());
 
         Decimal billSum = 0;
         Decimal savingsSum = 0;
@@ -216,9 +212,7 @@ public with sharing class ProductionDetailBillTest {
             if (part.Type__c == 'Bill') {
                 billSum += part.Amount__c;
             }
-            if (part.Type__c == 'Customer Savings') {
-                savingsSum += part.Amount__c;
-            }
+            savingsSum += part.Customer_Savings__c;
         }
         System.assertEquals(1997.03, billSum);
         System.assertEquals(80, savingsSum);
@@ -249,7 +243,7 @@ public with sharing class ProductionDetailBillTest {
 
         // 2 bills, one has 1 transfer parts, other has 2. 1 for bill, 1 for savings:
         List<Transfer_Part__c> parts = service.productionDetailToInsert;
-        System.assertEquals(6, parts.size());
+        System.assertEquals(3, parts.size());
 
         Decimal billSum = 0;
         Decimal savingsSum = 0;
@@ -257,9 +251,7 @@ public with sharing class ProductionDetailBillTest {
             if (part.Type__c == 'Bill') {
                 billSum += part.Amount__c;
             }
-            if (part.Type__c == 'Customer Savings') {
-                savingsSum += part.Amount__c;
-            }
+            savingsSum += part.Customer_Savings__c;
         }
         System.assertEquals(252.73, billSum);
         System.assertEquals(20, savingsSum);
@@ -368,13 +360,48 @@ public with sharing class ProductionDetailBillTest {
         ProductionDetailBillService service = new ProductionDetailBillService();
         service.transferToDetailMap = mapParts;
         Decimal billAmount = -221.87;
-        service.createBillProductionDetail(transferId, billAmount, 'Bill', Util.getFakeId(Journal_Entry__c.SObjectType));
+        Decimal savingsAmount = 22.18;
+        service.createBillProductionDetail(transferId, billAmount, savingsAmount, 'Bill', Util.getFakeId(Journal_Entry__c.SObjectType));
 
         List<Transfer_Part__c> partsToInsertList = service.productionDetailToInsert;
         System.assertEquals(3, partsToInsertList.size());
         System.assertEquals(
             partsToInsertList[0].Amount__c,
             Util.roundValue(billAmount * (tp1.Amount__c/tp1.Transfer__r.Transfer_Amount__c), 4, 'HALF_UP'),
+            'P2BService should insert a PD with an amount based the dollar values of the Transfer and Transfer Parts, not' +
+                ' the kWh values, since credit rates may change monthly'
+        );
+        System.assertEquals(
+            partsToInsertList[0].Customer_Savings__c,
+            Util.roundValue(savingsAmount * (tp1.Amount__c/tp1.Transfer__r.Transfer_Amount__c), 4, 'HALF_UP'),
+            'P2BService should insert a PD with an amount based the dollar values of the Transfer and Transfer Parts, not' +
+                ' the kWh values, since credit rates may change monthly'
+        );
+    }
+
+    @IsTest
+    public static void testSavingsOnlyAmounts() {
+        sfab_FabricatedSObject fabbedTransfer = getMockTransfer(11130);
+        Transfer_Part__c tp1 = getmockTransferPart(fabbedTransfer, 10000, 5324);
+        Transfer_Part__c tp2 = getmockTransferPart(fabbedTransfer, 12000, 4211);
+        Transfer_Part__c tp3 = getmockTransferPart(fabbedTransfer, 187, 1595);
+        List<Transfer_Part__c> transferParts = new List<Transfer_Part__c>{tp1, tp2, tp3};
+
+        Map<Id, List<Transfer_Part__c>> mapParts = new Map<Id, List<Transfer_Part__c>>();
+        Id transferId = Util.getFakeId(Transfer__c.SObjectType);
+        mapParts.put(transferId, transferParts);
+
+        ProductionDetailBillService service = new ProductionDetailBillService();
+        service.transferToDetailMap = mapParts;
+        Decimal billAmount = 0;
+        Decimal savingsAmount = 22.18;
+        service.createBillProductionDetail(transferId, 0, savingsAmount, 'Bill', Util.getFakeId(Journal_Entry__c.SObjectType));
+
+        List<Transfer_Part__c> partsToInsertList = service.productionDetailToInsert;
+        System.assertEquals(3, partsToInsertList.size());
+        System.assertEquals(
+            partsToInsertList[0].Customer_Savings__c,
+            Util.roundValue(savingsAmount * (tp1.Amount__c/tp1.Transfer__r.Transfer_Amount__c), 4, 'HALF_UP'),
             'P2BService should insert a PD with an amount based the dollar values of the Transfer and Transfer Parts, not' +
                 ' the kWh values, since credit rates may change monthly'
         );

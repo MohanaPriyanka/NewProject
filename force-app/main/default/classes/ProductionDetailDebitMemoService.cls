@@ -101,7 +101,7 @@ public without sharing class ProductionDetailDebitMemoService {
                     // Use the amount on the SF Adjustment since there could be multiple adjustments related
                     // to a single debit memo in Zuora, like a0p0a00000ButEJAAZ
                     String productionDetailType = entry.Reason_Code__c == 'No Longer Billing'?entry.Reason_Code__c:'Payment';
-                    billService.createBillProductionDetail(sfAdjustment.Transfer__c, -sfAdjustment.Adjustment_Amount__c, productionDetailType, entry.Id);
+                    billService.createBillProductionDetail(sfAdjustment.Transfer__c, -sfAdjustment.Adjustment_Amount__c, null, productionDetailType, entry.Id);
                 }
             }
         }

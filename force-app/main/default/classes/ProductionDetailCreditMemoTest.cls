@@ -6,10 +6,10 @@ public with sharing class ProductionDetailCreditMemoTest {
     @IsTest
     public static void testCreateProductionDetailFromCreditMemos() {
         ProductionToBillServiceTest.useMocks();
-        // 5 Credit Memos Total
+        // 4 Credit Memos Total
         // 2 of which have Reason Code = 'Production' so should
-        // create 4 records each: 1 Bill, 1 Savings and 1 Payment in the first production period, and 1 Payment in the second
-        // the remaining 3 should only create 'Collection' Production Detail records
+        // create 3 records each: 1 Bill and 1 Payment in the first production period, and 1 Payment in the second
+        // the remaining one should only create 'Collection' Production Detail records
         List<Journal_Entry__c> creditMemoEntries = getCreditMemoJournalEntries();
         System.assertEquals(5, creditMemoEntries.size());
 
@@ -38,7 +38,7 @@ public with sharing class ProductionDetailCreditMemoTest {
         // and 4 payment records each (2 production periods, 2 parts each)
         // 3 'Payment' Credit Memos have 2 credit memo part items each, so 6 total Production Detail records:
         System.assertEquals(2, countOfBills);
-        System.assertEquals(2, countOfSavings);
+        System.assertEquals(0, countOfSavings);
         System.assertEquals(12, countOfPayments);
     }
 
@@ -73,7 +73,7 @@ public with sharing class ProductionDetailCreditMemoTest {
 
         // 2 'Bill' Credit Memos create both a bill production detail and savings production detail:
         System.assertEquals(2, countOfBills);
-        System.assertEquals(2, countOfSavings);
+        System.assertEquals(0, countOfSavings);
 
         // 2 Payments are inserted as a part of the 'production' credit memo logic,
         // which don't use callouts so we aren't testing here:
