@@ -111,10 +111,8 @@
     <permissionSets>Inbox Without Einstein Activity Capture</permissionSets>
     <permissionSets>Inbox With Einstein Activity Capture</permissionSets>
     <permissionSets>CS Basic</permissionSets>
-    <permissionSets>External CS Management</permissionSets>
     <permissionSets>Edit All</permissionSets>
     <permissionSets>Limit Monitoring App</permissionSets>
-    <permissionSets>Platform API</permissionSets>
     <permissionSets>Lightning</permissionSets>
     <permissionSets>DocuSign Administrator</permissionSets>
     <permissionSets>DocuSign User</permissionSets>
