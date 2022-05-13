@@ -30,7 +30,7 @@ private with sharing class ProductionToBillAuditorTest {
         AggregateResultProxy je2Aggregate = new AggregateResultProxy();
         je2Aggregate.withAliasAndValue('Journal_Entry__c', journalEntry2);
         je2Aggregate.withAliasAndValue('Object_Type__c', 'DebitMemo');
-        je2Aggregate.withAliasAndValue('AMOUNT', 200);
+        je2Aggregate.withAliasAndValue('AMOUNT', -200);
 
         journalEntrySelectorMock.when('selectForReconciliation').thenReturn(new List<AggregateResultProxy>{je1Aggregate, je2Aggregate});
 
@@ -43,7 +43,7 @@ private with sharing class ProductionToBillAuditorTest {
         ));
         scope.add(new Journal_Entry__c(
             Id = journalEntry2,
-            Amount__c = -200
+            Amount__c = 200
         ));
         scope.add(new Journal_Entry__c(
             Id = journalEntry3,
@@ -76,7 +76,7 @@ private with sharing class ProductionToBillAuditorTest {
         je1Aggregate.withAliasAndValue('Journal_Entry__c', journalEntry1);
         je1Aggregate.withAliasAndValue('Object_Type__c', 'CreditMemo');
         je1Aggregate.withAliasAndValue('Reason_Code__c', 'Production');
-        je1Aggregate.withAliasAndValue('AMOUNT', -100);
+        je1Aggregate.withAliasAndValue('AMOUNT', -140);
 
         journalEntrySelectorMock.when('selectForReconciliation').thenReturn(new List<AggregateResultProxy>{je1Aggregate});
 
@@ -100,6 +100,40 @@ private with sharing class ProductionToBillAuditorTest {
         ];
         System.assertEquals(0, errorLogs.size(),
             'Expected no error logs because a $120 CM with $20 Unapplied should have $100 of production details, but got this: ' + errorLogs);
+    }
+
+    @IsTest
+    private static void testJEAuditorReconciliationForNotAppliedCreditMemos() {
+        Id journalEntry1 = Util.getFakeId(Journal_Entry__c.SObjectType);
+        UniversalMocker journalEntrySelectorMock = UniversalMocker.mock(JournalEntrySelector.class);
+        AggregateResultProxy je1Aggregate = new AggregateResultProxy();
+        je1Aggregate.withAliasAndValue('Journal_Entry__c', journalEntry1);
+        je1Aggregate.withAliasAndValue('Object_Type__c', 'CreditMemo');
+        je1Aggregate.withAliasAndValue('Reason_Code__c', 'Production');
+        je1Aggregate.withAliasAndValue('AMOUNT', -23794.84);
+
+        journalEntrySelectorMock.when('selectForReconciliation').thenReturn(new List<AggregateResultProxy>{je1Aggregate});
+
+        ProductionToBillJEAuditor.journalEntrySelector = (JournalEntrySelector) journalEntrySelectorMock.createStub();
+
+        List<Journal_Entry__c> scope = new List<Journal_Entry__c>();
+        scope.add(new Journal_Entry__c(
+            Id = journalEntry1,
+            Amount__c = 11897.42,
+            Credit_Memo_Unapplied_Amount__c = 11897.42
+        ));
+
+        ProductionToBillJEAuditor jeAuditor = new ProductionToBillJEAuditor();
+        jeAuditor.execute(null, scope);
+        jeAuditor.finish(null);
+        List<Error_Log__c> errorLogs = [
+            SELECT Message__c
+            FROM Error_Log__c
+            WHERE Severity__c = :Logger.ERROR
+            AND Class__c = 'ProductionToBillJEAuditor'
+        ];
+        System.assertEquals(0, errorLogs.size(),
+            'Expected no error logs because a CM that has nothing applied is -2x the CM amount, but got this: ' + errorLogs);
     }
 
 
