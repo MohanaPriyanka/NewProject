@@ -6,7 +6,6 @@
  */
 public class InvocableCommissionStructureChanger {
 
-    @TestVisible private static final String INVALID_STAGE_ERROR = 'Invalid Opportunity Stage';
     @TestVisible private static final String APPROVED_PAYMENTS_ERROR = 'Approved Commission Payment Found';
     @TestVisible private static FeatureService featureService = new FeatureService();
     @TestVisible private static OpportunitiesSelector opportunitiesSelector = new OpportunitiesSelector();
@@ -73,10 +72,6 @@ public class InvocableCommissionStructureChanger {
     }
 
     private void validate() {
-        if (!opp.IsWon) {
-            validationErrors.add(INVALID_STAGE_ERROR);
-            return;
-        }
         for (Commission_Payment__c cp : commissionPayments) {
             if (cp.Status__c == 'Approved') {
                 validationErrors.add(APPROVED_PAYMENTS_ERROR);

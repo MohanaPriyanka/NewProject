@@ -2,31 +2,6 @@
 public class InvocableCommissionStructureChangerTest {
 
     @IsTest
-    public static void testWithBadOpportunityStage() {
-        Opportunity opp = getOpp(false, true);
-        UniversalMocker oppSelectorMock = UniversalMocker.mock(OpportunitiesSelector.class);
-        oppSelectorMock.when('getOpportunityWithCommissionPayments').thenReturn(opp);
-
-        UniversalMocker uowMock = UniversalMocker.mock(fflib_SObjectUnitOfWork.class);
-        InvocableCommissionStructureChanger.opportunitiesSelector = (OpportunitiesSelector) oppSelectorMock.createStub();
-        InvocableCommissionStructureChanger.oppUOW = (fflib_SObjectUnitOfWork) uowMock.createStub();
-
-        InvocableCommissionStructureChanger.CommissionChangeData changeData =
-            new InvocableCommissionStructureChanger.CommissionChangeData();
-        changeData.opportunityId = opp.Id;
-        changeData.newCommissionStructureId = Util.getFakeId(Commission_Structure__c.SObjectType);
-
-        List<String> validationErrors = InvocableCommissionStructureChanger.invokeCommissionStructureChange(
-            new List<InvocableCommissionStructureChanger.CommissionChangeData>{
-                changeData
-            });
-
-        System.assert(validationErrors.contains(InvocableCommissionStructureChanger.INVALID_STAGE_ERROR),
-            'The opportunity stage of IsWon = false should prevent commission structure change');
-        uowMock.assertThat().method('commitWork').wasNeverCalled();
-    }
-
-    @IsTest
     public static void testWithApprovedCommissionPayment() {
         Opportunity opp = getOpp(true, true);
         UniversalMocker oppSelectorMock = UniversalMocker.mock(OpportunitiesSelector.class);
