@@ -123,13 +123,15 @@ public without sharing class UASSelector {
     public static Map<Id, Utility_Account_Subscription__c> selectByIdsAsMap(Set<Id> uasIds){
         Map<Id, Utility_Account_Subscription__c> uasWithClientMap = new Map<Id, Utility_Account_Subscription__c>([
             SELECT Id,
-                Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c,
+                Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c,
                 Externally_Serviced__c
             FROM Utility_Account_Subscription__c
             WHERE Id IN : uasIds
         ]);
         return uasWithClientMap;
     }
+
+    // Query is based on parent Account since the customer portal is branded and can display multiple property accounts, but only one brand
     public List<AggregateResult> getBrandKeySummary(Set<Id> parentAccountIds) {
         List<AggregateResult> uasSummary = [
             SELECT COUNT(Id) numberOfRecords,

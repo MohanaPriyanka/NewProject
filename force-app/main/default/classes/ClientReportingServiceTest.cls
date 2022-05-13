@@ -1,7 +1,6 @@
 /**
  * @description Created By: peteryao on 2019-03-03
  * Description:
- * Test:
  **/
 @IsTest
 public with sharing class ClientReportingServiceTest {
@@ -30,8 +29,8 @@ public with sharing class ClientReportingServiceTest {
     @IsTest
     public static void testAdjustmentClientOwnerStamp() {
         Utility_Account_Subscription__c uas = [
-            SELECT Id, Opportunity__r.Shared_Solar_System__c, Opportunity__r.AccountId,
-                Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c, Externally_Serviced__c
+            SELECT Id, Opportunity__r.AccountId, Shared_Solar_System__c,
+                Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c, Externally_Serviced__c
             FROM Utility_Account_Subscription__c
             WHERE Name = '0000239'
         ];
@@ -64,48 +63,62 @@ public with sharing class ClientReportingServiceTest {
         transferPartService.createPartsFromTransfer(new List<Transfer__c>{
             transfer
         });
-        System.assertEquals(uas.Opportunity__r.Shared_Solar_System__c, billPeriod.Shared_Solar_System__c);
+        System.assertEquals(uas.Shared_Solar_System__c, billPeriod.Shared_Solar_System__c);
         BillGenerationServiceTest.generateBills(new List<Id>{
             billPeriod.Id
         });
         Bill_Adjustment__c billAdjustment = [
-            SELECT Id, Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__c, Client__c
+            SELECT Id, Utility_Account_Subscription__r.Shared_Solar_System__c, Client__c
             FROM Bill_Adjustment__c
             WHERE Id = :adjustment.Id
         ];
         System.assertEquals(
-            uas.Opportunity__r.Shared_Solar_System__c,
-            billAdjustment.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__c
+            uas.Shared_Solar_System__c,
+            billAdjustment.Utility_Account_Subscription__r.Shared_Solar_System__c
         );
         System.assertNotEquals(null, billAdjustment.Client__c);
         System.assertEquals(
-            uas.Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c,
+            uas.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c,
             billAdjustment.Client__c
         );
         Utility_Account_Subscription__c uasTwo = [
-            SELECT Id, Opportunity__r.Shared_Solar_System__c,
-                Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c
+            SELECT Id, Shared_Solar_System__c,
+                Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c
             FROM Utility_Account_Subscription__c
             WHERE Name = '0000244'
         ];
         adjustment.Utility_Account_Subscription__c = uasTwo.Id;
         update adjustment;
         Bill_Adjustment__c updatedBillAdjustment = [
-            SELECT Id, Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__c, Client__c
+            SELECT Id, Utility_Account_Subscription__r.Shared_Solar_System__c, Client__c
             FROM Bill_Adjustment__c
             WHERE Id = :adjustment.Id
         ];
         System.assertEquals(
-            uasTwo.Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c,
+            uasTwo.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c,
             updatedBillAdjustment.Client__c
         );
     }
     @IsTest
     public static void testUASBClientOwnerStamp() {
         List<Utility_Account_Subscription__c> uasList = [
-            SELECT Id, Opportunity__r.AccountId
+            SELECT Id, Opportunity__r.AccountId, Opportunity__c
             FROM Utility_Account_Subscription__c
         ];
+
+        Opportunity opp = [
+            SELECT Id, Shared_Solar_System__c, Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c, Shared_Solar_System__r.Name
+            FROM Opportunity WHERE Id = :uasList[0].Opportunity__c LIMIT 1
+        ];
+
+        Shared_Solar_System__c sss = [
+            SELECT Id, BWC_Project_Entity_Manual__r.Client_Account__c
+            FROM Shared_Solar_System__c
+            WHERE Name = 'Oxford Barrett St. P2' LIMIT 1
+        ];
+
+        opp.Shared_Solar_System__c = sss.Id;
+        update opp;
 
         UASB__c billOne = new UASB__c(
             Account__c = uasList[0].Opportunity__r.AccountId,
@@ -131,8 +144,8 @@ public with sharing class ClientReportingServiceTest {
         insert transferPart;
 
         List<UASB__c> uasbs = [
-            SELECT Id, Client__c,
-                Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c
+            SELECT Id, Client__c, Client__r.Name,
+                Utility_Account_Subscription__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c
             FROM UASB__c
         ];
         System.assert(uasbs.size() > 0);
@@ -140,7 +153,7 @@ public with sharing class ClientReportingServiceTest {
         for (UASB__c uasb : uasbs) {
             System.assertNotEquals(null, uasb.Client__c);
             System.assertEquals(
-                uasb.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c,
+                uasb.Utility_Account_Subscription__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c,
                 uasb.Client__c
             );
         }
@@ -292,8 +305,8 @@ public with sharing class ClientReportingServiceTest {
             LIMIT 1
         ];
         Utility_Account_Subscription__c uas = [
-            SELECT Id, Opportunity__r.Shared_Solar_System__c, Opportunity__r.AccountId,
-                Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c
+            SELECT Id, Shared_Solar_System__c, Opportunity__r.AccountId,
+                Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c
             FROM Utility_Account_Subscription__c
             WHERE Name = '0000239'
         ];

@@ -1,7 +1,7 @@
 /*************************************************************************************
  * Created By: peteryao on 2019-03-03  
  * Description: Methods to aid with CS Client Reporting, e.g. client owner stamping
- * Test: ClientReportingServiceTest, ContractTriggerTest
+ * Tested By: ClientReportingServiceTest, ContractTriggerTest
  *************************************************************************************/
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class ClientReportingService {
@@ -33,7 +33,7 @@ public without sharing class ClientReportingService {
                 if (billAdjustment.Client__c == null &&
                     billAdjustment.Utility_Account_Subscription__c != null) {
                     billAdjustment.Client__c =
-                        uasWithClient.Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c;
+                        uasWithClient.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c;
                 }
                 if (uasWithClient.Externally_Serviced__c == true) {
                     billAdjustment.Externally_Serviced__c = uasWithClient.Externally_Serviced__c;
@@ -57,7 +57,7 @@ public without sharing class ClientReportingService {
                 uasb.Utility_Account_Subscription__c != null &&
                 uasWithClient != null) {
                 uasb.Client__c =
-                    uasWithClient.Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c;
+                    uasWithClient.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c;
             }
         }
     }
@@ -100,8 +100,8 @@ public without sharing class ClientReportingService {
 
     // Client Health Score
 
-    public static void updateClientReports( Map<ID, Client_Health_Report__c> oldReportMap,
-                                            Map<ID, Client_Health_Report__c> newReportMap) {
+    public static void updateClientReports( Map<Id, Client_Health_Report__c> oldReportMap,
+                                            Map<Id, Client_Health_Report__c> newReportMap) {
         for (Client_Health_Report__c newReport : newReportMap.values()) {
             if (!oldReportMap.get(newReport.Id).Recalculate_Health_Score__c && newReport.Recalculate_Health_Score__c){
                 newReport.Client_Health_Score__c = Util.roundValue(calculateClientHealthScore(newReport),2,null);

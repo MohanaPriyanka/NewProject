@@ -76,7 +76,7 @@ public virtual class UASB {
         uasb.Billing_Period_Start_Date__c = transfer.Date_of_Transfer__c;
         uasb.Billing_Period_End_Date__c = transfer.Date_of_Transfer__c.addMonths(1);
         uasb.PreGen_IsPreGen__c = szs.Utility_Account_Subscription__r.Finaled__c;
-        uasb.Shared_Solar_System__c = szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__c;
+        uasb.Shared_Solar_System__c = szs.Utility_Account_Subscription__r.Shared_Solar_System__c;
         uasb.Externally_Serviced__c = szs.Utility_Account_Subscription__r.Externally_Serviced__c;
         uasb.PreGen_Name_on_Account__c = getCustomerName();
         uasb.PreGen_Utility_Acct__c = getUtilityAccountNumberForComparison();
@@ -95,7 +95,7 @@ public virtual class UASB {
         uasb.Credits_Allocated__c = getSubscriptionNMCs();
         uasb.Customer_Subscription_KW_DC__c = szs.Customer_Subscription_kW_DC__c;
         uasb.NMC_Discount__c = getNMCDiscount();
-        uasb.Total_System_Size_kW_DC__c = szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Total_System_Size_kWh_DC__c;
+        uasb.Total_System_Size_kW_DC__c = szs.Utility_Account_Subscription__r.Shared_Solar_System__r.Total_System_Size_kWh_DC__c;
         uasb.NM_Rate_Floor__c = szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.NM_Rate_Floor__c;
         uasb.Pricing_Structure__c = szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.Pricing_Structure__c;
         uasb.Solar_Electricity_Rate__c = getSolarElectricityRate();
