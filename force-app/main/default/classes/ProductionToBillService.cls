@@ -14,8 +14,8 @@ public without sharing class ProductionToBillService implements Queueable, Datab
         BILL, PAYMENT, CREDITMEMO, DEBITMEMO, UNSERVICED_BILL, UNSERVICED_ADJUST
     }
     public OperationType opType;
-    // Set to 50 to avoid UNABLE_TO_LOCK_ROW on Production records when inserting InvoiceItem PDs
-    public Integer batchSize = 50;
+    // Set to 200 to avoid UNABLE_TO_LOCK_ROW on Production records when inserting InvoiceItem PDs
+    public Integer batchSize = 200;
 
     public List<Journal_Entry__c> incompleteEntries = new List<Journal_Entry__c>();
 

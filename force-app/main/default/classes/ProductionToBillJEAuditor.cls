@@ -52,7 +52,7 @@ public without sharing class ProductionToBillJEAuditor implements Database.Batch
         // The Credit Memo Unapplied Amount will show up as a PD in the future, but for now, add it to the aggregate amount
         amountToCompare += Util.nullToZero(journalEntry.Credit_Memo_Unapplied_Amount__c);
         // The JE Amount is already a positive amount, but the PD Amount can be negative (for Debit Memos or
-        if (journalEntry.Amount__c != Math.abs(amountToCompare)) {
+        if (journalEntry.Amount__c != Util.roundValue(Math.abs(amountToCompare), 2, 'HALF_UP')) {
             errors += 'JE: ' + jeId + ', Amount: ' + journalEntry.Amount__c + ', PD Sum: ' + amount +
                 ', type: ' + objectType + ', reason:' + reasonCode + '\n';
         }

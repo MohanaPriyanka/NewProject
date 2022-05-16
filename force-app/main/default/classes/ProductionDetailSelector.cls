@@ -1,6 +1,13 @@
 // Tested by: ProductionDetailSelectorTest
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public inherited sharing class ProductionDetailSelector {
+    /**
+     * @description Used to get the Transfer Parts for a Transfer that show the amount for each production period.
+     * Needs to be sorted by smallest Transfer Part first, to allow P2B to calculate the largest Transfer Parts
+     * correctly, since they will be larger than the total Transfer.
+     * @param transferIds Transfers getting Production Details
+     * @return List of Transfer Parts
+     */
     public Map<Id, List<Transfer_Part__c>> getTransferPartMap(Set<Id> transferIds) {
         Map<Id, List<Transfer_Part__c>> partsMap = new Map<Id, List<Transfer_Part__c>>();
         List<Transfer_Part__c> parts = [
@@ -10,6 +17,7 @@ public inherited sharing class ProductionDetailSelector {
             FROM Transfer_Part__c
             WHERE Transfer__c IN : transferIds
             AND Type__c = 'Transfer'
+            ORDER BY Amount__c
         ];
 
         for (Transfer_Part__c part : parts){

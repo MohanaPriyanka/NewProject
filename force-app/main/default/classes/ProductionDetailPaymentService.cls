@@ -25,8 +25,16 @@ public without sharing class ProductionDetailPaymentService implements Database.
             List<Transfer_Part__c> invoicePartOrDebitMemo = billPartsOrDebitMemoMap.get(paymentEntry.Applied_Record_Id__c);
             if (invoicePartOrDebitMemo != null) {
                 distributePaymentAmongInvoicesOrDebitMemos(paymentEntry, invoicePartOrDebitMemo);
+            } else {
+                Logger.logLater(
+                    'ProductionDetailPaymentService',
+                    'calculateProductionDetailFromCollectionItem',
+                    'Could not find PDs for ' + paymentEntry.Applied_Record_Id__c + ' when calculating PDs for ' + paymentEntry.Id,
+                    Logger.WARN
+                );
             }
         }
+        Logger.flushLogs();
     }
 
     @TestVisible

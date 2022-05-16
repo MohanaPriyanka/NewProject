@@ -102,7 +102,10 @@ public without sharing class ProductionDetailCreditMemoService implements Databa
         memoParts = (ZuoraAPI.CreditMemoWithParts) JSON.deserialize(response.getBody(), ZuoraAPI.CreditMemoWithParts.class);
         // Reset the Credit Memo's Unapplied Amount in case it is fully applied
         creditMemo.Credit_Memo_Unapplied_Amount__c = null;
-
+        if (memoParts.parts == null) {
+            Logger.logLater('ProductionDetailCreditMemoService', 'splitCreditMemoIntoParts', 'Credit Memo ' + creditMemo.External_Id__c + ' has no parts', Logger.ERROR);
+            return journalEntriesByPart;
+        }
         for (ZuoraAPI.CreditMemoPart memoPart : memoParts.parts) {
             if (memoPart.DebitMemoId != null) {
                 Journal_Entry__c creditMemoPartEntry = new Journal_Entry__c(
