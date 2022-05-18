@@ -223,7 +223,6 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
         savingsAmount = Util.roundValue(savingsAmount, 2, 'HALF_UP');
         Decimal billAmountLeftToApply = billAmount;
         Decimal savingsAmountLeftToApply = savingsAmount;
-
         List<Transfer_Part__c> transferProductionDetail = transferToDetailMap.get(transferId);
 
         for (Integer i = 0; i <= transferProductionDetail.size() -1; i++) {
@@ -238,40 +237,20 @@ public without sharing class ProductionDetailBillService implements ZuoraDataQue
             Decimal billAmountToApplyToProductionPeriod = getWeightedApplicationAmount(transferDetail, billAmount);
             Decimal savingsAmountToApplyToProductionPeriod = getWeightedApplicationAmount(transferDetail, savingsAmount);
 
-            billAmountLeftToApply =
-                setPDAmount(billAmountToApplyToProductionPeriod, billAmountLeftToApply, part, Transfer_Part__c.Amount__c);
-            savingsAmountLeftToApply =
-                setPDAmount(savingsAmountToApplyToProductionPeriod, savingsAmountLeftToApply, part, Transfer_Part__c.Customer_Savings__c);
+            part.Amount__c = billAmountToApplyToProductionPeriod;
+            billAmountLeftToApply -= billAmountToApplyToProductionPeriod;
+            part.Customer_Savings__c = savingsAmountToApplyToProductionPeriod;
+            savingsAmountLeftToApply -= savingsAmountToApplyToProductionPeriod;
 
             // In cases of rounding cutoff, put remainder (~0.01 or so on last transfer part):
             if (i == transferProductionDetail.size() -1) {
-                assignRemainderToLastPD(billAmountLeftToApply, part, savingsAmountLeftToApply);
+                part.Amount__c += billAmountLeftToApply;
+                part.Customer_Savings__c += savingsAmountLeftToApply;
             }
             productionDetailToInsert.add(part);
 
         }
     }
-
-    private void assignRemainderToLastPD(Decimal billAmountLeftToApply, Transfer_Part__c part, Decimal savingsAmountLeftToApply) {
-        if (billAmountLeftToApply > 0) {
-            part.Amount__c += billAmountLeftToApply;
-        }
-        if (savingsAmountLeftToApply > 0) {
-            part.Customer_Savings__c += savingsAmountLeftToApply;
-        }
-    }
-
-    private Decimal setPDAmount(Decimal amountToApplyToProductionPeriod, Decimal amountLeftToApply, Transfer_Part__c part, SObjectField field) {
-        if (Math.abs(amountToApplyToProductionPeriod) <= Math.abs(amountLeftToApply)) {
-            part.put(field, amountToApplyToProductionPeriod);
-            amountLeftToApply -= amountToApplyToProductionPeriod;
-        } else {
-            part.put(field, amountLeftToApply);
-            amountLeftToApply = 0;
-        }
-        return amountLeftToApply;
-    }
-
 
     private Transfer_Part__c setRelatedRecordId(Transfer_Part__c transferProdDetail, String type, Id relatedRecordId) {
         if (type == 'Externally Serviced' && relatedRecordId.getSobjectType() == UASB__c.SObjectType){

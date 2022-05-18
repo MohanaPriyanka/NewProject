@@ -347,10 +347,10 @@ public with sharing class ProductionDetailBillTest {
 
     @IsTest
     public static void testBillAmounts() {
-        sfab_FabricatedSObject fabbedTransfer = getMockTransfer(11130);
-        Transfer_Part__c tp1 = getmockTransferPart(fabbedTransfer, 10000, 5324);
-        Transfer_Part__c tp2 = getmockTransferPart(fabbedTransfer, 12000, 4211);
-        Transfer_Part__c tp3 = getmockTransferPart(fabbedTransfer, 187, 1595);
+        sfab_FabricatedSObject fabbedTransfer = getMockTransfer(2708);
+        Transfer_Part__c tp1 = getmockTransferPart(fabbedTransfer, 12000, -4211);
+        Transfer_Part__c tp2 = getmockTransferPart(fabbedTransfer, 187, 1595);
+        Transfer_Part__c tp3 = getmockTransferPart(fabbedTransfer, 10000, 5324);
         List<Transfer_Part__c> transferParts = new List<Transfer_Part__c>{tp1, tp2, tp3};
 
         Map<Id, List<Transfer_Part__c>> mapParts = new Map<Id, List<Transfer_Part__c>>();
@@ -366,14 +366,14 @@ public with sharing class ProductionDetailBillTest {
         List<Transfer_Part__c> partsToInsertList = service.productionDetailToInsert;
         System.assertEquals(3, partsToInsertList.size());
         System.assertEquals(
-            partsToInsertList[0].Amount__c,
             Util.roundValue(billAmount * (tp1.Amount__c/tp1.Transfer__r.Transfer_Amount__c), 4, 'HALF_UP'),
+            partsToInsertList[0].Amount__c,
             'P2BService should insert a PD with an amount based the dollar values of the Transfer and Transfer Parts, not' +
                 ' the kWh values, since credit rates may change monthly'
         );
         System.assertEquals(
-            partsToInsertList[0].Customer_Savings__c,
             Util.roundValue(savingsAmount * (tp1.Amount__c/tp1.Transfer__r.Transfer_Amount__c), 4, 'HALF_UP'),
+            partsToInsertList[0].Customer_Savings__c,
             'P2BService should insert a PD with an amount based the dollar values of the Transfer and Transfer Parts, not' +
                 ' the kWh values, since credit rates may change monthly'
         );

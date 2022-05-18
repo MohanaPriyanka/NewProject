@@ -59,8 +59,13 @@ public without sharing class ProductionDetailPaymentService implements Database.
                 Decimal invoicePartPayments = Util.nullToZero(partToPaymentMap.get(invoicePartOrDebitMemo.Id));
                 // The Production Details for Debit Memos are negative (they are negative payments), but we need to pay
                 // them, so we need to take the abs of that amount.
-                Decimal invoicePartBalance = Math.abs(invoicePartOrDebitMemo.Amount__c) - invoicePartPayments;
-                if (invoicePartBalance <= 0) {
+                Decimal invoicePartBalance;
+                if (invoicePartOrDebitMemo.Journal_Entry__r.Object_Type__c == 'DebitMemo') {
+                    invoicePartBalance = Math.abs(invoicePartOrDebitMemo.Amount__c) - invoicePartPayments;
+                } else {
+                    invoicePartBalance = invoicePartOrDebitMemo.Amount__c - invoicePartPayments;
+                }
+                if (invoicePartBalance == 0) {
                     continue;
                 }
                 applicationAmount = Math.min(invoicePartBalance, paymentAmount);

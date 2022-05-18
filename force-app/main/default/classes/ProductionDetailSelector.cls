@@ -48,7 +48,8 @@ public inherited sharing class ProductionDetailSelector {
         Map<String, List<Transfer_Part__c>> partsMap = new Map<String, List<Transfer_Part__c>>();
         List<Transfer_Part__c> parts = [
             SELECT Id, Transfer__c, Amount__c, Transfer__r.Transfer_Amount__c, Transfer__r.Billing_Method__c,
-                Production__c, Production__r.Name, Journal_Entry__c, Journal_Entry__r.External_Id__c
+                Production__c, Production__r.Name, Journal_Entry__c, Journal_Entry__r.External_Id__c,
+                Journal_Entry__r.Object_Type__c
             FROM Transfer_Part__c
             WHERE Journal_Entry__r.External_Id__c IN : invoiceEntries
             AND (Type__c = 'Bill'
