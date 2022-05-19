@@ -495,14 +495,32 @@ public with sharing class SimpleSignupFormControllerTest {
         Partner__c partner2 = (Partner__c) mockPartners[1].toSObject();
 
         Test.startTest();
-            SimpleSignupFormController.accountsSelector = (AccountsSelector) Test.createStub(AccountsSelector.class, new MockSelectors(true));
+            SimpleSignupFormController.accountsSelector = (AccountsSelector) Test.createStub(AccountsSelector.class, new MockSelectors(true, false));
             Boolean partner1SellsLMI = SimpleSignupFormController.partnerSellsLMI(partner1.Id);
-            SimpleSignupFormController.accountsSelector = (AccountsSelector) Test.createStub(AccountsSelector.class, new MockSelectors(false));
+            SimpleSignupFormController.accountsSelector = (AccountsSelector) Test.createStub(AccountsSelector.class, new MockSelectors(false, false));
             Boolean partner2SellsLMI = SimpleSignupFormController.partnerSellsLMI(partner2.Id);
         Test.stopTest();
 
         System.assertEquals(true, partner1SellsLMI);
         System.assertEquals(false, partner2SellsLMI);
+
+    }
+
+    @IsTest
+    private static void testpartnerSSSSelectionEnabled() {
+        List<sfab_FabricatedSObject> mockPartners = getMockPartnerList(2);
+        Partner__c partner1 = (Partner__c) mockPartners[0].toSObject();
+        Partner__c partner2 = (Partner__c) mockPartners[1].toSObject();
+
+        Test.startTest();
+        SimpleSignupFormController.accountsSelector = (AccountsSelector) Test.createStub(AccountsSelector.class, new MockSelectors(false, true));
+        Boolean partner1sssSelection = SimpleSignupFormController.partnerSSSSelectionEnabled(partner1.Id);
+        SimpleSignupFormController.accountsSelector = (AccountsSelector) Test.createStub(AccountsSelector.class, new MockSelectors(false, false));
+        Boolean partner2sssSelection = SimpleSignupFormController.partnerSSSSelectionEnabled(partner2.Id);
+        Test.stopTest();
+
+        System.assertEquals(true, partner1sssSelection);
+        System.assertEquals(false, partner2sssSelection);
 
     }
 
@@ -530,9 +548,11 @@ public with sharing class SimpleSignupFormControllerTest {
 
     public class MockSelectors extends MockProvider {
         private Boolean LMI;
+        private Boolean sssSelectionEnabled;
 
-        public MockSelectors(Boolean LMI) {
+        public MockSelectors(Boolean LMI, Boolean sssSelection) {
             this.LMI = LMI;
+            this.sssSelectionEnabled = sssSelection;
         }
 
         public override Object handleMethodCall(MethodCall methodCall) {
@@ -546,6 +566,9 @@ public with sharing class SimpleSignupFormControllerTest {
 
                     if (LMI) {
                         mockAccount.setField(Account.Sells_LMI__c, true);
+                    }
+                    if (sssSelectionEnabled) {
+                        mockAccount.setField(Account.SSS_Selection_Enabled__c, true);
                     }
 
                     Account acc = (Account) mockAccount.toSObject();

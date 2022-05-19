@@ -285,7 +285,7 @@ public without sharing class AccountsSelector {
 
     public List<Account> selectAccountByPartnerIds(Set<Id> partnerIds) {
         return new List<Account>([
-            SELECT Id, Sells_LMI__c, Sells_Non_Residential__c, Sells_Residential__c
+            SELECT Id, Sells_LMI__c, Sells_Non_Residential__c, Sells_Residential__c, SSS_Selection_Enabled__c
             FROM Account
             WHERE Partner__c IN :partnerIds
         ]);

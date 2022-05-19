@@ -2,8 +2,8 @@
  * Created by lindsayholmes_gearscrm on 7/14/20.
  */
 
- /**
- *  shared CSS component is not sufficiently bug-free to use at this time
- *  replacing with static resource and loadStyles
-**/
-/* @import 'c/ssfStyleLibrary'; */
+@import 'c/ssfStyleLibrary';
+
+.partnerCommentsBox {
+    min-width: 100%;
+}

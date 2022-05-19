@@ -40,6 +40,8 @@ export default class SsfZipCheck extends NavigationMixin(LightningElement) {
         partnerSellsLMI({partnerId: this.partnerId})
         .then(result => {
             this.showLMI = result;
+        }).catch(error => {
+            this.showLMI = false;
         })
     }
 

@@ -387,7 +387,19 @@ public without sharing class SimpleSignupFormController {
     public static Boolean partnerSellsLMI(Id partnerId) {
         Set<Id> partnerIds = new Set<Id>{partnerId};
         List<Account> acc = accountsSelector.selectAccountByPartnerIds(partnerIds);
-        return acc[0].Sells_LMI__c;
+        return acc[0]?.Sells_LMI__c;
+    }
+
+    /**
+    * @description Checks if Partner has SSS Selection enabled
+    * @param partnerId ID of Partner__c record
+    * @returns SSS_Selection_Enabled__c (Boolean)
+    */
+    @AuraEnabled(Cacheable=true)
+    public static Boolean partnerSSSSelectionEnabled(Id partnerId) {
+        Set<Id> partnerIds = new Set<Id>{partnerId};
+        List<Account> acc = accountsSelector.selectAccountByPartnerIds(partnerIds);
+        return acc[0]?.SSS_Selection_Enabled__c;
     }
 
 }

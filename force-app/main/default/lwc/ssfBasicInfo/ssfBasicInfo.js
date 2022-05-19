@@ -1,10 +1,9 @@
 import { LightningElement, track, api } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
-import { loadStyle } from 'lightning/platformResourceLoader';
 import formFactorName from '@salesforce/client/formFactor';
-import staticResourceFolder from '@salesforce/resourceUrl/SimpleSignupFormStyling';
 import companyShortName from '@salesforce/label/c.SSF_Company_Short_Name';
 import companyPrivacyPolicyLink from '@salesforce/label/c.SSF_Company_Privacy_Policy_Link';
+import partnerSSSSelectionEnabled from '@salesforce/apex/SimpleSignupFormController.partnerSSSSelectionEnabled';
 import { postReadyStateEvent } from 'c/ssfShared';
 import {
     onLoad,
@@ -59,6 +58,10 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @track podPrefix;
     @track uanLength;
     @track podLength;
+    @track showProjectSelection = false;
+
+    lmiSystems = [];
+    smallCSSystems = [];
 
     collectPOD = false;
     utilityAccountCount = 0;
@@ -70,9 +73,75 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     }
 
     connectedCallback() {
-        loadStyle(this, staticResourceFolder + '/StyleLibrary.css');
         onLoad(this);
         postReadyStateEvent(this, null);
+        if(this.partnerId != null) {
+            this.checkProjectSelection();
+        }
+    }
+
+    checkProjectSelection() {
+        partnerSSSSelectionEnabled({partnerId: this.partnerId})
+        .then(result => {
+            if (result) {
+                this.setupProjectSelection();
+            }
+        }).catch(error => {
+            this.showProjectSelection = false;
+        })
+    }
+
+    setupProjectSelection() {
+        this.parseSystemsList();
+
+        if (this.customerType === 'LMI' && this.lmiSystems.length > 1) {
+            if (this.setDefaultProject()) {
+                this.restLead.partnerSystemSelection = this.lmiSystems[0].value;
+            }
+            this.projectOptions = this.lmiSystems;
+            this.showProjectSelection = true;
+        } else if (this.smallCSSystems.length > 1) {
+            if (this.setDefaultProject()) {
+                this.restLead.partnerSystemSelection = this.smallCSSystems[0].value;
+            }
+            this.projectOptions = this.smallCSSystems;
+            this.showProjectSelection = true;
+        } else {
+            this.showProjectSelection = false;
+        }
+    }
+
+    parseSystemsList() {
+        let systems = this.zipCheckResponse.solarSystems;
+
+        systems.forEach(sss => {
+            if (sss.smallCsCapacityAvailable) {
+                let csOption = {label: sss.name, value: sss.sssId};
+                this.smallCSSystems.push(csOption);
+            }
+            if (sss.lmiCapacityAvailable) {
+                let lmiOption = {label: sss.name, value: sss.sssId};
+                this.lmiSystems.push(lmiOption);
+            }
+        });
+    }
+
+    // feature to allow a partner to change project on continue application is not currently being used
+    // since we currently don't want to return SSS information after initial application submission (5/18/2022)
+    // leaving front end in case we decide to implement this feature in the future
+    setDefaultProject() {
+        return (this.restLead.partnerSystemSelection != null && !this.projectStillAvailable()) || this.restLead.partnerSystemSelection == null;
+    }
+
+    projectStillAvailable() {
+        let previouslySelectedSystem = this.restLead.partnerSystemSelection;
+        let availableSystems = this.customerType === 'LMI' ? this.lmiSystems : this.smallCSSystems;
+        let availableSystemIds = [];
+
+        availableSystems.forEach(sss => {
+            availableSystemIds.push(sss.value);
+        });
+        return availableSystemIds.includes(previouslySelectedSystem);
     }
 
     // handle changes in form entries
@@ -255,6 +324,10 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
 
     get billingInfoFieldLevelHelp() {
         return `This is the address the ${this.label.companyShortName} bill will be sent to.`;
+    }
+
+    get sssSelectionFieldLevelHelp() {
+        return 'Your customer will be placed on the system you select as long as there is sufficient capacity when the application is approved.';
     }
 
 }

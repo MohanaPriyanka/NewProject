@@ -495,9 +495,25 @@
         <!-- OTHER INFO -->
         <h6>Other Info<span class="blue-text">&nbsp;&gt;</span></h6>
         <div class="form-section">
-            <p class="input-group slds-var-m-around_small">
+            <template if:true={showProjectSelection}>
+                <div class="input-group half">
+                    <lightning-combobox
+                      name="partnerSystemSelection"
+                      label="Project Selection"
+                      value={restLead.partnerSystemSelection}
+                      options={projectOptions}
+                      onchange={genericOnChange}
+                      field-level-help={sssSelectionFieldLevelHelp}>
+                    </lightning-combobox>
+                </div>
+            </template>
+
+            <div class="input-group half">
+                <lightning-textarea class="partnerCommentsBox" name="partnerComments" label="Comments:" value={restLead.partnerComments} onchange={genericOnChange} placeholder="Enter any comments here..." max-length="255"></lightning-textarea>
+            </div>
+
+            <div class="input-group slds-var-m-vertical_small">
                 <lightning-input
-                  class="slds-var-p-left_medium"
                   type="checkbox"
                   label="Replacement Capacity"
                   variant="label-stacked"
@@ -505,15 +521,17 @@
                   checked={restLead.replacementCapacity}
                   onchange={replacementCapacityOnChange}>
                 </lightning-input>
-            </p>
-            <p class="slds-var-m-around_small">
+            </div>
+
+            <div class="input-group half">
                 <lightning-input
                   name="referralName"
                   label="Referral Code"
                   field-level-help="Enter the full name of the individual that referred you here. If you don't have a referral code, no problem! You can leave this field blank. "
                   onchange={genericOnChange}>
                 </lightning-input>
-            </p>
+            </div>
+
         </div>
 
         <!-- FOOTER -->

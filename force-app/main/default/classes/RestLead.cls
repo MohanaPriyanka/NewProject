@@ -385,6 +385,7 @@ public without sharing class RestLead {
             if (fieldNames.contains('utilityId')) baseLead.Utility_relationship__c = restLead.utilityId;
             if (fieldNames.contains('birthdate')) baseLead.LASERCA__Birthdate__c = restLead.birthdate;
             if (fieldNames.contains('replacementCapacity')) baseLead.Replacement_Capacity__c = restLead.replacementCapacity;
+            if (fieldNames.contains('partnerComments')) baseLead.Partner_Comments__c = restLead.partnerComments;
             restLead.updateDerivedFields(new RestLead(baseLead), baseLead);
 
             if (restLead.utilityId == null && restLead.eiaId != null) {
