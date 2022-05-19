@@ -348,6 +348,7 @@ src/package.xml
 !src/matchingRules/*
 !src/flows/*
 !src/remoteSiteSettings/*
+!force-app/main/default/objects/*
 
 
 #profiles and permission sets are complex Files. If your Org's
