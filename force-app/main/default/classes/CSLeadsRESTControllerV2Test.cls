@@ -719,7 +719,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     @IsTest
     private static void testPatchContractWithAppCompleteActions() { // e.g. Powersetter 3rd party origination
         CSTestDataFactory dataset = new CSTestDataFactory();
-        dataset.insertOpenUCBSystem();
+        dataset.insertOpenUCBSystem('Project A Oak Road', '1');
         dataset.insertLeadViaAPI(true, 'None', false);
         dataset.insertContractFiles();
         JSONGenerator jsonGenerator = JSON.createGenerator(false);

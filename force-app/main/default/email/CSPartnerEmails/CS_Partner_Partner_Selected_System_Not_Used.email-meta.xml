@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Notifies CS partner that a CS lead was unable to be converted onto the desired System selected by the Partner</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>CS Partner - Partner Selected System Not Used</name>
+    <style>none</style>
+    <subject>Perch Energy Change of Project Notification Regarding a Customer Enrollment in SSF</subject>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

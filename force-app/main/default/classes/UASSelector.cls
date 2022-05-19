@@ -1,7 +1,7 @@
 /*************************************************************************************
  * Created By: peteryao on 1/20/19  
  * Description: 
- * Tested By: UASSelectorTest
+ * Tested By: UASSelectorTest, CSLeadsConverterTest
  *************************************************************************************/
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class UASSelector {
@@ -271,6 +271,14 @@ public without sharing class UASSelector {
             AND Opportunity__r.Product_Line__c = 'Community Solar'
             AND Opportunity__r.StageName = 'Complete'
             AND Next_Schedule_Z_Status__c = 'Active Subscription'
+        ];
+    }
+
+    public List<Utility_Account_Subscription__c> getByLeadId(Id leadId) {
+        return [
+            SELECT Id, Shared_Solar_System__c, Opportunity__r.Lead__c
+            FROM Utility_Account_Subscription__c
+            WHERE Opportunity__r.Lead__c =: leadId
         ];
     }
 }

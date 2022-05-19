@@ -1,6 +1,6 @@
 /**
  * @description : Responsible for qualifying Leads, and handling actions when they are not qualified
- * Tested By: SharedSolarSystemsTest, CSQualificationTestclass, LeadServiceTestclass
+ * Tested By: SharedSolarSystemsTest, CSQualificationTestclass, LeadServiceTestclass, CSLeadsConverterTest
  */
 public without sharing class SharedSolarSystemQualifier {
 
@@ -81,18 +81,28 @@ public without sharing class SharedSolarSystemQualifier {
     public List<Shared_Solar_System__c> getQualifiedForLead(Lead lead, List<Shared_Solar_System__c> records) {
         List<SortedSystem> sortedSystems = new List<SortedSystem>();
         List<Shared_Solar_System__c> sortedSharedSolarSystems = new List<Shared_Solar_System__c>();
+        Shared_Solar_System__c prioritizedSystem;
 
         if (lead.Selected_SSS_For_Conversion__c != null) {
             records = sssSelector.selectAll(CollectionUtil.toIds(lead.Selected_SSS_For_Conversion__c.split('/')));
         }
         for (Shared_Solar_System__c sss : records) {
-            if (qualifiedForSystem(lead, sss, lead.LASER_Credit_Score__c)) {
+            Boolean qualifiedSystem = qualifiedForSystem(lead, sss, lead.LASER_Credit_Score__c);
+            Boolean partnerSelectedSystem = lead.SSS_Selected_by_Partner__c != null && sss.Id == lead.SSS_Selected_by_Partner__c;
+            if (qualifiedSystem && !partnerSelectedSystem) {
                 sortedSystems.add(new SortedSystem(sss, lead.System_Assignment__c));
+            } else if (qualifiedSystem && partnerSelectedSystem) {
+                prioritizedSystem = sss;
             }
         }
         sortedSystems.sort();
         for (Integer wrapperIndex = 0; wrapperIndex < sortedSystems.size(); wrapperIndex++) {
             sortedSharedSolarSystems.add(sortedSystems[wrapperIndex].sss);
+        }
+        if (prioritizedSystem != null) {
+            List<Shared_Solar_System__c> systems = new List<Shared_Solar_System__c>{prioritizedSystem};
+            systems.addAll(sortedSharedSolarSystems);
+            sortedSharedSolarSystems = systems;
         }
 
         Logger.flushLogs();

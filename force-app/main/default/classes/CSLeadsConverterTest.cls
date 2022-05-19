@@ -21,12 +21,20 @@ public without sharing class CSLeadsConverterTest {
         ual.Annual_kWh__c = 10000;
         update ual;
 
+        // Assign partner selected system as if set during enrollment
+        Shared_Solar_System__c systemNotAvailableForEnrollment = new Shared_Solar_System__c(
+            Name = 'Test System A'
+        );
+        insert systemNotAvailableForEnrollment;
+
         // Ensure Lead has passed Qualification and is now in 'Qualified' status
+        // Set Partner SSS Selection to project unavailable during conversion -> should send email to Partner Contacts
         Lead leadToQualify = new Lead(
             Id = ual.Lead__c,
             Status = 'Qualified',
             LastName = 'Doe',
-            Application_Complete_Date__c = System.now()
+            Application_Complete_Date__c = System.now(),
+            SSS_Selected_by_Partner__c = systemNotAvailableForEnrollment.Id
         );
         update leadToQualify;
 
@@ -44,6 +52,8 @@ public without sharing class CSLeadsConverterTest {
         results = CSLeadsConverter.invocableConvertLead(new List<LeadConvertDetail>{
             detail
         })[0];
+        System.assertEquals(1, MessagingService.emailsSent.size(), 'Should have sent out partner email indicating failure' +
+            'to place customer on desired Project (see PartnerSystemSelectionNotifier)');
         Test.stopTest();
 
         // Verify results
@@ -78,11 +88,13 @@ public without sharing class CSLeadsConverterTest {
         update utility;
 
         // Ensure Lead has passed Qualification and is now in 'Qualified' status
+        // Set Partner SSS Selection to a project with a higher assignment order, as if Partner selected during enrollment
         Lead leadToQualify = new Lead(
             Id = ual.Lead__c,
             Status = 'Qualified',
             LastName = 'Doe',
-            Application_Complete_Date__c = System.now()
+            Application_Complete_Date__c = System.now(),
+            SSS_Selected_by_Partner__c = [SELECT Id FROM Shared_Solar_System__c WHERE Name = 'Project B Main St' LIMIT 1].Id
         );
         update leadToQualify;
 
@@ -106,6 +118,12 @@ public without sharing class CSLeadsConverterTest {
         System.assert(leadAfterConversion.Auto_QC_Failure_Reason__c == null, 'Auto QC failure reason should be null');
         System.assert(leadAfterConversion.Auto_QC_Failure_Details__c == null, 'Auto QC failure details should be null');
         System.assert(leadAfterConversion.Auto_QC_Error_Debug__c == null, 'No error debug for Auto QC should be on Lead');
+        System.assertEquals(leadToQualify.SSS_Selected_by_Partner__c,
+            [SELECT Id, Shared_Solar_System__c
+            FROM Utility_Account_Subscription__c
+            WHERE Opportunity__r.Lead__c =: leadToQualify.Id LIMIT 1].Shared_Solar_System__c,
+            'Shared solar system on the UAS for the converted deal should be the same as the partner selection'
+        );
     }
 
     @IsTest
@@ -211,7 +229,8 @@ public without sharing class CSLeadsConverterTest {
             Average_Demand_Threshold__c = 25
         );
         CSTestDataFactory dataFactory = new CSTestDataFactory();
-        dataFactory.insertOpenUCBSystem();
+        dataFactory.insertOpenUCBSystem('Project A Oak Road', '1');
+        dataFactory.insertOpenUCBSystem('Project B Main St', '2');
         dataFactory.insertLeadViaAPI(false, 'None', false);
     }
 

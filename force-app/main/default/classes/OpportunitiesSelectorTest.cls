@@ -247,4 +247,9 @@ public with sharing class OpportunitiesSelectorTest {
         System.assertNotEquals(null, new OpportunitiesSelector().selectRetiredOpportunities(new Set<Id>{opp.Id}),
             'Expect a list of Opportunities with Date Removed From Project populated');
     }
+
+    @IsTest
+    public static void testGetOppsByLead() {
+        new OpportunitiesSelector().getOppsByLead(Util.getFakeId(Lead.SObjectType));
+    }
 }

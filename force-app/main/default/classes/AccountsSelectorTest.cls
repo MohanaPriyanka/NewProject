@@ -203,4 +203,9 @@ public with sharing class AccountsSelectorTest {
         System.assertNotEquals(null, new AccountsSelector().selectParentAccountWithContacts(new Set<Id>{accId}), 'Expected list of accounts');
     }
 
+    @IsTest
+    public static void testGetPartnerAccountAdminContactEmails() {
+        new AccountsSelector().getPartnerAccountAdminContactEmails(Util.getFakeId(Account.SObjectType));
+    }
+
 }

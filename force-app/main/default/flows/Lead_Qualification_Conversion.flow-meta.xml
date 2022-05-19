@@ -30,7 +30,7 @@
         <name>leadQualificationCheck</name>
         <label>Run Lead Qualification</label>
         <locationX>2294</locationX>
-        <locationY>1238</locationY>
+        <locationY>1478</locationY>
         <actionName>InvocableLeadQualification</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -52,7 +52,7 @@
         <name>Run_Lead_Conversion</name>
         <label>Run Lead Conversion</label>
         <locationX>1370</locationX>
-        <locationY>2054</locationY>
+        <locationY>2510</locationY>
         <actionName>CSLeadsConverter</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -86,7 +86,7 @@
         <name>Update_Screen_Before_Error_0</name>
         <label>Update Screen</label>
         <locationX>314</locationX>
-        <locationY>2654</locationY>
+        <locationY>3110</locationY>
         <actionName>c:UpdateScreen</actionName>
         <actionType>component</actionType>
         <connector>
@@ -105,7 +105,7 @@
         <name>Update_Screen_GetLead_0</name>
         <label>Update Screen</label>
         <locationX>2162</locationX>
-        <locationY>2294</locationY>
+        <locationY>2750</locationY>
         <actionName>c:UpdateScreen</actionName>
         <actionType>component</actionType>
         <connector>
@@ -124,7 +124,7 @@
         <name>updateScreenUnqualified</name>
         <label>Update Screen</label>
         <locationX>2954</locationX>
-        <locationY>1718</locationY>
+        <locationY>1958</locationY>
         <actionName>c:UpdateScreen</actionName>
         <actionType>component</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -141,7 +141,7 @@
         <name>Add_Error_Log_to_List_0</name>
         <label>Add Error Log to List</label>
         <locationX>314</locationX>
-        <locationY>2414</locationY>
+        <locationY>2870</locationY>
         <assignmentItems>
             <assignToReference>sovc_ErrorLogs</assignToReference>
             <operator>Add</operator>
@@ -158,7 +158,7 @@
         <name>Add_Selected_System_Id_to_List</name>
         <label>Add Selected System Id to List</label>
         <locationX>1458</locationX>
-        <locationY>1838</locationY>
+        <locationY>2294</locationY>
         <assignmentItems>
             <assignToReference>selectedSystemIds</assignToReference>
             <operator>Add</operator>
@@ -174,7 +174,7 @@
         <name>Assign_Error_Log_0</name>
         <label>Assign Error Log</label>
         <locationX>314</locationX>
-        <locationY>2294</locationY>
+        <locationY>2750</locationY>
         <assignmentItems>
             <assignToReference>sov_ErrorLog.Severity__c</assignToReference>
             <operator>Assign</operator>
@@ -225,7 +225,7 @@
         <name>Assign_Error_Log_0_0</name>
         <label>Assign Error Log</label>
         <locationX>2690</locationX>
-        <locationY>2174</locationY>
+        <locationY>2630</locationY>
         <assignmentItems>
             <assignToReference>sov_ErrorLog.Severity__c</assignToReference>
             <operator>Assign</operator>
@@ -327,6 +327,22 @@
             </value>
         </assignmentItems>
         <connector>
+            <targetReference>Partner_SSS_Available</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Variables_For_Selection_Screen</name>
+        <label>Set Variables For SSS Selection Screen</label>
+        <locationX>2294</locationX>
+        <locationY>1238</locationY>
+        <assignmentItems>
+            <assignToReference>numberOfPartnerSelectedSystemsInQualifiedList</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>Partner_SSS_Available</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
             <targetReference>Qualification_Preview</targetReference>
         </connector>
     </assignments>
@@ -386,11 +402,33 @@
             <elementReference>getLead.Moody_s_Risk_Calc__c</elementReference>
         </value>
     </choices>
+    <collectionProcessors>
+        <description>If the lead is qualified for the Partner Selected SSS (indicated in SSS_Selected_by_Partner__c on Lead), the resulting array from this element should not be null. If not null, this prevents a user of this flow from being able to manually select SSSes to apply this lead to in a subsequent screen.</description>
+        <name>Partner_SSS_Available</name>
+        <elementSubtype>FilterCollectionProcessor</elementSubtype>
+        <label>Determine if Partner Selected System Available</label>
+        <locationX>2294</locationX>
+        <locationY>1118</locationY>
+        <assignNextValueToReference>currentItem_Partner_SSS_Available_0</assignNextValueToReference>
+        <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
+        <collectionReference>orderedSSSList</collectionReference>
+        <conditionLogic>and</conditionLogic>
+        <conditions>
+            <leftValueReference>currentItem_Partner_SSS_Available_0.Id</leftValueReference>
+            <operator>EqualTo</operator>
+            <rightValue>
+                <elementReference>getLead.SSS_Selected_by_Partner__c</elementReference>
+            </rightValue>
+        </conditions>
+        <connector>
+            <targetReference>Set_Variables_For_Selection_Screen</targetReference>
+        </connector>
+    </collectionProcessors>
     <decisions>
         <name>Check_Qualification</name>
         <label>Check Lead Status</label>
         <locationX>2294</locationX>
-        <locationY>1478</locationY>
+        <locationY>1718</locationY>
         <defaultConnector>
             <targetReference>showLeadStatusInvalid</targetReference>
         </defaultConnector>
@@ -406,7 +444,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>scrQualifiedLead</targetReference>
+                <targetReference>Does_User_Choose_Systems</targetReference>
             </connector>
             <label>Qualified</label>
         </rules>
@@ -430,7 +468,7 @@
         <name>Determine_Results</name>
         <label>Determine Results</label>
         <locationX>1370</locationX>
-        <locationY>2174</locationY>
+        <locationY>2630</locationY>
         <defaultConnector>
             <targetReference>scrError_0_0</targetReference>
         </defaultConnector>
@@ -558,6 +596,31 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Does_User_Choose_Systems</name>
+        <label>Does User Choose Systems?</label>
+        <locationX>1370</locationX>
+        <locationY>1838</locationY>
+        <defaultConnector>
+            <targetReference>scrQualifiedLead</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Yes</defaultConnectorLabel>
+        <rules>
+            <name>No</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>numberOfPartnerSelectedSystemsInQualifiedList</leftValueReference>
+                <operator>GreaterThanOrEqualTo</operator>
+                <rightValue>
+                    <numberValue>1.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>partnerSelectedSystemVerify</targetReference>
+            </connector>
+            <label>No</label>
+        </rules>
+    </decisions>
+    <decisions>
         <description>If Lead is already converted, no need to try again</description>
         <name>IsConverted</name>
         <label>Is Lead Converted?</label>
@@ -617,7 +680,7 @@
         <name>Loop_Thru_Selected_Systems</name>
         <label>Loop Thru Selected Systems</label>
         <locationX>1370</locationX>
-        <locationY>1718</locationY>
+        <locationY>2174</locationY>
         <collectionReference>selectedSSSList</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -671,7 +734,7 @@
         <name>Get_UALs_For_Incomplete</name>
         <label>Get UALs For Incomplete</label>
         <locationX>1106</locationX>
-        <locationY>2294</locationY>
+        <locationY>2750</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Resolve_UALs_Before_Conversion_0_0</targetReference>
@@ -697,7 +760,7 @@
         <name>Get_UALs_For_No_Demand</name>
         <label>Get UALs For No Demand</label>
         <locationX>1898</locationX>
-        <locationY>2414</locationY>
+        <locationY>2870</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>scrNoDemandCapacity</targetReference>
@@ -731,7 +794,7 @@
         <name>Get_Utility</name>
         <label>Get Utility</label>
         <locationX>1898</locationX>
-        <locationY>2294</locationY>
+        <locationY>2750</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_UALs_For_No_Demand</targetReference>
@@ -773,7 +836,7 @@
         <name>Lead_After_Qualification</name>
         <label>Get Updated Lead</label>
         <locationX>2294</locationX>
-        <locationY>1358</locationY>
+        <locationY>1598</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Check_Qualification</targetReference>
@@ -809,7 +872,7 @@
         <name>appIncompleteScr</name>
         <label>Application Incomplete Screen</label>
         <locationX>842</locationX>
-        <locationY>2294</locationY>
+        <locationY>2750</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -825,7 +888,7 @@
         <name>invalidEmailScr</name>
         <label>Invalid Email Screen</label>
         <locationX>1370</locationX>
-        <locationY>2294</locationY>
+        <locationY>2750</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -838,10 +901,79 @@
         <showHeader>false</showHeader>
     </screens>
     <screens>
+        <name>partnerSelectedSystemVerify</name>
+        <label>Qualified - Confirm Partner Selection</label>
+        <locationX>1238</locationX>
+        <locationY>1958</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Loop_Thru_Selected_Systems</targetReference>
+        </connector>
+        <fields>
+            <name>previewHeaderText_0</name>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;strong style=&quot;font-size: 20px; color: rgb(25, 153, 40);&quot;&gt;CONFIRM PARTNER SELECTED SYSTEM&lt;/strong&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>qualificationPreviewHelptext_0</name>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;The Partner indicated they would like this deal to be placed on a specific project. The &lt;/span&gt;&lt;strong style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;first&lt;/strong&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt; row of the table below represents the Partner&apos;s selection. This system will be prioritized during conversion. Please confirm the Partner&apos;s selection.&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;strong style=&quot;color: rgb(255, 0, 0); background-color: rgb(255, 255, 255);&quot;&gt;NOTE&lt;/strong&gt;&lt;strong style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;: &lt;/strong&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;All projects available for conversion are selected by default. This is to ensure that large customers can be subscribed to multiple Systems if needed. It is recommended, but not required, for all rows in the table below to be selected.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>tableSSSPreview_0</name>
+            <dataTypeMappings>
+                <typeName>T</typeName>
+                <typeValue>Shared_Solar_System__c</typeValue>
+            </dataTypeMappings>
+            <extensionName>c:datatable</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>objectName</name>
+                <value>
+                    <stringValue>Shared_Solar_System__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnFields</name>
+                <value>
+                    <stringValue>Name,Product__c,Utility__c,Capacity_Available_to_be_Reserved__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnWidths</name>
+                <value>
+                    <stringValue>Name:249, Product__c:249, Utility__c:249, Capacity_Available_to_be_Reserved__c:249</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>tableData</name>
+                <value>
+                    <elementReference>orderedSSSList</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>preSelectedRows</name>
+                <value>
+                    <elementReference>orderedSSSList</elementReference>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>selectedSSSList</assignToReference>
+                <name>outputSelectedRows</name>
+            </outputParameters>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
         <name>Qualification_Preview</name>
         <label>Qualification Preview</label>
         <locationX>2294</locationX>
-        <locationY>1118</locationY>
+        <locationY>1358</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -925,7 +1057,7 @@
         <name>Resolve_UALs_Before_Conversion_0_0</name>
         <label>UALs Incomplete</label>
         <locationX>1106</locationX>
-        <locationY>2414</locationY>
+        <locationY>2870</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1016,7 +1148,7 @@
         <name>scrError_0</name>
         <label>Error Screen</label>
         <locationX>314</locationX>
-        <locationY>2774</locationY>
+        <locationY>3230</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1032,7 +1164,7 @@
         <name>scrError_0_0</name>
         <label>Error Screen</label>
         <locationX>2426</locationX>
-        <locationY>2294</locationY>
+        <locationY>2750</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1048,7 +1180,7 @@
         <name>scrFinish_0</name>
         <label>Finish</label>
         <locationX>2162</locationX>
-        <locationY>2414</locationY>
+        <locationY>2870</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1064,7 +1196,7 @@
         <name>scrNoDemandCapacity</name>
         <label>No Demand Capacity</label>
         <locationX>1898</locationX>
-        <locationY>2534</locationY>
+        <locationY>2990</locationY>
         <allowBack>true</allowBack>
         <allowFinish>false</allowFinish>
         <allowPause>false</allowPause>
@@ -1110,7 +1242,7 @@
         <name>scrProducts_Do_Not_Match_0_0</name>
         <label>Products Do Not Match</label>
         <locationX>1634</locationX>
-        <locationY>2294</locationY>
+        <locationY>2750</locationY>
         <allowBack>true</allowBack>
         <allowFinish>false</allowFinish>
         <allowPause>false</allowPause>
@@ -1125,8 +1257,8 @@
     <screens>
         <name>scrQualifiedLead</name>
         <label>Qualified - Select Systems</label>
-        <locationX>1370</locationX>
-        <locationY>1598</locationY>
+        <locationX>1502</locationX>
+        <locationY>1958</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1195,7 +1327,7 @@
         <name>showLeadStatus</name>
         <label>Unqualified</label>
         <locationX>2954</locationX>
-        <locationY>1598</locationY>
+        <locationY>1838</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1246,7 +1378,7 @@
         <name>showLeadStatusInvalid</name>
         <label>Bad Lead Status</label>
         <locationX>3218</locationX>
-        <locationY>1598</locationY>
+        <locationY>1838</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1262,7 +1394,7 @@
         <name>testLeadScr</name>
         <label>Invalid Email Screen</label>
         <locationX>578</locationX>
-        <locationY>2294</locationY>
+        <locationY>2750</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1451,7 +1583,7 @@
         <name>Log_Errors_0</name>
         <label>Log Errors</label>
         <locationX>314</locationX>
-        <locationY>2534</locationY>
+        <locationY>2990</locationY>
         <connector>
             <targetReference>Update_Screen_Before_Error_0</targetReference>
         </connector>
@@ -1498,6 +1630,14 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>currentItem_Partner_SSS_Available_0</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Shared_Solar_System__c</objectType>
     </variables>
     <variables>
         <name>currentLoadZone</name>
@@ -1564,6 +1704,14 @@
         <isInput>false</isInput>
         <isOutput>true</isOutput>
         <objectType>Lead</objectType>
+    </variables>
+    <variables>
+        <name>numberOfPartnerSelectedSystemsInQualifiedList</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
     </variables>
     <variables>
         <name>numberOfQualifyingSystemsForLead</name>

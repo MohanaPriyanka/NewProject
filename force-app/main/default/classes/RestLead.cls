@@ -39,6 +39,8 @@ public without sharing class RestLead {
     public Datetime mostRecentContractGen;  // used in SSF only
     public Date birthdate;
     public Boolean replacementCapacity;
+    public String partnerSystemSelection;
+    public String partnerComments;
 
     @TestVisible private static FeatureService featureService = new FeatureService();
     @TestVisible private static PerchOneLocationService locationService = new PerchOneLocationService();
@@ -79,6 +81,8 @@ public without sharing class RestLead {
         this.noPayment = lead.No_Payment__c;
         this.birthdate = lead.LASERCA__Birthdate__c;
         this.replacementCapacity = lead.Replacement_Capacity__c;
+        this.partnerSystemSelection = lead.SSS_Selected_by_Partner__c;
+        this.partnerComments = lead.Partner_Comments__c;
     }
 
     public void validateCreateFields() {
@@ -99,7 +103,6 @@ public without sharing class RestLead {
         Util.validateStrings(requiredFields);
         validateApplicationType();
     }
-
 
     private void validateApplicationType() {
         List<String> validApplicationTypes = new List<String>{
@@ -181,7 +184,9 @@ public without sharing class RestLead {
             No_Payment__c = this.noPayment,
             Utility_relationship__c = this.utilityId,
             LASERCA__Birthdate__c = this.birthdate,
-            Replacement_Capacity__c = this.replacementCapacity == null ? false : this.replacementCapacity
+            Replacement_Capacity__c = this.replacementCapacity == null ? false : this.replacementCapacity,
+            SSS_Selected_by_Partner__c = this.partnerSystemSelection,
+            Partner_Comments__c = this.partnerComments
         );
         // Since:
         // - all UALs should have the same zip code under a property account (enforced by the UI and business logic),
@@ -341,7 +346,6 @@ public without sharing class RestLead {
         public MergeService(RestLead restLead) {
             this.restLead = restLead;
         }
-
 
         /**
          * @description Used to merge in fields during PATCHes.  Any field that we expect to PATCH should be added to this method.

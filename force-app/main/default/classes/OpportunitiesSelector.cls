@@ -324,4 +324,13 @@ public without sharing class OpportunitiesSelector {
             WHERE Id = :opportunityId
         ];
     }
+
+    public List<Opportunity> getOppsByLead(Id leadId) {
+        return [
+            SELECT Id, Lead__r.SSS_Selected_by_Partner__c, Lead__r.Name, Lead__r.Partner_Account__r.Name,
+                Lead__r.Partner_Account__c
+            FROM Opportunity
+            WHERE Lead__c =: leadId
+        ];
+    }
 }

@@ -104,9 +104,9 @@ public with sharing class CSTestDataFactory {
         insert contractDocumentLinks;
     }
 
-    public void insertOpenUCBSystem() {
+    public void insertOpenUCBSystem(String name, String assignmentOrder) {
         Shared_Solar_System__c openUCBSystem = new Shared_Solar_System__c(
-            Name = 'Project A Oak Road',
+            Name = name,
             Service_Territory__c = 'SEMA',
             Billing_Method__c = 'NMC',
             Open__c = true,
@@ -117,7 +117,7 @@ public with sharing class CSTestDataFactory {
             Perch_Acq_Reserved_Small_CS_Capacity__c = 1445.86,
             Total_System_Size_kW_AC__c = 996,
             Credit_Score_Requirement__c = 200,
-            Assignment_Order__c = '1',
+            Assignment_Order__c = assignmentOrder,
             Utility_NMC_Tariff__c = getTariffForProduct(),
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
@@ -174,6 +174,17 @@ public with sharing class CSTestDataFactory {
         salesRepId = salesRep.Id;
         partner.Default_Sales_Rep__c = salesRep.Id;
         update partner;
+
+        // Insert sales rep contact
+        Contact salesRepContact = new Contact(
+            Admin_User__c = true,
+            FirstName = 'Default',
+            LastName = 'Rep',
+            AccountId = partnerAccountId,
+            Partner_Lookup__c = partner.Id,
+            Email = 'test.email@gmail.com'
+        );
+        insert salesRepContact;
 
         // Insert System Properties configuration with default partner set and fine logging enabled
         insert new System_Properties__c(

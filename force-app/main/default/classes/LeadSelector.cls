@@ -32,6 +32,7 @@ public without sharing class LeadSelector {
         'Parcel_Zip__c',
         'Partner_lookup__c',
         'Partner_Email__c',
+        'Partner_Comments__c',
         'Phone',
         'PostalCode',
         'Privacy_Policy_Acknowledged__c',
@@ -40,6 +41,7 @@ public without sharing class LeadSelector {
         'Referral_Name__c',
         'Referral_Email__c',
         'Replacement_Capacity__c',
+        'SSS_Selected_by_Partner__c',
         'Status',
         'State',
         'Street',
@@ -75,7 +77,6 @@ public without sharing class LeadSelector {
         'Annual_kWh__c',
         'Annual_Cost_of_Electricity__c'
     };
-
 
     public static List<Lead> selectConvertedByIds(List<Id> leadIds) {
         return [
@@ -141,6 +142,7 @@ public without sharing class LeadSelector {
                 No_Payment__c,
                 Parcel_Zip__c,
                 Parent_Account__c,
+                Partner_Comments__c,
                 Partner_Email__c,
                 Partner_Account__c,
                 Partner_Account__r.Name,
@@ -163,6 +165,7 @@ public without sharing class LeadSelector {
                 Replacement_Capacity__c,
                 Sales_Person__c,
                 Selected_SSS_For_Conversion__c,
+                SSS_Selected_by_Partner__c,
                 State,
                 Status,
                 Street,
@@ -303,6 +306,7 @@ public without sharing class LeadSelector {
         return new Map<Id, Lead>([
             SELECT Id,Utility_relationship__c,EmailBouncedDate,Application_Complete_Date__c,IsConverted,LastName,
                 Selected_SSS_For_Conversion__c,Status,Product__c,LoadZone__c,Product__r.Ignore_Load_Zones_When_Qualifying__c,
+                SSS_Selected_by_Partner__c,
                 (SELECT Id, QC_Status__c, Annual_kWh__c, Annual_Cost_of_Electricity__c, Utility_Rate_Class__c,
                     Average_Demand__c, Exclude_from_Demand_Capacity__c
                  FROM Utility_Account_Logs__r

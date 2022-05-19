@@ -11,6 +11,7 @@ public without sharing class CSLeadsConverter implements Queueable {
     @TestVisible private static LeadSelector leadSelector = new LeadSelector();
     @TestVisible private static SharedSolarSystemsSelector systemsSelector = new SharedSolarSystemsSelector();
     @TestVisible private static UtilitySelector utilitySelector = new UtilitySelector();
+    @TestVisible private static UASSelector uasSelector = new UASSelector();
 
     private Map<Id, LeadConvertDetail> conversions = new Map<Id, LeadConvertDetail>();
     private List<Database.LeadConvert> conversionsReady;
@@ -89,7 +90,7 @@ public without sharing class CSLeadsConverter implements Queueable {
             throw new Util.BWException('Batch size set to null. Please set the value in System_Properties__c custom setting');
         }
         List<Id> leadIdsToProcess = new List<Id>(autoConvertLeads);
-        for (Integer i = leadIdsToProcess.size()-1; i >= batchSize; i--) {
+        for (Integer i = leadIdsToProcess.size() - 1; i >= batchSize; i--) {
             Id currentLeadId = leadIdsToProcess[i];
             leadIdsToProcess.remove(i);
             leadsForNextBatch.add(currentLeadId);
@@ -209,11 +210,13 @@ public without sharing class CSLeadsConverter implements Queueable {
     private void commitConversion() {
         List<Database.LeadConvertResult> results = Database.convertLead(conversionsReady, false);
         for (Database.LeadConvertResult result : results) {
+            LeadConvertDetail detail = conversions.get(result.getLeadId());
             if (!result.isSuccess()) {
-                LeadConvertDetail detail = conversions.get(result.getLeadId());
                 detail.error = CSLeadConversionValidator.CONVERSION_FAILURE;
                 detail.errorsEncountered.add(CSLeadConversionValidator.CONVERSION_FAILURE);
                 detail.errorMessage = result.getErrors().toString();
+            } else {
+                PartnerSystemSelectionNotifier.assessLeadPostConversion(detail.lead);
             }
         }
     }

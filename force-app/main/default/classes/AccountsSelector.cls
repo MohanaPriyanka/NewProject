@@ -290,4 +290,22 @@ public without sharing class AccountsSelector {
             WHERE Partner__c IN :partnerIds
         ]);
     }
+
+    public List<String> getPartnerAccountAdminContactEmails(Id partnerAccountId) {
+        List<String> emailAddresses = new List<String>();
+        List<Account> partnerAccounts = [
+            SELECT Id, (SELECT Id, Email FROM Contacts WHERE Email != NULL AND Admin_User__c = TRUE)
+            FROM Account
+            WHERE RecordType.Name = 'Partner Account'
+            AND Id =: partnerAccountId
+            LIMIT 1
+        ];
+        if (partnerAccounts.isEmpty()) {
+            return null;
+        }
+        for (Contact con : partnerAccounts[0].Contacts) {
+            emailAddresses.add(con.Email);
+        }
+        return emailAddresses;
+    }
 }
