@@ -239,7 +239,7 @@ build.properties
 .idea/dbnavigator.xml
 .idea/shelf
 .idea/misc.xml
-.idea/inspectionProfiles/Project_Default.xml
+.idea/inspectionProfiles/*
 .idea/vcs.xml
 
 # Sensitive or high-churn files:

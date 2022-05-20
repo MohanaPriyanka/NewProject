@@ -5,8 +5,8 @@
 public without sharing class CaseFactory implements Queueable {
 
     public static String ediErrorQCSubject = 'Upload Complete Utility Bill to Case - Need More Pages';
-    private Map<Object, SObject> recordTypeMap;
-    private Map<Object, SObject> groupMap;
+    private static Map<Object, SObject> recordTypeMap;
+    private static Map<Object, SObject> groupMap;
     public Set<Id> erroredUtilityDataRequestIds;
     private String queueType;
     private Lead lead;
@@ -16,9 +16,20 @@ public without sharing class CaseFactory implements Queueable {
     private Map<String, EDI_Error_Mapping__mdt> ediErrorMappings;
     @TestVisible private UtilityDataRequestSelector udrSelector = new UtilityDataRequestSelector();
     @TestVisible private CaseSelector caseSelector = new CaseSelector();
+    static {
+        List<RecordType> caseRecordTypes = [
+            SELECT Id, Name, DeveloperName
+            FROM RecordType
+            WHERE SobjectType = 'Case'
+        ];
+        recordTypeMap = CollectionUtil.mapByField(caseRecordTypes, RecordType.DeveloperName);
 
-    public CaseFactory() {
-        queryForRecordTypesAndQueues();
+        List<Group> assignmentGroups = [
+            SELECT Id, DeveloperName
+            FROM Group
+            WHERE Type = 'Queue'
+        ];
+        groupMap = CollectionUtil.mapByField(assignmentGroups, Group.DeveloperName);
     }
 
     /**
@@ -91,23 +102,6 @@ public without sharing class CaseFactory implements Queueable {
             }
         }
         return newCase;
-    }
-
-    @SuppressWarnings('PMD.ApexCRUDViolation')
-    private void queryForRecordTypesAndQueues() {
-        List<RecordType> caseRecordTypes = [
-            SELECT Id, Name, DeveloperName
-            FROM RecordType
-            WHERE SobjectType = 'Case'
-        ];
-        recordTypeMap = CollectionUtil.mapByField(caseRecordTypes, RecordType.DeveloperName);
-
-        List<Group> assignmentGroups = [
-            SELECT Id, DeveloperName
-            FROM Group
-            WHERE Type = 'Queue'
-        ];
-        groupMap = CollectionUtil.mapByField(assignmentGroups, Group.DeveloperName);
     }
 
     /**

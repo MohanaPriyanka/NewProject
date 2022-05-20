@@ -10,7 +10,7 @@
  * https://developer.salesforce.com/forums/?id=906F00000008yXCIAY
  * Harry's version includes full functionality including status object adn other DML operations
  * 
- * Tested By: PostSandboxRefresherTest
+ * Tested By: GenericBatchDMLOperationTest
  *************************************************************************************/
 
 public without sharing class GenericBatchDMLOperation implements Database.Batchable<SObject>,Database.Stateful {
@@ -20,6 +20,7 @@ public without sharing class GenericBatchDMLOperation implements Database.Batcha
     private List<SObject> sobjList = new List<SObject>();
     private String log = '';
     public List<String> triggersToDisable = new List<String>();
+    public SObjectField externalIdForUpsert;
     private LeadConvertOption leadConvertOption;
     private String postBatchOperationClass;
 
@@ -61,11 +62,7 @@ public without sharing class GenericBatchDMLOperation implements Database.Batcha
             } when 'Update' {
                 resultList = saveResult2GR(Database.update(scope, false));
             } when 'Upsert' {
-                // Unfortunately, upsert with a field specification requires a concrete SObject type,
-                // so this isn't quite Generic.
-                // https://success.salesforce.com/ideaView?id=08730000000aNhVAAU
-                // Added upsert with externalID for EnergyUsageUpdateTriggerHandler
-                resultList = handleUpsertWithExternalIds(scope);
+                resultList = upsertResult2GR(Database.upsert(scope, externalIdForUpsert, false));
             } when 'Delete' {
                 resultList = deleteResult2GR(Database.delete(scope, false));
             } when 'Convert' {
@@ -104,18 +101,6 @@ public without sharing class GenericBatchDMLOperation implements Database.Batcha
         resultList = leadConvertResult2GR(Database.convertLead(leadConverts, false));
         return resultList;
     }
-
-    private List<GenericResult> handleUpsertWithExternalIds(List<SObject> scope) {
-        List<GenericResult> resultList = new List<GenericResult>();
-        if (scope.getSObjectType().getDescribe().getName() == 'Journal_Entry__c') {
-            Schema.SObjectField externalId = Journal_Entry__c.External_Id__c;
-            resultList = upsertResult2GR(Database.upsert((List<Journal_Entry__c>) scope, externalId, false));
-        } else {
-            resultList = upsertResult2GR(Database.upsert(scope, false));
-        }
-        return resultList;
-    }
-
 
     public interface PostBatchOperation {
         Object executePostBatch();

@@ -153,7 +153,9 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         upsertAndDeleteJournalEntries(queriedJournalEntriesByExternalId, existingEntries, periodCloseDate);
 
         delete entriesSafeToDelete;
-        upsert reconciliationItems External_Id__c;
+        GenericBatchDMLOperation batchCaseUpsert = new GenericBatchDMLOperation(reconciliationItems, 'Upsert');
+        batchCaseUpsert.externalIdForUpsert = Case.External_Id__c;
+        Database.executeBatch(batchCaseUpsert);
 
         if (entriesToUpsert.size() > 200) {
             GenericBatchDMLOperation batchDMLOperation = new GenericBatchDMLOperation(entriesToUpsert, 'Upsert');

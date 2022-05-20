@@ -1,6 +1,6 @@
 /**
  * Created by peteryao on 1/31/20.
- * Tested By: PostSandboxRefresherTest
+ * Tested By: GenericBatchDMLOperationTest
  */
 
 public with sharing class InvocableBatchLeadConverter {
