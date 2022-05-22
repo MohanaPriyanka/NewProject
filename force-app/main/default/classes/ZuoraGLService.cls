@@ -159,6 +159,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
 
         if (entriesToUpsert.size() > 200) {
             GenericBatchDMLOperation batchDMLOperation = new GenericBatchDMLOperation(entriesToUpsert, 'Upsert');
+            batchDMLOperation.externalIdForUpsert = Journal_Entry__c.External_Id__c;
             batchDMLOperation.setPostBatchOperation(postBatchClass);
             Database.executeBatch(batchDMLOperation);
         } else {
