@@ -214,6 +214,7 @@ pip-log.txt
 
 #OSX-specific exclusions
 .[dD][sS]_[sS]tore
+*__MACOSX*
 
 # Sublime
 *.sublime-project
