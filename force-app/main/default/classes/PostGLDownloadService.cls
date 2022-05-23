@@ -10,7 +10,7 @@ public without sharing class PostGLDownloadService implements GenericBatchDMLOpe
 
         ProductionToBillService productionService = new ProductionToBillService();
         productionService.opType = ProductionToBillService.OperationType.BILL;
-        productionService.execute(null);
+        System.enqueueJob(productionService);
         return null;
     }
 }
