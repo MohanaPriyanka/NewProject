@@ -14466,6 +14466,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Lead.SSS_Selected_by_Partner__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Lead.SREC_Product__c</field>
         <readable>true</readable>
     </fieldPermissions>

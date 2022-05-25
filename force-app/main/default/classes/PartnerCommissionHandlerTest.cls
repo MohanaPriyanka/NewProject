@@ -209,6 +209,10 @@ public class PartnerCommissionHandlerTest {
     private static void testOpportunityTriggers() {
         Util.disableAllTriggers();
         UtilityAccountSubscriptionHandlerTest.setupData();
+        FeatureService.Mock mockFeatureService = new FeatureService.Mock(new Map<String,Boolean>{
+            'New_Partner_Commission_Generator' => false // Legacy test case
+        });
+        OpportunityTriggerHandler.featureService = (FeatureService) Test.createStub(FeatureService.class, mockFeatureService);
 
         List<Opportunity> opportunities = [
                 SELECT Id, Partner_tag_lookup__c, Product__c
@@ -461,6 +465,10 @@ public class PartnerCommissionHandlerTest {
 
     @IsTest
     private static void testQueueCalculatePartnerCommission() {
+        FeatureService.Mock mockFeatureService = new FeatureService.Mock(new Map<String,Boolean>{
+            'New_Partner_Commission_Generator' => false // Cover legacy test case
+        });
+        OpportunityTriggerHandler.featureService = (FeatureService) Test.createStub(FeatureService.class, mockFeatureService);
         Test.startTest();
         PartnerCommissionHandler handler = new PartnerCommissionHandler();
         handler.queueCalculatePartnerCommission(null);

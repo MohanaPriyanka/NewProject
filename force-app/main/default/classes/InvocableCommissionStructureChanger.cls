@@ -61,10 +61,7 @@ public class InvocableCommissionStructureChanger {
         updateOpportunity();
         if (!opp.Commission_Payments__r.isEmpty()) {
             if (featureService.isEnabled('New_Partner_Commission_Generator')) {
-                PartnerCommissionCalculator calculator = new PartnerCommissionCalculator(opp.Id);
-                calculator.calculate();
-                commissionPaymentUOW.registerDirty(calculator.getUpsertList());
-                commissionPaymentUOW.commitWork();
+                updateCommissionPayments();
             } else {
                 PartnerCommissionHandler.invokeCommissionStructureChange(new List<Id>{opp.Id});
             }
@@ -86,4 +83,14 @@ public class InvocableCommissionStructureChanger {
         oppUOW.commitWork();
     }
 
+    private void updateCommissionPayments() {
+        PartnerCommissionCalculator calculator = new PartnerCommissionCalculator(opp.Id);
+        calculator.calculate();
+        List<Commission_Payment__c> paymentsToUpdate = calculator.getUpsertList();
+        for (Commission_Payment__c payment : paymentsToUpdate) {
+            payment.Commission_Structure__c = newCommissionStructureId;
+        }
+        commissionPaymentUOW.registerDirty(paymentsToUpdate);
+        commissionPaymentUOW.commitWork();
+    }
 }

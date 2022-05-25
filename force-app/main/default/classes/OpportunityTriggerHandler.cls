@@ -4,6 +4,7 @@
  */
 public without sharing class OpportunityTriggerHandler {
 
+    @TestVisible private static FeatureService featureService = new FeatureService();
     @TestVisible private static PartnerCommissionHandler partnerCommissionHandler = new PartnerCommissionHandler();
     private static CustomerPortalActivator customerPortalActivator = new CustomerPortalActivator();
     private static Id csRecordTypeId = SObjectType.Opportunity.getRecordTypeInfosByName().get('Community Solar').getRecordTypeId();
@@ -125,6 +126,9 @@ public without sharing class OpportunityTriggerHandler {
     }
 
     private void createPartnerCommission(Map<Id, Opportunity> oldOpps, Map<Id, Opportunity> newOpps) {
+        if (featureService.isEnabled('New_Partner_Commission_Generator')) {
+            return;
+        }
         Set<Id> opportunityIdSet = new Set<Id>();
         for (Opportunity newOpp : newOpps.values()) {
             Opportunity oldOpp = oldOpps.get(newOpp.Id);

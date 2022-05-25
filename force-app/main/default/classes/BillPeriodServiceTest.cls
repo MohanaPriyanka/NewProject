@@ -292,9 +292,12 @@ private class BillPeriodServiceTest {
 
     @IsTest
     private static void testCreateUCBCommissionsAfterBillPeriodUpdate() {
+        FeatureService.Mock mockFeatureService = new FeatureService.Mock(new Map<String,Boolean>{
+            'New_Partner_Commission_Generator' => false // Cover legacy test case
+        });
+        BillPeriodService.featureService = (FeatureService) Test.createStub(FeatureService.class, mockFeatureService);
         BillPeriodService.commissionService =
             (PartnerCommissionService) Test.createStub(PartnerCommissionService.class, new MockPartnerCommissionService());
-
         BillPeriodService.uasbSelector =
             (UASBSelector) Test.createStub(UASBSelector.class, new MockUASBSelector(null, System.today()));
         BillPeriodService.uow = new fflib_SObjectUnitOfWork(
@@ -375,5 +378,4 @@ private class BillPeriodServiceTest {
             return null;
         }
     }
-
 }

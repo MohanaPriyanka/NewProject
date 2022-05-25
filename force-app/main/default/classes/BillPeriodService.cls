@@ -1,9 +1,8 @@
 /**
- * Created by SarahRenfro on 11/7/2019.
+ * @description Created by SarahRenfro on 11/7/2019.
  *
  * Tested By: BillPeriodServiceTest
  */
-
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public with sharing class BillPeriodService {
 
@@ -11,6 +10,7 @@ public with sharing class BillPeriodService {
     public Map<Id, Bill_Period__c> completedBillPeriods = new Map<Id, Bill_Period__c>();
     @TestVisible private OpportunityCommissionableDateSetter oppDateSetter;
 
+    @TestVisible private static FeatureService featureService = new FeatureService();
     @TestVisible private static ProductionService productionService = new ProductionService();
     @TestVisible private static UASBSelector uasbSelector = new UASBSelector();
     @TestVisible private static OpportunitiesSelector opportunitiesSelector = new OpportunitiesSelector();
@@ -150,7 +150,7 @@ public with sharing class BillPeriodService {
     }
 
     /**
-     * @description Updates First CS Bill Date for accounts that have this as their first transfer, and generates
+     * @description Updates First CS Bill Date for accounts that have this as their first transfer, and (legacy) generates
      * commissions for corresponding opportunities
      * @param transfers UCB Transfers
      * @return Set of opportunity Ids that are getting billed by the transfers, to be used as inputs for the
@@ -171,22 +171,30 @@ public with sharing class BillPeriodService {
             }
         }
 
-        List<Opportunity> opportunitiesForFirstBillSent = opportunitiesSelector.selectWithoutFirstInvoiceCommissionByOpp(opportunityIdsGettingBilled);
-        PartnerCommissionService.PendingCommission firstBillSent = new PartnerCommissionService.PendingCommission();
-        firstBillSent.opportunitiesToRun = opportunitiesForFirstBillSent;
-        firstBillSent.typeOfCommission = PartnerCommissionService.CommissionType.FIRSTBILLSENT;
-        commissionService.calculateCommissionRecords(firstBillSent, uow);
-
-        List<Opportunity> opportunitiesForFirstBillPaid = opportunitiesSelector.selectWithoutFirstPaymentCommissionByOpp(opportunityIdsGettingBilled);
-        PartnerCommissionService.PendingCommission firstBillPaid = new PartnerCommissionService.PendingCommission();
-        firstBillPaid.opportunitiesToRun = opportunitiesForFirstBillPaid;
-        firstBillPaid.typeOfCommission = PartnerCommissionService.CommissionType.FIRSTBILLPAID;
-        commissionService.calculateCommissionRecords(firstBillPaid, uow);
+        // LEGACY: Calculate commissions for related Opportunities. To be deprecated in the future.
+        legacyCalculateCommissions(
+            opportunitiesSelector.selectWithoutFirstInvoiceCommissionByOpp(opportunityIdsGettingBilled),
+            PartnerCommissionService.CommissionType.FIRSTBILLSENT
+        );
+        legacyCalculateCommissions(
+            opportunitiesSelector.selectWithoutFirstPaymentCommissionByOpp(opportunityIdsGettingBilled),
+            PartnerCommissionService.CommissionType.FIRSTBILLPAID
+        );
 
         oppDateSetter = new OpportunityCommissionableDateSetter(uasbs);
         oppDateSetter.executeForUCB();
 
         uow.commitWork();
         return opportunityIdsGettingBilled;
+    }
+
+    private void legacyCalculateCommissions(List<Opportunity> opps, PartnerCommissionService.CommissionType commissionType) {
+        if (featureService.isEnabled('New_Partner_Commission_Generator')) {
+            return;
+        }
+        PartnerCommissionService.PendingCommission legacyCommissionJob = new PartnerCommissionService.PendingCommission();
+        legacyCommissionJob.opportunitiesToRun = opps;
+        legacyCommissionJob.typeOfCommission = commissionType;
+        commissionService.calculateCommissionRecords(legacyCommissionJob, uow);
     }
 }

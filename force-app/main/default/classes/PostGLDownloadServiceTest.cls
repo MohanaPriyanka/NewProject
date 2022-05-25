@@ -1,7 +1,28 @@
 @IsTest
 private with sharing class PostGLDownloadServiceTest {
     @IsTest
-    private static void testExecutePostBatch() {
+    private static void testExecutePostBatchLegacyCommissions() {
+        FeatureService.Mock mockFeatureService = new FeatureService.Mock(new Map<String,Boolean>{
+            'New_Partner_Commission_Generator' => false
+        });
+        PostGLDownloadService.featureService = (FeatureService) Test.createStub(FeatureService.class, mockFeatureService);
+
+        PostGLDownloadService postGLDownloadService = new PostGLDownloadService();
+        Test.startTest();
+        postGLDownloadService.executePostBatch();
+        Test.stopTest();
+        List<Error_Log__c> errorLogs = [SELECT Message__c FROM Error_Log__c WHERE Severity__c = :Logger.ERROR];
+        System.assertEquals(0, errorLogs.size(),
+            'Expected no error logs with severity of error, but got this: ' + errorLogs);
+    }
+
+    @IsTest
+    private static void testExecutePostBatchNewCommissions() {
+        FeatureService.Mock mockFeatureService = new FeatureService.Mock(new Map<String,Boolean>{
+            'New_Partner_Commission_Generator' => true
+        });
+        PostGLDownloadService.featureService = (FeatureService) Test.createStub(FeatureService.class, mockFeatureService);
+
         UniversalMocker journalEntrySelectorMock = UniversalMocker.mock(JournalEntrySelector.class);
         Journal_Entry__c jeReadyForPD = new Journal_Entry__c(
             Date__c = System.today(),

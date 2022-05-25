@@ -17,6 +17,10 @@ public without sharing class OpportunityCommissionableDateSetter implements Gene
     private List<Opportunity> firstBillSentOpps = new List<Opportunity>();
     private List<Opportunity> firstBillPaidOpps = new List<Opportunity>();
 
+    @SuppressWarnings('PMD.EmptyStatementBlock')
+    public OpportunityCommissionableDateSetter() {
+    }
+
     /**
      * @description Intended for Opportunities which are paid
      * @param accountIds Account Ids to check all Opportunities where first bill dates are not yet set
