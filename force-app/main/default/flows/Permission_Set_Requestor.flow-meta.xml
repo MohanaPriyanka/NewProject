@@ -3,13 +3,14 @@
     <actionCalls>
         <name>Submit_Case_for_Approval</name>
         <label>Submit Case for Approval</label>
-        <locationX>1258</locationX>
-        <locationY>71</locationY>
+        <locationX>314</locationX>
+        <locationY>998</locationY>
         <actionName>submit</actionName>
         <actionType>submit</actionType>
         <connector>
             <targetReference>Confirmation</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>objectId</name>
             <value>
@@ -29,7 +30,7 @@
             </value>
         </inputParameters>
     </actionCalls>
-    <apiVersion>49.0</apiVersion>
+    <apiVersion>54.0</apiVersion>
     <choices>
         <name>Case</name>
         <choiceText>Case</choiceText>
@@ -39,18 +40,18 @@
         </value>
     </choices>
     <choices>
-        <name>Work_Request</name>
-        <choiceText>Work Request</choiceText>
+        <name>Jira_Ticket</name>
+        <choiceText>Jira Ticket</choiceText>
         <dataType>String</dataType>
         <value>
-            <stringValue>Work_Request</stringValue>
+            <stringValue>Jira_Ticket</stringValue>
         </value>
     </choices>
     <decisions>
         <name>Is_the_permission_set_already_assigned</name>
         <label>Is the permission set already assigned?</label>
-        <locationX>764</locationX>
-        <locationY>57</locationY>
+        <locationX>314</locationX>
+        <locationY>638</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Permission_set_is_already_assigned</name>
@@ -103,7 +104,7 @@
     <formulas>
         <name>CaseDescription</name>
         <dataType>String</dataType>
-        <expression>&quot;Reason for Permission: &quot;&amp; {!Why_do_you_need_this_permission} &amp; BR() &amp; &quot;Expiration Date:&quot;&amp;TEXT({!When_should_the_permission_set_access_expire})</expression>
+        <expression>&quot;Reason for Permission: &quot;&amp; {!Why_do_you_need_this_permission} &amp; BR() &amp; &quot;Expiration Date:&quot;&amp;TEXT({!When_should_the_permission_set_access_expire}) &amp; BR() &amp; &quot;Jira Ticket: &quot;&amp; {!Jira_Ticket_Number}</expression>
     </formulas>
     <formulas>
         <name>CaseSubject</name>
@@ -126,7 +127,7 @@
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>FREE_FORM_CANVAS</stringValue>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -139,8 +140,8 @@
     <recordCreates>
         <name>Create_Case</name>
         <label>Create Case</label>
-        <locationX>1096</locationX>
-        <locationY>55</locationY>
+        <locationX>314</locationX>
+        <locationY>878</locationY>
         <assignRecordIdToReference>varCaseId</assignRecordIdToReference>
         <connector>
             <targetReference>Submit_Case_for_Approval</targetReference>
@@ -211,19 +212,13 @@
                 <stringValue>Permissions Request</stringValue>
             </value>
         </inputAssignments>
-        <inputAssignments>
-            <field>agf__ADM_Work__c</field>
-            <value>
-                <elementReference>varRelatedWork</elementReference>
-            </value>
-        </inputAssignments>
         <object>Case</object>
     </recordCreates>
     <recordLookups>
         <name>Find_if_permission_set_already_exists</name>
         <label>Find if permission set already exists</label>
-        <locationX>632</locationX>
-        <locationY>50</locationY>
+        <locationX>314</locationX>
+        <locationY>518</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Is_the_permission_set_already_assigned</targetReference>
@@ -252,8 +247,8 @@
     <recordLookups>
         <name>Get_Contact_ID</name>
         <label>Get Contact ID</label>
-        <locationX>336</locationX>
-        <locationY>50</locationY>
+        <locationX>314</locationX>
+        <locationY>278</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Permission_Set_ID</targetReference>
@@ -274,8 +269,8 @@
     <recordLookups>
         <name>Get_Permission_Set_ID</name>
         <label>Get Permission Set ID</label>
-        <locationX>483</locationX>
-        <locationY>52</locationY>
+        <locationX>314</locationX>
+        <locationY>398</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Find_if_permission_set_already_exists</targetReference>
@@ -297,8 +292,8 @@
     <recordLookups>
         <name>Get_Queue_ID</name>
         <label>Get Queue ID</label>
-        <locationX>947</locationX>
-        <locationY>49</locationY>
+        <locationX>314</locationX>
+        <locationY>758</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Create_Case</targetReference>
@@ -320,8 +315,8 @@
     <screens>
         <name>Confirmation</name>
         <label>Confirmation</label>
-        <locationX>1253</locationX>
-        <locationY>336</locationY>
+        <locationX>314</locationX>
+        <locationY>1118</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -336,8 +331,8 @@
     <screens>
         <name>Permission_Requestor</name>
         <label>Permission Requestor</label>
-        <locationX>238</locationX>
-        <locationY>180</locationY>
+        <locationX>314</locationX>
+        <locationY>158</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -373,7 +368,7 @@
         <fields>
             <name>This_request_is_related_to_a</name>
             <choiceReferences>Case</choiceReferences>
-            <choiceReferences>Work_Request</choiceReferences>
+            <choiceReferences>Jira_Ticket</choiceReferences>
             <dataType>String</dataType>
             <fieldText>This request is related to a:</fieldText>
             <fieldType>RadioButtons</fieldType>
@@ -413,6 +408,7 @@
                     <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <outputParameters>
                 <assignToReference>varRelatedCase</assignToReference>
@@ -430,51 +426,18 @@
             </visibilityRule>
         </fields>
         <fields>
-            <name>RelatedWork</name>
-            <extensionName>flowruntime:lookup</extensionName>
-            <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>fieldApiName</name>
-                <value>
-                    <stringValue>agf__ADM_Work__c</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>label</name>
-                <value>
-                    <stringValue>Related Work Request</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>objectApiName</name>
-                <value>
-                    <stringValue>Case</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>recordId</name>
-                <value>
-                    <elementReference>varRelatedWork</elementReference>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>required</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </inputParameters>
+            <name>Jira_Ticket_Number</name>
+            <dataType>String</dataType>
+            <fieldText>Jira Ticket Number</fieldText>
+            <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
-            <outputParameters>
-                <assignToReference>varRelatedWork</assignToReference>
-                <name>recordId</name>
-            </outputParameters>
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
                 <conditions>
                     <leftValueReference>This_request_is_related_to_a</leftValueReference>
                     <operator>EqualTo</operator>
                     <rightValue>
-                        <elementReference>Work_Request</elementReference>
+                        <elementReference>Jira_Ticket</elementReference>
                     </rightValue>
                 </conditions>
             </visibilityRule>
@@ -485,8 +448,8 @@
     <screens>
         <name>Permission_set_already_assigned</name>
         <label>Permission set already assigned</label>
-        <locationX>772</locationX>
-        <locationY>279</locationY>
+        <locationX>50</locationX>
+        <locationY>758</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -499,8 +462,8 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>50</locationX>
-        <locationY>50</locationY>
+        <locationX>188</locationX>
+        <locationY>0</locationY>
         <connector>
             <targetReference>Permission_Requestor</targetReference>
         </connector>
@@ -567,13 +530,6 @@
     </variables>
     <variables>
         <name>varRelatedCase</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>varRelatedWork</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
