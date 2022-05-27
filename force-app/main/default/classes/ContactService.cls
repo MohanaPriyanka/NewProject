@@ -29,6 +29,9 @@ public with sharing class ContactService {
 
     @TestVisible
     private void updateZuoraContacts(List<ZuoraAPI.ZuoraContact> zuoraContacts) {
+        if (zuoraContacts.isEmpty()) {
+            return;
+        }
         ZuoraAPI.ActionItems actionItems = new ZuoraAPI.ActionItems();
         actionItems.type = 'Contact';
         actionItems.objects = zuoraContacts;
