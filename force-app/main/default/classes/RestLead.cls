@@ -15,6 +15,7 @@ public without sharing class RestLead {
     public String applicationType;
     public String customerType;
     public String streetAddress;
+    public String subpremise;
     public String city;
     public String state;
     public String zipCode;
@@ -41,6 +42,7 @@ public without sharing class RestLead {
     public Boolean replacementCapacity;
     public String partnerSystemSelection;
     public String partnerComments;
+    public Boolean hasUnverifiedAddress;
 
     @TestVisible private static FeatureService featureService = new FeatureService();
     @TestVisible private static PerchOneLocationService locationService = new PerchOneLocationService();
@@ -83,6 +85,7 @@ public without sharing class RestLead {
         this.replacementCapacity = lead.Replacement_Capacity__c;
         this.partnerSystemSelection = lead.SSS_Selected_by_Partner__c;
         this.partnerComments = lead.Partner_Comments__c;
+        this.hasUnverifiedAddress = lead.Unverified_Address__c;
     }
 
     public void validateCreateFields() {
@@ -159,11 +162,11 @@ public without sharing class RestLead {
             Phone = this.mobilePhone,
             Company = this.businessName,
             Application_Type__c = this.applicationType,
-            LASERCA__Home_Address__c = this.streetAddress,
+            LASERCA__Home_Address__c = this.subpremise != null && this.subpremise.length() > 0 ? this.streetAddress + ' ' + this.subpremise : this.streetAddress,
             LASERCA__Home_City__c = this.city,
             LASERCA__Home_State__c = this.state,
             LASERCA__Home_Zip__c = this.zipCode,
-            Street = this.streetAddress,
+            Street = this.subpremise != null && this.subpremise.length() > 0 ? this.streetAddress + ' ' + this.subpremise : this.streetAddress,
             City = this.city,
             State = BlueWaveParent.convertAbbreviationToState(this.state),
             PostalCode = this.zipCode,
@@ -186,7 +189,8 @@ public without sharing class RestLead {
             LASERCA__Birthdate__c = this.birthdate,
             Replacement_Capacity__c = this.replacementCapacity == null ? false : this.replacementCapacity,
             SSS_Selected_by_Partner__c = this.partnerSystemSelection,
-            Partner_Comments__c = this.partnerComments
+            Partner_Comments__c = this.partnerComments,
+            Unverified_Address__c = this.hasUnverifiedAddress == null ? false : this.hasUnverifiedAddress
         );
         // Since:
         // - all UALs should have the same zip code under a property account (enforced by the UI and business logic),
@@ -366,6 +370,8 @@ public without sharing class RestLead {
             if (fieldNames.contains('businessName')) baseLead.Company = restLead.businessName;
             if (fieldNames.contains('streetAddress')) baseLead.LASERCA__Home_Address__c = restLead.streetAddress;
             if (fieldNames.contains('streetAddress')) baseLead.Street = restLead.streetAddress;
+            if (fieldNames.contains('subpremise') && restLead.subpremise != null && restLead.subpremise.length() > 0) baseLead.LASERCA__Home_Address__c = restLead.streetAddress + ' ' + restLead.subpremise;
+            if (fieldNames.contains('subpremise') && restLead.subpremise != null && restLead.subpremise.length() > 0) baseLead.Street = restLead.streetAddress + ' ' + restLead.subpremise;
             if (fieldNames.contains('city')) baseLead.LASERCA__Home_City__c = restLead.city;
             if (fieldNames.contains('city')) baseLead.City = restLead.city;
             if (fieldNames.contains('state')) baseLead.LASERCA__Home_State__c = restLead.state;
@@ -386,6 +392,7 @@ public without sharing class RestLead {
             if (fieldNames.contains('birthdate')) baseLead.LASERCA__Birthdate__c = restLead.birthdate;
             if (fieldNames.contains('replacementCapacity')) baseLead.Replacement_Capacity__c = restLead.replacementCapacity;
             if (fieldNames.contains('partnerComments')) baseLead.Partner_Comments__c = restLead.partnerComments;
+            if (fieldNames.contains('hasUnverifiedAddress')) baseLead.Unverified_Address__c = restLead.hasUnverifiedAddress;
             restLead.updateDerivedFields(new RestLead(baseLead), baseLead);
 
             if (restLead.utilityId == null && restLead.eiaId != null) {
@@ -402,12 +409,14 @@ public without sharing class RestLead {
         public String email;
         public String name;
         public String billingStreet;
+        public String subpremise;
         public String billingCity;
         public String billingState;
         public String billingPostalCode;
         public String zuoraPaymentRefId;
         public Datetime zuoraPaymentRefIdExpirationDate;
         public List<RestUtilityAccountLog> utilityAccountLogs;
+        public Boolean hasUnverifiedAddress;
 
         @SuppressWarnings('PMD.EmptyStatementBlock')
         public RestPropertyAccount() {
@@ -423,6 +432,7 @@ public without sharing class RestLead {
             this.billingPostalCode = account.BillingPostalCode;
             this.zuoraPaymentRefId = account.Zuora_Payment_Ref_Id__c;
             this.zuoraPaymentRefIdExpirationDate = account.Zuora_Payment_Ref_Id_Expiration_Date__c;
+            this.hasUnverifiedAddress = account.Unverified_Address__c;
         }
 
         public Account asAccount(Lead lead) {
@@ -435,12 +445,13 @@ public without sharing class RestLead {
                 Product_Line__c = 'Community Solar',
                 RecordTypeId = recordType,
                 Electricity_Provider__c = lead.Utility_relationship__r.Id,
-                BillingStreet = billingStreet,
+                BillingStreet = subpremise != null && subpremise.length() > 0 ? billingStreet + ' ' + subpremise : billingStreet,
                 BillingCity = billingCity,
                 BillingState = BlueWaveParent.convertAbbreviationToState(billingState.toUpperCase()),
                 BillingPostalCode = billingPostalCode,
                 Zuora_Payment_Ref_Id__c = zuoraPaymentRefId,
-                Zuora_Payment_Ref_Id_Expiration_Date__c = zuoraPaymentRefIdExpirationDate
+                Zuora_Payment_Ref_Id_Expiration_Date__c = zuoraPaymentRefIdExpirationDate,
+                Unverified_Address__c = hasUnverifiedAddress == null ? false : hasUnverifiedAddress
             );
 
             return newAccount;
@@ -476,11 +487,13 @@ public without sharing class RestLead {
         public Account mergeFields(Set<String> fieldNames, Account baseAccount) {
             if (fieldNames.contains('name')) baseAccount.Name = this.name;
             if (fieldNames.contains('billingStreet')) baseAccount.BillingStreet = this.billingStreet;
+            if (fieldNames.contains('subpremise') && this.subpremise != null && this.subpremise.length() > 0) baseAccount.BillingStreet = this.billingStreet + ' ' + this.subpremise;
             if (fieldNames.contains('billingCity')) baseAccount.BillingCity = this.billingCity;
             if (fieldNames.contains('billingState')) baseAccount.BillingStateCode = this.billingState;
             if (fieldNames.contains('billingPostalCode')) baseAccount.BillingPostalCode = this.billingPostalCode;
             if (fieldNames.contains('zuoraPaymentRefId')) baseAccount.Zuora_Payment_Ref_Id__c = this.zuoraPaymentRefId;
             if (fieldNames.contains('zuoraPaymentRefIdExpirationDate')) baseAccount.Zuora_Payment_Ref_Id_Expiration_Date__c = this.zuoraPaymentRefIdExpirationDate;
+            if (fieldNames.contains('hasUnverifiedAddress')) baseAccount.Unverified_Address__c = this.hasUnverifiedAddress;
 
             return baseAccount;
         }
@@ -497,6 +510,7 @@ public without sharing class RestLead {
         public String podId;
         public String nameOnAccount;
         public String serviceStreet;
+        public String subpremise;
         public String serviceCity;
         public String serviceState;
         public String servicePostalCode;
@@ -506,6 +520,7 @@ public without sharing class RestLead {
         public List<RestContentDocument> utilityBills;
         public Decimal latitude;
         public Decimal longitude;
+        public Boolean hasUnverifiedAddress;
 
         public RestUtilityAccountLog() {
             this.utilityBills = new List<RestContentDocument>();
@@ -533,6 +548,9 @@ public without sharing class RestLead {
             this.rateClass = ual.Utility_Rate_Class__r.Name;
             this.annualKWh = ual.Annual_kWh__c;
             this.annualCostOfElectricity = ual.Annual_Cost_of_Electricity__c;
+            this.latitude = ual.Location__Latitude__s;
+            this.longitude = ual.Location__Longitude__s;
+            this.hasUnverifiedAddress = ual.Unverified_Address__c;
         }
 
         @SuppressWarnings('PMD.ApexCRUDViolation')
@@ -544,14 +562,15 @@ public without sharing class RestLead {
                 Name = utilityAccountNumber,
                 Premise_Number__c = podId,
                 Name_on_Account__c = nameOnAccount,
-                Service_Address__c = serviceStreet,
+                Service_Address__c = subpremise != null && subpremise.length() > 0 ? serviceStreet + ' ' + subpremise : serviceStreet,
                 Service_City__c = serviceCity,
                 Service_State__c = serviceState,
                 Service_Zip_Code__c = servicePostalCode,
                 Annual_kWh__c = annualKWh,
                 Annual_Cost_of_Electricity__c = annualCostOfElectricity,
                 Location__Latitude__s = latitude,
-                Location__Longitude__s = longitude
+                Location__Longitude__s = longitude,
+                Unverified_Address__c = hasUnverifiedAddress == null ? false : hasUnverifiedAddress
             );
 
             List<Lead> leadList = [SELECT Utility_relationship__c FROM Lead WHERE Id = :propertyAccount.Lead__c];
@@ -580,11 +599,15 @@ public without sharing class RestLead {
             if (fieldNames.contains('podId')) baseUAL.Premise_Number__c = this.podId;
             if (fieldNames.contains('nameOnAccount')) baseUAL.Name_on_Account__c = this.nameOnAccount;
             if (fieldNames.contains('serviceStreet')) baseUAL.Service_Address__c = this.serviceStreet;
+            if (fieldNames.contains('subpremise') && this.subpremise != null && this.subpremise.length() > 0) baseUAL.Service_Address__c = this.serviceStreet + ' ' + this.subpremise;
             if (fieldNames.contains('serviceCity')) baseUAL.Service_City__c = this.serviceCity;
             if (fieldNames.contains('serviceState')) baseUAL.Service_State__c = this.serviceState;
             if (fieldNames.contains('servicePostalCode')) baseUAL.Service_Zip_Code__c = this.servicePostalCode;
             if (fieldNames.contains('annualKWh')) baseUAL.Annual_kWh__c = this.annualKWh;
             if (fieldNames.contains('annualCostOfElectricity')) baseUAL.Annual_Cost_of_Electricity__c = this.annualCostOfElectricity;
+            if (fieldNames.contains('latitude')) baseUAL.Location__Latitude__s = this.latitude;
+            if (fieldNames.contains('longitude')) baseUAL.Location__Longitude__s = this.longitude;
+            if (fieldNames.contains('hasUnverifiedAddress')) baseUAL.Unverified_Address__c = this.hasUnverifiedAddress;
 
             if(fieldNames.contains('rateClass')) {
                 if(this.rateClass == null) {

@@ -12,14 +12,16 @@ import {
     validateUtilityAccountLog,
     handleUnderwritingChange,
     verifyUtilityAccountEntry,
-    validateServiceZipCode,
     findDuplicateUAL,
     verifyPODEntry,
     getText,
     submitApplication,
     validateContactEmail,
     handleAccountNumberInputMask,
-    handleValidateAccountNumber
+    handleValidateAccountNumber,
+    handleSetAddress,
+    handleUpdateAddresses,
+    addressFields
 } from 'c/ssfBasicInfoShared';
 
 export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
@@ -52,6 +54,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @track underwritingHelpTextVisible;
     @track disableUnderwritingFields = false;
     @track showModal;
+    @track showAddressValidationModal;
     @track duplicateLeadId;
     @track underwriting = 'FICO'; // Defaulted to FICO
     @track uanPrefix;
@@ -71,6 +74,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         companyPrivacyPolicyLink,
         companyShortName,
     }
+    addressFields = addressFields;
 
     connectedCallback() {
         onLoad(this);
@@ -175,21 +179,19 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         if (eventField === 'utilityAccountNumber' || eventField === 'utilityAccountNumberReentry') {
             handleAccountNumberInputMask(this, event, 'uan');
             verifyUtilityAccountEntry(this, event, eventField);
-        } else if (eventField === 'servicePostalCode' && event.target.value.length === 5) {
-            validateServiceZipCode(this, event);
         } else if (eventField === 'podId' || eventField === 'podIdReentry') {
             handleAccountNumberInputMask(this, event, 'podId');
             verifyPODEntry(this, event, eventField);
         }
     }
 
+    onSetAddressEvent(event) {
+        handleSetAddress(this, event);
+    }
+
     setAndValidateContactEmail(event) {
         this.restLead.email = event.target.value;
         validateContactEmail(this);
-    }
-
-    handleZipEntry(event) {
-        validateServiceZipCode(this, event);
     }
 
     validateUtilityAccount(event) {
@@ -272,6 +274,14 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
 
     toggleUnderwritingHelp() {
         this.underwritingHelpTextVisible = !this.underwritingHelpTextVisible;
+    }
+
+    onCloseModal(event) {
+        this[event.detail.field] = event.detail.value;
+    }
+
+    onUpdateAddresses(event) {
+        handleUpdateAddresses(this, event);
     }
 
     get formFactor() {

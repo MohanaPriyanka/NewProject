@@ -1,0 +1,19 @@
+/**
+ * Created by rebeccanachison on 5/13/22.
+ */
+
+.ssf-address-validation-modal__input-text {
+    font-size: .875rem;
+    font-family: 'ManropeSemiBold', 'Manrope', sans-serif;
+    font-weight: 700;
+}
+
+.ssf-address-validation-modal__result-wrapper {
+    margin-top: 20px;
+}
+
+.ssf-address-validation-modal__result-text {
+    /*match radio group styling*/
+    font-size: 0.8125rem;
+    margin-top: 4px;
+}

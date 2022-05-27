@@ -5,7 +5,8 @@
     <customButtons>Submit_Bill_Adjustment</customButtons>
     <customButtons>Open_in_Zuora</customButtons>
     <customButtons>Prep_for_delete</customButtons>
-    <excludeButtons>DataDotComCompanyHierarchy</excludeButtons>
+    <excludeButtons>DataDotComAccountInsights</excludeButtons>
+    <excludeButtons>DataDotComClean</excludeButtons>
     <excludeButtons>DisableCustomerPortalAccount</excludeButtons>
     <excludeButtons>DisablePartnerPortalAccount</excludeButtons>
     <excludeButtons>IncludeOffline</excludeButtons>
@@ -89,6 +90,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Phone</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Unverified_Address__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>

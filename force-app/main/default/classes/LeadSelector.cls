@@ -49,7 +49,8 @@ public without sharing class LeadSelector {
         'Underwriting_Criteria__c',
         'Utility_relationship__c',
         'Zuora_Payment_Ref_Id__c',
-        'Zuora_Payment_Ref_Id_Expiration_Date__c'
+        'Zuora_Payment_Ref_Id_Expiration_Date__c',
+        'Unverified_Address__c'
     };
 
     public List<String> apiPropertyAccountFields = new List<String>{
@@ -61,7 +62,8 @@ public without sharing class LeadSelector {
         'BillingStateCode',
         'BillingPostalCode',
         'Zuora_Payment_Ref_Id__c',
-        'Zuora_Payment_Ref_Id_Expiration_Date__c'
+        'Zuora_Payment_Ref_Id_Expiration_Date__c',
+        'Unverified_Address__c'
     };
 
     public List<String> apiUtilityAccountFields = new List<String>{
@@ -75,7 +77,10 @@ public without sharing class LeadSelector {
         'Service_State__c',
         'Service_Zip_Code__c',
         'Annual_kWh__c',
-        'Annual_Cost_of_Electricity__c'
+        'Annual_Cost_of_Electricity__c',
+        'Location__Latitude__s',
+        'Location__Longitude__s',
+        'Unverified_Address__c'
     };
 
     public static List<Lead> selectConvertedByIds(List<Id> leadIds) {
@@ -172,6 +177,7 @@ public without sharing class LeadSelector {
                 System_Assignment__c,
                 Underwriting_Criteria__c,
                 Unqualified_due_to_FICO__c,
+                Unverified_Address__c,
                 Utility_relationship__c,
                 Utility_relationship__r.Id,
                 Utility_relationship__r.EIA_ID__c,

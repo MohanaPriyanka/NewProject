@@ -1,0 +1,64 @@
+<!--
+ - Created by rebeccanachison on 4/22/22.
+ -->
+
+<!-- SSF Address -->
+<template>
+  <div class="input-group half">
+    <lightning-input
+      name={fieldNames.street}
+      data-name="street"
+      class="slds-var-m-bottom_small ssf-address__street_input"
+      label="Street"
+      value={street}
+      onchange={handleOnChange}
+      required={required}>
+    </lightning-input>
+  </div>
+  <div class="input-group half">
+    <lightning-input
+      name="subpremise"
+      data-name="subpremise"
+      class="slds-var-m-bottom_small ssf-address__street_input"
+      label="Apt/Suite"
+      value={subpremise}
+      onchange={handleOnChange}>
+    </lightning-input>
+  </div>
+  <div class="input-group half">
+    <lightning-input
+      name={fieldNames.city}
+      data-name="city"
+      class="slds-var-m-bottom_small"
+      label="City"
+      value={city}
+      onchange={handleOnChange}
+      required={required}>
+    </lightning-input>
+  </div>
+  <div class="input-group half">
+    <lightning-combobox
+      name={fieldNames.state}
+      data-name="state"
+      class="slds-var-m-bottom_small slds-col"
+      label="State"
+      options={stateOptions}
+      placeholder=""
+      value={state}
+      onchange={handleOnChange}
+      required={required}>
+    </lightning-combobox>
+  </div>
+  <div class="input-group half">
+    <lightning-input
+      name={fieldNames.zipCode}
+      data-name="zip"
+      class="slds-var-m-bottom_small"
+      label="ZIP Code"
+      value={zip}
+      onchange={handleOnChange}
+      onblur={validateUtilityZip}
+      required={required}>
+    </lightning-input>
+  </div>
+</template>

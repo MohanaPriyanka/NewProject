@@ -69,6 +69,10 @@
                 <behavior>Edit</behavior>
                 <field>Service_Zip_Code__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Unverified_Address__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

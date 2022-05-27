@@ -1,0 +1,70 @@
+<!--
+ - Created by rebeccanachison on 4/22/22.
+ -->
+
+<!-- SSF Address Validation Modal -->
+<template>
+  <template if:true={show}>
+    <!-- Modal/Popup Box LWC starts here -->
+    <div role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+      <div class="slds-modal__container">
+        <!-- Modal/Popup Box LWC header here -->
+        <header class="slds-modal__header">
+          <h4 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{title}</h4>
+        </header>
+        <!-- Modal/Popup Box LWC body starts here -->
+        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+          <h4>Please choose from the address options below:</h4>
+          <template for:each={suggestionSets} for:item="set">
+            <div
+              class="ssf-address-validation-modal__result-wrapper"
+              key={set.key}>
+              <h5>{set.name}</h5>
+              <p class="ssf-address-validation-modal__input-text">{set.input}</p>
+              <template if:true={set.hasResults}>
+                <lightning-radio-group
+                  name={set.key}
+                  options={set.results}
+                  value={set.firstResult}
+                  type="radio">
+                </lightning-radio-group>
+              </template>
+              <template if:false={set.hasResults}>
+                <p class="ssf-address-validation-modal__result-text">Could not locate the address as entered. Please try reentering.</p>
+                <lightning-input
+                  data-type="checkbox"
+                  type="checkbox"
+                  label="Use unverified address"
+                  name={set.key}>
+                </lightning-input>
+              </template>
+            </div >
+          </template>
+
+        </div>
+        <!-- Modal/Popup Box LWC footer starts here -->
+        <footer class="slds-modal__footer">
+          <div class={buttonContainerClass}>
+            <div class={closeButtonWrapperClass}>
+              <button
+                class={closeButtonClass}
+                onclick={closeModal}
+                title="Close">
+                Close
+              </button>
+            </div>
+            <div class={agreeButtonWrapperClass}>
+              <button
+                class={agreeButtonClass}
+                onclick={acceptSuggestions}
+                title="agree">
+                OK
+              </button>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+  </template>
+</template>

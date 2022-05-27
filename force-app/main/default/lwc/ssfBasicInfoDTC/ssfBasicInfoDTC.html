@@ -159,49 +159,23 @@
             <div class="form-section">
                 <template if:true={isFicoUnderwriting}>
                     <template if:false={sameHomeAddress}>
-                        <div class="input-group half">
-                            <lightning-input
-                              name="streetAddress"
-                              class="slds-var-m-bottom_small"
-                              label="Street"
-                              field-level-help="This address will be used to perform a soft credit pull, please be sure it is associated with you, and not a P.O. Box or business address."
-                              onchange={genericOnChange}
-                              value={restLead.streetAddress}
-                              required>
-                            </lightning-input>
-                        </div>
-                        <div class="input-group half">
-                            <lightning-input
-                              name="city"
-                              class="slds-var-m-bottom_small"
-                              label="City"
-                              onchange={genericOnChange}
-                              value={restLead.city}
-                              required>
-                            </lightning-input>
-                        </div>
-                        <div class="input-group half">
-                            <lightning-combobox
-                              name="state"
-                              class="slds-var-m-bottom_small slds-col"
-                              label="State"
-                              onchange={genericOnChange}
-                              options={stateOptions}
-                              placeholder=""
-                              value={restLead.state}
-                              required>
-                            </lightning-combobox>
-                        </div>
-                        <div class="input-group half">
-                            <lightning-input
-                              name="zipCode"
-                              class="slds-var-m-bottom_small"
-                              label="ZIP Code"
-                              onchange={genericOnChange}
-                              value={restLead.zipCode}
-                              required>
-                            </lightning-input>
-                        </div>
+                        <c-ssf-address
+                          class="form-section slds-p-around_none"
+                          data-object="restLead"
+                          object-name="restLead"
+                          street={restLead.streetAddress}
+                          subpremise={restLead.subpremise}
+                          city={restLead.city}
+                          state={restLead.state}
+                          zip={restLead.zipCode}
+                          field-names={addressFields.restLead}
+                          state-options={stateOptions}
+                          field-level-help="This address will be used to perform a soft credit pull, please be sure it is associated with you, and not a P.O. Box or business address."
+                          zip-code-input={zipinput}
+                          utility-zip-codes-served={zipCheckResponse.utilityZipCodesServed}
+                          onsetaddress={onSetAddressEvent}
+                          required>
+                        </c-ssf-address>
                     </template>
                     <div class="input-group half">
                         <lightning-input
@@ -222,49 +196,23 @@
             <h6>Billing Info<span class="blue-text">&nbsp;&gt;</span></h6>
             <div class="form-section">
                 <template if:false={sameBillingAddress}>
-                    <div class="input-group half">
-                        <lightning-input
-                          name="billingStreet"
-                          class="slds-var-m-bottom_small"
-                          label="Billing Street"
-                          field-level-help={billingInfoFieldLevelHelp}
-                          onchange={propertyAccountOnChange}
-                          value={propertyAccount.billingStreet}
-                          required>
-                        </lightning-input>
-                    </div>
-                    <div class="input-group half">
-                        <lightning-input
-                          name="billingCity"
-                          class="slds-var-m-bottom_small"
-                          label="City"
-                          onchange={propertyAccountOnChange}
-                          value={propertyAccount.billingCity}
-                          required>
-                        </lightning-input>
-                    </div>
-                    <div class="input-group half">
-                        <lightning-combobox
-                          name="billingState"
-                          class="slds-var-m-bottom_small slds-col"
-                          label="State"
-                          onchange={propertyAccountOnChange}
-                          options={stateOptions}
-                          placeholder=""
-                          value={propertyAccount.billingState}
-                          required>
-                        </lightning-combobox>
-                    </div>
-                    <div class="input-group half">
-                        <lightning-input
-                          name="billingPostalCode"
-                          class="slds-var-m-bottom_small"
-                          label="ZIP Code"
-                          onchange={propertyAccountOnChange}
-                          value={propertyAccount.billingPostalCode}
-                          required>
-                        </lightning-input>
-                    </div>
+                    <c-ssf-address
+                      class="form-section slds-p-around_none"
+                      data-object="propertyAccount"
+                      object-name="propertyAccount"
+                      street={propertyAccount.billingStreet}
+                      subpremise={propertyAccount.subpremise}
+                      city={propertyAccount.billingCity}
+                      state={propertyAccount.billingState}
+                      zip={propertyAccount.billingPostalCode}
+                      state-options={stateOptions}
+                      field-names={addressFields.propertyAccount}
+                      field-level-help={billingInfoFieldLevelHelp}
+                      zip-code-input={zipinput}
+                      utility-zip-codes-served={zipCheckResponse.utilityZipCodesServed}
+                      onsetaddress={onSetAddressEvent}
+                      required>
+                    </c-ssf-address>
                 </template>
                 <div class="input-group">
                     <lightning-input
@@ -285,12 +233,35 @@
                             <lightning-accordion-section key={it.value.localid} name={it.value.localid} label={it.value.name}>
                                 <template if:false={it.first}>
                                     <template if:false={it.value.doNotDelete}>
-                                        <lightning-button-menu name={it.index} key={it.value.localid} slot="actions" alternative-text="Show menu" icon-size="x-small" menu-alignment="auto" onselect={handleUtilityAccountMenu}>
-                                            <lightning-menu-item name={it.index} value="remove" label="Remove" ></lightning-menu-item>
+                                        <lightning-button-menu
+                                          name={it.index}
+                                          key={it.value.localid}
+                                          slot="actions"
+                                          alternative-text="Show menu"
+                                          icon-size="x-small"
+                                          menu-alignment="auto"
+                                          onselect={handleUtilityAccountMenu}>
+                                            <lightning-menu-item
+                                              name={it.index}
+                                              value="remove"
+                                              label="Remove">
+                                            </lightning-menu-item>
                                         </lightning-button-menu>
                                     </template>
                                 </template>
                                 <div class="form-section accordion" key={it.value.localid}>
+                                    <div class="input-group half ssf-basic-info__account-name-wrapper">
+                                        <lightning-input
+                                          key={it.value.localid}
+                                          name="nameOnAccount"
+                                          data-row-index={it.index}
+                                          class="slds-var-m-bottom_small"
+                                          label="Name on Account"
+                                          value={it.value.nameOnAccount}
+                                          onchange={utilityAccountOnChange}
+                                          required>
+                                        </lightning-input>
+                                    </div>
                                     <div class="input-group half">
                                         <lightning-input
                                             key={it.value.localid}
@@ -353,18 +324,6 @@
                                             </lightning-input>
                                         </div>
                                     </template>
-                                    <div class="input-group half">
-                                        <lightning-input
-                                            key={it.value.localid}
-                                            name="nameOnAccount"
-                                            data-row-index={it.index}
-                                            class="slds-var-m-bottom_small"
-                                            label="Name on Account"
-                                            value={it.value.nameOnAccount}
-                                            onchange={utilityAccountOnChange}
-                                            required>
-                                        </lightning-input>
-                                    </div>
                                     <template if:true={collectRateClass}>
                                         <div class="input-group half">
                                             <lightning-combobox
@@ -381,61 +340,28 @@
                                             </lightning-combobox>
                                         </div>
                                     </template>
-                                    <div class="input-group half">
-                                        <lightning-input
-                                            key={it.value.localid}
-                                            name="serviceStreet"
-                                            data-row-index={it.index}
-                                            class="slds-var-m-bottom_small"
-                                            label="Service Street Address"
-                                            field-level-help="Please ensure the service street address exactly matches what's found on your utility bill."
-                                            value={it.value.serviceStreet}
-                                            onchange={utilityAccountOnChange}
-                                            required>
-                                        </lightning-input>
-                                    </div>
-                                    <div class="input-group half">
-                                        <lightning-input
-                                            key={it.value.localid}
-                                            name="serviceCity"
-                                            data-row-index={it.index}
-                                            class="slds-var-m-bottom_small"
-                                            label="City"
-                                            value={it.value.serviceCity}
-                                            onchange={utilityAccountOnChange}
-                                            required>
-                                        </lightning-input>
-                                    </div>
-                                    <div class="input-group half">
-                                        <lightning-combobox
-                                            key={it.value.localid}
-                                            name="serviceState"
-                                            data-row-index={it.index}
-                                            class="slds-var-m-bottom_small slds-col"
-                                            placeholder=""
-                                            label="State"
-                                            value={it.value.serviceState}
-                                            onchange={utilityAccountOnChange}
-                                            options={stateOptions}
-                                            required>
-                                        </lightning-combobox>
-                                    </div>
-                                    <div class="input-group half">
-                                        <lightning-input
-                                          type="select"
-                                          key={it.value.localid}
-                                          name="servicePostalCode"
-                                          data-row-index={it.index}
-                                          data-ual-zip-index={it.index}
-                                          class="slds-var-m-bottom_small"
-                                          label="ZIP Code"
-                                          value={it.value.servicePostalCode}
-                                          max-length="5"
-                                          onchange={utilityAccountOnChange}
-                                          onblur={handleZipEntry}
-                                          required>
-                                        </lightning-input>
-                                    </div>
+                                    <c-ssf-address
+                                      key={it.value.localid}
+                                      data-row-index={it.index}
+                                      data-object="utilityAccountLog"
+                                      index={it.index}
+                                      class="form-section slds-p-around_none"
+                                      object-name="utilityAccountLog"
+                                      street={it.value.serviceStreet}
+                                      subpremise= {it.value.subpremise}
+                                      city={it.value.serviceCity}
+                                      state={it.value.serviceState}
+                                      zip={it.value.servicePostalCode}
+                                      latitude={it.value.latitude}
+                                      longitude={it.value.longitude}
+                                      field-names={addressFields.utilityAccountLog}
+                                      field-level-help="Please ensure the service street address exactly matches what's found on your utility bill."
+                                      zip-code-input={zipinput}
+                                      utility-zip-codes-served={zipCheckResponse.utilityZipCodesServed}
+                                      state-options={stateOptions}
+                                      onsetaddress={onSetAddressEvent}
+                                      required>
+                                    </c-ssf-address>
                                     <template if:true={it.value.showUpload}>
                                         <div class="input-group half">
                                             <c-ssf-file-upload
@@ -471,7 +397,10 @@
                                     </template>
                                     <div class="input-group">
                                         <template if:true={it.last}>
-                                            <div class="combo-button" title="Add another Utility Account" onclick={addAnotherUtilityAccount}>
+                                            <div
+                                              class="combo-button"
+                                              title="Add another Utility Account"
+                                              onclick={addAnotherUtilityAccount}>
                                                 <svg class="combo-button__icon" aria-hidden="true">
                                                     <use xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg#new"></use>
                                                 </svg>
@@ -513,4 +442,11 @@
     <template if:true={showModal}>
          <c-duplicate-modal show={showModal} lead-id={duplicateLeadId} ></c-duplicate-modal>
     </template>
+
+    <!-- ADDRESS VALIDATION MODAL -->
+    <c-ssf-address-validation-modal
+      show={showAddressValidationModal}
+      onupdateaddresses={onUpdateAddresses}
+      onclosemodal={onCloseModal}>
+    </c-ssf-address-validation-modal>
 </template>

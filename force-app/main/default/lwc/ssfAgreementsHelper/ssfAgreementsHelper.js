@@ -106,7 +106,7 @@ const consentsComplete = async (component) => {
             });
             component.dispatchEvent(consentsCompleteEvent);
         } catch (error) {
-            postErrorLogEvent(component, error, null,'ssfAgreementsShared', 'consentsComplete', 'Error');
+            postErrorLogEvent(component, error, null,'ssfAgreementsHelper', 'consentsComplete', 'Error');
             showWarningToast(
                 component,
                 'Oops',
@@ -213,7 +213,7 @@ const getContractDocuments = (component) => {
                 'Sorry, we ran into a technical issue. Please try again by clicking “Next” or contact our Customer Care team.'
             );
             let errContext = `Unexpected error occurred for Lead ${component.lead.id}`;
-            postErrorLogEvent(component, error, errContext, 'ssfAgreementsShared', 'getContractDocuments', 'Error');
+            postErrorLogEvent(component, error, errContext, 'ssfAgreementsHelper', 'getContractDocuments', 'Error');
         });
     }, 2000);
     component.documentPollerTimeoutId = window.setTimeout(() => {
@@ -226,7 +226,7 @@ const getContractDocuments = (component) => {
             'Oops! We had an issue generating your documents. Please try again by clicking “Next” or contact our Customer Care team.'
         );
         let error = `Contract document generation timed out for Lead ${component.lead.id}`;
-        postErrorLogEvent(component, error, null, 'ssfAgreementsShared', 'getContractDocuments', 'Error');
+        postErrorLogEvent(component, error, null, 'ssfAgreementsHelper', 'getContractDocuments', 'Error');
     }, DOC_GEN_TIMEOUT);
 }
 

@@ -15687,6 +15687,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Unverified_Address__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Account.Utility_Opp__c</field>
         <readable>true</readable>
@@ -24827,17 +24832,17 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Lead.ClickToDial__Click_to_Call_Mobile__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Lead.ClickToDial__Click_to_Call_Phone__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Lead.ClickToDial__Click_to_Call_Skype__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -26024,6 +26029,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Lead.Unqualified_due_to_FICO__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Unverified_Address__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -33664,6 +33674,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Log__c.Subscribed_Annual_kWhs_Rollup__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility_Account_Log__c.Unverified_Address__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

@@ -245,36 +245,64 @@ const validateUtilityAccountLog = (cmp, index) => {
     }, true);
 }
 
-const validateServiceZipCode = (cmp, event) => {
-    let fieldsToDisplayError = [];
-    let fieldsToClearError = [];
-    let zipCodeInput = cmp.zipinput;
-
-    if (event !== null) {
-        // Perform realtime validation for single field change onblur
-        const index = event.target.dataset.rowIndex;
-        checkIfZipcodeSupported(cmp, index, fieldsToDisplayError, fieldsToClearError);
-    } else {
-        // Perform validation for every UAL's zipcode field
-        const utilityAccountLogs = cmp.propertyAccount.utilityAccountLogs;
-        for (let index=0; index < utilityAccountLogs.length; index++) {
-            checkIfZipcodeSupported(cmp, index, fieldsToDisplayError, fieldsToClearError);
+const validateAddresses = async (cmp) => {
+    try {
+        const addresses = cmp.template.querySelectorAll('c-ssf-address');
+        const resultMap = {};
+        for (const address of addresses) {
+            const objectName = address.objectName;
+            const object = objectName === 'utilityAccountLog' ? cmp.propertyAccount.utilityAccountLogs[address.index] : cmp[objectName];
+            if (object.hasOverride || !object.hasUnverifiedAddress) {
+                // move on to next object if already user chose to override or address was already verified
+                continue;
+            }
+            // get results from Google Geocoder API
+            let result = await address.geocodeAddresses();
+            if (result.isExactMatch) {
+                // if address was entered correctly set lat/lng, remove unverified flag, reset override flag
+                const latitudeField = addressFields[objectName]?.latitude;
+                const longitudeField = addressFields[objectName]?.longitude;
+                object[latitudeField] = result.latitude;
+                object[longitudeField] = result.longitude;
+                object.hasUnverifiedAddress = false;
+                object.hasOverride = false;
+            } else {
+                // otherwise put together object address suggestions
+                const key = objectName === 'utilityAccountLog' ? `utilityAccountLog${address.index}` : objectName;
+                // map of object name to name for the validation modal headers
+                const nameMap = {
+                    'restLead': 'Contact Address',
+                    'propertyAccount': 'Billing Address',
+                    [`utilityAccountLog${address.index}`]: `Utility Account ${address.index + 1}`
+                }
+                const input = address.subpremise && address.subpremise.length ? `${address.street} ${address.subpremise}, ${address.city} ${address.state} ${address.zip}` : `${address.street}, ${address.city} ${address.state} ${address.zip}`;
+                // map each object to its list of suggestions, object-specific field names, header name, current input, and subpremise
+                resultMap[key] = {
+                    addresses: result.addresses,
+                    fields: addressFields[objectName],
+                    name: nameMap[key],
+                    input: input,
+                    subpremise: address.subpremise
+                };
+            }
         }
-    }
-
-    if (fieldsToDisplayError.length !== 0) {
-        let error = `Invalid ZIP Code or ZIP Code not in the same Utility area as the previously-entered ZIP Code ${zipCodeInput}. 
-            Please enter a ZIP Code in the same Utility area as ${zipCodeInput} or restart your application.`;
-        fieldsToDisplayError.forEach(fieldElement => {
-            fieldElement.setCustomValidity(error);
-            fieldElement.reportValidity();
-        });
-    }
-    if (fieldsToClearError.length !== 0) {
-        fieldsToClearError.forEach(fieldElement => {
-            fieldElement.setCustomValidity('');
-            fieldElement.reportValidity();
-        });
+        if (Object.keys(resultMap).length) {
+            // open the validation modal if any objects weren't an exact match
+            const modal = cmp.template.querySelector('c-ssf-address-validation-modal');
+            modal.setSuggestions(resultMap);
+            // open modal, hide loading spinner, and return to info view
+            cmp.showAddressValidationModal = true;
+            toggleLoadingSpinnerEvent(cmp, true, 'waitingRoom');
+            cmp.dispatchEvent(new CustomEvent('readystate'));
+            return false;
+        }
+        return true;
+    } catch (error) {
+        toggleLoadingSpinnerEvent(cmp, true, 'waitingRoom');
+        cmp.dispatchEvent(new CustomEvent('readystate'));
+        postErrorLogEvent(cmp, error, null, 'ssfBasicInfoShared', 'validateAddresses', 'Error');
+        showGenericErrorToast(cmp);
+        return false;
     }
 }
 
@@ -333,26 +361,13 @@ const findDuplicateUAL = (cmp, event) => {
     });
 }
 
-const checkIfZipcodeSupported = (cmp, index, fieldsToDisplayError, fieldsToClearError) => {
-    const zipCodesSupported = cmp.zipCheckResponse.utilityZipCodesServed;
-    let enteredZipCode = cmp.propertyAccount.utilityAccountLogs[index].servicePostalCode;
-    if (!zipCodesSupported.includes(enteredZipCode)) {
-        fieldsToDisplayError.push(locateZipCodeField(cmp, index));
-    } else {
-        fieldsToClearError.push(locateZipCodeField(cmp, index));
-    }
-}
-
-const locateZipCodeField = (cmp, index) => {
-    return cmp.template.querySelector(`[data-ual-zip-index="${index}"]`);
-}
-
 const setRemainingFields = (component, sameHomeAddressAsFirstUA) => {
     if (component.sameHomeAddress) {
         component.restLead.streetAddress = component.propertyAccount.utilityAccountLogs[0].serviceStreet;
         component.restLead.city = component.propertyAccount.utilityAccountLogs[0].serviceCity;
         component.restLead.state = component.propertyAccount.utilityAccountLogs[0].serviceState;
         component.restLead.zipCode = component.propertyAccount.utilityAccountLogs[0].servicePostalCode;
+        component.restLead.hasUnverifiedAddress = component.propertyAccount.utilityAccountLogs[0].hasUnverifiedAddress;
     }
     if (component.sameBillingAddress) {
         component.propertyAccount = matchBillingAddress(component.propertyAccount);
@@ -417,6 +432,7 @@ const matchBillingAddress = (propertyAccount) => {
     propertyAccount.billingCity = propertyAccount.utilityAccountLogs[0].serviceCity;
     propertyAccount.billingState = propertyAccount.utilityAccountLogs[0].serviceState;
     propertyAccount.billingPostalCode = propertyAccount.utilityAccountLogs[0].servicePostalCode;
+    propertyAccount.hasUnverifiedAddress = propertyAccount.utilityAccountLogs[0].hasUnverifiedAddress;
     return propertyAccount;
 }
 
@@ -425,21 +441,22 @@ const matchHomeAddress = (restLead, propertyAccount) => {
     restLead.city = propertyAccount.utilityAccountLogs[0].serviceCity;
     restLead.state = propertyAccount.utilityAccountLogs[0].serviceState;
     restLead.zipCode = propertyAccount.utilityAccountLogs[0].servicePostalCode;
+    restLead.hasUnverifiedAddress = propertyAccount.utilityAccountLogs[0].hasUnverifiedAddress;
     return restLead;
 }
 
 const applicationValid = (cmp) => {
-    validateServiceZipCode(cmp, null); // Check all UAL zips, even if on a resume app, to ensure we service those zips
+
     validateContactEmail(cmp); // Check to ensure emails are valid
 
-    var allValid = [...cmp.template.querySelectorAll('lightning-input'), ...cmp.template.querySelectorAll('lightning-combobox')]
+    let allValid = [...cmp.template.querySelectorAll('lightning-input'), ...cmp.template.querySelectorAll('lightning-combobox'), ...cmp.template.querySelectorAll('c-ssf-address')]
     .reduce((validSoFar, inputCmp) => {
         inputCmp.reportValidity();
         return validSoFar && inputCmp.checkValidity();
     }, true);
 
     if (cmp.isFileUpload) {
-        var uploadValid = true;
+        let uploadValid = true;
         cmp.propertyAccount.utilityAccountLogs.forEach(ual => {
             if (!ual.utilityBills || ual.utilityBills.length === 0) {
                 uploadValid = false;
@@ -473,12 +490,16 @@ const applicationValid = (cmp) => {
         element.removeError();
     });
     return true;
+
 }
 
 const validateContactEmail = (cmp) => {
     const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     let contactEmailField = cmp.template.querySelector(`[data-field-name="contactEmail"]`);
-    if (!cmp.restLead.email.match(regex)) {
+    if (!cmp.restLead || !cmp.restLead.email) {
+        // matches OOTB wording for checkValidity() error message
+        contactEmailField.setCustomValidity('Complete this field.');
+    } else if (!cmp.restLead.email.match(regex)) {
         contactEmailField.setCustomValidity('Invalid email address entered. Please check your inputs.');
     } else {
         contactEmailField.setCustomValidity('');
@@ -514,6 +535,10 @@ const submitApplication = async (cmp, partnerVersion) => {
 
     // set remaining fields on restLead, including some address fields
     setRemainingFields(cmp, false);
+    let hasValidAddresses = await validateAddresses(cmp);
+    if (!hasValidAddresses) {
+        return;
+    }
     if (!cmp.resumedApp) {
         await insertLead(cmp);
     }
@@ -667,6 +692,68 @@ const handleAccountNumberInputMask = (cmp, event, type) => {
     cmp.propertyAccount.utilityAccountLogs[event.target.dataset.rowIndex][event.target.name] = maskedInput;
 }
 
+const handleSetAddress = (cmp, event) => {
+    // called when user changes any address field input
+    const objectName = event.detail.object;
+    const object = objectName === 'utilityAccountLog' ? cmp.propertyAccount.utilityAccountLogs[event.target.dataset.rowIndex] : cmp[objectName];
+    const field = event.detail.field;
+    object[field] = event.detail.value;
+    // reset unverified and override fields now that the address has changed
+    // subpremise not a part of verification
+    if (field === 'subpremise') {
+        return;
+    }
+    object['hasUnverifiedAddress'] = true;
+    object['hasOverride'] = false;
+}
+
+const handleUpdateAddresses = (cmp, event) => {
+    // called when the user accepts or overrides changes from the ssfAddressValidationModal
+    if (!event.detail.objects && !event.detail.objects.length) {
+        return;
+    }
+    for (const objectInfo of event.detail.objects) {
+        const objectName = objectInfo.objectName;
+        const object = objectName.startsWith('utilityAccountLog') ? cmp.propertyAccount.utilityAccountLogs[parseInt(objectName.substring(17))] : cmp[objectName];
+        for (const field in objectInfo.address) {
+            object[field] = objectInfo.address[field];
+        };
+    }
+    // focus on street field to get user attention
+    let element;
+    const objectName = event.detail.objects[0].objectName;
+    if (objectName.startsWith('utilityAccountLog')) {
+        element = cmp.template.querySelector(`c-ssf-address[data-object="utilityAccountLog"][data-row-index="${objectName.substring(17)}"]`);
+    } else {
+        element = cmp.template.querySelector(`c-ssf-address[data-object="${objectName}"]`);
+    }
+    element.focusStreet();
+}
+
+// map of object name to object-specific field names so address fields can be set dynamically
+const addressFields = {
+    'restLead': {
+        street: 'streetAddress',
+        city: 'city',
+        state: 'state',
+        zipCode: 'zipCode'
+    },
+    'propertyAccount': {
+        street: 'billingStreet',
+        city: 'billingCity',
+        state: 'billingState',
+        zipCode: 'billingPostalCode'
+    },
+    'utilityAccountLog': {
+        street: 'serviceStreet',
+        city: 'serviceCity',
+        state: 'serviceState',
+        zipCode: 'servicePostalCode',
+        latitude: 'latitude',
+        longitude: 'longitude'
+    }
+}
+
 export {
     getFinDocFileTypes,
     getNewRestUtilityAccountLog,
@@ -675,7 +762,6 @@ export {
     handleUnderwritingChange,
     verifyUtilityAccountEntry,
     verifyPODEntry,
-    validateServiceZipCode,
     applicationValid,
     onLoad,
     findDuplicateUAL,
@@ -683,5 +769,8 @@ export {
     submitApplication,
     validateContactEmail,
     handleAccountNumberInputMask,
-    handleValidateAccountNumber
+    handleValidateAccountNumber,
+    handleSetAddress,
+    handleUpdateAddresses,
+    addressFields
 }

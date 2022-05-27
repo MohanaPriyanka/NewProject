@@ -1,6 +1,6 @@
 /**
  * Created by jlugo on 2019-07-10.
- * Tested by: UALSelectorTest, UtilityDataRequestServiceTest, and system tests in RESTRouterV2Test
+ * Tested by: UALSelectorTest, UtilityDataRequestServiceTest, RESTRouterV2Test, UtilityAccountSubscriptionHandlerTest
  */
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class UALSelector {
@@ -17,9 +17,9 @@ public without sharing class UALSelector {
         return [
             SELECT Id, Name, Name_on_Account__c, Service_Address__c, Service_City__c, Service_State__c,
                 Service_Zip_Code__c, Annual_kWh__c, Annual_Cost_of_Electricity__c, Account__c, Lead__c,
-                Average_Demand__c, Utility_lookup__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Name,
-            	Num_UDRPs_Annual_kWh__c, Num_UDRPs_Avg_Demand__c, NYPA__c, RNY__c, Address_Update__c,
-            	Previous_Name_on_Utility_Account__c, Previous_Service_Address__c, QC_Status__c,
+                Average_Demand__c, Utility_lookup__c, Utility_Rate_Class__c, Utility_Rate_Class__r.Name, Unverified_Address__c,
+                Location__Latitude__s, Location__Longitude__s, Num_UDRPs_Annual_kWh__c, Num_UDRPs_Avg_Demand__c, NYPA__c,
+                RNY__c, Address_Update__c, Previous_Name_on_Utility_Account__c, Previous_Service_Address__c, QC_Status__c,
             	Previous_Service_City__c, Previous_Service_State__c, Previous_Service_Zip_Code__c, Premise_Number__c,
                 Auto_QC_Reject_Reason__c, Utility_lookup__r.Auto_QC_Maximum_Demand__c, Utility_lookup__r.Auto_QC_Minimum_kWH__c
             FROM Utility_Account_Log__c
