@@ -614,10 +614,10 @@ h6 {
 /****************************/
 @font-face {
     font-family: 'Manrope';
-    src: url('/resource/PerchFonts/Fonts/Manrope-Regular.ttf') format('truetype');
+    src: url('../PerchFonts/Fonts/Manrope-Regular.ttf') format('truetype');
 }
 
 @font-face {
     font-family: 'ManropeSemiBold';
-    src: url('/resource/PerchFonts/Fonts/Manrope-SemiBold.ttf') format('truetype');
+    src: url('../PerchFonts/Fonts/Manrope-SemiBold.ttf') format('truetype');
 }
