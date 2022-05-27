@@ -115,7 +115,7 @@
         <name>Flag_Subscription_Orders</name>
         <label>Flag Subscription Orders</label>
         <locationX>176</locationX>
-        <locationY>1910</locationY>
+        <locationY>2030</locationY>
         <actionName>DealCloseOrderIdentifier</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -128,6 +128,29 @@
                 <elementReference>socv_SelectedOpportuniites</elementReference>
             </value>
         </inputParameters>
+    </actionCalls>
+    <actionCalls>
+        <description>Set  CS_Capacity_Allocated__c</description>
+        <name>Set_Customer_kWDC_at_Complete</name>
+        <label>Set Customer kWDC at Complete on Opps</label>
+        <locationX>176</locationX>
+        <locationY>1790</locationY>
+        <actionName>CapacityAllocatedEvaluator</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>update_Opportunities</targetReference>
+        </connector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>oppList</name>
+            <value>
+                <elementReference>socv_OpportunitiesUpdateList</elementReference>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>socv_OpportunitiesUpdateList</assignToReference>
+            <name>output</name>
+        </outputParameters>
     </actionCalls>
     <apiVersion>49.0</apiVersion>
     <assignments>
@@ -272,7 +295,7 @@
         <locationX>176</locationX>
         <locationY>1670</locationY>
         <connector>
-            <targetReference>update_Opportunities</targetReference>
+            <targetReference>Set_Customer_kWDC_at_Complete</targetReference>
         </connector>
         <inputReference>socv_ContractUpdateList</inputReference>
     </recordUpdates>
@@ -280,7 +303,7 @@
         <name>update_Opportunities</name>
         <label>update_Opportunities</label>
         <locationX>176</locationX>
-        <locationY>1790</locationY>
+        <locationY>1910</locationY>
         <connector>
             <targetReference>Flag_Subscription_Orders</targetReference>
         </connector>
@@ -291,7 +314,7 @@
         <name>scr_End</name>
         <label>scr_End</label>
         <locationX>176</locationX>
-        <locationY>2030</locationY>
+        <locationY>2150</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
