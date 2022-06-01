@@ -24,6 +24,26 @@
         </outputParameters>
     </actionCalls>
     <actionCalls>
+        <description>Kickstart (Queueable) PartnerCommissionGenerator, if the &apos;New_Partner_Commission_Generator&apos; feature flag is enabled</description>
+        <name>Enqueue_Partner_Commissions_Generation</name>
+        <label>Enqueue Partner Commissions Generation</label>
+        <locationX>176</locationX>
+        <locationY>2030</locationY>
+        <actionName>InvocablePartnerCommissionGenerator</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Flag_Subscription_Orders</targetReference>
+        </connector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>opportunities</name>
+            <value>
+                <elementReference>socv_SelectedOpportuniites</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
         <name>ExecuteSOQL_Contracts</name>
         <label>ExecuteSOQL_Contracts</label>
         <locationX>176</locationX>
@@ -115,7 +135,7 @@
         <name>Flag_Subscription_Orders</name>
         <label>Flag Subscription Orders</label>
         <locationX>176</locationX>
-        <locationY>2030</locationY>
+        <locationY>2150</locationY>
         <actionName>DealCloseOrderIdentifier</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -305,7 +325,7 @@
         <locationX>176</locationX>
         <locationY>1910</locationY>
         <connector>
-            <targetReference>Flag_Subscription_Orders</targetReference>
+            <targetReference>Enqueue_Partner_Commissions_Generation</targetReference>
         </connector>
         <inputReference>socv_OpportunitiesUpdateList</inputReference>
     </recordUpdates>
@@ -314,7 +334,7 @@
         <name>scr_End</name>
         <label>scr_End</label>
         <locationX>176</locationX>
-        <locationY>2150</locationY>
+        <locationY>2270</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -436,7 +456,7 @@
     <textTemplates>
         <name>SOQL_Opportunities</name>
         <isViewedAsPlainText>true</isViewedAsPlainText>
-        <text>select id,Name, StageName, ContractId, Customer_Group__c, Shared_Solar_System__c, CS_Capacity_Allocated__c, Comments__c, Countersigned_Contract_Id__c, Total_Subscribed_kW_DC__c, Commission_Structure__c
+        <text>select id,Name, StageName, ContractId, Customer_Group__c, Shared_Solar_System__c, CS_Capacity_Allocated__c, Comments__c, Countersigned_Contract_Id__c, Total_Subscribed_kW_DC__c, Commission_Structure__c, Partner_Account__c
 from Opportunity 
 where Product_Line__c=&apos;Community Solar&apos; 
 and Contract.Generate_Countersigned_Version__c=false 

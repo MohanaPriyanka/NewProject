@@ -485,6 +485,25 @@ public class PartnerCommissionGenerationTest {
         }
     }
 
+    @IsTest
+    public static void testInvocableExecution() {
+        FeatureService.Mock mockFeatureService = new FeatureService.Mock(new Map<String,Boolean>{
+            'New_Partner_Commission_Generator' => true
+        });
+        InvocablePartnerCommissionGenerator.featureService = (FeatureService)
+            Test.createStub(FeatureService.class, mockFeatureService);
+        List<Opportunity> opps = [SELECT Id, Partner_Account__c FROM Opportunity];
+
+        Test.startTest();
+        List<List<Opportunity>> invocableOppsList = new List<List<Opportunity>>();
+        invocableOppsList.add(opps);
+        List<Id> jobId = InvocablePartnerCommissionGenerator.generateCommissions(invocableOppsList);
+        Test.stopTest();
+
+        AsyncApexJob jobInfo = [SELECT Status,NumberOfErrors FROM AsyncApexJob WHERE Id IN : jobId];
+        System.assertEquals('Completed', jobInfo.Status, 'Queuable should have completed');
+    }
+
     private class MockAccountsSelector extends MockProvider {
         private String commissionFrequency;
         public MockAccountsSelector(String commissionFrequency) {
