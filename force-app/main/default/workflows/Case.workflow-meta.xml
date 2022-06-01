@@ -43,6 +43,9 @@
             <field>ContactEmail</field>
             <type>email</type>
         </recipients>
+        <recipients>
+            <type>owner</type>
+        </recipients>
         <senderAddress>cssupport@perchenergy.com</senderAddress>
         <senderType>OrgWideEmailAddress</senderType>
         <template>Product_Team/New_Product_Support_Case</template>
