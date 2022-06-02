@@ -161,6 +161,12 @@ const setUnderwriting = (component, resumedApp) => {
     handleUnderwritingChange(component);
 }
 
+const resetUnderwriting = (component) => {
+    resetUnderwritingOptions(component);
+    resetApplicationUnderwriting(component);
+    handleUnderwritingChange(component);
+}
+
 const newApplicationUnderwriting = (component) => {
     if (!component.zipCheckResponse.underwrite) {
         component.underwriting = 'None';
@@ -189,6 +195,43 @@ const resumedAppUnderwriting = (component) => {
     component.showUnderwritingOptions = false;
     component.underwriting = component.restLead.underwritingCriteria;
     component.disableUnderwritingFields = true;
+}
+
+const resetUnderwritingOptions = (component) => {
+    component.underwritingOptions = [];
+    if (component.selectedSystem.ficoUnderwriting) {
+        component.underwritingOptions.push({label: 'Guarantor', value: 'FICO'});
+    }
+    if (component.selectedSystem.finDocsUnderwriting) {
+        component.underwritingOptions.push({label: 'Financial Documents', value: 'Financial Review'});
+    }
+}
+
+const resetApplicationUnderwriting = (component) => {
+    if (!component.selectedSystem.underwrite) {
+        component.underwriting = 'None';
+        component.restLead.underwritingCriteria = 'None';
+        component.showUnderwritingOptions = false;
+    }
+    else if (component.resiApplicationType  || component.underwritingOptions.length === 0) {
+        component.underwriting = 'FICO';
+        component.restLead.underwritingCriteria = 'FICO';
+        component.showUnderwritingOptions = false;
+    }
+    else if (!component.resiApplicationType) {
+        if (component.underwritingOptions.length === 1) {
+            // One underwriting option provided in zip check for SMB app
+            let option = component.underwritingOptions[0].value;
+            component.underwriting = option;
+            component.restLead.underwritingCriteria = option;
+        }
+        else {
+            // More than one underwriting option provided in zip check for SMB app - set default back to FICO
+            component.underwriting = 'FICO';
+            component.restLead.underwritingCriteria = null;
+            component.showUnderwritingOptions = true;
+        }
+    }
 }
 
 // notify parent ssf/ssfDTC of underwriting option to pass to ssfAgreements/ssfAgreementsDTC
@@ -717,7 +760,7 @@ const handleUpdateAddresses = (cmp, event) => {
         const object = objectName.startsWith('utilityAccountLog') ? cmp.propertyAccount.utilityAccountLogs[parseInt(objectName.substring(17))] : cmp[objectName];
         for (const field in objectInfo.address) {
             object[field] = objectInfo.address[field];
-        };
+        }
     }
     // focus on street field to get user attention
     let element;
@@ -772,5 +815,6 @@ export {
     handleValidateAccountNumber,
     handleSetAddress,
     handleUpdateAddresses,
+    resetUnderwriting,
     addressFields
 }

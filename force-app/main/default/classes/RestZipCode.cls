@@ -81,7 +81,7 @@ public inherited sharing class RestZipCode {
     private List<SolarSystem> getSolarSystems(List<Shared_Solar_System__c> sssSobjs) {
         List<SolarSystem> solarSystems = new List<SolarSystem>();
         for (Shared_Solar_System__c sss : sssSobjs) {
-            solarSystems.add(new SolarSystem(sss.Id, sss.Name, sss.Capacity_Available_to_be_Reserved__c > 0 ? true : false, sss.Perch_Acq_Available_LMI_Capacity__c > 0 ? true : false));
+            solarSystems.add(new SolarSystem(sss.Id, sss.Name, sss.Capacity_Available_to_be_Reserved__c > 0 ? true : false, sss.Perch_Acq_Available_LMI_Capacity__c > 0 ? true : false, sss.Available_SMB_Underwriting_Method_FICO__c, sss.Available_SMB_Underwriting_Method_Docs__c, !sss.Do_Not_Ask_for_Payment_Method__c, !sss.Do_Not_Underwrite__c));
         }
         return solarSystems;
     }
@@ -149,12 +149,21 @@ public inherited sharing class RestZipCode {
         public String name;
         public Boolean smallCsCapacityAvailable;
         public Boolean lmiCapacityAvailable;
+        public Boolean ficoUnderwriting;
+        public Boolean finDocsUnderwriting;
+        public Boolean collectPayment;
+        public Boolean underwrite;
 
-        public SolarSystem(String id, String name, Boolean smallCsCapacityAvailable, Boolean lmiCapacityAvailable) {
+        public SolarSystem(String id, String name, Boolean smallCsCapacityAvailable, Boolean lmiCapacityAvailable,
+            Boolean ficoUnderwriting, Boolean finDocsUnderwriting, Boolean collectPayment, Boolean underwrite) {
             this.sssId = id;
             this.name = name;
             this.smallCsCapacityAvailable = smallCsCapacityAvailable;
             this.lmiCapacityAvailable = lmiCapacityAvailable;
+            this.ficoUnderwriting = ficoUnderwriting;
+            this.finDocsUnderwriting = finDocsUnderwriting;
+            this.collectPayment = collectPayment;
+            this.underwrite = underwrite;
         }
     }
 }

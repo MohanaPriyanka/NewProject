@@ -21,6 +21,7 @@ import {
     handleValidateAccountNumber,
     handleSetAddress,
     handleUpdateAddresses,
+    resetUnderwriting,
     addressFields
 } from 'c/ssfBasicInfoShared';
 
@@ -62,6 +63,11 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @track uanLength;
     @track podLength;
     @track showProjectSelection = false;
+    @track selectedSystem;
+    @track openDacModal;
+    @track switchToResiVisible;
+    @track noResiCapacityVisible;
+    @track openConfirmationModal;
 
     lmiSystems = [];
     smallCSSystems = [];
@@ -88,6 +94,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
         partnerSSSSelectionEnabled({partnerId: this.partnerId})
         .then(result => {
             if (result) {
+                this.parseSystemsList();
                 this.setupProjectSelection();
             }
         }).catch(error => {
@@ -96,7 +103,6 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     }
 
     setupProjectSelection() {
-        this.parseSystemsList();
 
         if (this.customerType === 'LMI' && this.lmiSystems.length > 1) {
             if (this.setDefaultProject()) {
@@ -111,6 +117,7 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
             this.projectOptions = this.smallCSSystems;
             this.showProjectSelection = true;
         } else {
+            this.restLead.partnerSystemSelection = null;
             this.showProjectSelection = false;
         }
     }
@@ -155,7 +162,31 @@ export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
             // Set application and Lead to use specified underwriting selection
             this.underwriting = event.target.value;
             handleUnderwritingChange(this);
+        } else if (event.target.name === 'partnerSystemSelection') {
+            this.handleUnderwritingUpdate();
         }
+    }
+
+    handleUnderwritingUpdate() {
+        this.getSelectedSystemInfo();
+        resetUnderwriting(this);
+        this.resetCollectPayment(this);
+        this.isFinDocsUnderwriting;
+        this.isFicoUnderwriting;
+    }
+
+    getSelectedSystemInfo() {
+        let sssId = this.restLead.partnerSystemSelection;
+        let systems = this.zipCheckResponse.solarSystems;
+        systems.forEach(sss => {
+            if (sss.sssId === sssId) {
+                this.selectedSystem = sss;
+            }
+        });
+    }
+
+    resetCollectPayment() {
+        this.restLead.noPayment = !this.selectedSystem.collectPayment;
     }
 
     phoneOnChange(event) {
