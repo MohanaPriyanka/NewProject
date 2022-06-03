@@ -19,6 +19,10 @@ c-ssf-file-upload {
     width: 100%;
 }
 
+.fileUploadWithHelp > lightning-file-upload {
+    display: inline-flex;
+}
+
 .zip-container {
     width: 100%;
     display: block;

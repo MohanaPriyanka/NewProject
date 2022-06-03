@@ -2,6 +2,9 @@
     <div style="width: 100%;" class="slds-var-m-bottom_small">
         <template if:false={success}>
             <div class="fileUploadWithHelp">
+                <template if:true={required}>
+                    <span class="slds-required">*</span>
+                </template>
                 <lightning-file-upload
                     label={inputText}
                     name="fileUploader"
