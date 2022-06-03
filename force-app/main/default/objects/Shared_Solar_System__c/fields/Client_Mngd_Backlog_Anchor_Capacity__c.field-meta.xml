@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Client_Mngd_Backlog_Anchor_Capacity__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF (Management_Revenue_Start_Date__c &lt;= TODAY(), NULL, Client_Mngd_Forecasted_Anchor_Capacity__c)</formula>
+    <inlineHelpText>If Management Revenue Start Date is before today, then shows Forecasted capacity, otherwise blank</inlineHelpText>
+    <label>Client Mngd Backlog Anchor Capacity</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

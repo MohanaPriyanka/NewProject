@@ -1,0 +1,274 @@
+<!--
+ - Created by PeterYao_6fwtfg1 on 1/24/2022.
+ -->
+
+<!-- Reserved Capacity Updater -->
+<template>
+  <div>
+    New SSS Size: {newSSSSize}
+  </div>
+  <div>
+    <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+      <thead>
+      <tr class="slds-line-height_reset">
+        <th>
+          <div title="Capacity Type">Capacity Type</div>
+        </th>
+        <th>
+          <div class="slds-truncate" title="Current Value">Current Value</div>
+        </th>
+        <th>
+          <div class="slds-truncate" title="New Value">New Value</div>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr class="slds-hint-parent">
+        <th>
+          <div title="Client Managed Anchor">Client Managed Anchor</div>
+        </th>
+        <td>
+          <div title="Current">
+            {sssRecord.Client_Mngd_Forecasted_Anchor_Capacity__c}
+          </div>
+        </td>
+        <td>
+          <div title="New">
+            <lightning-input
+              name="clientManagedAnchor"
+              label="ClientManagedAnchor"
+              variant="label-hidden"
+              type="Number"
+              step=".01"
+              onchange={genericOnChange}
+              value={clientManagedAnchor}
+            ></lightning-input>
+          </div>
+        </td>
+      </tr>
+      <tr class="slds-hint-parent">
+        <th>
+          <div title="Client Managed Resi">Client Managed Resi</div>
+        </th>
+        <td>
+          <div title="Current">{sssRecord.Client_Mngd_Forecasted_Resi_Capacity__c}</div>
+        </td>
+        <td>
+          <div class="slds-truncate" title="New">
+            <lightning-input
+              data-capacity-type="clientManagedResi"
+              disabled={clientManagedResiDisabled}
+              name="clientManagedResi"
+              label="ClientManagedResi"
+              variant="label-hidden"
+              type="Number"
+              step=".01"
+              onchange={genericOnChange}
+              value={clientManagedResi}
+            ></lightning-input>
+          </div>
+        </td>
+      </tr>
+      <tr class="slds-hint-parent">
+        <th>
+          <div title="Client Managed C&I">Client Managed C&I</div>
+        </th>
+        <td>
+          <div title="Current">{sssRecord.Client_Mngd_Forecasted_C_I_Capacity__c}</div>
+        </td>
+        <td>
+          <div class="slds-truncate" title="New">
+            <lightning-input
+              data-capacity-type="clientManagedCI"
+              disabled={clientManagedCIDisabled}
+              name="clientManagedCI"
+              label="ClientManagedCI"
+              variant="label-hidden"
+              type="Number"
+              step=".01"
+              onchange={genericOnChange}
+              value={clientManagedCI}
+            ></lightning-input>
+          </div>
+        </td>
+      </tr>
+      <tr class="slds-hint-parent">
+        <th>
+          <div title="Client Managed Small CS">Client Managed Small CS</div>
+        </th>
+        <td>
+          <div title="Current">{sssRecord.Client_Mngd_Forecasted_Small_CS_Capacity__c}</div>
+        </td>
+        <td>
+          <div class="slds-truncate" title="New">
+            <lightning-input
+              data-capacity-type="clientManagedSmallCS"
+              disabled={clientManagedSmallCSDisabled}
+              name="clientManagedSmallCS"
+              label="ClientManagedSmallCS"
+              variant="label-hidden"
+              type="Number"
+              step=".01"
+              onchange={genericOnChange}
+              value={clientManagedSmallCS}
+            ></lightning-input>
+          </div>
+        </td>
+      </tr>
+      <template if:true={isLMI}>
+        <tr class="slds-hint-parent">
+          <th>
+            <div title="Client Managed LMI">Client Managed LMI</div>
+          </th>
+          <td>
+            <div title="Current">{sssRecord.Client_Mngd_Forecasted_LMI_Capacity__c}</div>
+          </td>
+          <td>
+            <div class="slds-truncate" title="New">
+              <lightning-input
+                name="clientManagedLMI"
+                label="ClientManagedLMI"
+                variant="label-hidden"
+                type="Number"
+                step=".01"
+                onchange={genericOnChange}
+                value={clientManagedLMI}
+              ></lightning-input>
+            </div>
+          </td>
+        </tr>
+      </template>
+      <tr class="slds-hint-parent">
+        <th>
+          <div title="Perch Managed Anchor">Perch Managed Anchor</div>
+        </th>
+        <td>
+            <div title="Current">{sssRecord.Perch_Mngd_Forecasted_Anchor_Capacity__c}</div>
+        </td>
+        <td>
+          <div title="New">
+            <lightning-input
+              name="perchManagedAnchor"
+              label="PerchManagedAnchor"
+              variant="label-hidden"
+              type="Number"
+              step=".01"
+              onchange={genericOnChange}
+              value={perchManagedAnchor}
+            ></lightning-input>
+          </div>
+        </td>
+      </tr>
+      <tr class="slds-hint-parent">
+        <th>
+          <div title="Perch Managed Resi">Perch Managed Resi</div>
+        </th>
+        <td>
+          <div title="Current">{sssRecord.Perch_Mngd_Forecasted_Resi_Capacity__c}</div>
+        </td>
+        <td>
+          <div title="New">
+            <lightning-input
+              data-capacity-type="perchManagedResi"
+              disabled={perchManagedResiDisabled}
+              name="perchManagedResi"
+              label="PerchManagedResi"
+              variant="label-hidden"
+              type="Number"
+              step=".01"
+              onchange={genericOnChange}
+              value={perchManagedResi}
+            ></lightning-input>
+          </div>
+        </td>
+      </tr>
+      <tr class="slds-hint-parent">
+        <th>
+          <div title="Perch Managed C&I">Perch Managed C&I</div>
+        </th>
+        <td>
+          <div title="Current">{sssRecord.Perch_Mngd_Forecasted_C_I_Capacity__c}</div>
+        </td>
+        <td>
+          <div title="New">
+            <lightning-input
+              data-capacity-type="perchManagedCI"
+              disabled={perchManagedCIDisabled}
+              name="perchManagedCI"
+              label="PerchManagedCI"
+              variant="label-hidden"
+              type="Number"
+              step=".01"
+              onchange={genericOnChange}
+              value={perchManagedCI}
+            ></lightning-input>
+          </div>
+        </td>
+      </tr>
+      <tr class="slds-hint-parent">
+        <th>
+          <div title="Perch Managed Small CS">Perch Managed Small CS</div>
+        </th>
+        <td>
+          <div title="Current">{sssRecord.Perch_Mngd_Forecasted_Small_CS_Capacity__c}</div>
+        </td>
+        <td>
+          <div title="New">
+            <lightning-input
+              data-capacity-type="perchManagedSmallCS"
+              disabled={perchManagedSmallCSDisabled}
+              name="perchManagedSmallCS"
+              label="PerchManagedSmallCS"
+              variant="label-hidden"
+              type="Number"
+              step=".01"
+              onchange={genericOnChange}
+              value={perchManagedSmallCS}
+            ></lightning-input>
+          </div>
+        </td>
+      </tr>
+      <template if:true={isLMI}>
+        <tr class="slds-hint-parent">
+          <th>
+            <div title="Perch Managed LMI">Perch Managed LMI</div>
+          </th>
+          <td>
+            <div title="Current">{sssRecord.Perch_Mngd_Forecasted_LMI_Capacity__c}</div>
+          </td>
+          <td>
+            <div class="slds-truncate" title="New">
+              <lightning-input
+                name="perchManagedLMI"
+                label="PerchManagedLMI"
+                variant="label-hidden"
+                type="Number"
+                step=".01"
+                onchange={genericOnChange}
+                value={perchManagedLMI}
+              ></lightning-input>
+            </div>
+          </td>
+        </tr>
+      </template>
+      <tr class="slds-hint-parent">
+        <th>Total</th>
+        <td>{currentTotal}</td>
+        <td class={newTotalClass}>{newTotal} (Difference: {newTotalDifferenceFromNewSize})</td>
+      </tr>
+      </tbody>
+      <tfoot>
+      <tr>
+        <td colspan="3">
+          <br/>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="3" class="slds-text-align_right">
+          <lightning-button label="Next" variant="brand" onclick={handleNext} disabled={newReservedSumNotEqualToNewSize}></lightning-button>
+        </td>
+      </tr>
+      </tfoot>
+    </table>
+  </div>
+</template>

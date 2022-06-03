@@ -5,7 +5,6 @@
     <externalId>false</externalId>
     <label>Shared Solar System Order</label>
     <referenceTo>Shared_Solar_System_Order__c</referenceTo>
-    <relationshipLabel>Capacity Reservation Orders</relationshipLabel>
     <relationshipName>Capacity_Reservation_Orders</relationshipName>
     <required>false</required>
     <trackTrending>false</trackTrending>

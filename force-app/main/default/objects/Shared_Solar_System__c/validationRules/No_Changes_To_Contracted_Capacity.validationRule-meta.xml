@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>No_Changes_To_Contracted_Capacity</fullName>
+    <active>true</active>
+    <description>Contracted capacities should be set when the system is contracted, and not changed after that. We can change the Forecasted capacities via a SSSO to show the latest.</description>
+    <errorConditionFormula>OR(AND( ISCHANGED( Client_Mngd_Contracted_Anchor_Capacity__c), NOT(ISBLANK(PRIORVALUE(Client_Mngd_Contracted_Anchor_Capacity__c)))),
+   AND( ISCHANGED( Client_Mngd_Contracted_Small_CS_Capacity__c), NOT(ISBLANK(PRIORVALUE(Client_Mngd_Contracted_Small_CS_Capacity__c)))),
+   AND( ISCHANGED( Client_Mngd_Contracted_Resi_Capacity__c), NOT(ISBLANK(PRIORVALUE(Client_Mngd_Contracted_Resi_Capacity__c)))),
+   AND( ISCHANGED( Client_Mngd_Contracted_C_I_Capacity__c), NOT(ISBLANK(PRIORVALUE(Client_Mngd_Contracted_C_I_Capacity__c)))),
+   AND( ISCHANGED( Client_Mngd_Contracted_LMI_Capacity__c), NOT(ISBLANK(PRIORVALUE(Client_Mngd_Contracted_LMI_Capacity__c)))),
+   AND( ISCHANGED( Perch_Mngd_Contracted_Anchor_Capacity__c), NOT(ISBLANK(PRIORVALUE(Perch_Mngd_Contracted_Anchor_Capacity__c)))),
+   AND( ISCHANGED( Perch_Mngd_Contracted_Small_CS_Capacity__c), NOT(ISBLANK(PRIORVALUE(Perch_Mngd_Contracted_Small_CS_Capacity__c)))),
+   AND( ISCHANGED( Perch_Mngd_Contracted_Resi_Capacity__c), NOT(ISBLANK(PRIORVALUE(Perch_Mngd_Contracted_Resi_Capacity__c)))),
+   AND( ISCHANGED( Perch_Mngd_Contracted_C_I_Capacity__c), NOT(ISBLANK(PRIORVALUE(Perch_Mngd_Contracted_C_I_Capacity__c)))),
+   AND( ISCHANGED( Perch_Mngd_Contracted_LMI_Capacity__c), NOT(ISBLANK(PRIORVALUE(Perch_Mngd_Contracted_LMI_Capacity__c))))
+)</errorConditionFormula>
+    <errorMessage>Once set, Contracted capacities should not be changed</errorMessage>
+</ValidationRule>

@@ -25,6 +25,16 @@
                 <default>false</default>
                 <label>LMI</label>
             </value>
+            <value>
+                <fullName>Resi</fullName>
+                <default>false</default>
+                <label>Resi</label>
+            </value>
+            <value>
+                <fullName>C&amp;I</fullName>
+                <default>false</default>
+                <label>C&amp;I</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

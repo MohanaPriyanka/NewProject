@@ -4,7 +4,7 @@
         <name>Approval_SSSO</name>
         <label>Approval_SSSO</label>
         <locationX>182</locationX>
-        <locationY>2342</locationY>
+        <locationY>2798</locationY>
         <actionName>submit</actionName>
         <actionType>submit</actionType>
         <connector>
@@ -23,7 +23,7 @@
         <name>Add_to_collection</name>
         <label>Add to collection</label>
         <locationX>138</locationX>
-        <locationY>1910</locationY>
+        <locationY>2366</locationY>
         <assignmentItems>
             <assignToReference>capacityReservationOrdersWithSSSOLookup</assignToReference>
             <operator>Add</operator>
@@ -39,7 +39,7 @@
         <name>Assign_SSSO</name>
         <label>Assign SSSO</label>
         <locationX>138</locationX>
-        <locationY>1790</locationY>
+        <locationY>2246</locationY>
         <assignmentItems>
             <assignToReference>Set_SSSO_on_CROs.Shared_Solar_System_Order__c</assignToReference>
             <operator>Assign</operator>
@@ -52,10 +52,26 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Combine_Acquisition_and_Forecasted_Orders</name>
+        <label>Combine Acquisition and Forecasted Orders</label>
+        <locationX>182</locationX>
+        <locationY>1526</locationY>
+        <assignmentItems>
+            <assignToReference>CapacityReservationOrders</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>CapacityForecastedOrders</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Count_CROs</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Count_CROs</name>
         <label>Count CROs</label>
         <locationX>182</locationX>
-        <locationY>1190</locationY>
+        <locationY>1646</locationY>
         <assignmentItems>
             <assignToReference>CountOfCROs</assignToReference>
             <operator>AssignCount</operator>
@@ -68,8 +84,13 @@
         </connector>
     </assignments>
     <choices>
+        <name>choice_Managed_Capacities</name>
+        <choiceText>Managed Capacities</choiceText>
+        <dataType>String</dataType>
+    </choices>
+    <choices>
         <name>choice_Reservation_Capacities</name>
-        <choiceText>Reserved Capacities</choiceText>
+        <choiceText>Acquisition Capacities</choiceText>
         <dataType>String</dataType>
     </choices>
     <choices>
@@ -94,7 +115,7 @@
         <locationX>182</locationX>
         <locationY>734</locationY>
         <defaultConnector>
-            <targetReference>scr_Comments</targetReference>
+            <targetReference>Get_Updated_Management_Capacities</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -121,10 +142,42 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Get_Updated_Management_Capacities</name>
+        <label>Get Updated Management Capacities</label>
+        <locationX>182</locationX>
+        <locationY>1070</locationY>
+        <defaultConnector>
+            <targetReference>scr_Comments</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Need_Updated_Management_Capacities</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>Select_Field_to_Update</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>choice_SystemSize</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Select_Field_to_Update</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>choice_Managed_Capacities</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Managed_Capacities</targetReference>
+            </connector>
+            <label>Need Updated Management Capacities</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Insert_CROs</name>
         <label>Insert CROs</label>
         <locationX>182</locationX>
-        <locationY>1550</locationY>
+        <locationY>2006</locationY>
         <defaultConnector>
             <targetReference>Approval_SSSO</targetReference>
         </defaultConnector>
@@ -184,7 +237,7 @@
         <name>Set_SSSO_on_CROs</name>
         <label>Set SSSO on CROs</label>
         <locationX>50</locationX>
-        <locationY>1670</locationY>
+        <locationY>2126</locationY>
         <collectionReference>CapacityReservationOrders</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -217,7 +270,7 @@
         <name>Create_CROs</name>
         <label>Create CROs</label>
         <locationX>50</locationX>
-        <locationY>2126</locationY>
+        <locationY>2582</locationY>
         <connector>
             <targetReference>Approval_SSSO</targetReference>
         </connector>
@@ -227,7 +280,7 @@
         <name>Create_SSSO</name>
         <label>Create_SSSO</label>
         <locationX>182</locationX>
-        <locationY>1430</locationY>
+        <locationY>1886</locationY>
         <assignRecordIdToReference>sov_SSSO.Id</assignRecordIdToReference>
         <connector>
             <targetReference>Insert_CROs</targetReference>
@@ -287,18 +340,28 @@
         <queriedFields>Client_Acq_Reserved_LMI_Capacity__c</queriedFields>
         <queriedFields>Total_System_Size_kWh_DC__c</queriedFields>
         <queriedFields>LMI__c</queriedFields>
+        <queriedFields>Client_Mngd_Forecasted_Anchor_Capacity__c</queriedFields>
+        <queriedFields>Client_Mngd_Forecasted_LMI_Capacity__c</queriedFields>
+        <queriedFields>Client_Mngd_Forecasted_Small_CS_Capacity__c</queriedFields>
+        <queriedFields>Perch_Mngd_Forecasted_Anchor_Capacity__c</queriedFields>
+        <queriedFields>Perch_Mngd_Forecasted_LMI_Capacity__c</queriedFields>
+        <queriedFields>Perch_Mngd_Forecasted_Small_CS_Capacity__c</queriedFields>
+        <queriedFields>Client_Mngd_Forecasted_C_I_Capacity__c</queriedFields>
+        <queriedFields>Client_Mngd_Forecasted_Resi_Capacity__c</queriedFields>
+        <queriedFields>Perch_Mngd_Forecasted_C_I_Capacity__c</queriedFields>
+        <queriedFields>Perch_Mngd_Forecasted_Resi_Capacity__c</queriedFields>
     </recordLookups>
     <runInMode>SystemModeWithoutSharing</runInMode>
     <screens>
         <name>scr_Comments</name>
         <label>Comments</label>
         <locationX>182</locationX>
-        <locationY>1070</locationY>
+        <locationY>1406</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Count_CROs</targetReference>
+            <targetReference>Combine_Acquisition_and_Forecasted_Orders</targetReference>
         </connector>
         <fields>
             <name>txt_Comments</name>
@@ -373,7 +436,7 @@
         <name>scr_Finish</name>
         <label>Finish</label>
         <locationX>182</locationX>
-        <locationY>2462</locationY>
+        <locationY>2918</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -406,6 +469,7 @@
             <choiceReferences>choice_SystemSize</choiceReferences>
             <choiceReferences>choice_Yield</choiceReferences>
             <choiceReferences>choice_Reservation_Capacities</choiceReferences>
+            <choiceReferences>choice_Managed_Capacities</choiceReferences>
             <dataType>String</dataType>
             <fieldText>Select the Fields you want to update:</fieldText>
             <fieldType>MultiSelectCheckboxes</fieldType>
@@ -418,7 +482,7 @@
         <name>scrReview</name>
         <label>Review</label>
         <locationX>182</locationX>
-        <locationY>1310</locationY>
+        <locationY>1766</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -488,13 +552,13 @@
             <inputParameters>
                 <name>columnFields</name>
                 <value>
-                    <stringValue>Responsible_for_Capacity__c,Customer_Type__c,Previous_Reserved_Capacity_kW_DC__c,New_Reserved_Capacity_kW_DC__c</stringValue>
+                    <stringValue>Responsible_for_Capacity__c,Customer_Type__c,Capacity_Type__c,Previous_Reserved_Capacity_kW_DC__c,New_Reserved_Capacity_kW_DC__c</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
                 <name>columnWidths</name>
                 <value>
-                    <stringValue>Responsible_for_Capacity__c:251, Customer_Type__c:251, Previous_Reserved_Capacity_kW_DC__c:251, New_Reserved_Capacity_kW_DC__c:251</stringValue>
+                    <stringValue>Responsible_for_Capacity__c:190, Customer_Type__c:165, Capacity_Type__c:150, Previous_Reserved_Capacity_kW_DC__c:250, New_Reserved_Capacity_kW_DC__c:250</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -526,6 +590,43 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
+        <name>Update_Managed_Capacities</name>
+        <label>Update Managed Capacities</label>
+        <locationX>50</locationX>
+        <locationY>1190</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>scr_Comments</targetReference>
+        </connector>
+        <fields>
+            <name>Managed_Capacity_Updater</name>
+            <extensionName>c:managedCapacityUpdater</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>sssRecord</name>
+                <value>
+                    <elementReference>sov_SSS</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>newSSSSize</name>
+                <value>
+                    <elementReference>varNew_System_Size_kW_DC</elementReference>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>CapacityForecastedOrders</assignToReference>
+                <name>capacityReservationOrders</name>
+            </outputParameters>
+        </fields>
+        <showFooter>false</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>Update_Reserved_Capacities</name>
         <label>Update Reserved Capacities</label>
         <locationX>50</locationX>
@@ -534,7 +635,7 @@
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>scr_Comments</targetReference>
+            <targetReference>Get_Updated_Management_Capacities</targetReference>
         </connector>
         <fields>
             <name>ReservedCapacityUpdater</name>
@@ -570,6 +671,14 @@
         </connector>
     </start>
     <status>Active</status>
+    <variables>
+        <name>CapacityForecastedOrders</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Capacity_Reservation_Order__c</objectType>
+    </variables>
     <variables>
         <name>CapacityReservationOrders</name>
         <dataType>SObject</dataType>

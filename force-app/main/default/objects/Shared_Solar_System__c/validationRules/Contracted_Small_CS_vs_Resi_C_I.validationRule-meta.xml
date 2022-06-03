@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Contracted_Small_CS_vs_Resi_C_I</fullName>
+    <active>true</active>
+    <description>The system only supports contracting by Small CS (where Resi and C&amp;I isn&apos;t specified) or Resi and C&amp;I</description>
+    <errorConditionFormula>OR (
+
+AND(Client_Mngd_Contracted_Small_CS_Capacity__c &gt; 0,
+    OR(Client_Mngd_Contracted_Resi_Capacity__c &gt; 0,
+       Client_Mngd_Contracted_C_I_Capacity__c &gt; 0)),
+
+AND(Perch_Mngd_Contracted_Small_CS_Capacity__c &gt; 0,
+    OR(Perch_Mngd_Contracted_Resi_Capacity__c &gt; 0,
+       Perch_Mngd_Contracted_C_I_Capacity__c &gt; 0))
+)</errorConditionFormula>
+    <errorMessage>Specify either Contracted Small CS Capacity, or Contracted Resi and C&amp;I Capacity, but not both. &quot;Small CS&quot; is used only when our contract doesn&apos;t specify a certain about of Resi or C&amp;I Capacity.</errorMessage>
+</ValidationRule>

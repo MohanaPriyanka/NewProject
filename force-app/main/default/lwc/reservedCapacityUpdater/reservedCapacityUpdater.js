@@ -2,25 +2,24 @@
  * Created by PeterYao_6fwtfg1 on 1/24/2022.
  */
 
-import {LightningElement, api, track} from 'lwc';
+import {LightningElement, api} from 'lwc';
 import {FlowNavigationNextEvent} from 'lightning/flowSupport';
 
 export default class ReservedCapacityUpdater extends LightningElement {
     @api sssRecord;
     @api newSSSSize;
     @api capacityReservationOrders;
-    @track currentTotal;
-    @track newTotal;
-    @track newTotalClass;
-    @track newTotalDifferenceFromNewSize;
-    @track clientAcquiredAnchor;
-    @track clientAcquiredSmallCS;
-    @track clientAcquiredLMI;
-    @track perchAcquiredAnchor;
-    @track perchAcquiredSmallCS;
-    @track perchAcquiredLMI;
-    @track newReservedSumNotEqualToNewSize = true;
-    @track isLMI;
+    currentTotal;
+    newTotal;
+    newTotalDifferenceFromNewSize;
+    clientAcquiredAnchor;
+    clientAcquiredSmallCS;
+    clientAcquiredLMI;
+    perchAcquiredAnchor;
+    perchAcquiredSmallCS;
+    perchAcquiredLMI;
+    newReservedSumNotEqualToNewSize = true;
+    isLMI;
 
     connectedCallback() {
         this.clientAcquiredSmallCS = this.sssRecord.Client_Acq_Reserved_Small_CS_Capacity__c;
@@ -58,15 +57,14 @@ export default class ReservedCapacityUpdater extends LightningElement {
             +this.perchAcquiredLMI +
             +this.perchAcquiredSmallCS);
         this.newTotalDifferenceFromNewSize = this.round(this.newSSSSize - this.newTotal);
-        if (this.newTotalDifferenceFromNewSize && this.newTotalDifferenceFromNewSize !== 0) {
-            this.newTotalClass = 'slds-text-color_error';
-            this.newReservedSumNotEqualToNewSize = true;
-        } else {
-            this.newTotalClass = '';
-            this.newReservedSumNotEqualToNewSize = false;
-        }
+        this.newReservedSumNotEqualToNewSize = !!this.newTotalDifferenceFromNewSize;
     }
 
+    get newTotalClass() {
+        return this.newReservedSumNotEqualToNewSize ? 'slds-text-color_error' : '';
+    }
+
+    // https://www.skillsugar.com/round-a-number-to-2-decimal-places-in-javascript
     round(num) {
         let m = Number((Math.abs(num) * 100).toPrecision(15));
         return Math.round(m) / 100 * Math.sign(num);
@@ -74,64 +72,60 @@ export default class ReservedCapacityUpdater extends LightningElement {
 
     setCapacityReservationOrders() {
         this.capacityReservationOrders = [];
-        this.addCapacityReservationOrder(
+        addCapacityReservationOrder(
+            this.capacityReservationOrders,
             this.sssRecord.Client_Acq_Reserved_Small_CS_Capacity__c,
             this.clientAcquiredSmallCS,
             'Client',
-            'Small CS'
+            'Small CS',
+            'Acquisition',
+            this.sssRecord.Id
         );
-        this.addCapacityReservationOrder (
+        addCapacityReservationOrder (
+            this.capacityReservationOrders,
             this.sssRecord.Client_Acq_Reserved_Anchor_Capacity__c,
             this.clientAcquiredAnchor,
             'Client',
-            'Anchor'
+            'Anchor',
+            'Acquisition',
+            this.sssRecord.Id
         );
-        this.addCapacityReservationOrder (
+        addCapacityReservationOrder (
+            this.capacityReservationOrders,
             this.sssRecord.Client_Acq_Reserved_LMI_Capacity__c,
             this.clientAcquiredLMI,
             'Client',
-            'LMI'
+            'LMI',
+            'Acquisition',
+            this.sssRecord.Id
         );
-        this.addCapacityReservationOrder(
+        addCapacityReservationOrder(
+            this.capacityReservationOrders,
             this.sssRecord.Perch_Acq_Reserved_Small_CS_Capacity__c,
             this.perchAcquiredSmallCS,
             'Perch',
-            'Small CS'
+            'Small CS',
+            'Acquisition',
+            this.sssRecord.Id
         );
-        this.addCapacityReservationOrder(
+        addCapacityReservationOrder(
+            this.capacityReservationOrders,
             this.sssRecord.Reserved_Anchor_Capacity__c,
             this.perchAcquiredAnchor,
             'Perch',
-            'Anchor'
+            'Anchor',
+            'Acquisition',
+            this.sssRecord.Id
         );
-        this.addCapacityReservationOrder (
+        addCapacityReservationOrder (
+            this.capacityReservationOrders,
             this.sssRecord.Perch_Acq_Reserved_LMI_Capacity__c,
             this.perchAcquiredLMI,
             'Perch',
-            'LMI'
+            'LMI',
+            'Acquisition',
+            this.sssRecord.Id
         );
-    }
-
-    addCapacityReservationOrder(previousCapacity, newCapacity, responsible, customerType) {
-        if (+previousCapacity !== +newCapacity) {
-            this.capacityReservationOrders.push(this.newCapacityReservationOrder(
-               previousCapacity,
-               newCapacity,
-               responsible,
-               customerType
-            ));
-        }
-    }
-
-    newCapacityReservationOrder(previousCapacity, newCapacity, responsible, customerType) {
-        return {
-            'sobjectType': 'Capacity_Reservation_Order__c',
-            'New_Reserved_Capacity_kW_DC__c': newCapacity,
-            'Responsible_for_Capacity__c': responsible,
-            'Customer_Type__c': customerType,
-            'Previous_Reserved_Capacity_kW_DC__c': previousCapacity,
-            'Shared_Solar_System__c': this.sssRecord.Id
-        };
     }
 
     handleNext(event) {
@@ -139,3 +133,30 @@ export default class ReservedCapacityUpdater extends LightningElement {
         this.dispatchEvent(nextNavigationEvent);
     }
 }
+
+const addCapacityReservationOrder = (existingReservationOrders, previousCapacity, newCapacity, responsible, customerType, capacityType, sssId) => {
+    if (+previousCapacity !== +newCapacity) {
+        existingReservationOrders.push(newCapacityReservationOrder(
+            previousCapacity,
+            newCapacity,
+            responsible,
+            customerType,
+            capacityType,
+            sssId
+        ));
+    }
+};
+
+const newCapacityReservationOrder = (previousCapacity, newCapacity, responsible, customerType, capacityType, sssId) => {
+    return {
+        'sobjectType': 'Capacity_Reservation_Order__c',
+        'Capacity_Type__c' : capacityType,
+        'New_Reserved_Capacity_kW_DC__c': newCapacity,
+        'Responsible_for_Capacity__c': responsible,
+        'Customer_Type__c': customerType,
+        'Previous_Reserved_Capacity_kW_DC__c': previousCapacity,
+        'Shared_Solar_System__c': sssId
+    };
+};
+
+export {addCapacityReservationOrder}

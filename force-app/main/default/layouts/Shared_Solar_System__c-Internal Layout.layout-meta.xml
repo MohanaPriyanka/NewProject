@@ -214,6 +214,57 @@
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
+        <label>Contracted Capacity</label>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Client_Mngd_Contracted_Anchor_Capacity__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Client_Mngd_Contracted_Resi_Capacity__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Client_Mngd_Contracted_C_I_Capacity__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Client_Mngd_Contracted_Small_CS_Capacity__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Client_Mngd_Contracted_LMI_Capacity__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Perch_Mngd_Contracted_Anchor_Capacity__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Perch_Mngd_Contracted_Resi_Capacity__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Perch_Mngd_Contracted_C_I_Capacity__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Perch_Mngd_Contracted_Small_CS_Capacity__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Perch_Mngd_Contracted_LMI_Capacity__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <style>TwoColumnsLeftToRight</style>
+    </layoutSections>
+    <layoutSections>
+        <customLabel>true</customLabel>
+        <detailHeading>true</detailHeading>
+        <editHeading>true</editHeading>
         <label>Utility Account Information</label>
         <layoutColumns>
             <layoutItems>
@@ -740,9 +791,10 @@
         <fields>Approval_Status__c</fields>
         <fields>Total_System_Size_kW_DC__c</fields>
         <fields>Yield__c</fields>
+        <fields>CREATED_DATE</fields>
         <relatedList>Shared_Solar_System_Order__c.Shared_Solar_System__c</relatedList>
-        <sortField>Date_Approved__c</sortField>
-        <sortOrder>Asc</sortOrder>
+        <sortField>CREATED_DATE</sortField>
+        <sortOrder>Desc</sortOrder>
     </relatedLists>
     <relatedLists>
         <excludeButtons>MassChangeOwner</excludeButtons>
@@ -766,7 +818,15 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>Responsible_for_Capacity__c</fields>
+        <fields>Capacity_Type__c</fields>
+        <fields>Customer_Type__c</fields>
+        <fields>Previous_Reserved_Capacity_kW_DC__c</fields>
+        <fields>New_Reserved_Capacity_kW_DC__c</fields>
+        <fields>CREATED_DATE</fields>
         <relatedList>Capacity_Reservation_Order__c.Shared_Solar_System__c</relatedList>
+        <sortField>CREATED_DATE</sortField>
+        <sortOrder>Desc</sortOrder>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>

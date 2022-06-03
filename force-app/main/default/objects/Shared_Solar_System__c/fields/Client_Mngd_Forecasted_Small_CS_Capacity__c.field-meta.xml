@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Client_Mngd_Forecasted_Small_CS_Capacity__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Client Manage Forecasted Small CS Capacity, set or changed through a Shared Solar System Order</inlineHelpText>
+    <label>Client Mngd Forecasted Small CS Capacity</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

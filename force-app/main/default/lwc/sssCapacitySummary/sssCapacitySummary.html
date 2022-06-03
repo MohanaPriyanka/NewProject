@@ -1,78 +1,173 @@
 <template>
   <div>
     <lightning-record-view-form record-id={recordId} object-api-name="Shared_Solar_System__c">
-      <table class="slds-table slds-table_bordered slds-border_left slds-border_right">
-        <tr class="slds-text-title_bold">
-          <td></td>
-          <td>Reserved</td>
-          <td>Committed</td>
-          <td>Pending</td>
-          <td>Available</td>
-        </tr>
-        <tr>
-          <td class="slds-text-title_bold">Client Acquired Anchor</td>
-          <td><lightning-output-field variant="label-hidden" field-name="Client_Acq_Reserved_Anchor_Capacity__c"></lightning-output-field></td>
-          <td><lightning-output-field variant="label-hidden" field-name="Client_Acq_Committed_Anchor_Capacity__c"></lightning-output-field></td>
-          <td><lightning-output-field variant="label-hidden" field-name="Client_Acq_Pending_Anchor_Capacity__c"></lightning-output-field></td>
-          <td><lightning-output-field variant="label-hidden" field-name="Client_Acq_Available_Anchor_Capacity__c"></lightning-output-field></td>
-        </tr>
-        <tr>
-          <td class="slds-text-title_bold">Client Acquired Small CS</td>
-          <td><lightning-output-field variant="label-hidden" field-name="Client_Acq_Reserved_Small_CS_Capacity__c"></lightning-output-field></td>
-          <td><lightning-output-field variant="label-hidden" field-name="Client_Acq_Committed_Small_CS_Capacity__c"></lightning-output-field></td>
-          <td><lightning-output-field variant="label-hidden" field-name="Client_Acq_Pending_Small_CS_Capacity__c"></lightning-output-field></td>
-          <td><lightning-output-field variant="label-hidden" field-name="Client_Acq_Available_Small_CS_Capacity__c"></lightning-output-field></td>
-        </tr>
-        <template if:true={lmi}>
-          <tr>
-            <td class="slds-text-title_bold">Client Acquired LMI</td>
-            <td><lightning-output-field variant="label-hidden" field-name="Client_Acq_Reserved_LMI_Capacity__c"></lightning-output-field></td>
-            <td><lightning-output-field variant="label-hidden" field-name="Client_Acq_Committed_LMI_Capacity__c"></lightning-output-field></td>
-            <td><lightning-output-field variant="label-hidden" field-name="Client_Acq_Pending_LMI_Capacity__c"></lightning-output-field></td>
-            <td><lightning-output-field variant="label-hidden" field-name="Client_Acq_Available_LMI_Capacity__c"></lightning-output-field></td>
-          </tr>
-        </template>
-        <tr>
-          <td class="slds-text-title_bold">Perch Acquired Anchor</td>
-          <td><lightning-output-field variant="label-hidden" field-name="Reserved_Anchor_Capacity__c"></lightning-output-field></td>
-          <td><lightning-output-field variant="label-hidden" field-name="Anchor_Capacity_Reserved__c"></lightning-output-field></td>
-          <td><lightning-output-field variant="label-hidden" field-name="Pending_Anchor_Capacity__c"></lightning-output-field></td>
-          <td><lightning-output-field variant="label-hidden" field-name="Available_Anchor_Capacity__c"></lightning-output-field></td>
-        </tr>
-        <tr>
-          <td class="slds-text-title_bold">Perch Acquired Small CS</td>
-          <td><lightning-output-field variant="label-hidden" field-name="Perch_Acq_Reserved_Small_CS_Capacity__c"></lightning-output-field></td>
-          <td><lightning-output-field variant="label-hidden" field-name="Capacity_Committed_kW_DC__c"></lightning-output-field></td>
-          <td><lightning-output-field variant="label-hidden" field-name="Pending_Small_CS_Capacity__c"></lightning-output-field></td>
-          <td><lightning-output-field variant="label-hidden" field-name="Capacity_Available_to_be_Reserved__c"></lightning-output-field></td>
-        </tr>
-        <template if:true={lmi}>
-          <tr>
-            <td class="slds-text-title_bold">Perch Acquired LMI</td>
-            <td><lightning-output-field variant="label-hidden" field-name="Perch_Acq_Reserved_LMI_Capacity__c"></lightning-output-field></td>
-            <td><lightning-output-field variant="label-hidden" field-name="Perch_Acq_Committed_LMI_Capacity__c"></lightning-output-field></td>
-            <td><lightning-output-field variant="label-hidden" field-name="Perch_Acq_Pending_LMI_Capacity__c"></lightning-output-field></td>
-            <td><lightning-output-field variant="label-hidden" field-name="Perch_Acq_Available_LMI_Capacity__c"></lightning-output-field></td>
-          </tr>
-        </template>
-        <template if:true={isNY}>
-          <tr>
-            <td class="slds-text-title_bold">Demand Capacity</td>
-            <td><lightning-output-field variant="label-hidden" field-name="Reserved_Demand_Capacity__c"></lightning-output-field></td>
-            <td><lightning-output-field variant="label-hidden" field-name="Committed_Demand_Capacity__c"></lightning-output-field></td>
-            <td><lightning-output-field variant="label-hidden" field-name="Pending_Demand_Capacity__c"></lightning-output-field></td>
-            <td><lightning-output-field variant="label-hidden" field-name="Available_Demand_Capacity__c"></lightning-output-field></td>
-          </tr>
-        </template>
-        <tr>
-          <td class="slds-text-title_bold">Total System Size (kW DC)</td>
-          <td><lightning-output-field variant="label-hidden" field-name="Total_System_Size_kWh_DC__c"></lightning-output-field></td>
-          <td><lightning-output-field variant="label-hidden" field-name="Anchor_CS_Capacity_Committed__c"></lightning-output-field></td>
-          <td></td>
-          <td><lightning-output-field variant="label-hidden" field-name="Project_Capacity_Available_kW_DC__c"></lightning-output-field></td>
-        </tr>
-
-      </table>
+      <lightning-tabset>
+        <lightning-tab label="Acquisition">
+          <table class="slds-table slds-table_bordered slds-border_left slds-border_right">
+            <tr class="slds-text-title_bold">
+              <td></td>
+              <td>Reserved</td>
+              <td>Committed</td>
+              <td>Pending</td>
+              <td>Available</td>
+            </tr>
+            <tr>
+              <td class="slds-text-title_bold">Client Acquired Anchor</td>
+              <td><lightning-output-field variant="label-hidden" field-name="Client_Acq_Reserved_Anchor_Capacity__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Client_Acq_Committed_Anchor_Capacity__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Client_Acq_Pending_Anchor_Capacity__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Client_Acq_Available_Anchor_Capacity__c"></lightning-output-field></td>
+            </tr>
+            <tr>
+              <td class="slds-text-title_bold">Client Acquired Small CS</td>
+              <td><lightning-output-field variant="label-hidden" field-name="Client_Acq_Reserved_Small_CS_Capacity__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Client_Acq_Committed_Small_CS_Capacity__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Client_Acq_Pending_Small_CS_Capacity__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Client_Acq_Available_Small_CS_Capacity__c"></lightning-output-field></td>
+            </tr>
+            <template if:true={lmi}>
+              <tr>
+                <td class="slds-text-title_bold">Client Acquired LMI</td>
+                <td><lightning-output-field variant="label-hidden" field-name="Client_Acq_Reserved_LMI_Capacity__c"></lightning-output-field></td>
+                <td><lightning-output-field variant="label-hidden" field-name="Client_Acq_Committed_LMI_Capacity__c"></lightning-output-field></td>
+                <td><lightning-output-field variant="label-hidden" field-name="Client_Acq_Pending_LMI_Capacity__c"></lightning-output-field></td>
+                <td><lightning-output-field variant="label-hidden" field-name="Client_Acq_Available_LMI_Capacity__c"></lightning-output-field></td>
+              </tr>
+            </template>
+            <tr>
+              <td class="slds-text-title_bold">Perch Acquired Anchor</td>
+              <td><lightning-output-field variant="label-hidden" field-name="Reserved_Anchor_Capacity__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Anchor_Capacity_Reserved__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Pending_Anchor_Capacity__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Available_Anchor_Capacity__c"></lightning-output-field></td>
+            </tr>
+            <tr>
+              <td class="slds-text-title_bold">Perch Acquired Small CS</td>
+              <td><lightning-output-field variant="label-hidden" field-name="Perch_Acq_Reserved_Small_CS_Capacity__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Capacity_Committed_kW_DC__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Pending_Small_CS_Capacity__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Capacity_Available_to_be_Reserved__c"></lightning-output-field></td>
+            </tr>
+            <template if:true={lmi}>
+              <tr>
+                <td class="slds-text-title_bold">Perch Acquired LMI</td>
+                <td><lightning-output-field variant="label-hidden" field-name="Perch_Acq_Reserved_LMI_Capacity__c"></lightning-output-field></td>
+                <td><lightning-output-field variant="label-hidden" field-name="Perch_Acq_Committed_LMI_Capacity__c"></lightning-output-field></td>
+                <td><lightning-output-field variant="label-hidden" field-name="Perch_Acq_Pending_LMI_Capacity__c"></lightning-output-field></td>
+                <td><lightning-output-field variant="label-hidden" field-name="Perch_Acq_Available_LMI_Capacity__c"></lightning-output-field></td>
+              </tr>
+            </template>
+            <template if:true={isNY}>
+              <tr>
+                <td class="slds-text-title_bold">Demand Capacity</td>
+                <td><lightning-output-field variant="label-hidden" field-name="Reserved_Demand_Capacity__c"></lightning-output-field></td>
+                <td><lightning-output-field variant="label-hidden" field-name="Committed_Demand_Capacity__c"></lightning-output-field></td>
+                <td><lightning-output-field variant="label-hidden" field-name="Pending_Demand_Capacity__c"></lightning-output-field></td>
+                <td><lightning-output-field variant="label-hidden" field-name="Available_Demand_Capacity__c"></lightning-output-field></td>
+              </tr>
+            </template>
+            <tr>
+              <td class="slds-text-title_bold">Total System Size (kW DC)</td>
+              <td><lightning-output-field variant="label-hidden" field-name="Total_System_Size_kWh_DC__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Anchor_CS_Capacity_Committed__c"></lightning-output-field></td>
+              <td></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Project_Capacity_Available_kW_DC__c"></lightning-output-field></td>
+            </tr>
+          </table>
+        </lightning-tab>
+        <lightning-tab label="Management">
+          <table class="slds-table slds-table_bordered slds-border_left slds-border_right">
+            <tr class="slds-text-title_bold">
+              <td></td>
+              <td>Contracted</td>
+              <td>Forecasted</td>
+              <td>Backlog</td>
+              <td>Managed</td>
+            </tr>
+            <tr>
+              <td class="slds-text-title_bold">Client Managed Anchor</td>
+              <td><lightning-output-field variant="label-hidden" field-name="Client_Mngd_Contracted_Anchor_Capacity__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Client_Mngd_Forecasted_Anchor_Capacity__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Client_Mngd_Backlog_Anchor_Capacity__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Client_Mngd_Managed_Anchor_Capacity__c"></lightning-output-field></td>
+            </tr>
+            <tr>
+              <td class="slds-text-title_bold">Client Managed Resi</td>
+              <td><lightning-output-field variant="label-hidden" field-name="Client_Mngd_Contracted_Resi_Capacity__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Client_Mngd_Forecasted_Resi_Capacity__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Client_Mngd_Backlog_Resi_Capacity__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Client_Mngd_Managed_Resi_Capacity__c"></lightning-output-field></td>
+            </tr>
+            <tr>
+              <td class="slds-text-title_bold">Client Managed C&I</td>
+              <td><lightning-output-field variant="label-hidden" field-name="Client_Mngd_Contracted_C_I_Capacity__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Client_Mngd_Forecasted_C_I_Capacity__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Client_Mngd_Backlog_C_I_Capacity__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Client_Mngd_Managed_C_I_Capacity__c"></lightning-output-field></td>
+            </tr>
+            <tr>
+              <td class="slds-text-title_bold">Client Managed Small CS</td>
+              <td><lightning-output-field variant="label-hidden" field-name="Client_Mngd_Contracted_Small_CS_Capacity__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Client_Mngd_Forecasted_Small_CS_Capacity__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Client_Mngd_Backlog_Small_CS_Capacity__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Client_Mngd_Managed_Small_CS_Capacity__c"></lightning-output-field></td>
+            </tr>
+            <template if:true={lmi}>
+              <tr>
+                <td class="slds-text-title_bold">Client Managed LMI</td>
+                <td><lightning-output-field variant="label-hidden" field-name="Client_Mngd_Contracted_LMI_Capacity__c"></lightning-output-field></td>
+                <td><lightning-output-field variant="label-hidden" field-name="Client_Mngd_Forecasted_LMI_Capacity__c"></lightning-output-field></td>
+                <td><lightning-output-field variant="label-hidden" field-name="Client_Mngd_Backlog_LMI_Capacity__c"></lightning-output-field></td>
+                <td><lightning-output-field variant="label-hidden" field-name="Client_Mngd_Managed_LMI_Capacity__c"></lightning-output-field></td>
+              </tr>
+            </template>
+            <tr>
+              <td class="slds-text-title_bold">Perch Managed Anchor</td>
+              <td><lightning-output-field variant="label-hidden" field-name="Perch_Mngd_Contracted_Anchor_Capacity__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Perch_Mngd_Forecasted_Anchor_Capacity__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Perch_Mngd_Backlog_Anchor_Capacity__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Perch_Mngd_Managed_Anchor_Capacity__c"></lightning-output-field></td>
+            </tr>
+            <tr>
+              <td class="slds-text-title_bold">Client Managed Resi</td>
+              <td><lightning-output-field variant="label-hidden" field-name="Perch_Mngd_Contracted_Resi_Capacity__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Perch_Mngd_Forecasted_Resi_Capacity__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Perch_Mngd_Backlog_Resi_Capacity__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Perch_Mngd_Managed_Resi_Capacity__c"></lightning-output-field></td>
+            </tr>
+            <tr>
+              <td class="slds-text-title_bold">Client Managed C&I</td>
+              <td><lightning-output-field variant="label-hidden" field-name="Perch_Mngd_Contracted_C_I_Capacity__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Perch_Mngd_Forecasted_C_I_Capacity__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Perch_Mngd_Backlog_C_I_Capacity__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Perch_Mngd_Managed_C_I_Capacity__c"></lightning-output-field></td>
+            </tr>
+            <tr>
+              <td class="slds-text-title_bold">Perch Managed Small CS</td>
+              <td><lightning-output-field variant="label-hidden" field-name="Perch_Mngd_Contracted_Small_CS_Capacity__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Perch_Mngd_Forecasted_Small_CS_Capacity__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Perch_Mngd_Backlog_Small_CS_Capacity__c"></lightning-output-field></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Perch_Mngd_Managed_Small_CS_Capacity__c"></lightning-output-field></td>
+            </tr>
+            <template if:true={lmi}>
+              <tr>
+                <td class="slds-text-title_bold">Perch Managed LMI</td>
+                <td><lightning-output-field variant="label-hidden" field-name="Perch_Mngd_Contracted_LMI_Capacity__c"></lightning-output-field></td>
+                <td><lightning-output-field variant="label-hidden" field-name="Perch_Mngd_Forecasted_LMI_Capacity__c"></lightning-output-field></td>
+                <td><lightning-output-field variant="label-hidden" field-name="Perch_Mngd_Backlog_LMI_Capacity__c"></lightning-output-field></td>
+                <td><lightning-output-field variant="label-hidden" field-name="Perch_Mngd_Managed_LMI_Capacity__c"></lightning-output-field></td>
+              </tr>
+            </template>
+            <tr>
+              <td class="slds-text-title_bold">Total System Size (kW DC)</td>
+              <td></td>
+              <td><lightning-output-field variant="label-hidden" field-name="Total_System_Size_kWh_DC__c"></lightning-output-field></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </table>
+        </lightning-tab>
+      </lightning-tabset>
     </lightning-record-view-form>
   </div>
 </template>

@@ -153,13 +153,13 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
-    <label>Capacity Reservation Order</label>
+    <label>Capacity Change Order</label>
     <nameField>
         <displayFormat>CRO-{00000}</displayFormat>
-        <label>Capacity Reservation Order Name</label>
+        <label>Capacity Change Order Name</label>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>Capacity Reservation Orders</pluralLabel>
+    <pluralLabel>Capacity Change Orders</pluralLabel>
     <searchLayouts></searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>

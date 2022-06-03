@@ -6,10 +6,11 @@ import {LightningElement, api, wire} from 'lwc';
 import {getFieldValue, getRecord} from 'lightning/uiRecordApi';
 import LMI_FIELD from '@salesforce/schema/Shared_Solar_System__c.LMI__c';
 import STATE_FIELD from '@salesforce/schema/Shared_Solar_System__c.State__c';
+import MANAGEMENT_REVENUE_START_DATE_FIELD from '@salesforce/schema/Shared_Solar_System__c.Management_Revenue_Start_Date__c';
 
 export default class SssCapacitySummary extends LightningElement {
     @api recordId;
-    @wire(getRecord, { recordId: '$recordId', fields: [LMI_FIELD, STATE_FIELD] })
+    @wire(getRecord, { recordId: '$recordId', fields: [LMI_FIELD, STATE_FIELD, MANAGEMENT_REVENUE_START_DATE_FIELD] })
     sss;
 
     get lmi() {

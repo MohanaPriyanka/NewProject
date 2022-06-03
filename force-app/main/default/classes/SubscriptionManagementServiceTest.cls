@@ -124,6 +124,7 @@ public class SubscriptionManagementServiceTest {
         Capacity_Reservation_Order__c cro = new Capacity_Reservation_Order__c(
             Shared_Solar_System_Order__c = ssso.Id,
             Shared_Solar_System__c = ssso.Shared_Solar_System__c,
+            Capacity_Type__c = 'Acquisition',
             Customer_Type__c = 'Small CS',
             Responsible_for_Capacity__c = 'Perch',
             New_Reserved_Capacity_kW_DC__c = 1000
@@ -140,36 +141,42 @@ public class SubscriptionManagementServiceTest {
     private static void testCapacityReserver() {
         List<Capacity_Reservation_Order__c> capacityReservationOrders = new List<Capacity_Reservation_Order__c>();
         Capacity_Reservation_Order__c perchSmallCS = new Capacity_Reservation_Order__c(
+            Capacity_Type__c = 'Acquisition',
             Customer_Type__c = 'Small CS',
             Responsible_for_Capacity__c = 'Perch',
             New_Reserved_Capacity_kW_DC__c = 1000
         );
         capacityReservationOrders.add(perchSmallCS);
         Capacity_Reservation_Order__c perchAnchor = new Capacity_Reservation_Order__c(
+            Capacity_Type__c = 'Acquisition',
             Customer_Type__c = 'Anchor',
             Responsible_for_Capacity__c = 'Perch',
             New_Reserved_Capacity_kW_DC__c = 2000
         );
         capacityReservationOrders.add(perchAnchor);
         Capacity_Reservation_Order__c clientAnchor = new Capacity_Reservation_Order__c(
+            Capacity_Type__c = 'Acquisition',
             Customer_Type__c = 'Anchor',
             Responsible_for_Capacity__c = 'Client',
             New_Reserved_Capacity_kW_DC__c = 3000
         );
         capacityReservationOrders.add(clientAnchor);
         Capacity_Reservation_Order__c clientSmallCS = new Capacity_Reservation_Order__c(
+            Capacity_Type__c = 'Acquisition',
             Customer_Type__c = 'Small CS',
             Responsible_for_Capacity__c = 'Client',
             New_Reserved_Capacity_kW_DC__c = 4000
         );
         capacityReservationOrders.add(clientSmallCS);
         Capacity_Reservation_Order__c clientLMI = new Capacity_Reservation_Order__c(
+            Capacity_Type__c = 'Acquisition',
             Customer_Type__c = 'LMI',
             Responsible_for_Capacity__c = 'Client',
             New_Reserved_Capacity_kW_DC__c = 5000
         );
         capacityReservationOrders.add(clientLMI);
         Capacity_Reservation_Order__c perchLMI = new Capacity_Reservation_Order__c(
+            Capacity_Type__c = 'Acquisition',
             Customer_Type__c = 'LMI',
             Responsible_for_Capacity__c = 'Perch',
             New_Reserved_Capacity_kW_DC__c = 6000
@@ -188,6 +195,66 @@ public class SubscriptionManagementServiceTest {
         System.assertEquals(clientSmallCS.New_Reserved_Capacity_kW_DC__c, sss.Client_Acq_Reserved_Small_CS_Capacity__c,
             'CapacityReserver should set Client Small CS');
         System.assertEquals(clientLMI.New_Reserved_Capacity_kW_DC__c, sss.Client_Acq_Reserved_LMI_Capacity__c,
+            'CapacityReserver should set Client LMI');
+    }
+    @IsTest
+    private static void testCapacityReserverForManagement() {
+        List<Capacity_Reservation_Order__c> capacityReservationOrders = new List<Capacity_Reservation_Order__c>();
+        Capacity_Reservation_Order__c perchSmallCS = new Capacity_Reservation_Order__c(
+            Capacity_Type__c = 'Management',
+            Customer_Type__c = 'Small CS',
+            Responsible_for_Capacity__c = 'Perch',
+            New_Reserved_Capacity_kW_DC__c = 1000
+        );
+        capacityReservationOrders.add(perchSmallCS);
+        Capacity_Reservation_Order__c perchAnchor = new Capacity_Reservation_Order__c(
+            Capacity_Type__c = 'Management',
+            Customer_Type__c = 'Anchor',
+            Responsible_for_Capacity__c = 'Perch',
+            New_Reserved_Capacity_kW_DC__c = 2000
+        );
+        capacityReservationOrders.add(perchAnchor);
+        Capacity_Reservation_Order__c clientAnchor = new Capacity_Reservation_Order__c(
+            Capacity_Type__c = 'Management',
+            Customer_Type__c = 'Anchor',
+            Responsible_for_Capacity__c = 'Client',
+            New_Reserved_Capacity_kW_DC__c = 3000
+        );
+        capacityReservationOrders.add(clientAnchor);
+        Capacity_Reservation_Order__c clientSmallCS = new Capacity_Reservation_Order__c(
+            Capacity_Type__c = 'Management',
+            Customer_Type__c = 'Small CS',
+            Responsible_for_Capacity__c = 'Client',
+            New_Reserved_Capacity_kW_DC__c = 4000
+        );
+        capacityReservationOrders.add(clientSmallCS);
+        Capacity_Reservation_Order__c clientLMI = new Capacity_Reservation_Order__c(
+            Capacity_Type__c = 'Management',
+            Customer_Type__c = 'LMI',
+            Responsible_for_Capacity__c = 'Client',
+            New_Reserved_Capacity_kW_DC__c = 5000
+        );
+        capacityReservationOrders.add(clientLMI);
+        Capacity_Reservation_Order__c perchLMI = new Capacity_Reservation_Order__c(
+            Capacity_Type__c = 'Management',
+            Customer_Type__c = 'LMI',
+            Responsible_for_Capacity__c = 'Perch',
+            New_Reserved_Capacity_kW_DC__c = 6000
+        );
+        capacityReservationOrders.add(perchLMI);
+        Shared_Solar_System__c sss = new Shared_Solar_System__c();
+        new CapacityReserver().updateSystem(sss, capacityReservationOrders);
+        System.assertEquals(perchSmallCS.New_Reserved_Capacity_kW_DC__c, sss.Perch_Mngd_Forecasted_Small_CS_Capacity__c,
+            'CapacityReserver should set Perch Small CS');
+        System.assertEquals(perchAnchor.New_Reserved_Capacity_kW_DC__c, sss.Perch_Mngd_Forecasted_Anchor_Capacity__c,
+            'CapacityReserver should set Perch Anchor');
+        System.assertEquals(perchLMI.New_Reserved_Capacity_kW_DC__c, sss.Perch_Mngd_Forecasted_LMI_Capacity__c,
+            'CapacityReserver should set Perch LMI');
+        System.assertEquals(clientAnchor.New_Reserved_Capacity_kW_DC__c, sss.Client_Mngd_Forecasted_Anchor_Capacity__c,
+            'CapacityReserver should set Client Anchor');
+        System.assertEquals(clientSmallCS.New_Reserved_Capacity_kW_DC__c, sss.Client_Mngd_Forecasted_Small_CS_Capacity__c,
+            'CapacityReserver should set Client Small CS');
+        System.assertEquals(clientLMI.New_Reserved_Capacity_kW_DC__c, sss.Client_Mngd_Forecasted_LMI_Capacity__c,
             'CapacityReserver should set Client LMI');
     }
     @IsTest
