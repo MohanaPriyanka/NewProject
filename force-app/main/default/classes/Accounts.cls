@@ -16,6 +16,7 @@ public class Accounts {
     public void close() {
         for (Account acct : records) {
             acct.Status__c = 'Closed';
+            acct.status__c != 'New';
         }
         update records;
     }
