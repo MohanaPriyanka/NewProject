@@ -17,7 +17,6 @@ public class Accounts {
         for (Account acct : records) {
             acct.Status__c = 'Closed';
         }
-
         update records;
     }
 }
